@@ -1,0 +1,70 @@
+{
+  "WELCOME_INTRO": "建筑人",
+
+  "BACK_BUTTON_TEXT": "返回",
+
+  "NAME": "姓名",
+  "EMAIL": "邮箱",
+  "USERNAME": "用户名",
+  "PASSWORD": "密码",
+  "LOGIN": "登录",
+  "SIGNUP": "注册",
+
+  "TUTORIAL_SKIP_BUTTON": "跳过",
+
+  "TUTORIAL_SLIDE1_TITLE": "欢迎使用<b>建筑人</b>应用",
+  "TUTORIAL_SLIDE1_DESCRIPTION": "这是一个专门用于建筑行业管理的应用，在这里你可以使用丰富多样的方式开展日常管理。",
+
+  "TUTORIAL_SLIDE2_TITLE": "使用方式",
+  "TUTORIAL_SLIDE2_DESCRIPTION": "你只需要简单的注册一个属于自己的帐户，并且通过实名认证即可使用所有的功能，没有任何费用。",
+
+  "TUTORIAL_SLIDE3_TITLE": "功能简介",
+  "TUTORIAL_SLIDE3_DESCRIPTION": "在这里，除了日常的考勤管理，人员管理，财务管理等，你还可以对人员进行实时的定位管理，并且所有的人员轨迹都有迹可查。更多功能等待你去发现。",
+
+  "TUTORIAL_SLIDE4_TITLE": "准备好了吗？",
+  "TUTORIAL_SLIDE4_BUTTON": "开始使用",
+
+  "TAB1_TITLE": "Items",
+  "TAB2_TITLE": "Search",
+  "TAB3_TITLE": "Settings",
+
+  "MAP_TITLE": "Map",
+
+
+
+  "SETTINGS_TITLE": "Settings",
+  "SETTINGS_OPTION1": "Option 1",
+  "SETTINGS_OPTION2": "Option 2",
+  "SETTINGS_OPTION3": "Option 3",
+  "SETTINGS_OPTION4": "Option 4",
+
+  "SETTINGS_PROFILE_BUTTON": "Edit Profile",
+
+  "SETTINGS_PAGE_PROFILE": "Edit Profile",
+
+  "WELCOME_TITLE": "Welcome",
+
+  "LOGIN_TITLE": "Sign in",
+  "LOGIN_ERROR": "Unable to sign in. Please check your account information and try again.",
+  "LOGIN_BUTTON": "Sign in",
+  "SIGNUP_TITLE": "Sign up",
+  "SIGNUP_ERROR": "Unable to create account. Please check your account information and try again.",
+  "SIGNUP_BUTTON": "Sign up",
+
+  "LIST_MASTER_TITLE": "Items",
+
+  "ITEM_CREATE_TITLE": "New Item",
+  "ITEM_CREATE_CHOOSE_IMAGE": "Add Image",
+
+  "ITEM_NAME_PLACEHOLDER": "Name",
+  "ITEM_ABOUT_PLACEHOLDER": "About",
+
+  "DONE_BUTTON": "Done",
+  "CANCEL_BUTTON": "Cancel",
+  "DELETE_BUTTON": "Delete",
+
+  "CARDS_TITLE": "Social",
+
+  "SEARCH_TITLE": "Search",
+  "SEARCH_PLACEHOLDER": "Search the items list, e.g. \"Donald Duck\""
+}

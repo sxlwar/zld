@@ -1,7 +1,10 @@
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TutorialPage } from './tutorial';
-import { TranslateModule } from '@ngx-translate/core';
+import {NgModule} from '@angular/core';
+import {IonicPageModule} from 'ionic-angular';
+import {TutorialPage} from './tutorial';
+import {TranslateModule} from '@ngx-translate/core';
+import {StoreModule} from '@ngrx/store';
+import {platformDirectionReducer, showSkipReducer, slideReducer} from '../../reducers/slide-reducer';
+import {SlideService} from '../../serveices/business/slide-service';
 
 @NgModule({
   declarations: [
@@ -9,10 +12,18 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   imports: [
     IonicPageModule.forChild(TutorialPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    StoreModule.forRoot({
+      showSkip: showSkipReducer,
+      welcomeSlides: slideReducer,
+      platformDirection: platformDirectionReducer
+    }),
   ],
   exports: [
     TutorialPage
+  ],
+  providers: [
+    SlideService
   ]
 })
 export class TutorialPageModule { }

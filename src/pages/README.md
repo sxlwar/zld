@@ -1,3 +1,3 @@
 # Pages
 
-Each page type available has a corresponding README, take a look by navigating to a page directory above.
+每一个页面都有一个对应的README文件，可以打开以上文件夹进行查看。

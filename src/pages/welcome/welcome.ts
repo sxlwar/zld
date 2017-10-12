@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController} from 'ionic-angular';
+import {Store} from '@ngrx/store';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -14,13 +15,18 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController,
+              public store: Store<any>) {
+  }
 
   login() {
-    this.navCtrl.push('LoginPage');
+    this.navCtrl.push('LoginPage').then(() => {
+
+    });
   }
 
   signup() {
-    this.navCtrl.push('SignupPage');
+    this.navCtrl.push('SignupPage').then(() => {
+    });
   }
 }
