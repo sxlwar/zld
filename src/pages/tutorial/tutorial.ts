@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {IonicPage, MenuController, NavController, Slides} from 'ionic-angular';
-import {SlideService} from '../../serveices/business/slide-service';
+import {SlideService} from '../../serveices/business/tutorial-service';
 import {Observable} from 'rxjs/Observable';
 import {Store} from '@ngrx/store';
+import * as fromRoot from '../../reducers/index-reducer'
 
 @IonicPage()
 @Component({
@@ -17,7 +18,7 @@ export class TutorialPage implements OnInit {
   constructor(public navCtrl: NavController,
               public menu: MenuController,
               private slideService: SlideService,
-              public store: Store<any>) {
+              public store: Store<fromRoot.AppState>) {
   }
 
   ngOnInit() {
@@ -34,18 +35,20 @@ export class TutorialPage implements OnInit {
 
     this.slideService.getSlides(keys, address);
 
-    this.slides = this.store.select('welcomeSlides');
+    this.slides = this.store.select(fromRoot.selectWelcomeSlides);
 
-    this.showSkip = this.store.select('showSkip');
+    this.showSkip = this.store.select(fromRoot.selectSkipState);
 
-    this.dir = this.store.select('platformDirection');
+    this.dir = this.store.select(fromRoot.selectPlatformDirection);
   }
 
   startApp() {
     this.navCtrl.setRoot('WelcomePage', {}, {
       animate: true,
       direction: 'forward'
-    }).then(() => {});
+    }).then(() => {
+      this.slideService.resetSkipState();
+    });
   }
 
   onSlideChangeStart(slides: Slides) {

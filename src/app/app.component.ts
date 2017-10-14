@@ -1,7 +1,6 @@
 import {Component, ViewChild} from '@angular/core';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
-import {TranslateService} from '@ngx-translate/core';
 import {Config, Nav, Platform} from 'ionic-angular';
 
 import {FirstRunPage} from '../pages/pages';
@@ -9,7 +8,7 @@ import {Settings} from '../providers/providers';
 import {Store} from '@ngrx/store';
 import {ConfigService} from '../serveices/config/config-service';
 
-import * as fromRoot from '../reducers/config-reducer';
+import * as fromRoot from '../reducers/index-reducer';
 
 @Component({
   templateUrl: './app.component.html'
@@ -40,12 +39,9 @@ export class MyApp {
               private statusBar: StatusBar,
               private splashScreen: SplashScreen,
               private configService: ConfigService,
-              private store: Store<fromRoot.State>) {
+              private store: Store<fromRoot.AppState>) {
     this.configService.init();
-    this.store.select(fromRoot.selectButtonText).subscribe(result => {
-      console.log(result);
-      this.config.set('backButtonText', result);
-    });
+    this.store.select(fromRoot.selectButtonText).subscribe(text => this.config.set('backButtonText', text));
   }
 
   /**

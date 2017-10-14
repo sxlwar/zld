@@ -1,8 +1,8 @@
-import {Platform, Slides} from 'ionic-angular';
+import {Slides} from 'ionic-angular';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {TranslateService} from '@ngx-translate/core';
-import {AddSlidesAction, HideSkipAction, SetPlatformDirection, ShowSkipAction} from '../../actions/slide-action';
+import {AddSlidesAction, ToggleSkipAction} from '../../actions/tutorial-action';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/bufferCount';
@@ -10,33 +10,25 @@ import 'rxjs/add/operator/zip'
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/operator/mergeAll';
-import {zipObject, concat, assign} from 'lodash';
-import {ShowSkip, Slide} from '../../interfaces/slide-interface';
+import {assign, concat, zipObject} from 'lodash';
+import {Slide} from '../../interfaces/tutorial-interface';
+import {State} from '../../reducers/tutorial-reducer';
 
 @Injectable()
 export class SlideService {
   constructor(
-    private platform: Platform,
-    public store: Store<ShowSkip | Slide>,
+    public store: Store<State>,
     private translate: TranslateService
   ) {
-    store.dispatch(new SetPlatformDirection(platform.dir()));
+
   }
 
   slideChange(slides: Slides) {
-    if (slides.isEnd()) {
-      this.hideSkip();
-    } else {
-      this.showSkip();
-    }
+    this.store.dispatch(new ToggleSkipAction(!slides.isEnd()));
   }
 
-  showSkip() {
-    this.store.dispatch(new ShowSkipAction(null));
-  }
-
-  hideSkip() {
-    this.store.dispatch(new HideSkipAction(null));
+  resetSkipState(){
+    this.store.dispatch(new ToggleSkipAction(true));
   }
 
   getSlides(keys: string[], images: string[]) {

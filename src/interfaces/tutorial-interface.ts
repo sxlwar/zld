@@ -1,6 +1,3 @@
-export interface ShowSkip {
-  showSkip: boolean;
-}
 
 export interface Slide {
   title: string;

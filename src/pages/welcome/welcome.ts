@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController} from 'ionic-angular';
 import {Store} from '@ngrx/store';
+import {AppState} from '../../reducers/index-reducer';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -16,7 +17,7 @@ import {Store} from '@ngrx/store';
 export class WelcomePage {
 
   constructor(public navCtrl: NavController,
-              public store: Store<any>) {
+              public store: Store<AppState>) {
   }
 
   login() {
@@ -28,5 +29,9 @@ export class WelcomePage {
   signup() {
     this.navCtrl.push('SignupPage').then(() => {
     });
+  }
+
+  replayTutorial() {
+    this.navCtrl.setRoot('TutorialPage').then(()=>{});
   }
 }

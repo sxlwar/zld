@@ -14,9 +14,10 @@ import {Items} from '../mocks/providers/items';
 import {Settings, User} from '../providers/providers';
 import {MyApp} from './app.component';
 import {Api} from '../providers/api/api';
-import {Store, StoreModule} from '@ngrx/store';
-import {reducers} from '../reducers/config-reducer';
+import {ActionReducer, MetaReducer, Store, StoreModule} from '@ngrx/store';
+import {reducers} from '../reducers/index-reducer';
 import {ConfigService} from '../serveices/config/config-service';
+
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -38,6 +39,29 @@ export function provideSettings(storage: Storage) {
     option4: 'Hello'
   });
 }
+//
+// export function getMetaReducers(reducer: ActionReducer<any>): ActionReducer<any> {
+//   return function (state, action) {
+//     return reducer(state, action)
+//   }
+// }
+//
+// export const metaReducers: MetaReducer<any>[] = [getMetaReducers];
+
+export function debug1(reducer: ActionReducer<any>): ActionReducer<any> {
+  return function(state, action) {
+    console.log('state', state);
+    return reducer(state, action);
+  }
+}
+export function debug2(reducer: ActionReducer<any>): ActionReducer<any> {
+  return function(state, action) {
+    console.log('action', action);
+    return reducer(state, action);
+  }
+}
+
+export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
 
 @NgModule({
   declarations: [
@@ -55,7 +79,7 @@ export function provideSettings(storage: Storage) {
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    StoreModule.forRoot(reducers)
+    StoreModule.forRoot(reducers, {metaReducers})
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -70,7 +94,7 @@ export function provideSettings(storage: Storage) {
     SplashScreen,
     StatusBar,
     Store,
-    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
+    {provide: Settings, useFactory: provideSettings, deps: [Storage]},
     // Keep this to enable Ionic's runtime error handling during development
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConfigService

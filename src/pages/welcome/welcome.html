@@ -2,12 +2,11 @@
   <div class="splash-bg"></div>
   <div class="splash-info">
     <div class="splash-logo"></div>
-    <div class="splash-intro">
-      {{ 'WELCOME_INTRO' | translate }}
-    </div>
+    <span class="splash-intro">{{'WELCOME_INTRO' | translate}}</span>
   </div>
   <div padding>
     <button ion-button block (click)="signup()">{{ 'SIGNUP' | translate }}</button>
     <button ion-button block (click)="login()" class="login">{{ 'LOGIN' | translate }}</button>
+    <button ion-button block clear (click)="replayTutorial()">{{'REVIEW_TUTORIAL' | translate}}</button>
   </div>
 </ion-content>

@@ -3,8 +3,8 @@ import {IonicPageModule} from 'ionic-angular';
 import {TutorialPage} from './tutorial';
 import {TranslateModule} from '@ngx-translate/core';
 import {StoreModule} from '@ngrx/store';
-import {platformDirectionReducer, showSkipReducer, slideReducer} from '../../reducers/slide-reducer';
-import {SlideService} from '../../serveices/business/slide-service';
+import {SlideService} from '../../serveices/business/tutorial-service';
+// import {reducers} from '../../reducers/index-reducer';
 
 @NgModule({
   declarations: [
@@ -13,11 +13,7 @@ import {SlideService} from '../../serveices/business/slide-service';
   imports: [
     IonicPageModule.forChild(TutorialPage),
     TranslateModule.forChild(),
-    StoreModule.forRoot({
-      showSkip: showSkipReducer,
-      welcomeSlides: slideReducer,
-      platformDirection: platformDirectionReducer
-    }),
+    // StoreModule.forRoot(reducers),
   ],
   exports: [
     TutorialPage
