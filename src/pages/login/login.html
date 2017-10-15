@@ -1,39 +1,98 @@
-<ion-header>
+<ion-content class="transparent-header" [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
+  <ion-header>
+    <ion-navbar></ion-navbar>
+  </ion-header>
+  <ion-slides #slider [direction]="direction" class="content-slider">
 
-  <ion-navbar>
-    <ion-title>{{ 'LOGIN_TITLE' | translate }}</ion-title>
-  </ion-navbar>
-
-</ion-header>
-
-
-<ion-content>
-  <form (submit)="doLogin()">
-    <ion-list>
-
-      <ion-item>
-        <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
-        <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
-      </ion-item>
-
-      <!--
-      Want to use a Username instead of an Email? Here you go:
-
-      <ion-item>
-        <ion-label floating>{{ 'USERNAME' | translate }}</ion-label>
-        <ion-input type="text" [(ngModel)]="account.username" name="username"></ion-input>
-      </ion-item>
-      -->
-
-      <ion-item>
-        <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
-        <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
-      </ion-item>
-
-      <div padding>
-        <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+    <ion-slide class="zoom swiper-no-swiping">
+      <button ion-button clear (click)="changeSlidesActive(1)" class="slide-button">
+        {{'LOGIN_NEED_TO_LOGIN' | translate}}
+        <ion-icon name="arrow-up"></ion-icon>
+      </button>
+      <div style="padding: 0 32px;">
+        <ion-item>
+          <ion-label fixed>{{'LOGIN_USER_TYPE' | translate}}</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
+          <ion-input type="search"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{'NAME' | translate}}</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
+          <ion-input type="tel"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{'LOGIN_PHONE_VERIFICATION' | translate}}</ion-label>
+          <ion-input type="number"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{'LOGIN_IMAGE_VERIFICATION' | translate}}</ion-label>
+          <ion-input type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+        <ion-item class="margin-bottom">
+          <ion-label fixed>{{'LOGIN_CONFIRM_PASSWORD' | translate}}</ion-label>
+          <ion-input type="password"></ion-input>
+        </ion-item>
+        <button ion-button block round (click)="signup()" color="light" class="login-button">{{'SIGNUP' | translate}}</button>
       </div>
+    </ion-slide>
 
-    </ion-list>
-  </form>
+    <ion-slide class="zoom swiper-no-swiping">
+      <ion-slides #innerSlider class="content-slider">
+
+        <ion-slide class="swiper-no-swiping">
+          <div style="padding: 20% 32px 32px 32px">
+            <ion-item>
+              <ion-label floating>{{'MOBILE_PHONE' | translate}}</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label floating>{{'PASSWORD' | translate}}</ion-label>
+              <ion-input type="password"></ion-input>
+            </ion-item>
+            <button ion-button block round (click)="login()" color="light" class="login-button">{{'LOGIN' | translate}}</button>
+            <button ion-button clear (click)="changeInnerSlidesActive(1)" color="light" class="forgot-button">{{'LOGIN_FORGOT_PASSWORD' | translate}}</button>
+          </div>
+          <button ion-button clear (click)="changeSlidesActive(0)" class="slide-button position-bottom">{{'LOGIN_NEED_TO_SIGN_UP' | translate}}<ion-icon name="arrow-down"></ion-icon></button>
+        </ion-slide>
+
+        <ion-slide class="swiper-no-swiping">
+          <div style="padding: 20% 32px 32px 32px">
+            <ion-item>
+              <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
+              <ion-input type="tel"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>{{'LOGIN_PHONE_VERIFICATION' | translate}}</ion-label>
+              <ion-input type="number"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>{{'LOGIN_IMAGE_VERIFICATION' | translate}}</ion-label>
+              <ion-input type="text"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
+              <ion-input type="password"></ion-input>
+            </ion-item>
+            <ion-item class="margin-bottom">
+              <ion-label fixed>{{'LOGIN_CONFIRM_PASSWORD' | translate}}</ion-label>
+              <ion-input type="password"></ion-input>
+            </ion-item>
+            <button ion-button block round (click)="resetPassword()" color="light" class="login-button">{{'LOGIN_RESET_PASSWORD' | translate}}</button>
+            <button ion-button clear (click)="changeInnerSlidesActive(0)" color="light" class="goback-button"><ion-icon name="arrow-back"></ion-icon>{{'LOGIN_NEED_TO_LOGIN' | translate}}</button>
+          </div>
+        </ion-slide>
+      </ion-slides>
+    </ion-slide>
+
+  </ion-slides>
 </ion-content>

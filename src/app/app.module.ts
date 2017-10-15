@@ -17,6 +17,7 @@ import {Api} from '../providers/api/api';
 import {ActionReducer, MetaReducer, Store, StoreModule} from '@ngrx/store';
 import {reducers} from '../reducers/index-reducer';
 import {ConfigService} from '../serveices/config/config-service';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 
 // The translate loader needs to know where to load i18n files
@@ -79,7 +80,10 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     }),
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
-    StoreModule.forRoot(reducers, {metaReducers})
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 15
+    })
   ],
   bootstrap: [IonicApp],
   entryComponents: [

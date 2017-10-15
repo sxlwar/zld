@@ -1,0 +1,17 @@
+.transparent-header .toolbar-content,
+.transparent-header .back-button {
+  color: white; }
+.transparent-header .toolbar-background,
+.transparent-header ion-navbar,
+.transparent-header ion-header {
+  background: transparent !important;
+  background-color: transparent !important; }
+.transparent-header .header-md::after,
+.transparent-header .toolbar-background-ios {
+  background-image: none;
+  border-bottom: 0; }
+.transparent-header .header-ios .toolbar-background-ios,
+.transparent-header .footer-ios .toolbar-background-ios {
+  border: 0; }
+
+/*# sourceMappingURL=app.css.map */
