@@ -1,25 +1,59 @@
-// import { FormBuilder, FormControl, Validator } from '@angular/forms';
-import {Component, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AlertController, App, IonicPage, LoadingController, NavParams, Slides, ViewController} from 'ionic-angular';
 import {LoginService} from '../../serveices/business/login-service';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers/index-reducer';
 import 'rxjs/add/operator/distinctUntilChanged';
+import {
+  mobilePhoneValidator, passwordMatchValidator, passwordValidator,
+  realnameValidator,
+} from '../../validators/validators';
+
+export class LoginForm {
+  mobilePhone = ['', mobilePhoneValidator];
+  password = ['', passwordValidator];
+  imageVerification = '';
+}
+
+export class PasswordInfo {
+  password = ['', mobilePhoneValidator];
+  confirmPassword = ['', mobilePhoneValidator];
+}
+
+export class ResetPwdForm {
+  mobilePhone = ['', mobilePhoneValidator];
+  phoneVerification = '';
+  imageVerification = '';
+  constructor(public passwordInfo: FormGroup){
+  }
+}
+
+export interface LoginFormModel {
+  mobilePhone: string;
+  password: string;
+  imageVerification: string;
+}
+
+const userTypes = ['LOGIN_PERSONAL_USER', 'LOGIN_COMPANY_USER'];
 
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage {
+export class LoginPage  implements OnInit{
 
-  // Slider methods
-  @ViewChild('slider') slider: Slides;
-  @ViewChild('innerSlider') innerSlider: Slides;
-
-  public loginForm: any;
+  public loginForm: FormGroup;
+  public signupForm: FormGroup;
+  public resetPwdForm: FormGroup;
   direction = 'vertical';
   public backgroundImage = 'assets/img/background/login-background.png';
+  public showVerificationOfLogin: boolean = false;
+  public showVerificationOfSignup: boolean;
+  public showVerificationOfReset: boolean;
+  public userTypes = userTypes;
+
 
   constructor(public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
@@ -27,10 +61,16 @@ export class LoginPage {
               private navParams: NavParams,
               private viewCtrl: ViewController,
               private loginService: LoginService,
-              private store: Store<fromRoot.AppState>) {
+              private store: Store<fromRoot.AppState>,
+              private fb: FormBuilder) {
     this.initSlide();
+    this.initForm();
     this.loginService.changeSlidesActive(this.navParams.get('index'));
   }
+
+  // Slider methods
+  @ViewChild('slider') slider: Slides;
+  @ViewChild('innerSlider') innerSlider: Slides;
 
   initSlide() {
     this.viewCtrl.willEnter.subscribe(() => {
@@ -44,12 +84,43 @@ export class LoginPage {
     });
   }
 
+  ngOnInit(){
+    this.store.select(fromRoot.selectUserInfo).subscribe(value => console.log(value));
+  }
+
   changeSlidesActive(index) {
     this.loginService.changeSlidesActive(index);
   }
 
   changeInnerSlidesActive(index) {
     this.loginService.changeInnerSlidesActive(index);
+  }
+
+  initForm() {
+    this.loginForm = this.fb.group(new LoginForm());
+
+    this.signupForm = this.fb.group({
+      userType: '',
+      company: '',
+      realname: ['', realnameValidator],
+      mobilePhone: ['', mobilePhoneValidator],
+      phoneVerification: '',
+      imageVerification: '',
+      passwordInfo: this.fb.group({
+        password: ['', passwordValidator],
+        confirmPassword: ['', passwordValidator]
+      }, {validator: passwordMatchValidator})
+    });
+
+    this.resetPwdForm = this.fb.group({
+      mobilePhone: ['', mobilePhoneValidator],
+      imageVerification: '',
+      phoneVerification: '',
+      passwordInfo: this.fb.group({
+        password: ['', passwordValidator],
+        confirmPassword: ['', passwordValidator]
+      }, {validator: passwordMatchValidator}),
+    });
   }
 
   presentLoading(message) {
@@ -70,16 +141,79 @@ export class LoginPage {
   }
 
   login() {
-    this.presentLoading('Thanks for signing up!');
-    // this.navCtrl.push(HomePage);
+    this.loginService.login(this.loginForm.value);
   }
 
   signup() {
-    this.presentLoading('Thanks for signing up!');
-    // this.navCtrl.push(HomePage);
+    console.log(this.signupForm.value);
   }
 
   resetPassword() {
-    this.presentLoading('An e-mail was sent with your new password.');
+    console.log(this.resetPwdForm.value);
+    console.log(this.resetPwdForm.get('passwordInfo').status);
+  }
+
+  get mobilePhone() {
+    return this.loginForm.get('mobilePhone');
+  }
+
+  get password() {
+    return this.loginForm.get('password');
+  }
+
+  get imageVerification() {
+    return this.loginForm.get('imageVerification');
+  }
+
+  get mobilePhoneReset() {
+    return this.resetPwdForm.get('mobilePhone');
+  }
+
+  get phoneVerificationReset() {
+    return this.resetPwdForm.get('phoneVerification');
+  }
+
+  get imageVerificationReset() {
+    return this.resetPwdForm.get('imageVerification');
+  }
+
+  get passwordReset() {
+    return this.resetPwdForm.get('passwordInfo.password');
+  }
+
+  get confirmPasswordReset() {
+    return this.resetPwdForm.get('passwordInfo.confirmPassword');
+  }
+
+  get userType() {
+    return this.signupForm.get('userType');
+  }
+
+  get company() {
+    return this.signupForm.get('company');
+  }
+
+  get realname() {
+    return this.signupForm.get('realname');
+  }
+
+  get mobilePhoneSignup() {
+    return this.signupForm.get('mobilePhone');
+  }
+
+  get phoneVerificationSignup() {
+    return this.signupForm.get('phoneVerification');
+  }
+
+  get imageVerificationSignup() {
+    return this.signupForm.get('imageVerification');
+  }
+
+  get passwordSignup() {
+    return this.signupForm.get('passwordInfo.password');
+  }
+
+  get confirmPasswordSignup() {
+    return this.signupForm.get('passwordInfo.confirmPassword');
   }
 }

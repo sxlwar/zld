@@ -14,4 +14,9 @@
 .transparent-header .footer-ios .toolbar-background-ios {
   border: 0; }
 
+.form-error {
+  padding: 0 16px;
+  font-size: 12px;
+  text-align: left; }
+
 /*# sourceMappingURL=app.css.map */

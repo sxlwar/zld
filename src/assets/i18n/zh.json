@@ -2,6 +2,11 @@
   "WELCOME_INTRO": "建筑人",
 
   "BACK_BUTTON_TEXT": "返回",
+  "CONFIRM_BUTTON": "确认",
+  "CANCEL_BUTTON": "取消",
+  "ADD_BUTTON": "添加",
+  "DELETE_BUTTON": "删除",
+
 
   "NAME": "姓名",
   "EMAIL": "邮箱",
@@ -34,6 +39,20 @@
   "LOGIN_USER_TYPE": "用户类型",
   "LOGIN_NEW_PASSWORD":"新密码",
   "LOGIN_CLICK_FOR_VERIFICATION": "点击获取",
+  "LOGIN_ACCOUNT_INVALID_ERROR": "请输入正确的手机号码",
+  "LOGIN_ACCOUNT_REQUIRED_ERROR": "手机号不能为空",
+  "LOGIN_PASSWORD_INVALID_ERROR":"密码长度必须为6-16位，可以由数字、字母、下划线组成",
+  "LOGIN_PASSWORD_REQUIRED_ERROR": "密码不能为空",
+  "LOGIN_IMAGE_VERIFICATION_REQUIRED_ERROR": "图形验证码不能为空",
+  "LOGIN_PHONE_VERIFICATION_REQUIRED_ERROR": "手机验证码不能为空",
+  "LOGIN_PASSWORD_MISMATCH_ERROR": "两次密码输入不一致",
+  "LOGIN_PERSONAL_USER":"工人",
+  "LOGIN_COMPANY_USER": "企业用户",
+  "LOGIN_USER_TYPE_REQUIRED_ERROR": "必须选择一个用户类型",
+  "LOGIN_COMPANY_REQUIRED_ERROR": "公司名称不能为空",
+  "LOGIN_NAME_REQUIRED_ERROR": "姓名不能为空",
+  "LOGIN_NAME_INVALID_ERROR": "请输入您的真实姓名",
+
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
@@ -67,8 +86,6 @@
   "ITEM_ABOUT_PLACEHOLDER": "About",
 
   "DONE_BUTTON": "Done",
-  "CANCEL_BUTTON": "Cancel",
-  "DELETE_BUTTON": "Delete",
 
   "CARDS_TITLE": "Social",
 

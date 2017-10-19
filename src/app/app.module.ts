@@ -18,8 +18,12 @@ import {ActionReducer, MetaReducer, Store, StoreModule} from '@ngrx/store';
 import {reducers} from '../reducers/index-reducer';
 import {ConfigService} from '../serveices/config/config-service';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-
-
+import {ENV} from '@app/env';
+import {ApiOperateService} from '../serveices/api/operate-service';
+import {ParameterService} from '../serveices/api/parameter-service';
+import {CommandService} from '../serveices/api/command-service';
+import {ApiService} from '../serveices/api/api-service';
+import {StoreService} from '../serveices/store-service';
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function HttpLoaderFactory(http: Http) {
@@ -64,6 +68,8 @@ export function debug2(reducer: ActionReducer<any>): ActionReducer<any> {
 
 export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
 
+console.log(ENV.DOMAIN);
+
 @NgModule({
   declarations: [
     MyApp
@@ -101,7 +107,12 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     {provide: Settings, useFactory: provideSettings, deps: [Storage]},
     // Keep this to enable Ionic's runtime error handling during development
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ConfigService
+    ConfigService,
+    ApiOperateService,
+    ParameterService,
+    CommandService,
+    ApiService,
+    StoreService
   ]
 })
 export class AppModule { }

@@ -9,7 +9,15 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "serve:zldtest": "APP_ENV=zldtest ionic-app-scripts serve",
+    "build:zldtest": "APP_ENV=zldtest ionic-app-scripts build --prod",
+    "serve:dev": "APP_ENV=dev ionic-app-scripts serve",
+    "build:dev": "APP_ENV=dev ionic-app-scripts build --prod",
+    "serve:builder": " APP_ENV=builder ionic-app-scripts serve",
+    "build:builder": " APP_ENV=builder ionic-app-scripts build --prod",
+    "serve:pro": " APP_ENV=pro ionic-app-scripts serve",
+    "build:pro": " APP_ENV=pro ionic-app-scripts build --prod"
   },
   "dependencies": {
     "@angular/common": "4.4.3",
@@ -35,7 +43,9 @@
     "ionic-angular": "3.7.0",
     "ionicons": "3.0.0",
     "lodash": "^4.17.4",
+    "queueing-subject": "^0.1.1",
     "rxjs": "5.4.3",
+    "rxjs-websockets": "^4.0.0",
     "sw-toolbox": "3.6.0",
     "zone.js": "0.8.17"
   },
@@ -44,5 +54,8 @@
     "ngrx-store-logger": "^0.2.0",
     "typescript": "^2.5.2"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "config": {
+    "ionic_webpack": "./config/webpack.config.js"
+  }
 }
