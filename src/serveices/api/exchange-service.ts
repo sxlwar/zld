@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CommandService} from './command-service';
 import {LoginOptions} from './operate-service';
-import {ApiService} from './api-service';
+import {WebsocketService} from './websocket-service';
 import {StoreService} from '../store-service';
 
 export interface Parameter {
@@ -24,21 +24,22 @@ export interface WsResponse {
 @Injectable()
 export class ParameterService {
   constructor(private command: CommandService,
-              private apiService: ApiService,
+              private wsService: WebsocketService,
               private storeService: StoreService) {
     this.handleMessage();
-    this.apiService.connectionStatus.subscribe(status => console.log(status));
+    this.wsService.connectionStatus.subscribe(status => console.log(status));
   }
 
   login(parameters: LoginOptions) {
     const command = {path: this.command.login};
-    this.apiService.send({parameters, command});
+    this.wsService.send({parameters, command});
   }
 
   handleMessage(){
-    this.apiService.messages.map((message: WsResponse) => {
+    this.wsService.messages.map((message: WsResponse) => {
       message.isError = message.code > 2000;
       return message;
     }).subscribe(this.storeService.subject);
   }
+
 }

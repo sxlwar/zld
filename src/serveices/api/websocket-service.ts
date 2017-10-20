@@ -12,7 +12,7 @@ import 'rxjs/add/operator/do';
  * @description This service is used for interacting with server.
  * */
 @Injectable()
-export class ApiService {
+export class WesocketService {
   private url = `ws://${ENV.DOMAIN}/wsapi`;
   private inputStream: QueueingSubject<string>;
   public messages: Observable<WsResponse>;

@@ -1,12 +1,84 @@
 import {Injectable} from '@angular/core';
 
+/**
+ * @description These operations define the action that an interface can perform.
+ * */
+export enum Operate {
+  querying = 'query',
+  addition = 'add',
+  updates = 'update',
+  deletion = 'delete',
+  search = 'search'
+}
+
+/**
+ * @description This object defines the interface interactions that the service must process.
+ * */
+export enum Processor {
+  login = 'login',
+  register = 'register',
+  resetPwd = 'resetPwd',
+  company = 'company'
+}
+
+export interface ApiUnit {
+  name: string;
+  operates: Map<string, string[]>;
+}
+
+const login: ApiUnit = {
+  name: Processor.login,
+  operates: new Map([[Operate.querying, ['employee.consumer.Login']]])
+};
+
+const company: ApiUnit = {
+  name: Processor.company,
+  operates: new Map([
+    [Operate.querying, ['employer.consumer.CompanyList']],
+    [Operate.updates, ['employer.consumer.CompanyUpdate']],
+    [Operate.addition, ['employer.consumer.CompanyAdd']],
+    [Operate.deletion, ['employer.consumer.CompanyDelete']],
+    [Operate.search, ['employer.consumer.SearchCompany']]
+  ])
+};
+
+const register: ApiUnit = {
+  name: Processor.register,
+  operates: new Map([
+    [Operate.addition, ['employee.consumer.EmployeeRegister', 'employee.consumer.WorkerRegister']],
+  ])
+};
+
+const resetPwd: ApiUnit = {
+  name: Processor.resetPwd,
+  operates: new Map([
+    [Operate.addition, ['employee.consumer.ResetPassword']]
+  ])
+};
+
+
+// export const login = 'employee.consumer.Login';
 @Injectable()
-export class CommandService {
-  login = "employee.consumer.Login";
+export abstract class CommandService {
+
+  login = login;
+
+  abstract loginProcessor(): void;
+
+  resetPwd = resetPwd;
+
+  abstract resetPwdProcessor(): void;
+
+  register = register;
+
+  abstract registerProcessor(): void;
+
+  compnay = company;
+
+  abstract companyProcessor(): void;
+
   resetPWPhoneVerifyCode = "employee.consumer.ResetPWPhoneVerifyCode";
   resetPassword = "employee.consumer.ResetPassword";
-  workerRegister = "employee.consumer.WorkerRegister";
-  employeeRegister = "employee.consumer.EmployeeRegister";
   regPhoneVerifyCode = "employee.consumer.RegPhoneVerifyCode";
   personalIdList = "employee.consumer.PersonalIdList";
   searchCompany = "employer.consumer.SearchCompany";
@@ -92,5 +164,10 @@ export class CommandService {
   requestAggregation = "workflow.consumer.RequestAggregation";
   attendResultTeamStatList = "operation.consumer.AttendResultTeamStatList";
   constructor(){
+  }
+
+  getPath({operation, processorName}): string[] {
+    const apiUnit: ApiUnit = this[processorName];
+    return apiUnit.operates.get(operation);
   }
 }
