@@ -19,11 +19,12 @@ import {reducers} from '../reducers/index-reducer';
 import {ConfigService} from '../serveices/config/config-service';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {ENV} from '@app/env';
-import {ApiOperateService} from '../serveices/api/operate-service';
-import {ParameterService} from '../serveices/api/parameter-service';
-import {CommandService} from '../serveices/api/command-service';
-import {ApiService} from '../serveices/api/api-service';
+import {OperateService} from '../serveices/api/operate-service';
+import {ExchangeService} from '../serveices/api/exchange-service';
+import {WebsocketService} from '../serveices/api/websocket-service';
 import {StoreService} from '../serveices/store-service';
+import {HttpService} from '../serveices/api/http-service';
+
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function HttpLoaderFactory(http: Http) {
@@ -108,10 +109,10 @@ console.log(ENV.DOMAIN);
     // Keep this to enable Ionic's runtime error handling during development
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConfigService,
-    ApiOperateService,
-    ParameterService,
-    CommandService,
-    ApiService,
+    OperateService,
+    ExchangeService,
+    WebsocketService,
+    HttpService,
     StoreService
   ]
 })

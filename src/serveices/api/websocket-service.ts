@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Parameter, WsResponse} from './parameter-service';
+import {Parameter, WsResponse} from './exchange-service';
 import {ENV} from '@app/env';
 import {QueueingSubject} from 'queueing-subject';
 import websocketConnect from 'rxjs-websockets';
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/do';
  * @description This service is used for interacting with server.
  * */
 @Injectable()
-export class WesocketService {
+export class WebsocketService {
   private url = `ws://${ENV.DOMAIN}/wsapi`;
   private inputStream: QueueingSubject<string>;
   public messages: Observable<WsResponse>;

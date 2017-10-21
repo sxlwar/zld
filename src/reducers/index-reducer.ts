@@ -4,7 +4,7 @@ import * as direction from './direction-reducer';
 import * as slide from './tutorial-reducer';
 import * as login from './login-reducer';
 import * as userInfo from './userInfo-reducer'
-import {UserInfo} from '../interfaces/userInfo-interface';
+import {UserInfo} from '../interfaces/response-interface';
 import {getAuthPass, getCaptcha, getRealname, getSid, getUserId} from './userInfo-reducer';
 
 export interface AppState {

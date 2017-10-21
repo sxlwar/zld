@@ -2,16 +2,18 @@ import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {State} from '../../reducers/login-reducer';
 import {ShowSpecificInnerSlide, ShowSpecificSlide} from '../../actions/login-action';
-import {ApiOperateService, LoginOptions} from '../api/operate-service';
+import {OperateService} from '../api/operate-service';
 import {LoginFormModel} from '../../pages/login/login';
 import {StoreService} from '../store-service';
+import {Operate, Processor} from '../api/command';
+import {LoginOptions} from '../../interfaces/request-interface';
 
 @Injectable()
 export class LoginService {
 
   constructor(
     public store: Store<State>,
-    public apiOptService: ApiOperateService,
+    public optService: OperateService,
     public storeService: StoreService) {
   }
 
@@ -25,12 +27,13 @@ export class LoginService {
   }
 
   login(source: LoginFormModel, randomCaptchaKey: string = '') {
-    const option: LoginOptions = {
+    const parameter: LoginOptions = {
       username: source.mobilePhone,
       password: source.password,
       captcha_code: source.imageVerification,
       rand_captcha_key: randomCaptchaKey
     };
-    this.apiOptService.login(option);
+    const loginOpt = {operation: Operate.querying, processorName: Processor.login, parameter};
+    this.optService.subject.next(loginOpt);
   }
 }

@@ -1,6 +1,6 @@
 import * as actions from '../actions/userInfo-action';
 import {LOGIN_SUCCESS, LOGIN_FAIL} from '../actions/userInfo-action';
-import {UserInfo} from '../interfaces/userInfo-interface';
+import {UserInfo} from '../interfaces/response-interface';
 
 
 export const initialSate: UserInfo = {

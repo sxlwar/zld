@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {UserInfo} from '../interfaces/userInfo-interface';
+import {UserInfo} from '../interfaces/response-interface';
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 

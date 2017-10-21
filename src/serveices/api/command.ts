@@ -57,9 +57,8 @@ const resetPwd: ApiUnit = {
 };
 
 
-// export const login = 'employee.consumer.Login';
 @Injectable()
-export abstract class CommandService {
+export abstract class Command {
 
   login = login;
 
