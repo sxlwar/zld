@@ -1,9 +1,9 @@
 import * as actions from '../actions/userInfo-action';
-import {LOGIN_SUCCESS, LOGIN_FAIL} from '../actions/userInfo-action';
+import {RESET_USER_INFO, UPDATE_USER_INFO} from '../actions/userInfo-action';
 import {UserInfo} from '../interfaces/response-interface';
 
 
-export const initialSate: UserInfo = {
+export const initialState: UserInfo = {
   realname: '',
   sid: '',
   user_id: NaN,
@@ -13,11 +13,13 @@ export const initialSate: UserInfo = {
   face_image: ''
 };
 
-export function reducer(state = initialSate, action: actions.Actions): UserInfo {
+
+export function reducer(state = initialState, action: actions.Actions): UserInfo {
   switch (action.type) {
-    case LOGIN_SUCCESS:
-    case LOGIN_FAIL:
-      return Object.assign({},action.payload);
+    case UPDATE_USER_INFO:
+      return Object.assign({}, action.payload);
+    case RESET_USER_INFO:
+      return initialState;
     default:
       return state;
   }

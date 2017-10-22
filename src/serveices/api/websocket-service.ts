@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Parameter, WsResponse} from './exchange-service';
 import {ENV} from '@app/env';
 import {QueueingSubject} from 'queueing-subject';
 import websocketConnect from 'rxjs-websockets';
@@ -7,6 +6,20 @@ import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/operator/delay';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
+
+export interface WsResponse {
+  code: number;
+  command: { path: string };
+  data: any;
+  msg: string;
+  isError: boolean
+  detail?: any;
+}
+
+export interface Parameter {
+  command: { path: string };
+  parameters: object;
+}
 
 /**
  * @description This service is used for interacting with server.
@@ -20,25 +33,31 @@ export class WebsocketService {
   private logger = [];
 
   constructor() {
-    this.inputStream = new QueueingSubject<string>();
-    this.connect();
-    this.monitor();
   }
 
-  public send(parameter: Parameter): void {
+  public send(parameter: Parameter) {
     this.inputStream.next(JSON.stringify(parameter));
   }
 
-  private connect() {
-    const {messages, connectionStatus} = websocketConnect(this.url, this.inputStream);
-    this.messages = messages.map((msg: string): WsResponse => JSON.parse(msg)).share();
+  connect() {
+    if (this.messages) return;
+    const {messages, connectionStatus} = websocketConnect(this.url, this.inputStream = new QueueingSubject<string>());
+    this.messages = messages
+      .map((msg: string): WsResponse => {
+        let response = JSON.parse(msg);
+        response.isError = response.code > 2000;
+        return response;
+      })
+      .share()
+      .do(value => console.log(value))
     this.connectionStatus = connectionStatus;
+    this.monitor();
   }
 
   /**
    * @description Keep watch on the message observable and restart the connection whenever it is broken.
    * */
-  private monitor() {
+  monitor() {
     this.messages
       .retryWhen(errors => errors.delay(1000))
       .do(errors => this.logger.push(errors))

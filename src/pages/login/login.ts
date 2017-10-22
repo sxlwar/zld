@@ -4,11 +4,15 @@ import {AlertController, App, IonicPage, LoadingController, NavParams, Slides, V
 import {LoginService} from '../../serveices/business/login-service';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers/index-reducer';
-import 'rxjs/add/operator/distinctUntilChanged';
 import {
-  mobilePhoneValidator, passwordMatchValidator, passwordValidator,
+  mobilePhoneValidator,
+  passwordMatchValidator,
+  passwordValidator,
   realnameValidator,
 } from '../../validators/validators';
+import 'rxjs/add/operator/switch';
+import {Subscription} from 'rxjs/Subscription';
+import {Observable} from 'rxjs/Observable';
 
 export class LoginForm {
   mobilePhone = ['', mobilePhoneValidator];
@@ -49,7 +53,7 @@ export class LoginPage  implements OnInit{
   public resetPwdForm: FormGroup;
   direction = 'vertical';
   public backgroundImage = 'assets/img/background/login-background.png';
-  public showVerificationOfLogin: boolean = false;
+  public showVerificationOfLogin$: Observable<boolean>;
   public showVerificationOfSignup: boolean;
   public showVerificationOfReset: boolean;
   public userTypes = userTypes;
@@ -61,7 +65,6 @@ export class LoginPage  implements OnInit{
               private navParams: NavParams,
               private viewCtrl: ViewController,
               private loginService: LoginService,
-              private store: Store<fromRoot.AppState>,
               private fb: FormBuilder) {
     this.initSlide();
     this.initForm();
@@ -75,17 +78,19 @@ export class LoginPage  implements OnInit{
   initSlide() {
     this.viewCtrl.willEnter.subscribe(() => {
 
-      this.store.select(fromRoot.selectActiveIndexOfSlides)
+      this.loginService.getActiveIndexOfSlides()
         .subscribe(index => this.slider.slideTo(index));
 
-      this.store.select(fromRoot.selectActiveIndexOfInnerSlides)
-        .distinctUntilChanged()
+      this.loginService.getActiveIndexOfInnerSlides()
         .subscribe(index => this.innerSlider.slideTo(index));
     });
   }
 
+  private loginSubscription: Subscription;
   ngOnInit(){
-    this.store.select(fromRoot.selectUserInfo).subscribe(value => console.log(value));
+    const info$ = this.loginService.getLoginObservable();
+    this.showVerificationOfLogin$ = info$.map(info => info.captcha);
+    this.loginSubscription = info$.subscribe(value => console.log(value));
   }
 
   changeSlidesActive(index) {

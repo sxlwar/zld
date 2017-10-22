@@ -1,4 +1,5 @@
 import {Action} from '@ngrx/store';
+import {UserInfo} from '../interfaces/response-interface';
 
 export const SHOW_SPECIFIC_SLIDE = 'SHOW_SPECIFIC_SLIDE';
 
@@ -18,5 +19,26 @@ export class ShowSpecificInnerSlide implements Action {
   }
 }
 
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+
+
+export class LoginSuccess implements Action {
+  readonly type = LOGIN_SUCCESS;
+
+  constructor(public payload: UserInfo) {
+  }
+}
+
+export const LOGIN_FAIL = 'LOGIN_FAIL';
+
+export class LoginFail implements Action {
+  readonly type = LOGIN_FAIL;
+
+  constructor(public payloda: boolean) {
+  }
+}
+
 export type Actions = ShowSpecificSlide
-  | ShowSpecificInnerSlide;
+  | ShowSpecificInnerSlide
+  | LoginFail
+  | LoginSuccess;

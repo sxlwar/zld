@@ -1,34 +1,23 @@
-import {Action} from '@ngrx/store';
 import {UserInfo} from '../interfaces/response-interface';
+import {Action} from '@ngrx/store';
 
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
 
-export class LoginSuccessAction implements Action {
-  readonly type = LOGIN_SUCCESS;
-
-  constructor(public payload: UserInfo) {
-
-  }
-}
-
-export const LOGIN_FAIL = 'LOGIN_FAIL';
-
-export class LoginFailAction implements Action {
-  readonly type = LOGIN_FAIL;
+export class UpdateUserInfo implements Action {
+  readonly type = UPDATE_USER_INFO;
 
   constructor(public payload: UserInfo) {
 
   }
 }
 
-export const REDIRECT_TO = 'REDIRECT_TO';
+export const RESET_USER_INFO = 'RESET_USER_INFO';
 
-export class RedirectAction implements Action {
-  readonly type = REDIRECT_TO;
+export class ResetUserInfo implements Action {
+  readonly type = RESET_USER_INFO;
 
-  constructor(public payload: string) {
-  }
+  constructor(public payload: any){}
 }
 
 
-export type Actions = LoginSuccessAction | LoginFailAction | RedirectAction;
+export type Actions = UpdateUserInfo | ResetUserInfo;

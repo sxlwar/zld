@@ -1,25 +1,24 @@
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {State} from '../../reducers/login-reducer';
 import {ShowSpecificInnerSlide, ShowSpecificSlide} from '../../actions/login-action';
-import {OperateService} from '../api/operate-service';
+import {DataService} from '../api/data-service';
 import {LoginFormModel} from '../../pages/login/login';
-import {StoreService} from '../store-service';
-import {Operate, Processor} from '../api/command';
 import {LoginOptions} from '../../interfaces/request-interface';
+import {Observable} from 'rxjs/Observable';
+import * as fromRoot from '../../reducers/index-reducer';
+import 'rxjs/add/operator/distinctUntilChanged';
 
 @Injectable()
 export class LoginService {
 
-  constructor(
-    public store: Store<State>,
-    public optService: OperateService,
-    public storeService: StoreService) {
+  login$: Observable<any>;
+
+  constructor(public store: Store<fromRoot.AppState>,
+              public dataService: DataService) {
   }
 
   changeSlidesActive(index: number) {
-    // this.store.dispatch(new ShowSpecificSlide(index));
-    this.storeService.subject.next(new ShowSpecificSlide(index));
+    this.store.dispatch(new ShowSpecificSlide(index));
   }
 
   changeInnerSlidesActive(index: number) {
@@ -27,13 +26,27 @@ export class LoginService {
   }
 
   login(source: LoginFormModel, randomCaptchaKey: string = '') {
-    const parameter: LoginOptions = {
+    const option: LoginOptions = {
       username: source.mobilePhone,
       password: source.password,
       captcha_code: source.imageVerification,
       rand_captcha_key: randomCaptchaKey
     };
-    const loginOpt = {operation: Operate.querying, processorName: Processor.login, parameter};
-    this.optService.subject.next(loginOpt);
+    this.dataService.loginProcessor(option);
+  }
+
+  getLoginObservable() {
+    if (!this.login$) {
+      this.login$ = this.dataService.getLoginDataObservable();
+    }
+    return this.login$;
+  }
+
+  getActiveIndexOfSlides() {
+    return this.store.select(fromRoot.selectActiveIndexOfSlides);
+  }
+
+  getActiveIndexOfInnerSlides() {
+    return this.store.select(fromRoot.selectActiveIndexOfInnerSlides).distinctUntilChanged();
   }
 }

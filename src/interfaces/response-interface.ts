@@ -9,3 +9,4 @@ export interface UserInfo {
   groups_list: string[];
   face_image: string;
 }
+

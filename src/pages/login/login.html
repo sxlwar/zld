@@ -176,7 +176,7 @@
             </div>
 
             <!--image verification-->
-            <div *ngIf="showVerificationOfLogin">
+            <div *ngIf="showVerificationOfLogin$ | async">
               <ion-item>
                 <ion-label floating>{{'LOGIN_IMAGE_VERIFICATION' | translate}}</ion-label>
                 <ion-input type="text" formControlName="imageVerification" required></ion-input>

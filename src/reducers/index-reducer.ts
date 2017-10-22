@@ -6,6 +6,7 @@ import * as login from './login-reducer';
 import * as userInfo from './userInfo-reducer'
 import {UserInfo} from '../interfaces/response-interface';
 import {getAuthPass, getCaptcha, getRealname, getSid, getUserId} from './userInfo-reducer';
+import * as response from './response-reducer';
 
 export interface AppState {
   backButton: config.State;
@@ -13,6 +14,9 @@ export interface AppState {
   slide: slide.State;
   login: login.State;
   userInfo: UserInfo;
+  response: response.State;
+  loginState: response.LoginState
+
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -20,7 +24,9 @@ export const reducers: ActionReducerMap<AppState> = {
   platformDirection: direction.reducer,
   slide: slide.reducer,
   login: login.reducer,
-  userInfo: userInfo.reducer
+  userInfo: userInfo.reducer,
+  response: response.reducer,
+  loginState: response.loginReducer
 };
 
 //back button
@@ -50,3 +56,8 @@ export const selectCapthca = createSelector(getUserInfo, getCaptcha);
 export const selectAuthPass = createSelector(getUserInfo, getAuthPass);
 export const selectSid = createSelector(getUserInfo, getSid);
 export const selectUserId = createSelector(getUserInfo, getUserId);
+
+
+//response
+export const getResponse = (state: AppState) => state.response;
+export const selectLoginState = createSelector(getResponse,response.getLoginState);

@@ -19,11 +19,11 @@ import {reducers} from '../reducers/index-reducer';
 import {ConfigService} from '../serveices/config/config-service';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {ENV} from '@app/env';
-import {OperateService} from '../serveices/api/operate-service';
-import {ExchangeService} from '../serveices/api/exchange-service';
+import {DataService} from '../serveices/api/data-service';
 import {WebsocketService} from '../serveices/api/websocket-service';
 import {StoreService} from '../serveices/store-service';
 import {HttpService} from '../serveices/api/http-service';
+import {ResponseService} from '../serveices/api/responses/response-service';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -109,11 +109,11 @@ console.log(ENV.DOMAIN);
     // Keep this to enable Ionic's runtime error handling during development
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ConfigService,
-    OperateService,
-    ExchangeService,
+    DataService,
     WebsocketService,
     HttpService,
-    StoreService
+    StoreService,
+    ResponseService
   ]
 })
 export class AppModule { }

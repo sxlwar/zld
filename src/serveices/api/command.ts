@@ -1,4 +1,7 @@
 import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Parameter} from './websocket-service';
+import {LoginOptions, RegisterOptions} from '../../interfaces/request-interface';
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -62,19 +65,19 @@ export abstract class Command {
 
   login = login;
 
-  abstract loginProcessor(): void;
+  // abstract loginProcessor(o: LoginOptions): Observable<any>;
 
   resetPwd = resetPwd;
 
-  abstract resetPwdProcessor(): void;
+  // abstract resetPwdProcessor(): void;
 
   register = register;
 
-  abstract registerProcessor(): void;
+  // abstract registerProcessor(o: RegisterOptions): Observable<any>;
 
   compnay = company;
 
-  abstract companyProcessor(): void;
+  // abstract companyProcessor(): void;
 
   resetPWPhoneVerifyCode = "employee.consumer.ResetPWPhoneVerifyCode";
   resetPassword = "employee.consumer.ResetPassword";
@@ -165,8 +168,13 @@ export abstract class Command {
   constructor(){
   }
 
-  getPath({operation, processorName}): string[] {
+  getPath({operation, processorName}): Observable<string[]> {
     const apiUnit: ApiUnit = this[processorName];
-    return apiUnit.operates.get(operation);
+    const paths = apiUnit.operates.get(operation);
+    return Observable.of(paths);
+  }
+
+  getFullParameter(path: string, parameters: object): Parameter {
+    return {command: {path}, parameters}
   }
 }
