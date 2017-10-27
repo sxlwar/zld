@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACE,sBAAI;EACF,KAAK,EAAE,IAAI;EACX,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;EACnB,eAAe,EAAE,aAAa;EAC9B,OAAO,EAAE,MAAM;AAEjB,uBAAK;EACH,UAAU,EAAE,MAAM;EAClB,SAAS,EAAE,IAAI",
+"sources": ["image-verification.scss"],
+"names": [],
+"file": "image-verification.css"
+}

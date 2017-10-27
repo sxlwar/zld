@@ -1,0 +1,11 @@
+image-verification div {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px; }
+image-verification span {
+  font-style: italic;
+  font-size: 12px; }
+
+/*# sourceMappingURL=image-verification.css.map */

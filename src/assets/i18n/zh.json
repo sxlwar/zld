@@ -52,7 +52,16 @@
   "LOGIN_COMPANY_REQUIRED_ERROR": "公司名称不能为空",
   "LOGIN_NAME_REQUIRED_ERROR": "姓名不能为空",
   "LOGIN_NAME_INVALID_ERROR": "请输入您的真实姓名",
+  "LOGIN_UPDATE_IMAGE_BUTTON": "看不清楚，再换一张",
+  "LOGIN_FAIL_TIP": "登录失败",
+  "LOGIN_PHONE_VERIFICATION_BUTTON": "点击获取",
+  "LOGIN_REGAIN_TIP": "秒后重新获取",
+  "LOGIN_SEARCH_COMPANY": "搜索公司",
+  "LOGIN_SEARCH_COMPANY_TIP": "输入公司名称",
+  "LOGIN_INPUT_IMAGE_VERIFICATION_TIP": "请先输入图形验证码，再获取手机验证码",
+  "LOGIN_PHONE_VERIFICATION_FAIL": "获取手机验证码失败",
 
+  "REGISTER_FAIL_TIP": "注册失败",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

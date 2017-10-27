@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Store} from '@ngrx/store';
-import {SetBackButtonText} from '../../actions/config-action';
-import {SetPlatformDirection} from '../../actions/tutorial-action';
+import {SetBackButtonTextAction, SetPlatformDirectionAction} from '../../actions/config-action';
 import {Platform} from 'ionic-angular';
 
 @Injectable()
@@ -14,18 +13,14 @@ export class ConfigService {
 
   public init() {
     this.initLanguage();
-    this.initBackButtonText();
-    this.initPlatformDirection();
+    this.initConfig();
   }
 
-  private initBackButtonText() {
+  private initConfig() {
+    this.store.dispatch(new SetPlatformDirectionAction(this.platform.dir()));
     this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {
-      this.store.dispatch(new SetBackButtonText(values.BACK_BUTTON_TEXT));
+      this.store.dispatch(new SetBackButtonTextAction(values.BACK_BUTTON_TEXT));
     });
-  }
-
-  private initPlatformDirection() {
-    this.store.dispatch(new SetPlatformDirection(this.platform.dir()));
   }
 
   private initLanguage() {

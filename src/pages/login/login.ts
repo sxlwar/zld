@@ -1,18 +1,26 @@
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {AlertController, App, IonicPage, LoadingController, NavParams, Slides, ViewController} from 'ionic-angular';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {
+  AlertController,
+  App,
+  IonicPage,
+  LoadingController,
+  ModalController,
+  NavController,
+  NavParams,
+  Slides,
+  ViewController
+} from 'ionic-angular';
 import {LoginService} from '../../serveices/business/login-service';
-import {Store} from '@ngrx/store';
-import * as fromRoot from '../../reducers/index-reducer';
 import {
   mobilePhoneValidator,
   passwordMatchValidator,
   passwordValidator,
   realnameValidator,
 } from '../../validators/validators';
-import 'rxjs/add/operator/switch';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
+import {Company, PhoneVerCodeResponse, RegisterResponse, LoginResponse} from '../../interfaces/response-interface';
 
 export class LoginForm {
   mobilePhone = ['', mobilePhoneValidator];
@@ -33,30 +41,31 @@ export class ResetPwdForm {
   }
 }
 
-export interface LoginFormModel {
-  mobilePhone: string;
-  password: string;
-  imageVerification: string;
-}
-
-const userTypes = ['LOGIN_PERSONAL_USER', 'LOGIN_COMPANY_USER'];
-
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage  implements OnInit{
+export class LoginPage implements OnInit, OnDestroy {
 
   public loginForm: FormGroup;
   public signupForm: FormGroup;
   public resetPwdForm: FormGroup;
   direction = 'vertical';
   public backgroundImage = 'assets/img/background/login-background.png';
-  public showVerificationOfLogin$: Observable<boolean>;
-  public showVerificationOfSignup: boolean;
+  public signupImageVerification$: Observable<PhoneVerCodeResponse>;
   public showVerificationOfReset: boolean;
-  public userTypes = userTypes;
+  public loginVerificationImage$: Observable<string>;
+  public userTypes = ['LOGIN_PERSONAL_USER', 'LOGIN_COMPANY_USER'];
+  private getActiveIndexOfInnerSlides$$: Subscription;
+  private getActiveIndexOfSlides$$: Subscription;
+  loginInfo$: Observable<LoginResponse>;
+  register$: Observable<RegisterResponse>;
+  realnameValidator = realnameValidator;
+  selectedCompany$: Observable<Company>;
+  // Slider methods
+  @ViewChild('slider') slider: Slides;
+  @ViewChild('innerSlider') innerSlider: Slides;
 
 
   constructor(public loadingCtrl: LoadingController,
@@ -65,40 +74,33 @@ export class LoginPage  implements OnInit{
               private navParams: NavParams,
               private viewCtrl: ViewController,
               private loginService: LoginService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private navCtrl: NavController,
+              private modalCtrl: ModalController) {
     this.initSlide();
     this.initForm();
-    this.loginService.changeSlidesActive(this.navParams.get('index'));
   }
 
-  // Slider methods
-  @ViewChild('slider') slider: Slides;
-  @ViewChild('innerSlider') innerSlider: Slides;
-
+  /*=========================================Init model=============================================================*/
   initSlide() {
     this.viewCtrl.willEnter.subscribe(() => {
 
-      this.loginService.getActiveIndexOfSlides()
+      this.loginService.changeSlidesActive(this.navParams.get('index'));
+
+      this.getActiveIndexOfSlides$$ = this.loginService.getActiveIndexOfSlides()
         .subscribe(index => this.slider.slideTo(index));
 
-      this.loginService.getActiveIndexOfInnerSlides()
+      this.getActiveIndexOfInnerSlides$$ = this.loginService.getActiveIndexOfInnerSlides()
         .subscribe(index => this.innerSlider.slideTo(index));
     });
   }
 
-  private loginSubscription: Subscription;
-  ngOnInit(){
-    const info$ = this.loginService.getLoginObservable();
-    this.showVerificationOfLogin$ = info$.map(info => info.captcha);
-    this.loginSubscription = info$.subscribe(value => console.log(value));
-  }
-
-  changeSlidesActive(index) {
-    this.loginService.changeSlidesActive(index);
-  }
-
-  changeInnerSlidesActive(index) {
-    this.loginService.changeInnerSlidesActive(index);
+  ngOnInit() {
+    this.loginInfo$ = this.loginService.getLoginInfo();
+    this.register$ = this.loginService.getRegisterInfo();
+    this.selectedCompany$ = this.loginService.getSelectedCompany();
+    this.signupImageVerification$ = this.loginService.getSignupPhoneVer();
+    this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
   }
 
   initForm() {
@@ -106,8 +108,8 @@ export class LoginPage  implements OnInit{
 
     this.signupForm = this.fb.group({
       userType: '',
-      company: '',
-      realname: ['', realnameValidator],
+      company: new FormControl({value: '', disabled: true}),
+      realname: '',
       mobilePhone: ['', mobilePhoneValidator],
       phoneVerification: '',
       imageVerification: '',
@@ -126,6 +128,64 @@ export class LoginPage  implements OnInit{
         confirmPassword: ['', passwordValidator]
       }, {validator: passwordMatchValidator}),
     });
+
+    this.signupForm.get('userType').valueChanges.subscribe(value => {
+      this.adjustmentValidationRules(value);
+    });
+  }
+
+  /*=============================================UI state change===================================================*/
+
+  changeSlidesActive(index) {
+    this.loginService.changeSlidesActive(index);
+  }
+
+  changeInnerSlidesActive(index) {
+    this.loginService.changeInnerSlidesActive(index);
+  }
+
+  /*=============================================Date state change===================================================*/
+
+  login() {
+    this.loginService.login(this.loginForm.value);
+  }
+
+  signup() {
+    console.log(this.signupForm.value);
+    this.loginService.signup(this.signupForm.value, this.signupForm.get('userType').value);
+  }
+
+  resetPassword() {
+    console.log(this.resetPwdForm.value);
+    console.log(this.resetPwdForm.get('passwordInfo').status);
+  }
+
+  updateVerificationImage() {
+    this.loginService.updateVerificationImageUrl();
+  }
+
+  getCompany() {
+    const modal = this.modalCtrl.create('SearchCompanyPage');
+    modal.present().then(() => {
+    });
+  }
+
+  getPhoneVerCode() {
+    this.loginService.getPhoneVerCode(this.signupForm.value);
+  }
+
+  /*========================================Component methods=====================================================*/
+
+  adjustmentValidationRules(userType: string): void {
+    const realnameCtrl = this.signupForm.get('realname');
+
+    if (userType === 'LOGIN_COMPANY_USER') {
+      realnameCtrl.setValidators([Validators.required, this.realnameValidator])
+    } else {
+      realnameCtrl.clearValidators();
+    }
+
+    realnameCtrl.updateValueAndValidity();
   }
 
   presentLoading(message) {
@@ -139,24 +199,32 @@ export class LoginPage  implements OnInit{
         subTitle: message,
         buttons: ['Dismiss']
       });
-      alert.present();
+      alert.present().then(() => {});
     });
 
-    loading.present();
+    loading.present().then(() => {});
   }
 
-  login() {
-    this.loginService.login(this.loginForm.value);
+
+  goToNextPage(haveAuthPassed) {
+    if (haveAuthPassed) {
+      this.navCtrl.setRoot('TabsPage').then(() => {
+      });
+    } else {
+      this.navCtrl.push('mapPage').then(() => {
+      });
+    }
   }
 
-  signup() {
-    console.log(this.signupForm.value);
+  /*=============================================Refuse cleaning====================================================*/
+
+  ngOnDestroy() {
+    this.getActiveIndexOfSlides$$.unsubscribe();
+    this.getActiveIndexOfInnerSlides$$.unsubscribe();
+    this.loginService.unSubscribe();
   }
 
-  resetPassword() {
-    console.log(this.resetPwdForm.value);
-    console.log(this.resetPwdForm.get('passwordInfo').status);
-  }
+  /*====================================Short cut method for template==============================================*/
 
   get mobilePhone() {
     return this.loginForm.get('mobilePhone');

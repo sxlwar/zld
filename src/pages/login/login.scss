@@ -115,4 +115,18 @@ page-login {
     margin: 0 auto;
     width: 200px;
   }
+   .custom-container{
+     position: relative;
+     ion-icon, cut-down{
+       color: white;
+       position: absolute;
+       right: 5%;
+       top: 50%;
+       transform: translateY(-50%);
+     }
+   }
+  .company-input {
+    line-height: 1em;
+  }
+
 }

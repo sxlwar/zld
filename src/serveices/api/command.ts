@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {Parameter} from './websocket-service';
-import {LoginOptions, RegisterOptions} from '../../interfaces/request-interface';
+import {WsRequest} from '../../interfaces/request-interface';
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -14,28 +13,15 @@ export enum Operate {
   search = 'search'
 }
 
-/**
- * @description This object defines the interface interactions that the service must process.
- * */
-export enum Processor {
-  login = 'login',
-  register = 'register',
-  resetPwd = 'resetPwd',
-  company = 'company'
-}
-
 export interface ApiUnit {
-  name: string;
   operates: Map<string, string[]>;
 }
 
 const login: ApiUnit = {
-  name: Processor.login,
   operates: new Map([[Operate.querying, ['employee.consumer.Login']]])
 };
 
 const company: ApiUnit = {
-  name: Processor.company,
   operates: new Map([
     [Operate.querying, ['employer.consumer.CompanyList']],
     [Operate.updates, ['employer.consumer.CompanyUpdate']],
@@ -45,15 +31,19 @@ const company: ApiUnit = {
   ])
 };
 
+const phoneVerificationCode: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.RegPhoneVerifyCode']]
+  ])
+};
+
 const register: ApiUnit = {
-  name: Processor.register,
   operates: new Map([
     [Operate.addition, ['employee.consumer.EmployeeRegister', 'employee.consumer.WorkerRegister']],
   ])
 };
 
 const resetPwd: ApiUnit = {
-  name: Processor.resetPwd,
   operates: new Map([
     [Operate.addition, ['employee.consumer.ResetPassword']]
   ])
@@ -61,29 +51,11 @@ const resetPwd: ApiUnit = {
 
 
 @Injectable()
-export abstract class Command {
-
-  login = login;
-
-  // abstract loginProcessor(o: LoginOptions): Observable<any>;
-
-  resetPwd = resetPwd;
-
-  // abstract resetPwdProcessor(): void;
-
-  register = register;
-
-  // abstract registerProcessor(o: RegisterOptions): Observable<any>;
-
-  compnay = company;
-
-  // abstract companyProcessor(): void;
+export class Command {
 
   resetPWPhoneVerifyCode = "employee.consumer.ResetPWPhoneVerifyCode";
   resetPassword = "employee.consumer.ResetPassword";
-  regPhoneVerifyCode = "employee.consumer.RegPhoneVerifyCode";
   personalIdList = "employee.consumer.PersonalIdList";
-  searchCompany = "employer.consumer.SearchCompany";
   processCreate = "workflow.consumer.ProcessCreate";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   workerContractList = "project.consumer.WorkerContractList";
@@ -168,13 +140,29 @@ export abstract class Command {
   constructor(){
   }
 
-  getPath({operation, processorName}): Observable<string[]> {
-    const apiUnit: ApiUnit = this[processorName];
-    const paths = apiUnit.operates.get(operation);
-    return Observable.of(paths);
+
+  private getFullParameter(path: string, parameters: object): WsRequest {
+    return {command: {path}, parameters}
   }
 
-  getFullParameter(path: string, parameters: object): Parameter {
-    return {command: {path}, parameters}
+  login(option): WsRequest {
+    const path = login.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path, option);
+  }
+
+  searchCompany(option): WsRequest {
+    const path = company.operates.get(Operate.search)[0];
+    return this.getFullParameter(path, option);
+  }
+
+  phoneVerificationCode(option): WsRequest {
+    const path = phoneVerificationCode.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path, option);
+  }
+
+  register(option): WsRequest {
+    const index = option.company_id ? 0 : 1;
+    const path = register.operates.get(Operate.addition)[index];
+    return this.getFullParameter(path, option);
   }
 }

@@ -7,7 +7,7 @@ export const DELETE_SLIDE = 'DELETE_SLIDE';
 
 export const TOGGLE_SKIP = 'TOGGLE_SKIP';
 
-export const SET_PLATFORM_DIRECTION = 'SET_PLATFORM_DIRECTION';
+
 
 export class ToggleSkipAction implements Action {
   readonly type = TOGGLE_SKIP;
@@ -37,16 +37,8 @@ export class AddSlidesAction implements Action {
   };
 }
 
-export class SetPlatformDirection implements Action {
-  readonly type = SET_PLATFORM_DIRECTION;
-
-  constructor(public payload: string) {
-  }
-}
-
 export type Actions =
   AddSlidesAction
   | AddSlideAction
   | DeleteSlideAction
-  | ToggleSkipAction
-  | SetPlatformDirection;
+  | ToggleSkipAction;

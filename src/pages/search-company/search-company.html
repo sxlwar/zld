@@ -1,0 +1,22 @@
+<ion-header>
+
+  <ion-toolbar>
+    <ion-title>
+      {{'LOGIN_SEARCH_COMPANY' | translate}}
+    </ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="dismiss();">
+        <span ion-text color="primary" showWhen="ios">{{'BACK_BUTTON_TEXT' | translate}}</span>
+        <ion-icon name="md-close" showWhen="android, windows"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <fuzzy-search [selectType]="selectType"
+                [items]="companies$ | async"
+                (search)="getSearch($event)"></fuzzy-search>
+</ion-content>

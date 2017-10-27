@@ -1,41 +1,126 @@
 import * as actions from '../actions/login-action';
-import {SHOW_SPECIFIC_INNER_SLIDE, SHOW_SPECIFIC_SLIDE} from '../actions/login-action';
+import {
+  LOGIN,
+  SHOW_SPECIFIC_INNER_SLIDE,
+  SHOW_SPECIFIC_SLIDE,
+  UPDATE_RANDOM_CODE
+} from '../actions/login-action';
+import {LoginOptions} from '../interfaces/request-interface';
+import {ENV} from '@app/env';
+import {RegisterResponse, LoginResponse} from '../interfaces/response-interface';
 
 export interface State {
-  page: {
-    activeIndexOfSlides: number
-    activeIndexOfInnerSlides: number
-  }
+  activeIndexOfSlides: number
+  activeIndexOfInnerSlides: number,
+  loginForm: LoginOptions,
+  loginVerificationImage: string,
+  randomCode: string;
 }
 
+/*=================================================UI state=======================================================*/
+
 export const initialSate: State = {
-  page: {
-    activeIndexOfSlides: 0,
-    activeIndexOfInnerSlides: 0
-  }
+  activeIndexOfSlides: 0,
+  activeIndexOfInnerSlides: 0,
+  loginForm: {  //FIXME These data have security hidden dangers and should not be preserved.
+    username: '',
+    password: '',
+    captcha_code: '',
+    rand_captcha_key: ''
+  },
+  loginVerificationImage: '',
+  randomCode: '00000'
 };
 
 export function reducer(state = initialSate, action: actions.Actions): State {
   switch (action.type) {
     case SHOW_SPECIFIC_SLIDE:
-      return {
-        page: {
-        activeIndexOfSlides: action.payload,
-          activeIndexOfInnerSlides: state.page.activeIndexOfInnerSlides,
-        }
-      };
+      return Object.assign({}, state, {activeIndexOfSlides: action.payload});
+
     case SHOW_SPECIFIC_INNER_SLIDE:
-      return {
-        page: {
-        activeIndexOfSlides: state.page.activeIndexOfSlides,
-          activeIndexOfInnerSlides: action.payload,
-        }
-      };
+      return Object.assign({}, state, {activeIndexOfInnerSlides: action.payload});
+
+    case LOGIN:
+      return Object.assign({}, state, {loginForm: action.payload});
+
+    case UPDATE_RANDOM_CODE:
+      return Object.assign({}, state, {
+        randomCode: action.payload,
+        loginVerificationImage: `http://${ENV.DOMAIN}/check_captcha/${action.payload}`
+      });
+
     default:
       return state;
   }
 }
 
-export const getActiveIndexOfSlides = (state: State) => state.page.activeIndexOfSlides;
+export const getActiveIndexOfSlides = (state: State) => state.activeIndexOfSlides;
 
-export const getActiveIndexOfInnerSlides = (state: State) => state.page.activeIndexOfInnerSlides;
+export const getActiveIndexOfInnerSlides = (state: State) => state.activeIndexOfInnerSlides;
+
+export const getLoginForm = (state: State) => state.loginForm;
+
+export const getLoginVerificationImage = (state: State) => state.loginVerificationImage;
+
+export const getRandomCode = (state: State) => state.randomCode;
+
+
+/*=====================================================login api response==========================================*/
+
+export const initialLoginResponse: LoginResponse = {
+  realname: '',
+  sid: '',
+  user_id: NaN,
+  auth_pass: false,
+  captcha: false,
+  groups_list: [],
+  face_image: ''
+};
+
+export function userInfoReducer(state = initialLoginResponse, action: actions.Actions): LoginResponse {
+  switch (action.type) {
+    case actions.LOGIN_SUCCESS:
+      return Object.assign({}, action.payload);
+    case actions.LOGIN_FAIL:
+      return Object.assign({}, initialLoginResponse, action.payload);
+    default:
+      return state;
+  }
+}
+
+export const getRealname = (state: LoginResponse) => state.realname;
+
+export const getSid = (state: LoginResponse) => state.sid;
+
+export const getUserId = (state: LoginResponse) => state.user_id;
+
+export const getAuthPass = (state: LoginResponse) => state.auth_pass;
+
+export const getCaptcha = (state: LoginResponse) => state.captcha;
+
+export const getGroupList = (state: LoginResponse) => state.groups_list;
+
+export const getFaceImage = (state: LoginResponse) => state.face_image;
+
+
+/*==================================================Register api response============================================*/
+
+export const initialRegisterState: RegisterResponse = {
+  user_id: NaN
+};
+
+export function registerReducer(state = initialRegisterState, action: actions.Actions) {
+  switch (action.type) {
+    case actions.REGISTER_SUCCESS:
+      return {...action.payload};
+
+    case actions.REGISTER_FAIL:
+      return {...action.payload, ...initialRegisterState};
+
+    default:
+      return initialRegisterState;
+
+  }
+}
+
+export const getRegisterUserId = (state: RegisterResponse) =>state.user_id;

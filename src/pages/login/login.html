@@ -4,14 +4,14 @@
   </ion-header>
   <ion-slides #slider [direction]="direction" class="content-slider">
 
-    <!--signup part-->
+    <!--========================================signup  start===================================================-->
     <ion-slide class="zoom swiper-no-swiping">
       <form action="" [formGroup]="signupForm" style="padding: 20% 32px 0;">
 
         <!--user type-->
         <ion-item>
           <ion-label>{{'LOGIN_USER_TYPE' | translate}}</ion-label>
-          <ion-select formControlName="userType" [cancelText]="'CANCEL_BUTTON' | translate"
+          <ion-select #selectType formControlName="userType" [cancelText]="'CANCEL_BUTTON' | translate"
                       [okText]="'CONFIRM_BUTTON' | translate" required>
             <ion-option *ngFor="let type of userTypes;" [value]="type">{{type | translate}}</ion-option>
           </ion-select>
@@ -23,20 +23,26 @@
         <!--company user need to select one company from the results of remote search-->
         <div *ngIf="userType.value === 'LOGIN_COMPANY_USER'">
           <!--company name-->
-          <ion-item>
-            <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
-            <ion-input type="search" formControlName="company" required></ion-input>
-          </ion-item>
+          <div class="custom-container">
+            <ion-item>
+              <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
+              <ion-textarea formControlName="company" [value]="(selectedCompany$ | async)?.name" [required]="userType.value === 'LOGIN_COMPANY_USER'" class="company-input"></ion-textarea>
+            </ion-item>
+            <ion-icon name="search" (click)="getCompany()"></ion-icon>
+          </div>
+
           <div *ngIf="company.dirty || company.touched" class="form-error">
-            <span *ngIf="company.errors.required">{{'LOGIN_COMPANY_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="userType.value === 'LOGIN_COMPANY_USER' && (company.errors)?.required">{{'LOGIN_COMPANY_REQUIRED_ERROR' | translate}}</span>
           </div>
 
           <!--realname of company user-->
           <ion-item>
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
-            <ion-input type="text" formControlName="realname" required></ion-input>
+            <ion-input type="text" formControlName="realname"></ion-input>
           </ion-item>
-          <div *ngIf="realname.invalid && (realname.dirty || realname.touched)" class="form-error">
+          <div
+            *ngIf="userType.value === 'LOGIN_COMPANY_USER' && realname.invalid && (realname.dirty || realname.touched)"
+            class="form-error">
             <span *ngIf="realname.errors.required">{{'LOGIN_NAME_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!realname.errors.required && realname.errors.nameFormat">
               {{signupForm.getError('nameFormat', 'realname') | translate}}
@@ -59,30 +65,39 @@
               </span>
         </div>
 
+        <!--image verification code-->
+        <div *ngIf="(signupImageVerification$ | async)?.captcha">
+          <ion-item>
+            <ion-label fixed>{{'LOGIN_IMAGE_VERIFICATION' | translate}}</ion-label>
+            <ion-input type="text" formControlName="imageVerification" required></ion-input>
+          </ion-item>
+          <image-verification [src]="loginVerificationImage$ | async" (update)="updateVerificationImage()"></image-verification>
+          <div
+            *ngIf="imageVerificationSignup.invalid && (imageVerificationSignup.dirty || imageVerificationSignup.touched)"
+            class="form-error">
+                <span *ngIf="imageVerificationSignup.errors.required">
+                  {{'LOGIN_IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
+                </span>
+          </div>
+        </div>
+
         <!--mobile phone verification code-->
-        <ion-item>
-          <ion-label fixed>{{'LOGIN_PHONE_VERIFICATION' | translate}}</ion-label>
-          <ion-input type="number" formControlName="phoneVerification" required></ion-input>
-        </ion-item>
+        <div class="custom-container">
+          <ion-item>
+            <ion-label fixed>{{'LOGIN_PHONE_VERIFICATION' | translate}}</ion-label>
+            <ion-input type="number" formControlName="phoneVerification" required></ion-input>
+          </ion-item>
+          <cut-down (request)="getPhoneVerCode()"
+                    [hidden]="signupForm.get('mobilePhone').invalid || signupForm.get('imageVerification').invalid">
+
+          </cut-down>
+        </div>
         <div
           *ngIf="phoneVerificationSignup.invalid && (phoneVerificationSignup.dirty || phoneVerificationSignup.touched)"
           class="form-error">
               <span *ngIf="phoneVerificationSignup.errors.required">
                 {{'LOGIN_PHONE_VERIFICATION_REQUIRED_ERROR' | translate}}
               </span>
-        </div>
-
-        <!--image verification code-->
-        <ion-item>
-          <ion-label fixed>{{'LOGIN_IMAGE_VERIFICATION' | translate}}</ion-label>
-          <ion-input type="text" formControlName="imageVerification" required></ion-input>
-        </ion-item>
-        <div
-          *ngIf="imageVerificationSignup.invalid && (imageVerificationSignup.dirty || imageVerificationSignup.touched)"
-          class="form-error">
-                <span *ngIf="imageVerificationSignup.errors.required">
-                  {{'LOGIN_IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
-                </span>
         </div>
 
         <!--password-->
@@ -123,6 +138,7 @@
           </div>
         </div>
 
+        <span>{{signupForm.get('imageVerification').valid | json}}</span>
         <button ion-button block round (click)="signup()" [disabled]="signupForm.invalid" color="light" class="login-button">{{'SIGNUP' | translate}}</button>
       </form>
 
@@ -132,11 +148,12 @@
         <ion-icon name="arrow-down"></ion-icon>
       </button>
     </ion-slide>
+    <!--========================================signup  end===================================================-->
 
     <ion-slide class="zoom swiper-no-swiping">
       <ion-slides #innerSlider class="content-slider">
 
-        <!--login part-->
+        <!--========================================login part start==============================================-->
         <ion-slide class="swiper-no-swiping">
           <button ion-button clear (click)="changeSlidesActive(0);loginForm.reset();" class="slide-button">
             {{'LOGIN_NEED_TO_SIGN_UP' |
@@ -176,11 +193,12 @@
             </div>
 
             <!--image verification-->
-            <div *ngIf="showVerificationOfLogin$ | async">
+            <div *ngIf="(loginInfo$ | async)?.captcha">
               <ion-item>
                 <ion-label floating>{{'LOGIN_IMAGE_VERIFICATION' | translate}}</ion-label>
                 <ion-input type="text" formControlName="imageVerification" required></ion-input>
               </ion-item>
+              <image-verification [src]="loginVerificationImage$ | async" (update)="updateVerificationImage()"></image-verification>
               <div *ngIf="imageVerification.invalid && (imageVerification.dirty || imageVerification.touched)"
                    class="form-error">
                 <span *ngIf="imageVerification.errors.required">
@@ -190,16 +208,16 @@
             </div>
 
             <button ion-button block round (click)="login()" [disabled]="loginForm.invalid" color="light"
-                    class="login-button">{{'LOGIN' |
-              translate}}
+                    class="login-button">{{'LOGIN' | translate}}
             </button>
             <button ion-button clear (click)="changeInnerSlidesActive(1); loginForm.reset();" color="light"
                     class="forgot-button">{{'LOGIN_FORGOT_PASSWORD' | translate}}
             </button>
           </div>
         </ion-slide>
+        <!--========================================login part end===================================================-->
 
-        <!--reset password part-->
+        <!--========================================reset password start===================================================-->
         <ion-slide class="swiper-no-swiping">
           <div [formGroup]="resetPwdForm" style="padding: 20% 32px 32px 32px">
 
@@ -292,6 +310,7 @@
             </button>
           </div>
         </ion-slide>
+        <!--========================================reset password end===================================================-->
       </ion-slides>
     </ion-slide>
 

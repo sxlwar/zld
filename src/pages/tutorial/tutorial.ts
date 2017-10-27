@@ -35,7 +35,7 @@ export class TutorialPage implements OnInit {
 
     this.slideService.getSlides(keys, address);
 
-    this.slides = this.store.select(fromRoot.selectWelcomeSlides);
+    this.slides = this.store.select(fromRoot.selectTutorialSlides);
 
     this.showSkip = this.store.select(fromRoot.selectSkipState);
 

@@ -1,63 +1,77 @@
 import {ActionReducerMap, createSelector} from '@ngrx/store';
 import * as config from './config-reducer';
-import * as direction from './direction-reducer';
-import * as slide from './tutorial-reducer';
+import * as tutorial from './tutorial-reducer';
 import * as login from './login-reducer';
-import * as userInfo from './userInfo-reducer'
-import {UserInfo} from '../interfaces/response-interface';
-import {getAuthPass, getCaptcha, getRealname, getSid, getUserId} from './userInfo-reducer';
-import * as response from './response-reducer';
+import * as search from './search-reducer';
+import * as phoneVerCode from './verification-code-reducer';
+import {RegisterResponse, LoginResponse} from '../interfaces/response-interface';
 
 export interface AppState {
-  backButton: config.State;
-  platformDirection: string;
-  slide: slide.State;
-  login: login.State;
-  userInfo: UserInfo;
-  response: response.State;
-  loginState: response.LoginState
-
+  config: config.State;
+  tutorialPage: tutorial.State;
+  loginPage: login.State;
+  userInfo: LoginResponse;
+  search: search.State;
+  phoneVerCode: phoneVerCode.State;
+  register: RegisterResponse
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  backButton: config.reducer,
-  platformDirection: direction.reducer,
-  slide: slide.reducer,
-  login: login.reducer,
-  userInfo: userInfo.reducer,
-  response: response.reducer,
-  loginState: response.loginReducer
+  config: config.reducer,
+  tutorialPage: tutorial.reducer,
+  loginPage: login.reducer,
+  userInfo: login.userInfoReducer,
+  search: search.reducer,
+  phoneVerCode: phoneVerCode.reducer,
+  register: login.registerReducer
 };
 
-//back button
-export const getBackButton = (state: AppState) => state.backButton;
-export const selectButtonText = createSelector(getBackButton, config.getBackButtonText);
+//config
+export const getConfig = (state: AppState) => state.config;
+export const selectButtonText = createSelector(getConfig, config.getBackButtonText);
+export const selectPlatformDirection = createSelector(getConfig, config.getPlatFormDirection);
 
-//platform direction
-export const getPlatformDirection = (state: AppState) => state.platformDirection;
-export const selectPlatformDirection = createSelector(getPlatformDirection, dir => dir);
+/*==============================================Pages selectors====================================================*/
 
-//tutorial
-export const getSlide = (state: AppState) => state.slide;
-export const selectSkipState = createSelector(getSlide, slide.getSkipState);
-export const selectWelcomeSlides = createSelector(getSlide, slide.getWelcomeSlides);
+//tutorialPage
+export const getTutorialPage = (state: AppState) => state.tutorialPage;
+export const selectSkipState = createSelector(getTutorialPage, tutorial.getSkipState);
+export const selectTutorialSlides = createSelector(getTutorialPage, tutorial.getTutorialSlides);
 
-//login
-export const getLogin = (state: AppState) => state.login;
-export const selectActiveIndexOfSlides = createSelector(getLogin, login.getActiveIndexOfSlides);
-export const selectActiveIndexOfInnerSlides = createSelector(getLogin, login.getActiveIndexOfInnerSlides);
+//loginPage
+export const getLoginPage = (state: AppState) => state.loginPage;
+export const selectActiveIndexOfSlides = createSelector(getLoginPage, login.getActiveIndexOfSlides);
+export const selectActiveIndexOfInnerSlides = createSelector(getLoginPage, login.getActiveIndexOfInnerSlides);
+export const selectLoginForm = createSelector(getLoginPage, login.getLoginForm);
+export const selectLoginVerificationImage = createSelector(getLoginPage, login.getLoginVerificationImage);
+export const selectRandomCode = createSelector(getLoginPage, login.getRandomCode);
 
 
-//userInfo
+/*==============================================search selectors====================================================*/
+
+//search e.g: search company , search worker
+export const getSearchState = (state: AppState) => state.search;
+export const selectSearchCompanies = createSelector(getSearchState, search.getCompanies);
+export const selectSearchQuery = createSelector(getSearchState, search.getQuery);
+export const selectSearchLoading = createSelector(getSearchState, search.getLoading);
+export const selectSelectedCompany = createSelector(getSearchState, search.getSelectedCompany);
+
+/*===========================================Server response selectors===========================================*/
+
+//userInfo  from: login api
 export const getUserInfo = (state: AppState) => state.userInfo;
 export const selectUserInfo = createSelector(getUserInfo, info => info);
-export const selectRealname = createSelector(getUserInfo, getRealname);
-export const selectCapthca = createSelector(getUserInfo, getCaptcha);
-export const selectAuthPass = createSelector(getUserInfo, getAuthPass);
-export const selectSid = createSelector(getUserInfo, getSid);
-export const selectUserId = createSelector(getUserInfo, getUserId);
+export const selectRealname = createSelector(getUserInfo, login.getRealname);
+export const selectCapthca = createSelector(getUserInfo, login.getCaptcha);
+export const selectAuthPass = createSelector(getUserInfo, login.getAuthPass);
+export const selectSid = createSelector(getUserInfo, login.getSid);
+export const selectUserId = createSelector(getUserInfo, login.getUserId);
 
 
-//response
-export const getResponse = (state: AppState) => state.response;
-export const selectLoginState = createSelector(getResponse,response.getLoginState);
+//phone verification code
+export const getPhoneVerCode = (state: AppState) => state.phoneVerCode;
+export const selectPhoneVerCodeCaptcha = createSelector(getPhoneVerCode, phoneVerCode.getPhoneVerCaptcha);
+
+//register
+export const getRegister = (state: AppState) => state.register;
+export const selectRegisterUserId = createSelector(getRegister, login.getRegisterUserId);
