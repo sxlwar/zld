@@ -20,7 +20,10 @@ import {
 } from '../../validators/validators';
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
-import {Company, PhoneVerCodeResponse, RegisterResponse, LoginResponse} from '../../interfaces/response-interface';
+import {
+  Company, PhoneVerCodeResponse, RegisterResponse, LoginResponse,
+  ResetPasswordResponse
+} from '../../interfaces/response-interface';
 
 export class LoginForm {
   mobilePhone = ['', mobilePhoneValidator];
@@ -54,13 +57,15 @@ export class LoginPage implements OnInit, OnDestroy {
   direction = 'vertical';
   public backgroundImage = 'assets/img/background/login-background.png';
   public signupImageVerification$: Observable<PhoneVerCodeResponse>;
+  public resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
   public showVerificationOfReset: boolean;
   public loginVerificationImage$: Observable<string>;
-  public userTypes = ['LOGIN_PERSONAL_USER', 'LOGIN_COMPANY_USER'];
+  public userTypes = ['REGISTER_PERSONAL_USER', 'LOGIN_COMPANY_USER'];
   private getActiveIndexOfInnerSlides$$: Subscription;
   private getActiveIndexOfSlides$$: Subscription;
   loginInfo$: Observable<LoginResponse>;
   register$: Observable<RegisterResponse>;
+  resetPwd$: Observable<ResetPasswordResponse>;
   realnameValidator = realnameValidator;
   selectedCompany$: Observable<Company>;
   // Slider methods
@@ -98,8 +103,10 @@ export class LoginPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.loginInfo$ = this.loginService.getLoginInfo();
     this.register$ = this.loginService.getRegisterInfo();
+    this.resetPwd$ = this.loginService.getResetPasswordInfo();
     this.selectedCompany$ = this.loginService.getSelectedCompany();
     this.signupImageVerification$ = this.loginService.getSignupPhoneVer();
+    this.resetPwdImageVerification$ = this.loginService.getResetPwdPhoneVer();
     this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
   }
 
@@ -151,13 +158,11 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   signup() {
-    console.log(this.signupForm.value);
     this.loginService.signup(this.signupForm.value, this.signupForm.get('userType').value);
   }
 
-  resetPassword() {
-    console.log(this.resetPwdForm.value);
-    console.log(this.resetPwdForm.get('passwordInfo').status);
+  resetPwd() {
+    this.loginService.resetPwd(this.resetPwdForm.value);
   }
 
   updateVerificationImage() {
@@ -170,8 +175,17 @@ export class LoginPage implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * FIXME NO.1
+   * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
+   * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
+   * */
   getPhoneVerCode() {
     this.loginService.getPhoneVerCode(this.signupForm.value);
+  }
+
+  getResetPhoneVerCode() {
+    this.loginService.getResetPwdPhoneVerCode(this.resetPwdForm.value);
   }
 
   /*========================================Component methods=====================================================*/

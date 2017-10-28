@@ -35,7 +35,16 @@ export interface PhoneVerificationCodeOptions {
   captcha_code?: string;
 }
 
+export interface ResetPasswordOptions {
+  username: string;
+  code: string;
+  password: string;
+  captcha_code?: string;
+  random_key?: string;
+}
+
 
 export type Options = LoginOptions
   & RegisterOptions
-  & PhoneVerificationCodeOptions;
+  & PhoneVerificationCodeOptions
+  & ResetPasswordOptions;

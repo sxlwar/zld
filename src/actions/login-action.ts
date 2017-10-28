@@ -1,6 +1,12 @@
 import {Action} from '@ngrx/store';
-import {LoginOptions, PhoneVerificationCodeOptions, RegisterOptions} from '../interfaces/request-interface';
-import {RegisterResponse, LoginResponse} from '../interfaces/response-interface';
+import {
+  LoginOptions, PhoneVerificationCodeOptions, RegisterOptions,
+  ResetPasswordOptions
+} from '../interfaces/request-interface';
+import {
+  RegisterResponse, LoginResponse, ResetPasswordResponse,
+  PhoneVerCodeResponse
+} from '../interfaces/response-interface';
 
 /*====================================================SLIDES ACTIONS===============================================*/
 
@@ -33,21 +39,21 @@ export class LoginAction implements Action {
   }
 }
 
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-
-export class LoginSuccessAction implements Action {
-  readonly type = LOGIN_SUCCESS;
-
-  constructor(public payload: LoginResponse) {
-  }
-}
-
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export class LoginFailAction implements Action {
   readonly type = LOGIN_FAIL;
 
   constructor(public payload: { captcha: boolean }) {
+  }
+}
+
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+
+export class LoginSuccessAction implements Action {
+  readonly type = LOGIN_SUCCESS;
+
+  constructor(public payload: LoginResponse) {
   }
 }
 
@@ -71,11 +77,11 @@ export class UpdateRandomCode implements Action {
   };
 }
 
-/*=========================================Phone verification actions===============================================*/
+/*=========================================Register phone verification actions===============================================*/
 
 export const GET_PHONE_VERIFICATION_CODE = 'GET_PHONE_VERIFICATION_CODE';
 
-export class GetPhoneVerCodeAction {
+export class RegisterPhoneVerCodeAction {
   readonly type = GET_PHONE_VERIFICATION_CODE;
 
   constructor(public payload: PhoneVerificationCodeOptions) {
@@ -84,23 +90,23 @@ export class GetPhoneVerCodeAction {
 
 export const PHONE_VERIFICATION_CODE_FAIL = 'PHONE_VERIFICATION_CODE_FAIL';
 
-export class PhoneVerCodeFailAction {
+export class RegisterPhoneVerCodeFailAction {
   readonly type = PHONE_VERIFICATION_CODE_FAIL;
 
-  constructor(public payload: { captcha: boolean }) {
+  constructor(public payload: PhoneVerCodeResponse) {
   }
 }
 
 export const PHONE_VERIFICATION_CODE_SUCCESS = 'PHONE_VERIFICATION_CODE_SUCCESS';
 
-export class PhoneVerCodeSuccessAction {
+export class RegisterPhoneVerCodeSuccessAction {
   readonly type = PHONE_VERIFICATION_CODE_SUCCESS;
 
-  constructor(public payload: null) {
+  constructor(public payload: PhoneVerCodeResponse) {
   }
 }
 
-/*===============================================register actions=====================================================*/
+/*===============================================register actions==================================================*/
 
 export const REGISTER = 'REGISTER';
 
@@ -108,15 +114,6 @@ export class RegisterAction {
   readonly type = REGISTER;
 
   constructor(public payload: RegisterOptions) {
-  };
-}
-
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-
-export class RegisterSuccessAction {
-  readonly type = REGISTER_SUCCESS;
-
-  constructor(public payload: RegisterResponse) {
   };
 }
 
@@ -129,6 +126,71 @@ export class RegisterFailAction {
   }
 }
 
+export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
+
+export class RegisterSuccessAction {
+  readonly type = REGISTER_SUCCESS;
+
+  constructor(public payload: RegisterResponse) {
+  };
+}
+
+/*=============================================Reset password=======================================================*/
+
+export const RESET_PASSWORD = 'RESET_PASSWORD';
+
+export class ResetPasswordAction {
+  readonly type = RESET_PASSWORD;
+
+  constructor(public payload: ResetPasswordOptions) {}
+}
+
+export const RESET_PASSWORD_FAIL = 'RESET_PASSWORD_FAIL';
+
+export class ResetPasswordFailAction {
+  readonly type = RESET_PASSWORD_FAIL;
+
+  constructor(public payload: ResetPasswordResponse) {}
+}
+
+export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
+
+export class ResetPasswordSuccessAction {
+  readonly type = RESET_PASSWORD_SUCCESS;
+
+  constructor(public payload: ResetPasswordResponse) {}
+}
+
+/*=============================================Reset password phone verification code=======================================================*/
+
+export const RESET_PHONE_VERIFICATION_CODE = 'RESET_PHONE_VERIFICATION_CODE';
+
+export class ResetPhoneVerCodeAction {
+  readonly type = RESET_PHONE_VERIFICATION_CODE;
+
+  constructor(public payload: PhoneVerificationCodeOptions) {
+  }
+}
+
+export const RESET_PHONE_VERIFICATION_CODE_FAIL = 'RESET_PHONE_VERIFICATION_CODE_FAIL';
+
+export class ResetPhoneVerCodeFailAction {
+  readonly type = RESET_PHONE_VERIFICATION_CODE_FAIL;
+
+  constructor(public payload: PhoneVerCodeResponse) {
+  }
+}
+
+export const RESET_PHONE_VERIFICATION_CODE_SUCCESS = 'RESET_PHONE_VERIFICATION_CODE_SUCCESS';
+
+export class ResetPhoneVerCodeSuccessAction {
+  readonly type = RESET_PHONE_VERIFICATION_CODE_SUCCESS;
+
+  constructor(public payload: PhoneVerCodeResponse) {
+  }
+}
+
+
 export type Actions = ShowSpecificSlideAction
   | ShowSpecificInnerSlideAction
   | LoginAction
@@ -136,9 +198,15 @@ export type Actions = ShowSpecificSlideAction
   | LoginSuccessAction
   | UpdateVerificationImageAction
   | UpdateRandomCode
-  | GetPhoneVerCodeAction
-  | PhoneVerCodeFailAction
-  | PhoneVerCodeSuccessAction
+  | RegisterPhoneVerCodeAction
+  | RegisterPhoneVerCodeFailAction
+  | RegisterPhoneVerCodeSuccessAction
   | RegisterAction
   | RegisterFailAction
-  | RegisterSuccessAction;
+  | RegisterSuccessAction
+  | ResetPasswordAction
+  | ResetPasswordFailAction
+  | ResetPasswordSuccessAction
+  | ResetPhoneVerCodeAction
+  | ResetPhoneVerCodeFailAction
+  | ResetPhoneVerCodeSuccessAction;

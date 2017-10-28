@@ -37,7 +37,14 @@ export interface PhoneVerCodeResponse {
   errorMessage?: string;
 }
 
+//register
 export interface RegisterResponse {
+  user_id: number;
+  errorMessage?: string;
+}
+
+//reset password
+export interface ResetPasswordResponse {
   user_id: number;
   errorMessage?: string;
 }
@@ -61,4 +68,5 @@ export interface WorkerResponse {
 
 export type ErrorResponse = LoginResponse
   | PhoneVerCodeResponse
-  | RegisterResponse;
+  | RegisterResponse
+  | ResetPasswordResponse;

@@ -77,7 +77,7 @@ export class WebsocketService {
    * */
   private handleDataStructure(data: any): object {
     if(typeof data === 'object') return data;
-    if(typeof data !== 'object') return {information: data};
+    if(typeof data === 'string') return {information: data};
     return {};
   }
 
@@ -87,7 +87,7 @@ export class WebsocketService {
    * */
   private handleError(data: WsResponse): string {
     const message = this.arrangeErrorInfo(data.detail);
-    return _.isString(message) ? _.find([message, data.msg], _.identity) : message;
+    return _.isObject(data.detail) ? _.find([message, data.msg], _.identity) : data.msg;
   }
 
   /**

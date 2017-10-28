@@ -3,8 +3,11 @@ import * as config from './config-reducer';
 import * as tutorial from './tutorial-reducer';
 import * as login from './login-reducer';
 import * as search from './search-reducer';
-import * as phoneVerCode from './verification-code-reducer';
-import {RegisterResponse, LoginResponse} from '../interfaces/response-interface';
+
+import {
+  RegisterResponse, LoginResponse, ResetPasswordResponse,
+  PhoneVerCodeResponse
+} from '../interfaces/response-interface';
 
 export interface AppState {
   config: config.State;
@@ -12,8 +15,10 @@ export interface AppState {
   loginPage: login.State;
   userInfo: LoginResponse;
   search: search.State;
-  phoneVerCode: phoneVerCode.State;
-  register: RegisterResponse
+  phoneVerCode: PhoneVerCodeResponse;
+  register: RegisterResponse;
+  resetPhoneVerCode: PhoneVerCodeResponse;
+  resetPassword: ResetPasswordResponse;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -22,8 +27,10 @@ export const reducers: ActionReducerMap<AppState> = {
   loginPage: login.reducer,
   userInfo: login.userInfoReducer,
   search: search.reducer,
-  phoneVerCode: phoneVerCode.reducer,
-  register: login.registerReducer
+  phoneVerCode: login.registerPhoneVerReducer,
+  register: login.registerReducer,
+  resetPhoneVerCode: login.resetPwdPhoneVerReducer,
+  resetPassword: login.resetPasswordReducer
 };
 
 //config
@@ -47,7 +54,7 @@ export const selectLoginVerificationImage = createSelector(getLoginPage, login.g
 export const selectRandomCode = createSelector(getLoginPage, login.getRandomCode);
 
 
-/*==============================================search selectors====================================================*/
+/*===========================================Server response selectors===========================================*/
 
 //search e.g: search company , search worker
 export const getSearchState = (state: AppState) => state.search;
@@ -55,8 +62,6 @@ export const selectSearchCompanies = createSelector(getSearchState, search.getCo
 export const selectSearchQuery = createSelector(getSearchState, search.getQuery);
 export const selectSearchLoading = createSelector(getSearchState, search.getLoading);
 export const selectSelectedCompany = createSelector(getSearchState, search.getSelectedCompany);
-
-/*===========================================Server response selectors===========================================*/
 
 //userInfo  from: login api
 export const getUserInfo = (state: AppState) => state.userInfo;
@@ -70,8 +75,16 @@ export const selectUserId = createSelector(getUserInfo, login.getUserId);
 
 //phone verification code
 export const getPhoneVerCode = (state: AppState) => state.phoneVerCode;
-export const selectPhoneVerCodeCaptcha = createSelector(getPhoneVerCode, phoneVerCode.getPhoneVerCaptcha);
+export const selectPhoneVerCodeCaptcha = createSelector(getPhoneVerCode, login.getRegisterPhoneVerCaptcha);
+
+//reset password verification code
+export const getResetPhoneVerCode = (state: AppState) => state.resetPhoneVerCode;
+export const selectResetPhoneVerCodeCaptcha = createSelector(getResetPhoneVerCode, login.getResetPhoneVerCaptcha);
 
 //register
 export const getRegister = (state: AppState) => state.register;
 export const selectRegisterUserId = createSelector(getRegister, login.getRegisterUserId);
+
+//reset password
+export const getResetPassword =(state: AppState) => state.resetPassword;
+export const selectResetPasswordId = createSelector(getResetPassword, login.getResetPasswordUserId);

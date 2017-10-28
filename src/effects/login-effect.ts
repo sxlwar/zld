@@ -11,15 +11,21 @@ import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/switchMap';
 import {
-  GET_PHONE_VERIFICATION_CODE,
   LOGIN,
+  REGISTER,
+  RESET_PASSWORD,
+  GET_PHONE_VERIFICATION_CODE,
+  RESET_PHONE_VERIFICATION_CODE,
   LoginFailAction,
   LoginSuccessAction,
-  PhoneVerCodeFailAction,
-  PhoneVerCodeSuccessAction,
-  REGISTER,
+  RegisterPhoneVerCodeFailAction,
+  RegisterPhoneVerCodeSuccessAction,
   RegisterFailAction,
-  RegisterSuccessAction
+  RegisterSuccessAction,
+  ResetPasswordFailAction,
+  ResetPasswordSuccessAction,
+  ResetPhoneVerCodeFailAction,
+  ResetPhoneVerCodeSuccessAction
 } from '../actions/login-action';
 import 'rxjs/add/operator/throttle';
 import {RequestAction} from '../interfaces/request-interface';
@@ -29,7 +35,6 @@ export class LoginEffect {
   @Effect()
   login$: Observable<RequestAction> = this.actions$
     .ofType(LOGIN)
-    .do(value => console.log(value))
     .mergeMap((action: RequestAction) => this.ws
       .send(this.command.login(action.payload))
       .takeUntil(this.actions$.ofType(LOGIN))
@@ -37,13 +42,28 @@ export class LoginEffect {
       .catch((msg) => of(msg))
     );
 
+  /**
+   * FIXME NO.1
+   * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，phoneVerCode$
+   * 处理注册时的手机验证码，resetPwdPhoneVerCode$处理重置密码时的手机验证码。
+   * */
   @Effect()
   phoneVerCode$: Observable<RequestAction> = this.actions$
     .ofType(GET_PHONE_VERIFICATION_CODE)
     .mergeMap((action: RequestAction) => this.ws
       .send(this.command.phoneVerificationCode(action.payload))
       .takeUntil(this.actions$.ofType(GET_PHONE_VERIFICATION_CODE))
-      .map(msg => msg.isError ? new PhoneVerCodeFailAction(msg.data) : new PhoneVerCodeSuccessAction(null))
+      .map(msg => msg.isError ? new RegisterPhoneVerCodeFailAction(msg.data) : new RegisterPhoneVerCodeSuccessAction(null))
+      .catch(msg => of(msg))
+    );
+
+  @Effect()
+  resetPwdPhoneVerCode$: Observable<RequestAction> = this.actions$
+    .ofType(RESET_PHONE_VERIFICATION_CODE)
+    .mergeMap((action: RequestAction) => this.ws
+      .send(this.command.resetPhoneVerificationCode(action.payload))
+      .takeUntil(this.actions$.ofType(RESET_PHONE_VERIFICATION_CODE))
+      .map(msg => msg.isError ? new ResetPhoneVerCodeFailAction(msg.data) : new ResetPhoneVerCodeSuccessAction(null))
       .catch(msg => of(msg))
     );
 
@@ -54,6 +74,16 @@ export class LoginEffect {
       .send(this.command.register(action.payload))
       .takeUntil(this.actions$.ofType(REGISTER))
       .map(msg => msg.isError ? new RegisterFailAction(msg.data) : new RegisterSuccessAction(msg.data))
+      .catch(msg => of(msg))
+    );
+
+  @Effect()
+  resetPassword$: Observable<RequestAction> = this.actions$
+    .ofType(RESET_PASSWORD)
+    .mergeMap((action: RequestAction) => this.ws
+      .send(this.command.resetPassword(action.payload))
+      .takeUntil(this.actions$.ofType(RESET_PASSWORD))
+      .map(msg => msg.isError ? new ResetPasswordFailAction(msg.data) : new ResetPasswordSuccessAction(msg.data))
       .catch(msg => of(msg))
     );
 

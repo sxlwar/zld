@@ -14,8 +14,10 @@ export function reducer(state = initialState, action: config.Actions) {
   switch (action.type) {
     case config.SET_BACK_BUTTON_TEXT:
       return Object.assign({}, state, {backButtonText: action.payload});
+
     case config.SET_PLATFORM_DIRECTION:
       return Object.assign({}, state, {defaultDirection: action.payload});
+
     default:
       return state;
   }

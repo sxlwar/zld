@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {WsRequest} from '../../interfaces/request-interface';
+import {WsResponse} from '../../interfaces/response-interface';
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -37,15 +38,21 @@ const phoneVerificationCode: ApiUnit = {
   ])
 };
 
+const resetPhoneVerificationCode: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.ResetPWPhoneVerifyCode']]
+  ])
+};
+
 const register: ApiUnit = {
   operates: new Map([
     [Operate.addition, ['employee.consumer.EmployeeRegister', 'employee.consumer.WorkerRegister']],
   ])
 };
 
-const resetPwd: ApiUnit = {
+const resetPassword: ApiUnit = {
   operates: new Map([
-    [Operate.addition, ['employee.consumer.ResetPassword']]
+    [Operate.updates, ['employee.consumer.ResetPassword']]
   ])
 };
 
@@ -53,8 +60,6 @@ const resetPwd: ApiUnit = {
 @Injectable()
 export class Command {
 
-  resetPWPhoneVerifyCode = "employee.consumer.ResetPWPhoneVerifyCode";
-  resetPassword = "employee.consumer.ResetPassword";
   personalIdList = "employee.consumer.PersonalIdList";
   processCreate = "workflow.consumer.ProcessCreate";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
@@ -155,14 +160,29 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * FIXME NO.1
+   * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，phoneVerificationCode
+   * 处理注册时的手机验证码，resetPhoneVerificationCode处理重置密码时的手机验证码。
+   * */
   phoneVerificationCode(option): WsRequest {
     const path = phoneVerificationCode.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path, option);
+  }
+
+  resetPhoneVerificationCode(option): WsRequest {
+    const path = resetPhoneVerificationCode.operates.get(Operate.querying)[0];
     return this.getFullParameter(path, option);
   }
 
   register(option): WsRequest {
     const index = option.company_id ? 0 : 1;
     const path = register.operates.get(Operate.addition)[index];
+    return this.getFullParameter(path, option);
+  }
+
+  resetPassword(option): WsRequest {
+    const path = resetPassword.operates.get(Operate.updates)[0];
     return this.getFullParameter(path, option);
   }
 }

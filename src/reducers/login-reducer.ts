@@ -7,7 +7,10 @@ import {
 } from '../actions/login-action';
 import {LoginOptions} from '../interfaces/request-interface';
 import {ENV} from '@app/env';
-import {RegisterResponse, LoginResponse} from '../interfaces/response-interface';
+import {
+  RegisterResponse, LoginResponse, ResetPasswordResponse,
+  PhoneVerCodeResponse
+} from '../interfaces/response-interface';
 
 export interface State {
   activeIndexOfSlides: number
@@ -103,7 +106,7 @@ export const getGroupList = (state: LoginResponse) => state.groups_list;
 export const getFaceImage = (state: LoginResponse) => state.face_image;
 
 
-/*==================================================Register api response============================================*/
+/*================================================Register api response============================================*/
 
 export const initialRegisterState: RegisterResponse = {
   user_id: NaN
@@ -118,9 +121,72 @@ export function registerReducer(state = initialRegisterState, action: actions.Ac
       return {...action.payload, ...initialRegisterState};
 
     default:
-      return initialRegisterState;
+      return state;
 
   }
 }
 
 export const getRegisterUserId = (state: RegisterResponse) =>state.user_id;
+
+/*================================================Reset password response============================================*/
+
+export const initialResetPasswordState: ResetPasswordResponse = {
+  user_id: NaN
+};
+
+export function resetPasswordReducer(state = initialResetPasswordState, action: actions.Actions) {
+  switch (action.type) {
+    case actions.RESET_PASSWORD_FAIL:
+      return {...action.payload};
+
+    case actions.RESET_PASSWORD_SUCCESS:
+      return {...action.payload, ...initialResetPasswordState};
+
+    default:
+      return state;
+  }
+}
+
+export const getResetPasswordUserId = (state: ResetPasswordResponse) => state.user_id;
+
+
+/*===========================================Register phone verification code=====================================*/
+
+export const initialPhoneVerCode: PhoneVerCodeResponse = {
+  captcha: false
+};
+
+export function registerPhoneVerReducer(state = initialPhoneVerCode, action: actions.Actions) {
+  switch (action.type) {
+    case actions.PHONE_VERIFICATION_CODE_FAIL:
+      const captcha = action.payload.captcha || false;
+      return Object.assign({}, action.payload, {captcha});
+
+    case actions.PHONE_VERIFICATION_CODE_SUCCESS:
+    default:
+      return state;
+  }
+}
+
+export const getRegisterPhoneVerCaptcha = (state: PhoneVerCodeResponse) => state.captcha;
+
+/*===========================================Reset phone verification code=====================================*/
+
+
+export const initialResetPhoneVerCode: PhoneVerCodeResponse = {
+  captcha: false
+};
+
+export function resetPwdPhoneVerReducer(state = initialResetPhoneVerCode, action: actions.Actions) {
+  switch (action.type) {
+    case actions.RESET_PHONE_VERIFICATION_CODE_FAIL:
+      const captcha = action.payload.captcha || false;
+      return Object.assign({}, action.payload, {captcha});
+
+    case actions.RESET_PHONE_VERIFICATION_CODE_SUCCESS:
+    default:
+      return state;
+  }
+}
+
+export const getResetPhoneVerCaptcha = (state: PhoneVerCodeResponse) => state.captcha;

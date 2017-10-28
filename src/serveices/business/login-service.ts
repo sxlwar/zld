@@ -7,8 +7,11 @@ import * as fromRoot from '../../reducers/index-reducer';
 import {
   getPhoneVerCode,
   getRegister,
+  getResetPassword,
+  getResetPhoneVerCode,
   selectPhoneVerCodeCaptcha,
   selectRandomCode,
+  selectResetPhoneVerCodeCaptcha,
   selectSelectedCompany,
   selectUserInfo
 } from '../../reducers/index-reducer';
@@ -24,9 +27,9 @@ import 'rxjs/add/operator/switchMap';
 import {Subscription} from 'rxjs/Subscription';
 import {ErrorService} from '../errors/error-service';
 import {TranslateService} from '@ngx-translate/core';
-import {LoginResponse} from '../../interfaces/response-interface';
+import {LoginResponse, PhoneVerCodeResponse} from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
-import {LoginFormModel, MapperService, SignupFormModel} from '../api/mapper-service';
+import {LoginFormModel, MapperService, ResetPwdFormModel, SignupFormModel} from '../api/mapper-service';
 import {ProcessorService} from '../api/processor-service';
 
 @Injectable()
@@ -110,9 +113,20 @@ export class LoginService {
 
   getSignupPhoneVer() {
     const phoneVerCode$ = this.store.select(getPhoneVerCode)
-      .do(captcha => captcha && this.updateVerificationImageUrl());
+      .do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl());
 
-    const phoneVerError$$ = this.errorService.handleErrorInSpecific(phoneVerCode$, 'LOGIN_PHONE_VERIFICATION_FAIL');
+    const phoneVerError$$ = this.errorService.handleErrorInSpecific(phoneVerCode$, 'PHONE_VERIFICATION_FAIL');
+
+    this.subscriptions.push(phoneVerError$$);
+
+    return phoneVerCode$;
+  }
+
+  getResetPwdPhoneVer() {
+    const phoneVerCode$ = this.store.select(getResetPhoneVerCode)
+      .do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl());
+
+    const phoneVerError$$ = this.errorService.handleErrorInSpecific(phoneVerCode$, 'PHONE_VERIFICATION_FAIL');
 
     this.subscriptions.push(phoneVerError$$);
 
@@ -127,6 +141,16 @@ export class LoginService {
     this.subscriptions.push(register$$);
 
     return register$;
+  }
+
+  getResetPasswordInfo() {
+    const resetPwd$ = this.store.select(getResetPassword);
+
+    const resetPwd$$ = this.errorService.handleErrorInSpecific(resetPwd$, 'RESET_PASSWORD_FAIL_TIP');
+
+    this.subscriptions.push(resetPwd$$);
+
+    return resetPwd$;
   }
 
   /*==============================================Request handle===================================================*/
@@ -156,6 +180,11 @@ export class LoginService {
     this.subscriptions.push(login$$);
   }
 
+  /**
+   * TODO NO.1
+   * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
+   * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
+   * */
   getPhoneVerCode(source: SignupFormModel) {
 
     const {username, captcha_code} = this.mapper.signupFormMap(source);
@@ -174,6 +203,23 @@ export class LoginService {
     this.subscriptions.push(phoneVer$$);
   }
 
+  getResetPwdPhoneVerCode(source: ResetPwdFormModel) {
+    const {username, captcha_code} = this.mapper.resetPwdForm(source);
+
+    const phoneVerCode$ = this.store.select(selectResetPhoneVerCodeCaptcha)
+      .switchMap((needImageVerCode: boolean) => {
+        if (needImageVerCode) {
+          return this.store.select(selectRandomCode)
+            .map(value => ({username, captcha_code, random_key: value}))
+        }
+        return Observable.of({username});
+      });
+
+    const phoneVer$$ = this.process.resetPhoneVerificationProcessor(phoneVerCode$);
+
+    this.subscriptions.push(phoneVer$$);
+  }
+
   signup(source: SignupFormModel, userType: string): void {
 
     const {username, password, code} = this.mapper.signupFormMap(source);
@@ -188,7 +234,7 @@ export class LoginService {
 
     let companyUserOption$: Observable<any> = Observable.of({});
 
-    if (userType === 'LOGIN_COMPANY_USER') {
+    if (userType === 'REGISTER_COMPANY_USER') {
       companyUserOption$ = this.store.select(selectSelectedCompany)
         .map(company => ({company_id: company.id, real_name: source.realname}));
     }
@@ -200,6 +246,14 @@ export class LoginService {
 
     this.subscriptions.push(register$$);
 
+  }
+
+  resetPwd(source: ResetPwdFormModel): void {
+    const {username, password, code} = this.mapper.resetPwdForm(source);
+
+    const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({username, password, code}));
+
+    this.subscriptions.push(resetPwd$$);
   }
 
   /*=============================================refuse cleaning====================================================*/
