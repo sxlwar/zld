@@ -1,4 +1,6 @@
 
+import {Action} from '@ngrx/store';
+
 export interface WsResponse {
   code: number;
   command: { path: string };
@@ -6,6 +8,12 @@ export interface WsResponse {
   msg: string;
   isError: boolean
   detail?: any;
+}
+
+export class ResponseAction implements Action {
+  readonly type: string;
+
+  constructor(public payload: any) {}
 }
 
 //custom field
@@ -49,6 +57,12 @@ export interface ResetPasswordResponse {
   errorMessage?: string;
 }
 
+//certificate
+export interface CertificateResponse {
+  auth_pass: boolean;
+  errorMessage?: string;
+}
+
 //search worker
 export interface WorkerResponse {
   user__username:	string
@@ -69,4 +83,5 @@ export interface WorkerResponse {
 export type ErrorResponse = LoginResponse
   | PhoneVerCodeResponse
   | RegisterResponse
-  | ResetPasswordResponse;
+  | ResetPasswordResponse
+  | CertificateResponse;

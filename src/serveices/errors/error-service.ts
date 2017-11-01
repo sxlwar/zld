@@ -7,6 +7,7 @@ import {AlertController, ToastController} from 'ionic-angular';
 import {TranslateService} from '@ngx-translate/core';
 import {ErrorMessage, ErrorResponse} from '../../interfaces/response-interface';
 import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/filter';
 
 export interface ErrorInfo {
   title: string;
@@ -44,11 +45,12 @@ export class ErrorService {
    * */
   handleUIError(msgKey: string) {
     this.translate.get(msgKey).subscribe(message => {
-      this.toastCtrl.create({
+      const toast = this.toastCtrl.create({
         message,
         duration: 3000,
         position: 'top'
-      })
+      });
+      toast.present().then(() => {});
     });
   }
 

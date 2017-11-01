@@ -32,3 +32,12 @@ export function realnameValidator(name: FormControl): {[key: string]: any} {
 
   return valid ? null: {nameFormat: 'NAME_INVALID_ERROR'};
 }
+
+
+export const personalIdFormat = /^[1-9]\d{5}(19|20)?\d{2}(0[1-9]|1[012])(0[1-9]|[12]\d|3[01])\d{3}(\d|x)$/i;
+
+export function personalIdValidator(name: FormControl): {[key: string]: any} {
+  const valid: boolean = personalIdFormat.test(name.value);
+
+  return valid ? null : {personalIdFormat: 'PERSONAL_ID_ERROR_TIP'};
+}

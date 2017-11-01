@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {IonicPage, MenuController, NavController, Slides} from 'ionic-angular';
-import {SlideService} from '../../serveices/business/tutorial-service';
+import {TutorialService} from '../../serveices/business/tutorial-service';
 import {Observable} from 'rxjs/Observable';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers/index-reducer'
+import {Subscription} from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
@@ -14,10 +15,11 @@ export class TutorialPage implements OnInit {
   slides: Observable<object[]>;
   showSkip: Observable<boolean>;
   dir: Observable<string>;
+  slides$$: Subscription;
 
   constructor(public navCtrl: NavController,
               public menu: MenuController,
-              private slideService: SlideService,
+              private tutorial: TutorialService,
               public store: Store<fromRoot.AppState>) {
   }
 
@@ -33,7 +35,7 @@ export class TutorialPage implements OnInit {
     ];
     const address = ['assets/img/ica-slidebox-img-1.png', 'assets/img/ica-slidebox-img-2.png', 'assets/img/ica-slidebox-img-3.png', 'assets/img/ica-slidebox-img-4.png'];
 
-    this.slideService.getSlides(keys, address);
+    this.slides$$ = this.tutorial.getSlides(keys, address);
 
     this.slides = this.store.select(fromRoot.selectTutorialSlides);
 
@@ -47,22 +49,25 @@ export class TutorialPage implements OnInit {
       animate: true,
       direction: 'forward'
     }).then(() => {
-      this.slideService.resetSkipState();
+      this.tutorial.resetSkipState();
     });
   }
 
   onSlideChangeStart(slides: Slides) {
-    this.slideService.slideChange(slides);
+    this.tutorial.slideChange(slides);
   }
 
+  // noinspection JSUnusedGlobalSymbols
   ionViewDidEnter() {
     // the root left menu should be disabled on the tutorial page
     this.menu.enable(false);
   }
 
+  // noinspection JSUnusedGlobalSymbols
   ionViewWillLeave() {
     // enable the root left menu when leaving the tutorial page
     this.menu.enable(true);
+    this.slides$$.unsubscribe();
   }
 
 }

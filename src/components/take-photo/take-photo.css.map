@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACE,2BAAiB;EACf,MAAM,EAAE,IAAI;EACZ,WAAW,EAAE,IAAI;EACjB,UAAU,EAAE,MAAM",
+"sources": ["take-photo.scss"],
+"names": [],
+"file": "take-photo.css"
+}

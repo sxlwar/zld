@@ -1,62 +1,103 @@
 {
-  "name": "app",
-  "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
-  "private": true,
-  "scripts": {
-    "clean": "ionic-app-scripts clean",
-    "build": "ionic-app-scripts build",
-    "lint": "ionic-app-scripts lint",
-    "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve",
-    "serve:zldtest": "APP_ENV=zldtest ionic-app-scripts serve",
-    "build:zldtest": "APP_ENV=zldtest ionic-app-scripts build --prod",
-    "serve:dev": "APP_ENV=dev ionic-app-scripts serve",
-    "build:dev": "APP_ENV=dev ionic-app-scripts build --prod",
-    "serve:builder": " APP_ENV=builder ionic-app-scripts serve",
-    "build:builder": " APP_ENV=builder ionic-app-scripts build --prod",
-    "serve:pro": " APP_ENV=pro ionic-app-scripts serve",
-    "build:pro": " APP_ENV=pro ionic-app-scripts build --prod"
-  },
-  "dependencies": {
-    "@angular/common": "4.4.3",
-    "@angular/compiler": "4.4.3",
-    "@angular/compiler-cli": "4.4.3",
-    "@angular/core": "4.4.3",
-    "@angular/forms": "4.4.3",
-    "@angular/http": "4.4.3",
-    "@angular/platform-browser": "4.4.3",
-    "@angular/platform-browser-dynamic": "4.4.3",
-    "@ionic-native/camera": "3.12.1",
-    "@ionic-native/core": "3.12.1",
-    "@ionic-native/google-maps": "3.12.1",
-    "@ionic-native/splash-screen": "3.12.1",
-    "@ionic-native/status-bar": "3.12.1",
-    "@ionic/storage": "2.0.1",
-    "@ngrx/core": "^1.2.0",
-    "@ngrx/effects": "^4.1.0",
-    "@ngrx/store": "^4.0.3",
-    "@ngrx/store-devtools": "^4.0.0",
-    "@ngx-translate/core": "6.0.1",
-    "@ngx-translate/http-loader": "0.0.3",
-    "@types/lodash": "^4.14.77",
-    "ionic-angular": "3.7.0",
-    "ionicons": "3.0.0",
-    "lodash": "^4.17.4",
-    "queueing-subject": "^0.1.1",
-    "rxjs": "5.4.3",
-    "rxjs-websockets": "^4.0.0",
-    "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.17"
-  },
-  "devDependencies": {
-    "@ionic/app-scripts": "3.0.0",
-    "ngrx-store-logger": "^0.2.0",
-    "typescript": "^2.5.2"
-  },
-  "description": "An Ionic project",
-  "config": {
-    "ionic_webpack": "./config/webpack.config.js"
-  }
+    "name": "建筑人",
+    "version": "2.0",
+    "author": "杭州市智链达数据有限公司",
+    "homepage": "ws://zld.data.com",
+    "private": true,
+    "scripts": {
+        "clean": "ionic-app-scripts clean",
+        "build": "ionic-app-scripts build",
+        "lint": "ionic-app-scripts lint",
+        "ionic:build": "ionic-app-scripts build",
+        "ionic:serve": "ionic-app-scripts serve",
+        "serve:zldtest": "APP_ENV=zldtest ionic-app-scripts serve",
+        "build:zldtest": "APP_ENV=zldtest ionic-app-scripts build --prod",
+        "serve:dev": "APP_ENV=dev ionic-app-scripts serve",
+        "build:dev": "APP_ENV=dev ionic-app-scripts build --prod",
+        "serve:builder": " APP_ENV=builder ionic-app-scripts serve",
+        "build:builder": " APP_ENV=builder ionic-app-scripts build --prod",
+        "serve:pro": " APP_ENV=pro ionic-app-scripts serve",
+        "build:pro": " APP_ENV=pro ionic-app-scripts build --prod"
+    },
+    "dependencies": {
+        "@angular/common": "4.4.3",
+        "@angular/compiler": "4.4.3",
+        "@angular/compiler-cli": "4.4.3",
+        "@angular/core": "4.4.3",
+        "@angular/forms": "4.4.3",
+        "@angular/http": "4.4.3",
+        "@angular/platform-browser": "4.4.3",
+        "@angular/platform-browser-dynamic": "4.4.3",
+        "@ionic-native/camera": "^3.12.1",
+        "@ionic-native/core": "^4.3.2",
+        "@ionic-native/file": "^4.3.2",
+        "@ionic-native/file-transfer": "^4.3.2",
+        "@ionic-native/google-maps": "3.12.1",
+        "@ionic-native/image-picker": "^4.3.2",
+        "@ionic-native/keyboard": "^4.3.2",
+        "@ionic-native/splash-screen": "3.12.1",
+        "@ionic-native/status-bar": "3.12.1",
+        "@ionic/storage": "2.0.1",
+        "@ngrx/core": "^1.2.0",
+        "@ngrx/effects": "^4.1.0",
+        "@ngrx/store": "^4.0.3",
+        "@ngrx/store-devtools": "^4.0.0",
+        "@ngx-translate/core": "6.0.1",
+        "@ngx-translate/http-loader": "0.0.3",
+        "@types/lodash": "^4.14.77",
+        "com.synconset.imagepicker": "~2.1.8",
+        "cordova-android": "^6.2.3",
+        "cordova-ios": "^4.4.0",
+        "cordova-plugin-camera": "^2.4.1",
+        "cordova-plugin-compat": "^1.2.0",
+        "cordova-plugin-device": "^1.1.4",
+        "cordova-plugin-file": "^4.3.3",
+        "cordova-plugin-file-transfer": "^1.6.3",
+        "cordova-plugin-splashscreen": "^4.0.3",
+        "cordova-plugin-statusbar": "^2.2.2",
+        "cordova-plugin-telerik-imagepicker": "^2.1.8",
+        "cordova-plugin-whitelist": "^1.3.1",
+        "ionic-angular": "3.7.0",
+        "ionic-plugin-keyboard": "^2.2.1",
+        "ionicons": "3.0.0",
+        "lodash": "^4.17.4",
+        "queueing-subject": "^0.1.1",
+        "rxjs": "5.4.3",
+        "rxjs-websockets": "^4.0.0",
+        "sw-toolbox": "3.6.0",
+        "zone.js": "0.8.17"
+    },
+    "devDependencies": {
+        "@ionic/app-scripts": "3.0.0",
+        "ngrx-store-logger": "^0.2.0",
+        "typescript": "^2.5.2"
+    },
+    "description": "An Ionic project",
+    "config": {
+        "ionic_webpack": "./config/webpack.config.js"
+    },
+    "cordova": {
+        "plugins": {
+            "cordova-plugin-file-transfer": {},
+            "cordova-plugin-file": {},
+            "com.synconset.imagepicker": {
+                "PHOTO_LIBRARY_USAGE_DESCRIPTION": "建筑人将访问您的相册，是否继续"
+            },
+            "cordova-plugin-device": {},
+            "cordova-plugin-splashscreen": {},
+            "cordova-plugin-statusbar": {},
+            "cordova-plugin-whitelist": {},
+            "ionic-plugin-keyboard": {},
+            "cordova-plugin-camera": {
+                "CAMERA_USAGE_DESCRIPTION": " ",
+                "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
+            }
+        },
+        "platforms": [
+            "android"
+        ],
+        "perference": {
+            "loadUrlTimeoutValue": "60000"
+        }
+    }
 }

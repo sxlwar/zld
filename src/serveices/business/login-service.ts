@@ -26,7 +26,6 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
 import {Subscription} from 'rxjs/Subscription';
 import {ErrorService} from '../errors/error-service';
-import {TranslateService} from '@ngx-translate/core';
 import {LoginResponse, PhoneVerCodeResponse} from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
 import {LoginFormModel, MapperService, ResetPwdFormModel, SignupFormModel} from '../api/mapper-service';
@@ -41,7 +40,6 @@ export class LoginService {
   constructor(public store: Store<fromRoot.AppState>,
               public process: ProcessorService,
               public errorService: ErrorService,
-              public translate: TranslateService,
               public mapper: MapperService) {
   }
 
@@ -58,7 +56,6 @@ export class LoginService {
   }
 
   updateVerificationImageUrl() {
-
     if (this.updateVerImage$$) this.updateVerImage$$.unsubscribe();
 
     this.updateVerImage$$ = Observable.range(1, 5)
@@ -101,10 +98,12 @@ export class LoginService {
    * is the network requests.
    * */
   getLoginInfo() {
-    const loginInfo$ = this.store.select(selectUserInfo)
-      .do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl());
+    const loginInfo$ = this.store.select(selectUserInfo);
 
-    const loginError$$ = this.errorService.handleErrorInSpecific(loginInfo$, 'LOGIN_FAIL_TIP');
+    const loginError$$ = this.errorService.handleErrorInSpecific(
+      loginInfo$.do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
+      'LOGIN_FAIL_TIP'
+    );
 
     this.subscriptions.push(loginError$$);
 
@@ -112,10 +111,13 @@ export class LoginService {
   }
 
   getSignupPhoneVer() {
-    const phoneVerCode$ = this.store.select(getPhoneVerCode)
-      .do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl());
+    const phoneVerCode$ = this.store.select(getPhoneVerCode);
 
-    const phoneVerError$$ = this.errorService.handleErrorInSpecific(phoneVerCode$, 'PHONE_VERIFICATION_FAIL');
+    const phoneVerError$$ = this.errorService
+      .handleErrorInSpecific(
+        phoneVerCode$.do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
+        'PHONE_VERIFICATION_FAIL'
+      );
 
     this.subscriptions.push(phoneVerError$$);
 
@@ -123,10 +125,12 @@ export class LoginService {
   }
 
   getResetPwdPhoneVer() {
-    const phoneVerCode$ = this.store.select(getResetPhoneVerCode)
-      .do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl());
+    const phoneVerCode$ = this.store.select(getResetPhoneVerCode);
 
-    const phoneVerError$$ = this.errorService.handleErrorInSpecific(phoneVerCode$, 'PHONE_VERIFICATION_FAIL');
+    const phoneVerError$$ = this.errorService.handleErrorInSpecific(
+      phoneVerCode$.do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl()),
+      'PHONE_VERIFICATION_FAIL'
+    );
 
     this.subscriptions.push(phoneVerError$$);
 

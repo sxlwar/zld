@@ -3,7 +3,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
 
 import { WelcomePage } from './welcome';
-import {WelcomeService} from '../../serveices/business/welcome-service';
 
 @NgModule({
   declarations: [
@@ -16,6 +15,6 @@ import {WelcomeService} from '../../serveices/business/welcome-service';
   exports: [
     WelcomePage
   ],
-  providers: [WelcomeService]
+  providers: []
 })
 export class WelcomePageModule { }

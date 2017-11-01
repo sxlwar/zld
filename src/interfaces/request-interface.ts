@@ -29,6 +29,10 @@ export interface RegisterOptions {
   company_id?: number;
 }
 
+export interface SearchCompanyOptions {
+  name: string
+}
+
 export interface PhoneVerificationCodeOptions {
   username: string;
   rand_captcha_key?: string;
@@ -43,8 +47,27 @@ export interface ResetPasswordOptions {
   random_key?: string;
 }
 
+export interface CertificateOptions {
+  sid: string;
+  realname: string;
+  num: string;
+  imageface?: string;
+  imageback?: string;
+}
+
+export interface UploadImageOptions {
+  sid: string;
+  command: string;
+  type: string;
+  file: string;
+  id?: string | number;
+}
+
 
 export type Options = LoginOptions
   & RegisterOptions
+  & SearchCompanyOptions
   & PhoneVerificationCodeOptions
-  & ResetPasswordOptions;
+  & ResetPasswordOptions
+  & CertificateOptions
+  & UploadImageOptions;

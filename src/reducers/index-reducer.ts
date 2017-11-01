@@ -3,22 +3,22 @@ import * as config from './config-reducer';
 import * as tutorial from './tutorial-reducer';
 import * as login from './login-reducer';
 import * as search from './search-reducer';
-
-import {
-  RegisterResponse, LoginResponse, ResetPasswordResponse,
-  PhoneVerCodeResponse
-} from '../interfaces/response-interface';
+import * as upload from './upload-reducer';
+import * as certificate from './certificate-reducer';
+import * as response from '../interfaces/response-interface';
 
 export interface AppState {
   config: config.State;
   tutorialPage: tutorial.State;
   loginPage: login.State;
-  userInfo: LoginResponse;
+  userInfo: response.LoginResponse;
   search: search.State;
-  phoneVerCode: PhoneVerCodeResponse;
-  register: RegisterResponse;
-  resetPhoneVerCode: PhoneVerCodeResponse;
-  resetPassword: ResetPasswordResponse;
+  phoneVerCode: response.PhoneVerCodeResponse;
+  register: response.RegisterResponse;
+  resetPhoneVerCode: response.PhoneVerCodeResponse;
+  resetPassword: response.ResetPasswordResponse;
+  uploadState: upload.State;
+  certificate: response.CertificateResponse;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -30,7 +30,9 @@ export const reducers: ActionReducerMap<AppState> = {
   phoneVerCode: login.registerPhoneVerReducer,
   register: login.registerReducer,
   resetPhoneVerCode: login.resetPwdPhoneVerReducer,
-  resetPassword: login.resetPasswordReducer
+  resetPassword: login.resetPasswordReducer,
+  uploadState: upload.reducer,
+  certificate: certificate.reducer,
 };
 
 //config
@@ -88,3 +90,14 @@ export const selectRegisterUserId = createSelector(getRegister, login.getRegiste
 //reset password
 export const getResetPassword =(state: AppState) => state.resetPassword;
 export const selectResetPasswordId = createSelector(getResetPassword, login.getResetPasswordUserId);
+
+//certificate
+export const getCertificate = (state: AppState) => state.certificate;
+export const selectCertificateResult = createSelector(getCertificate, certificate.getAuthPass);
+
+/*================================================HTTP===========================================================*/
+
+//upload
+export const getUploadState = (state: AppState) => state.uploadState;
+export const selectUploadingState = createSelector(getUploadState, upload.getUploadingState);
+export const selectUploadedState = createSelector(getUploadState, upload.getUploadedState);

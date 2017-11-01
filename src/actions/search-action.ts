@@ -1,11 +1,12 @@
 import {Company, WorkerResponse} from '../interfaces/response-interface';
+import {SearchCompanyOptions} from '../interfaces/request-interface';
 
 export const SEARCH_COMPANY = 'SEARCH_COMPANY';
 
 export class SearchCompanyAction {
   readonly type = SEARCH_COMPANY;
 
-  constructor(public payload: string) {
+  constructor(public payload: SearchCompanyOptions) {
   }
 }
 
@@ -14,7 +15,7 @@ export const SEARCH_WORKER = 'SEARCH_WORKER';
 export class SearchWorkerAction {
   readonly type = SEARCH_WORKER;
 
-  constructor(public payload: string) {
+  constructor(public payload: any) {
   }
 }
 

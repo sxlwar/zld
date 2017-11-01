@@ -44,8 +44,8 @@ export class SearchCompanyPage {
     });
   }
 
-  getSearch(query: string) {
-    if (!query) return;
-    this.store.dispatch(new SearchCompanyAction(query));
+  getSearch(name: string) {
+    if (!name) return;
+    this.store.dispatch(new SearchCompanyAction({name}));
   }
 }

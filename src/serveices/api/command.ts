@@ -1,7 +1,11 @@
 import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {WsRequest} from '../../interfaces/request-interface';
-import {WsResponse} from '../../interfaces/response-interface';
+import {
+  CertificateOptions,
+  LoginOptions,
+  PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions,
+  SearchCompanyOptions,
+  WsRequest
+} from '../../interfaces/request-interface';
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -56,6 +60,18 @@ const resetPassword: ApiUnit = {
   ])
 };
 
+const updatePersonalIdImage: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.PersonalIdUpdate']]
+  ])
+};
+
+const uploadPersonalIdImage: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['personalIdUpdate']]
+  ])
+};
+
 
 @Injectable()
 export class Command {
@@ -65,7 +81,7 @@ export class Command {
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   workerContractList = "project.consumer.WorkerContractList";
   workPieceList = "project.consumer.WorkPieceList";
-  personalIdUpdate = "employee.consumer.PersonalIdUpdate";
+  // personalIdUpdate = "employee.consumer.PersonalIdUpdate";
   teamList = "project.consumer.TeamList";
   workerDetailList = "employee.consumer.WorkerDetailList";
   workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
@@ -150,12 +166,12 @@ export class Command {
     return {command: {path}, parameters}
   }
 
-  login(option): WsRequest {
+  login(option: LoginOptions): WsRequest {
     const path = login.operates.get(Operate.querying)[0];
     return this.getFullParameter(path, option);
   }
 
-  searchCompany(option): WsRequest {
+  searchCompany(option: SearchCompanyOptions): WsRequest {
     const path = company.operates.get(Operate.search)[0];
     return this.getFullParameter(path, option);
   }
@@ -165,24 +181,33 @@ export class Command {
    * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，phoneVerificationCode
    * 处理注册时的手机验证码，resetPhoneVerificationCode处理重置密码时的手机验证码。
    * */
-  phoneVerificationCode(option): WsRequest {
+  phoneVerificationCode(option: PhoneVerificationCodeOptions): WsRequest {
     const path = phoneVerificationCode.operates.get(Operate.querying)[0];
     return this.getFullParameter(path, option);
   }
 
-  resetPhoneVerificationCode(option): WsRequest {
+  resetPhoneVerificationCode(option: PhoneVerificationCodeOptions): WsRequest {
     const path = resetPhoneVerificationCode.operates.get(Operate.querying)[0];
     return this.getFullParameter(path, option);
   }
 
-  register(option): WsRequest {
+  register(option: RegisterOptions): WsRequest {
     const index = option.company_id ? 0 : 1;
     const path = register.operates.get(Operate.addition)[index];
     return this.getFullParameter(path, option);
   }
 
-  resetPassword(option): WsRequest {
+  resetPassword(option: ResetPasswordOptions): WsRequest {
     const path = resetPassword.operates.get(Operate.updates)[0];
     return this.getFullParameter(path, option);
+  }
+
+  updatePersonalIdImage(option: CertificateOptions): WsRequest {
+    const path = updatePersonalIdImage.operates.get(Operate.updates)[0];
+    return this.getFullParameter(path, option);
+  }
+
+  get uploadPersonalIdImage(): string {
+    return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
 }

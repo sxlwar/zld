@@ -5,12 +5,15 @@ import {TranslateModule} from '@ngx-translate/core';
 import {CutDownComponent} from './cut-down/cut-down';
 import {IonicModule} from 'ionic-angular';
 import {FuzzySearchComponent} from './fuzzy-search/fuzzy-search';
+import {TakePhotoComponent} from './take-photo/take-photo';
+import {TakePhotoService} from './take-photo/take-photo-service';
 
 @NgModule({
   declarations: [
     ImageVerificationComponent,
     CutDownComponent,
-    FuzzySearchComponent
+    FuzzySearchComponent,
+    TakePhotoComponent
   ],
   imports: [
     IonicModule,
@@ -20,7 +23,11 @@ import {FuzzySearchComponent} from './fuzzy-search/fuzzy-search';
   exports: [
     ImageVerificationComponent,
     CutDownComponent,
-    FuzzySearchComponent
+    FuzzySearchComponent,
+    TakePhotoComponent
+  ],
+  providers: [
+    TakePhotoService
   ]
 })
 export class ComponentsModule {

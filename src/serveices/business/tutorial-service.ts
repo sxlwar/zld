@@ -13,9 +13,10 @@ import 'rxjs/add/operator/mergeAll';
 import {assign, concat, zipObject} from 'lodash';
 import {Slide} from '../../interfaces/tutorial-interface';
 import {State} from '../../reducers/tutorial-reducer';
+import {Subscription} from 'rxjs/Subscription';
 
 @Injectable()
-export class SlideService {
+export class TutorialService {
   constructor(
     public store: Store<State>,
     private translate: TranslateService
@@ -31,7 +32,7 @@ export class SlideService {
     this.store.dispatch(new ToggleSkipAction(true));
   }
 
-  getSlides(keys: string[], images: string[]) {
+  getSlides(keys: string[], images: string[]): Subscription{
     let translateResult = {};
 
     this.translate.get(keys).subscribe(result => translateResult = result);
@@ -39,7 +40,7 @@ export class SlideService {
     /**
      *There is a bug of typescript when use spread operator instead of apply method. https://github.com/Microsoft/TypeScript/issues/4130
      **/
-    this.getKeyOfOverview(keys)
+    return this.getKeyOfOverview(keys)
       .zip(this.getValueOfOverview(translateResult, keys))
       .map((ary: Array<Array<string>>, index: number) => assign({image: images[index]}, zipObject.apply(zipObject, ary)))
       .reduce((acc: Slide[], obj: Slide) => concat(acc, obj), [])

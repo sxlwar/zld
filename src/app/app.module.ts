@@ -9,7 +9,6 @@ import {IonicStorageModule, Storage} from '@ionic/storage';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
-
 import {Items} from '../mocks/providers/items';
 import {Settings, User} from '../providers/providers';
 import {MyApp} from './app.component';
@@ -18,12 +17,17 @@ import {ActionReducer, MetaReducer, Store, StoreModule} from '@ngrx/store';
 import {reducers} from '../reducers/index-reducer';
 import {ConfigService} from '../serveices/config/config-service';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {ENV} from '@app/env';
 import {ProcessorService} from '../serveices/api/processor-service';
 import {WebsocketService} from '../serveices/api/websocket-service';
 import {HttpService} from '../serveices/api/http-service';
 import {ErrorService} from '../serveices/errors/error-service';
 import {MapperService} from '../serveices/api/mapper-service';
+import {FileTransfer} from '@ionic-native/file-transfer';
+import {File} from '@ionic-native/file';
+import {Command} from '../serveices/api/command';
+import {TipService} from '../serveices/tip-service';
+import {ImagePicker} from '@ionic-native/image-picker';
+import {Keyboard} from '@ionic-native/keyboard';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -45,14 +49,6 @@ export function provideSettings(storage: Storage) {
     option4: 'Hello'
   });
 }
-//
-// export function getMetaReducers(reducer: ActionReducer<any>): ActionReducer<any> {
-//   return function (state, action) {
-//     return reducer(state, action)
-//   }
-// }
-//
-// export const metaReducers: MetaReducer<any>[] = [getMetaReducers];
 
 export function debug1(reducer: ActionReducer<any>): ActionReducer<any> {
   return function(state, action) {
@@ -69,8 +65,6 @@ export function debug2(reducer: ActionReducer<any>): ActionReducer<any> {
 
 export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
 
-console.log(ENV.DOMAIN);
-
 @NgModule({
   declarations: [
     MyApp
@@ -85,11 +79,15 @@ console.log(ENV.DOMAIN);
         deps: [Http]
       }
     }),
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp, {
+      scrollAssist: false,    // Valid options appear to be [true, false]
+      scrollPadding: false,
+      autoFocusAssist: false
+    }),
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
-      maxAge: 15
+      maxAge: 20
     })
   ],
   bootstrap: [IonicApp],
@@ -101,19 +99,25 @@ console.log(ENV.DOMAIN);
     Items,
     User,
     Camera,
+    ImagePicker,
+    File,
+    FileTransfer,
     GoogleMaps,
     SplashScreen,
     StatusBar,
+    Keyboard,
     Store,
     {provide: Settings, useFactory: provideSettings, deps: [Storage]},
     // Keep this to enable Ionic's runtime error handling during development
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Command,
     ConfigService,
     ProcessorService,
     WebsocketService,
     HttpService,
     ErrorService,
-    MapperService
+    MapperService,
+    TipService
   ]
 })
 export class AppModule { }

@@ -20,7 +20,7 @@ export const initialSate: State = {
 export function reducer(state = initialSate, action: actions.Actions): State {
   switch (action.type) {
     case SEARCH_COMPANY:
-      const query = action.payload;
+      const query = action.payload.name;
 
       if(query === '') {
         return {

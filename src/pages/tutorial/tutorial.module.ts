@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {TutorialPage} from './tutorial';
 import {TranslateModule} from '@ngx-translate/core';
-import {SlideService} from '../../serveices/business/tutorial-service';
+import {TutorialService} from '../../serveices/business/tutorial-service';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import {SlideService} from '../../serveices/business/tutorial-service';
     TutorialPage
   ],
   providers: [
-    SlideService
+    TutorialService
   ]
 })
 export class TutorialPageModule { }

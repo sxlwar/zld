@@ -1,5 +1,5 @@
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
   AlertController,
   App,
@@ -21,7 +21,10 @@ import {
 import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import {
-  Company, PhoneVerCodeResponse, RegisterResponse, LoginResponse,
+  Company,
+  LoginResponse,
+  PhoneVerCodeResponse,
+  RegisterResponse,
   ResetPasswordResponse
 } from '../../interfaces/response-interface';
 
@@ -31,43 +34,33 @@ export class LoginForm {
   imageVerification = '';
 }
 
-export class PasswordInfo {
-  password = ['', mobilePhoneValidator];
-  confirmPassword = ['', mobilePhoneValidator];
-}
-
-export class ResetPwdForm {
-  mobilePhone = ['', mobilePhoneValidator];
-  phoneVerification = '';
-  imageVerification = '';
-  constructor(public passwordInfo: FormGroup){
-  }
-}
-
 @IonicPage()
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',
 })
-export class LoginPage implements OnInit, OnDestroy {
+export class LoginPage {
 
-  public loginForm: FormGroup;
-  public signupForm: FormGroup;
-  public resetPwdForm: FormGroup;
+  backgroundImage = 'assets/img/background/login-background.png';
+  userTypes = ['REGISTER_PERSONAL_USER', 'REGISTER_COMPANY_USER'];
   direction = 'vertical';
-  public backgroundImage = 'assets/img/background/login-background.png';
-  public signupImageVerification$: Observable<PhoneVerCodeResponse>;
-  public resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
-  public showVerificationOfReset: boolean;
-  public loginVerificationImage$: Observable<string>;
-  public userTypes = ['REGISTER_PERSONAL_USER', 'LOGIN_COMPANY_USER'];
+  loginForm: FormGroup;
+  signupForm: FormGroup;
+  resetPwdForm: FormGroup;
+
   private getActiveIndexOfInnerSlides$$: Subscription;
   private getActiveIndexOfSlides$$: Subscription;
+  private navSubscription$$: Subscription;
+
   loginInfo$: Observable<LoginResponse>;
   register$: Observable<RegisterResponse>;
   resetPwd$: Observable<ResetPasswordResponse>;
-  realnameValidator = realnameValidator;
+  signupImageVerification$: Observable<PhoneVerCodeResponse>;
+  resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
+  loginVerificationImage$: Observable<string>;
   selectedCompany$: Observable<Company>;
+
+  realnameValidator = realnameValidator;
   // Slider methods
   @ViewChild('slider') slider: Slides;
   @ViewChild('innerSlider') innerSlider: Slides;
@@ -100,7 +93,7 @@ export class LoginPage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  ionViewDidLoad() {
     this.loginInfo$ = this.loginService.getLoginInfo();
     this.register$ = this.loginService.getRegisterInfo();
     this.resetPwd$ = this.loginService.getResetPasswordInfo();
@@ -108,6 +101,12 @@ export class LoginPage implements OnInit, OnDestroy {
     this.signupImageVerification$ = this.loginService.getSignupPhoneVer();
     this.resetPwdImageVerification$ = this.loginService.getResetPwdPhoneVer();
     this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
+
+    this.navSubscription$$ = this.loginInfo$
+      .filter(info => !!info.sid)
+      .map(info => info.auth_pass)
+      .distinctUntilChanged()
+      .subscribe(havePass => this.goToNextPage(havePass));
   }
 
   initForm() {
@@ -193,7 +192,7 @@ export class LoginPage implements OnInit, OnDestroy {
   adjustmentValidationRules(userType: string): void {
     const realnameCtrl = this.signupForm.get('realname');
 
-    if (userType === 'LOGIN_COMPANY_USER') {
+    if (userType === 'REGISTER_COMPANY_USER') {
       realnameCtrl.setValidators([Validators.required, this.realnameValidator])
     } else {
       realnameCtrl.clearValidators();
@@ -221,18 +220,21 @@ export class LoginPage implements OnInit, OnDestroy {
 
 
   goToNextPage(haveAuthPassed) {
-    if (haveAuthPassed) {
-      this.navCtrl.setRoot('TabsPage').then(() => {
-      });
-    } else {
-      this.navCtrl.push('mapPage').then(() => {
-      });
-    }
+    // if (haveAuthPassed) {
+    //   this.navCtrl.setRoot('TabsPage').then(() => {
+    //   });
+    // } else {
+    //   this.navCtrl.push('CertificationPage').then(() => {
+    //   });
+    // }
+    this.navCtrl.push('CertificationPage').then(() => {
+    });
   }
 
   /*=============================================Refuse cleaning====================================================*/
 
-  ngOnDestroy() {
+  // noinspection JSUnusedGlobalSymbols
+  ionViewWillUnload() {
     this.getActiveIndexOfSlides$$.unsubscribe();
     this.getActiveIndexOfInnerSlides$$.unsubscribe();
     this.loginService.unSubscribe();

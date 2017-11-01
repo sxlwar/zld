@@ -6,11 +6,12 @@ import {SEARCH_COMPANY, SearchCompanyCompleteAction} from '../actions/search-act
 import {Command} from '../serveices/api/command';
 import {of} from 'rxjs/observable/of';
 import {RequestAction} from '../interfaces/request-interface';
+import {ResponseAction} from '../interfaces/response-interface';
 
 @Injectable()
 export class SearchEffect {
   @Effect()
-  searchCompany$: Observable<RequestAction> = this.actions$
+  searchCompany$: Observable<ResponseAction> = this.actions$
     .ofType(SEARCH_COMPANY)
     .mergeMap((action: RequestAction) => this.ws
       .send(this.command.searchCompany(action.payload))

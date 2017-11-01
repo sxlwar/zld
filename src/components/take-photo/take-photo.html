@@ -1,0 +1,9 @@
+<!-- Generated template for the TakePhotoComponent component -->
+<div (click)="showActionSheet()">
+  <ion-card>
+    <ion-card-content class="photo-container" style="padding: 0;">
+      <span [hidden]="!!(fileUrl | async)">{{placeholder | translate}}</span>
+      <img [src]="fileUrl | async" alt="" style="height: 500px;width: 600px;">
+    </ion-card-content>
+  </ion-card>
+</div>

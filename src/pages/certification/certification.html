@@ -1,0 +1,58 @@
+<!--
+  Generated template for the CertificationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'CER_CERTIFICATION' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div [formGroup]="certificateForm">
+
+    <ion-item>
+      <ion-label fixed="">{{'NAME' | translate}}</ion-label>
+      <ion-input type="text" formControlName="realname" [value]="realname$ | async" required></ion-input>
+    </ion-item>
+    <div
+      *ngIf="realname.invalid && (realname.dirty || realname.touched)"
+      class="form-error">
+      <span *ngIf="realname.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
+      <span *ngIf="!realname.errors.required && realname.errors.nameFormat">
+              {{certificateForm.getError('nameFormat', 'realname') | translate}}
+            </span>
+    </div>
+
+    <ion-item>
+      <ion-label fixed>{{'PERSONAL_ID' | translate}}</ion-label>
+      <ion-input formControlName="personalId" required></ion-input>
+    </ion-item>
+    <div
+      *ngIf="personalId.invalid && (personalId.dirty || personalId.touched)"
+      class="form-error">
+      <span *ngIf="personalId.errors.required">{{'PERSONAL_ID_EMPTY_TIP' | translate}}</span>
+      <span *ngIf="!personalId.errors.required && personalId.errors.personalIdFormat">
+              {{certificateForm.getError('personalIdFormat', 'personalId') | translate}}
+            </span>
+    </div>
+
+    <h6>{{'CER_UPLOAD_PERSONAL_ID_IMAGE' | translate}}</h6>
+
+    <div padding>
+      <take-photo [placeholder]="frontTip" (fileUrl)="getImage($event, 'front')"></take-photo>
+
+      <take-photo [placeholder]="backTip" (fileUrl)="getImage($event,'back')"></take-photo>
+    </div>
+
+    <button ion-button block round (click)="certificate()" [disabled]="certificateForm.invalid">
+      {{'CER_AUTHENTICATION_NOW' | translate}}
+    </button>
+  </div>
+</ion-content>

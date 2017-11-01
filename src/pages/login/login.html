@@ -41,7 +41,7 @@
             <ion-input type="text" formControlName="realname"></ion-input>
           </ion-item>
           <div
-            *ngIf="userType.value === 'LOGIN_COMPANY_USER' && realname.invalid && (realname.dirty || realname.touched)"
+            *ngIf="userType.value === 'REGISTER_COMPANY_USER' && realname.invalid && (realname.dirty || realname.touched)"
             class="form-error">
             <span *ngIf="realname.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!realname.errors.required && realname.errors.nameFormat">
@@ -152,7 +152,7 @@
       <ion-slides #innerSlider class="content-slider">
 
         <!--========================================login part start==============================================-->
-        <ion-slide class="swiper-no-swiping">
+        <ion-slide class="swiper-no-swiping" style="margin-top: 4em;">
           <button ion-button clear (click)="changeSlidesActive(0);loginForm.reset();" class="slide-button">
             {{'LOGIN_NEED_TO_SIGN_UP' |
             translate}}

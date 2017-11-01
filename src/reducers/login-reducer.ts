@@ -83,9 +83,11 @@ export const initialLoginResponse: LoginResponse = {
 export function userInfoReducer(state = initialLoginResponse, action: actions.Actions): LoginResponse {
   switch (action.type) {
     case actions.LOGIN_SUCCESS:
-      return Object.assign({}, action.payload);
+      return {...action.payload};
+
     case actions.LOGIN_FAIL:
-      return Object.assign({}, initialLoginResponse, action.payload);
+      return {...initialLoginResponse, ...action.payload}
+
     default:
       return state;
   }

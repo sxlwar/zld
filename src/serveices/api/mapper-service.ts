@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
-import {LoginOptions, RegisterOptions, ResetPasswordOptions} from '../../interfaces/request-interface';
+import {
+  CertificateOptions, LoginOptions, RegisterOptions,
+  ResetPasswordOptions
+} from '../../interfaces/request-interface';
 
 export interface LoginFormModel {
   mobilePhone: string;
@@ -28,6 +31,15 @@ export interface ResetPwdFormModel {
     confirmPassword: string
   }
   imageVerification?: string;
+}
+
+export interface CertificateFormModel {
+  realname: string;
+  personalId: string;
+  personalIdPhoto: {
+    front: string;
+    back: string;
+  }
 }
 
 @Injectable()
@@ -59,6 +71,16 @@ export class MapperService {
       password: form.passwordInfo.password,
       code: form.phoneVerification,
       captcha_code: form.imageVerification
+    }
+  }
+
+  certificateForm(form: CertificateFormModel): CertificateOptions {
+    return {
+      realname: form.realname,
+      num: form.personalId,
+      sid: '',
+      imageface: form.personalIdPhoto.front,
+      imageback: form.personalIdPhoto.back
     }
   }
 }

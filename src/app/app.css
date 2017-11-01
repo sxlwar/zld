@@ -19,4 +19,7 @@
   font-size: 12px;
   text-align: left; }
 
+.scroll-content {
+  padding-bottom: 0 !important; }
+
 /*# sourceMappingURL=app.css.map */

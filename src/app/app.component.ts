@@ -2,13 +2,16 @@ import {Component, ViewChild} from '@angular/core';
 import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 import {Config, Nav, Platform} from 'ionic-angular';
-
+import {Keyboard} from '@ionic-native/keyboard';
 import {FirstRunPage} from '../pages/pages';
 import {Settings} from '../providers/providers';
 import {Store} from '@ngrx/store';
 import {ConfigService} from '../serveices/config/config-service';
-
 import * as fromRoot from '../reducers/index-reducer';
+import {ENV} from '@app/env';
+
+
+console.log(ENV.DOMAIN);
 
 @Component({
   templateUrl: './app.component.html'
@@ -31,7 +34,8 @@ export class MyApp {
     { title: 'Menu', component: 'MenuPage' },
     { title: 'Settings', component: 'SettingsPage' },
     { title: 'Search', component: 'SearchPage' },
-    { title: 'SearchCompany', component: 'SearchCompanyPage'}
+    {title: 'SearchCompany', component: 'SearchCompanyPage'},
+    {title: 'certification', component: 'CertificationPage'}
   ];
 
   constructor(private platform: Platform,
@@ -40,7 +44,8 @@ export class MyApp {
               private statusBar: StatusBar,
               private splashScreen: SplashScreen,
               private configService: ConfigService,
-              private store: Store<fromRoot.AppState>) {
+              private store: Store<fromRoot.AppState>,
+              private keyboard: Keyboard) {
     this.configService.init();
     this.store.select(fromRoot.selectButtonText).subscribe(text => this.config.set('backButtonText', text));
   }
@@ -55,6 +60,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      if (this.platform.is('ios')) {
+        this.keyboard.disableScroll(true);
+      }
     });
   }
 
@@ -65,4 +73,40 @@ export class MyApp {
     // noinspection JSIgnoredPromiseFromCall
     this.nav.setRoot(page.component);
   }
+
 }
+
+/**
+ * Fix keyboard height.
+ * */
+
+let coordinateY;
+let viewPortHeight;
+let offsetY;
+
+function tapCoordinates(event) {
+  coordinateY = event.touches[0].clientY;
+  viewPortHeight = window.innerHeight;
+  offsetY = (viewPortHeight - coordinateY);
+}
+
+function keyboardShowHandler(event) {
+  const keyboardHeight = event.keyboardHeight;
+  const bodyMove = <HTMLElement>document.querySelector("ion-app");
+  const bodyMoveStyle = bodyMove.style;
+  const compensationHeight = 60;
+
+  if (offsetY < keyboardHeight + compensationHeight) {
+    bodyMoveStyle.bottom = (keyboardHeight - offsetY + compensationHeight) + "px";
+    bodyMoveStyle.top = "initial";
+  }
+}
+
+function keyboardHideHandler() {
+  const removeStyles = <HTMLElement>document.querySelector("ion-app");
+  removeStyles.removeAttribute("style");
+}
+
+window.addEventListener('native.keyboardshow', keyboardShowHandler);
+window.addEventListener('native.keyboardhide', keyboardHideHandler);
+window.addEventListener('touchstart', tapCoordinates);
