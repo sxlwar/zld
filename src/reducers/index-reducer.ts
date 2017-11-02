@@ -101,3 +101,4 @@ export const selectCertificateResult = createSelector(getCertificate, certificat
 export const getUploadState = (state: AppState) => state.uploadState;
 export const selectUploadingState = createSelector(getUploadState, upload.getUploadingState);
 export const selectUploadedState = createSelector(getUploadState, upload.getUploadedState);
+export const selectUploadResult = createSelector(getUploadState, upload.getUploadResult);

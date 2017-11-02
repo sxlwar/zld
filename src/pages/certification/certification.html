@@ -51,7 +51,7 @@
       <take-photo [placeholder]="backTip" (fileUrl)="getImage($event,'back')"></take-photo>
     </div>
 
-    <button ion-button block round (click)="certificate()" [disabled]="certificateForm.invalid">
+    <button ion-button block round (click)="certificate()" [disabled]="certificateForm.invalid" class="certificate-button">
       {{'CER_AUTHENTICATION_NOW' | translate}}
     </button>
   </div>

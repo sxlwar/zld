@@ -37,7 +37,7 @@ export class TakePhotoComponent implements OnDestroy{
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.subscription && this.subscription.unsubscribe();
   }
 
 }

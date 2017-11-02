@@ -85,7 +85,7 @@
   "CER_ID_CARD_BACK_TIP": "正面，带有身份证号",
   "CER_AUTHENTICATION_NOW": "立即认证",
   "CER_CERTIFICATE_FAIL": "认证失败",
-  "CER_UPLOAD_PERSONAL_ID_IMAGE": "请设置对应的身份证照片",
+  "CER_UPLOAD_PERSONAL_ID_IMAGE": "请在以下位置放置对应的身份证照片",
   "CER_WAIT_THEN_UPLOAD": "稍候请重新上传",
 
 

@@ -5,7 +5,7 @@ import {TranslateModule} from '@ngx-translate/core';
 import {CertificateService} from '../../serveices/business/certificate-service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {EffectsModule} from '@ngrx/effects';
-import {UploadEffect} from '../../effects/upload-effect';
+import {CertificateEffect} from '../../effects/certificate-effect';
 import {ComponentsModule} from '../../components/components.module';
 
 @NgModule({
@@ -16,7 +16,7 @@ import {ComponentsModule} from '../../components/components.module';
     IonicPageModule.forChild(CertificationPage),
     TranslateModule.forChild(),
     ReactiveFormsModule,
-    EffectsModule.forRoot([UploadEffect]),
+    EffectsModule.forRoot([CertificateEffect]),
     ComponentsModule
   ],
   exports: [

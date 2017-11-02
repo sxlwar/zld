@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
 import {CertificateService} from '../../serveices/business/certificate-service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -33,6 +33,8 @@ export class CertificationPage {
     this.initForm();
   }
 
+  /*============================================Init model======================================================*/
+
   initForm() {
     this.certificateForm = this.fb.group({
       realname: ['', realnameValidator],
@@ -45,24 +47,19 @@ export class CertificationPage {
   }
 
   ionViewDidLoad() {
-    this.realname$ = this.certificateService.getRealname();
+    this.realname$ = this.certificateService.realname;
     this.certificate$$ = this.certificateService.certificateResult
       .filter(res => !!res)
       .subscribe(_ => {
-        console.log('certificate success');
         this.navCtrl.push('TabsPage').then(() => {
         });
       });
   }
 
+  /*============================================UI state changed=================================================*/
+
   certificate() {
     this.certificateService.certificate(this.certificateForm.value);
-  }
-
-  // noinspection JSUnusedGlobalSymbols
-  ionViewWillUnload() {
-    this.certificate$$.unsubscribe();
-    this.certificateService.unSubscribe();
   }
 
   getImage(url = '', type: string) {
@@ -72,6 +69,16 @@ export class CertificationPage {
 
      this.certificateForm.get('personalIdPhoto').patchValue(config);
   }
+
+  /*============================================Refuse clean======================================================*/
+
+  // noinspection JSUnusedGlobalSymbols
+  ionViewWillUnload() {
+    this.certificate$$.unsubscribe();
+    this.certificateService.unSubscribe();
+  }
+
+  /*====================================Short cut method for template==============================================*/
 
   get realname() {
     return this.certificateForm.get('realname')

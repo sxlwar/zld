@@ -1,6 +1,12 @@
 page-certification h6 {
-  color: #f53d3d;
+  color: #00c1de;
   text-align: center;
-  margin: 16px 0 0; }
+  margin: 16px 0 0;
+  font-size: 12px; }
+page-certification certificate-button {
+  width: 100%;
+  max-width: 40rem;
+  height: 50px;
+  font-size: 1.2em; }
 
 /*# sourceMappingURL=certification.css.map */

@@ -3,11 +3,13 @@ import * as upload from '../actions/upload-action';
 export interface State {
   uploading: boolean;
   uploadedState: boolean;
+  uploadResponse: any[];
 }
 
 const initialState: State = {
   uploading: false,
-  uploadedState: false
+  uploadedState: false,
+  uploadResponse: []
 };
 
 export function reducer(state = initialState, action: upload.Actions): State {
@@ -15,20 +17,15 @@ export function reducer(state = initialState, action: upload.Actions): State {
     case upload.UPLOAD:
       return {
         uploading: true,
-        uploadedState: state.uploadedState
+        uploadedState: state.uploadedState,
+        uploadResponse: state.uploadResponse
       };
 
     case upload.UPLOAD_COMPLETE:
       return {
         uploading: false,
-        uploadedState: state.uploadedState
-      };
-
-    case upload.UPLOAD_FAIL:
-    case upload.UPLOAD_SUCCESS:
-      return {
-        uploading: false,
-        uploadedState: action.payload
+        uploadedState: state.uploadedState,
+        uploadResponse: action.payload
       };
 
     default:
@@ -39,3 +36,5 @@ export function reducer(state = initialState, action: upload.Actions): State {
 export const getUploadingState = (state: State) => state.uploading;
 
 export const getUploadedState = (state: State) => state.uploadedState;
+
+export const getUploadResult = (state: State) => state.uploadResponse;

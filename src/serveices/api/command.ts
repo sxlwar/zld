@@ -81,7 +81,6 @@ export class Command {
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   workerContractList = "project.consumer.WorkerContractList";
   workPieceList = "project.consumer.WorkPieceList";
-  // personalIdUpdate = "employee.consumer.PersonalIdUpdate";
   teamList = "project.consumer.TeamList";
   workerDetailList = "employee.consumer.WorkerDetailList";
   workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";

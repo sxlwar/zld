@@ -22,21 +22,16 @@ import {Subscription} from 'rxjs/Subscription';
 import {MapperService} from './mapper-service';
 import {CertificateAction} from '../../actions/certificate-action';
 import 'rxjs';
-import {Loading, LoadingController} from 'ionic-angular';
-import {HttpService} from './http-service';
 import {Command} from './command';
-import {TranslateService} from '@ngx-translate/core';
+import {UploadService} from './upload-service';
 
 @Injectable()
 export class ProcessorService extends MapperService {
-  loading: Loading;
 
   constructor(public store: Store<AppState>,
               public errorService: ErrorService,
-              public loadingCtrl: LoadingController,
-              public http: HttpService,
-              public command: Command,
-              public translate: TranslateService) {
+              public uploadService: UploadService,
+              public command: Command) {
     super();
   }
 
@@ -82,63 +77,19 @@ export class ProcessorService extends MapperService {
   }
 
   certificateProcessor(option$: Observable<CertificateOptions>, image$: Observable<UploadImageOptions>): Subscription {
-    this.presentLoading();
-
-    return this.uploadImagesProcessor(image$, this.command.uploadPersonalIdImage)
+    return this.uploadService.uploadImagesProcessor(image$, this.command.uploadPersonalIdImage)
+      .map(responses => responses.every(res => {
+        const result = JSON.parse(res.response);
+        return res.responseCode === 200 && result.code === 1000;
+      }))
       .withLatestFrom(option$)
       .subscribe(ary => {
         const [uploadSuccess, option] = ary;
 
-        this.dismissLoading();
-
         if (uploadSuccess) {
           this.store.dispatch(new CertificateAction(option));
-        }else {
-          const errorMessage = this.translate.get('CER_WAIT_THEN_UPLOAD').map(errorMessage => ({errorMessage}));
-          this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');
         }
       });
-  }
-
-  /**
-   * @description Used for upload multi images.
-   * */
-  uploadImagesProcessor(source: Observable<UploadImageOptions>, command: string): Observable<boolean> {
-    return source
-      .reduce((acc, cur) => {
-        acc.push(cur);
-        return acc;
-      }, [])
-      .map(options => options.map((option) => this.http
-        .upload(Observable
-          .of(option)
-          .map(partition => Object.assign(partition, {command}))
-        ))
-      )
-      .mergeMap(imageObs => {
-        return Observable.forkJoin(imageObs)
-          .map(responses => responses.every(res => {
-              const result = JSON.parse(res.response);
-              return res.responseCode === 200 && result.code === 1000;
-            })
-          )
-      });
-  }
-
-  presentLoading() {
-    this.loading = this.loadingCtrl.create({
-      duration: 3000,
-      spinner: 'dots',
-      content: '图片上传中,请稍侯'
-    });
-
-    this.loading.present().then(() => {
-    })
-  }
-
-  dismissLoading() {
-    if (this.loading) this.loading.dismiss().then(() => {
-    });
   }
 
 }

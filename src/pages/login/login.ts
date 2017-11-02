@@ -103,10 +103,7 @@ export class LoginPage {
     this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
 
     this.navSubscription$$ = this.loginInfo$
-      .filter(info => !!info.sid)
-      .map(info => info.auth_pass)
-      .distinctUntilChanged()
-      .subscribe(havePass => this.goToNextPage(havePass));
+      .subscribe(userInfo => userInfo.sid && this.goToNextPage(userInfo.auth_pass));
   }
 
   initForm() {
