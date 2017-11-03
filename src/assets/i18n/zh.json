@@ -88,6 +88,11 @@
   "CER_UPLOAD_PERSONAL_ID_IMAGE": "请在以下位置放置对应的身份证照片",
   "CER_WAIT_THEN_UPLOAD": "稍候请重新上传",
 
+  "MESSAGE": "消息",
+  "PROJECT": "工程",
+  "MISSION": "任务",
+  "MINE": "我的",
+
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

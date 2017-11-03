@@ -3,7 +3,7 @@ import {SplashScreen} from '@ionic-native/splash-screen';
 import {StatusBar} from '@ionic-native/status-bar';
 import {Config, Nav, Platform} from 'ionic-angular';
 import {Keyboard} from '@ionic-native/keyboard';
-import {FirstRunPage} from '../pages/pages';
+import {FirstRunPage, PAGES} from '../pages/pages';
 import {Settings} from '../providers/providers';
 import {Store} from '@ngrx/store';
 import {ConfigService} from '../serveices/config/config-service';
@@ -21,22 +21,7 @@ export class MyApp {
 
   @ViewChild(Nav) nav: Nav;
 
-  pages: any[] = [
-    { title: 'Tutorial', component: 'TutorialPage' },
-    { title: 'Welcome', component: 'WelcomePage' },
-    { title: 'Tabs', component: 'TabsPage' },
-    { title: 'Cards', component: 'CardsPage' },
-    { title: 'Content', component: 'ContentPage' },
-    { title: 'Login', component: 'LoginPage' },
-    { title: 'Signup', component: 'SignupPage' },
-    { title: 'Map', component: 'MapPage' },
-    { title: 'Master Detail', component: 'ListMasterPage' },
-    { title: 'Menu', component: 'MenuPage' },
-    { title: 'Settings', component: 'SettingsPage' },
-    { title: 'Search', component: 'SearchPage' },
-    {title: 'SearchCompany', component: 'SearchCompanyPage'},
-    {title: 'certification', component: 'CertificationPage'}
-  ];
+  pages: any[] = PAGES;
 
   constructor(private platform: Platform,
               settings: Settings,
