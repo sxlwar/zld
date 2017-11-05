@@ -217,15 +217,13 @@ export class LoginPage {
 
 
   goToNextPage(haveAuthPassed) {
-    // if (haveAuthPassed) {
-    //   this.navCtrl.setRoot('TabsPage').then(() => {
-    //   });
-    // } else {
-    //   this.navCtrl.push('CertificationPage').then(() => {
-    //   });
-    // }
-    this.navCtrl.push('CertificationPage').then(() => {
-    });
+    if (haveAuthPassed) {
+      this.navCtrl.setRoot('TabsPage').then(() => {
+      });
+    } else {
+      this.navCtrl.push('CertificationPage').then(() => {
+      });
+    }
   }
 
   /*=============================================Refuse cleaning====================================================*/

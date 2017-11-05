@@ -7,13 +7,15 @@ import {IonicModule} from 'ionic-angular';
 import {FuzzySearchComponent} from './fuzzy-search/fuzzy-search';
 import {TakePhotoComponent} from './take-photo/take-photo';
 import {TakePhotoService} from './take-photo/take-photo-service';
+import {IconBarComponent} from './icon-bar/icon-bar';
 
 @NgModule({
   declarations: [
     ImageVerificationComponent,
     CutDownComponent,
     FuzzySearchComponent,
-    TakePhotoComponent
+    TakePhotoComponent,
+    IconBarComponent,
   ],
   imports: [
     IonicModule,
@@ -24,7 +26,8 @@ import {TakePhotoService} from './take-photo/take-photo-service';
     ImageVerificationComponent,
     CutDownComponent,
     FuzzySearchComponent,
-    TakePhotoComponent
+    TakePhotoComponent,
+    IconBarComponent,
   ],
   providers: [
     TakePhotoService

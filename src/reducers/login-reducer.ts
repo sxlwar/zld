@@ -86,7 +86,7 @@ export function userInfoReducer(state = initialLoginResponse, action: actions.Ac
       return {...action.payload};
 
     case actions.LOGIN_FAIL:
-      return {...initialLoginResponse, ...action.payload}
+      return {...initialLoginResponse, ...action.payload};
 
     default:
       return state;

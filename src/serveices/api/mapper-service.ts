@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {
-  CertificateOptions, LoginOptions, RegisterOptions,
-  ResetPasswordOptions
+  CertificateOptions, LoginOptions, ProjectListOptions, RegisterOptions,
+  ResetPasswordOptions, WorkerContractOptions
 } from '../../interfaces/request-interface';
 
 export interface LoginFormModel {
@@ -83,4 +83,18 @@ export class MapperService {
       imageback: form.personalIdPhoto.back
     }
   }
+
+  // workerContractForm(form: WorkerContractFormModel): WorkerContractOptions {
+  //   return {
+  //     sid: ''
+  //   }
+  // }
+  //
+  // projectForm(form: ProjectFormModel): ProjectListOptions{
+  //   return {
+  //     sid: '',
+  //     project_name: form.name,
+  //     prime_contract_status: fomr
+  //   }
+  // }
 }

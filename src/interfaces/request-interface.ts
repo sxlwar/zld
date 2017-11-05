@@ -63,6 +63,31 @@ export interface UploadImageOptions {
   id?: string | number;
 }
 
+export interface TeamListOptions {
+  sid: string;
+  project_id?: number;
+  name?: string;
+  leader_id?: string;
+  team_id?: string;
+  flag?: number;
+}
+
+export interface ProjectListOptions {
+  sid: string;
+  project_id?: number[];
+  prime_contract_status?: string;
+  sub_contract_status?: string;
+  without_sub_contract?: number;
+  project_name?: string;
+  company_id?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface WorkerContractOptions {
+  sid: string;
+}
+
 
 export type Options = LoginOptions
   & RegisterOptions
@@ -70,4 +95,7 @@ export type Options = LoginOptions
   & PhoneVerificationCodeOptions
   & ResetPasswordOptions
   & CertificateOptions
-  & UploadImageOptions;
+  & UploadImageOptions
+  & TeamListOptions
+  & ProjectListOptions
+  & WorkerContractOptions;

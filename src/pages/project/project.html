@@ -7,12 +7,29 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>project</ion-title>
+    <ion-title>{{'PROJECT' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
-
+<div id="projectHead" class="home-head padding">
+  <div *ngIf="" class="info-pane">
+    <p>{{(project | async)?.name}}}}</p>
+    <p>{{(project | async)?.address}}</p>
+    <div>
+      <div class="projectInfo">
+        <h6></h6>
+        <h4></h4>
+      </div>
+      <div class="projectInfo">
+        <h6></h6>
+        <h4></h4>
+      </div>
+    </div>
+  </div>
+  <h4 *ngIf="" class="text-center colorWhite">{{'PROJECT_TIP' | translate}}</h4>
+</div>
 
 <ion-content padding>
 
+    <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
 </ion-content>

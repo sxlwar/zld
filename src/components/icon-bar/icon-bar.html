@@ -1,0 +1,8 @@
+<!-- Generated template for the BoxComponent component -->
+
+<ion-row>
+  <ion-col *ngFor="let icon of icons" col-3 (click)="goTo.emit(icon)">
+    <ion-icon [name]="icon.icon" [color]="icon.color || 'forbidden'"></ion-icon>
+    <P>{{ icon.text | translate}}</P>
+  </ion-col>
+</ion-row>

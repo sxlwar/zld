@@ -6,6 +6,7 @@ import * as search from './search-reducer';
 import * as upload from './upload-reducer';
 import * as certificate from './certificate-reducer';
 import * as response from '../interfaces/response-interface';
+import * as icons from './icons-reducer';
 
 export interface AppState {
   config: config.State;
@@ -19,6 +20,7 @@ export interface AppState {
   resetPassword: response.ResetPasswordResponse;
   uploadState: upload.State;
   certificate: response.CertificateResponse;
+  icons: icons.State
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -33,6 +35,7 @@ export const reducers: ActionReducerMap<AppState> = {
   resetPassword: login.resetPasswordReducer,
   uploadState: upload.reducer,
   certificate: certificate.reducer,
+  icons: icons.reducer
 };
 
 //config
@@ -73,6 +76,7 @@ export const selectCapthca = createSelector(getUserInfo, login.getCaptcha);
 export const selectAuthPass = createSelector(getUserInfo, login.getAuthPass);
 export const selectSid = createSelector(getUserInfo, login.getSid);
 export const selectUserId = createSelector(getUserInfo, login.getUserId);
+export const selectGroupList = createSelector(getUserInfo,login.getGroupList);
 
 
 //phone verification code
@@ -102,3 +106,6 @@ export const getUploadState = (state: AppState) => state.uploadState;
 export const selectUploadingState = createSelector(getUploadState, upload.getUploadingState);
 export const selectUploadedState = createSelector(getUploadState, upload.getUploadedState);
 export const selectUploadResult = createSelector(getUploadState, upload.getUploadResult);
+
+/*================================================Icons with permission===========================================*/
+export const getIconsState = (state: AppState) => state.icons;

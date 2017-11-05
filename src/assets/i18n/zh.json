@@ -93,6 +93,51 @@
   "MISSION": "任务",
   "MINE": "我的",
 
+  "PROJECT_REMAIN_DAYS": "剩余天数",
+  "PROJECT_WORKER_COUNT":"施工人数",
+  "PROJECT_TIP": "更多功能，敬请期待！",
+  "PROJECT_OVER_DUE": "已逾期",
+
+  "ATTENDANCE_CHAR":"考勤表",
+  "PAYROLL": "工资单",
+  "ORGANIZATION": "组织架构",
+  "WORKER_MANAGER": "工人管理",
+  "WORK_PIECE": "工件",
+  "ATTENDANCE_MACHINE": "考勤机",
+  "WORKER_LOCATION": "工人位置",
+  "WORKER_TRAJECTORY": "人员轨迹",
+  "IC_LOCATION_CARD": "IC定位卡",
+  "ATTENDANCE_CARD": "考勤卡",
+
+  "ATTENDANCE_CONFIRM": "考勤确认",
+  "PAYROLL_AUDIT": "工资单审核",
+  "LEAVE_APPLY": "请假申请",
+  "OVERTIME_APPLY": "加班申请",
+  "PIECE_AUDIT": "工件审核",
+  "MODIFY_ATTENDANCE": "考勤异常修改",
+  "WORK_CONTRACT": "用工合同",
+  "PRIME_CONTRACT": "总包合同",
+  "SUB_CONTRACT": "分包合同",
+  "MODIFY_DUTY": "修改出勤时间",
+  "MODIFY_WORK_CONTRACT": "用工合同修改",
+  "MY_AUDIT": "我审核",
+  "MY_APPLY": "我发起",
+
+
+  "MY_ATTENDANCE": "考勤",
+  "MY_SALARY": "薪资",
+  "MY_BANK_CARD": "银行卡",
+  "MY_CERTIFICATE": "证书",
+  "MY_CONTRACT": "合同",
+  "LAUNCH_APPLY": "发起申请",
+  "TRAJECTORY": "轨迹",
+  "FAMILY_INFO": "家庭信息",
+  "PERSONAL_INFO": "个人信息",
+  "WORK_EXPERIENCE": "工作经历",
+  "EDUCATION_EXPERIENCE": "教育经历",
+
+
+
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

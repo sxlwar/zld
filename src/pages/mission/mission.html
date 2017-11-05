@@ -14,5 +14,5 @@
 
 
 <ion-content padding>
-
+  <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
 </ion-content>

@@ -29,6 +29,7 @@ import {TipService} from '../serveices/tip-service';
 import {ImagePicker} from '@ionic-native/image-picker';
 import {Keyboard} from '@ionic-native/keyboard';
 import {UploadService} from '../serveices/api/upload-service';
+import {PermissionService} from '../serveices/config/permission-service';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -119,7 +120,8 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     UploadService,
     ErrorService,
     MapperService,
-    TipService
+    TipService,
+    PermissionService
   ]
 })
 export class AppModule { }

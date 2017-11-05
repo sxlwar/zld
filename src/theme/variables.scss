@@ -29,7 +29,14 @@ $colors: (
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  advanced:   #7726ea,
+  piece:      #ffc900,
+  contract:   #387ef5,
+  location:   #d4237a,
+  related:    #EE82EE,
+  economics:  #D2691E,
+  forbidden:  #808080
 );
 
 
@@ -78,4 +85,4 @@ $colors: (
 @import "roboto";
 @import "noto-sans";
 
-@import "zld-icons.scss";
+@import "icons.scss";
