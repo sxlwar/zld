@@ -7,6 +7,8 @@ import * as upload from './upload-reducer';
 import * as certificate from './certificate-reducer';
 import * as response from '../interfaces/response-interface';
 import * as icons from './icons-reducer';
+import * as project from './project-reducer';
+import * as worker from './worker-reducer';
 
 export interface AppState {
   config: config.State;
@@ -20,7 +22,9 @@ export interface AppState {
   resetPassword: response.ResetPasswordResponse;
   uploadState: upload.State;
   certificate: response.CertificateResponse;
-  icons: icons.State
+  icons: icons.State,
+  project: project.State,
+  worker: worker.State
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -35,7 +39,9 @@ export const reducers: ActionReducerMap<AppState> = {
   resetPassword: login.resetPasswordReducer,
   uploadState: upload.reducer,
   certificate: certificate.reducer,
-  icons: icons.reducer
+  icons: icons.reducer,
+  project: project.reducer,
+  worker: worker.reducer
 };
 
 //config
@@ -98,6 +104,18 @@ export const selectResetPasswordId = createSelector(getResetPassword, login.getR
 //certificate
 export const getCertificate = (state: AppState) => state.certificate;
 export const selectCertificateResult = createSelector(getCertificate, certificate.getAuthPass);
+
+//project list
+export const getProject = (state: AppState) => state.project;
+export const selectSelectedProject = createSelector(getProject,project.getSelectedProject);
+export const selectCurrentProjects = createSelector(getProject, project.getCurrentProjects);
+
+//worker contract list
+export const getWorkerContracts = (state: AppState) => state.worker;
+export const selectWorkerPage = createSelector(getWorkerContracts,worker.getWorkerContractPage);
+export const selectWorkerLimit = createSelector(getWorkerContracts,worker.getWorkerContractLimit);
+export const selectWorkerContracts = createSelector(getWorkerContracts,worker.getWorkerContracts);
+export const selectWorkerContractResponse = createSelector(getWorkerContracts, worker.getWorkerContractResponse);
 
 /*================================================HTTP===========================================================*/
 

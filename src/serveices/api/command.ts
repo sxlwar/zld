@@ -2,10 +2,16 @@ import {Injectable} from '@angular/core';
 import {
   CertificateOptions,
   LoginOptions,
-  PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions,
+  PhoneVerificationCodeOptions,
+  ProjectListOptions,
+  RegisterOptions,
+  ResetPasswordOptions,
   SearchCompanyOptions,
-  WsRequest
+  WorkerContractOptions,
+  WsRequest,
 } from '../../interfaces/request-interface';
+import {Permission} from '../../interfaces/permission-interface';
+import {CW, EME, LM, MM, PM, PME, QW, SW, TL} from '../config/character';
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -18,8 +24,26 @@ export enum Operate {
   search = 'search'
 }
 
+export interface MagicNumberMap {
+  [key: string]: number;
+}
+
+export class Iterator {
+  value: MagicNumberMap;
+
+  constructor(value: MagicNumberMap) {
+  }
+
+  next() {
+    return {value: this.value, done: true}
+  }
+}
+
 export interface ApiUnit {
   operates: Map<string, string[]>;
+  permission?: Permission;
+  noMagicNumber?: Map<string, Iterator>;
+  specialCharacter?: Map<string, Iterator>;
 }
 
 const login: ApiUnit = {
@@ -73,13 +97,46 @@ const uploadPersonalIdImage: ApiUnit = {
 };
 
 
+const projectList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employer.consumer.ProjectList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, CW, QW, SW],
+    opt: []
+  }
+};
+
+export enum WorkerContract {
+  unexpired = 'unexpired',
+  timeTypeContract = 'timeTypeContract',
+  pieceTypeContract = 'pieceTypeContract'
+}
+
+const workerContractList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.WorkerContractList']]
+  ]),
+  noMagicNumber: new Map([
+    [WorkerContract.unexpired, new Iterator({flag: 1})],
+    [WorkerContract.timeTypeContract, new Iterator({contract_type: 1})],
+    [WorkerContract.pieceTypeContract, new Iterator({contract_type: 2})]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, CW, QW, SW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [SW, new Iterator({self: 1})]
+  ])
+};
+
 @Injectable()
 export class Command {
 
   personalIdList = "employee.consumer.PersonalIdList";
   processCreate = "workflow.consumer.ProcessCreate";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
-  workerContractList = "project.consumer.WorkerContractList";
   workPieceList = "project.consumer.WorkPieceList";
   teamList = "project.consumer.TeamList";
   workerDetailList = "employee.consumer.WorkerDetailList";
@@ -88,7 +145,6 @@ export class Command {
   requestList = "workflow.consumer.RequestList";
   projectPayBillList = "project.consumer.ProjectPayBillList";
   attendanceInstantList = "project.consumer.AttendanceInstantList";
-  projectList = "employer.consumer.ProjectList";
   workTimePayList = "project.consumer.WorkTimePayList";
   projectPayProcessList = "project.consumer.ProjectPayProcessList";
   workerBankNoList = "employee.consumer.WorkerBankNoList";
@@ -206,7 +262,31 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  getProjectList(option: ProjectListOptions): WsRequest {
+    const path = projectList.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkerContractList(option: WorkerContractOptions, ...magicNumberNames: string[]): WsRequest {
+    const path = workerContractList.operates.get(Operate.querying)[0];
+
+    const magicOption = magicNumberNames.reduce((acc, cur) => {
+      const param = workerContractList.noMagicNumber.get(cur);
+      return {...acc, ...param};
+    }, {});
+
+    return this.getFullParameter(path, {...option, ...magicOption});
+  }
+
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
+  }
+
+  get projectList() {
+    return projectList;
+  }
+
+  get workerContractList() {
+    return workerContractList;
   }
 }

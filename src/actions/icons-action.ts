@@ -1,32 +1,5 @@
 import {Action} from '@ngrx/store';
-import {IconState, State} from '../reducers/icons-reducer';
-
-export const CREATE_ICONS_BAR = 'CREATE_ICONS_BAR';
-
-export class CreateIconsBarAction implements Action {
-  readonly type = CREATE_ICONS_BAR;
-
-  constructor(public payload: string) {
-  }
-}
-
-export const GET_ICONS_BAR = 'GET_ICONS_BAR';
-
-export class GetIconsBarAction implements Action {
-  readonly type = GET_ICONS_BAR;
-
-  constructor(public payload: string) {
-  }
-}
-
-export const SET_PERMISSION = 'SET_PERMISSION';
-
-export class SetPermissionAction implements Action {
-  readonly type = SET_PERMISSION;
-
-  constructor(public payload: IconState) {
-  }
-}
+import {State} from '../reducers/icons-reducer';
 
 export const ADD_ICONS_BAR = 'ADD_ICONS_BAR';
 
@@ -37,8 +10,4 @@ export class AddIconsBarAction implements Action {
   }
 }
 
-
-export type Actions = CreateIconsBarAction
-  | AddIconsBarAction
-  | GetIconsBarAction
-  | SetPermissionAction;
+export type Actions = AddIconsBarAction;

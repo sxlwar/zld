@@ -16,7 +16,7 @@
   <ion-list *ngSwitchCase="'radio'" radio-group>
     <ion-item *ngFor="let item of items" (click)="confirm.emit(item)">
       <ion-label>{{item.name}}</ion-label>
-      <ion-radio value="{{item.id}}" (ionSelect)="setRadioResult($event)"></ion-radio>
+      <ion-radio value="{{item.id}}" (ionSelect)="select.emit($event)"></ion-radio>
     </ion-item>
   </ion-list>
 

@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
 import {IconState} from '../../reducers/icons-reducer';
-import {IconService} from '../../serveices/business/iconService';
-import * as icon from '../../serveices/business/iconService';
+import {IconService} from '../../serveices/business/icon-service';
+import * as icon from '../../serveices/business/icon-service';
 
 /**
  * Generated class for the MissionPage page.

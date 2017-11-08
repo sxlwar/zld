@@ -6,30 +6,35 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>{{'PROJECT' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
-<div id="projectHead" class="home-head padding">
-  <div *ngIf="" class="info-pane">
-    <p>{{(project | async)?.name}}}}</p>
-    <p>{{(project | async)?.address}}</p>
+
+<ion-content padding>
+
+  <div padding *ngIf="name | async" class="pane">
+    <button ion-button icon-left clear color="light"
+            *ngIf="haveMultipleProject | async"
+            (click)="switchProject($event)">
+      <ion-icon name="swap"></ion-icon>
+      {{'PROJECT_SWITCH_PROJECT' | translate}}
+    </button>
+    <p>{{name | async}}</p>
+    <p>{{address | async}}</p>
     <div>
-      <div class="projectInfo">
-        <h6></h6>
-        <h4></h4>
+      <div class="pane-info">
+        <h6>{{remainDays | async | positiveInteger}}</h6>
+        <h4 *ngIf="!(isExpired | async)">{{'PROJECT_REMAIN_DAYS' | translate}}</h4>
+        <h4 *ngIf="isExpired | async">{{'PROJECT_OVERDUE_DAYS' | translate}}</h4>
       </div>
-      <div class="projectInfo">
-        <h6></h6>
-        <h4></h4>
+      <div class="pane-info">
+        <h6>{{workerCount | async}}</h6>
+        <h4>{{'PROJECT_WORKER_COUNT' | translate}}</h4>
       </div>
     </div>
   </div>
-  <h4 *ngIf="" class="text-center colorWhite">{{'PROJECT_TIP' | translate}}</h4>
-</div>
-
-<ion-content padding>
 
     <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
 </ion-content>

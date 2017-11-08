@@ -5,10 +5,11 @@ import {
   PhoneVerificationCodeOptions,
   RegisterOptions,
   ResetPasswordOptions,
-  UploadImageOptions
+  UploadImageOptions,
+  WorkerContractOptions
 } from '../../interfaces/request-interface';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../reducers/index-reducer';
+import {AppState, selectSid} from '../../reducers/index-reducer';
 import {
   LoginAction,
   RegisterAction,
@@ -24,6 +25,9 @@ import {CertificateAction} from '../../actions/certificate-action';
 import 'rxjs';
 import {Command} from './command';
 import {UploadService} from './upload-service';
+import {PermissionService} from '../config/permission-service';
+import {GetProjectListAction} from '../../actions/project-action';
+import {GetWorkerContractsAction} from '../../actions/worker-action';
 
 @Injectable()
 export class ProcessorService extends MapperService {
@@ -31,7 +35,8 @@ export class ProcessorService extends MapperService {
   constructor(public store: Store<AppState>,
               public errorService: ErrorService,
               public uploadService: UploadService,
-              public command: Command) {
+              public command: Command,
+              public permission: PermissionService) {
     super();
   }
 
@@ -92,4 +97,29 @@ export class ProcessorService extends MapperService {
       });
   }
 
+  projectListProcessor(): Subscription {
+    const viewPermission$ = this.permission.apiPermissionValidate(this.command.projectList).map(result => result.view);
+
+    const sid$ = this.store.select(selectSid);
+
+    return viewPermission$.zip(sid$, (passed, sid) => passed ? {sid, prime_contract_status: '完成'} : null)
+      .filter(res => !!res)
+      .subscribe(option => this.store.dispatch(new GetProjectListAction(option)));
+  }
+
+  workerContractListProcessor(option$: Observable<WorkerContractOptions>): Subscription {
+    const viewPermission$ = this.permission
+      .apiPermissionValidate(this.command.workerContractList)
+      .map(result => result.view);
+
+    const specialOption$ = this.permission.specialOptionValidate(this.command.workerContractList);
+
+    return viewPermission$.zip(
+      specialOption$,
+      option$,
+      (passed, option1, option2) => passed ? {...option1, ...option2} : null
+    )
+      .filter(res => !!res)
+      .subscribe(option => this.store.dispatch(new GetWorkerContractsAction(option)));
+  }
 }

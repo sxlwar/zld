@@ -58,7 +58,7 @@ export class ErrorService {
    * @description
    * Used to handle the errors on the specified stream. The stream should be  a request stream.
    * */
-  handleErrorInSpecific(obs: Observable<ErrorResponse>, title: string) {
+  handleErrorInSpecific(obs: Observable<ErrorResponse>, title = '') {
 
     const button = 'CONFIRM_BUTTON';
 

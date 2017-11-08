@@ -30,6 +30,9 @@ import {ImagePicker} from '@ionic-native/image-picker';
 import {Keyboard} from '@ionic-native/keyboard';
 import {UploadService} from '../serveices/api/upload-service';
 import {PermissionService} from '../serveices/config/permission-service';
+import {TimeService} from '../serveices/utils/time-service';
+import {ComponentsModule} from '../components/components.module';
+import {ProjectListComponent} from '../components/project-list/project-list';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -69,7 +72,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
   ],
   imports: [
     BrowserModule,
@@ -90,11 +93,13 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument({
       maxAge: 20
-    })
+    }),
+    ComponentsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    ProjectListComponent,
   ],
   providers: [
     Api,
@@ -121,7 +126,8 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     ErrorService,
     MapperService,
     TipService,
-    PermissionService
+    PermissionService,
+    TimeService,
   ]
 })
 export class AppModule { }

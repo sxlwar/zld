@@ -18,5 +18,6 @@
 <ion-content padding>
   <fuzzy-search [selectType]="selectType"
                 [items]="companies$ | async"
+                (select)="selectCompany($event)"
                 (search)="getSearch($event)"></fuzzy-search>
 </ion-content>

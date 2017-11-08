@@ -5,7 +5,7 @@ import {Company} from '../../interfaces/response-interface';
 import * as fromRoot from '../../reducers/index-reducer';
 import {AppState} from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
-import {SearchCompanyAction} from '../../actions/search-action';
+import {SearchCompanyAction, SelectCompanyAction} from '../../actions/search-action';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/withLatestFrom';
@@ -47,5 +47,9 @@ export class SearchCompanyPage {
   getSearch(name: string) {
     if (!name) return;
     this.store.dispatch(new SearchCompanyAction({name}));
+  }
+
+  selectCompany(id) {
+    this.store.dispatch(new SelectCompanyAction(Number(id)))
   }
 }

@@ -94,9 +94,11 @@
   "MINE": "我的",
 
   "PROJECT_REMAIN_DAYS": "剩余天数",
+  "PROJECT_OVERDUE_DAYS": "逾期天数",
   "PROJECT_WORKER_COUNT":"施工人数",
   "PROJECT_TIP": "更多功能，敬请期待！",
   "PROJECT_OVER_DUE": "已逾期",
+  "PROJECT_SWITCH_PROJECT": "切换工程",
 
   "ATTENDANCE_CHAR":"考勤表",
   "PAYROLL": "工资单",
@@ -136,7 +138,7 @@
   "WORK_EXPERIENCE": "工作经历",
   "EDUCATION_EXPERIENCE": "教育经历",
 
-
+  "API_ERROR": "请求失败",
 
 
   "TAB1_TITLE": "Items",

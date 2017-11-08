@@ -1,18 +1,3 @@
-import {
-  CW,
-  EME,
-  LM,
-  MM,
-  PA,
-  Permission,
-  PermissionService,
-  PM,
-  PME,
-  QW,
-  SW,
-  TL,
-  UW
-} from '../config/permission-service';
 import {Observable} from 'rxjs/Observable';
 import {IconState} from '../../reducers/icons-reducer';
 import {AppState, getIconsState} from '../../reducers/index-reducer';
@@ -20,6 +5,9 @@ import {createSelector, Store} from '@ngrx/store';
 import {Injectable} from '@angular/core';
 import {AddIconsBarAction} from '../../actions/icons-action';
 import {Subscription} from 'rxjs/Subscription';
+import {Permission} from '../../interfaces/permission-interface';
+import {PermissionService} from '../config/permission-service';
+import {PME, EME, MM, PM, LM, TL, SW, UW,CW, QW, PA} from '../config/character';
 
 export interface IconItem {
   text: string;
@@ -338,7 +326,7 @@ export class IconService {
     return state => state[name];
   }
 
-  clean() {
+  unSubscribe() {
     this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

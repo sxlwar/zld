@@ -8,6 +8,9 @@ import {FuzzySearchComponent} from './fuzzy-search/fuzzy-search';
 import {TakePhotoComponent} from './take-photo/take-photo';
 import {TakePhotoService} from './take-photo/take-photo-service';
 import {IconBarComponent} from './icon-bar/icon-bar';
+import { ProjectListComponent } from './project-list/project-list';
+import {ProjectService} from '../serveices/business/project-service';
+import {WorkerService} from '../serveices/business/worker-service';
 
 @NgModule({
   declarations: [
@@ -16,6 +19,7 @@ import {IconBarComponent} from './icon-bar/icon-bar';
     FuzzySearchComponent,
     TakePhotoComponent,
     IconBarComponent,
+    ProjectListComponent,
   ],
   imports: [
     IonicModule,
@@ -28,9 +32,12 @@ import {IconBarComponent} from './icon-bar/icon-bar';
     FuzzySearchComponent,
     TakePhotoComponent,
     IconBarComponent,
+    ProjectListComponent,
   ],
   providers: [
-    TakePhotoService
+    TakePhotoService,
+    ProjectService,
+    WorkerService
   ]
 })
 export class ComponentsModule {

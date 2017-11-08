@@ -1,9 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {Company} from '../../interfaces/response-interface';
 import 'rxjs/add/operator/scan'
-import {AppState} from '../../reducers/index-reducer';
-import {Store} from '@ngrx/store';
-import {SelectCompanyAction} from '../../actions/search-action';
 
 /**
  * Generated class for the FuzzySearchComponent component.
@@ -19,16 +15,15 @@ export class FuzzySearchComponent {
 
   @Input() selectType: string;
 
-  @Input() items: Company[];
+  @Input() items: any[];
 
   @Output() confirm = new EventEmitter();
 
   @Output() search = new EventEmitter();
 
-  constructor(public store: Store<AppState>) {
+  @Output() select = new EventEmitter();
+
+  constructor() {
   }
 
-  setRadioResult(id: number) {
-    this.store.dispatch(new SelectCompanyAction(Number(id)))
-  }
 }

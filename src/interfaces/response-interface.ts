@@ -142,7 +142,7 @@ export interface Project {
 export interface ProjectListResponse {
   count: number;
   projects: Project[];
-  errorMessage: string;
+  errorMessage?: string;
 }
 
 //time pay
@@ -196,7 +196,7 @@ export interface WorkerContract {
 export interface WorkerContractListResponse {
   count: number;
   worker_contract: WorkerContract[];
-  errorMessage: string;
+  errorMessage?: string;
 }
 
 

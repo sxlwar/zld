@@ -86,6 +86,13 @@ export interface ProjectListOptions {
 
 export interface WorkerContractOptions {
   sid: string;
+  flag: number;
+  limit: number;
+  page: number;
+  project_id?: string;
+  request_status?: string;
+  self?: number;
+  team_id?: number;
 }
 
 

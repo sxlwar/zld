@@ -1,7 +1,9 @@
 import {Injectable} from '@angular/core';
 import {
-  CertificateOptions, LoginOptions, ProjectListOptions, RegisterOptions,
-  ResetPasswordOptions, WorkerContractOptions
+  CertificateOptions,
+  LoginOptions,
+  RegisterOptions,
+  ResetPasswordOptions
 } from '../../interfaces/request-interface';
 
 export interface LoginFormModel {
