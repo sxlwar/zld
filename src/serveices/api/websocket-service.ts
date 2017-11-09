@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {ENV} from '@app/env';
 import {QueueingSubject} from 'queueing-subject';
@@ -11,6 +12,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {WsRequest} from '../../interfaces/request-interface';
 import {WsResponse} from '../../interfaces/response-interface';
 import * as _ from 'lodash';
+//endregion
 
 interface ErrorTipUnit {
   message: string;
@@ -76,8 +78,8 @@ export class WebsocketService {
    * Deal with the problem of uncertain data structure.
    * */
   private handleDataStructure(data: any): object {
+    if(Array.isArray(data) || typeof data === 'string') return {information: data};
     if(typeof data === 'object') return data;
-    if(typeof data === 'string') return {information: data};
     return {};
   }
 

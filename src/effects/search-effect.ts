@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {Actions, Effect} from '@ngrx/effects';
 import {WebsocketService} from '../serveices/api/websocket-service';
@@ -7,6 +8,7 @@ import {Command} from '../serveices/api/command';
 import {of} from 'rxjs/observable/of';
 import {RequestAction} from '../interfaces/request-interface';
 import {ResponseAction} from '../interfaces/response-interface';
+//endregion
 
 @Injectable()
 export class SearchEffect {

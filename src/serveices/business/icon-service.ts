@@ -275,6 +275,46 @@ export const apply: IconItem = {
   }
 };
 
+export const personalInfo: IconItem = {
+  text: 'PERSONAL_INFO',
+  icon: 'personal-info',
+  color: 'primary',
+  permission: {
+    view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
+    opt: [],
+  }
+};
+
+export const familyInfo: IconItem = {
+  text: 'FAMILY_INFO',
+  icon: 'family-info',
+  color: 'primary',
+  permission: {
+    view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
+    opt: [],
+  }
+};
+
+export const workInfo: IconItem = {
+  text: 'WORK_EXPERIENCE',
+  icon: 'work-info',
+  color: 'primary',
+  permission: {
+    view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
+    opt: [],
+  }
+};
+
+export const educationInfo: IconItem = {
+  text: 'EDUCATION_EXPERIENCE',
+  icon: 'education-info',
+  color: 'primary',
+  permission: {
+    view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
+    opt: [],
+  }
+};
+
 @Injectable()
 export class IconService {
 
@@ -298,7 +338,7 @@ export class IconService {
 
   private addPermissionToIcons(icons: Observable<IconItem>): Observable<IconState[]> {
     return this.permission
-      .permissionValidate(icons.map(icon => icon.permission))
+      .functionalPermissionValidate(icons.map(icon => icon.permission))
       .zip(icons, (permission, item) => {
         const {text, icon, color} = item;
         return {text, icon, color, permission};

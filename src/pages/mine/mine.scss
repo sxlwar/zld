@@ -1,3 +1,32 @@
 page-mine {
 
+  h6 {
+    color: #ffffff;
+  }
+  .card-ios {
+    margin: -17px -16px 0 -16px;
+    width: auto;
+    background: #00c1de;
+  }
+  .item-ios {
+    background: transparent;
+  }
+  icon-bar {
+    margin: 10px 0;
+  }
+  .project-info {
+    color: grey;
+    h5 {
+      writing-mode: vertical-lr;
+      float: left;
+      margin: 0px !important;
+      color: rgb(193, 236, 247);
+    }
+    p {
+      color: rgb(193, 236, 247);
+    }
+    div {
+      text-align: center;
+    }
+  }
 }

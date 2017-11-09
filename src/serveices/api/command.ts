@@ -131,6 +131,25 @@ const workerContractList: ApiUnit = {
   ])
 };
 
+export const workTypeList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.WorkTypeList']]
+  ])
+};
+
+export const teamList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.TeamList']]
+  ]),
+  specialCharacter: new Map([
+    [SW, new Iterator({self: 1})],
+    [TL, new Iterator({flag: 1})],
+    [LM, new Iterator({flag: 1})],
+    [PM, new Iterator({flag: 1})],
+    [MM, new Iterator({flag: 1})]
+  ])
+};
+
 @Injectable()
 export class Command {
 
@@ -138,7 +157,6 @@ export class Command {
   processCreate = "workflow.consumer.ProcessCreate";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   workPieceList = "project.consumer.WorkPieceList";
-  teamList = "project.consumer.TeamList";
   workerDetailList = "employee.consumer.WorkerDetailList";
   workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
   attendResultList = "project.consumer.AttendResultList";
@@ -160,7 +178,6 @@ export class Command {
   payProcessList = "project.consumer.PayProcessList";
   payBillList = "project.consumer.PayBillList";
   workCertificateList = "employee.consumer.WorkCertificateList";
-  workTypeList = "employee.consumer.WorkTypeList";
   nationalityList = "employee.consumer.NationalityList";
   groupsList = "employee.consumer.GroupsList";
   workCertificateDelete = "employee.consumer.WorkCertificateDelete";
@@ -278,6 +295,16 @@ export class Command {
     return this.getFullParameter(path, {...option, ...magicOption});
   }
 
+  getWorkTypeList(): WsRequest {
+    const path = workTypeList.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path, {});
+  }
+
+  getTeamList(option): WsRequest {
+    const path = teamList.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path, option);
+  }
+
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
@@ -288,5 +315,9 @@ export class Command {
 
   get workerContractList() {
     return workerContractList;
+  }
+
+  get teamList() {
+    return teamList;
   }
 }

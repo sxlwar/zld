@@ -1,3 +1,23 @@
-
+page-mine h6 {
+  color: #ffffff; }
+page-mine .card-ios {
+  margin: -17px -16px 0 -16px;
+  width: auto;
+  background: #00c1de; }
+page-mine .item-ios {
+  background: transparent; }
+page-mine icon-bar {
+  margin: 10px 0; }
+page-mine .project-info {
+  color: grey; }
+  page-mine .project-info h5 {
+    writing-mode: vertical-lr;
+    float: left;
+    margin: 0px !important;
+    color: #c1ecf7; }
+  page-mine .project-info p {
+    color: #c1ecf7; }
+  page-mine .project-info div {
+    text-align: center; }
 
 /*# sourceMappingURL=mine.css.map */

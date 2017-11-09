@@ -1,3 +1,4 @@
+//region
 import {Actions, Effect} from '@ngrx/effects';
 import {Observable} from 'rxjs/Observable';
 import {ResponseAction} from '../interfaces/response-interface';
@@ -15,6 +16,7 @@ import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/catch';
 import {Injectable} from '@angular/core';
+//endregion
 
 @Injectable()
 export class CertificateEffect extends Command {
@@ -34,5 +36,3 @@ export class CertificateEffect extends Command {
     super();
   }
 }
-
-

@@ -131,12 +131,19 @@
   "MY_BANK_CARD": "银行卡",
   "MY_CERTIFICATE": "证书",
   "MY_CONTRACT": "合同",
+  "MY_ACCOUNT_CURRENT_INFO": "当前所属",
   "LAUNCH_APPLY": "发起申请",
   "TRAJECTORY": "轨迹",
   "FAMILY_INFO": "家庭信息",
   "PERSONAL_INFO": "个人信息",
   "WORK_EXPERIENCE": "工作经历",
   "EDUCATION_EXPERIENCE": "教育经历",
+
+  "ACCOUNT_CONFIG": "帐号设置",
+  "ACCOUNT_SAFETY": "帐号安全",
+  "SERVICE_TELEPHONE": "客服电话",
+  "VERSION_INTRODUCTION": "版本介绍",
+  "LOGOUT": "退出当前帐号",
 
   "API_ERROR": "请求失败",
 

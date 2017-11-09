@@ -7,29 +7,23 @@ import {Store} from '@ngrx/store';
 import {Command} from '../serveices/api/command';
 import {Observable} from 'rxjs/Observable';
 import {ResponseAction} from '../interfaces/response-interface';
-import {
-  GET_WORKER_CONTRACTS,
-  GetWorkerContractsAction,
-  WorkerContractListFailAction,
-  WorkerContractListSuccessAction
-} from '../actions/worker-action';
 import {of} from 'rxjs/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/mergeMap';
+import {GET_TEAM_LIST, GetTeamListAction, TeamListFailAction, TeamListSuccessAction} from '../actions/team-actions';
 //endregion
 
 @Injectable()
-export class WorkerEffect extends Command {
+export class TeamEffect extends Command {
   @Effect()
-  workerContracts$: Observable<ResponseAction> = this.actions$
-    .ofType(GET_WORKER_CONTRACTS)
-    .do(action => console.log(action))
-    .switchMap((action: GetWorkerContractsAction) => this.ws
-      .send(this.getWorkerContractList(action.payload))
-      .takeUntil(this.actions$.ofType(GET_WORKER_CONTRACTS))
-      .map(msg => msg.isError ? new WorkerContractListFailAction(msg.data) : new WorkerContractListSuccessAction(msg.data))
+  teamList$: Observable<ResponseAction> = this.actions$
+    .ofType(GET_TEAM_LIST)
+    .mergeMap((action: GetTeamListAction) => this.ws
+      .send(this.getTeamList(action.payload))
+      .takeUntil(this.actions$.ofType(GET_TEAM_LIST))
+      .map(msg => msg.isError ? new TeamListFailAction(msg.data) : new TeamListSuccessAction(msg.data))
       .catch(error => of(error))
     );
 

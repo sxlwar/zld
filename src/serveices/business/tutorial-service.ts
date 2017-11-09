@@ -10,7 +10,7 @@ import 'rxjs/add/operator/zip'
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/last';
 import 'rxjs/add/operator/mergeAll';
-import {assign, concat, zipObject} from 'lodash';
+import {zipObject} from 'lodash';
 import {Slide} from '../../interfaces/tutorial-interface';
 import {State} from '../../reducers/tutorial-reducer';
 import {Subscription} from 'rxjs/Subscription';
@@ -42,8 +42,8 @@ export class TutorialService {
      **/
     return this.getKeyOfOverview(keys)
       .zip(this.getValueOfOverview(translateResult, keys))
-      .map((ary: Array<Array<string>>, index: number) => assign({image: images[index]}, zipObject.apply(zipObject, ary)))
-      .reduce((acc: Slide[], obj: Slide) => concat(acc, obj), [])
+      .map((ary: Array<Array<string>>, index: number) => Object.assign({image: images[index]}, zipObject.apply(zipObject, ary)))
+      .reduce((acc: Slide[], obj: Slide) => acc.concat([obj]), [])
       .subscribe((value: Slide[]) => this.store.dispatch(new AddSlidesAction(value)));
   }
 

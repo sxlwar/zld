@@ -9,6 +9,8 @@ import * as response from '../interfaces/response-interface';
 import * as icons from './icons-reducer';
 import * as project from './project-reducer';
 import * as worker from './worker-reducer';
+import * as workType from './craft-reducer';
+import * as team from './team-reducer';
 
 export interface AppState {
   config: config.State;
@@ -24,7 +26,9 @@ export interface AppState {
   certificate: response.CertificateResponse;
   icons: icons.State,
   project: project.State,
-  worker: worker.State
+  worker: worker.State,
+  workType: response.WorkTypeListResponse,
+  team: team.State
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -41,7 +45,9 @@ export const reducers: ActionReducerMap<AppState> = {
   certificate: certificate.reducer,
   icons: icons.reducer,
   project: project.reducer,
-  worker: worker.reducer
+  worker: worker.reducer,
+  workType: workType.reducer,
+  team: team.reducer
 };
 
 //config
@@ -108,7 +114,8 @@ export const selectCertificateResult = createSelector(getCertificate, certificat
 //project list
 export const getProject = (state: AppState) => state.project;
 export const selectSelectedProject = createSelector(getProject,project.getSelectedProject);
-export const selectCurrentProjects = createSelector(getProject, project.getCurrentProjects);
+export const selectProjects = createSelector(getProject, project.getProjects);
+export const selectErrorMessage = createSelector(getProject, project.getErrorMessage);
 
 //worker contract list
 export const getWorkerContracts = (state: AppState) => state.worker;
@@ -116,6 +123,14 @@ export const selectWorkerPage = createSelector(getWorkerContracts,worker.getWork
 export const selectWorkerLimit = createSelector(getWorkerContracts,worker.getWorkerContractLimit);
 export const selectWorkerContracts = createSelector(getWorkerContracts,worker.getWorkerContracts);
 export const selectWorkerContractResponse = createSelector(getWorkerContracts, worker.getWorkerContractResponse);
+
+//work type list
+export const getWorkType = (state: AppState) => state.workType;
+export const selectWorkTypeList = createSelector(getWorkType, workType.getWorkType);
+
+//team list
+export const getTeam = (state: AppState) => state.team;
+export const selectTeamResponse = createSelector(getTeam, team.getTeamListResponse);
 
 /*================================================HTTP===========================================================*/
 

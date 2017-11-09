@@ -26,7 +26,10 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
 import {Subscription} from 'rxjs/Subscription';
 import {ErrorService} from '../errors/error-service';
-import {LoginResponse, PhoneVerCodeResponse} from '../../interfaces/response-interface';
+import {
+  LoginResponse, PhoneVerCodeResponse, RegisterResponse,
+  ResetPasswordResponse
+} from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
 import {LoginFormModel, MapperService, ResetPwdFormModel, SignupFormModel} from '../api/mapper-service';
 import {ProcessorService} from '../api/processor-service';
@@ -41,6 +44,7 @@ export class LoginService {
               public process: ProcessorService,
               public errorService: ErrorService,
               public mapper: MapperService) {
+    this.handleError();
   }
 
   /**
@@ -90,71 +94,24 @@ export class LoginService {
 
   /*==============================================Side effect===================================================*/
 
-  /**
-   * @description
-   * These methods used for generate an observable to the component
-   * and notify the fault processing center to handle the error in this stream.
-   * The data that is subscribed here is affected by side effects and needs to be handled with exception, usually case
-   * is the network requests.
-   * */
-  getLoginInfo() {
-    const loginInfo$ = this.store.select(selectUserInfo);
-
-    const loginError$$ = this.errorService.handleErrorInSpecific(
-      loginInfo$.do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
-      'LOGIN_FAIL_TIP'
-    );
-
-    this.subscriptions.push(loginError$$);
-
-    return loginInfo$;
+  getLoginInfo(): Observable<LoginResponse> {
+    return this.store.select(selectUserInfo);
   }
 
-  getSignupPhoneVer() {
-    const phoneVerCode$ = this.store.select(getPhoneVerCode);
-
-    const phoneVerError$$ = this.errorService
-      .handleErrorInSpecific(
-        phoneVerCode$.do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
-        'PHONE_VERIFICATION_FAIL'
-      );
-
-    this.subscriptions.push(phoneVerError$$);
-
-    return phoneVerCode$;
+  getSignupPhoneVer():Observable<PhoneVerCodeResponse> {
+    return this.store.select(getPhoneVerCode);
   }
 
-  getResetPwdPhoneVer() {
-    const phoneVerCode$ = this.store.select(getResetPhoneVerCode);
-
-    const phoneVerError$$ = this.errorService.handleErrorInSpecific(
-      phoneVerCode$.do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl()),
-      'PHONE_VERIFICATION_FAIL'
-    );
-
-    this.subscriptions.push(phoneVerError$$);
-
-    return phoneVerCode$;
+  getResetPwdPhoneVer(): Observable<PhoneVerCodeResponse> {
+    return this.store.select(getResetPhoneVerCode);
   }
 
-  getRegisterInfo() {
-    const register$ = this.store.select(getRegister);
-
-    const register$$ = this.errorService.handleErrorInSpecific(register$, 'REGISTER_FAIL_TIP');
-
-    this.subscriptions.push(register$$);
-
-    return register$;
+  getRegisterInfo(): Observable<RegisterResponse> {
+    return this.store.select(getRegister);
   }
 
-  getResetPasswordInfo() {
-    const resetPwd$ = this.store.select(getResetPassword);
-
-    const resetPwd$$ = this.errorService.handleErrorInSpecific(resetPwd$, 'RESET_PASSWORD_FAIL_TIP');
-
-    this.subscriptions.push(resetPwd$$);
-
-    return resetPwd$;
+  getResetPasswordInfo(): Observable<ResetPasswordResponse> {
+    return this.store.select(getResetPassword);
   }
 
   /*==============================================Request handle===================================================*/
@@ -258,6 +215,52 @@ export class LoginService {
     const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({username, password, code}));
 
     this.subscriptions.push(resetPwd$$);
+  }
+
+  /*=========================================error handle========================================================*/
+
+  private handleError() {
+    const login$$ = this.handleLoginError();
+
+    const signupPhoneVerCode$$ = this.handleSignPhoneVerCodeError();
+
+    const resetPhoneVerCode$$ = this.handleResetPhoneVerCodeError();
+
+    const register$$ = this.handleRegisterError();
+
+    const resetPassword$$ = this.handleResetPassWordInfoError();
+
+    this.subscriptions = this.subscriptions.concat([login$$, signupPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
+  }
+
+  private handleLoginError(): Subscription{
+    return this.errorService.handleErrorInSpecific(
+      this.getLoginInfo().do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
+      'LOGIN_FAIL_TIP'
+    );
+  }
+
+  private handleSignPhoneVerCodeError(): Subscription {
+    return this.errorService
+      .handleErrorInSpecific(
+        this.getSignupPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
+        'PHONE_VERIFICATION_FAIL'
+      );
+  }
+
+  private handleResetPhoneVerCodeError(): Subscription {
+    return this.errorService.handleErrorInSpecific(
+      this.getResetPwdPhoneVer().do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl()),
+      'PHONE_VERIFICATION_FAIL'
+    );
+  }
+
+  private handleRegisterError(): Subscription {
+    return this.errorService.handleErrorInSpecific(this.getRegisterInfo(), 'REGISTER_FAIL_TIP');
+  }
+
+  private handleResetPassWordInfoError(): Subscription {
+    return this.errorService.handleErrorInSpecific(this.getResetPasswordInfo(), 'RESET_PASSWORD_FAIL_TIP');
   }
 
   /*=============================================refuse cleaning====================================================*/

@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {
   CertificateOptions,
@@ -5,6 +6,7 @@ import {
   RegisterOptions,
   ResetPasswordOptions
 } from '../../interfaces/request-interface';
+//endregion
 
 export interface LoginFormModel {
   mobilePhone: string;
@@ -85,18 +87,4 @@ export class MapperService {
       imageback: form.personalIdPhoto.back
     }
   }
-
-  // workerContractForm(form: WorkerContractFormModel): WorkerContractOptions {
-  //   return {
-  //     sid: ''
-  //   }
-  // }
-  //
-  // projectForm(form: ProjectFormModel): ProjectListOptions{
-  //   return {
-  //     sid: '',
-  //     project_name: form.name,
-  //     prime_contract_status: fomr
-  //   }
-  // }
 }

@@ -7,3 +7,8 @@ export interface PermissionResult {
   view: boolean;
   opt: boolean;
 }
+
+export interface ComprehensivePermissionResult {
+  permission: PermissionResult;
+  option: {[key: string]: any}
+}

@@ -3,6 +3,9 @@ import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
 
 import { TabsPage } from './tabs';
+import {EffectsModule} from '@ngrx/effects';
+import {ProjectEffect} from '../../effects/project-effect';
+import {WorkerEffect} from '../../effects/worker-effect';
 
 @NgModule({
   declarations: [
@@ -10,7 +13,8 @@ import { TabsPage } from './tabs';
   ],
   imports: [
     IonicPageModule.forChild(TabsPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    EffectsModule.forRoot([ProjectEffect, WorkerEffect]),
   ],
   exports: [
     TabsPage

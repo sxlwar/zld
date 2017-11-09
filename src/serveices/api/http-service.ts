@@ -1,8 +1,10 @@
+//region
 import {Injectable} from '@angular/core';
 import {FileTransfer, FileTransferObject, FileUploadOptions, FileUploadResult} from '@ionic-native/file-transfer';
 import {ENV} from '@app/env';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
+//endregion
 
 interface UploadOption {
   sid: string;

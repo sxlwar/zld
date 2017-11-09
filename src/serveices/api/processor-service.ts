@@ -1,10 +1,11 @@
+//region
 import {Injectable} from '@angular/core';
 import {
   CertificateOptions,
   LoginOptions,
   PhoneVerificationCodeOptions,
   RegisterOptions,
-  ResetPasswordOptions,
+  ResetPasswordOptions, TeamListOptions,
   UploadImageOptions,
   WorkerContractOptions
 } from '../../interfaces/request-interface';
@@ -28,6 +29,9 @@ import {UploadService} from './upload-service';
 import {PermissionService} from '../config/permission-service';
 import {GetProjectListAction} from '../../actions/project-action';
 import {GetWorkerContractsAction} from '../../actions/worker-action';
+import {GetWorkTypeListAction} from '../../actions/craft-action';
+import {GetTeamListAction} from '../../actions/team-actions';
+//endregion
 
 @Injectable()
 export class ProcessorService extends MapperService {
@@ -121,5 +125,19 @@ export class ProcessorService extends MapperService {
     )
       .filter(res => !!res)
       .subscribe(option => this.store.dispatch(new GetWorkerContractsAction(option)));
+  }
+
+  workTypeListProcessor(): void {
+    this.store.dispatch(new GetWorkTypeListAction());
+  }
+
+  teamListProcessor(option$: Observable<TeamListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.teamList);
+
+    return permissionResult.filter(res => res.permission.view)
+      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .subscribe(option => {
+        this.store.dispatch(new GetTeamListAction(option));
+      });
   }
 }

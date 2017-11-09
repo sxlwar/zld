@@ -13,7 +13,7 @@ export const initialState: State = {
   page: 1,
   workerContractResponse: {
     count: -1,
-    worker_contract: null
+    worker_contract: []
   },
   workerContracts: []
 };

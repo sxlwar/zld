@@ -1,3 +1,4 @@
+//region
 import {NgModule} from '@angular/core';
 import {ImageVerificationComponent} from './image-verification/image-verification';
 import {CommonModule} from '@angular/common';
@@ -11,6 +12,7 @@ import {IconBarComponent} from './icon-bar/icon-bar';
 import { ProjectListComponent } from './project-list/project-list';
 import {ProjectService} from '../serveices/business/project-service';
 import {WorkerService} from '../serveices/business/worker-service';
+//endregion
 
 @NgModule({
   declarations: [

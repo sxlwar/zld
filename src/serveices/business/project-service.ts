@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Project} from '../../interfaces/response-interface';
 import {
-  AppState, getProject, selectCurrentProjects,
+  AppState,
+  selectErrorMessage,
+  selectProjects,
   selectSelectedProject,
 } from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
@@ -14,16 +16,23 @@ import {SelectProjectAction} from '../../actions/project-action';
 
 @Injectable()
 export class ProjectService {
+
   subscriptions: Subscription[] = [];
 
   constructor(public store: Store<AppState>,
               public processor: ProcessorService,
               public error: ErrorService,
               public timeService: TimeService) {
+    this.handleError();
   }
 
+  /*====================================The main methods provided by the service===================================*/
+
+  //FIXME No.2 在请求回来之前再次查询当前工程时仍然会发出请求，可以增加一个请求状态，在发请求前查看当前没有没进行的请求，想到好办法再解决。
   getCurrentProject(): Observable<Project> {
-    return this.store.select(selectSelectedProject).filter(value => !!value);
+    return this.store.select(selectSelectedProject)
+      .do(value => !value && this.getProjectList())
+      .filter(value => !!value);
   }
 
   getProjectList() {
@@ -33,13 +42,7 @@ export class ProjectService {
   }
 
   getUserAllProject(): Observable<Project[]> {
-    const projects$ =  this.store.select(getProject);
-
-    const projectError$$ = this.error.handleErrorInSpecific(projects$, 'API_ERROR');
-
-    this.subscriptions.push(projectError$$);
-
-    return projects$.map(data => data.projects);
+    return this.store.select(selectProjects)
   }
 
   getProjectName(): Observable<string> {
@@ -58,19 +61,35 @@ export class ProjectService {
   }
 
   getProjectId(): Observable<number> {
-    return this.getCurrentProject().map(project => project.id);
+    return this.getCurrentProject()
+      .map(project => project.id);
   }
 
   switchProject(id: number) {
     this.store.dispatch(new SelectProjectAction(id));
   }
 
-  cutDownDays(date: string): number {
+  /*================================================error handle===============================================*/
+
+  private handleError() {
+    const error$ = this.store.select(selectErrorMessage)
+      .filter(msg => !!msg).map(errorMessage => ({errorMessage}));
+
+    const projectError$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
+
+    this.subscriptions.push(projectError$$);
+  }
+
+  /*============================================service private methods==========================================*/
+
+  private cutDownDays(date: string): number {
     if (!date) return NaN;
     const end = new Date(date);
     const now = new Date();
     return this.timeService.countDownDays(now, end);
   }
+
+  /*============================================refuse clean====================================================*/
 
   unSubscribe() {
     this.subscriptions.forEach(item => item.unsubscribe());

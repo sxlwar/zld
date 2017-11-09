@@ -1,3 +1,4 @@
+//region
 import {Actions, Effect} from '@ngrx/effects';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
@@ -31,6 +32,7 @@ import 'rxjs/add/operator/throttle';
 import {RequestAction} from '../interfaces/request-interface';
 import {ResponseAction} from '../interfaces/response-interface';
 import {TipService} from '../serveices/tip-service';
+//endregion
 
 @Injectable()
 export class LoginEffect {

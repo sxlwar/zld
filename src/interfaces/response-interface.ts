@@ -1,4 +1,3 @@
-
 import {Action} from '@ngrx/store';
 
 export interface WsResponse {
@@ -199,6 +198,18 @@ export interface WorkerContractListResponse {
   errorMessage?: string;
 }
 
+//workType
+export interface WorkType {
+  id: number;
+  danger: number;
+  name: string;
+}
+
+//workTypeList
+export interface WorkTypeListResponse {
+  information: WorkType[],
+  errorMessage?: string;
+}
 
 export type ErrorResponse = LoginResponse
   | PhoneVerCodeResponse
@@ -207,4 +218,5 @@ export type ErrorResponse = LoginResponse
   | CertificateResponse
   | TeamListResponse
   | ProjectListResponse
-  | WorkerContractListResponse;
+  | WorkerContractListResponse
+  | WorkTypeListResponse;

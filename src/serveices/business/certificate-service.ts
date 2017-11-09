@@ -25,6 +25,7 @@ export class CertificateService {
   constructor(private store: Store<AppState>,
               private process: ProcessorService,
               private errorService: ErrorService) {
+    this.handleError();
   }
 
   /*===============================================No side Effect===================================================*/
@@ -33,12 +34,6 @@ export class CertificateService {
    * @description Give the components information that they want to know.
    * */
   get certificateResult(): Observable<boolean> {
-    const certificateInfo$ = this.store.select(getCertificate);
-
-    const certificateSubscription = this.errorService.handleErrorInSpecific(certificateInfo$, 'CER_CERTIFICATE_FAIL');
-
-    this.subscriptions.push(certificateSubscription);
-
     this.monitorUploadResult();
 
     return this.store.select(selectCertificateResult);
@@ -46,28 +41,6 @@ export class CertificateService {
 
   get realname(): Observable<string> {
     return this.store.select(selectRealname);
-  }
-
-  /**
-   * @description
-   * Monitor the result of upload images and handle error when upload fail.
-   * */
-  private monitorUploadResult(): void {
-    const errorMessage = this.store.select(selectUploadResult)
-      .mergeMap(data => Observable
-        .from(data)
-        .filter(data => data.code !== 1000)
-        .map(data => data.msg)
-        .distinctUntilChanged()
-        .reduce((acc, cur) => {
-          acc.errorMessage += cur;
-          return acc;
-        }, {errorMessage: ''})
-      );
-
-    const uploadSubscription = this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');
-
-    this.subscriptions.push(uploadSubscription);
   }
 
   /*===============================================Side Effect===================================================*/
@@ -100,6 +73,37 @@ export class CertificateService {
     const certificate$$ = this.process.certificateProcessor(option$, upload$);
 
     this.subscriptions.push(certificate$$);
+  }
+
+  /*=============================================error handle====================================================*/
+
+  private handleError() {
+    const certificateSubscription = this.errorService
+      .handleErrorInSpecific(this.store.select(getCertificate), 'CER_CERTIFICATE_FAIL');
+
+    this.subscriptions.push(certificateSubscription);
+  }
+
+  /**
+   * @description
+   * Monitor the result of upload images and handle error when upload fail.
+   * */
+  private monitorUploadResult(): void {
+    const errorMessage = this.store.select(selectUploadResult)
+      .mergeMap(data => Observable
+        .from(data)
+        .filter(data => data.code !== 1000)
+        .map(data => data.msg)
+        .distinctUntilChanged()
+        .reduce((acc, cur) => {
+          acc.errorMessage += cur;
+          return acc;
+        }, {errorMessage: ''})
+      );
+
+    const uploadSubscription = this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');
+
+    this.subscriptions.push(uploadSubscription);
   }
 
   /*=============================================refuse cleaning====================================================*/

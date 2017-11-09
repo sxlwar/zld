@@ -1,11 +1,18 @@
+//region
 import {Injectable} from '@angular/core';
 import {HttpService} from './http-service';
 import {Observable} from 'rxjs/Observable';
 import {UploadImageOptions} from '../../interfaces/request-interface';
-import 'rxjs';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../reducers/index-reducer';
 import {UploadAction, UploadCompleteAction} from '../../actions/upload-action';
+import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/forkJoin';
+//endregion
 
 @Injectable()
 export class UploadService {

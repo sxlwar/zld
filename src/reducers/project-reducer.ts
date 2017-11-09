@@ -45,4 +45,6 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
 export const getSelectedProject = (state: State) => state.selectedProject;
 
-export const getCurrentProjects = (state: State) => state.projects;
+export const getProjects = (state: State) => state.projects;
+
+export const getErrorMessage = (state: State) => state.errorMessage;

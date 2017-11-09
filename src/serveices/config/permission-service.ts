@@ -4,7 +4,7 @@ import {AppState, selectGroupList} from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
-import {Permission, PermissionResult} from '../../interfaces/permission-interface';
+import {ComprehensivePermissionResult, Permission, PermissionResult} from '../../interfaces/permission-interface';
 import {ApiUnit, Command} from '../api/command';
 
 @Injectable()
@@ -15,12 +15,11 @@ export class PermissionService {
   // project_pieceContract_view = [PME, EME, MM, PM, LM, TL, QW];
   // project_area_view = [PME, EME, MM, PM, LM, TL];
 
-
   constructor(public store: Store<AppState>,
               public command: Command) {
   }
 
-  permissionValidate(target: Observable<Permission>): Observable<PermissionResult>{
+  functionalPermissionValidate(target: Observable<Permission>): Observable<PermissionResult>{
     return this.character
       .combineLatest(target)
       .map(item => this.generatePermission(item));
@@ -53,6 +52,11 @@ export class PermissionService {
         return {};
       }
     });
+  }
+
+  comprehensiveValidate(arg: ApiUnit): Observable<ComprehensivePermissionResult> {
+    return this.apiPermissionValidate(arg)
+      .zip(this.specialOptionValidate(arg), (permission, option) => ({permission, option}));
   }
 
   private get character() {

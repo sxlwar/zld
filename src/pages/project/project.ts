@@ -60,12 +60,13 @@ export class ProjectPage {
               public popoverCtrl: PopoverController,
               public projectService: ProjectService,
               public workerService: WorkerService) {
-    this.projectService.getProjectList();
   }
 
   ionViewDidLoad() {
 
     this.icons = this.iconService.getIcons('project', icons);
+
+    this.projects = this.projectService.getUserAllProject();
 
     this.name = this.projectService.getProjectName();
 
@@ -77,12 +78,10 @@ export class ProjectPage {
 
     this.workerCount = this.workerService.getWorkerCount(this.createOption());
 
-    this.projects = this.projectService.getUserAllProject();
-
     this.haveMultipleProject = this.projects.map(value => value.length > 1);
   }
 
-  createOption(): Observable<object> {
+  createOption(): Observable<{[key: string] : string | number}> {
     return Observable.of({request_status: '完成'})
       .zip(
         this.projectService.getProjectId().map(project_id => ({project_id})),
