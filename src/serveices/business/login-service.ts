@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode} from '../../actions/login-action';
@@ -33,6 +34,7 @@ import {
 import 'rxjs/add/observable/of';
 import {LoginFormModel, MapperService, ResetPwdFormModel, SignupFormModel} from '../api/mapper-service';
 import {ProcessorService} from '../api/processor-service';
+//endregion
 
 @Injectable()
 export class LoginService {

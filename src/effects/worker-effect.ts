@@ -25,7 +25,6 @@ export class WorkerEffect extends Command {
   @Effect()
   workerContracts$: Observable<ResponseAction> = this.actions$
     .ofType(GET_WORKER_CONTRACTS)
-    .do(action => console.log(action))
     .switchMap((action: GetWorkerContractsAction) => this.ws
       .send(this.getWorkerContractList(action.payload))
       .takeUntil(this.actions$.ofType(GET_WORKER_CONTRACTS))

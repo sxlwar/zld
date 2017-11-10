@@ -1,5 +1,4 @@
-
-
+//region
 import {Injectable} from '@angular/core';
 import {AppState, selectLoginForm, selectUserInfo} from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
@@ -7,6 +6,7 @@ import {Observable} from 'rxjs/Observable';
 import {LoginResponse} from '../../interfaces/response-interface';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/mergeMap';
+//endregion
 
 @Injectable()
 export class UserService {
@@ -22,7 +22,7 @@ export class UserService {
       return this.store.select(selectLoginForm).map(data => data.username);
   }
 
-  getUserCharater(): Observable<string> {
+  getUserCharacter(): Observable<string> {
       return this.getUserInfo().mergeMap(data => Observable.from(data.groups_list).first());
   }
 

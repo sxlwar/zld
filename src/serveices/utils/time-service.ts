@@ -1,5 +1,12 @@
+//region
 import {Injectable} from '@angular/core';
 import {Base} from './base';
+//endregion
+
+export const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+export const monthShortNames = monthNames;
+export const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+export const dayShortNames = dayNames;
 
 @Injectable()
 export class TimeService extends Base {
@@ -20,7 +27,7 @@ export class TimeService extends Base {
       hour = date.getHours(),
       minute = date.getMinutes(),
       second = date.getSeconds();
-    return year + "-" + this.toTwo(String(month)) + "-" + this.toTwo(String(day)) + " " + this.toTwo(String(hour)) + ":" + this.toTwo(String(minute)) + ":" + this.toTwo(String(second));
+    return year + '-' + this.toTwo(String(month)) + '-' + this.toTwo(String(day)) + ' ' + this.toTwo(String(hour)) + ':' + this.toTwo(String(minute)) + ':' + this.toTwo(String(second));
   }
 
   getDate(date: Date, isFullDate: boolean): string {
@@ -29,14 +36,14 @@ export class TimeService extends Base {
       day = date.getDate();
     const m = this.toTwo(String(month));
     const d = this.toTwo(String(day));
-    return isFullDate ? y + "-" + m + "-" + d : m + "-" + d;
+    return isFullDate ? y + '-' + m + '-' + d : m + '-' + d;
   }
 
-  withOutSecond(str = ""): string {
+  withOutSecond(str = ''): string {
     if (!str) return str;
     const ary = str.split(':');
     ary.shift();
-    return ary.join(":");
+    return ary.join(':');
   }
 
   /*以date为基准生成日历，full为真时生成当月日历，为假时生成当周的日历
@@ -155,10 +162,10 @@ export class TimeService extends Base {
       hours = this.toTwo(String(obj.getUTCHours())),
       minutes = this.toTwo(String(obj.getUTCMinutes()));
     return {
-      fullDate: year + "-" + month + "-" + date,
-      shortDate: month + "-" + date,
-      time: hours + ":" + minutes,
-      dateWithoutDay: year + "-" + month,
+      fullDate: year + '-' + month + '-' + date,
+      shortDate: month + '-' + date,
+      time: hours + ':' + minutes,
+      dateWithoutDay: year + '-' + month,
       week: week
     };
   }
@@ -187,7 +194,7 @@ export class TimeService extends Base {
     const now = new Date();
 
     // 以/分割的字符串在各浏览器下行为一致
-    const date = typeof day === 'string' ? new Date(day.split("-").join("/")) : day;
+    const date = typeof day === 'string' ? new Date(day.split('-').join('/')) : day;
 
     return now.getFullYear() === date.getFullYear() && now.getMonth() === date.getMonth() && now.getDate() === date.getDate();
   }

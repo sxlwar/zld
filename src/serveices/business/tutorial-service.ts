@@ -1,3 +1,4 @@
+//region
 import {Slides} from 'ionic-angular';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
@@ -14,6 +15,7 @@ import {zipObject} from 'lodash';
 import {Slide} from '../../interfaces/tutorial-interface';
 import {State} from '../../reducers/tutorial-reducer';
 import {Subscription} from 'rxjs/Subscription';
+//endregion
 
 @Injectable()
 export class TutorialService {

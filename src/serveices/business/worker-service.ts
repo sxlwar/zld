@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {
   AppState,
@@ -26,6 +27,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
+//endregion
 
 @Injectable()
 export class WorkerService {
@@ -68,20 +70,25 @@ export class WorkerService {
    * @description
    * If there is a repository, use this data directly, if not, we need to get it from the server
    * */
-  getContractByUserId(id$: Observable<number>): Observable<WorkerContract> {
+  getContractByUserId(userId: Observable<number>): Observable<WorkerContract> {
+
+    const combineFn = (contracts, id) => contracts.find(contract => contract.worker_id === id);
+
     return this.store.select(selectWorkerContracts)
-      .zip(id$, (contracts, id) => contracts.find(contract => contract.worker_id === id))
+      .zip(userId, combineFn)
       .mergeMap(contract => {
         if (contract) return Observable.of(contract);
 
-        const option = Observable.of({limit: 1, page: 1}).zip(id$, (option, user_id) => ({...option, user_id}));
+        const option = Observable.of({limit: 1, page: 1}).zip(userId, (option, user_id) => ({...option, user_id}));
 
         this.getWorkerContracts(option);
 
         return this.store.select(selectWorkerContractResponse)
-          .mergeMap(data => {
-            if(!data.worker_contract.length) return Observable.of(null);
-            return Observable.from(data.worker_contract).first();
+          .map(res => res.worker_contract)
+          .zip(userId, combineFn)
+          .mergeMap(contract => {
+            if(contract) return Observable.of(contract);
+            return Observable.of(null);
           });
       })
   }

@@ -1,3 +1,4 @@
+//region
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import * as icon from '../../serveices/business/icon-service';
@@ -10,6 +11,7 @@ import 'rxjs/add/operator/zip';
 import 'rxjs/add/observable/of';
 import {Project} from '../../interfaces/response-interface';
 import {ProjectListComponent} from '../../components/project-list/project-list';
+//endregion
 
 /**
  * Generated class for the ProjectPage page.
@@ -76,13 +78,16 @@ export class ProjectPage {
 
     this.isExpired = this.remainDays.map(num => num < 0);
 
-    this.workerCount = this.workerService.getWorkerCount(this.createOption());
-
     this.haveMultipleProject = this.projects.map(value => value.length > 1);
   }
 
+  // noinspection JSUnusedGlobalSymbols
+  ionViewWillEnter() {
+    this.workerCount = this.workerService.getWorkerCount(this.createOption());
+  }
+
   createOption(): Observable<{[key: string] : string | number}> {
-    return Observable.of({request_status: '完成'})
+    return Observable.of({request_status: '完成', limit: 1})
       .zip(
         this.projectService.getProjectId().map(project_id => ({project_id})),
         (status, id) => Object.assign(id, status)
@@ -100,7 +105,8 @@ export class ProjectPage {
   }
 
   goTo(item) {
-    console.log(item);
+    if(!item.page) return;
+    this.navCtrl.push(item.page).then(() => {});
   }
 
   // noinspection JSUnusedGlobalSymbols

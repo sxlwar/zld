@@ -96,6 +96,33 @@ export interface WorkerContractOptions {
 }
 
 
+export interface AttendanceResultListOptions {
+  sid: string;
+  start_day?: string;
+  end_day?: string;
+  confirm?: string;
+  user_id?: string;
+  self?: number;
+  team_id?: number[];
+  page?: number;
+  limit?: number;
+}
+
+
+export interface AttendanceInstantListOptions {
+  sid: string
+  start_day: string
+  end_day: string
+  self: number;
+  user_id: number[];
+  identity_num: string;
+  team_id: number[];
+  flag: number;
+  attendance_machine_id: number;
+  page: number;
+  limit: number;
+}
+
 export type Options = LoginOptions
   & RegisterOptions
   & SearchCompanyOptions
@@ -105,4 +132,6 @@ export type Options = LoginOptions
   & UploadImageOptions
   & TeamListOptions
   & ProjectListOptions
-  & WorkerContractOptions;
+  & WorkerContractOptions
+  & AttendanceResultListOptions
+  & AttendanceInstantListOptions;

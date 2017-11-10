@@ -80,7 +80,7 @@ export class MinePage {
 
     this.realname = this.userInfo.getRealname();
 
-    this.character = this.userInfo.getUserCharater();
+    this.character = this.userInfo.getUserCharacter();
 
     this.account = this.userInfo.getAccount();
 
@@ -91,10 +91,7 @@ export class MinePage {
     this.workType = this.workTypeService.getOwnWorkType()
       .mergeMap(types => Observable.from(types).first().map(workType => workType.name));
 
-    this.team = this.teamService.getOwnTeam().map(team => {
-      if(team) return team.name;
-      return '';
-    });
+    this.team = this.teamService.getOwnTeam().map(team => team && team.name || '');
   }
 
   goTo(item) {

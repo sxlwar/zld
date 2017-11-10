@@ -1,3 +1,4 @@
+//region
 import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {ProjectPage} from './project';
@@ -7,6 +8,7 @@ import {IconService} from '../../serveices/business/icon-service';
 import {ProjectService} from '../../serveices/business/project-service';
 import {WorkerService} from '../../serveices/business/worker-service';
 import {PositiveIntegerPipe} from '../../pipes/positive-integer-pipe';
+//endregion
 
 @NgModule({
   declarations: [

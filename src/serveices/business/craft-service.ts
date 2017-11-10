@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {AppState, selectWorkTypeList, getWorkType} from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
@@ -7,6 +8,7 @@ import {WorkerService} from './worker-service';
 import {ProcessorService} from '../api/processor-service';
 import {ErrorService} from '../errors/error-service';
 import {Subscription} from 'rxjs/Subscription';
+//endregion
 
 @Injectable()
 export class CraftService {

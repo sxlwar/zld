@@ -1,3 +1,4 @@
+//region
 import {Observable} from 'rxjs/Observable';
 import {IconState} from '../../reducers/icons-reducer';
 import {AppState, getIconsState} from '../../reducers/index-reducer';
@@ -7,13 +8,17 @@ import {AddIconsBarAction} from '../../actions/icons-action';
 import {Subscription} from 'rxjs/Subscription';
 import {Permission} from '../../interfaces/permission-interface';
 import {PermissionService} from '../config/permission-service';
-import {PME, EME, MM, PM, LM, TL, SW, UW,CW, QW, PA} from '../config/character';
+import {CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW} from '../config/character';
+import * as pages from '../../pages/pages';
+//endregion
 
+//region
 export interface IconItem {
   text: string;
   icon: string;
   color: string;
-  permission: Permission
+  permission: Permission;
+  page: string
 }
 
 export const attendance: IconItem = {
@@ -23,7 +28,8 @@ export const attendance: IconItem = {
   permission: {
     view: [PME, PM, LM],
     opt: [TL]
-  }
+  },
+  page: pages.attendancePage
 };
 
 export const payroll: IconItem = {
@@ -33,7 +39,8 @@ export const payroll: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL],
     opt: []
-  }
+  },
+  page: ''
 };
 
 export const organization: IconItem = {
@@ -43,7 +50,8 @@ export const organization: IconItem = {
   permission: {
     view: [PME, EME, MM, LM, TL, QW],
     opt: [PM]
-  }
+  },
+  page: ''
 };
 
 export const workerManager: IconItem = {
@@ -53,7 +61,8 @@ export const workerManager: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, CW, QW],
     opt: [LM, TL]
-  }
+  },
+  page: ''
 };
 export const workPiece: IconItem = {
   text: 'WORK_PIECE',
@@ -62,7 +71,8 @@ export const workPiece: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL, QW],
     opt: []
-  }
+  },
+  page: ''
 };
 export const location: IconItem = {
   text: 'WORKER_LOCATION',
@@ -71,7 +81,8 @@ export const location: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL],
     opt: []
-  }
+  },
+  page: ''
 };
 export const trajectory: IconItem = {
   text: 'WORKER_TRAJECTORY',
@@ -80,7 +91,8 @@ export const trajectory: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW],
     opt: []
-  }
+  },
+  page: ''
 };
 export const attendanceMachine: IconItem = {
   text: 'ATTENDANCE_MACHINE',
@@ -89,7 +101,8 @@ export const attendanceMachine: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL],
     opt: []
-  }
+  },
+  page: ''
 };
 export const locationCard: IconItem = {
   text: 'IC_LOCATION_CARD',
@@ -98,7 +111,8 @@ export const locationCard: IconItem = {
   permission: {
     view: [PME, EME, MM, LM, TL],
     opt: [PM]
-  }
+  },
+  page: ''
 };
 export const attendanceCard: IconItem = {
   text: 'ATTENDANCE_CARD',
@@ -107,7 +121,8 @@ export const attendanceCard: IconItem = {
   permission: {
     view: [PME, EME, MM, TL],
     opt: [PM]
-  }
+  },
+  page: ''
 };
 
 export const attendanceConfirm: IconItem = {
@@ -117,7 +132,8 @@ export const attendanceConfirm: IconItem = {
   permission: {
     view: [PME, EME],
     opt: [TL]
-  }
+  },
+  page: ''
 };
 export const payrollAudit: IconItem = {
   text: 'PAYROLL_AUDIT',
@@ -126,7 +142,8 @@ export const payrollAudit: IconItem = {
   permission: {
     view: [PME, EME, MM],
     opt: [PM, LM, TL]
-  }
+  },
+  page: ''
 };
 export const leave: IconItem = {
   text: 'LEAVE_APPLY',
@@ -135,7 +152,8 @@ export const leave: IconItem = {
   permission: {
     view: [PME, EME, MM],
     opt: [PM, LM]
-  }
+  },
+  page: ''
 };
 export const overtime: IconItem = {
   text: 'LEAVE_APPLY',
@@ -144,7 +162,8 @@ export const overtime: IconItem = {
   permission: {
     view: [PME, EME, MM, TL],
     opt: [PM]
-  }
+  },
+  page: ''
 };
 export const pieceAudit: IconItem = {
   text: 'PIECE_AUDIT',
@@ -153,7 +172,8 @@ export const pieceAudit: IconItem = {
   permission: {
     view: [PME, EME, MM, TL],
     opt: [PM, QW]
-  }
+  },
+  page: ''
 };
 export const modifyAttendance: IconItem = {
   text: 'MODIFY_ATTENDANCE',
@@ -162,7 +182,8 @@ export const modifyAttendance: IconItem = {
   permission: {
     view: [PME, EME, MM, TL],
     opt: [PM, LM]
-  }
+  },
+  page: ''
 };
 export const workContract: IconItem = {
   text: 'WORK_CONTRACT',
@@ -171,7 +192,8 @@ export const workContract: IconItem = {
   permission: {
     view: [],
     opt: [PM, LM, TL, SW, UW]
-  }
+  },
+  page: ''
 };
 export const primeContract: IconItem = {
   text: 'PRIME_CONTRACT',
@@ -180,7 +202,8 @@ export const primeContract: IconItem = {
   permission: {
     view: [],
     opt: [PME, MM, PM]
-  }
+  },
+  page: ''
 };
 export const subContract: IconItem = {
   text: 'SUB_CONTRACT',
@@ -189,7 +212,8 @@ export const subContract: IconItem = {
   permission: {
     view: [],
     opt: [PME, MM, PM]
-  }
+  },
+  page: ''
 };
 export const modifyDuty: IconItem = {
   text: 'MODIFY_DUTY',
@@ -198,7 +222,8 @@ export const modifyDuty: IconItem = {
   permission: {
     view: [],
     opt: [PM, TL]
-  }
+  },
+  page: ''
 };
 export const workContractModify: IconItem = {
   text: 'MODIFY_WORK_CONTRACT',
@@ -207,7 +232,8 @@ export const workContractModify: IconItem = {
   permission: {
     view: [],
     opt: [PM, LM]
-  }
+  },
+  page: ''
 };
 export const myAudited: IconItem = {
   text: 'MY_AUDIT',
@@ -216,7 +242,8 @@ export const myAudited: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL, QW, SW, UW],
     opt: []
-  }
+  },
+  page: ''
 };
 export const myLaunch: IconItem = {
   text: 'MY_APPLY',
@@ -225,7 +252,8 @@ export const myLaunch: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL, QW],
     opt: []
-  }
+  },
+  page: ''
 };
 
 export const myAttendance: IconItem = {
@@ -235,7 +263,8 @@ export const myAttendance: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW],
     opt: []
-  }
+  },
+  page: ''
 };
 export const salary: IconItem = {
   text: 'MY_SALARY',
@@ -244,7 +273,8 @@ export const salary: IconItem = {
   permission: {
     view: [SW, UW],
     opt: []
-  }
+  },
+  page: ''
 };
 export const bankCard: IconItem = {
   text: 'MY_BANK_CARD',
@@ -253,7 +283,8 @@ export const bankCard: IconItem = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: []
-  }
+  },
+  page: ''
 };
 export const certificate: IconItem = {
   text: 'MY_CERTIFICATE',
@@ -262,7 +293,8 @@ export const certificate: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: []
-  }
+  },
+  page: ''
 };
 
 export const apply: IconItem = {
@@ -272,7 +304,8 @@ export const apply: IconItem = {
   permission: {
     view: [],
     opt: [TL, PM]
-  }
+  },
+  page: ''
 };
 
 export const personalInfo: IconItem = {
@@ -282,7 +315,8 @@ export const personalInfo: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
-  }
+  },
+  page: ''
 };
 
 export const familyInfo: IconItem = {
@@ -292,7 +326,8 @@ export const familyInfo: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
-  }
+  },
+  page: ''
 };
 
 export const workInfo: IconItem = {
@@ -302,7 +337,8 @@ export const workInfo: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
-  }
+  },
+  page: ''
 };
 
 export const educationInfo: IconItem = {
@@ -312,8 +348,10 @@ export const educationInfo: IconItem = {
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
-  }
+  },
+  page: ''
 };
+//endregion
 
 @Injectable()
 export class IconService {
@@ -340,8 +378,8 @@ export class IconService {
     return this.permission
       .functionalPermissionValidate(icons.map(icon => icon.permission))
       .zip(icons, (permission, item) => {
-        const {text, icon, color} = item;
-        return {text, icon, color, permission};
+        const {text, icon, color, page} = item;
+        return {text, icon, color, page, permission};
       })
       .map(item => {
         const {view, opt} = item.permission;

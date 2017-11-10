@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import {Project} from '../../interfaces/response-interface';
@@ -13,6 +14,7 @@ import {ErrorService} from '../errors/error-service';
 import {Subscription} from 'rxjs/Subscription';
 import {TimeService} from '../utils/time-service';
 import {SelectProjectAction} from '../../actions/project-action';
+//endregion
 
 @Injectable()
 export class ProjectService {

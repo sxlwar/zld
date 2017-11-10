@@ -1,3 +1,4 @@
+//region
 import {ErrorHandler, NgModule} from '@angular/core';
 import {Http, HttpModule} from '@angular/http';
 import {BrowserModule} from '@angular/platform-browser';
@@ -30,9 +31,10 @@ import {ImagePicker} from '@ionic-native/image-picker';
 import {Keyboard} from '@ionic-native/keyboard';
 import {UploadService} from '../serveices/api/upload-service';
 import {PermissionService} from '../serveices/config/permission-service';
-import {TimeService} from '../serveices/utils/time-service';
+import {dayNames, dayShortNames, monthNames, monthShortNames, TimeService} from '../serveices/utils/time-service';
 import {ComponentsModule} from '../components/components.module';
 import {ProjectListComponent} from '../components/project-list/project-list';
+//endregion
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -87,7 +89,11 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     IonicModule.forRoot(MyApp, {
       scrollAssist: false,    // Valid options appear to be [true, false]
       scrollPadding: false,
-      autoFocusAssist: false
+      autoFocusAssist: false,
+      monthNames,
+      monthShortNames,
+      dayNames,
+      dayShortNames,
     }),
     IonicStorageModule.forRoot(),
     StoreModule.forRoot(reducers),

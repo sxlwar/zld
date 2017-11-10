@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {AppState, selectTeamResponse} from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
@@ -19,6 +20,7 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
 import 'rxjs/add/observable/of';
 import {SW, QW, TL, CW} from '../config/character';
+//endregion
 
 
 @Injectable()
@@ -51,7 +53,7 @@ export class TeamService {
   }
 
   getOwnTeam(): Observable<Team> {
-    const character$ = this.userInfo.getUserCharater()
+    const character$ = this.userInfo.getUserCharacter()
       .map(char => this.characterHasTeam.indexOf(char) !== -1);
 
     const teamId$ = this.workerService.getOwnContract()

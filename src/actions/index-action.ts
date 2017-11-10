@@ -7,6 +7,7 @@ import {Actions as project} from './project-action';
 import {Actions as worker} from './worker-action';
 import {Actions as workType} from './craft-action';
 import {Actions as team} from './team-actions';
+import {Actions as attendance} from './attendance-actions';
 
 export type Actions = config
   | tutorial
@@ -16,4 +17,5 @@ export type Actions = config
   | project
   | worker
   | workType
-  | team;
+  | team
+  | attendance;

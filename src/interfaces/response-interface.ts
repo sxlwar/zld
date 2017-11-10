@@ -1,4 +1,5 @@
 import {Action} from '@ngrx/store';
+import {inlineTemplate} from '@ionic/app-scripts/dist/template';
 
 export interface WsResponse {
   code: number;
@@ -20,6 +21,7 @@ export interface ErrorMessage {
   errorMessage: string;
 }
 
+/*==================================Data model before enter into app=============================================*/
 //login
 export interface LoginResponse {
   realname: string;
@@ -62,21 +64,7 @@ export interface CertificateResponse {
   errorMessage?: string;
 }
 
-//search worker
-export interface WorkerResponse {
-  user__username:	string
-  user_id:	number
-  realname:	string
-  age:	number
-  sex:	string
-  cer_status:	number
-  company__name:	string
-  curraddr__province:	string
-  curraddr__dist:	string
-  userpersonal_idnum:	string
-  curraddr__city:	string
-  code:	number
-}
+/*=================================================Team model======================================================*/
 
 export interface Team {
   leader_id: string;
@@ -96,6 +84,8 @@ export interface TeamListResponse {
   teams: Team[];
   errorMessage?: string;
 }
+
+/*===============================================Project model======================================================*/
 
 export interface AttendanceMachine {
   latitude: number;
@@ -143,6 +133,8 @@ export interface ProjectListResponse {
   projects: Project[];
   errorMessage?: string;
 }
+
+/*===========================================Worker contract model======================================================*/
 
 //time pay
 export interface TimePay {
@@ -198,6 +190,8 @@ export interface WorkerContractListResponse {
   errorMessage?: string;
 }
 
+/*===========================================Work type model======================================================*/
+
 //workType
 export interface WorkType {
   id: number;
@@ -211,6 +205,82 @@ export interface WorkTypeListResponse {
   errorMessage?: string;
 }
 
+
+/*===========================================Attendance model=================================================*/
+
+export interface AmendAttendanceResult {
+  id: number;
+  reason: string;
+  request_id: number;
+  result_id: number
+  result__status: string;
+  on_duty: string;
+  off_duty: string;
+}
+
+export interface AttendanceResult {
+  contract__team__name: string;
+  total_gps_area_hour: number;
+  total_area_hour: number;
+  contract_id: number;
+  confirm: number;
+  contract__worker__employee__realname: string;
+  availability_work_hour: number;
+  day: number;
+  contract__worker_id: number;
+  attend_amend: AmendAttendanceResult[];
+  contract__team_id: number;
+  id: number;
+  contract__worker__username: number;
+}
+
+
+export interface AttendanceResultListResponse {
+  count: number;
+  attendance_results: AttendanceResult[];
+  errorMessage?: string;
+}
+
+export interface AttendanceInstant {
+  user_id: number;
+  attendance_machine__type: string;
+  similarity: number;
+  attendance_machine_id: number;
+  type: number;
+  capture_image: string;
+  day: string;
+  screen_image: string;
+  time: string;
+  user__employee__realname: string;
+  attendance_machine__name: string;
+  id: number;
+}
+
+export interface AttendanceInstantListResponse {
+  count: number;
+  attendance_instants: AttendanceInstant[];
+  errorMessage?: string;
+}
+
+/*========================================================================================================*/
+
+
+//search worker
+export interface WorkerResponse {
+  user__username:	string
+  user_id:	number
+  realname:	string
+  age:	number
+  sex:	string
+  cer_status:	number
+  company__name:	string
+  curraddr__province:	string
+  curraddr__dist:	string
+  userpersonal_idnum:	string
+  curraddr__city:	string
+  code:	number
+}
+
 export type ErrorResponse = LoginResponse
   | PhoneVerCodeResponse
   | RegisterResponse
@@ -219,4 +289,6 @@ export type ErrorResponse = LoginResponse
   | TeamListResponse
   | ProjectListResponse
   | WorkerContractListResponse
-  | WorkTypeListResponse;
+  | WorkTypeListResponse
+  | AttendanceResultListResponse
+  | AttendanceInstantListResponse;

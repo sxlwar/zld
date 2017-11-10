@@ -5,7 +5,8 @@ export interface IconState {
   text: string;
   icon: string;
   color: string;
-  permission: PermissionResult
+  permission: PermissionResult;
+  page: string;
 }
 
 export interface State {

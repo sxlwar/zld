@@ -1,3 +1,4 @@
+//region
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {
@@ -17,6 +18,7 @@ import {CertificateOptions, UploadImageOptions} from '../../interfaces/request-i
 import {Subscription} from 'rxjs/Subscription';
 import 'rxjs/add/operator/withLatestFrom';
 import {ErrorService} from '../errors/error-service';
+//endregion
 
 @Injectable()
 export class CertificateService {
