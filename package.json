@@ -1,7 +1,7 @@
 {
-    "name": "建筑人",
-    "version": "2.0",
-    "author": "杭州市智链达数据有限公司",
+    "name": "builder",
+    "version": "2.0.0",
+    "author": "zld",
     "homepage": "ws://zld.data.com",
     "private": true,
     "scripts": {

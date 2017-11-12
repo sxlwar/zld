@@ -16,9 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
  * See https://ionicframework.com/docs/components/#navigation for more info on
  * Ionic pages and navigation.
  */
-export interface TeamOption {
 
-}
 @IonicPage()
 @Component({
   selector: 'page-attendance',
