@@ -64,7 +64,6 @@ export class AttendancePage {
     this.attendance.setDate(type, data);
   }
 
-  
   getAttendances() {
     // const option = Observable.of({})
     // this.attendances = this.attendance.getAttendanceResultList();

@@ -3,6 +3,6 @@ export const ENV = {
     return false
   },
   get DOMAIN() {
-    return 'dev.zlddata.cn'
+    return 'builder.zlddata.cn'
   }
 };
