@@ -12,7 +12,7 @@ import {
   GetWorkerContractsAction,
   WorkerContractListFailAction,
   WorkerContractListSuccessAction
-} from '../actions/worker-action';
+} from '../actions/action/worker-action';
 import {of} from 'rxjs/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';

@@ -8,7 +8,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {Observable} from 'rxjs/Observable';
 import {Team} from '../../interfaces/response-interface';
 import {UserService} from './user-service';
-import {TeamListOptions} from '../../interfaces/request-interface';
+import {RequestOption} from '../../interfaces/request-interface';
 import {WorkerService} from './worker-service';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/from';
@@ -19,7 +19,9 @@ import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
 import 'rxjs/add/observable/of';
-import {SW, QW, TL, CW} from '../config/character';
+import {CW, QW, SW, TL} from '../config/character';
+import {ProjectService} from './project-service';
+
 //endregion
 
 
@@ -34,6 +36,7 @@ export class TeamService {
               public error: ErrorService,
               public process: ProcessorService,
               public userInfo: UserService,
+              public project: ProjectService,
               public workerService: WorkerService) {
     this.handleError();
   }
@@ -42,7 +45,7 @@ export class TeamService {
     return this.store.select(selectTeamResponse).map(res => res.teams);
   }
 
-  getTeamList(option: Observable<TeamListOptions> = Observable.empty()): void {
+  getTeamList(option: Observable<RequestOption> = Observable.empty()): void {
     const option$ = this.userInfo.getSid()
       .map(sid => ({sid}))
       .combineLatest(option.defaultIfEmpty({}), (sid, option) => Object.assign(sid, option));
@@ -76,6 +79,18 @@ export class TeamService {
     return character$.mergeMap(isTeamCharacter => {
       if(isTeamCharacter) return team$;
       return Observable.of(null);
+    })
+  }
+
+  getOwnTeams(): Observable<Team[]> {
+    return this.getTeams().mergeMap(teams => {
+      if (teams.length) return Observable.of(teams);
+
+      const option = this.project.getCurrentProject().map(project => ({project_id: project.id}));
+
+      this.getTeamList(option);
+
+      return this.getTeams();
     })
   }
 

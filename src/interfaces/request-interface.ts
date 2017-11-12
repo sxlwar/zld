@@ -12,6 +12,10 @@ export class RequestAction implements Action {
   };
 }
 
+export interface RequestOption {
+  [key: string]: string | number;
+}
+
 export interface LoginOptions {
   username: string;
   password: string;
@@ -113,14 +117,14 @@ export interface AttendanceInstantListOptions {
   sid: string
   start_day: string
   end_day: string
-  self: number;
-  user_id: number[];
-  identity_num: string;
-  team_id: number[];
-  flag: number;
-  attendance_machine_id: number;
   page: number;
   limit: number;
+  self?: number;
+  user_id?: number[];
+  identity_num?: string;
+  team_id?: number[];
+  flag?: number;
+  attendance_machine_id?: number;
 }
 
 export type Options = LoginOptions

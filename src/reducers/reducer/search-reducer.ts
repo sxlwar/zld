@@ -1,6 +1,8 @@
-import * as actions from '../actions/search-action';
-import {SEARCH_COMPANY, SEARCH_COMPANY_COMPLETE, SELECT_COMPANY} from '../actions/search-action';
-import {Company} from '../interfaces/response-interface';
+//region
+import * as actions from '../../actions/action/search-action';
+import {SEARCH_COMPANY, SEARCH_COMPANY_COMPLETE, SELECT_COMPANY} from '../../actions/action/search-action';
+import {Company} from '../../interfaces/response-interface';
+//endregion
 
 export interface State {
   companies: Company[];

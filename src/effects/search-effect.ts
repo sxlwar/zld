@@ -3,7 +3,7 @@ import {Injectable} from '@angular/core';
 import {Actions, Effect} from '@ngrx/effects';
 import {WebsocketService} from '../serveices/api/websocket-service';
 import {Observable} from 'rxjs/Observable';
-import {SEARCH_COMPANY, SearchCompanyCompleteAction} from '../actions/search-action';
+import {SEARCH_COMPANY, SearchCompanyCompleteAction} from '../actions/action/search-action';
 import {Command} from '../serveices/api/command';
 import {of} from 'rxjs/observable/of';
 import {RequestAction} from '../interfaces/request-interface';

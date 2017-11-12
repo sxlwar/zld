@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
-import {ProjectListOptions} from '../interfaces/request-interface';
-import {ProjectListResponse} from '../interfaces/response-interface';
+import {ProjectListOptions} from '../../interfaces/request-interface';
+import {ProjectListResponse} from '../../interfaces/response-interface';
 
 export const GET_PROJECT_LIST = 'GET_PROJECT_LIST';
 

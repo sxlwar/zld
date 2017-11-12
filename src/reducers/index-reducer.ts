@@ -1,16 +1,19 @@
+//region
 import {ActionReducerMap, createSelector} from '@ngrx/store';
-import * as config from './config-reducer';
-import * as tutorial from './tutorial-reducer';
-import * as login from './login-reducer';
-import * as search from './search-reducer';
-import * as upload from './upload-reducer';
-import * as certificate from './certificate-reducer';
+import * as config from './reducer/config-reducer';
+import * as tutorial from './reducer/tutorial-reducer';
+import * as login from './reducer/login-reducer';
+import * as search from './reducer/search-reducer';
+import * as upload from './reducer/upload-reducer';
+import * as certificate from './reducer/certificate-reducer';
 import * as response from '../interfaces/response-interface';
-import * as icons from './icons-reducer';
-import * as project from './project-reducer';
-import * as worker from './worker-reducer';
-import * as workType from './craft-reducer';
-import * as team from './team-reducer';
+import * as icons from './reducer/icons-reducer';
+import * as project from './reducer/project-reducer';
+import * as worker from './reducer/worker-reducer';
+import * as workType from './reducer/craft-reducer';
+import * as team from './reducer/team-reducer';
+import * as attendance from './reducer/attendance-reducer';
+//endregion
 
 export interface AppState {
   config: config.State;
@@ -28,7 +31,8 @@ export interface AppState {
   project: project.State,
   worker: worker.State,
   workType: response.WorkTypeListResponse,
-  team: team.State
+  team: team.State,
+  attendance: attendance.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -47,7 +51,8 @@ export const reducers: ActionReducerMap<AppState> = {
   project: project.reducer,
   worker: worker.reducer,
   workType: workType.reducer,
-  team: team.reducer
+  team: team.reducer,
+  attendance: attendance.reducer
 };
 
 //config
@@ -71,7 +76,7 @@ export const selectLoginVerificationImage = createSelector(getLoginPage, login.g
 export const selectRandomCode = createSelector(getLoginPage, login.getRandomCode);
 
 
-/*===========================================Server response selectors===========================================*/
+/*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Server response selectors Start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 //search e.g: search company , search worker
 export const getSearchState = (state: AppState) => state.search;
@@ -131,6 +136,16 @@ export const selectWorkTypeList = createSelector(getWorkType, workType.getWorkTy
 //team list
 export const getTeam = (state: AppState) => state.team;
 export const selectTeamResponse = createSelector(getTeam, team.getTeamListResponse);
+
+//attendance result list
+export const getAttendance = (state: AppState) => state.attendance;
+export const selectAttendanceResponse = createSelector(getAttendance, attendance.getAttendanceResultResponse);
+export const selectAttendanceList = createSelector(getAttendance, attendance.getAttendnaceResults);
+export const selectAttendanceCount = createSelector(getAttendance, attendance.getAttendanceCount);
+export const selectAttendanceDatePeriod = createSelector(getAttendance, attendance.getAttendanceDatePeriod);
+export const selectAttendanceDateStart = createSelector(selectAttendanceDatePeriod, attendance.getAttendanceStartDate);
+export const selectAttendanceDateEnd = createSelector(selectAttendanceDatePeriod, attendance.getAttendanceEndDate);
+/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 /*================================================HTTP===========================================================*/
 

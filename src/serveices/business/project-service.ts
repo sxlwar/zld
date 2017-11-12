@@ -13,7 +13,7 @@ import {ProcessorService} from '../api/processor-service';
 import {ErrorService} from '../errors/error-service';
 import {Subscription} from 'rxjs/Subscription';
 import {TimeService} from '../utils/time-service';
-import {SelectProjectAction} from '../../actions/project-action';
+import {SelectProjectAction} from '../../actions/action/project-action';
 //endregion
 
 @Injectable()

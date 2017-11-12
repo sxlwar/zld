@@ -1,5 +1,5 @@
-import {CertificateResponse} from '../interfaces/response-interface';
-import * as actions from '../actions/certificate-action';
+import {CertificateResponse} from '../../interfaces/response-interface';
+import * as actions from '../../actions/action/certificate-action';
 
 const initialState: CertificateResponse = {
   auth_pass: false

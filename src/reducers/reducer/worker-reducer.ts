@@ -1,5 +1,5 @@
-import {WorkerContract, WorkerContractListResponse} from '../interfaces/response-interface';
-import * as actions from '../actions/worker-action';
+import {WorkerContract, WorkerContractListResponse} from '../../interfaces/response-interface';
+import * as actions from '../../actions/action/worker-action';
 
 export interface State {
   limit: number;

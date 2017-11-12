@@ -1,9 +1,9 @@
 
 
-import {TeamListResponse} from '../interfaces/response-interface';
+import {TeamListResponse} from '../../interfaces/response-interface';
 
-import * as actions from '../actions/team-actions';
-import {GET_TEAM_LIST, TEAM_LIST_FAIL, TEAM_LIST_SUCCESS} from '../actions/team-actions';
+import * as actions from '../../actions/action/team-actions';
+import {GET_TEAM_LIST, TEAM_LIST_FAIL, TEAM_LIST_SUCCESS} from '../../actions/action/team-actions';
 
 export interface State {
   response: TeamListResponse;

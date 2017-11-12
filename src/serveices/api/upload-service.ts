@@ -5,7 +5,7 @@ import {Observable} from 'rxjs/Observable';
 import {UploadImageOptions} from '../../interfaces/request-interface';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../reducers/index-reducer';
-import {UploadAction, UploadCompleteAction} from '../../actions/upload-action';
+import {UploadAction, UploadCompleteAction} from '../../actions/action/upload-action';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';

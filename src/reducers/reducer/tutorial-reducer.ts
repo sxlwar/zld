@@ -1,5 +1,5 @@
-import * as actions from '../actions/tutorial-action';
-import {Slide} from '../interfaces/tutorial-interface';
+import * as actions from '../../actions/action/tutorial-action';
+import {Slide} from '../../interfaces/tutorial-interface';
 
 export interface State {
   skipState: boolean;

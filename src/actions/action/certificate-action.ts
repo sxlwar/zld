@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
-import {CertificateOptions} from '../interfaces/request-interface';
-import {CertificateResponse} from '../interfaces/response-interface';
+import {CertificateOptions} from '../../interfaces/request-interface';
+import {CertificateResponse} from '../../interfaces/response-interface';
 
 export const CERTIFICATE = 'CERTIFICATE';
 

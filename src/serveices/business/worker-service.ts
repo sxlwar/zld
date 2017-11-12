@@ -16,7 +16,7 @@ import {
   DecrementQueryWorkerContractPageAction,
   IncrementQueryWorkerContractPageAction,
   ResetQueryWorkerContractPageAction
-} from '../../actions/worker-action';
+} from '../../actions/action/worker-action';
 import 'rxjs/add/operator/zip';
 import {Subscription} from 'rxjs/Subscription';
 import {ErrorService} from '../errors/error-service';

@@ -4,7 +4,7 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import * as icon from '../../serveices/business/icon-service';
 import {IconService} from '../../serveices/business/icon-service';
 import {Observable} from 'rxjs/Observable';
-import {IconState} from '../../reducers/icons-reducer';
+import {IconState} from '../../reducers/reducer/icons-reducer';
 import {ProjectService} from '../../serveices/business/project-service';
 import {UserService} from '../../serveices/business/user-service';
 import {CraftService} from '../../serveices/business/craft-service';
@@ -96,6 +96,7 @@ export class MinePage {
 
   goTo(item) {
     console.log(item);
+    this.navCtrl.push(item.page).then(() => {});
   }
 
   // noinspection JSUnusedGlobalSymbols

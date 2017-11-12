@@ -1,7 +1,7 @@
 //region
 import {Action} from '@ngrx/store';
-import {AttendanceResultListResponse} from '../interfaces/response-interface';
-import {AttendanceResultListOptions} from '../interfaces/request-interface';
+import {AttendanceResultListResponse} from '../../interfaces/response-interface';
+import {AttendanceResultListOptions} from '../../interfaces/request-interface';
 //endregion
 
 export const GET_ATTENDANCE_RESULT_LIST = 'GET_ATTENDANCE_RESULT_LIST';
@@ -31,6 +31,26 @@ export class AttendanceResultListSuccessAction implements Action {
   }
 }
 
+export const SET_ATTENDANCE_START_DATE = 'SET_ATTENDANCE_START_DATE';
+
+export class SetAttendanceStartDate implements Action {
+  readonly type = SET_ATTENDANCE_START_DATE;
+
+  constructor(public payload: string) {
+  }
+}
+
+export const SET_ATTENDANCE_END_DATE = 'SET_ATTENDANCE_END_DATE';
+
+export class SetAttendanceEndDate implements Action {
+  readonly type = SET_ATTENDANCE_END_DATE;
+
+  constructor(public payload: string) {
+  }
+}
+
 export type Actions = GetAttendanceResultListAction
   | AttendanceResultListFailAction
-  | AttendanceResultListSuccessAction;
+  | AttendanceResultListSuccessAction
+  | SetAttendanceStartDate
+  | SetAttendanceEndDate;

@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
 import * as icon from '../../serveices/business/icon-service';
 import {IconService} from '../../serveices/business/icon-service';
-import {IconState} from '../../reducers/icons-reducer';
+import {IconState} from '../../reducers/reducer/icons-reducer';
 import {Observable} from 'rxjs/Observable';
 import {ProjectService} from '../../serveices/business/project-service';
 import {WorkerService} from '../../serveices/business/worker-service';

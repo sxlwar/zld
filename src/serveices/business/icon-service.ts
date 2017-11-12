@@ -1,10 +1,10 @@
 //region
 import {Observable} from 'rxjs/Observable';
-import {IconState} from '../../reducers/icons-reducer';
+import {IconState} from '../../reducers/reducer/icons-reducer';
 import {AppState, getIconsState} from '../../reducers/index-reducer';
 import {createSelector, Store} from '@ngrx/store';
 import {Injectable} from '@angular/core';
-import {AddIconsBarAction} from '../../actions/icons-action';
+import {AddIconsBarAction} from '../../actions/action/icons-action';
 import {Subscription} from 'rxjs/Subscription';
 import {Permission} from '../../interfaces/permission-interface';
 import {PermissionService} from '../config/permission-service';

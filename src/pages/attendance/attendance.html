@@ -14,17 +14,115 @@
 
 
 <ion-content padding>
-  <ion-searchbar (ionInput)="getItems($event)" placeholder="{{ 'SEARCH_PLACEHOLDER' | translate }}"></ion-searchbar>
-  <!--<team-select></team-select>-->
-  <ion-item>
-    <ion-label>日期</ion-label>
-    <ion-datetime displayFormat="YYYY-MM-DD"
-                  pickerFormat="YYYY MM DD"
-                  [cancelText]="'CANCEL_BUTTON' | translate"
-                  [doneText]="'CONFIRM_BUTTON' | translate"
-                  min="2017-01-01"
-                  max="2020-12-31"
-                  [(ngModel)]="selectedDate"></ion-datetime>
-  </ion-item>
-  <!--<attendance></attendance>-->
+
+  <ion-item-divider color="light">设置查询条件</ion-item-divider>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>开始时间</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD"
+                    pickerFormat="YYYY MM DD"
+                    [cancelText]="'CANCEL_BUTTON' | translate"
+                    [doneText]="'CONFIRM_BUTTON' | translate"
+                    min="2017-01-01"
+                    max="2020-12-31"
+                    [(ngModel)]="startDate" (ngModelChange)="setDate('start')" #start = 'ngModel'></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>结束时间</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD"
+                    pickerFormat="YYYY MM DD"
+                    [cancelText]="'CANCEL_BUTTON' | translate"
+                    [doneText]="'CONFIRM_BUTTON' | translate"
+                    [min]="startDate"
+                    max="2020-12-31"
+                    [(ngModel)]="endDate" (ngModelChange)="setDate('end')" #end = 'ngModel'></ion-datetime>
+    </ion-item>
+
+    <p *ngIf = 'end.value < start.value'>开始时间不能不小于结束时间</p>
+    <!--<ion-item>-->
+      <!--<ion-label>班组</ion-label>-->
+      <!--<ion-select [(ngModel)]="selectedTeams"  [selectOptions]="selectOptions">-->
+        <!--<ion-option *ngFor="let team of teams | async" [value]="team">{{team.name}}</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+  </ion-list>
+
+  <ion-list class="identity" style="margin: 16px 0 0 0">
+    <ion-item-divider>
+      <ion-label>
+        <ion-grid>
+          <ion-row>
+            <ion-col>姓名</ion-col>
+            <ion-col>总时间</ion-col>
+            <ion-col>有效时间</ion-col>
+            <ion-col><ion-icon name="more"></ion-icon></ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-label>
+      <ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>
+
+    </ion-item-divider>
+  </ion-list>
+
+  <!--<ion-list style="background: grey">-->
+    <!--<ion-item *ngFor="let attendance of attendances">-->
+      <!--<ion-label>-->
+        <!--<ion-grid>-->
+          <!--<ion-row>-->
+            <!--<ion-col>attendance</ion-col>-->
+            <!--<ion-col>20</ion-col>-->
+            <!--<ion-col>40</ion-col>-->
+            <!--<ion-col><ion-icon name="arrow-forward" item-end (click)="click()"></ion-icon></ion-col>-->
+          <!--</ion-row>-->
+        <!--</ion-grid>-->
+      <!--</ion-label>-->
+      <!--<ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>-->
+        <!--<ion-grid>-->
+          <!--<ion-row>-->
+            <!--<ion-col>张三</ion-col>-->
+            <!--<ion-col>20</ion-col>-->
+            <!--<ion-col>40</ion-col>-->
+            <!--<ion-col><ion-icon name="arrow-forward" item-end (click)="click()"></ion-icon></ion-col>-->
+          <!--</ion-row>-->
+        <!--</ion-grid>-->
+      <!--</ion-label>-->
+      <!--<ion-checkbox [(ngModel)]="pepperoni"></ion-checkbox>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>-->
+        <!--<ion-grid>-->
+          <!--<ion-row>-->
+            <!--<ion-col>李四</ion-col>-->
+            <!--<ion-col>10</ion-col>-->
+            <!--<ion-col>42</ion-col>-->
+            <!--<ion-col><ion-icon name="arrow-forward" item-end (click)="click()"></ion-icon></ion-col>-->
+          <!--</ion-row>-->
+        <!--</ion-grid>-->
+      <!--</ion-label>-->
+      <!--<ion-checkbox [(ngModel)]="sausage" disabled="true"></ion-checkbox>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item>-->
+      <!--<ion-label>-->
+        <!--<ion-grid>-->
+          <!--<ion-row>-->
+            <!--<ion-col>五哥</ion-col>-->
+            <!--<ion-col>29</ion-col>-->
+            <!--<ion-col>480</ion-col>-->
+            <!--<ion-col><ion-icon name="arrow-forward" item-end (click)="click()"></ion-icon></ion-col>-->
+          <!--</ion-row>-->
+        <!--</ion-grid>-->
+      <!--</ion-label>-->
+      <!--<ion-checkbox [(ngModel)]="mushrooms"></ion-checkbox>-->
+    <!--</ion-item>-->
+
+  <!--</ion-list>-->
+
 </ion-content>

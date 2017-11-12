@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Store} from '@ngrx/store';
-import {SetBackButtonTextAction, SetPlatformDirectionAction} from '../../actions/config-action';
+import {SetBackButtonTextAction, SetPlatformDirectionAction} from '../../actions/action/config-action';
 import {Platform} from 'ionic-angular';
 
 @Injectable()

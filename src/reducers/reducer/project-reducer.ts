@@ -1,5 +1,5 @@
-import {Project} from '../interfaces/response-interface';
-import * as actions from '../actions/project-action';
+import {Project} from '../../interfaces/response-interface';
+import * as actions from '../../actions/action/project-action';
 
 export interface State {
   count: number;

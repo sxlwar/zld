@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
-import {WorkerContractOptions} from '../interfaces/request-interface';
-import {WorkerContractListResponse} from '../interfaces/response-interface';
+import {WorkerContractOptions} from '../../interfaces/request-interface';
+import {WorkerContractListResponse} from '../../interfaces/response-interface';
 
 export const GET_WORKER_CONTRACTS = 'GET_WORKER_CONTRACTS';
 

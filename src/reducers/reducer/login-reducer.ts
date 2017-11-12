@@ -1,16 +1,16 @@
-import * as actions from '../actions/login-action';
+import * as actions from '../../actions/action/login-action';
 import {
   LOGIN,
   SHOW_SPECIFIC_INNER_SLIDE,
   SHOW_SPECIFIC_SLIDE,
   UPDATE_RANDOM_CODE
-} from '../actions/login-action';
-import {LoginOptions} from '../interfaces/request-interface';
+} from '../../actions/action/login-action';
+import {LoginOptions} from '../../interfaces/request-interface';
 import {ENV} from '@app/env';
 import {
   RegisterResponse, LoginResponse, ResetPasswordResponse,
   PhoneVerCodeResponse
-} from '../interfaces/response-interface';
+} from '../../interfaces/response-interface';
 
 export interface State {
   activeIndexOfSlides: number
