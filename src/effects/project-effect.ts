@@ -10,7 +10,7 @@ import {
   GetProjectListAction,
   ProjectListFailAction,
   ProjectListSuccessAction
-} from '../actions/project-action';
+} from '../actions/action/project-action';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/map';
 import {of} from 'rxjs/observable/of';

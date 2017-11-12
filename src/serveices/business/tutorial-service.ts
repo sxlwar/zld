@@ -3,7 +3,7 @@ import {Slides} from 'ionic-angular';
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {TranslateService} from '@ngx-translate/core';
-import {AddSlidesAction, ToggleSkipAction} from '../../actions/tutorial-action';
+import {AddSlidesAction, ToggleSkipAction} from '../../actions/action/tutorial-action';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/bufferCount';
@@ -13,7 +13,7 @@ import 'rxjs/add/operator/last';
 import 'rxjs/add/operator/mergeAll';
 import {zipObject} from 'lodash';
 import {Slide} from '../../interfaces/tutorial-interface';
-import {State} from '../../reducers/tutorial-reducer';
+import {State} from '../../reducers/reducer/tutorial-reducer';
 import {Subscription} from 'rxjs/Subscription';
 //endregion
 

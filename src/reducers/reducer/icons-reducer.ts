@@ -1,5 +1,5 @@
-import * as actions from '../actions/icons-action';
-import {PermissionResult} from '../interfaces/permission-interface';
+import * as actions from '../../actions/action/icons-action';
+import {PermissionResult} from '../../interfaces/permission-interface';
 
 export interface IconState {
   text: string;

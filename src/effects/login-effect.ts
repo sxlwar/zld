@@ -1,12 +1,12 @@
 //region
-import {Actions, Effect} from '@ngrx/effects';
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
-import {WebsocketService} from '../serveices/api/websocket-service';
-import {Command} from '../serveices/api/command';
+import { Actions, Effect } from '@ngrx/effects';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { WebsocketService } from '../serveices/api/websocket-service';
+import { Command } from '../serveices/api/command';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/filter';
-import {of} from 'rxjs/observable/of';
+import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/reduce';
@@ -27,11 +27,11 @@ import {
   ResetPasswordSuccessAction,
   ResetPhoneVerCodeFailAction,
   ResetPhoneVerCodeSuccessAction
-} from '../actions/login-action';
+} from '../actions/action/login-action';
 import 'rxjs/add/operator/throttle';
-import {RequestAction} from '../interfaces/request-interface';
-import {ResponseAction} from '../interfaces/response-interface';
-import {TipService} from '../serveices/tip-service';
+import { RequestAction } from '../interfaces/request-interface';
+import { ResponseAction } from '../interfaces/response-interface';
+import { TipService } from '../serveices/tip-service';
 //endregion
 
 @Injectable()
@@ -94,8 +94,8 @@ export class LoginEffect {
     );
 
   constructor(public actions$: Actions,
-              public ws: WebsocketService,
-              public command: Command,
-              public tip: TipService) {
+    public ws: WebsocketService,
+    public command: Command,
+    public tip: TipService) {
   }
 }

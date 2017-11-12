@@ -1,5 +1,5 @@
-import {Company, WorkerResponse} from '../interfaces/response-interface';
-import {SearchCompanyOptions} from '../interfaces/request-interface';
+import {Company, WorkerResponse} from '../../interfaces/response-interface';
+import {SearchCompanyOptions} from '../../interfaces/request-interface';
 
 export const SEARCH_COMPANY = 'SEARCH_COMPANY';
 

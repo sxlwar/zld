@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {Slide} from '../interfaces/tutorial-interface';
+import {Slide} from '../../interfaces/tutorial-interface';
 
 export const ADD_SLIDES = 'ADD_SLIDES';
 export const ADD_SLIDE = 'ADD_SLIDE';

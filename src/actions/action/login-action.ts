@@ -2,11 +2,11 @@ import {Action} from '@ngrx/store';
 import {
   LoginOptions, PhoneVerificationCodeOptions, RegisterOptions,
   ResetPasswordOptions
-} from '../interfaces/request-interface';
+} from '../../interfaces/request-interface';
 import {
   RegisterResponse, LoginResponse, ResetPasswordResponse,
   PhoneVerCodeResponse
-} from '../interfaces/response-interface';
+} from '../../interfaces/response-interface';
 
 /*====================================================SLIDES ACTIONS===============================================*/
 

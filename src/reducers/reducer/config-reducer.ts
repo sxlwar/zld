@@ -1,4 +1,4 @@
-import * as config from '../actions/config-action'
+import * as config from '../../actions/action/config-action'
 
 export interface State {
   backButtonText: string;

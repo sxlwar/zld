@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
-import {IconState} from '../../reducers/icons-reducer';
+import {IconState} from '../../reducers/reducer/icons-reducer';
 import {IconService} from '../../serveices/business/icon-service';
 import * as icon from '../../serveices/business/icon-service';
 

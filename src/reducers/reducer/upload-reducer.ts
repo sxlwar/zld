@@ -1,4 +1,4 @@
-import * as upload from '../actions/upload-action';
+import * as upload from '../../actions/action/upload-action';
 
 export interface State {
   uploading: boolean;

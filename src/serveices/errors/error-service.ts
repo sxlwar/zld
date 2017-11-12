@@ -1,13 +1,15 @@
-import {Injectable} from '@angular/core';
-import {AppState} from '../../reducers/index-reducer';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs/Subscription';
-import {AlertController, ToastController} from 'ionic-angular';
-import {TranslateService} from '@ngx-translate/core';
-import {ErrorMessage, ErrorResponse} from '../../interfaces/response-interface';
+//region
+import { Injectable } from '@angular/core';
+import { AppState } from '../../reducers/index-reducer';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { AlertController, ToastController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+import { ErrorMessage, ErrorResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
+//endregion
 
 export interface ErrorInfo {
   title: string;
@@ -18,9 +20,9 @@ export interface ErrorInfo {
 @Injectable()
 export class ErrorService {
   constructor(public store: Store<AppState>,
-              public alertCtrl: AlertController,
-              public toastCtrl: ToastController,
-              public translate: TranslateService) {
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController,
+    public translate: TranslateService) {
   }
 
   /**
@@ -50,7 +52,7 @@ export class ErrorService {
         duration: 3000,
         position: 'top'
       });
-      toast.present().then(() => {});
+      toast.present().then(() => { });
     });
   }
 
@@ -63,10 +65,10 @@ export class ErrorService {
     const button = 'CONFIRM_BUTTON';
 
     const lang$ = this.translate.get([title, button])
-      .map(lang => ({title: lang[title], buttons: [lang[button]]}));
+      .map(lang => ({ title: lang[title], buttons: [lang[button]] }));
 
     const error$: Observable<ErrorInfo> = obs.withLatestFrom(lang$)
-      .map(res => Object.assign({msg: res[0]}, res[1]) as ErrorInfo);
+      .map(res => Object.assign({ msg: res[0] }, res[1]) as ErrorInfo);
 
     return this.handleResponseError(error$);
 

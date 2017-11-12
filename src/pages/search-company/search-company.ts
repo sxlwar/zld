@@ -5,7 +5,7 @@ import {Company} from '../../interfaces/response-interface';
 import * as fromRoot from '../../reducers/index-reducer';
 import {AppState} from '../../reducers/index-reducer';
 import {Store} from '@ngrx/store';
-import {SearchCompanyAction, SelectCompanyAction} from '../../actions/search-action';
+import {SearchCompanyAction, SelectCompanyAction} from '../../actions/action/search-action';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/withLatestFrom';

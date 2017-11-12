@@ -1,5 +1,4 @@
 import {Action} from '@ngrx/store';
-import {inlineTemplate} from '@ionic/app-scripts/dist/template';
 
 export interface WsResponse {
   code: number;

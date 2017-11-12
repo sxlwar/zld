@@ -150,6 +150,26 @@ export const teamList: ApiUnit = {
   ])
 };
 
+export enum attendance {
+  attendanceOnlyDisplay = 'onlyDisplay'
+}
+
+export const attendanceList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.AttendResultList']]
+  ]),
+  permission: {
+    view: [PME, EME, PM, LM, TL, SW],
+    opt: []
+  },
+  noMagicNumber: new Map([
+    [attendance.attendanceOnlyDisplay, new Iterator({flag: 1})]
+  ]),
+  specialCharacter: new Map([
+    [SW, new Iterator({self: 1})]
+  ])
+};
+
 @Injectable()
 export class Command {
 
@@ -159,7 +179,6 @@ export class Command {
   workPieceList = "project.consumer.WorkPieceList";
   workerDetailList = "employee.consumer.WorkerDetailList";
   workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
-  attendResultList = "project.consumer.AttendResultList";
   requestList = "workflow.consumer.RequestList";
   projectPayBillList = "project.consumer.ProjectPayBillList";
   attendanceInstantList = "project.consumer.AttendanceInstantList";
@@ -305,6 +324,11 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  getAttendanceList(option): WsRequest {
+    const path = attendanceList.operates.get(Operate.querying)[0];
+    return this.getFullParameter(path,option);
+  }
+
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
@@ -319,5 +343,9 @@ export class Command {
 
   get teamList() {
     return teamList;
+  }
+
+  get attendanceList() {
+    return attendanceList;
   }
 }

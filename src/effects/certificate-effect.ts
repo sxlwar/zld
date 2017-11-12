@@ -7,7 +7,7 @@ import {
   CertificateAction,
   CertificateFailAction,
   CertificateSuccessAction
-} from '../actions/certificate-action';
+} from '../actions/action/certificate-action';
 import {WebsocketService} from '../serveices/api/websocket-service';
 import {Command} from '../serveices/api/command';
 import {of} from 'rxjs/observable/of';

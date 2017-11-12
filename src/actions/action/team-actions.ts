@@ -1,6 +1,6 @@
 import {Action} from '@ngrx/store';
-import {TeamListOptions} from '../interfaces/request-interface';
-import {TeamListResponse} from '../interfaces/response-interface';
+import {TeamListOptions} from '../../interfaces/request-interface';
+import {TeamListResponse} from '../../interfaces/response-interface';
 
 export const GET_TEAM_LIST = 'GET_TEAM_LIST';
 

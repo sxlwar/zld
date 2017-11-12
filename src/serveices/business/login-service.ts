@@ -1,7 +1,7 @@
 //region
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode} from '../../actions/login-action';
+import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode} from '../../actions/action/login-action';
 import {LoginOptions, RegisterOptions} from '../../interfaces/request-interface';
 import {Observable} from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';

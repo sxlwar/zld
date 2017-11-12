@@ -6,7 +6,7 @@ import {Store} from '@ngrx/store';
 import {Actions, Effect} from '@ngrx/effects';
 import {ResponseAction} from '../interfaces/response-interface';
 import {Observable} from 'rxjs/Observable';
-import {GET_WORK_TYPE_LIST, WorkTypeListFailAction, WorkTypeListSuccessAction} from '../actions/craft-action';
+import {GET_WORK_TYPE_LIST, WorkTypeListFailAction, WorkTypeListSuccessAction} from '../actions/action/craft-action';
 import {RequestAction} from '../interfaces/request-interface';
 import {Command} from '../serveices/api/command';
 import {of} from 'rxjs/observable/of';

@@ -1,6 +1,7 @@
 //region
 import {Injectable} from '@angular/core';
 import {
+  AttendanceResultListOptions,
   CertificateOptions,
   LoginOptions,
   PhoneVerificationCodeOptions,
@@ -17,20 +18,21 @@ import {
   RegisterPhoneVerCodeAction,
   ResetPasswordAction,
   ResetPhoneVerCodeAction
-} from '../../actions/login-action';
+} from '../../actions/action/login-action';
 import {Observable} from 'rxjs/Observable';
 import {ErrorService} from '../errors/error-service';
 import {Subscription} from 'rxjs/Subscription';
 import {MapperService} from './mapper-service';
-import {CertificateAction} from '../../actions/certificate-action';
+import {CertificateAction} from '../../actions/action/certificate-action';
 import 'rxjs';
 import {Command} from './command';
 import {UploadService} from './upload-service';
 import {PermissionService} from '../config/permission-service';
-import {GetProjectListAction} from '../../actions/project-action';
-import {GetWorkerContractsAction} from '../../actions/worker-action';
-import {GetWorkTypeListAction} from '../../actions/craft-action';
-import {GetTeamListAction} from '../../actions/team-actions';
+import {GetProjectListAction} from '../../actions/action/project-action';
+import {GetWorkerContractsAction} from '../../actions/action/worker-action';
+import {GetWorkTypeListAction} from '../../actions/action/craft-action';
+import {GetTeamListAction} from '../../actions/action/team-actions';
+import {GetAttendanceResultListAction} from '../../actions/action/attendance-actions';
 //endregion
 
 @Injectable()
@@ -139,5 +141,15 @@ export class ProcessorService extends MapperService {
       .subscribe(option => {
         this.store.dispatch(new GetTeamListAction(option));
       });
+  }
+
+  attendanceListProcessor(option$: Observable<AttendanceResultListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.attendanceList);
+
+    return permissionResult.filter(res => res.permission.view)
+      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .subscribe(option => {
+        this.store.dispatch(new GetAttendanceResultListAction(option));
+      })
   }
 }

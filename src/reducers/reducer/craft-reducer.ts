@@ -1,5 +1,5 @@
-import {WorkTypeListResponse} from '../interfaces/response-interface';
-import * as actions from '../actions/craft-action';
+import {WorkTypeListResponse} from '../../interfaces/response-interface';
+import * as actions from '../../actions/action/craft-action';
 
 export const initialState: WorkTypeListResponse = {
   information: []
