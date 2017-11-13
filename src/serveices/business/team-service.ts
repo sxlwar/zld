@@ -1,15 +1,15 @@
 //region
-import {Injectable} from '@angular/core';
-import {AppState, selectTeamResponse} from '../../reducers/index-reducer';
-import {Store} from '@ngrx/store';
-import {ErrorService} from '../errors/error-service';
-import {ProcessorService} from '../api/processor-service';
-import {Subscription} from 'rxjs/Subscription';
-import {Observable} from 'rxjs/Observable';
-import {Team} from '../../interfaces/response-interface';
-import {UserService} from './user-service';
-import {RequestOption} from '../../interfaces/request-interface';
-import {WorkerService} from './worker-service';
+import { Injectable } from '@angular/core';
+import { AppState, selectTeamResponse, selectSelectedTeams } from '../../reducers/index-reducer';
+import { Store } from '@ngrx/store';
+import { ErrorService } from '../errors/error-service';
+import { ProcessorService } from '../api/processor-service';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { Team } from '../../interfaces/response-interface';
+import { UserService } from './user-service';
+import { RequestOption } from '../../interfaces/request-interface';
+import { WorkerService } from './worker-service';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
@@ -19,9 +19,9 @@ import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
 import 'rxjs/add/observable/of';
-import {CW, QW, SW, TL} from '../config/character';
-import {ProjectService} from './project-service';
-
+import { CW, QW, SW, TL } from '../config/character';
+import { ProjectService } from './project-service';
+import { SetSelectTeams } from '../../actions/action/team-actions';
 //endregion
 
 
@@ -33,11 +33,11 @@ export class TeamService {
   characterHasTeam = [TL, CW, QW, SW];
 
   constructor(public store: Store<AppState>,
-              public error: ErrorService,
-              public process: ProcessorService,
-              public userInfo: UserService,
-              public project: ProjectService,
-              public workerService: WorkerService) {
+    public error: ErrorService,
+    public process: ProcessorService,
+    public userInfo: UserService,
+    public project: ProjectService,
+    public workerService: WorkerService) {
     this.handleError();
   }
 
@@ -47,7 +47,7 @@ export class TeamService {
 
   getTeamList(option: Observable<RequestOption> = Observable.empty()): void {
     const option$ = this.userInfo.getSid()
-      .map(sid => ({sid}))
+      .map(sid => ({ sid }))
       .combineLatest(option.defaultIfEmpty({}), (sid, option) => Object.assign(sid, option));
 
     const teamList$$ = this.process.teamListProcessor(option$);
@@ -68,16 +68,18 @@ export class TeamService {
       .mergeMap(team => {
         if (!!team) return Observable.of(team);
 
-        this.getTeamList();
+        const option = this.project.getCurrentProject().map(project => ({ project_id: project.id }));
+
+        this.getTeamList(option);
 
         return this.getTeams().mergeMap(teams => {
-          if(!teams) return Observable.empty();
+          if (!teams) return Observable.empty();
           return Observable.from(teams).first();
         });
       });
 
     return character$.mergeMap(isTeamCharacter => {
-      if(isTeamCharacter) return team$;
+      if (isTeamCharacter) return team$;
       return Observable.of(null);
     })
   }
@@ -86,12 +88,24 @@ export class TeamService {
     return this.getTeams().mergeMap(teams => {
       if (teams.length) return Observable.of(teams);
 
-      const option = this.project.getCurrentProject().map(project => ({project_id: project.id}));
+      const option = this.project.getCurrentProject().map(project => ({ project_id: project.id }));
 
       this.getTeamList(option);
 
       return this.getTeams();
     })
+  }
+
+  getSelectedTeams(): Observable<number[]> {
+    return this.store.select(selectSelectedTeams)
+  }
+
+  setSelectTeams(ids: Observable<number>): void {
+    ids.reduce((acc, cur) => {
+      acc.push(cur);
+      return acc;
+    }, [])
+    .subscribe(ids => this.store.dispatch(new SetSelectTeams(ids)));
   }
 
   private handleError() {

@@ -76,6 +76,7 @@ export interface Team {
   project_id: number;
   id: number;
   project_name: string;
+  selected?: boolean;
 }
 
 //teamList
@@ -225,12 +226,13 @@ export interface AttendanceResult {
   confirm: number;
   contract__worker__employee__realname: string;
   availability_work_hour: number;
-  day: number;
+  day: string;
   contract__worker_id: number;
   attend_amend: AmendAttendanceResult[];
   contract__team_id: number;
   id: number;
-  contract__worker__username: number;
+  contract__worker__username: string;
+  selected?: boolean;
 }
 
 

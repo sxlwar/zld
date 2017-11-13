@@ -11,7 +11,7 @@ export interface State {
   selected: Company
 }
 
-export const initialSate: State = {
+export const initialState: State = {
   companies: [],
   loading: false,
   query: '',
@@ -19,7 +19,7 @@ export const initialSate: State = {
 };
 
 
-export function reducer(state = initialSate, action: actions.Actions): State {
+export function reducer(state = initialState, action: actions.Actions): State {
   switch (action.type) {
     case SEARCH_COMPANY:
       const query = action.payload.name;

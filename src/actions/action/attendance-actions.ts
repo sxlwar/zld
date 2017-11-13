@@ -4,6 +4,8 @@ import {AttendanceResultListResponse} from '../../interfaces/response-interface'
 import {AttendanceResultListOptions} from '../../interfaces/request-interface';
 //endregion
 
+/*==========================================Attendance query======================================================= */
+
 export const GET_ATTENDANCE_RESULT_LIST = 'GET_ATTENDANCE_RESULT_LIST';
 
 export class GetAttendanceResultListAction implements Action {
@@ -31,9 +33,11 @@ export class AttendanceResultListSuccessAction implements Action {
   }
 }
 
+/* =============================================Attendance date=================================================== */
+
 export const SET_ATTENDANCE_START_DATE = 'SET_ATTENDANCE_START_DATE';
 
-export class SetAttendanceStartDate implements Action {
+export class SetAttendanceStartDateAction implements Action {
   readonly type = SET_ATTENDANCE_START_DATE;
 
   constructor(public payload: string) {
@@ -42,15 +46,88 @@ export class SetAttendanceStartDate implements Action {
 
 export const SET_ATTENDANCE_END_DATE = 'SET_ATTENDANCE_END_DATE';
 
-export class SetAttendanceEndDate implements Action {
+export class SetAttendanceEndDateAction implements Action {
   readonly type = SET_ATTENDANCE_END_DATE;
 
   constructor(public payload: string) {
   }
 }
 
+/* ======================================Attendance query page=================================================== */
+
+export const SET_QUERY_ATTENDANCE_PAGE = 'SET_QUERY_ATTENDANCE_PAGE';
+
+export class SetQueryAttendancePageAction implements Action {
+  readonly type = SET_QUERY_ATTENDANCE_PAGE;
+
+  constructor(public payload: number) {
+  }
+}
+
+export const GET_QUERY_ATTENDANCE_PAGE = 'GET_QUERY_ATTENDANCE_PAGE';
+
+export class GetQueryAttendancePageAction implements Action {
+  readonly type = GET_QUERY_ATTENDANCE_PAGE;
+
+  constructor() {
+  }
+}
+
+/* ==========================================Attendance limit==================================================== */
+
+export const SET_QUERY_ATTENDANCE_LIMIT = 'SET_QUERY_ATTENDANCE_LIMIT';
+
+export class SetQueryAttendanceLimitAction implements Action {
+  readonly type = SET_QUERY_ATTENDANCE_LIMIT;
+
+  constructor(public payload: number) {
+  }
+}
+
+export const GET_QUERY_ATTENDANCE_LIMIT = 'GET_QUERY_ATTENDANCE_LIMIT';
+
+export class GetQueryAttendanceLimitAction implements Action {
+  readonly type = GET_QUERY_ATTENDANCE_LIMIT;
+
+  constructor(public payload: number) {
+  }
+}
+
+/* ==========================================Attendance selected==================================================== */
+
+export const ADD_SELECTED_ATTENDANCE = 'ADD_SELECTED_ATTENDANCE'; 
+
+export class AddSelectedAttendanceAction implements Action {
+  readonly type = ADD_SELECTED_ATTENDANCE;
+
+  constructor(public payload: number){}
+}
+
+export const REMOVE_SELECTED_ATTENDANCE = 'REMOVE_SELECTED_ATTENDANCE';
+
+export class RemoveSelectedAttendanceAction implements Action {
+  readonly type = REMOVE_SELECTED_ATTENDANCE;
+
+  constructor(public payload: number){}
+}
+
+export const TOGGLE_ALL_SELECTED_ATTENDANCE = 'TOGGLE_ALL_SELECTED_ATTENDANCE';
+
+export class ToggleAllSelectedAction implements Action {
+  readonly type = TOGGLE_ALL_SELECTED_ATTENDANCE;
+
+  constructor(public payload: boolean){}
+}
+
 export type Actions = GetAttendanceResultListAction
   | AttendanceResultListFailAction
   | AttendanceResultListSuccessAction
-  | SetAttendanceStartDate
-  | SetAttendanceEndDate;
+  | SetAttendanceStartDateAction
+  | SetAttendanceEndDateAction
+  | SetQueryAttendancePageAction
+  | GetQueryAttendancePageAction
+  | SetQueryAttendanceLimitAction
+  | GetQueryAttendanceLimitAction
+  | AddSelectedAttendanceAction
+  | RemoveSelectedAttendanceAction
+  | ToggleAllSelectedAction;

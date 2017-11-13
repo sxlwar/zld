@@ -146,6 +146,8 @@
   "LOGOUT": "退出当前帐号",
 
   "API_ERROR": "请求失败",
+  
+  "RESPONSE_IS_EMPTY": "没有符合条件的结果",
 
 
   "TAB1_TITLE": "Items",

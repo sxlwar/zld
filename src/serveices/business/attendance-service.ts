@@ -1,16 +1,26 @@
 //region
 import { Injectable } from '@angular/core';
-import { AppState, selectAttendanceList, selectAttendanceResponse, selectAttendanceDatePeriod } from '../../reducers/index-reducer';
+import {
+  AppState,
+  selectAttendanceDatePeriod,
+  selectAttendanceLimit,
+  selectAttendanceList,
+  selectAttendancePage,
+  selectAttendanceResponse,
+  selectAttendanceAllSelected
+} from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceResult } from '../../interfaces/response-interface';
-import { AttendanceResultListOptions, RequestOption } from '../../interfaces/request-interface';
+import { RequestOption } from '../../interfaces/request-interface';
 import 'rxjs/add/observable/empty'
 import { DatePeriod } from '../../reducers/reducer/attendance-reducer';
-import { SetAttendanceStartDate, SetAttendanceEndDate } from '../../actions/action/attendance-actions';
+import { SetAttendanceEndDateAction, SetAttendanceStartDateAction, AddSelectedAttendanceAction, RemoveSelectedAttendanceAction, ToggleAllSelectedAction } from '../../actions/action/attendance-actions';
+import { UserService } from '../../serveices/business/user-service';
+
 //endregion
 
 @Injectable()
@@ -19,16 +29,35 @@ export class AttendanceService {
 
   constructor(public store: Store<AppState>,
     public processor: ProcessorService,
-    public error: ErrorService) {
+    public userInfo: UserService,
+    public error: ErrorService
+  ) {
     this.handleError();
   }
 
   getAttendanceResultList(option: Observable<RequestOption>): Observable<AttendanceResult[]> {
+    this.getAttendances(option);
+
     return this.store.select(selectAttendanceList);
   }
 
-  getAttendanceResult(option: Observable<AttendanceResultListOptions> = Observable.empty()): void {
+  getAttendances(option: Observable<RequestOption> = Observable.empty()): void {
+    const sid = this.userInfo.getSid();
 
+    const page = this.store.select(selectAttendancePage);
+
+    const limit = this.store.select(selectAttendanceLimit);
+
+    const params = sid.zip(
+      page,
+      limit,
+      option,
+      (sid, limit, page, option) => ({ sid, page, limit, ...option })
+    );
+
+    const subscription = this.processor.attendanceListProcessor(params);
+
+    this.subscriptions.push(subscription);
   }
 
   getSelectedDate(): Observable<DatePeriod> {
@@ -37,9 +66,25 @@ export class AttendanceService {
 
   setDate(type: string, data: string): void {
     if (type === 'start') {
-      this.store.dispatch(new SetAttendanceStartDate(data));
+      this.store.dispatch(new SetAttendanceStartDateAction(data));
     }
-    this.store.dispatch(new SetAttendanceEndDate(data));
+    this.store.dispatch(new SetAttendanceEndDateAction(data));
+  }
+
+  toggleSelected(att:AttendanceResult) {
+    if(att.selected){
+      this.store.dispatch(new AddSelectedAttendanceAction(att.id));
+    }else {
+      this.store.dispatch(new RemoveSelectedAttendanceAction(att.id));
+    }
+  }
+
+  getAllSelected(): Observable<boolean> {
+    return this.store.select(selectAttendanceAllSelected);
+  }
+
+  toggleAllSelected(isSelected: boolean) {
+    this.store.dispatch(new ToggleAllSelectedAction(isSelected));
   }
 
   handleError() {

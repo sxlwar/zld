@@ -13,7 +13,7 @@ export class RequestAction implements Action {
 }
 
 export interface RequestOption {
-  [key: string]: string | number;
+  [key: string]: string | number | number[] | string [];
 }
 
 export interface LoginOptions {

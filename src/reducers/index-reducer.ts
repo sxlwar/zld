@@ -136,15 +136,21 @@ export const selectWorkTypeList = createSelector(getWorkType, workType.getWorkTy
 //team list
 export const getTeam = (state: AppState) => state.team;
 export const selectTeamResponse = createSelector(getTeam, team.getTeamListResponse);
+export const selectSelectedTeams = createSelector(getTeam, team.getSelectTeams);
 
 //attendance result list
 export const getAttendance = (state: AppState) => state.attendance;
 export const selectAttendanceResponse = createSelector(getAttendance, attendance.getAttendanceResultResponse);
-export const selectAttendanceList = createSelector(getAttendance, attendance.getAttendnaceResults);
+export const selectAttendanceList = createSelector(getAttendance, attendance.getAttendanceResults);
 export const selectAttendanceCount = createSelector(getAttendance, attendance.getAttendanceCount);
 export const selectAttendanceDatePeriod = createSelector(getAttendance, attendance.getAttendanceDatePeriod);
 export const selectAttendanceDateStart = createSelector(selectAttendanceDatePeriod, attendance.getAttendanceStartDate);
 export const selectAttendanceDateEnd = createSelector(selectAttendanceDatePeriod, attendance.getAttendanceEndDate);
+export const selectAttendancePage = createSelector(getAttendance, attendance.getAttendancePage);
+export const selectAttendanceLimit = createSelector(getAttendance, attendance.getAttendanceLimit);
+export const selectSelectedAttendanceIds = createSelector(getAttendance, attendance.getSelectedAttendanceIds);
+export const selectAttendanceAllSelected = createSelector(getAttendance, attendance.getAllSelected);
+
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 /*================================================HTTP===========================================================*/

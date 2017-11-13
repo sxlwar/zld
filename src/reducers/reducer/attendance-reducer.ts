@@ -15,11 +15,13 @@ export interface State {
   limit: number;
   page: number;
   datePeriod: DatePeriod;
+  selected: number[];
+  allSelected: boolean;
   attendanceResultListResponse: AttendanceResultListResponse;
 }
 
 export const initialState: State = {
-  limit: 10,
+  limit: 20,
   page: 1,
   datePeriod: {
     start: new Date(),
@@ -28,7 +30,9 @@ export const initialState: State = {
   attendanceResultListResponse: {
     count: 0,
     attendance_results: []
-  }
+  },
+  selected: [],
+  allSelected: false
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -45,18 +49,46 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
     case actions.SET_ATTENDANCE_START_DATE:
     case actions.SET_ATTENDANCE_END_DATE: {
-      const datePeriod = datePeroidReducer(state.datePeriod, action);
+      const datePeriod = datePeriodReducer(state.datePeriod, action);
 
       return Object.assign({}, state, { datePeriod });
     }
 
+    case actions.SET_QUERY_ATTENDANCE_PAGE:
+      return Object.assign({}, state, {page: action.payload});
+
+    case actions.SET_QUERY_ATTENDANCE_LIMIT:
+      return Object.assign({}, state, {limit: action.payload});
+
+    case actions.ADD_SELECTED_ATTENDANCE:{
+      const selected = state.selected.concat([action.payload]);
+
+      const allSelected = selected.length === state.attendanceResultListResponse.attendance_results.length;
+      
+      return Object.assign({}, state, {selected, allSelected});
+    }
+
+    case actions.REMOVE_SELECTED_ATTENDANCE: {
+      const selected = state.selected.filter(item => item !== action.payload);
+
+      return Object.assign({}, state, {selected, allSelected: false});
+    }
+
+    case actions.TOGGLE_ALL_SELECTED_ATTENDANCE: {
+      const selected = action.payload ? state.attendanceResultListResponse.attendance_results.map(item => item.id) : [];
+
+      return Object.assign({}, state, {selected, allSelected: action.payload});
+    }
+
+    case actions.GET_QUERY_ATTENDANCE_PAGE:
+    case actions.GET_QUERY_ATTENDANCE_LIMIT:
     case GET_ATTENDANCE_RESULT_LIST:
     default:
       return state;
   }
 }
 
-export function datePeroidReducer(state = initialState.datePeriod, action: actions.Actions): DatePeriod {
+export function datePeriodReducer(state = initialState.datePeriod, action: actions.Actions): DatePeriod {
   switch (action.type) {
     case actions.SET_ATTENDANCE_START_DATE:
       return {
@@ -77,7 +109,7 @@ export function datePeroidReducer(state = initialState.datePeriod, action: actio
 
 export const getAttendanceResultResponse = (state: State) => state.attendanceResultListResponse;
 
-export const getAttendnaceResults = (state: State) => state.attendanceResultListResponse.attendance_results;
+export const getAttendanceResults = (state: State) => state.attendanceResultListResponse.attendance_results;
 
 export const getAttendanceCount = (state: State) => state.attendanceResultListResponse.count;
 
@@ -86,3 +118,11 @@ export const getAttendanceDatePeriod = (state: State) => state.datePeriod;
 export const getAttendanceStartDate = (state: DatePeriod) => state.start;
 
 export const getAttendanceEndDate = (state: DatePeriod) => state.end;
+
+export const getAttendancePage = (state: State) => state.page;
+
+export const getAttendanceLimit = (state: State) => state.limit;
+
+export const getAllSelected = (state: State) => state.allSelected;
+
+export const getSelectedAttendanceIds = (state: State) => state.selected;

@@ -29,7 +29,25 @@ export class TeamListSuccessAction implements Action {
   }
 }
 
+export const SET_SELECT_TEAMS = 'SET_SELECT_TEAMS';
+
+export class SetSelectTeams implements Action {
+  readonly type = SET_SELECT_TEAMS;
+
+  constructor(public payload: number[]){}
+}
+
+export const GET_SELECT_TEAMS = 'GET_SELECT_TEAMS';
+
+export class GetSelectTeams implements Action {
+  readonly type = GET_SELECT_TEAMS;
+
+  constructor() {}
+}
+
 
 export type Actions = GetTeamListAction
   | TeamListFailAction
-  | TeamListSuccessAction;
+  | TeamListSuccessAction
+  | SetSelectTeams
+  | GetSelectTeams;
