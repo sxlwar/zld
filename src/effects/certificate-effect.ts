@@ -8,8 +8,8 @@ import {
   CertificateFailAction,
   CertificateSuccessAction
 } from '../actions/action/certificate-action';
-import {WebsocketService} from '../serveices/api/websocket-service';
-import {Command} from '../serveices/api/command';
+import {WebsocketService} from '../services/api/websocket-service';
+import {Command} from '../services/api/command';
 import {of} from 'rxjs/observable/of';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';

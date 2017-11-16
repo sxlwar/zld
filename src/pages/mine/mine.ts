@@ -1,22 +1,15 @@
 //region
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import * as icon from '../../serveices/business/icon-service';
-import {IconService} from '../../serveices/business/icon-service';
+import * as icon from '../../services/business/icon-service';
+import {IconService} from '../../services/business/icon-service';
 import {Observable} from 'rxjs/Observable';
 import {IconState} from '../../reducers/reducer/icons-reducer';
-import {ProjectService} from '../../serveices/business/project-service';
-import {UserService} from '../../serveices/business/user-service';
-import {CraftService} from '../../serveices/business/craft-service';
-import {TeamService} from '../../serveices/business/team-service';
+import {ProjectService} from '../../services/business/project-service';
+import {UserService} from '../../services/business/user-service';
+import {CraftService} from '../../services/business/craft-service';
+import {TeamService} from '../../services/business/team-service';
 //endregion
-
-/**
- * Generated class for the MinePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 const icons = [
   icon.myAttendance,

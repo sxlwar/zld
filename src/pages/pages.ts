@@ -42,10 +42,14 @@ export const attendancePage = 'AttendancePage';
 
 
 
+/*============================================common pages===================================================*/
 
+export const attendanceRecordPage = 'AttendanceRecordPage';
 
 
 /*============================================mine tab pages===================================================*/
+
+export const personalAttendancePage = 'PersonalAttendancePage';
 
 export const PAGES = [
   { title: 'Tutorial', component: tutorialPage },
@@ -70,7 +74,9 @@ export const PAGES = [
   { title: 'Mission', component: MissionRoot},
   { title: 'Mine', component: MineRoot},
 
-  { title: 'Attendance', component: attendancePage }
+  { title: 'Attendance', component: attendancePage },
+
+  { title: 'AttendanceRecord', component: attendanceRecordPage},
+
+  { title: 'PersonalAttendance', component: personalAttendancePage}
 ];
-
-

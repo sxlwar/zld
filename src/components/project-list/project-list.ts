@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import {NavParams, ViewController} from 'ionic-angular';
-import {ProjectService} from '../../serveices/business/project-service';
+import {ProjectService} from '../../services/business/project-service';
 import {Project} from '../../interfaces/response-interface';
 import {Observable} from 'rxjs/Observable';
-import {WorkerService} from '../../serveices/business/worker-service';
+import {WorkerService} from '../../services/business/worker-service';
 
 /**
  * Generated class for the ProjectListComponent component.

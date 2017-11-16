@@ -27,6 +27,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
+import { RequestOption } from 'interfaces/request-interface';
 //endregion
 
 @Injectable()
@@ -70,7 +71,7 @@ export class WorkerService {
    * @description
    * If there is a repository, use this data directly, if not, we need to get it from the server
    * */
-  getContractByUserId(userId: Observable<number>): Observable<WorkerContract> {
+  getContractByUserId(userId: Observable<number>, subOption: Observable<RequestOption> = Observable.empty()): Observable<WorkerContract> {
 
     const combineFn = (contracts, id) => contracts.find(contract => contract.worker_id === id);
 
@@ -79,7 +80,11 @@ export class WorkerService {
       .mergeMap(contract => {
         if (contract) return Observable.of(contract);
 
-        const option = Observable.of({limit: 1, page: 1}).zip(userId, (option, user_id) => ({...option, user_id}));
+        const option = Observable.of({limit: 1, page: 1}).zip(
+          userId,
+          subOption.defaultIfEmpty({}),
+          (option, user_id, subOption) => ({...option, user_id, ...subOption})
+        );
 
         this.getWorkerContracts(option);
 
@@ -93,10 +98,10 @@ export class WorkerService {
       })
   }
 
-  getOwnContract(): Observable<WorkerContract> {
+  getOwnContract(option: Observable<RequestOption> = Observable.empty()): Observable<WorkerContract> {
     const userId = this.store.select(selectUserId);
 
-    return this.getContractByUserId(userId);
+    return this.getContractByUserId(userId, option);
   }
 
   incrementPage() {

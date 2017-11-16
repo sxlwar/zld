@@ -1,5 +1,5 @@
 //region
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   AttendanceResultListOptions,
   CertificateOptions,
@@ -8,10 +8,14 @@ import {
   RegisterOptions,
   ResetPasswordOptions, TeamListOptions,
   UploadImageOptions,
-  WorkerContractOptions
+  WorkerContractOptions,
+  AttendanceInstantListOptions,
+  PayBillListOptions,
+  WorkPieceListOptions,
+  WorkOvertimeRecordListOptions
 } from '../../interfaces/request-interface';
-import {Store} from '@ngrx/store';
-import {AppState, selectSid} from '../../reducers/index-reducer';
+import { Store } from '@ngrx/store';
+import { AppState, selectSid } from '../../reducers/index-reducer';
 import {
   LoginAction,
   RegisterAction,
@@ -19,30 +23,34 @@ import {
   ResetPasswordAction,
   ResetPhoneVerCodeAction
 } from '../../actions/action/login-action';
-import {Observable} from 'rxjs/Observable';
-import {ErrorService} from '../errors/error-service';
-import {Subscription} from 'rxjs/Subscription';
-import {MapperService} from './mapper-service';
-import {CertificateAction} from '../../actions/action/certificate-action';
+import { Observable } from 'rxjs/Observable';
+import { ErrorService } from '../errors/error-service';
+import { Subscription } from 'rxjs/Subscription';
+import { MapperService } from './mapper-service';
+import { CertificateAction } from '../../actions/action/certificate-action';
 import 'rxjs';
-import {Command} from './command';
-import {UploadService} from './upload-service';
-import {PermissionService} from '../config/permission-service';
-import {GetProjectListAction} from '../../actions/action/project-action';
-import {GetWorkerContractsAction} from '../../actions/action/worker-action';
-import {GetWorkTypeListAction} from '../../actions/action/craft-action';
-import {GetTeamListAction} from '../../actions/action/team-actions';
-import {GetAttendanceResultListAction} from '../../actions/action/attendance-actions';
+import { Command } from './command';
+import { UploadService } from './upload-service';
+import { PermissionService } from '../config/permission-service';
+import { GetProjectListAction } from '../../actions/action/project-action';
+import { GetWorkerContractsAction } from '../../actions/action/worker-action';
+import { GetWorkTypeListAction } from '../../actions/action/craft-action';
+import { GetTeamListAction } from '../../actions/action/team-action';
+import { GetAttendanceResultListAction } from '../../actions/action/attendance-action';
+import { GetAttendanceRecordAction } from '../../actions/action/attendance-record-action';
+import { GetPayBillListAction } from '../../actions/action/pay-bill-action';
+import { GetWorkPieceListAction } from '../../actions/action/work-piece-action';
+import { GetWorkOvertimeRecordAction } from '../../actions/action/overtime-action';
 //endregion
 
 @Injectable()
 export class ProcessorService extends MapperService {
 
   constructor(public store: Store<AppState>,
-              public errorService: ErrorService,
-              public uploadService: UploadService,
-              public command: Command,
-              public permission: PermissionService) {
+    public errorService: ErrorService,
+    public uploadService: UploadService,
+    public command: Command,
+    public permission: PermissionService) {
     super();
   }
 
@@ -108,7 +116,7 @@ export class ProcessorService extends MapperService {
 
     const sid$ = this.store.select(selectSid);
 
-    return viewPermission$.zip(sid$, (passed, sid) => passed ? {sid, prime_contract_status: '完成'} : null)
+    return viewPermission$.zip(sid$, (passed, sid) => passed ? { sid, prime_contract_status: '完成' } : null)
       .filter(res => !!res)
       .subscribe(option => this.store.dispatch(new GetProjectListAction(option)));
   }
@@ -123,7 +131,7 @@ export class ProcessorService extends MapperService {
     return viewPermission$.zip(
       specialOption$,
       option$,
-      (passed, option1, option2) => passed ? {...option1, ...option2} : null
+      (passed, option1, option2) => passed ? { ...option1, ...option2 } : null
     )
       .filter(res => !!res)
       .subscribe(option => this.store.dispatch(new GetWorkerContractsAction(option)));
@@ -136,7 +144,8 @@ export class ProcessorService extends MapperService {
   teamListProcessor(option$: Observable<TeamListOptions>): Subscription {
     const permissionResult = this.permission.comprehensiveValidate(this.command.teamList);
 
-    return permissionResult.filter(res => res.permission.view)
+    return permissionResult
+      .filter(res => res.permission.view)
       .zip(option$, (result, option) => Object.assign({}, option, result.option))
       .subscribe(option => {
         this.store.dispatch(new GetTeamListAction(option));
@@ -146,10 +155,47 @@ export class ProcessorService extends MapperService {
   attendanceListProcessor(option$: Observable<AttendanceResultListOptions>): Subscription {
     const permissionResult = this.permission.comprehensiveValidate(this.command.attendanceList);
 
-    return permissionResult.filter(res => res.permission.view)
+    return permissionResult
+      .filter(res => res.permission.view)
       .zip(option$, (result, option) => Object.assign({}, option, result.option))
       .subscribe(option => {
         this.store.dispatch(new GetAttendanceResultListAction(option));
       })
+  }
+
+  attendanceRecordListProcessor(option$: Observable<AttendanceInstantListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.attendanceInstantList);
+
+    return permissionResult
+      .filter(res => res.permission.view)
+      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .subscribe(option => this.store.dispatch(new GetAttendanceRecordAction(option)));
+  }
+
+  payBillListProcessor(option$: Observable<PayBillListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.payBillList);
+
+    return permissionResult
+      .filter(res => res.permission.view)
+      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .subscribe(option => this.store.dispatch(new GetPayBillListAction(option)));
+  }
+
+  workPieceListProcessor(option$: Observable<WorkPieceListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.workPieceList);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetWorkPieceListAction(option)));
+  }
+
+  workOvertimeRecordListProcessor(option$: Observable<WorkOvertimeRecordListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.workOvertimeRecordList);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetWorkOvertimeRecordAction(option)));
   }
 }

@@ -125,6 +125,47 @@ export interface AttendanceInstantListOptions {
   team_id?: number[];
   flag?: number;
   attendance_machine_id?: number;
+} 
+
+export interface PayBillListOptions {
+  sid: string;
+  month: string;
+  self?: number;
+  user_id?: number[];
+  team_id?: number[];
+  project_id?: number;
+  request_id?: number;
+  pay_type?: string;
+}
+
+export interface RequestAggregationOptions {
+  sid: string;
+}
+
+export interface WorkOvertimeRecordListOptions {
+  sid: string;
+  request_id?: number;
+  project_id?: number;
+  start_day?: string;
+  end_day?: string;
+  request_status?: string;
+  user_id?: number[];
+  self?: number;
+  team_id?: number[];
+  page?: number;
+  limit?: number;
+  history_view?: boolean;
+}
+
+export interface WorkPieceListOptions {
+  sid: string;
+  project_id?: number;
+  user_id?: number;
+  self?: number;
+  request_id?: number;
+  request_status?: string;
+  work_piece_pay_id?: number;
+  history_view?: boolean;
 }
 
 export type Options = LoginOptions
@@ -138,4 +179,6 @@ export type Options = LoginOptions
   & ProjectListOptions
   & WorkerContractOptions
   & AttendanceResultListOptions
-  & AttendanceInstantListOptions;
+  & AttendanceInstantListOptions
+  & PayBillListOptions
+  & WorkOvertimeRecordListOptions;

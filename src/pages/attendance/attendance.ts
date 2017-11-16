@@ -2,21 +2,19 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { AttendanceService } from '../../serveices/business/attendance-service';
-import { TimeService } from '../../serveices/utils/time-service';
+import { AttendanceService } from '../../services/business/attendance-service';
+import { TimeService } from '../../services/utils/time-service';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceResult, Team } from '../../interfaces/response-interface';
-import { TeamService } from '../../serveices/business/team-service';
+import { TeamService } from '../../services/business/team-service';
 import { Subscription } from 'rxjs/Subscription';
-import { attendances } from '../../mocks/providers/data';
+import { attendanceList, attendance } from '../../services/api/command';
+import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
+import { attendance as attendanceIcon } from '../../services/business/icon-service';
+import { ProjectRoot, attendanceRecordPage } from '../../pages/pages';
+import { uniqBy } from 'lodash';
 //endregion
 
-/**
- * Generated class for the AttendancePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 @IonicPage()
 @Component({
   selector: 'page-attendance',
@@ -30,15 +28,19 @@ export class AttendancePage {
   attendances: Observable<AttendanceResult[]>;
   subscriptions: Subscription[] = [];
   allSelected: boolean;
+  sortType = 1;
+  operatePermission: Observable<boolean>
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public attendance: AttendanceService,
     public timeService: TimeService,
     public teamService: TeamService,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public actionSheet: ActionSheetController
   ) {
     this.today = timeService.getDate(new Date(), true);
+    this.operatePermission = this.getOperatePermission();
   }
 
   ionViewDidLoad() {
@@ -48,18 +50,20 @@ export class AttendancePage {
     this.monitorAllSelect();
   }
 
+  /* ========================================================Initial data model========================================================= */
+
   initialDate() {
     const subscription = this.attendance.getSelectedDate()
       .subscribe(data => {
         this.startDate = this.timeService.getDate(data.start, true);
         this.endDate = this.timeService.getDate(data.end, true);
       });
-
     this.subscriptions.push(subscription);
   }
 
   initialTeam() {
     this.teams = this.teamService.getOwnTeams()
+
       .withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => {
         teams.forEach(team => team.selected = ids.indexOf(team.id) !== -1);
         return teams;
@@ -69,13 +73,20 @@ export class AttendancePage {
   getAttendances() {
     const option = this.getAttendanceOption();
 
-    // this.attendances = this.attendance.getAttendanceResultList(option);
-    this.attendances = Observable.of(attendances);
+    this.attendances = this.attendance.getAttendanceResult(option);
   }
 
+  getOperatePermission(): Observable<boolean> {
+    return this.attendance.getOperatePermission(attendanceIcon.icon, ProjectRoot)
+  }
+
+  /* ========================================================Attendance operation========================================================= */
+
   getAttendanceOption() {
+    const queryType = attendanceList.noMagicNumber.get(attendance.unconfirm).value;
+
     return this.teamService.getSelectedTeams()
-      .map(ids => ({ start_day: this.startDate, end_day: this.endDate, team_id: ids }));
+      .map(ids => ({ start_day: this.startDate, end_day: this.endDate, team_id: ids, ...queryType }));
   }
 
   setDate(type: string) {
@@ -83,15 +94,7 @@ export class AttendancePage {
 
     this.attendance.setDate(type, data);
 
-    this.attendance.getAttendances(this.getAttendanceOption());
-  }
-
-  setTeam(teams) {
-    const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
-
-    this.teamService.setSelectTeams(teamIds);
-
-    this.attendance.getAttendances(this.getAttendanceOption());
+    this.getAttendances();
   }
 
   toggleAllSelected(isSelected) {
@@ -103,31 +106,49 @@ export class AttendancePage {
   }
 
   monitorAllSelect() {
-    const subscription = this.attendance.getAllSelected().subscribe(all => {
-      this.allSelected = all;
-    });    
-    
+    const subscription = this.attendance.getAllSelectedState().subscribe(all => this.allSelected = all);
+
     this.subscriptions.push(subscription);
   }
 
-  getAttendanceResultList() {
+  getNextPage(infiniteScroll) {
+    this.attendance.increasePage();
 
+    this.attendances = this.attendances.scan((acc,cur) => acc.concat(cur)).map(res => uniqBy(res, 'id'));
+
+    this.attendance.getAttendances(this.getAttendanceOption());
+
+    return this.attendance.getAttendanceResultList().toPromise();
   }
 
-  getItems(input: string) {
+  sortAttendanceBy(target: string) {
+    this.sortType = -this.sortType;
 
+    this.attendance.switchSortType(this.sortType);
+
+    this.attendance.sortBy(target);
   }
 
-  click() {
-    console.log('arrow clicked');
+  /* ========================================================Team operation========================================================= */
+
+  setTeam(teams) {
+    const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
+
+    this.teamService.setSelectTeams(teamIds);
+
+    this.getAttendances();
+  }
+
+  showActionSheet() {
+    this.attendance.showActionSheet();
+  }
+
+  goToDetailPage(attendance) {
+    this.navCtrl.push(attendanceRecordPage, { attendance }).then(() => { });
   }
 
   ionViewWillUnload() {
     this.subscriptions.forEach(item => item && item.unsubscribe());
     this.attendance.unSubscribe();
-  }
-
-  ionViewDidLeave() {
-    
   }
 }

@@ -13,6 +13,10 @@ import * as worker from './reducer/worker-reducer';
 import * as workType from './reducer/craft-reducer';
 import * as team from './reducer/team-reducer';
 import * as attendance from './reducer/attendance-reducer';
+import * as attendanceRecord from './reducer/attendance-record-reducer';
+import * as payBill from './reducer/pay-bill-reducer';
+import * as overtime from './reducer/overtime-reducer';
+import * as piece from './reducer/work-piece-reducer';
 //endregion
 
 export interface AppState {
@@ -33,6 +37,10 @@ export interface AppState {
   workType: response.WorkTypeListResponse,
   team: team.State,
   attendance: attendance.State,
+  attendanceRecord: attendanceRecord.State,
+  payBill: payBill.State,
+  overtime: overtime.State,
+  piece: piece.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -52,7 +60,11 @@ export const reducers: ActionReducerMap<AppState> = {
   worker: worker.reducer,
   workType: workType.reducer,
   team: team.reducer,
-  attendance: attendance.reducer
+  attendance: attendance.reducer,
+  attendanceRecord: attendanceRecord.reducer,
+  payBill: payBill.reducer,
+  overtime: overtime.reducer,
+  piece: piece.reducer,
 };
 
 //config
@@ -150,6 +162,33 @@ export const selectAttendancePage = createSelector(getAttendance, attendance.get
 export const selectAttendanceLimit = createSelector(getAttendance, attendance.getAttendanceLimit);
 export const selectSelectedAttendanceIds = createSelector(getAttendance, attendance.getSelectedAttendanceIds);
 export const selectAttendanceAllSelected = createSelector(getAttendance, attendance.getAllSelected);
+export const selectAttendanceData = createSelector(getAttendance, attendance.getAttendanceData);
+
+//attendance instanst list
+export const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
+export const selectAttendanceRecordResponse = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceResponse);
+export const selectAttendanceRecordCount = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordCount);
+export const selectAttendanceRecordInstant = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordInstants);
+export const selectAttendanceRecordPage = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordPage);
+export const selectAttendanceRecordLimit = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordLimit);
+
+//pay bill list
+export const getPayBill = (state: AppState) => state.payBill;
+export const selectPayBillListResponse = createSelector(getPayBill, payBill.getPayBillListResponse);
+export const selectPayBillListCount = createSelector(getPayBill, payBill.getPayBillListCount);
+export const selectPayBillList = createSelector(getPayBill, payBill.getPayBillList);
+
+//overtime record list
+export const getOvertime = (state: AppState) => state.overtime;
+export const selectOvertimeRecordResponse = createSelector(getOvertime, overtime.getOvertimeRecordResponse);
+export const selectOvertimeRecordCount = createSelector(getOvertime, overtime.getOvertimeRecordCount);
+export const selectOvertimeRecord = createSelector(getOvertime, overtime.getOvertimeRecord);
+
+//work piece 
+export const getWorkPiece = (state: AppState) => state.piece;
+export const selectWorkPieceResponse = createSelector(getWorkPiece, piece.getPieceResponse);
+export const selectWorkPiecePay = createSelector(getWorkPiece, piece.getPiecePay);
+export const selectWorkPieceFinishFlow = createSelector(getWorkPiece, piece.getPieceFinishFlow);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
@@ -162,4 +201,6 @@ export const selectUploadedState = createSelector(getUploadState, upload.getUplo
 export const selectUploadResult = createSelector(getUploadState, upload.getUploadResult);
 
 /*================================================Icons with permission===========================================*/
+
 export const getIconsState = (state: AppState) => state.icons;
+export const selectIcon = (path: string | string[]) => createSelector(getIconsState, icons.getSpecificIcon(path));

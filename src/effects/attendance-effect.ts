@@ -1,19 +1,17 @@
 //region
-import {Injectable} from '@angular/core';
-import {Actions, Effect} from '@ngrx/effects';
-import {WebsocketService} from '../serveices/api/websocket-service';
-import {AppState} from '../reducers/index-reducer';
-import {Command} from '../serveices/api/command';
-import {Store} from '@ngrx/store';
-import {ResponseAction} from '../interfaces/response-interface';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { WebsocketService } from '../services/api/websocket-service';
+import { Command } from '../services/api/command';
+import { ResponseAction } from '../interfaces/response-interface';
+import { Observable } from 'rxjs/Observable';
 import {
   AttendanceResultListFailAction,
   AttendanceResultListSuccessAction,
   GET_ATTENDANCE_RESULT_LIST,
   GetAttendanceResultListAction
-} from '../actions/action/attendance-actions';
-import {of} from 'rxjs/observable/of';
+} from '../actions/action/attendance-action';
+import { of } from 'rxjs/observable/of';
 //endregion
 
 @Injectable()
@@ -28,10 +26,9 @@ export class AttendanceEffect extends Command {
       .catch(error => of(error))
     );
 
-
   constructor(public ws: WebsocketService,
-              public actions$: Actions,
-              public store: Store<AppState>) {
+    public actions$: Actions,
+  ) {
     super();
   }
 }

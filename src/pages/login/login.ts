@@ -11,7 +11,7 @@ import {
   Slides,
   ViewController
 } from 'ionic-angular';
-import {LoginService} from '../../serveices/business/login-service';
+import {LoginService} from '../../services/business/login-service';
 import {
   mobilePhoneValidator,
   passwordMatchValidator,

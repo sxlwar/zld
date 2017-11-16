@@ -1,0 +1,15 @@
+
+<ion-grid>
+  <ion-row>
+    <ion-col *ngFor="let item of calendar">{{item.week}}</ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-grid>
+  <ion-row *ngFor="let week of month">
+    <ion-col *ngFor="let day of week" (click)="showDetail.emit(day)">
+      <span>{{(day || '') | date: 'd'}}</span>
+      <i *ngIf="date" class="small-dot"  [ngClass]="{normal: day.records, abnormal: !day.records}"></i>
+    </ion-col>
+  </ion-row>
+</ion-grid>

@@ -6,7 +6,7 @@ import {Keyboard} from '@ionic-native/keyboard';
 import {FirstRunPage, PAGES} from '../pages/pages';
 import {Settings} from '../providers/providers';
 import {Store} from '@ngrx/store';
-import {ConfigService} from '../serveices/config/config-service';
+import {ConfigService} from '../services/config/config-service';
 import * as fromRoot from '../reducers/index-reducer';
 import {ENV} from '@app/env';
 

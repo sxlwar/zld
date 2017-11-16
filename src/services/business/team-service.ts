@@ -21,7 +21,7 @@ import 'rxjs/add/operator/defaultIfEmpty';
 import 'rxjs/add/observable/of';
 import { CW, QW, SW, TL } from '../config/character';
 import { ProjectService } from './project-service';
-import { SetSelectTeams } from '../../actions/action/team-actions';
+import { SetSelectTeams } from '../../actions/action/team-action';
 //endregion
 
 

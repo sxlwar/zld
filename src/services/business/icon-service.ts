@@ -1,14 +1,14 @@
 //region
-import {Observable} from 'rxjs/Observable';
-import {IconState} from '../../reducers/reducer/icons-reducer';
-import {AppState, getIconsState} from '../../reducers/index-reducer';
-import {createSelector, Store} from '@ngrx/store';
-import {Injectable} from '@angular/core';
-import {AddIconsBarAction} from '../../actions/action/icons-action';
-import {Subscription} from 'rxjs/Subscription';
-import {Permission} from '../../interfaces/permission-interface';
-import {PermissionService} from '../config/permission-service';
-import {CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW} from '../config/character';
+import { Observable } from 'rxjs/Observable';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import { AppState, getIconsState } from '../../reducers/index-reducer';
+import { createSelector, Store } from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { AddIconsBarAction } from '../../actions/action/icons-action';
+import { Subscription } from 'rxjs/Subscription';
+import { Permission } from '../../interfaces/permission-interface';
+import { PermissionService } from '../config/permission-service';
+import { CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW } from '../config/character';
 import * as pages from '../../pages/pages';
 //endregion
 
@@ -264,7 +264,7 @@ export const myAttendance: IconItem = {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW],
     opt: []
   },
-  page: ''
+  page: pages.personalAttendancePage
 };
 export const salary: IconItem = {
   text: 'MY_SALARY',
@@ -359,7 +359,7 @@ export class IconService {
   subscriptions: Subscription[] = [];
 
   constructor(public store: Store<AppState>,
-              public permission: PermissionService) {
+    public permission: PermissionService) {
   }
 
   getIcons(name: string, icons: IconItem[]): Observable<IconState[]> {
@@ -378,11 +378,11 @@ export class IconService {
     return this.permission
       .functionalPermissionValidate(icons.map(icon => icon.permission))
       .zip(icons, (permission, item) => {
-        const {text, icon, color, page} = item;
-        return {text, icon, color, page, permission};
+        const { text, icon, color, page } = item;
+        return { text, icon, color, page, permission };
       })
       .map(item => {
-        const {view, opt} = item.permission;
+        const { view, opt } = item.permission;
         if (!view && !opt) item.color = '';
         return item;
       })

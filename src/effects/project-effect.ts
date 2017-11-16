@@ -1,8 +1,8 @@
 //region
 import {Injectable} from '@angular/core';
 import {Actions, Effect} from '@ngrx/effects';
-import {WebsocketService} from '../serveices/api/websocket-service';
-import {Command} from '../serveices/api/command';
+import {WebsocketService} from '../services/api/websocket-service';
+import {Command} from '../services/api/command';
 import {ResponseAction} from '../interfaces/response-interface';
 import {Observable} from 'rxjs/Observable';
 import {

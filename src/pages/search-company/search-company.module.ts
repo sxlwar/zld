@@ -4,7 +4,7 @@ import {SearchCompanyPage} from './search-company';
 import {ComponentsModule} from '../../components/components.module';
 import {EffectsModule} from '@ngrx/effects';
 import {SearchEffect} from '../../effects/search-effect';
-import {Command} from '../../serveices/api/command';
+import {Command} from '../../services/api/command';
 import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({

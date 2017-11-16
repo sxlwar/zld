@@ -1,16 +1,17 @@
 //region
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, PopoverController} from 'ionic-angular';
-import * as icon from '../../serveices/business/icon-service';
-import {IconService} from '../../serveices/business/icon-service';
+import * as icon from '../../services/business/icon-service';
+import {IconService} from '../../services/business/icon-service';
 import {IconState} from '../../reducers/reducer/icons-reducer';
 import {Observable} from 'rxjs/Observable';
-import {ProjectService} from '../../serveices/business/project-service';
-import {WorkerService} from '../../serveices/business/worker-service';
+import {ProjectService} from '../../services/business/project-service';
+import {WorkerService} from '../../services/business/worker-service';
 import 'rxjs/add/operator/zip';
 import 'rxjs/add/observable/of';
 import {Project} from '../../interfaces/response-interface';
 import {ProjectListComponent} from '../../components/project-list/project-list';
+import { ProjectRoot } from '../../pages/pages';
 //endregion
 
 /**
@@ -66,7 +67,7 @@ export class ProjectPage {
 
   ionViewDidLoad() {
 
-    this.icons = this.iconService.getIcons('project', icons);
+    this.icons = this.iconService.getIcons(ProjectRoot, icons);
 
     this.projects = this.projectService.getUserAllProject();
 

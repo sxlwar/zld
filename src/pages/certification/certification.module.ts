@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {CertificationPage} from './certification';
 import {TranslateModule} from '@ngx-translate/core';
-import {CertificateService} from '../../serveices/business/certificate-service';
+import {CertificateService} from '../../services/business/certificate-service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {EffectsModule} from '@ngrx/effects';
 import {CertificateEffect} from '../../effects/certificate-effect';

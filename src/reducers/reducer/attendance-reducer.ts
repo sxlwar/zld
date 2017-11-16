@@ -1,10 +1,7 @@
 //region
-import { AttendanceResultListResponse } from '../../interfaces/response-interface';
-import * as actions from '../../actions/action/attendance-actions';
-import {
-  ATTENDANCE_RESULT_LIST_FAIL, ATTENDANCE_RESULT_LIST_SUCCESS,
-  GET_ATTENDANCE_RESULT_LIST
-} from '../../actions/action/attendance-actions';
+import { AttendanceResultListResponse, AttendanceResult } from '../../interfaces/response-interface';
+import * as actions from '../../actions/action/attendance-action';
+import { uniqBy } from 'lodash';
 //endregion
 
 export interface DatePeriod {
@@ -17,7 +14,9 @@ export interface State {
   datePeriod: DatePeriod;
   selected: number[];
   allSelected: boolean;
-  attendanceResultListResponse: AttendanceResultListResponse;
+  response: AttendanceResultListResponse;
+  data: AttendanceResult[];
+  rank: number;
 }
 
 export const initialState: State = {
@@ -27,25 +26,31 @@ export const initialState: State = {
     start: new Date(),
     end: new Date()
   },
-  attendanceResultListResponse: {
+  response: {
     count: 0,
     attendance_results: []
   },
   selected: [],
-  allSelected: false
+  allSelected: false,
+  data: [],
+  rank: 1
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
   switch (action.type) {
-    case ATTENDANCE_RESULT_LIST_FAIL:
+    case actions.ATTENDANCE_RESULT_LIST_FAIL:
       return Object.assign({}, state, {
-        attendanceResultListResponse: action.payload
+        response: action.payload
       });
 
-    case ATTENDANCE_RESULT_LIST_SUCCESS:
+    case actions.ATTENDANCE_RESULT_LIST_SUCCESS: {
+      const data = state.data.concat(action.payload.attendance_results);
+
       return Object.assign({}, state, {
-        attendanceResultListResponse: action.payload
+        response: action.payload,
+        data: uniqBy(data, 'id')
       });
+    }
 
     case actions.SET_ATTENDANCE_START_DATE:
     case actions.SET_ATTENDANCE_END_DATE: {
@@ -55,34 +60,60 @@ export function reducer(state = initialState, action: actions.Actions): State {
     }
 
     case actions.SET_QUERY_ATTENDANCE_PAGE:
-      return Object.assign({}, state, {page: action.payload});
+      return Object.assign({}, state, { page: action.payload });
 
     case actions.SET_QUERY_ATTENDANCE_LIMIT:
-      return Object.assign({}, state, {limit: action.payload});
+      return Object.assign({}, state, { limit: action.payload });
 
-    case actions.ADD_SELECTED_ATTENDANCE:{
+    case actions.ADD_SELECTED_ATTENDANCE: {
       const selected = state.selected.concat([action.payload]);
 
-      const allSelected = selected.length === state.attendanceResultListResponse.attendance_results.length;
-      
-      return Object.assign({}, state, {selected, allSelected});
+      const allSelected = selected.length === state.data.length;
+
+      return Object.assign({}, state, { selected, allSelected });
     }
 
     case actions.REMOVE_SELECTED_ATTENDANCE: {
       const selected = state.selected.filter(item => item !== action.payload);
 
-      return Object.assign({}, state, {selected, allSelected: false});
+      return Object.assign({}, state, { selected, allSelected: false });
     }
 
     case actions.TOGGLE_ALL_SELECTED_ATTENDANCE: {
-      const selected = action.payload ? state.attendanceResultListResponse.attendance_results.map(item => item.id) : [];
+      const selected = action.payload ? state.response.attendance_results.map(item => item.id) : [];
+      
+      state.data.forEach(item => item.selected = action.payload);
 
-      return Object.assign({}, state, {selected, allSelected: action.payload});
+      return Object.assign({}, state, { selected, allSelected: action.payload });
+    }
+
+    case actions.INCREASE_ATTENDANCE_PAGE: {
+      return Object.assign({}, state, { page: state.page + 1 });
+    }
+
+    case actions.RESET_ATTENDANCE_PAGE: {
+      return Object.assign({}, state, { page: 1 });
+    }
+    
+    case actions.SORT_ATTENDANCE: {
+      const key = action.payload;
+
+      state.data.sort((att1, att2) => {
+        if(att1[key] > att2[key]) return state.rank;
+        if(att1[key] < att2[key]) return -state.rank;
+        return 0;
+      });
+
+      return {...state};
+    }
+
+    case actions.TOGGLE_SORT_TYPE: {
+      return Object.assign({}, state, {rank: action.payload});
     }
 
     case actions.GET_QUERY_ATTENDANCE_PAGE:
     case actions.GET_QUERY_ATTENDANCE_LIMIT:
-    case GET_ATTENDANCE_RESULT_LIST:
+    case actions.GET_ATTENDANCE_RESULT_LIST:
     default:
       return state;
   }
@@ -107,11 +138,11 @@ export function datePeriodReducer(state = initialState.datePeriod, action: actio
   }
 }
 
-export const getAttendanceResultResponse = (state: State) => state.attendanceResultListResponse;
+export const getAttendanceResultResponse = (state: State) => state.response;
 
-export const getAttendanceResults = (state: State) => state.attendanceResultListResponse.attendance_results;
+export const getAttendanceResults = (state: State) => state.response.attendance_results;
 
-export const getAttendanceCount = (state: State) => state.attendanceResultListResponse.count;
+export const getAttendanceCount = (state: State) => state.response.count;
 
 export const getAttendanceDatePeriod = (state: State) => state.datePeriod;
 
@@ -126,3 +157,5 @@ export const getAttendanceLimit = (state: State) => state.limit;
 export const getAllSelected = (state: State) => state.allSelected;
 
 export const getSelectedAttendanceIds = (state: State) => state.selected;
+
+export const getAttendanceData = (state: State) => state.data;

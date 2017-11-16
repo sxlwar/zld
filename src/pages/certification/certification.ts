@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {Observable} from 'rxjs/Observable';
-import {CertificateService} from '../../serveices/business/certificate-service';
+import {CertificateService} from '../../services/business/certificate-service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {personalIdValidator, realnameValidator} from '../../validators/validators';
 import {Subscription} from 'rxjs/Subscription';

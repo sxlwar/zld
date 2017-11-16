@@ -1,7 +1,7 @@
 //region
-import {Action} from '@ngrx/store';
-import {AttendanceResultListResponse} from '../../interfaces/response-interface';
-import {AttendanceResultListOptions} from '../../interfaces/request-interface';
+import { Action } from '@ngrx/store';
+import { AttendanceResultListResponse } from '../../interfaces/response-interface';
+import { AttendanceResultListOptions } from '../../interfaces/request-interface';
 //endregion
 
 /*==========================================Attendance query======================================================= */
@@ -95,12 +95,13 @@ export class GetQueryAttendanceLimitAction implements Action {
 
 /* ==========================================Attendance selected==================================================== */
 
-export const ADD_SELECTED_ATTENDANCE = 'ADD_SELECTED_ATTENDANCE'; 
+export const ADD_SELECTED_ATTENDANCE = 'ADD_SELECTED_ATTENDANCE';
 
 export class AddSelectedAttendanceAction implements Action {
   readonly type = ADD_SELECTED_ATTENDANCE;
 
-  constructor(public payload: number){}
+  constructor(public payload: number) {
+  }
 }
 
 export const REMOVE_SELECTED_ATTENDANCE = 'REMOVE_SELECTED_ATTENDANCE';
@@ -108,7 +109,8 @@ export const REMOVE_SELECTED_ATTENDANCE = 'REMOVE_SELECTED_ATTENDANCE';
 export class RemoveSelectedAttendanceAction implements Action {
   readonly type = REMOVE_SELECTED_ATTENDANCE;
 
-  constructor(public payload: number){}
+  constructor(public payload: number) {
+  }
 }
 
 export const TOGGLE_ALL_SELECTED_ATTENDANCE = 'TOGGLE_ALL_SELECTED_ATTENDANCE';
@@ -116,7 +118,48 @@ export const TOGGLE_ALL_SELECTED_ATTENDANCE = 'TOGGLE_ALL_SELECTED_ATTENDANCE';
 export class ToggleAllSelectedAction implements Action {
   readonly type = TOGGLE_ALL_SELECTED_ATTENDANCE;
 
-  constructor(public payload: boolean){}
+  constructor(public payload: boolean) {
+  }
+}
+
+/* ================================================Attendance page================================================*/
+
+export const INCREASE_ATTENDANCE_PAGE = 'INCREASE_ATTENDANCE_PAGE';
+
+export class IncreaseAttendancePageAction implements Action {
+  readonly type = 'INCREASE_ATTENDANCE_PAGE';
+
+  constructor() {
+  }
+}
+
+export const RESET_ATTENDANCE_PAGE = 'RESET_ATTENDANCE_PAGE';
+
+export class ResetAttendnacePageAction implements Action {
+  readonly type = RESET_ATTENDANCE_PAGE;
+
+  constructor() {
+  };
+}
+
+/* ================================================Attendance sort================================================*/
+
+export const SORT_ATTENDANCE = 'SORT_ATTENDANCE';
+
+export class SortAttendanceAction implements Action {
+  readonly type = SORT_ATTENDANCE;
+
+  constructor(public payload: string) {
+  }
+}
+
+export const TOGGLE_SORT_TYPE = 'TOGGLE_SORT_TYPE';
+
+export class ToggleAttendanceSortTypeAction implements Action {
+  readonly type = TOGGLE_SORT_TYPE;
+
+  constructor(public payload: number) {
+  }
 }
 
 export type Actions = GetAttendanceResultListAction
@@ -130,4 +173,8 @@ export type Actions = GetAttendanceResultListAction
   | GetQueryAttendanceLimitAction
   | AddSelectedAttendanceAction
   | RemoveSelectedAttendanceAction
-  | ToggleAllSelectedAction;
+  | ToggleAllSelectedAction
+  | IncreaseAttendancePageAction
+  | ResetAttendnacePageAction
+  | SortAttendanceAction
+  | ToggleAttendanceSortTypeAction;

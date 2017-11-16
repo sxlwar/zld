@@ -1,4 +1,4 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 export interface WsResponse {
   code: number;
@@ -12,7 +12,7 @@ export interface WsResponse {
 export class ResponseAction implements Action {
   readonly type: string;
 
-  constructor(public payload: any) {}
+  constructor(public payload: any) { }
 }
 
 //custom field
@@ -21,6 +21,7 @@ export interface ErrorMessage {
 }
 
 /*==================================Data model before enter into app=============================================*/
+
 //login
 export interface LoginResponse {
   realname: string;
@@ -136,7 +137,6 @@ export interface ProjectListResponse {
 
 /*===========================================Worker contract model======================================================*/
 
-//time pay
 export interface TimePay {
   overtime_pay_mount: number;
   contract_id: number;
@@ -146,7 +146,6 @@ export interface TimePay {
   pay_mount: number;
 }
 
-//workerContract
 export interface WorkerContract {
   request_files: any[];
   worker__employee__personalIdNum: string;
@@ -192,7 +191,6 @@ export interface WorkerContractListResponse {
 
 /*===========================================Work type model======================================================*/
 
-//workType
 export interface WorkType {
   id: number;
   danger: number;
@@ -235,7 +233,7 @@ export interface AttendanceResult {
   selected?: boolean;
 }
 
-
+//attendResultList
 export interface AttendanceResultListResponse {
   count: number;
   attendance_results: AttendanceResult[];
@@ -257,29 +255,166 @@ export interface AttendanceInstant {
   id: number;
 }
 
+export enum AttendanceInstantType {
+  CAN_NOT_READ,
+  IN,
+  OUT
+}
+
+// attendanceInstantList
 export interface AttendanceInstantListResponse {
   count: number;
   attendance_instants: AttendanceInstant[];
   errorMessage?: string;
 }
 
+
+export interface AttendResultTeamStatListResponse {
+
+}
+
+/*===========================================Paybill model======================================================*/
+
+export interface PayBill {
+  contract__team__name: string;
+  project_bill__month: string;
+  hour_5: number;
+  hour_4: number;
+  hour_6: number;
+  hour_1: number;
+  id: number;
+  hour_3: number;
+  hour_2: number;
+  pay_type: string;
+  user_id: number;
+  contract__worker__employee__realname: string;
+  project_bill_id: number;
+  amount_3: number;
+  project_bill__project__name: string;
+  amount_1: number;
+  project_bill__project_id: number;
+  amount_2: number;
+  amount_5: number;
+  amount_4: number;
+  amount_6: number;
+  contract__team_id: number;
+}
+
+// payBillList
+export interface PayBillListResponse {
+  count: number;
+  pay_bill: PayBill[];
+  errorMessage?: string;
+}
+
+
+/*==========================================Over time model====================================================*/
+
+export interface WorkerContract {
+  worker__employee__realname: string;
+  id: number;
+  team__name: string;
+}
+
+export interface Overtime {
+  finish: string;
+  contracts: WorkerContract[];
+  request__status: string;
+  day: string;
+  start: string;
+  reason: string;
+  attachment: string;
+  request_id: number;
+  type: string;
+  id: number;
+}
+
+// WorkOvertimeRecordList
+export interface WorkOvertimeRecordListResponse {
+  count: number;
+  work_overtimes: Overtime[];
+  errorMessage?: string;
+}
+
+
+/*==========================================Work Piece model====================================================*/
+
+export interface WorkPieceFinish {
+  comment: string;
+  finish_date: string;
+  workpieces_id: number;
+  workpieces__contract__worker_id: number;
+  num: number;
+  quality_percent: number;
+  request_id: number;
+  workpieces__contract__worker__employee__realname: string;
+  id: number;
+}
+
+export interface WorkPiece {
+  name: string;
+  contract__worker__employee__realname: string;
+  id: number;
+  contract__worker_id: number;
+  num: number;
+  location: string;
+  standard: string;
+  pay_mount: number;
+  contract_id: number;
+}
+
+// WorkPieceList
+export interface WorkPieceListResponse {
+  work_piece_finish_flow: WorkPieceFinish[];
+  work_piece_pay: WorkPiece[];
+  errorMessage?: string;
+}
+
+/*============================================Launch model==================================================*/
+
+export interface ProcessCreateResponse {
+  
+}
+
+export interface MultiProcessCreateResponse {
+
+}
+
+export interface TaskUpdateResponse {
+
+}
+
+/*============================================Work flow model==================================================*/
+
+export interface TaskCount {
+  process_id__count: number;
+  process_id: string;
+}
+
+export interface RequestAggregationResponse {
+  request_aggregation: TaskCount[];
+  errorMessage?: string;
+}
+
+
+
 /*========================================================================================================*/
 
 
 //search worker
 export interface WorkerResponse {
-  user__username:	string
-  user_id:	number
-  realname:	string
-  age:	number
-  sex:	string
-  cer_status:	number
-  company__name:	string
-  curraddr__province:	string
-  curraddr__dist:	string
-  userpersonal_idnum:	string
-  curraddr__city:	string
-  code:	number
+  user__username: string
+  user_id: number
+  realname: string
+  age: number
+  sex: string
+  cer_status: number
+  company__name: string
+  curraddr__province: string
+  curraddr__dist: string
+  userpersonal_idnum: string
+  curraddr__city: string
+  code: number
 }
 
 export type ErrorResponse = LoginResponse
@@ -292,4 +427,12 @@ export type ErrorResponse = LoginResponse
   | WorkerContractListResponse
   | WorkTypeListResponse
   | AttendanceResultListResponse
-  | AttendanceInstantListResponse;
+  | AttendanceInstantListResponse
+  | PayBillListResponse
+  | WorkOvertimeRecordListResponse
+  | WorkPieceListResponse
+  | RequestAggregationResponse
+  | AttendResultTeamStatListResponse
+  | ProcessCreateResponse
+  | MultiProcessCreateResponse
+  | TaskUpdateResponse;

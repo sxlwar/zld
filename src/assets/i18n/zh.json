@@ -146,9 +146,27 @@
   "LOGOUT": "退出当前帐号",
 
   "API_ERROR": "请求失败",
-  
+  "LOADING": "数据加载中···",
   "RESPONSE_IS_EMPTY": "没有符合条件的结果",
+  
+  "SET_QUERYN_CONDITION":"设置查询条件",
+  "START_TIME": "开始时间",
+  "END_TIME": "结束时间",
+  "TEAM": "班组",
+  "TOTOAL_TIME": "总时间",
+  "VALID_TIME": "有效时间",
+  "ATTENDANCE_CONFRIM": "确认考勤",
+  "ATTENDANCE_APPLY_FOR_MODIFY": "申请修改",
 
+  "ATTENDANCE_RECORD": "考勤记录",
+  "ATTENDANCE_MACHINE_NAME":"考勤机名称",
+  "ATTENDANCE_RECORD_TYPE":"进/出",
+  "TIME":"时间",
+  "CAN_NOT_READ": "不识别",
+  "IN": "进",
+  "OUT": "出",
+  
+  "PERSONAL_ATTENDANCE": "我的考勤",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

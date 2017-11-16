@@ -1,7 +1,19 @@
 //region
-import {Injectable} from '@angular/core';
-import {Base} from './base';
+import { Injectable } from '@angular/core';
+import { Base } from './base';
 //endregion
+export interface Calendar {
+  week: string;
+  days: Date[];
+}
+
+export interface DateInfo {
+  fullDate: string;
+  shortDate: string;
+  time: string;
+  dateWithoutDay: string;
+  week: number;
+}
 
 export const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
 export const monthShortNames = monthNames;
@@ -53,36 +65,36 @@ export class TimeService extends Base {
    * 以起始值为界，先算起始值之前的日期，再算起始值之后的日期*/
 
   // eslint-disable-next-line complexity
-  createCalendar(date: Date, full: Boolean) {
+  createCalendar(date: Date, full: Boolean): Calendar[] {
     let result = [
-        {
-          week: '日',
-          days: []
-        },
-        {
-          week: '一',
-          days: []
-        },
-        {
-          week: '二',
-          days: []
-        },
-        {
-          week: '三',
-          days: []
-        },
-        {
-          week: '四',
-          days: []
-        },
-        {
-          week: '五',
-          days: []
-        },
-        {
-          week: '六',
-          days: []
-        }],
+      {
+        week: '日',
+        days: []
+      },
+      {
+        week: '一',
+        days: []
+      },
+      {
+        week: '二',
+        days: []
+      },
+      {
+        week: '三',
+        days: []
+      },
+      {
+        week: '四',
+        days: []
+      },
+      {
+        week: '五',
+        days: []
+      },
+      {
+        week: '六',
+        days: []
+      }],
       millionSeconds = date.getTime(),
       max = full ? this.getLastDayOfMonth(date) : 6,
       min = full ? 1 : 0,
@@ -153,7 +165,7 @@ export class TimeService extends Base {
     return currentDate === compareDate;
   }
 
-  getDateInfo(value: Date): object {
+  getDateInfo(value: Date): DateInfo {
     const obj = new Date(value),
       year = obj.getFullYear(),
       month = obj.getMonth() + 1,
@@ -161,6 +173,7 @@ export class TimeService extends Base {
       week = obj.getDay(),
       hours = this.toTwo(String(obj.getUTCHours())),
       minutes = this.toTwo(String(obj.getUTCMinutes()));
+      
     return {
       fullDate: year + '-' + month + '-' + date,
       shortDate: month + '-' + date,
@@ -209,5 +222,13 @@ export class TimeService extends Base {
     const hour = parseInt(time);
 
     return hour >= 12 && hour <= 23;
+  }
+
+  getFirstDateOfMonth(date: Date): Date {
+    const year = date.getFullYear();
+
+    const month = date.getMonth() + 1;
+
+    return new Date(`${year}/${month}/01`);
   }
 }

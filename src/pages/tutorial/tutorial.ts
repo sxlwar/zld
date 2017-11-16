@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {IonicPage, MenuController, NavController, Slides} from 'ionic-angular';
-import {TutorialService} from '../../serveices/business/tutorial-service';
+import {TutorialService} from '../../services/business/tutorial-service';
 import {Observable} from 'rxjs/Observable';
 import {Store} from '@ngrx/store';
 import * as fromRoot from '../../reducers/index-reducer'

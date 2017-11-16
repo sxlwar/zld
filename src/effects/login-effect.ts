@@ -2,8 +2,8 @@
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { WebsocketService } from '../serveices/api/websocket-service';
-import { Command } from '../serveices/api/command';
+import { WebsocketService } from '../services/api/websocket-service';
+import { Command } from '../services/api/command';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/filter';
 import { of } from 'rxjs/observable/of';
@@ -31,7 +31,7 @@ import {
 import 'rxjs/add/operator/throttle';
 import { RequestAction } from '../interfaces/request-interface';
 import { ResponseAction } from '../interfaces/response-interface';
-import { TipService } from '../serveices/tip-service';
+import { TipService } from '../services/tip-service';
 //endregion
 
 @Injectable()

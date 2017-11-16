@@ -1,10 +1,10 @@
 //region
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from '../serveices/api/websocket-service';
+import { WebsocketService } from '../services/api/websocket-service';
 import { AppState } from '../reducers/index-reducer';
 import { Store } from '@ngrx/store';
-import { Command } from '../serveices/api/command';
+import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';
 import { of } from 'rxjs/observable/of';
@@ -12,7 +12,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/mergeMap';
-import { GET_TEAM_LIST, GetTeamListAction, TeamListFailAction, TeamListSuccessAction } from '../actions/action/team-actions';
+import { GET_TEAM_LIST, GetTeamListAction, TeamListFailAction, TeamListSuccessAction } from '../actions/action/team-action';
 //endregion
 
 @Injectable()

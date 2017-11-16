@@ -4,9 +4,9 @@ import {IonicPageModule} from 'ionic-angular';
 import {ProjectPage} from './project';
 import {TranslateModule} from '@ngx-translate/core';
 import {ComponentsModule} from '../../components/components.module';
-import {IconService} from '../../serveices/business/icon-service';
-import {ProjectService} from '../../serveices/business/project-service';
-import {WorkerService} from '../../serveices/business/worker-service';
+import {IconService} from '../../services/business/icon-service';
+import {ProjectService} from '../../services/business/project-service';
+import {WorkerService} from '../../services/business/worker-service';
 import {PositiveIntegerPipe} from '../../pipes/positive-integer-pipe';
 //endregion
 

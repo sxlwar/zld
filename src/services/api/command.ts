@@ -1,4 +1,5 @@
-import {Injectable} from '@angular/core';
+//region
+import { Injectable } from '@angular/core';
 import {
   CertificateOptions,
   LoginOptions,
@@ -10,8 +11,9 @@ import {
   WorkerContractOptions,
   WsRequest,
 } from '../../interfaces/request-interface';
-import {Permission} from '../../interfaces/permission-interface';
-import {CW, EME, LM, MM, PM, PME, QW, SW, TL} from '../config/character';
+import { Permission } from '../../interfaces/permission-interface';
+import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
+//endregion
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -24,8 +26,12 @@ export enum Operate {
   search = 'search'
 }
 
+export interface checkFn {
+  (arg: number[]): boolean
+}
+
 export interface MagicNumberMap {
-  [key: string]: number;
+  [key: string]: number | checkFn;
 }
 
 export class Iterator {
@@ -35,7 +41,7 @@ export class Iterator {
   }
 
   next() {
-    return {value: this.value, done: true}
+    return { value: this.value, done: true }
   }
 }
 
@@ -113,21 +119,21 @@ export enum WorkerContract {
   pieceTypeContract = 'pieceTypeContract'
 }
 
-const workerContractList: ApiUnit = {
+export const workerContractList: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['project.consumer.WorkerContractList']]
   ]),
   noMagicNumber: new Map([
-    [WorkerContract.unexpired, new Iterator({flag: 1})],
-    [WorkerContract.timeTypeContract, new Iterator({contract_type: 1})],
-    [WorkerContract.pieceTypeContract, new Iterator({contract_type: 2})]
+    [WorkerContract.unexpired, new Iterator({ flag: 1 })],
+    [WorkerContract.timeTypeContract, new Iterator({ contract_type: 1 })],
+    [WorkerContract.pieceTypeContract, new Iterator({ contract_type: 2 })]
   ]),
   permission: {
     view: [PME, EME, MM, PM, LM, TL, CW, QW, SW],
     opt: []
   },
   specialCharacter: new Map([
-    [SW, new Iterator({self: 1})]
+    [SW, new Iterator({ self: 1 })]
   ])
 };
 
@@ -142,16 +148,20 @@ export const teamList: ApiUnit = {
     [Operate.querying, ['project.consumer.TeamList']]
   ]),
   specialCharacter: new Map([
-    [SW, new Iterator({self: 1})],
-    [TL, new Iterator({flag: 1})],
-    [LM, new Iterator({flag: 1})],
-    [PM, new Iterator({flag: 1})],
-    [MM, new Iterator({flag: 1})]
+    [SW, new Iterator({ self: 1 })],
+    [TL, new Iterator({ flag: 1 })],
+    [LM, new Iterator({ flag: 1 })],
+    [PM, new Iterator({ flag: 1 })],
+    [MM, new Iterator({ flag: 1 })]
   ])
 };
 
 export enum attendance {
-  attendanceOnlyDisplay = 'onlyDisplay'
+  attendanceOnlyDisplay = 'onlyDisplay',
+  unconfirm = 'unconfirm',
+  confirmed = 'confirmed',
+  applyToModify = 'applyToModify',
+  allTyps = 'allTypes'
 }
 
 export const attendanceList: ApiUnit = {
@@ -159,29 +169,90 @@ export const attendanceList: ApiUnit = {
     [Operate.querying, ['project.consumer.AttendResultList']]
   ]),
   permission: {
-    view: [PME, EME, PM, LM, TL, SW],
+    view: [PME, MM, PM, LM, TL,],
     opt: []
   },
   noMagicNumber: new Map([
-    [attendance.attendanceOnlyDisplay, new Iterator({flag: 1})]
+    [attendance.attendanceOnlyDisplay, new Iterator({ flag: 1 })],
+    [attendance.unconfirm, new Iterator({ confirm: 0 })],
+    [attendance.confirmed, new Iterator({ confirm: 1 })],
+    [attendance.applyToModify, new Iterator({ confirm: 2 })],
+    [attendance.allTyps, new Iterator({ confirm: 3 })]
   ]),
   specialCharacter: new Map([
-    [SW, new Iterator({self: 1})]
+    [SW, new Iterator({ self: 1 })]
   ])
 };
 
+export enum attendanceInstant {
+  attendanceInstantOnlyDisplay = 'onlyDisplay'
+}
+
+export const attendanceInstantList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.AttendanceInstantList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  },
+  noMagicNumber: new Map([
+    [attendanceInstant.attendanceInstantOnlyDisplay, new Iterator({ flag: 1 })]
+  ]),
+  specialCharacter: new Map([
+    [SW, new Iterator({ self: 1 })]
+  ])
+}
+
+export function onlyOwnTeam(ary: number[]): boolean {
+  //TODO: 根据传进来的id:number确定这些班组是不是当前用户的班组。
+  return true;
+}
+
+export const payBillList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.PayBillList']]
+  ]),
+  permission: {
+    view: [PME, EME, PM, LM, TL, SW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [TL, new Iterator({ check: onlyOwnTeam })],
+    [SW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const workPieceList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.WorkPieceList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL, QW],
+    opt: []
+  }
+}
+
+export const workOvertimeRecordList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.WorkOvertimeRecordList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
 @Injectable()
 export class Command {
 
   personalIdList = "employee.consumer.PersonalIdList";
   processCreate = "workflow.consumer.ProcessCreate";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
-  workPieceList = "project.consumer.WorkPieceList";
+
   workerDetailList = "employee.consumer.WorkerDetailList";
   workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
   requestList = "workflow.consumer.RequestList";
   projectPayBillList = "project.consumer.ProjectPayBillList";
-  attendanceInstantList = "project.consumer.AttendanceInstantList";
   workTimePayList = "project.consumer.WorkTimePayList";
   projectPayProcessList = "project.consumer.ProjectPayProcessList";
   workerBankNoList = "employee.consumer.WorkerBankNoList";
@@ -189,13 +260,11 @@ export class Command {
   workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
   amendAttendRecordList = "project.consumer.AmendAttendRecordList";
   leaveRecordList = "project.consumer.LeaveRecordList";
-  workOvertimeRecordList = "project.consumer.WorkOvertimeRecordList";
   attendResultConfirm = "project.consumer.AttendResultConfirm";
   paySalary = "project.consumer.PaySalary";
   taskUpdate = "workflow.consumer.TaskUpdate";
   multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
   payProcessList = "project.consumer.PayProcessList";
-  payBillList = "project.consumer.PayBillList";
   workCertificateList = "employee.consumer.WorkCertificateList";
   nationalityList = "employee.consumer.NationalityList";
   groupsList = "employee.consumer.GroupsList";
@@ -249,57 +318,65 @@ export class Command {
   basicInfoList = "employee.consumer.BasicInfoList";
   requestAggregation = "workflow.consumer.RequestAggregation";
   attendResultTeamStatList = "operation.consumer.AttendResultTeamStatList";
-  constructor(){
+  constructor() {
   }
 
-
   private getFullParameter(path: string, parameters: object): WsRequest {
-    return {command: {path}, parameters}
+    return { command: { path }, parameters }
   }
 
   login(option: LoginOptions): WsRequest {
     const path = login.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, option);
   }
 
   searchCompany(option: SearchCompanyOptions): WsRequest {
     const path = company.operates.get(Operate.search)[0];
+
     return this.getFullParameter(path, option);
   }
 
   /**
-   * FIXME NO.1
+   * FIXME: NO.1
    * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，phoneVerificationCode
    * 处理注册时的手机验证码，resetPhoneVerificationCode处理重置密码时的手机验证码。
    * */
   phoneVerificationCode(option: PhoneVerificationCodeOptions): WsRequest {
     const path = phoneVerificationCode.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, option);
   }
 
   resetPhoneVerificationCode(option: PhoneVerificationCodeOptions): WsRequest {
     const path = resetPhoneVerificationCode.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, option);
   }
 
   register(option: RegisterOptions): WsRequest {
     const index = option.company_id ? 0 : 1;
+
     const path = register.operates.get(Operate.addition)[index];
+
     return this.getFullParameter(path, option);
   }
 
   resetPassword(option: ResetPasswordOptions): WsRequest {
     const path = resetPassword.operates.get(Operate.updates)[0];
+
     return this.getFullParameter(path, option);
   }
 
   updatePersonalIdImage(option: CertificateOptions): WsRequest {
     const path = updatePersonalIdImage.operates.get(Operate.updates)[0];
+
     return this.getFullParameter(path, option);
   }
 
   getProjectList(option: ProjectListOptions): WsRequest {
     const path = projectList.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, option);
   }
 
@@ -308,27 +385,53 @@ export class Command {
 
     const magicOption = magicNumberNames.reduce((acc, cur) => {
       const param = workerContractList.noMagicNumber.get(cur);
-      return {...acc, ...param};
+      return { ...acc, ...param };
     }, {});
 
-    return this.getFullParameter(path, {...option, ...magicOption});
+    return this.getFullParameter(path, { ...option, ...magicOption });
   }
 
   getWorkTypeList(): WsRequest {
     const path = workTypeList.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, {});
   }
 
   getTeamList(option): WsRequest {
     const path = teamList.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, option);
   }
 
   getAttendanceList(option): WsRequest {
     const path = attendanceList.operates.get(Operate.querying)[0];
-    return this.getFullParameter(path,option);
+
+    return this.getFullParameter(path, option);
   }
 
+  getAttendanceInstantList(option): WsRequest {
+    const path = attendanceInstantList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getPayBillList(option): WsRequest {
+    const path = payBillList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkPieceList(option): WsRequest {
+    const path = workPieceList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkOvertimeRecordList(option): WsRequest {
+    const path = workOvertimeRecordList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
@@ -347,5 +450,21 @@ export class Command {
 
   get attendanceList() {
     return attendanceList;
+  }
+
+  get attendanceInstantList() {
+    return attendanceInstantList;
+  }
+
+  get payBillList() {
+    return payBillList;
+  }
+
+  get workPieceList() {
+    return workPieceList;
+  }
+
+  get workOvertimeRecordList() {
+    return workOvertimeRecordList;
   }
 }
