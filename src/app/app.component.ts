@@ -1,14 +1,14 @@
-import {Component, ViewChild} from '@angular/core';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {StatusBar} from '@ionic-native/status-bar';
-import {Config, Nav, Platform} from 'ionic-angular';
-import {Keyboard} from '@ionic-native/keyboard';
-import {FirstRunPage, PAGES} from '../pages/pages';
-import {Settings} from '../providers/providers';
-import {Store} from '@ngrx/store';
-import {ConfigService} from '../services/config/config-service';
+import { Component, ViewChild } from '@angular/core';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { Config, Nav, Platform } from 'ionic-angular';
+import { Keyboard } from '@ionic-native/keyboard';
+import { FirstRunPage, PAGES } from '../pages/pages';
+import { Settings } from '../providers/providers';
+import { Store } from '@ngrx/store';
+import { ConfigService } from '../services/config/config-service';
 import * as fromRoot from '../reducers/index-reducer';
-import {ENV} from '@app/env';
+import { ENV } from '@app/env';
 
 
 console.log(ENV.DOMAIN);
@@ -24,13 +24,13 @@ export class MyApp {
   pages: any[] = PAGES;
 
   constructor(private platform: Platform,
-              settings: Settings,
-              private config: Config,
-              private statusBar: StatusBar,
-              private splashScreen: SplashScreen,
-              private configService: ConfigService,
-              private store: Store<fromRoot.AppState>,
-              private keyboard: Keyboard) {
+    settings: Settings,
+    private config: Config,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private configService: ConfigService,
+    private store: Store<fromRoot.AppState>,
+    private keyboard: Keyboard) {
     this.configService.init();
     this.store.select(fromRoot.selectButtonText).subscribe(text => this.config.set('backButtonText', text));
   }

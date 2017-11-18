@@ -1,9 +1,3 @@
-<!--
-  Generated template for the PersonalAttendancePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -15,10 +9,6 @@
 
 <ion-content padding>
   <ion-item-divider>{{date | date: 'yyyy-MM'}}</ion-item-divider>
-  <!-- <calendar [isMonth]='isMonth'
-    [attendanceRecords]= ''
-    [attendanceResults] = ''
-    [overtimeRecords] = ''
-    (showDetail)= 'showDetail($event)'></calendar> -->
-    <p>考勤统计表</p>
+  <calendar [isMonth]='isMonth' (dayClicked)='dayClicked($event)'></calendar>
+  <attendance-time-chart [yearMonth]='yearMonth'></attendance-time-chart>
 </ion-content>

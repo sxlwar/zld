@@ -1,39 +1,30 @@
 //region
-import {ErrorHandler, NgModule} from '@angular/core';
-import {Http, HttpModule} from '@angular/http';
-import {BrowserModule} from '@angular/platform-browser';
-import {Camera} from '@ionic-native/camera';
-import {GoogleMaps} from '@ionic-native/google-maps';
-import {SplashScreen} from '@ionic-native/splash-screen';
-import {StatusBar} from '@ionic-native/status-bar';
-import {IonicStorageModule, Storage} from '@ionic/storage';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
-import {Items} from '../mocks/providers/items';
-import {Settings, User} from '../providers/providers';
-import {MyApp} from './app.component';
-import {Api} from '../providers/api/api';
-import {ActionReducer, MetaReducer, Store, StoreModule} from '@ngrx/store';
-import {reducers} from '../reducers/index-reducer';
-import {ConfigService} from '../services/config/config-service';
-import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import {ProcessorService} from '../services/api/processor-service';
-import {WebsocketService} from '../services/api/websocket-service';
-import {HttpService} from '../services/api/http-service';
-import {ErrorService} from '../services/errors/error-service';
-import {MapperService} from '../services/api/mapper-service';
-import {FileTransfer} from '@ionic-native/file-transfer';
-import {File} from '@ionic-native/file';
-import {Command} from '../services/api/command';
-import {TipService} from '../services/tip-service';
-import {ImagePicker} from '@ionic-native/image-picker';
-import {Keyboard} from '@ionic-native/keyboard';
-import {UploadService} from '../services/api/upload-service';
-import {PermissionService} from '../services/config/permission-service';
-import {dayNames, dayShortNames, monthNames, monthShortNames, TimeService} from '../services/utils/time-service';
-import {ComponentsModule} from '../components/components.module';
-import {ProjectListComponent} from '../components/project-list/project-list';
+import { ErrorHandler, NgModule } from '@angular/core';
+import { Http, HttpModule } from '@angular/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { Camera } from '@ionic-native/camera';
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { SplashScreen } from '@ionic-native/splash-screen';
+import { StatusBar } from '@ionic-native/status-bar';
+import { IonicStorageModule, Storage } from '@ionic/storage';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { Items } from '../mocks/providers/items';
+import { Settings, User } from '../providers/providers';
+import { MyApp } from './app.component';
+import { Api } from '../providers/api/api';
+import { ActionReducer, MetaReducer, Store, StoreModule } from '@ngrx/store';
+import { reducers } from '../reducers/index-reducer';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FileTransfer } from '@ionic-native/file-transfer';
+import { File } from '@ionic-native/file';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { Keyboard } from '@ionic-native/keyboard';
+import { dayNames, dayShortNames, monthNames, monthShortNames } from '../services/utils/time-service';
+import { ComponentsModule } from '../components/components.module';
+import { ProjectListComponent } from '../components/project-list/project-list';
+import { API_SERVICES, BUSINESS_SERVICES, CONFIG_SERVICES, UTIL_SERVICES } from '../services/service-import';
 //endregion
 
 // The translate loader needs to know where to load i18n files
@@ -58,13 +49,13 @@ export function provideSettings(storage: Storage) {
 }
 
 export function debug1(reducer: ActionReducer<any>): ActionReducer<any> {
-  return function(state, action) {
+  return function (state, action) {
     console.log('state', state);
     return reducer(state, action);
   }
 }
 export function debug2(reducer: ActionReducer<any>): ActionReducer<any> {
-  return function(state, action) {
+  return function (state, action) {
     console.log('action', action);
     return reducer(state, action);
   }
@@ -100,7 +91,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     StoreDevtoolsModule.instrument({
       maxAge: 20
     }),
-    ComponentsModule
+    ComponentsModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -120,20 +111,13 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     StatusBar,
     Keyboard,
     Store,
-    {provide: Settings, useFactory: provideSettings, deps: [Storage]},
+    { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Command,
-    ConfigService,
-    ProcessorService,
-    WebsocketService,
-    HttpService,
-    UploadService,
-    ErrorService,
-    MapperService,
-    TipService,
-    PermissionService,
-    TimeService,
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
+    API_SERVICES,
+    BUSINESS_SERVICES,
+    CONFIG_SERVICES,
+    UTIL_SERVICES,
   ]
 })
 export class AppModule { }

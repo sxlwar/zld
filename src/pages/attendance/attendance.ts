@@ -63,7 +63,6 @@ export class AttendancePage {
 
   initialTeam() {
     this.teams = this.teamService.getOwnTeams()
-
       .withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => {
         teams.forEach(team => team.selected = ids.indexOf(team.id) !== -1);
         return teams;

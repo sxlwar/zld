@@ -1,15 +1,28 @@
 
 <ion-grid>
   <ion-row>
-    <ion-col *ngFor="let item of calendar">{{item.week}}</ion-col>
+    <ion-col *ngFor="let item of heads">{{item}}</ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-grid style="background: rgba(241, 241,241,.5)">
+  <ion-row *ngFor="let row of (data | async)">
+    <ion-col *ngFor="let day of row" (click)="dayClicked.emit(day)">
+      <div>{{day | date: 'd'}}</div>
+      <i *ngIf="day" class="small-dot" [ngClass]="{'normal': day.isNormalAttendance, 'abnormal': day.isLegalDay}"></i>
+    </ion-col>
   </ion-row>
 </ion-grid>
 
 <ion-grid>
-  <ion-row *ngFor="let week of month">
-    <ion-col *ngFor="let day of week" (click)="showDetail.emit(day)">
-      <span>{{(day || '') | date: 'd'}}</span>
-      <i *ngIf="date" class="small-dot"  [ngClass]="{normal: day.records, abnormal: !day.records}"></i>
+  <ion-row class="pane">
+    <ion-col>
+      <span class="small-dot normal"></span>
+      <span>{{'TURN_OUT_FOR_WORK' | translate}}</span>
+    </ion-col>
+    <ion-col>
+      <span class="small-dot abnormal"></span>
+      <span>{{'ABSENCE_FROM_DUTY' | translate}}</span>
     </ion-col>
   </ion-row>
 </ion-grid>

@@ -1,3 +1,4 @@
+import { MineRoot } from './../pages';
 //region
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
@@ -69,7 +70,7 @@ export class MinePage {
   }
 
   ionViewDidLoad() {
-    this.icons = this.iconService.getIcons('mine', icons);
+    this.icons = this.iconService.getIcons(MineRoot, icons);
 
     this.realname = this.userInfo.getRealname();
 
@@ -88,8 +89,7 @@ export class MinePage {
   }
 
   goTo(item) {
-    console.log(item);
-    this.navCtrl.push(item.page).then(() => {});
+    this.navCtrl.push(item.page, item).then(() => {});
   }
 
   // noinspection JSUnusedGlobalSymbols

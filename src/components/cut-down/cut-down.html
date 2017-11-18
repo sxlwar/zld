@@ -1,6 +1,5 @@
 <!-- Generated template for the CutDownComponent component -->
 <div>
   <button [hidden]="timing$ | async" ion-button outline color="light" small (click)="request.emit();">{{'PHONE_VERIFICATION_BUTTON' | translate}}</button>
-  <!--<span  [hidden]="!(timing$ | async)">{{timer$ | async}}{{'REGAIN_VERIFICATION_CODE_TIP' | translate}}</span>-->
   <span  [hidden]="!(timing$ | async)">{{timer$ | async}}{{'REGAIN_VERIFICATION_CODE_TIP' | translate}}</span>
 </div>

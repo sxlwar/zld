@@ -1,8 +1,9 @@
+//region
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
-
 import { WelcomePage } from './welcome';
+//endregion
 
 @NgModule({
   declarations: [
@@ -14,7 +15,6 @@ import { WelcomePage } from './welcome';
   ],
   exports: [
     WelcomePage
-  ],
-  providers: []
+  ]
 })
 export class WelcomePageModule { }

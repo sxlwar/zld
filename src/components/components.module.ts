@@ -13,6 +13,7 @@ import { ProjectListComponent } from './project-list/project-list';
 import { ProjectService } from '../services/business/project-service';
 import { WorkerService } from '../services/business/worker-service';
 import { CalendarComponent } from './calendar/calendar';
+import { AttendanceTimeChartComponent } from './attendance-time-chart/attendance-time-chart';
 //endregion
 
 @NgModule({
@@ -24,6 +25,7 @@ import { CalendarComponent } from './calendar/calendar';
     IconBarComponent,
     ProjectListComponent,
     CalendarComponent,
+    AttendanceTimeChartComponent,
   ],
   imports: [
     IonicModule,
@@ -38,6 +40,7 @@ import { CalendarComponent } from './calendar/calendar';
     IconBarComponent,
     ProjectListComponent,
     CalendarComponent,
+    AttendanceTimeChartComponent,
   ],
   providers: [
     TakePhotoService,

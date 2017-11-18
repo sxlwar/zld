@@ -1,8 +1,9 @@
+//region
 import {NgModule} from '@angular/core';
 import {IonicPageModule} from 'ionic-angular';
 import {TutorialPage} from './tutorial';
 import {TranslateModule} from '@ngx-translate/core';
-import {TutorialService} from '../../services/business/tutorial-service';
+//endregion
 
 @NgModule({
   declarations: [
@@ -14,9 +15,6 @@ import {TutorialService} from '../../services/business/tutorial-service';
   ],
   exports: [
     TutorialPage
-  ],
-  providers: [
-    TutorialService
   ]
 })
 export class TutorialPageModule { }

@@ -38,6 +38,7 @@ export class Iterator {
   value: MagicNumberMap;
 
   constructor(value: MagicNumberMap) {
+    this.value = value;
   }
 
   next() {
@@ -193,7 +194,7 @@ export const attendanceInstantList: ApiUnit = {
     [Operate.querying, ['project.consumer.AttendanceInstantList']]
   ]),
   permission: {
-    view: [PME, MM, PM, LM, TL],
+    view: [PME, MM, PM, LM, TL, SW],
     opt: []
   },
   noMagicNumber: new Map([

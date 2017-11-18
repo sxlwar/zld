@@ -1,5 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {Observable} from 'rxjs/Observable';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/range';
 
@@ -13,20 +13,19 @@ import 'rxjs/add/observable/range';
   selector: 'cut-down',
   templateUrl: 'cut-down.html'
 })
-export class CutDownComponent implements OnInit{
+export class CutDownComponent implements OnInit {
 
   timer$: Observable<number>;
 
-  @Output()
-  request = new EventEmitter();
+  @Output() request = new EventEmitter();
 
-  timing$ : Observable<boolean>;
+  timing$: Observable<boolean>;
 
   constructor() {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.timer$ = this.request.switchMap(() => Observable.interval(1000).take(60).map(num => 59 - num));
-    this.timing$ = this.timer$.map(value => value >0);
+    this.timing$ = this.timer$.map(value => value > 0);
   }
 }

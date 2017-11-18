@@ -12,6 +12,16 @@ import { RequestOption, PayBillListOptions } from '../../interfaces/request-inte
 import { UserService } from '..//business/user-service';
 //endregion
 
+export enum payBillTime {
+    systemAtt = 1,
+    systemOvertime,
+    systemOverOvertime,
+    manualAtt,
+    manualOvertime,
+    manualOverOvertime,
+    pieceActual = '',
+    prefix = 'hour_'
+}
 @Injectable()
 export class PayBillService {
     subscriptions: Subscription[] = [];
@@ -32,7 +42,36 @@ export class PayBillService {
         return this.store.select(selectPayBillList);
     }
 
-    getPayBillList(option: Observable<RequestOption>): void {
+    getPayBillOfMonth(option: Observable<RequestOption>): Observable<PayBill> {
+        return this.getPayBills(option) 
+            .mergeMap(res => Observable.from(res).take(1));
+    }
+
+    getAttendanceTimeStatistics(option: Observable<RequestOption>): Observable<number[]> {
+        const source = this.getPayBillOfMonth(option);
+
+        const attendanceTimeTotal = source.map(payBill => this.countAttendanceTotalTime(payBill));
+
+        const overtimeTotal = source.map(payBill => this.countOvertimeTotalTime(payBill));
+
+        const overOvertimeTotal = source.map(payBill => this.countOverOvertimeTotalTime(payBill));
+
+        return attendanceTimeTotal.zip(overtimeTotal, overOvertimeTotal);
+    }
+
+    countAttendanceTotalTime(payBill: PayBill): number {
+        return payBill[payBillTime.prefix + payBillTime.systemAtt] + payBill[payBillTime.prefix + payBillTime.manualAtt];
+    }
+
+    countOvertimeTotalTime(payBill: PayBill): number {
+        return payBill[payBillTime.prefix + payBillTime.systemOvertime] + payBill[payBillTime.prefix + payBillTime.manualOvertime];
+    }
+
+    countOverOvertimeTotalTime(payBill: PayBill): number {
+        return payBill[payBillTime.prefix + payBillTime.systemOverOvertime] + payBill[payBillTime.prefix + payBillTime.manualOverOvertime];
+    }
+
+    private getPayBillList(option: Observable<RequestOption>): void {
         const sid = this.userInfo.getSid();
 
         const params = sid.zip(option, (sid, option) => ({ sid, ...option })) as Observable<PayBillListOptions>;

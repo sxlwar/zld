@@ -16,6 +16,8 @@
   "MOBILE_PHONE": "手机号",
   "COMPANY":"公司名称",
 
+  "HOUR": "小时",
+
   "NEED_TO_LOGIN": "我要登录",
   "IMAGE_VERIFICATION": "图形验证码",
   "PHONE_VERIFICATION_BUTTON": "点击获取",
@@ -167,6 +169,13 @@
   "OUT": "出",
   
   "PERSONAL_ATTENDANCE": "我的考勤",
+  "TURN_OUT_FOR_WORK": "出勤",
+  "ABSENCE_FROM_DUTY": "缺勤",
+  "CURRENT_MONTH_ATTENDANCE": "本月出勤时间",
+  "NORMAL_ATTENDANCE_TIME": "正常出勤",
+  "NORMAL_OVERTIME_TIME": "正常工资加班",
+  "OVER_OVERTIME_TIME": "加班工资加班",
+  "ATTENDANCE_TIME_TOTAL": "出勤总时间",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

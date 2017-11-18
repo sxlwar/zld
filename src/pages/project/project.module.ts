@@ -1,13 +1,10 @@
 //region
-import {NgModule} from '@angular/core';
-import {IonicPageModule} from 'ionic-angular';
-import {ProjectPage} from './project';
-import {TranslateModule} from '@ngx-translate/core';
-import {ComponentsModule} from '../../components/components.module';
-import {IconService} from '../../services/business/icon-service';
-import {ProjectService} from '../../services/business/project-service';
-import {WorkerService} from '../../services/business/worker-service';
-import {PositiveIntegerPipe} from '../../pipes/positive-integer-pipe';
+import { NgModule } from '@angular/core';
+import { IonicPageModule } from 'ionic-angular';
+import { ProjectPage } from './project';
+import { TranslateModule } from '@ngx-translate/core';
+import { ComponentsModule } from '../../components/components.module';
+import { PositiveIntegerPipe } from '../../pipes/positive-integer-pipe';
 //endregion
 
 @NgModule({
@@ -20,10 +17,8 @@ import {PositiveIntegerPipe} from '../../pipes/positive-integer-pipe';
     TranslateModule.forChild(),
     ComponentsModule,
   ],
-  providers: [
-    IconService,
-    ProjectService,
-    WorkerService,
-  ],
+  exports: [
+    ProjectPage,
+  ]
 })
-export class ProjectPageModule {}
+export class ProjectPageModule { }

@@ -49,7 +49,7 @@ export class PermissionService {
       const option = arg.specialCharacter.get(char);
 
       if (option) {
-        return option;
+        return option.value;
       } else {
         return {};
       }

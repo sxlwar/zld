@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { MessageRoot, ProjectRoot, MissionRoot, MineRoot} from '../pages';
+import { MessageRoot, ProjectRoot, MissionRoot, MineRoot } from '../pages';
 
 @IonicPage()
 @Component({
@@ -14,17 +14,20 @@ export class TabsPage {
   MissionRoot: any = MissionRoot;
   MineRoot: any = MineRoot;
 
-  tab1Title = " ";
-  tab2Title = " ";
-  tab3Title = " ";
-  tab4Title = " ";
+  messageTitle = " ";
+  projectTitle = " ";
+  missionTitle = " ";
+  mineTitle = " ";
 
-  constructor(public navCtrl: NavController, public translateService: TranslateService) {
+  constructor(
+    public navCtrl: NavController,
+    public translateService: TranslateService
+  ) {
     translateService.get(['MESSAGE', 'PROJECT', 'MISSION', 'MINE']).subscribe(values => {
-      this.tab1Title = values['MESSAGE'];
-      this.tab2Title = values['PROJECT'];
-      this.tab3Title = values['MISSION'];
-      this.tab4Title = values['MINE'];
+      this.messageTitle = values['MESSAGE'];
+      this.projectTitle = values['PROJECT'];
+      this.missionTitle = values['MISSION'];
+      this.mineTitle = values['MINE'];
     });
   }
 }

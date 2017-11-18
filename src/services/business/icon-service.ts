@@ -261,7 +261,7 @@ export const myAttendance: IconItem = {
   icon: 'my-attendance',
   color: 'primary',
   permission: {
-    view: [PME, MM, PM, LM, TL, CW, QW, SW, UW],
+    view: [SW],
     opt: []
   },
   page: pages.personalAttendancePage
@@ -371,7 +371,16 @@ export class IconService {
 
     this.subscriptions.push(subscription);
 
-    return this.store.select(createSelector(getIconsState, this.select(name)));
+    return this.selectIcons(name);
+  }
+
+  selectIcons(rootName: string): Observable<IconState[]> {
+    return this.store.select(createSelector(getIconsState,this.select(rootName)))
+  }
+
+  getIcon(rootName: string, iconName: string): Observable<IconState> {
+    return this.selectIcons(rootName)
+      .mergeMap(icons => Observable.from(icons).filter(item => item.icon === iconName));
   }
 
   private addPermissionToIcons(icons: Observable<IconItem>): Observable<IconState[]> {
@@ -395,7 +404,9 @@ export class IconService {
   private addIcons(name: string, icons: Observable<IconState[]>): Subscription {
     return icons.subscribe(icons => {
       const target = {};
+
       target[name] = icons;
+
       this.store.dispatch(new AddIconsBarAction(target));
     });
   }

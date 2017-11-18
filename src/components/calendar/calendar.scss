@@ -4,13 +4,27 @@ calendar {
         width: 10px;
         height: 10px;
         border-radius: 5px;
-      }
+        background: transparent;
+    }
+/* 注意这个地方abnormal和 normal的顺序不能放错 */
+    .abnormal {
+        background: #f53d3d;
+    }
 
     .normal {
-        background: #33cd5f;
+        background: #32db64;
     }
-    
-    .abnormal {
-        background: #eeeeee
+
+    ion-col {
+        text-align: center;
+        
+        i {
+            margin: 0 auto;
+        }
+    }
+
+    .pane {
+        background: #eeeeee;
+        border: 1px solid gray;
     }
 }

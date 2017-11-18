@@ -46,6 +46,7 @@
         "@ngx-translate/http-loader": "0.0.3",
         "@types/lodash": "^4.14.77",
         "@types/node": "^8.0.50",
+        "chart.js": "^2.7.1",
         "com.synconset.imagepicker": "~2.1.8",
         "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",

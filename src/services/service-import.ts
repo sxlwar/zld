@@ -23,6 +23,7 @@ import { PermissionService } from './config/permission-service';
 import { TimeService } from './utils/time-service';
 import { ErrorService } from './errors/error-service';
 import { TipService } from './tip-service';
+import { ChartService } from './utils/chart-service';
 
 
 export const API_SERVICES = [
@@ -52,7 +53,7 @@ export const BUSINESS_SERVICES = [
 ]
 
 
-export const CONFIG_SERVICE = [
+export const CONFIG_SERVICES = [
     ConfigService,
     PermissionService
 ]
@@ -60,5 +61,6 @@ export const CONFIG_SERVICE = [
 export const UTIL_SERVICES = [
     TimeService,
     ErrorService,
-    TipService
+    TipService,
+    ChartService
 ]
