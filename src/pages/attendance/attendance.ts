@@ -113,7 +113,7 @@ export class AttendancePage {
   getNextPage(infiniteScroll) {
     this.attendance.increasePage();
 
-    this.attendances = this.attendances.scan((acc,cur) => acc.concat(cur)).map(res => uniqBy(res, 'id'));
+    this.attendances = this.attendances.scan((acc, cur) => acc.concat(cur)).map(res => uniqBy(res, 'id'));
 
     this.attendance.getAttendances(this.getAttendanceOption());
 
@@ -142,8 +142,12 @@ export class AttendancePage {
     this.attendance.showActionSheet();
   }
 
-  goToDetailPage(attendance) {
-    this.navCtrl.push(attendanceRecordPage, { attendance }).then(() => { });
+  goToDetailPage(attendance: AttendanceResult) {
+    const day = attendance.day;
+
+    const workerId = attendance.contract__worker_id;
+
+    this.navCtrl.push(attendanceRecordPage, { day, workerId, rootName: ProjectRoot, iconName: attendanceIcon.icon }).then(() => { });
   }
 
   ionViewWillUnload() {

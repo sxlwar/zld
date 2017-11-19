@@ -22,7 +22,7 @@ export interface DatePeriod {
   selector: 'calendar',
   templateUrl: 'calendar.html'
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit{
   @Input() isMonth: boolean;
 
   @Output() dayClicked = new EventEmitter();
@@ -39,7 +39,7 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data = this.getCalendar();
+    this.data = this.getCalendar().take(1);
   }
 
   getCalendar(): Observable<Date[][]> {
@@ -84,6 +84,7 @@ export class CalendarComponent implements OnInit {
   getPredicateData(): Observable<DatePeriod> {
 
     return this.instant.getAttendanceRecord(this.getOption())
+      .skip(1)
       .switchMap(records => Observable.from(records)
         .map(record => record.day)
         .distinctUntilChanged()

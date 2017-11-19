@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { AttendanceInstant, AttendanceInstantType, AttendanceInstantListResponse } from '../../interfaces/response-interface';
 import { RequestOption, AttendanceInstantListOptions } from '../../interfaces/request-interface';
 import { UserService } from '..//business/user-service';
-import { IncreaseRecordPageAction } from '../../actions/action/attendance-record-action';
+import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/action/attendance-record-action';
 import { ResetAttendnacePageAction } from '../../actions/action/attendance-action';
 import 'rxjs/add/observable/from';
 //endregion
@@ -63,6 +63,10 @@ export class AttendanceRecordService {
         this.store.dispatch(new IncreaseRecordPageAction());
     }
 
+    resetPage(): void {
+        this.store.dispatch(new ResetRecordPageAction());
+    }
+    
     mapRecordType(records: AttendanceInstant[]): Observable<AttendanceInstant[]> {
         return Observable.from(records)
             .map(record => {

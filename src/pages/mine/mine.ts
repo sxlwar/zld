@@ -1,15 +1,15 @@
-import { MineRoot } from './../pages';
 //region
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import { MineRoot } from './../pages';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as icon from '../../services/business/icon-service';
-import {IconService} from '../../services/business/icon-service';
-import {Observable} from 'rxjs/Observable';
-import {IconState} from '../../reducers/reducer/icons-reducer';
-import {ProjectService} from '../../services/business/project-service';
-import {UserService} from '../../services/business/user-service';
-import {CraftService} from '../../services/business/craft-service';
-import {TeamService} from '../../services/business/team-service';
+import { IconService } from '../../services/business/icon-service';
+import { Observable } from 'rxjs/Observable';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import { ProjectService } from '../../services/business/project-service';
+import { UserService } from '../../services/business/user-service';
+import { CraftService } from '../../services/business/craft-service';
+import { TeamService } from '../../services/business/team-service';
 //endregion
 
 const icons = [
@@ -30,9 +30,9 @@ interface Setting {
 }
 
 const setting: Setting[] = [
-  {icon: 'settings', name: 'ACCOUNT_CONFIG'},
-  {icon: 'call', name: 'SERVICE_TELEPHONE'},
-  {icon: 'document', name: 'VERSION_INTRODUCTION'},
+  { icon: 'settings', name: 'ACCOUNT_CONFIG' },
+  { icon: 'call', name: 'SERVICE_TELEPHONE' },
+  { icon: 'document', name: 'VERSION_INTRODUCTION' },
 ];
 
 @IonicPage()
@@ -61,12 +61,12 @@ export class MinePage {
   faceImage: Observable<string>;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public userInfo: UserService,
-              public workTypeService: CraftService,
-              public projectService: ProjectService,
-              public teamService: TeamService,
-              public iconService: IconService) {
+    public navParams: NavParams,
+    public userInfo: UserService,
+    public workTypeService: CraftService,
+    public projectService: ProjectService,
+    public teamService: TeamService,
+    public iconService: IconService) {
   }
 
   ionViewDidLoad() {
@@ -82,6 +82,7 @@ export class MinePage {
 
     this.projectName = this.projectService.getProjectName();
 
+    //TODO: 在获取自己的工种和班组时都要去拿自己的合同，如果store中没有当前用户的合同，这个地方会发出两次请求去查合同。
     this.workType = this.workTypeService.getOwnWorkType()
       .mergeMap(types => Observable.from(types).first().map(workType => workType.name));
 
@@ -89,10 +90,9 @@ export class MinePage {
   }
 
   goTo(item) {
-    this.navCtrl.push(item.page, item).then(() => {});
+    this.navCtrl.push(item.page, item).then(() => { });
   }
 
-  // noinspection JSUnusedGlobalSymbols
   ionViewWillLeave() {
     this.workTypeService.unSubscribe();
   }

@@ -36,7 +36,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
         }
 
         case actions.RESET_RECORD_PAGE: {
-            return Object.assign({}, state, { page: 0 });
+            return Object.assign({}, state, { page: 1 });
         } 
 
         case actions.GET_ATTENDANCE_RECORD:

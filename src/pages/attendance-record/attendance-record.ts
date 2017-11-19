@@ -1,14 +1,13 @@
 //region
-import { ProjectRoot } from './../pages';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AttendanceResult, AttendanceInstant } from '../../interfaces/response-interface';
+import { AttendanceInstant } from '../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceService } from '../../services/business/attendance-service';
-import { attendance as attendanceIcon } from '../../services/business/icon-service'
 import { AttendanceRecordService } from '../../services/business/attendance-record-service';
 import { RequestOption } from '../../interfaces/request-interface';
 import { uniqBy } from 'lodash';
+import { Subscription } from 'rxjs/Subscription';
 //endregion
 
 @IonicPage()
@@ -20,48 +19,54 @@ export class AttendanceRecordPage {
   time: string;
   operatePermission: Observable<boolean>;
   records: Observable<AttendanceInstant[]>;
+  haveMoreData = true;
+  pageSubscription: Subscription;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public attendance: AttendanceService,
     public attendanceRecord: AttendanceRecordService,
   ) {
-    this.getAttendanceTime();
+    this.time = this.navParams.get('day');
   }
 
   ionViewDidLoad() {
-    this.operatePermission = this.attendance.getOperatePermission(attendanceIcon.icon, ProjectRoot);
+    const rootName = this.navParams.get('rootName');
+
+    const iconName = this.navParams.get('iconName');
+
+    this.operatePermission = this.attendance.getOperatePermission(iconName, rootName);
 
     this.getAttendanceRecords();
-  }
-
-  getAttendanceTime() {
-    const attendance: AttendanceResult = this.navParams.get('attendance');
-
-    this.time = attendance.day;
   }
 
   getAttendanceRecords() {
     this.records = this.attendanceRecord
       .getAttendanceRecord(this.getRecordOption())
+      .do(value => this.haveMoreData = !!value.length)
       .scan((acc, cur) => acc.concat(cur))
       .map(result => uniqBy(result, 'id'));
   }
 
   getRecordOption(): Observable<RequestOption> {
-    const attendance: AttendanceResult = this.navParams.get('attendance');
+    const workerId = this.navParams.get('workerId');
 
-    const option= {start_day: this.time, end_day: this.time, user_id: [attendance.contract__worker_id] };
+    const option = { start_day: this.time, end_day: this.time, user_id: [workerId] };
 
     return Observable.of(option);
   }
 
-  getNextPage() {
+  getNextPage(infiniteScroll) {
     this.attendanceRecord.increasePage();
 
     this.attendanceRecord.getAttendaceInstantList(this.getRecordOption());
 
-    return this.attendanceRecord.getAttendanceRecordResponse().toPromise(); //FIXME: NO.3 无限下拉有问题，v1中是使用ng-if拉完所有的数据之后把infinite-scroll移除了
+    this.pageSubscription &&  this.pageSubscription.unsubscribe();
+    
+    this.pageSubscription = this.attendanceRecord
+      .getAttendanceRecordResponse()
+      .map(response => !!response.attendance_instants)
+      .subscribe(value => infiniteScroll.complete());
   }
 
   showActionSheet() {
@@ -70,5 +75,11 @@ export class AttendanceRecordPage {
 
   ionViewWillUnlod() {
     this.attendanceRecord.unSubscribe();
+    
+    this.pageSubscription && this.pageSubscription.unsubscribe();
+  }
+
+  ionViewWillLeave() {
+    this.attendanceRecord.resetPage();
   }
 }

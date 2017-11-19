@@ -30,7 +30,7 @@ export class AttendanceEffect extends Command {
   @Effect()
   attendanceRecord$: Observable<ResponseAction> = this.actions$
     .ofType(GET_ATTENDANCE_RECORD)
-    .switchMap((action: GetAttendanceRecordAction) => this.ws
+    .mergeMap((action: GetAttendanceRecordAction) => this.ws
       .send(this.getAttendanceInstantList(action.payload))
       .takeUntil(this.actions$.ofType(GET_ATTENDANCE_RECORD))
       .map(msg => msg.isError ? new AttendanceRecordFailAction(msg.data) : new AttendanceRecordSuccessAction(msg.data))
