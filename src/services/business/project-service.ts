@@ -33,8 +33,13 @@ export class ProjectService {
   /*====================================The main methods provided by the service===================================*/
 
   getCurrentProject(): Observable<Project> {
-    return this.store.select(selectSelectedProject)
-      .filter(value => !!value);
+    const currentProject = this.store.select(selectSelectedProject);
+
+    const subscription = currentProject.subscribe(value => !value && this.getProjectList());
+
+    this.subscriptions.push(subscription);
+
+    return currentProject.filter(value => !!value);
   }
 
   getProjectList() {

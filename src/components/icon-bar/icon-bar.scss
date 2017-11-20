@@ -3,13 +3,14 @@ icon-bar {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+
   ion-icon {
     font-size: 44px;
   }
-  p {
-    white-space: normal;
-  }
-  ion-col {
-    text-align: center;
+  
+  ion-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
   }
 }

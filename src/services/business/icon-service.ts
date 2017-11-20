@@ -4,23 +4,15 @@ import { IconState } from '../../reducers/reducer/icons-reducer';
 import { AppState, getIconsState } from '../../reducers/index-reducer';
 import { createSelector, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { AddIconsBarAction } from '../../actions/action/icons-action';
+import { AddIconsBarAction, AddBadgeAction } from '../../actions/action/icons-action';
 import { Subscription } from 'rxjs/Subscription';
-import { Permission } from '../../interfaces/permission-interface';
 import { PermissionService } from '../config/permission-service';
 import { CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW } from '../config/character';
 import * as pages from '../../pages/pages';
+import { IconItem } from '../../interfaces/icon-interface';
 //endregion
 
 //region
-export interface IconItem {
-  text: string;
-  icon: string;
-  color: string;
-  permission: Permission;
-  page: string
-}
-
 export const attendance: IconItem = {
   text: 'ATTENDANCE_CHAR',
   icon: 'attendance',
@@ -133,7 +125,7 @@ export const attendanceConfirm: IconItem = {
     view: [PME, EME],
     opt: [TL]
   },
-  page: ''
+  page: pages.attendanceConfirmPage
 };
 export const payrollAudit: IconItem = {
   text: 'PAYROLL_AUDIT',
@@ -358,8 +350,12 @@ export class IconService {
 
   subscriptions: Subscription[] = [];
 
-  constructor(public store: Store<AppState>,
-    public permission: PermissionService) {
+  id: number;
+  constructor(
+    public store: Store<AppState>,
+    public permission: PermissionService
+  ) {
+    this.id = Math.random();
   }
 
   getIcons(name: string, icons: IconItem[]): Observable<IconState[]> {
@@ -375,12 +371,26 @@ export class IconService {
   }
 
   selectIcons(rootName: string): Observable<IconState[]> {
-    return this.store.select(createSelector(getIconsState,this.select(rootName)))
+    return this.store.select(createSelector(getIconsState, this.select(rootName)))
   }
 
   getIcon(rootName: string, iconName: string): Observable<IconState> {
     return this.selectIcons(rootName)
       .mergeMap(icons => Observable.from(icons).filter(item => item.icon === iconName));
+  }
+
+  needBadge(icon: IconState): boolean {
+    const { view, opt } = icon.permission;
+
+    return opt || view;
+  }
+
+  addBadge(badge: Observable<number>, path: string[]): void {
+    const subscription = badge.subscribe(count => {
+      this.store.dispatch(new AddBadgeAction({ count, path }));
+    });
+    
+    this.subscriptions.push(subscription);
   }
 
   private addPermissionToIcons(icons: Observable<IconItem>): Observable<IconState[]> {

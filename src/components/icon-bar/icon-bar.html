@@ -1,8 +1,9 @@
 <!-- Generated template for the BoxComponent component -->
 
 <ion-row>
-  <ion-col *ngFor="let icon of icons" col-3 (click)="goTo.emit(icon)">
+  <ion-col *ngFor="let icon of icons" col-3 text-center (click)="goTo.emit(icon)">
     <ion-icon [name]="icon.icon" [color]="icon.color || 'forbidden'"></ion-icon>
-    <P>{{ icon.text | translate}}</P>
+    <P text-wrap>{{ icon.text | translate}}</P>
+    <ion-badge item-end color="danger" *ngIf="icon?.badge">{{icon.badge | badge}}</ion-badge>
   </ion-col>
 </ion-row>

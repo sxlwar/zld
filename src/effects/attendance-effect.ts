@@ -1,4 +1,5 @@
 //region
+import { GET_ATTENDANCE_RESULT_TEAM_STAT, GetAttendanceResultTeamStatListAction, AttendanceResultTeamStatFailAction, AttendanceResultTeamStatSuccessAction } from './../actions/action/statistics-action';
 import { GET_ATTENDANCE_RECORD, GetAttendanceRecordAction, AttendanceRecordFailAction, AttendanceRecordSuccessAction } from './../actions/action/attendance-record-action';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
@@ -36,6 +37,16 @@ export class AttendanceEffect extends Command {
       .map(msg => msg.isError ? new AttendanceRecordFailAction(msg.data) : new AttendanceRecordSuccessAction(msg.data))
       .catch(error => of(error))
     );
+
+  @Effect()
+  attendanceResultTeamStat$: Observable<ResponseAction> = this.actions$
+    .ofType(GET_ATTENDANCE_RESULT_TEAM_STAT)
+    .switchMap((action: GetAttendanceResultTeamStatListAction) => this.ws
+      .send(this.getAttendanceResultTeamStatList(action.payload))
+      .takeUntil(this.actions$.ofType(GET_ATTENDANCE_RESULT_TEAM_STAT))
+      .map(msg => msg.isError ? new AttendanceResultTeamStatFailAction(msg.data): new AttendanceResultTeamStatSuccessAction(msg.data))
+      .catch(error => of(error))
+  )
 
   constructor(
     public ws: WebsocketService,

@@ -43,6 +43,12 @@ export class AttendancePage {
     this.operatePermission = this.getOperatePermission();
   }
 
+  ionViewCanEnter() {
+    const {view, opt} = this.navParams.get('permission');
+
+    return opt || view; 
+  }
+
   ionViewDidLoad() {
     this.initialDate();
     this.initialTeam();

@@ -17,6 +17,7 @@ import * as attendanceRecord from './reducer/attendance-record-reducer';
 import * as payBill from './reducer/pay-bill-reducer';
 import * as overtime from './reducer/overtime-reducer';
 import * as piece from './reducer/work-piece-reducer';
+import * as statistics from './reducer/statistics-reducer';
 //endregion
 
 export interface AppState {
@@ -41,6 +42,7 @@ export interface AppState {
   payBill: payBill.State,
   overtime: overtime.State,
   piece: piece.State,
+  statistics: statistics.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -65,6 +67,7 @@ export const reducers: ActionReducerMap<AppState> = {
   payBill: payBill.reducer,
   overtime: overtime.reducer,
   piece: piece.reducer,
+  statistics: statistics.reducer,
 };
 
 //config
@@ -190,6 +193,10 @@ export const selectWorkPieceResponse = createSelector(getWorkPiece, piece.getPie
 export const selectWorkPiecePay = createSelector(getWorkPiece, piece.getPiecePay);
 export const selectWorkPieceFinishFlow = createSelector(getWorkPiece, piece.getPieceFinishFlow);
 
+//attendance result stat team stat list 
+export const getStatistics = (state: AppState) => state.statistics;
+export const selectAttendanceStatisticsResponse = createSelector(getStatistics, statistics.getAttendanceStatResponse);
+export const selectAttendanceStatistics = createSelector(getStatistics, statistics.getAttendanceStats);
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 /*================================================HTTP===========================================================*/

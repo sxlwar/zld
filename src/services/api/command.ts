@@ -243,6 +243,17 @@ export const workOvertimeRecordList: ApiUnit = {
     opt: []
   }
 }
+
+export const attendanceResultTeamStatList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['operation.consumer.AttendResultTeamStatList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
 @Injectable()
 export class Command {
 
@@ -318,7 +329,6 @@ export class Command {
   readMsgContent = "operation.consumer.ReadMsgContent";
   basicInfoList = "employee.consumer.BasicInfoList";
   requestAggregation = "workflow.consumer.RequestAggregation";
-  attendResultTeamStatList = "operation.consumer.AttendResultTeamStatList";
   constructor() {
   }
 
@@ -433,6 +443,13 @@ export class Command {
 
     return this.getFullParameter(path, option);
   }
+
+  getAttendanceResultTeamStatList(option): WsRequest {
+    const path = attendanceResultTeamStatList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
@@ -467,5 +484,9 @@ export class Command {
 
   get workOvertimeRecordList() {
     return workOvertimeRecordList;
+  }
+
+  get attendanceResultTeamStatList() {
+    return attendanceResultTeamStatList;
   }
 }

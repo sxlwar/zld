@@ -11,7 +11,8 @@ import { Actions as attendance } from './action/attendance-action';
 import { Actions as attendanceRecord } from './action/attendance-record-action';
 import { Actions as payBill } from './action/pay-bill-action';
 import { Actions as overtime } from './action/overtime-action';
-import { Actions as piece} from './action/work-piece-action';
+import { Actions as piece } from './action/work-piece-action';
+import { Actions as statistics } from './action/statistics-action';
 
 export type Actions = config
   | tutorial
@@ -26,4 +27,5 @@ export type Actions = config
   | attendanceRecord
   | payBill
   | overtime
-  | piece;
+  | piece
+  | statistics;

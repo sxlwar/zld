@@ -1,16 +1,12 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {Observable} from 'rxjs/Observable';
-import {IconState} from '../../reducers/reducer/icons-reducer';
-import {IconService} from '../../services/business/icon-service';
+import { StatisticsService } from './../../services/business/statistics-service';
+import { attendanceConfirm } from './../../services/business/icon-service';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import { IconService } from '../../services/business/icon-service';
 import * as icon from '../../services/business/icon-service';
-
-/**
- * Generated class for the MissionPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import * as pages from '../../pages/pages';
 
 const icons = [
   icon.attendanceConfirm,
@@ -37,17 +33,38 @@ export class MissionPage {
 
   icons: Observable<IconState[]>;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public iconService: IconService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public iconService: IconService,
+    public statistics: StatisticsService
+  ) {
+    this.icons = this.iconService.getIcons(pages.MissionRoot, icons);
   }
 
-  ionViewDidLoad() {
-    this.icons = this.iconService.getIcons('mission', icons);
+  ionViewWillEnter() {
+    this.addBadge();
   }
 
-  goTo(item){
-    console.log(item);
+  addBadge() {
+    const attendanceConfirmBadge = this.attendanceConfirmBadge();
+
+    this.iconService.addBadge(attendanceConfirmBadge, [pages.MissionRoot, icon.attendanceConfirm.icon]);
+  }
+
+  getBadgeIcons(): Observable<IconState> {
+    return this.icons
+      .mergeMap(icons => Observable.from(icons).filter(icon => this.iconService.needBadge(icon)));
+  }
+
+  attendanceConfirmBadge(): Observable<number> {
+    return this.getBadgeIcons()
+      .filter(icon => icon.icon === attendanceConfirm.icon)
+      .switchMapTo(this.statistics.getAttendanceResultStatistics())
+  }
+
+  goTo(item) {
+    this.navCtrl.push(item.page, item).then(() => { });
   }
 
 }

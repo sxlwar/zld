@@ -14,13 +14,6 @@ import { ProjectListComponent } from '../../components/project-list/project-list
 import { ProjectRoot } from '../../pages/pages';
 //endregion
 
-/**
- * Generated class for the ProjectPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 const icons = [
   icon.attendance,
   icon.payroll,
@@ -67,11 +60,10 @@ export class ProjectPage {
     public projectService: ProjectService,
     public workerService: WorkerService
   ) {
-    this.projectService.getProjectList();
   }
 
   ionViewDidLoad() {
-    
+
     this.icons = this.iconService.getIcons(ProjectRoot, icons);
 
     this.currentProject = this.projectService.getCurrentProject();
@@ -89,7 +81,6 @@ export class ProjectPage {
     this.haveMultipleProject = this.projects.map(value => value.length > 1);
   }
 
-  // noinspection JSUnusedGlobalSymbols
   ionViewWillEnter() {
     this.workerCount = this.workerService.getWorkerCount(this.createOption());
   }
@@ -114,10 +105,9 @@ export class ProjectPage {
 
   goTo(item) {
     if (!item.page) return;
-    this.navCtrl.push(item.page).then(() => { });
+    this.navCtrl.push(item.page, item).then(() => { });
   }
 
-  // noinspection JSUnusedGlobalSymbols
   ionViewWillUnload() {
     this.iconService.unSubscribe();
     this.projectService.unSubscribe();

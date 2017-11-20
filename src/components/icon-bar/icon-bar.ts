@@ -1,27 +1,22 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { OnChanges } from '@angular/core/src/metadata/lifecycle_hooks';
+import { IconState } from '../../reducers/reducer/icons-reducer';
 
-/**
- * Generated class for the IconBarComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
-export interface Icon {
-  text: string;
-  icon: string;
-}
 @Component({
   selector: 'icon-bar',
   templateUrl: 'icon-bar.html'
 })
-export class IconBarComponent {
+export class IconBarComponent implements OnChanges {
 
-  @Input() icons: Icon[];
+  @Input() icons: IconState[];
 
   @Output() goTo = new EventEmitter();
 
-
   constructor() {
+  }
+
+  ngOnChanges($event) {
+    console.log('icon bar value changed', $event);
   }
 
 }

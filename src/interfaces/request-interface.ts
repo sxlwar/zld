@@ -168,6 +168,13 @@ export interface WorkPieceListOptions {
   history_view?: boolean;
 }
 
+export interface AttendanceResultTeamStatListOptions {
+  sid: string;
+  team_ids: number[];
+  start_day?: string;
+  end_day?: string;
+}
+
 export type Options = LoginOptions
   & RegisterOptions
   & SearchCompanyOptions
@@ -181,4 +188,5 @@ export type Options = LoginOptions
   & AttendanceResultListOptions
   & AttendanceInstantListOptions
   & PayBillListOptions
-  & WorkOvertimeRecordListOptions;
+  & WorkOvertimeRecordListOptions
+  & AttendanceResultTeamStatListOptions;

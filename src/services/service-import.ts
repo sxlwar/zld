@@ -1,4 +1,6 @@
-
+import { TakePhotoService } from './../components/take-photo/take-photo-service';
+import { ProjectService } from './business/project-service';
+import { StatisticsService } from './business/statistics-service';
 import { Command } from './api/command'
 import { HttpService } from './api/http-service';
 import { MapperService } from './api/mapper-service';
@@ -45,11 +47,14 @@ export const BUSINESS_SERVICES = [
     LoginService,
     OvertimeService,
     PayBillService,
+    ProjectService,
     TeamService,
     TutorialService,
     UserService,
     WorkPieceService,
     WorkerService,
+    StatisticsService,
+    TakePhotoService,
 ]
 
 

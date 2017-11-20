@@ -60,13 +60,15 @@ export class MinePage {
 
   faceImage: Observable<string>;
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public userInfo: UserService,
     public workTypeService: CraftService,
     public projectService: ProjectService,
     public teamService: TeamService,
-    public iconService: IconService) {
+    public iconService: IconService
+  ) {
   }
 
   ionViewDidLoad() {

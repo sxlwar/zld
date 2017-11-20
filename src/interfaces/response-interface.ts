@@ -396,7 +396,28 @@ export interface RequestAggregationResponse {
   errorMessage?: string;
 }
 
+/*============================================Attendance statistics model==================================================*/
 
+export interface AttendanceStatus {
+  amend_count: number;
+  confirm_count: number;
+  unconfirm_count: number;
+}
+
+export interface AttendanceConfirmStatus {
+  [date: string]: AttendanceStatus;
+}
+
+export interface AttendanceStatistics {
+  team_name: string;
+  team_id: number;
+  confirm_status: AttendanceConfirmStatus;
+}
+
+export interface AttendanceResultTeamStatListResposne {
+  attend_result_team_stat_list: AttendanceStatistics[];
+  errorMessage?: string;
+} 
 
 /*========================================================================================================*/
 

@@ -1,4 +1,7 @@
+import { AttendanceStatistics } from './../../interfaces/response-interface';
+import { selectAttendanceStatistics, selectAttendanceStatisticsResponse } from './../../reducers/index-reducer';
 //region
+import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
 import {
   AppState,
@@ -36,6 +39,7 @@ export class AttendanceService {
     public error: ErrorService,
     public translate: TranslateService,
     public actionSheet: ActionSheetController,
+    public teamService: TeamService
   ) {
     this.handleError();
     this.monitorPage();
@@ -96,6 +100,26 @@ export class AttendanceService {
 
   resetPage(): void {
     this.store.dispatch(new ResetAttendnacePageAction());
+  }
+
+  getAttendanceStatisticsByTeam():void {
+    const sid = this.userInfo.getSid();
+
+    const teamIds = this.teamService.getOwnTeams()
+      .filter(teams => !!teams.length)
+      .map(teams => teams.map(team => team.id));
+
+    const option = sid.zip(teamIds, (sid, team_ids) => ({sid, team_ids}));
+
+    const subscription = this.processor.attendanceResultTeamStatListProcessor(option);
+    
+    this.subscriptions.push(subscription); 
+  }
+
+  getAttendanceStatistics(): Observable<AttendanceStatistics[]> {
+    this.getAttendanceStatisticsByTeam();
+  
+    return this.store.select(selectAttendanceStatistics);
   }
 
   /* =========================================================Attendance date operation================================================= */
@@ -193,7 +217,21 @@ export class AttendanceService {
   }
 
   private handleError() {
+    this.handleAttendanceError();
+    this.handleStatisticesError();
+  }
+
+  private handleAttendanceError() {
     const error = this.store.select(selectAttendanceResponse);
+
+    const subscription = this.error.handleErrorInSpecific(error, 'API_ERROR');
+
+    this.subscriptions.push(subscription);
+
+  }
+
+  private handleStatisticesError() {
+    const error = this.store.select(selectAttendanceStatisticsResponse);
 
     const subscription = this.error.handleErrorInSpecific(error, 'API_ERROR');
 

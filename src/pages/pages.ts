@@ -34,7 +34,7 @@ export const attendancePage = 'AttendancePage';
 
 /*============================================mission tab pages===================================================*/
 
-
+export const attendanceConfirmPage = 'AttendanceConfirmPage';
 
 
 
@@ -77,6 +77,8 @@ export const PAGES = [
   { title: 'Attendance', component: attendancePage },
 
   { title: 'AttendanceRecord', component: attendanceRecordPage},
+
+  { title: 'AttendanceConfirm', component: attendanceConfirmPage},
 
   { title: 'PersonalAttendance', component: personalAttendancePage}
 ];

@@ -1,3 +1,5 @@
+import { GetAttendanceResultTeamStatListAction } from './../../actions/action/statistics-action';
+import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 //region
 import { Injectable } from '@angular/core';
 import {
@@ -145,7 +147,7 @@ export class ProcessorService extends MapperService {
     const permissionResult = this.permission.comprehensiveValidate(this.command.teamList);
 
     return permissionResult
-      .filter(res => res.permission.view)
+      .filter(res => res.permission.opt || res.permission.view)
       .zip(option$, (result, option) => Object.assign({}, option, result.option))
       .subscribe(option => {
         this.store.dispatch(new GetTeamListAction(option));
@@ -197,5 +199,14 @@ export class ProcessorService extends MapperService {
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetWorkOvertimeRecordAction(option)));
+  }
+
+  attendanceResultTeamStatListProcessor(option$: Observable<AttendanceResultTeamStatListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceResultTeamStatList);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetAttendanceResultTeamStatListAction(option)));
   }
 }

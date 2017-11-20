@@ -1,4 +1,5 @@
 //region
+import { SharedModule } from './shared.modules';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -92,6 +93,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
       maxAge: 20
     }),
     ComponentsModule,
+    SharedModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
