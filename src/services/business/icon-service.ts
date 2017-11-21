@@ -12,10 +12,56 @@ import * as pages from '../../pages/pages';
 import { IconItem } from '../../interfaces/icon-interface';
 //endregion
 
+export const attendanceIcon = 'attendance';
+export const payrollIcon = 'payroll';
+export const organizationIcon = 'organization';
+export const workerManagerIcon = 'worker-manager';
+export const workPieceIcon = 'work-piece';
+export const locationIcon = 'location';
+export const trajectoryIcon = 'trajectory';
+export const attendanceMachineIcon = 'attendance-machine';
+export const locationCardIcon = 'location-card';
+export const attendanceCardIcon = 'attendance-card';
+export const attendanceConfirmIcon = 'attendance-confirm';
+export const payrollAuditIcon = 'payroll-audit';
+export const leaveIcon = 'leave';
+export const overtimeIcon = 'overtime';
+export const pieceAuditIcon = 'piece-audit';
+export const modifyAttendanceIcon = 'modify-attendance';
+export const workContractIcon = 'work-contract';
+export const primeContractIcon = 'prime-contract';
+export const subContractIcon = 'sub-contract';
+export const modifyDutyIcon = 'modify-duty';
+export const workContractModifyIcon = 'work-contract-modify';
+export const myAuditedIcon = 'my-audited';
+export const myLaunchIcon = 'my-launch';
+export const myAttendanceIcon = 'my-attendance';
+export const salaryIcon = 'salary';
+export const bankCardIcon = 'bank-card';
+export const certificateIcon = 'certificate';
+export const applyIcon = 'apply';
+export const personalInfoIcon = 'personal-info';
+export const familyInfoIcon = 'family-info';
+export const workInfoIcon = 'work-info';
+export const educationInfoIcon = 'education-info';
+
+export const workFlowMap = new Map([
+  [payrollAuditIcon, 'project_payflow_apply'],
+  [leaveIcon, 'leave_apply'],
+  [overtimeIcon, 'workovertime_apply'],
+  [pieceAuditIcon, 'workpiece_finish'],
+  [modifyAttendanceIcon, 'amend_worker_attend'],
+  [workContractIcon, 'sign_worker_contract'],
+  [primeContractIcon, 'prime_contract_time_change'],
+  [subContractIcon, 'sub_contract_time_change'],
+  [modifyDutyIcon, 'timeduty_apply'],
+  [workContractModifyIcon, 'worker_contract_time_change']
+]);
+
 //region
 export const attendance: IconItem = {
   text: 'ATTENDANCE_CHAR',
-  icon: 'attendance',
+  icon: attendanceIcon,
   color: 'primary',
   permission: {
     view: [PME, PM, LM],
@@ -26,7 +72,7 @@ export const attendance: IconItem = {
 
 export const payroll: IconItem = {
   text: 'PAYROLL',
-  icon: 'payroll',
+  icon: payrollIcon,
   color: 'economics',
   permission: {
     view: [PME, EME, MM, PM, LM, TL],
@@ -37,7 +83,7 @@ export const payroll: IconItem = {
 
 export const organization: IconItem = {
   text: 'ORGANIZATION',
-  icon: 'organization',
+  icon: organizationIcon,
   color: 'advanced',
   permission: {
     view: [PME, EME, MM, LM, TL, QW],
@@ -48,7 +94,7 @@ export const organization: IconItem = {
 
 export const workerManager: IconItem = {
   text: 'WORKER_MANAGER',
-  icon: 'worker-manager',
+  icon: workerManagerIcon,
   color: 'advanced',
   permission: {
     view: [PME, EME, MM, PM, CW, QW],
@@ -58,7 +104,7 @@ export const workerManager: IconItem = {
 };
 export const workPiece: IconItem = {
   text: 'WORK_PIECE',
-  icon: 'work-piece',
+  icon: workPieceIcon,
   color: 'piece',
   permission: {
     view: [PME, EME, MM, PM, LM, TL, QW],
@@ -68,7 +114,7 @@ export const workPiece: IconItem = {
 };
 export const location: IconItem = {
   text: 'WORKER_LOCATION',
-  icon: 'location',
+  icon: locationIcon,
   color: 'location',
   permission: {
     view: [PME, EME, MM, PM, LM, TL],
@@ -78,7 +124,7 @@ export const location: IconItem = {
 };
 export const trajectory: IconItem = {
   text: 'WORKER_TRAJECTORY',
-  icon: 'trajectory',
+  icon: trajectoryIcon,
   color: 'location',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW],
@@ -88,7 +134,7 @@ export const trajectory: IconItem = {
 };
 export const attendanceMachine: IconItem = {
   text: 'ATTENDANCE_MACHINE',
-  icon: 'attendance-machine',
+  icon: attendanceMachineIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM, PM, LM, TL],
@@ -98,7 +144,7 @@ export const attendanceMachine: IconItem = {
 };
 export const locationCard: IconItem = {
   text: 'IC_LOCATION_CARD',
-  icon: 'location-card',
+  icon: locationCardIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM, LM, TL],
@@ -108,7 +154,7 @@ export const locationCard: IconItem = {
 };
 export const attendanceCard: IconItem = {
   text: 'ATTENDANCE_CARD',
-  icon: 'attendance-card',
+  icon: attendanceCardIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM, TL],
@@ -119,7 +165,7 @@ export const attendanceCard: IconItem = {
 
 export const attendanceConfirm: IconItem = {
   text: 'ATTENDANCE_CONFIRM',
-  icon: 'attendance-confirm',
+  icon: attendanceConfirmIcon,
   color: 'primary',
   permission: {
     view: [PME, EME],
@@ -129,7 +175,7 @@ export const attendanceConfirm: IconItem = {
 };
 export const payrollAudit: IconItem = {
   text: 'PAYROLL_AUDIT',
-  icon: 'payroll-audit',
+  icon: payrollAuditIcon,
   color: 'economics',
   permission: {
     view: [PME, EME, MM],
@@ -139,7 +185,7 @@ export const payrollAudit: IconItem = {
 };
 export const leave: IconItem = {
   text: 'LEAVE_APPLY',
-  icon: 'leave',
+  icon: leaveIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM],
@@ -149,7 +195,7 @@ export const leave: IconItem = {
 };
 export const overtime: IconItem = {
   text: 'LEAVE_APPLY',
-  icon: 'overtime',
+  icon: overtimeIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM, TL],
@@ -159,7 +205,7 @@ export const overtime: IconItem = {
 };
 export const pieceAudit: IconItem = {
   text: 'PIECE_AUDIT',
-  icon: 'piece-audit',
+  icon: pieceAuditIcon,
   color: 'piece',
   permission: {
     view: [PME, EME, MM, TL],
@@ -169,7 +215,7 @@ export const pieceAudit: IconItem = {
 };
 export const modifyAttendance: IconItem = {
   text: 'MODIFY_ATTENDANCE',
-  icon: 'modify-attendance',
+  icon: modifyAttendanceIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM, TL],
@@ -179,7 +225,7 @@ export const modifyAttendance: IconItem = {
 };
 export const workContract: IconItem = {
   text: 'WORK_CONTRACT',
-  icon: 'work-contract',
+  icon: workContractIcon,
   color: 'contract',
   permission: {
     view: [],
@@ -189,7 +235,7 @@ export const workContract: IconItem = {
 };
 export const primeContract: IconItem = {
   text: 'PRIME_CONTRACT',
-  icon: 'prime-contract',
+  icon: primeContractIcon,
   color: 'contract',
   permission: {
     view: [],
@@ -199,7 +245,7 @@ export const primeContract: IconItem = {
 };
 export const subContract: IconItem = {
   text: 'SUB_CONTRACT',
-  icon: 'sub-contract',
+  icon: subContractIcon,
   color: 'contract',
   permission: {
     view: [],
@@ -209,7 +255,7 @@ export const subContract: IconItem = {
 };
 export const modifyDuty: IconItem = {
   text: 'MODIFY_DUTY',
-  icon: 'modify-duty',
+  icon: modifyDutyIcon,
   color: 'primary',
   permission: {
     view: [],
@@ -219,7 +265,7 @@ export const modifyDuty: IconItem = {
 };
 export const workContractModify: IconItem = {
   text: 'MODIFY_WORK_CONTRACT',
-  icon: 'work-contract-modify',
+  icon: workContractModifyIcon,
   color: 'contract',
   permission: {
     view: [],
@@ -229,7 +275,7 @@ export const workContractModify: IconItem = {
 };
 export const myAudited: IconItem = {
   text: 'MY_AUDIT',
-  icon: 'my-audited',
+  icon: myAuditedIcon,
   color: 'related',
   permission: {
     view: [PME, EME, MM, PM, LM, TL, QW, SW, UW],
@@ -239,7 +285,7 @@ export const myAudited: IconItem = {
 };
 export const myLaunch: IconItem = {
   text: 'MY_APPLY',
-  icon: 'my-launch',
+  icon: myLaunchIcon,
   color: 'related',
   permission: {
     view: [PME, EME, MM, PM, LM, TL, QW],
@@ -250,7 +296,7 @@ export const myLaunch: IconItem = {
 
 export const myAttendance: IconItem = {
   text: 'MY_ATTENDANCE',
-  icon: 'my-attendance',
+  icon: myAttendanceIcon,
   color: 'primary',
   permission: {
     view: [SW],
@@ -260,7 +306,7 @@ export const myAttendance: IconItem = {
 };
 export const salary: IconItem = {
   text: 'MY_SALARY',
-  icon: 'salary',
+  icon: salaryIcon,
   color: 'economics',
   permission: {
     view: [SW, UW],
@@ -270,7 +316,7 @@ export const salary: IconItem = {
 };
 export const bankCard: IconItem = {
   text: 'MY_BANK_CARD',
-  icon: 'bank-card',
+  icon: bankCardIcon,
   color: 'primary',
   permission: {
     view: [PME, EME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
@@ -280,7 +326,7 @@ export const bankCard: IconItem = {
 };
 export const certificate: IconItem = {
   text: 'MY_CERTIFICATE',
-  icon: 'certificate',
+  icon: certificateIcon,
   color: 'contract',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
@@ -291,7 +337,7 @@ export const certificate: IconItem = {
 
 export const apply: IconItem = {
   text: 'LAUNCH_APPLY',
-  icon: 'apply',
+  icon: applyIcon,
   color: 'secondary',
   permission: {
     view: [],
@@ -302,7 +348,7 @@ export const apply: IconItem = {
 
 export const personalInfo: IconItem = {
   text: 'PERSONAL_INFO',
-  icon: 'personal-info',
+  icon: personalInfoIcon,
   color: 'primary',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
@@ -313,7 +359,7 @@ export const personalInfo: IconItem = {
 
 export const familyInfo: IconItem = {
   text: 'FAMILY_INFO',
-  icon: 'family-info',
+  icon: familyInfoIcon,
   color: 'primary',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
@@ -324,7 +370,7 @@ export const familyInfo: IconItem = {
 
 export const workInfo: IconItem = {
   text: 'WORK_EXPERIENCE',
-  icon: 'work-info',
+  icon: workInfoIcon,
   color: 'primary',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
@@ -335,7 +381,7 @@ export const workInfo: IconItem = {
 
 export const educationInfo: IconItem = {
   text: 'EDUCATION_EXPERIENCE',
-  icon: 'education-info',
+  icon: educationInfoIcon,
   color: 'primary',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
@@ -389,7 +435,7 @@ export class IconService {
     const subscription = badge.subscribe(count => {
       this.store.dispatch(new AddBadgeAction({ count, path }));
     });
-    
+
     this.subscriptions.push(subscription);
   }
 

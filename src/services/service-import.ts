@@ -1,3 +1,4 @@
+//region
 import { TakePhotoService } from './../components/take-photo/take-photo-service';
 import { ProjectService } from './business/project-service';
 import { StatisticsService } from './business/statistics-service';
@@ -26,7 +27,8 @@ import { TimeService } from './utils/time-service';
 import { ErrorService } from './errors/error-service';
 import { TipService } from './tip-service';
 import { ChartService } from './utils/chart-service';
-
+import { WorkFlowService } from './business/work-flow-service';
+//endregion
 
 export const API_SERVICES = [
     Command,
@@ -55,6 +57,7 @@ export const BUSINESS_SERVICES = [
     WorkerService,
     StatisticsService,
     TakePhotoService,
+    WorkFlowService,
 ]
 
 

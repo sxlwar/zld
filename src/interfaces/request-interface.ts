@@ -1,4 +1,4 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 export interface WsRequest {
   command: { path: string };
@@ -13,7 +13,7 @@ export class RequestAction implements Action {
 }
 
 export interface RequestOption {
-  [key: string]: string | number | number[] | string [];
+  [key: string]: string | number | number[] | string[];
 }
 
 export interface LoginOptions {
@@ -125,7 +125,7 @@ export interface AttendanceInstantListOptions {
   team_id?: number[];
   flag?: number;
   attendance_machine_id?: number;
-} 
+}
 
 export interface PayBillListOptions {
   sid: string;

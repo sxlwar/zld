@@ -6,6 +6,7 @@ import { PayBillEffect } from './pay-bill-effect';
 import { OvertimeEffect } from './overtime-effect';
 import { CraftEffect } from './craft-effect';
 import { AttendanceEffect } from './attendance-effect';
+import { WorkFlowEffect } from './work-flow-effect';
 
 export const EFFECTS = [
     AttendanceEffect,
@@ -15,5 +16,6 @@ export const EFFECTS = [
     ProjectEffect,
     TeamEffect,
     WorkPieceEffect,
-    WorkerEffect
+    WorkerEffect,
+    WorkFlowEffect
 ]

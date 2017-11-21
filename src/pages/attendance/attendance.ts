@@ -88,7 +88,7 @@ export class AttendancePage {
   /* ========================================================Attendance operation========================================================= */
 
   getAttendanceOption() {
-    const queryType = attendanceList.noMagicNumber.get(attendance.unconfirm).value;
+    const queryType = attendanceList.noMagicNumber.get(attendance.unconfirmed).value;
 
     return this.teamService.getSelectedTeams()
       .map(ids => ({ start_day: this.startDate, end_day: this.endDate, team_id: ids, ...queryType }));

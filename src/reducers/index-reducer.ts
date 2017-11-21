@@ -197,6 +197,11 @@ export const selectWorkPieceFinishFlow = createSelector(getWorkPiece, piece.getP
 export const getStatistics = (state: AppState) => state.statistics;
 export const selectAttendanceStatisticsResponse = createSelector(getStatistics, statistics.getAttendanceStatResponse);
 export const selectAttendanceStatistics = createSelector(getStatistics, statistics.getAttendanceStats);
+
+//request aggregation list
+export const selectWorkFlowStatisticsResponse = createSelector(getStatistics,statistics.getWorkFlowStatResponse);
+export const selectWorkFlowStatistics = createSelector(getStatistics, statistics.getWorkFlowStats);
+
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 /*================================================HTTP===========================================================*/

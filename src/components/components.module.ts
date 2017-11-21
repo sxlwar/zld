@@ -1,5 +1,5 @@
 //region
-import { SharedModule } from './../app/shared.modules';
+import { SharedModule } from '../app/shared.modules';
 import { NgModule } from '@angular/core';
 import { ImageVerificationComponent } from './image-verification/image-verification';
 import { CommonModule } from '@angular/common';

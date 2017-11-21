@@ -20,6 +20,24 @@ export interface ErrorMessage {
   errorMessage: string;
 }
 
+export enum workFlow {
+  overtime= "workovertime_apply",
+  amendAtt= "amend_worker_attend",
+  pieceFinish= "workpiece_finish",
+  payFlow= "project_payflow_apply",
+  timeDuty= "timeduty_apply",
+  leave= "leave_apply",
+  signWorker= "sign_worker_contract",
+  workerPostpone= "worker_contract_time_change",
+  subPostpone= "sub_contract_time_change",
+  primePostpone= "prime_contract_time_change",
+  launchWorker= "sign_worker_contract",
+  launchSub= "sign_sub_contract",
+  launchPrime= "sign_prime_contract",
+  modifyDutyTime= "timeduty_apply",
+  contractTimeChange= "worker_contract_time_change"
+}
+
 /*==================================Data model before enter into app=============================================*/
 
 //login
@@ -273,7 +291,7 @@ export interface AttendResultTeamStatListResponse {
 
 }
 
-/*===========================================Paybill model======================================================*/
+/*===========================================PayBill model======================================================*/
 
 export interface PayBill {
   contract__team__name: string;
@@ -384,19 +402,7 @@ export interface TaskUpdateResponse {
 
 }
 
-/*============================================Work flow model==================================================*/
-
-export interface TaskCount {
-  process_id__count: number;
-  process_id: string;
-}
-
-export interface RequestAggregationResponse {
-  request_aggregation: TaskCount[];
-  errorMessage?: string;
-}
-
-/*============================================Attendance statistics model==================================================*/
+/*=================================================Statistics model==================================================*/
 
 export interface AttendanceStatus {
   amend_count: number;
@@ -414,10 +420,20 @@ export interface AttendanceStatistics {
   confirm_status: AttendanceConfirmStatus;
 }
 
-export interface AttendanceResultTeamStatListResposne {
+export interface AttendanceResultTeamStatListResponse {
   attend_result_team_stat_list: AttendanceStatistics[];
   errorMessage?: string;
 } 
+
+export interface WorkFlowAggregation {
+  process_id__count: number;
+  process_id: string;
+}
+
+export interface RequestAggregationResponse {
+  request_aggregation: WorkFlowAggregation[];
+  errorMessage?: string;
+}
 
 /*========================================================================================================*/
 

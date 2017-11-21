@@ -1,6 +1,7 @@
-import { GetAttendanceResultTeamStatListAction } from './../../actions/action/statistics-action';
-import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions } from './../../interfaces/request-interface';
 //region
+import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
+import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import {
   AttendanceResultListOptions,
@@ -48,11 +49,13 @@ import { GetWorkOvertimeRecordAction } from '../../actions/action/overtime-actio
 @Injectable()
 export class ProcessorService extends MapperService {
 
-  constructor(public store: Store<AppState>,
+  constructor(
+    public store: Store<AppState>,
     public errorService: ErrorService,
     public uploadService: UploadService,
     public command: Command,
-    public permission: PermissionService) {
+    public permission: PermissionService
+  ) {
     super();
   }
 
@@ -208,5 +211,14 @@ export class ProcessorService extends MapperService {
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetAttendanceResultTeamStatListAction(option)));
+  }
+
+  workFlowStatisticsProcessor(option$: Observable<RequestAggregationOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.workFlowStatistics);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetWorkFlowStatisticsAction(option)));
   }
 }

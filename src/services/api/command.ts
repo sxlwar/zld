@@ -159,10 +159,10 @@ export const teamList: ApiUnit = {
 
 export enum attendance {
   attendanceOnlyDisplay = 'onlyDisplay',
-  unconfirm = 'unconfirm',
+  unconfirmed = 'unconfirmed',
   confirmed = 'confirmed',
   applyToModify = 'applyToModify',
-  allTyps = 'allTypes'
+  allTypes = 'allTypes'
 }
 
 export const attendanceList: ApiUnit = {
@@ -175,10 +175,10 @@ export const attendanceList: ApiUnit = {
   },
   noMagicNumber: new Map([
     [attendance.attendanceOnlyDisplay, new Iterator({ flag: 1 })],
-    [attendance.unconfirm, new Iterator({ confirm: 0 })],
+    [attendance.unconfirmed, new Iterator({ confirm: 0 })],
     [attendance.confirmed, new Iterator({ confirm: 1 })],
     [attendance.applyToModify, new Iterator({ confirm: 2 })],
-    [attendance.allTyps, new Iterator({ confirm: 3 })]
+    [attendance.allTypes, new Iterator({ confirm: 3 })]
   ]),
   specialCharacter: new Map([
     [SW, new Iterator({ self: 1 })]
@@ -250,6 +250,16 @@ export const attendanceResultTeamStatList: ApiUnit = {
   ]),
   permission: {
     view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
+export const workFlowStatistics: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['workflow.consumer.RequestAggregation']]
+  ]),
+  permission: {
+    view: [PM, LM, TL, SW],
     opt: []
   }
 }
@@ -328,7 +338,6 @@ export class Command {
   msgTitleDelete = "operation.consumer.MsgTitleDelete";
   readMsgContent = "operation.consumer.ReadMsgContent";
   basicInfoList = "employee.consumer.BasicInfoList";
-  requestAggregation = "workflow.consumer.RequestAggregation";
   constructor() {
   }
 
@@ -450,6 +459,12 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  getWorkFlowStatistics(option): WsRequest {
+    const path = workFlowStatistics.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
@@ -488,5 +503,9 @@ export class Command {
 
   get attendanceResultTeamStatList() {
     return attendanceResultTeamStatList;
+  }
+
+  get workFlowStatistics() {
+    return workFlowStatistics;
   }
 }

@@ -65,12 +65,5 @@ export function getIconReducer(state: State, path: string | string[]): IconState
   return result;
 }
 
-export function updateIconReducer(state: IconState[], iconName: string, count: number): IconState[] {
-  return state.map(icon => {
-    if(icon.icon === iconName) icon.badge = count;
-    return icon;
-  })
-  
-}
 
 export const getSpecificIcon = (path: string | string[]) => (state: State) => getIconReducer(state, path);
