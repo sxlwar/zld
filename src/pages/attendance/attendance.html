@@ -9,7 +9,7 @@
 
 <ion-content padding>
 
-  <ion-item-divider color="light">{{'SET_QUERYN_CONDITION' | translate}}</ion-item-divider>
+  <ion-item-divider color="light">{{'SET_QUERY_CONDITION' | translate}}</ion-item-divider>
 
   <ion-list>
     <ion-item>
@@ -40,7 +40,7 @@
         <ion-grid>
           <ion-row>
             <ion-col (click)="sortAttendanceBy('contract__worker__employee__realname')">{{'NAME' | translate}}</ion-col>
-            <ion-col (click)="sortAttendanceBy('total_area_hour')">{{'TOTOAL_TIME' | translate}}</ion-col>
+            <ion-col (click)="sortAttendanceBy('total_area_hour')">{{'TOTAL_TIME' | translate}}</ion-col>
             <ion-col (click)="sortAttendanceBy('availability_work_hour')">{{'VALID_TIME' | translate}}</ion-col>
             <ion-col>
               <ion-icon *ngIf="operatePermission | async" name="more" (click)="showActionSheet()"></ion-icon>

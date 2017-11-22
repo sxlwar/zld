@@ -20,24 +20,6 @@ export interface ErrorMessage {
   errorMessage: string;
 }
 
-export enum workFlow {
-  overtime= "workovertime_apply",
-  amendAtt= "amend_worker_attend",
-  pieceFinish= "workpiece_finish",
-  payFlow= "project_payflow_apply",
-  timeDuty= "timeduty_apply",
-  leave= "leave_apply",
-  signWorker= "sign_worker_contract",
-  workerPostpone= "worker_contract_time_change",
-  subPostpone= "sub_contract_time_change",
-  primePostpone= "prime_contract_time_change",
-  launchWorker= "sign_worker_contract",
-  launchSub= "sign_sub_contract",
-  launchPrime= "sign_prime_contract",
-  modifyDutyTime= "timeduty_apply",
-  contractTimeChange= "worker_contract_time_change"
-}
-
 /*==================================Data model before enter into app=============================================*/
 
 //login
@@ -286,11 +268,6 @@ export interface AttendanceInstantListResponse {
   errorMessage?: string;
 }
 
-
-export interface AttendResultTeamStatListResponse {
-
-}
-
 /*===========================================PayBill model======================================================*/
 
 export interface PayBill {
@@ -420,6 +397,7 @@ export interface AttendanceStatistics {
   confirm_status: AttendanceConfirmStatus;
 }
 
+//attendResultTeamStatList
 export interface AttendanceResultTeamStatListResponse {
   attend_result_team_stat_list: AttendanceStatistics[];
   errorMessage?: string;
@@ -430,6 +408,7 @@ export interface WorkFlowAggregation {
   process_id: string;
 }
 
+//requestAggregation
 export interface RequestAggregationResponse {
   request_aggregation: WorkFlowAggregation[];
   errorMessage?: string;
@@ -469,7 +448,7 @@ export type ErrorResponse = LoginResponse
   | WorkOvertimeRecordListResponse
   | WorkPieceListResponse
   | RequestAggregationResponse
-  | AttendResultTeamStatListResponse
+  | AttendanceResultTeamStatListResponse
   | ProcessCreateResponse
   | MultiProcessCreateResponse
   | TaskUpdateResponse;

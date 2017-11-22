@@ -10,7 +10,7 @@ import { AttendanceInstant, AttendanceInstantType, AttendanceInstantListResponse
 import { RequestOption, AttendanceInstantListOptions } from '../../interfaces/request-interface';
 import { UserService } from '..//business/user-service';
 import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/action/attendance-record-action';
-import { ResetAttendnacePageAction } from '../../actions/action/attendance-action';
+import { ResetAttendancePageAction } from '../../actions/action/attendance-action';
 import 'rxjs/add/observable/from';
 //endregion
 
@@ -89,7 +89,7 @@ export class AttendanceRecordService {
             .subscribe(value => {
                 const [page, count, limit] = value;
 
-                if (page * limit >= count) this.store.dispatch(new ResetAttendnacePageAction());
+                if (page * limit >= count) this.store.dispatch(new ResetAttendancePageAction());
             });
 
         this.subscriptions.push(subscription);
