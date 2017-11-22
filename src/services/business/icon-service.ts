@@ -12,6 +12,9 @@ import * as pages from '../../pages/pages';
 import { IconItem } from '../../interfaces/icon-interface';
 //endregion
 
+/**
+ * @description These constants are icon names used in application.
+ */
 export const attendanceIcon = 'attendance';
 export const payrollIcon = 'payroll';
 export const organizationIcon = 'organization';
@@ -45,6 +48,9 @@ export const familyInfoIcon = 'family-info';
 export const workInfoIcon = 'work-info';
 export const educationInfoIcon = 'education-info';
 
+/**
+ * @description Icon badge's statistics field mapper.
+ */
 export const workFlowMap = new Map([
   [payrollAuditIcon, 'project_payflow_apply'],
   [leaveIcon, 'leave_apply'],
@@ -57,6 +63,8 @@ export const workFlowMap = new Map([
   [modifyDutyIcon, 'timeduty_apply'],
   [workContractModifyIcon, 'worker_contract_time_change']
 ]);
+
+/* ================================================================Icon model START================================================================ */
 
 //region
 export const attendance: IconItem = {
@@ -102,6 +110,7 @@ export const workerManager: IconItem = {
   },
   page: ''
 };
+
 export const workPiece: IconItem = {
   text: 'WORK_PIECE',
   icon: workPieceIcon,
@@ -112,6 +121,7 @@ export const workPiece: IconItem = {
   },
   page: ''
 };
+
 export const location: IconItem = {
   text: 'WORKER_LOCATION',
   icon: locationIcon,
@@ -122,6 +132,7 @@ export const location: IconItem = {
   },
   page: ''
 };
+
 export const trajectory: IconItem = {
   text: 'WORKER_TRAJECTORY',
   icon: trajectoryIcon,
@@ -132,6 +143,7 @@ export const trajectory: IconItem = {
   },
   page: ''
 };
+
 export const attendanceMachine: IconItem = {
   text: 'ATTENDANCE_MACHINE',
   icon: attendanceMachineIcon,
@@ -142,6 +154,7 @@ export const attendanceMachine: IconItem = {
   },
   page: ''
 };
+
 export const locationCard: IconItem = {
   text: 'IC_LOCATION_CARD',
   icon: locationCardIcon,
@@ -152,6 +165,7 @@ export const locationCard: IconItem = {
   },
   page: ''
 };
+
 export const attendanceCard: IconItem = {
   text: 'ATTENDANCE_CARD',
   icon: attendanceCardIcon,
@@ -223,6 +237,7 @@ export const modifyAttendance: IconItem = {
   },
   page: ''
 };
+
 export const workContract: IconItem = {
   text: 'WORK_CONTRACT',
   icon: workContractIcon,
@@ -233,6 +248,7 @@ export const workContract: IconItem = {
   },
   page: ''
 };
+
 export const primeContract: IconItem = {
   text: 'PRIME_CONTRACT',
   icon: primeContractIcon,
@@ -243,6 +259,7 @@ export const primeContract: IconItem = {
   },
   page: ''
 };
+
 export const subContract: IconItem = {
   text: 'SUB_CONTRACT',
   icon: subContractIcon,
@@ -253,6 +270,7 @@ export const subContract: IconItem = {
   },
   page: ''
 };
+
 export const modifyDuty: IconItem = {
   text: 'MODIFY_DUTY',
   icon: modifyDutyIcon,
@@ -263,6 +281,7 @@ export const modifyDuty: IconItem = {
   },
   page: ''
 };
+
 export const workContractModify: IconItem = {
   text: 'MODIFY_WORK_CONTRACT',
   icon: workContractModifyIcon,
@@ -273,6 +292,7 @@ export const workContractModify: IconItem = {
   },
   page: ''
 };
+
 export const myAudited: IconItem = {
   text: 'MY_AUDIT',
   icon: myAuditedIcon,
@@ -283,6 +303,7 @@ export const myAudited: IconItem = {
   },
   page: ''
 };
+
 export const myLaunch: IconItem = {
   text: 'MY_APPLY',
   icon: myLaunchIcon,
@@ -390,6 +411,8 @@ export const educationInfo: IconItem = {
   page: ''
 };
 //endregion
+
+/* ================================================================Icon model EDN================================================================= */
 
 @Injectable()
 export class IconService {

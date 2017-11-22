@@ -77,23 +77,21 @@ export class MissionPage {
 
         const iconName = iconState.icon;
 
-        const observable = workFlowBadges.filter(aggregation => aggregation.process_id === processId).map(aggregation => aggregation.process_id__count);
+        const observable = workFlowBadges.filter(aggregation => aggregation.process_id === processId)
+          .map(aggregation => aggregation.process_id__count);
 
         this.iconService.addBadge(observable, [pages.MissionRoot, iconName]);
-        return [observable, [pages.MissionRoot, iconName]];
       });
-
   }
 
   getBadgeIcons(): Observable<IconState> {
-    return this.icons
-      .mergeMap(icons => Observable.from(icons).filter(icon => this.iconService.needBadge(icon)));
+    return this.icons.mergeMap(icons => Observable.from(icons).filter(icon => this.iconService.needBadge(icon)));
   }
 
   attendanceConfirmBadge(): Observable<number> {
     return this.getBadgeIcons()
       .filter(item => item.icon === Icons.attendanceConfirm.icon)
-      .switchMapTo(this.statistics.getAttendanceResultStatistics())
+      .switchMapTo(this.statistics.getAttendanceResultStatistics('unconfirm_count'))
   }
 
   workFlowBadges(): Observable<WorkFlowAggregation> {
@@ -105,8 +103,8 @@ export class MissionPage {
     this.navCtrl.push(item.page, item).then(() => { });
   }
 
-  ionViewDidLeave(){
-   this.subscription.unsubscribe();
+  ionViewDidLeave() {
+    this.subscription.unsubscribe();
   }
 
 }

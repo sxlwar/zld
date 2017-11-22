@@ -1,5 +1,5 @@
 import { AttendanceStatistics } from './../../interfaces/response-interface';
-import { selectAttendanceStatistics, selectAttendanceStatisticsResponse } from './../../reducers/index-reducer';
+import { selectAttendanceStatisticsResponse, selectAttendanceStatistics } from './../../reducers/index-reducer';
 //region
 import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
@@ -23,7 +23,7 @@ import { AttendanceResult } from '../../interfaces/response-interface';
 import { RequestOption } from '../../interfaces/request-interface';
 import 'rxjs/add/observable/empty'
 import { DatePeriod } from '../../reducers/reducer/attendance-reducer';
-import { SetAttendanceEndDateAction, SetAttendanceStartDateAction, AddSelectedAttendanceAction, RemoveSelectedAttendanceAction, ToggleAllSelectedAction, IncreaseAttendancePageAction, ResetAttendnacePageAction, SortAttendanceAction, ToggleAttendanceSortTypeAction } from '../../actions/action/attendance-action';
+import { SetAttendanceEndDateAction, SetAttendanceStartDateAction, AddSelectedAttendanceAction, RemoveSelectedAttendanceAction, ToggleAllSelectedAction, IncreaseAttendancePageAction, ResetAttendancePageAction, SortAttendanceAction, ToggleAttendanceSortTypeAction } from '../../actions/action/attendance-action';
 import { UserService } from '..//business/user-service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
@@ -48,7 +48,7 @@ export class AttendanceService {
   /* =========================================================Attendance data========================================================== */
 
   /**
-   * @description  Data returned from this method contians cached.
+   * @description  Data returned from this method contains cached.
    * */
   getAttendanceData(option: Observable<RequestOption>): Observable<AttendanceResult[]> {
     this.getAttendances(option);
@@ -99,7 +99,7 @@ export class AttendanceService {
   }
 
   resetPage(): void {
-    this.store.dispatch(new ResetAttendnacePageAction());
+    this.store.dispatch(new ResetAttendancePageAction());
   }
 
   getAttendanceStatisticsByTeam():void {
@@ -117,9 +117,13 @@ export class AttendanceService {
   }
 
   getAttendanceStatistics(): Observable<AttendanceStatistics[]> {
-    this.getAttendanceStatisticsByTeam();
-  
-    return this.store.select(selectAttendanceStatistics);
+    const result = this.store.select(selectAttendanceStatistics);
+
+    const subscription = result.subscribe(value => !value.length && this.getAttendanceStatisticsByTeam());
+
+    this.subscriptions.push(subscription);
+
+    return result; 
   }
 
   /* =========================================================Attendance date operation================================================= */
@@ -166,7 +170,7 @@ export class AttendanceService {
   /* =========================================================Attendance modify operation================================================= */
 
   showActionSheet() {
-    const subscription = this.translate.get(['ATTENDANCE_CONFRIM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
+    const subscription = this.translate.get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
       .subscribe(value => this.createActionSheet(value));
 
     this.subscriptions.push(subscription);
@@ -176,7 +180,7 @@ export class AttendanceService {
     const actionSheet = this.actionSheet.create({
       buttons: [
         {
-          text: buttonText.ATTENDANCE_CONFRIM,
+          text: buttonText.ATTENDANCE_CONFIRM,
           handler: () => {
             console.log('navigation to confirm option');
           }
@@ -210,7 +214,7 @@ export class AttendanceService {
       .subscribe(value => {
         const [page, count, limit] = value;
 
-        if (page * limit >= count) this.store.dispatch(new ResetAttendnacePageAction());
+        if (page * limit >= count) this.store.dispatch(new ResetAttendancePageAction());
       });
 
       this.subscriptions.push(subscription);

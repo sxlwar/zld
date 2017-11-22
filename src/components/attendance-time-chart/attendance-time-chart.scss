@@ -6,4 +6,9 @@ attendance-time-chart {
     ion-card-header {
         text-align: center;
     }
+    
+    .card-ios {
+        margin: 12px 0;
+        width: calc(100%);
+    }
 }

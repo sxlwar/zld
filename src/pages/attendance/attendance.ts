@@ -31,7 +31,8 @@ export class AttendancePage {
   sortType = 1;
   operatePermission: Observable<boolean>
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public attendance: AttendanceService,
     public timeService: TimeService,

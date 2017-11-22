@@ -175,6 +175,12 @@ export interface AttendanceResultTeamStatListOptions {
   end_day?: string;
 }
 
+//TODO: unused;
+export interface AttendanceResultConfirmOptions {
+  sid: string;
+  attendance_result_id: number[];
+}
+
 export type Options = LoginOptions
   & RegisterOptions
   & SearchCompanyOptions
@@ -189,4 +195,5 @@ export type Options = LoginOptions
   & AttendanceInstantListOptions
   & PayBillListOptions
   & WorkOvertimeRecordListOptions
-  & AttendanceResultTeamStatListOptions;
+  & AttendanceResultTeamStatListOptions
+  & AttendanceResultConfirmOptions;

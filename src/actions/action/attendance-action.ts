@@ -135,7 +135,7 @@ export class IncreaseAttendancePageAction implements Action {
 
 export const RESET_ATTENDANCE_PAGE = 'RESET_ATTENDANCE_PAGE';
 
-export class ResetAttendnacePageAction implements Action {
+export class ResetAttendancePageAction implements Action {
   readonly type = RESET_ATTENDANCE_PAGE;
 
   constructor() {
@@ -175,6 +175,6 @@ export type Actions = GetAttendanceResultListAction
   | RemoveSelectedAttendanceAction
   | ToggleAllSelectedAction
   | IncreaseAttendancePageAction
-  | ResetAttendnacePageAction
+  | ResetAttendancePageAction
   | SortAttendanceAction
   | ToggleAttendanceSortTypeAction;

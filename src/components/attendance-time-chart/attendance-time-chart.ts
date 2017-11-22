@@ -43,7 +43,7 @@ export class AttendanceTimeChartComponent implements OnInit {
   }
 
   getPieChart(sourceData: Observable<number[]>) {
-    this.chartSubscription = this.getChartData(sourceData).map(source => this.chartService.getAttendanceTimeChart(source))
+    this.chartSubscription = this.getChartData(sourceData).map(source => this.chartService.getPieChartData(source))
       .subscribe(data => {
         this.chart = this.chartService.getChart(this.pieCanvas.nativeElement, ChartType.pie, data);
       })

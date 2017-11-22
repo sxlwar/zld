@@ -54,9 +54,30 @@ export class WorkFlowStatisticsSuccessAction implements Action {
     constructor(public payload: RequestAggregationOptions) { }
 }
 
+/* ===============================================Data condition======================================================== */
+
+export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM  = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM';
+
+export class ShowSpecificAttendanceStatisticsByTeam implements Action {
+    readonly type = SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM;
+
+    constructor(public payload: string[]) {}
+}
+
+export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE';
+
+export class ShowSpecificAttendanceStatisticsByDate implements Action {
+    readonly type = SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE;
+
+    constructor(public payload: string[]) {}
+}
+
+
 export type Actions = GetAttendanceResultTeamStatListAction
     | AttendanceResultTeamStatFailAction
     | AttendanceResultTeamStatSuccessAction
     | GetWorkFlowStatisticsAction
     | WorkFlowStatisticsFailAction
-    | WorkFlowStatisticsSuccessAction;
+    | WorkFlowStatisticsSuccessAction
+    | ShowSpecificAttendanceStatisticsByTeam
+    | ShowSpecificAttendanceStatisticsByDate;
