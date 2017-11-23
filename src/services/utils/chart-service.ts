@@ -50,10 +50,33 @@ export class ChartService {
         });
     }
 
+<<<<<<< HEAD
     getPieChartData(sourceData: ChartSourceData): ChartData {
 
         const backgroundColor = COLORS.slice(0, sourceData.data.length);
 
+=======
+    getAttendanceTimeChart(sourceData: ChartSourceData): ChartData {
+        const backgroundColor = COLORS.slice(0, sourceData.data.length);
+
+        const hoverBackgroundColor = this.generateHoverColor(backgroundColor);
+
+        return {
+            labels: sourceData.labels,
+            datasets: [{
+                hoverBackgroundColor,
+                backgroundColor,
+                data: sourceData.data
+            }
+            ]
+        }
+    }
+
+    getAttendanceStatisticsTeamChart(sourceData: ChartSourceData): ChartData {
+
+        const backgroundColor = COLORS.slice(0, sourceData.data.length);
+
+>>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
         const hoverBackgroundColor = this.generateHoverColor(backgroundColor);
 
         return {
@@ -68,7 +91,11 @@ export class ChartService {
         }
     }
 
+<<<<<<< HEAD
     getBarChartData(sourceData: ChartSourceData): ChartData {
+=======
+    getAttendanceStatisticsDayChart(sourceData: ChartSourceData): ChartData {
+>>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
         const backgroundColor = COLORS.slice(0, sourceData.data.length);
 
         const hoverBackgroundColor = this.generateHoverColor(backgroundColor);
