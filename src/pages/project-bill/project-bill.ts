@@ -15,7 +15,16 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProjectBillPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams
+  ) {
+  }
+
+  ionViewCanEnter(){
+    const {view, opt} = this.navParams.get('permission');
+
+    return opt || view;
   }
 
   ionViewDidLoad() {

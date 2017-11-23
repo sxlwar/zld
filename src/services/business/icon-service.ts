@@ -86,7 +86,7 @@ export const payroll: IconItem = {
     view: [PME, EME, MM, PM, LM, TL],
     opt: []
   },
-  page: ''
+  page: pages.projectBillPage
 };
 
 export const organization: IconItem = {

@@ -302,13 +302,94 @@ export interface PayBill {
   contract__team_id: number;
 }
 
-// payBillList
+// payBillList 个人工资对帐单
 export interface PayBillListResponse {
   count: number;
   pay_bill: PayBill[];
   errorMessage?: string;
 }
 
+export interface ProjectPayBill {
+  bill_status: string;
+  pay_bill__amount_6__sum: number;
+  pay_bill__hour_3__sum: number;
+  pay_bill__amount_4__sum: number;
+  project__name: string;
+  pay_bill__amount_3__sum: number;
+  pay_bill__amount_1__sum: number;
+  pay_bill__hour_4__sum: number;
+  pay_bill__amount_all__sum: number;
+  month: string;
+  pay_bill__hour_5__sum: number;
+  create_time: string;
+  pay_bill__amount_5__sum: number;
+  modify_time: string;
+  pay_bill__hour_2__sum: number;
+  pay_bill__hour_6__sum: number;
+  project_id: number;
+  pay_bill__hour_1__sum: number;
+  id: number;
+  pay_bill__amount__sum: number;
+  pay_bill__amount_2__sum: number;
+}
+
+//projectPayBillList 工程工资对帐单
+export interface ProjectPayBillListResponse {
+  project_pay_bill: ProjectPayBill[];
+  errorMessage?: string;
+}
+
+export interface PayProcess {
+  status: string;
+  bank_name: string;
+  modify_time: string;
+  pay_bill__contract__worker__username: string;
+  project_pay__project_bill__month: string;
+  tran_id: string;
+  response_msg: null;
+  tran_time: null;
+  pay_bill__contract__team__name: string;
+  name: string;
+  response_code: null;
+  pay_bill__contract__worker__employee__realname: string;
+  amount: number;
+  pay_bill__contract__worker_id: number;
+  create_time: string;
+  project_pay__project_bill__project_id: number;
+  project_pay__project_bill__project__name: string;
+  id: number;
+  project_pay_id: number;
+  bank_no: string;
+}
+
+//payProcessList 个人工资发放单
+export interface PayProcessListResponse {
+  count: number;
+  pay_process: PayProcess[]
+  errorMessage?: string;
+}
+
+export interface ProjectPayProcess {
+  status: string;
+  amount_paying: number;
+  project_bill_id: number;
+  amount_paid: number;
+  project_bill__project_id: number;
+  project_bill__project__name: string;
+  amount: number;
+  create_time: string;
+  modify_time: string;
+  bankno__num: null;
+  project_bill__month: string;
+  id: number;
+}
+
+//projectPayProcessList 工程工资发放单 
+export interface ProjectPayProcessListResponse {
+  project_pay_process: ProjectPayProcess[]
+  count: number;
+  errorMessage?: string;
+}
 
 /*==========================================Over time model====================================================*/
 
@@ -337,7 +418,6 @@ export interface WorkOvertimeRecordListResponse {
   work_overtimes: Overtime[];
   errorMessage?: string;
 }
-
 
 /*==========================================Work Piece model====================================================*/
 

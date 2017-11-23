@@ -16,6 +16,8 @@ export interface RequestOption {
   [key: string]: string | number | number[] | string[];
 }
 
+/*==================================Data model before enter into app=============================================*/
+
 export interface LoginOptions {
   username: string;
   password: string;
@@ -67,6 +69,8 @@ export interface UploadImageOptions {
   id?: string | number;
 }
 
+/*=================================================Team model======================================================*/
+
 export interface TeamListOptions {
   sid: string;
   project_id?: number;
@@ -75,6 +79,8 @@ export interface TeamListOptions {
   team_id?: string;
   flag?: number;
 }
+
+/*===============================================Project model======================================================*/
 
 export interface ProjectListOptions {
   sid: string;
@@ -88,6 +94,8 @@ export interface ProjectListOptions {
   limit?: number;
 }
 
+/*===========================================Worker contract model======================================================*/
+
 export interface WorkerContractOptions {
   sid: string;
   flag: number;
@@ -99,6 +107,7 @@ export interface WorkerContractOptions {
   team_id?: number;
 }
 
+/*===========================================Attendance model=================================================*/
 
 export interface AttendanceResultListOptions {
   sid: string;
@@ -111,7 +120,6 @@ export interface AttendanceResultListOptions {
   page?: number;
   limit?: number;
 }
-
 
 export interface AttendanceInstantListOptions {
   sid: string
@@ -127,6 +135,14 @@ export interface AttendanceInstantListOptions {
   attendance_machine_id?: number;
 }
 
+//FIXME: unused;
+export interface AttendanceResultConfirmOptions {
+  sid: string;
+  attendance_result_id: number[];
+}
+
+/*===========================================PayBill model======================================================*/
+
 export interface PayBillListOptions {
   sid: string;
   month: string;
@@ -138,9 +154,36 @@ export interface PayBillListOptions {
   pay_type?: string;
 }
 
-export interface RequestAggregationOptions {
+export interface ProjectPayProcessListOptions {
   sid: string;
+  limit: number;
+  page: number;
+  project_id?: number;
+  project_name?: string;
 }
+
+export interface ProjectPayBillListOptions {
+  sid: string;
+  id?: number;
+  project_id?: number;
+  request_id?: number;
+  month?: string; //Actually is year-month ex: '2017-01'
+  request_status?: string;
+}
+
+export interface PayProcessListOptions {
+  sid: string;
+  page: number;
+  limit: number;
+  self?: number;
+  user_id?: number[];
+  team_id?: number[];
+  month?: number[]; //Actually is year-month ex: '2017-01'
+  project_id?: number[];
+  status?: string;
+}
+
+/*==========================================Over time model====================================================*/
 
 export interface WorkOvertimeRecordListOptions {
   sid: string;
@@ -157,6 +200,8 @@ export interface WorkOvertimeRecordListOptions {
   history_view?: boolean;
 }
 
+/*==========================================Work Piece model====================================================*/
+
 export interface WorkPieceListOptions {
   sid: string;
   project_id?: number;
@@ -168,17 +213,17 @@ export interface WorkPieceListOptions {
   history_view?: boolean;
 }
 
+/*=================================================Statistics model==================================================*/
+
 export interface AttendanceResultTeamStatListOptions {
   sid: string;
   team_ids: number[];
   start_day?: string;
   end_day?: string;
 }
-
-//TODO: unused;
-export interface AttendanceResultConfirmOptions {
+ 
+export interface RequestAggregationOptions {
   sid: string;
-  attendance_result_id: number[];
 }
 
 export type Options = LoginOptions
@@ -196,4 +241,7 @@ export type Options = LoginOptions
   & PayBillListOptions
   & WorkOvertimeRecordListOptions
   & AttendanceResultTeamStatListOptions
-  & AttendanceResultConfirmOptions;
+  & AttendanceResultConfirmOptions
+  & ProjectPayProcessListOptions
+  & ProjectPayBillListOptions
+  & PayProcessListOptions;

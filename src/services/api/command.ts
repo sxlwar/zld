@@ -1,19 +1,10 @@
-//region
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
-import {
-  CertificateOptions,
-  LoginOptions,
-  PhoneVerificationCodeOptions,
-  ProjectListOptions,
-  RegisterOptions,
-  ResetPasswordOptions,
-  SearchCompanyOptions,
-  WorkerContractOptions,
-  WsRequest,
-} from '../../interfaces/request-interface';
 import { Permission } from '../../interfaces/permission-interface';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 //endregion
+
+/* =======================================================Interface definition===================================================================== */
 
 /**
  * @description These operations define the action that an interface can perform.
@@ -52,6 +43,8 @@ export interface ApiUnit {
   noMagicNumber?: Map<string, Iterator>;
   specialCharacter?: Map<string, Iterator>;
 }
+
+/* =======================================================API unit definition===================================================================== */
 
 const login: ApiUnit = {
   operates: new Map([[Operate.querying, ['employee.consumer.Login']]])
@@ -103,6 +96,7 @@ const uploadPersonalIdImage: ApiUnit = {
   ])
 };
 
+/* =======================================================Project===================================================================== */
 
 const projectList: ApiUnit = {
   operates: new Map([
@@ -113,6 +107,8 @@ const projectList: ApiUnit = {
     opt: []
   }
 };
+
+/* =======================================================Work contract===================================================================== */
 
 export enum WorkerContract {
   unexpired = 'unexpired',
@@ -138,11 +134,15 @@ export const workerContractList: ApiUnit = {
   ])
 };
 
+/* =======================================================Work Type===================================================================== */
+
 export const workTypeList: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['employee.consumer.WorkTypeList']]
   ])
 };
+
+/* =======================================================Work Type===================================================================== */
 
 export const teamList: ApiUnit = {
   operates: new Map([
@@ -156,6 +156,8 @@ export const teamList: ApiUnit = {
     [MM, new Iterator({ flag: 1 })]
   ])
 };
+
+/* =======================================================Attendance===================================================================== */
 
 export enum attendance {
   attendanceOnlyDisplay = 'onlyDisplay',
@@ -186,7 +188,7 @@ export const attendanceList: ApiUnit = {
 };
 
 export enum attendanceInstant {
-  attendanceInstantOnlyDisplay = 'onlyDisplay'
+  attendanceInstantOnlyDisplay = 'onlyDisplay' //鬼知道文档上的这个字段是干啥的
 }
 
 export const attendanceInstantList: ApiUnit = {
@@ -210,6 +212,8 @@ export function onlyOwnTeam(ary: number[]): boolean {
   return true;
 }
 
+/* =======================================================Pay Bill===================================================================== */
+
 export const payBillList: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['project.consumer.PayBillList']]
@@ -224,6 +228,37 @@ export const payBillList: ApiUnit = {
   ])
 }
 
+export const payProcessList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.PayProcessList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
+export const projectPayBillList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.ProjectPayBillList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
+export const projectPayProcessList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.ProjectPayProcessList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM ,LM,TL],
+    opt: []
+  }
+}
+/* =======================================================Work piece===================================================================== */
+
 export const workPieceList: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['project.consumer.WorkPieceList']]
@@ -234,6 +269,8 @@ export const workPieceList: ApiUnit = {
   }
 }
 
+/* =======================================================Overtime===================================================================== */
+
 export const workOvertimeRecordList: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['project.consumer.WorkOvertimeRecordList']]
@@ -243,6 +280,8 @@ export const workOvertimeRecordList: ApiUnit = {
     opt: []
   }
 }
+
+/* =======================================================Statistics===================================================================== */
 
 export const attendanceResultTeamStatList: ApiUnit = {
   operates: new Map([
@@ -270,13 +309,10 @@ export class Command {
   personalIdList = "employee.consumer.PersonalIdList";
   processCreate = "workflow.consumer.ProcessCreate";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
-
   workerDetailList = "employee.consumer.WorkerDetailList";
   workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
   requestList = "workflow.consumer.RequestList";
-  projectPayBillList = "project.consumer.ProjectPayBillList";
   workTimePayList = "project.consumer.WorkTimePayList";
-  projectPayProcessList = "project.consumer.ProjectPayProcessList";
   workerBankNoList = "employee.consumer.WorkerBankNoList";
   workerBankNoAdd = "employee.consumer.WorkerBankNoAdd";
   workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
@@ -286,7 +322,6 @@ export class Command {
   paySalary = "project.consumer.PaySalary";
   taskUpdate = "workflow.consumer.TaskUpdate";
   multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
-  payProcessList = "project.consumer.PayProcessList";
   workCertificateList = "employee.consumer.WorkCertificateList";
   nationalityList = "employee.consumer.NationalityList";
   groupsList = "employee.consumer.GroupsList";
@@ -417,50 +452,68 @@ export class Command {
     return this.getFullParameter(path, {});
   }
 
-  getTeamList(option): WsRequest {
+  getTeamList(option: TeamListOptions): WsRequest {
     const path = teamList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getAttendanceList(option): WsRequest {
+  getAttendanceList(option: AttendanceResultListOptions): WsRequest {
     const path = attendanceList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getAttendanceInstantList(option): WsRequest {
+  getAttendanceInstantList(option: AttendanceInstantListOptions): WsRequest {
     const path = attendanceInstantList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getPayBillList(option): WsRequest {
+  getPayBillList(option: PayBillListOptions): WsRequest {
     const path = payBillList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getWorkPieceList(option): WsRequest {
+  getWorkPieceList(option: WorkPieceListOptions): WsRequest {
     const path = workPieceList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getWorkOvertimeRecordList(option): WsRequest {
+  getWorkOvertimeRecordList(option: WorkOvertimeRecordListOptions): WsRequest {
     const path = workOvertimeRecordList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getAttendanceResultTeamStatList(option): WsRequest {
+  getAttendanceResultTeamStatList(option: AttendanceResultTeamStatListOptions): WsRequest {
     const path = attendanceResultTeamStatList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getWorkFlowStatistics(option): WsRequest {
+  getWorkFlowStatistics(option: RequestAggregationOptions): WsRequest {
     const path = workFlowStatistics.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getPayProcessList(option: PayProcessListOptions): WsRequest {
+    const path = payProcessList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getProjectPayBillList(option: ProjectPayBillListOptions) {
+    const path = projectPayBillList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getProjectPayProcessList(option:ProjectPayProcessListOptions) {
+    const path = projectPayProcessList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
@@ -507,5 +560,17 @@ export class Command {
 
   get workFlowStatistics() {
     return workFlowStatistics;
+  }
+
+  get payProcessList() {
+    return payProcessList;
+  }
+
+  get projectPayBillList() {
+    return projectPayBillList;
+  }
+
+  get projectPayProcessList() {
+    return projectPayProcessList;
   }
 }

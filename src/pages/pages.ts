@@ -31,6 +31,8 @@ export const MineRoot = 'MinePage';
 
 export const attendancePage = 'AttendancePage';
 
+export const projectBillPage = 'ProjectBillPage';
+
 
 /*============================================mission tab pages===================================================*/
 
@@ -75,6 +77,7 @@ export const PAGES = [
   { title: 'Mine', component: MineRoot},
 
   { title: 'Attendance', component: attendancePage },
+  { title: 'ProjectBill', component: projectBillPage },
 
   { title: 'AttendanceRecord', component: attendanceRecordPage},
 

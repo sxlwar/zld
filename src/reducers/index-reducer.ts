@@ -1,5 +1,5 @@
 //region
-import {ActionReducerMap, createSelector} from '@ngrx/store';
+import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as config from './reducer/config-reducer';
 import * as tutorial from './reducer/tutorial-reducer';
 import * as login from './reducer/login-reducer';
@@ -108,7 +108,7 @@ export const selectCapthca = createSelector(getUserInfo, login.getCaptcha);
 export const selectAuthPass = createSelector(getUserInfo, login.getAuthPass);
 export const selectSid = createSelector(getUserInfo, login.getSid);
 export const selectUserId = createSelector(getUserInfo, login.getUserId);
-export const selectGroupList = createSelector(getUserInfo,login.getGroupList);
+export const selectGroupList = createSelector(getUserInfo, login.getGroupList);
 
 
 //phone verification code
@@ -124,7 +124,7 @@ export const getRegister = (state: AppState) => state.register;
 export const selectRegisterUserId = createSelector(getRegister, login.getRegisterUserId);
 
 //reset password
-export const getResetPassword =(state: AppState) => state.resetPassword;
+export const getResetPassword = (state: AppState) => state.resetPassword;
 export const selectResetPasswordId = createSelector(getResetPassword, login.getResetPasswordUserId);
 
 //certificate
@@ -133,15 +133,15 @@ export const selectCertificateResult = createSelector(getCertificate, certificat
 
 //project list
 export const getProject = (state: AppState) => state.project;
-export const selectSelectedProject = createSelector(getProject,project.getSelectedProject);
+export const selectSelectedProject = createSelector(getProject, project.getSelectedProject);
 export const selectProjects = createSelector(getProject, project.getProjects);
 export const selectErrorMessage = createSelector(getProject, project.getErrorMessage);
 
 //worker contract list
 export const getWorkerContracts = (state: AppState) => state.worker;
-export const selectWorkerPage = createSelector(getWorkerContracts,worker.getWorkerContractPage);
-export const selectWorkerLimit = createSelector(getWorkerContracts,worker.getWorkerContractLimit);
-export const selectWorkerContracts = createSelector(getWorkerContracts,worker.getWorkerContracts);
+export const selectWorkerPage = createSelector(getWorkerContracts, worker.getWorkerContractPage);
+export const selectWorkerLimit = createSelector(getWorkerContracts, worker.getWorkerContractLimit);
+export const selectWorkerContracts = createSelector(getWorkerContracts, worker.getWorkerContracts);
 export const selectWorkerContractResponse = createSelector(getWorkerContracts, worker.getWorkerContractResponse);
 
 //work type list
@@ -167,7 +167,7 @@ export const selectSelectedAttendanceIds = createSelector(getAttendance, attenda
 export const selectAttendanceAllSelected = createSelector(getAttendance, attendance.getAllSelected);
 export const selectAttendanceData = createSelector(getAttendance, attendance.getAttendanceData);
 
-//attendance instanst list
+//attendance instant list
 export const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
 export const selectAttendanceRecordResponse = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceResponse);
 export const selectAttendanceRecordCount = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordCount);
@@ -177,9 +177,23 @@ export const selectAttendanceRecordLimit = createSelector(getAttendanceRecord, a
 
 //pay bill list
 export const getPayBill = (state: AppState) => state.payBill;
-export const selectPayBillListResponse = createSelector(getPayBill, payBill.getPayBillListResponse);
-export const selectPayBillListCount = createSelector(getPayBill, payBill.getPayBillListCount);
+export const selectPayBillListResponse = createSelector(getPayBill, payBill.getPayBillResponse);
+export const selectPayBillListCount = createSelector(getPayBill, payBill.getPayBillCount);
 export const selectPayBillList = createSelector(getPayBill, payBill.getPayBillList);
+
+//pay process list
+export const selectPayProcessResponse = createSelector(getPayBill, payBill.getPayBillResponse);
+export const selectPayProcessCount = createSelector(getPayBill, payBill.getPayProcessCount);
+export const selectPayProcessList = createSelector(getPayBill, payBill.getPayProcessList);
+
+//project bill list
+export const selectProjectBillResponse = createSelector(getPayBill, payBill.getProjectBillResponse);
+export const selectProjectBillList = createSelector(getPayBill, payBill.getProjectBillList);
+
+//project process list
+export const selectProjectProcessResponse = createSelector(getPayBill, payBill.getProjectProcessResponse);
+export const selectProjectProcessCount = createSelector(getPayBill, payBill.getProjectProcessCount);
+export const selectProjectProcessList = createSelector(getPayBill, payBill.getProjectProcessList);
 
 //overtime record list
 export const getOvertime = (state: AppState) => state.overtime;
@@ -200,7 +214,7 @@ export const selectAttendanceStatistics = createSelector(getStatistics, statisti
 export const selectAttendanceStatisticList = createSelector(getStatistics, statistics.getAttendanceStatisticList);
 
 //request aggregation list
-export const selectWorkFlowStatisticsResponse = createSelector(getStatistics,statistics.getWorkFlowStatResponse);
+export const selectWorkFlowStatisticsResponse = createSelector(getStatistics, statistics.getWorkFlowStatResponse);
 export const selectWorkFlowStatistics = createSelector(getStatistics, statistics.getWorkFlowStats);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/

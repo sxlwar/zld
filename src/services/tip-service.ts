@@ -1,21 +1,23 @@
-import {Injectable} from '@angular/core';
-import {Loading, LoadingController, ToastController} from 'ionic-angular';
-import {AppState, selectUploadingState} from '../reducers/index-reducer';
-import {Subscription} from 'rxjs/Subscription';
-import {Store} from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { Loading, LoadingController, ToastController } from 'ionic-angular';
+import { AppState, selectUploadingState } from '../reducers/index-reducer';
+import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class TipService {
   loading: Loading;
   loading$$: Subscription;
 
-  constructor(private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController,
-              private store: Store<AppState>) {
+  constructor(
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private store: Store<AppState>
+  ) {
     this.loadingSpy();
   }
 
-  showServerResponseSuccess(message: string): void{
+  showServerResponseSuccess(message: string): void {
     const toast = this.toastCtrl.create({
       message,
       duration: 3000,
