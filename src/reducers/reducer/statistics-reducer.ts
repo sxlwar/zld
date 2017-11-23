@@ -34,11 +34,7 @@ export function reducer(state = initialState, action: actions.Actions) {
         }
 
         case actions.ATTENDANCE_RESULT_TEAM_STAT_SUCCESS: {
-<<<<<<< HEAD
             const statisticList = attendanceStatisticListReducer(action.payload.attend_result_team_stat_list, state.attendanceConditions);
-=======
-            const statisticList = attendanceStatisticListReduce(action.payload.attend_result_team_stat_list, state.attendanceConditions);
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 
             state.attendanceConditions.statisticList = statisticList;
 
@@ -50,11 +46,7 @@ export function reducer(state = initialState, action: actions.Actions) {
         case actions.SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM: {
             const attendanceConditions = Object.assign({}, state.attendanceConditions, { selectedTeams: action.payload });
 
-<<<<<<< HEAD
             const statisticList = attendanceStatisticListReducer(state.attendanceResultTeamStatResponse.attend_result_team_stat_list, attendanceConditions);
-=======
-            const statisticList = attendanceStatisticListReduce(state.attendanceResultTeamStatResponse.attend_result_team_stat_list, attendanceConditions);
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 
             attendanceConditions.statisticList = statisticList;
 
@@ -64,11 +56,7 @@ export function reducer(state = initialState, action: actions.Actions) {
         case actions.SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE: {
             const attendanceConditions = Object.assign({}, state.attendanceConditions, { selectedDates: action.payload });
 
-<<<<<<< HEAD
             const statisticList = attendanceStatisticListReducer(state.attendanceResultTeamStatResponse.attend_result_team_stat_list, attendanceConditions);
-=======
-            const statisticList = attendanceStatisticListReduce(state.attendanceResultTeamStatResponse.attend_result_team_stat_list, attendanceConditions);
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 
             attendanceConditions.statisticList = statisticList;
 
@@ -86,11 +74,7 @@ export function reducer(state = initialState, action: actions.Actions) {
     }
 }
 
-<<<<<<< HEAD
 export function attendanceStatisticListReducer(data: AttendanceStatistics[], condition: AttendanceConditions): AttendanceStatistics[] {
-=======
-export function attendanceStatisticListReduce(data: AttendanceStatistics[], condition: AttendanceConditions): AttendanceStatistics[] {
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
     const { selectedTeams, selectedDates } = condition;
 
     let result = [...data];
@@ -111,13 +95,7 @@ export function filterConfirmStatusByDate(data: AttendanceStatistics, dates: str
     const status = data.confirm_status;
 
     const result = dates.reduce((acc, cur) => {
-<<<<<<< HEAD
         if(status[cur]) acc[cur] = status[cur];
-=======
-        if(status[cur]){
-            acc[cur] = status[cur];
-        }
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
         return acc;
     },{});
 

@@ -62,18 +62,13 @@ export class AttendanceConfirmPage {
 
       const data = source.map(item => item.count);
 
-<<<<<<< HEAD
       return this.chartService.getPieChartData({ labels, data });
-=======
-      return this.chartService.getAttendanceStatisticsTeamChart({ labels, data });
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
     })
       .subscribe(data => {
         this.chartService.getChart(this.teamChart.nativeElement, ChartType.doughnut, data);
       });
 
     this.subscriptions.push(subscription);
-<<<<<<< HEAD
   }
 
   getTeams(sourceData: Observable<AttendanceConfirmStatisticByTeam[]>) {
@@ -102,36 +97,6 @@ export class AttendanceConfirmPage {
     this.subscriptions.push(subscription);
   }
 
-=======
-  }
-
-  getTeams(sourceData: Observable<AttendanceConfirmStatisticByTeam[]>) {
-    this.teams = sourceData.map(data => data.map(item => ({ name: item.teamName })));
-  }
-
-  generateDayChart(sourceData: Observable<AttendanceConfirmStatisticByDay[]>) {
-    const subscription = sourceData
-      .map(source => {
-        const labels = source.map(item => item.date);
-
-        const data = source.map(item => item.count);
-
-        return this.chartService.getAttendanceStatisticsDayChart({ labels, data });
-      })
-      .subscribe(data => {
-        const options = {
-          scales: {
-            yAxes: [{ ticks: { beginAtZero: true } }]
-          }
-        };
-
-        this.chartService.getChart(this.dayChart.nativeElement, ChartType.bar, data, options);
-      });
-
-    this.subscriptions.push(subscription);
-  }
-
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
   getDays(sourceData: Observable<AttendanceConfirmStatisticByDay[]>) {
     this.days = sourceData.map(data => {
       let result = data.map(item => ({ date: item.date }));
@@ -150,14 +115,11 @@ export class AttendanceConfirmPage {
     }
   }
 
-<<<<<<< HEAD
   goToNextPage(statistic) {
     //TODO:把数据传给考勤表page完事。
     console.log(statistic);
   }
 
-=======
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
   unSubscribe() {
     this.subscriptions.forEach(item => item.unsubscribe());
   }

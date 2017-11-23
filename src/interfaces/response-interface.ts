@@ -268,7 +268,6 @@ export interface AttendanceInstantListResponse {
   errorMessage?: string;
 }
 
-<<<<<<< HEAD
 //TODO: unused;
 //attendResultList
 export interface AttendanceResultConfirmResponse {
@@ -276,8 +275,6 @@ export interface AttendanceResultConfirmResponse {
   errorMessage?: string;
 }
 
-=======
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 /*===========================================PayBill model======================================================*/
 
 export interface PayBill {

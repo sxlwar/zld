@@ -15,10 +15,7 @@ export interface AttendanceStatisticDayItem {
     date: string;
     count: number;
     teams: string[];
-<<<<<<< HEAD
     teamIds: number[];
-=======
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 }
 
 export interface AttendanceConfirmStatisticByTeam {
@@ -34,10 +31,7 @@ export interface AttendanceConfirmStatisticByDay {
 export interface AttendanceStatisticTeamItem {
     dates: string[];
     teamName: string;
-<<<<<<< HEAD
     teamId: number;
-=======
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 }
 
 @Injectable()
@@ -116,11 +110,7 @@ export class StatisticsService {
     getAttendanceItemOf(key: string): Observable<AttendanceStatisticDayItem[]> {
         const source = this.store.select(selectAttendanceStatisticList);
 
-<<<<<<< HEAD
         const list: Observable<AttendanceStatisticDayItem[]> = this.getAttendanceByDay(source, key).map(data => data.map(item => Object.assign(item, {teams: [],teamIds:[]})));
-=======
-        const list: Observable<AttendanceStatisticDayItem[]> = this.getAttendanceByDay(source, key).map(data => data.map(item => Object.assign(item, {teams: []})));
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
 
         const teamWithDates: Observable<AttendanceStatisticTeamItem[]> = source.map(data => {
             let result: AttendanceStatistics[] = data.filter(item => !isEmpty(item.confirm_status));
@@ -132,13 +122,9 @@ export class StatisticsService {
 
                 const teamName = item.team_name;
 
-<<<<<<< HEAD
                 const teamId = item.team_id;
 
                 return { teamName, dates, teamId };
-=======
-                return { teamName, dates };
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
             });
         });
 
@@ -146,16 +132,12 @@ export class StatisticsService {
         return list.withLatestFrom(teamWithDates)
             .map(([result, teamInfo]) => {
                 result.forEach(res => {
-<<<<<<< HEAD
                     teamInfo.forEach(item => {
                         if(item.dates.indexOf(res.date) !== -1) {
                             res.teams.push(item.teamName)
                             res.teamIds.push(item.teamId);
                         }
                     })
-=======
-                    teamInfo.forEach(item => (item.dates.indexOf(res.date) !== -1) && res.teams.push(item.teamName))
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
                 })
 
                 return orderBy(result, ['date'], ['desc']);

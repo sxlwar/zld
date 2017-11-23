@@ -22,28 +22,17 @@
     </ion-card-content>
   </ion-card>
 
-<<<<<<< HEAD
   <ion-item-divider>{{'SET_QUERY_CONDITION' | translate}}</ion-item-divider>
   <ion-list>
     <ion-item>
       <ion-label>{{'TEAM' | translate}}</ion-label>
-=======
-  <ion-item-divider>设置筛选条件</ion-item-divider>
-  <ion-list>
-    <ion-item>
-      <ion-label>班组</ion-label>
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
       <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="filterDataBy('team',$event)" [cancelText]="'CANCEL_BUTTON' | translate"
         [okText]="'CONFIRM_BUTTON' | translate">
         <ion-option *ngFor="let team of teams | async" [value]="team" [selected]="team.selected">{{team.name}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
-<<<<<<< HEAD
       <ion-label>{{'TIME' | translate}}</ion-label>
-=======
-      <ion-label>时间</ion-label>
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
       <ion-select [(ngModel)]="selectedDays" multiple="true" (ngModelChange)="filterDataBy('day',$event)" [cancelText]="'CANCEL_BUTTON' | translate"
         [okText]="'CONFIRM_BUTTON' | translate">
         <ion-option *ngFor="let day of days | async" [value]="day" [selected]="day.selected">{{day.date}}</ion-option>
@@ -54,7 +43,6 @@
   <ion-list>
 
     <ion-item *ngFor="let statistic of statisticList | async">
-<<<<<<< HEAD
       <ion-grid (click)="goToNextPage(statistic)">
         <ion-row>
           <ion-col>{{statistic.date}}</ion-col>
@@ -68,26 +56,7 @@
       </ion-grid>
       <ion-icon name="arrow-forward" item-end></ion-icon>
     </ion-item>
-
-=======
-      <ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col>{{statistic.date}}</ion-col>
-            <ion-col text-right>
-              <ion-badge color="secondary">{{statistic.count}}</ion-badge>
-            </ion-col>
-          </ion-row>
-          <ion-row text-wrap>
-            班组： {{statistic.teams | join }}
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-
-      <ion-checkbox></ion-checkbox>
-    </ion-item>
     
->>>>>>> 3fe9fa80b230ba4d5ad22c88e69fb1f23bd5d408
   </ion-list>
 
 </ion-content>
