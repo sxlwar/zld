@@ -194,6 +194,7 @@ export const selectProjectBillList = createSelector(getPayBill, payBill.getProje
 export const selectProjectProcessResponse = createSelector(getPayBill, payBill.getProjectProcessResponse);
 export const selectProjectProcessCount = createSelector(getPayBill, payBill.getProjectProcessCount);
 export const selectProjectProcessList = createSelector(getPayBill, payBill.getProjectProcessList);
+export const selectProjectProcessSelectedStatus = createSelector(getPayBill, payBill.getSelectedProjectPayProcessStatus);
 
 //overtime record list
 export const getOvertime = (state: AppState) => state.overtime;

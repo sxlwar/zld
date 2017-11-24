@@ -1,18 +1,60 @@
-<!--
-  Generated template for the ProjectBillPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>project-bill</ion-title>
+    <ion-title>{{'PROJECT_PAY_PROCESS' | translate}}</ion-title>
   </ion-navbar>
 
+  <ion-toolbar>
+    <ion-title text-center>银湖科技园</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 
 <ion-content padding>
+
+  <ion-card>
+    <ion-card-header text-center>发放金额总览</ion-card-header>
+    <ion-card-content>
+      <canvas #overview></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-segment [(ngModel)]="selectedStatus" color="primary" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="grantIn"> <!--不要改成接口中的字段，因为接口中用的是中文，模板字段不支持中文；牛逼的后台，直接用中文，我觉得后台应该用易语言写，用毛的python-->
+      {{'GRANT_IN' | translate}}
+    </ion-segment-button>
+    <ion-segment-button value="pendingRelease">
+      {{'PENDING_RELEASE' | translate}}
+    </ion-segment-button>
+    <ion-segment-button value="alreadyIssued">
+      {{'ALREADY_ISSUED' | translate}}
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="selectedStatus">
+    <ion-list *ngSwitchCase="'grantIn'">
+      <ion-item>
+        <ion-icon name="send" item-start></ion-icon>
+        2017年5月 850
+        <ion-icon name="arrow-forward" item-end></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'pendingRelease'">
+      <ion-item>
+        <ion-icon name="leaf" item-start></ion-icon>
+        2017年8月 10290
+        <ion-icon name="arrow-forward" item-end></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'alreadyIssued'">
+      <ion-item>
+        <ion-icon name="rose" item-start></ion-icon>
+        2017年10月 2983.3
+        <ion-icon name="arrow-forward" item-end></ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
 
 </ion-content>

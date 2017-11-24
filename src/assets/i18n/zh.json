@@ -181,6 +181,12 @@
   "PENDING_TO_CONFIRMED_ATTENDANCE": "待确认考勤统计",
   "TEAMS_HAVE_UNCONFIRMED_ATTENDANCE": "包含未确认考勤的班组",
   "DAYS_HAVE_UNCONFIRMED_ATTENDANCE": "包含未确认考勤的日期(最后七天）",
+  
+  "PROJECT_PAY_PROCESS": "工程发放单",
+  "GRANT_IN": "发放中",
+  "PENDING_RELEASE": "待发放",
+  "ALREADY_ISSUED": "已发放",
+  "TOTAL_AMOUNT": "总金额",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

@@ -1,3 +1,4 @@
+import { ProjectProcessService } from './business/project-process-service';
 //region
 import { TakePhotoService } from './../components/take-photo/take-photo-service';
 import { ProjectService } from './business/project-service';
@@ -58,6 +59,7 @@ export const BUSINESS_SERVICES = [
     StatisticsService,
     TakePhotoService,
     WorkFlowService,
+    ProjectProcessService,
 ]
 
 

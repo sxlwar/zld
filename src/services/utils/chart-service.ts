@@ -22,7 +22,8 @@ export interface ChartData {
 export enum ChartType {
     pie = 'pie',
     doughnut = 'doughnut',
-    bar = 'bar'
+    bar = 'bar',
+    horizontalBar = 'horizontalBar' 
 }
 
 const COLORS = [
@@ -51,7 +52,6 @@ export class ChartService {
     }
 
     getPieChartData(sourceData: ChartSourceData): ChartData {
-
         const backgroundColor = COLORS.slice(0, sourceData.data.length);
 
         const hoverBackgroundColor = this.generateHoverColor(backgroundColor);
@@ -68,19 +68,18 @@ export class ChartService {
         }
     }
 
-    getBarChartData(sourceData: ChartSourceData): ChartData {
+    getBarChartData(sourceData: ChartSourceData, legendLabel: string, maxCount = 7): ChartData {
         const backgroundColor = COLORS.slice(0, sourceData.data.length);
 
         const hoverBackgroundColor = this.generateHoverColor(backgroundColor);
 
-
-        const data = sourceData.data.slice(0, 7);
+        const data = sourceData.data.slice(0, maxCount);
 
         return {
-            labels: sourceData.labels.slice(0, 7),
+            labels: sourceData.labels.slice(0, maxCount),
             datasets: [
                 {
-                    label: '未确认数量',
+                    label: legendLabel,
                     backgroundColor,
                     hoverBackgroundColor,
                     data

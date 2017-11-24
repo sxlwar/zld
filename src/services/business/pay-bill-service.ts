@@ -36,8 +36,8 @@ export class PayBillService {
         this.handleError();
     }
 
-    getPayBills(opton: Observable<RequestOption>): Observable<PayBill[]> {
-        this.getPayBillList(opton);
+    getPayBills(option: Observable<RequestOption>): Observable<PayBill[]> {
+        this.getPayBillList(option);
 
         return this.store.select(selectPayBillList);
     }

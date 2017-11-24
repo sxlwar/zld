@@ -173,7 +173,7 @@ export class TimeService extends Base {
       week = obj.getDay(),
       hours = this.toTwo(String(obj.getUTCHours())),
       minutes = this.toTwo(String(obj.getUTCMinutes()));
-      
+
     return {
       fullDate: year + '-' + month + '-' + date,
       shortDate: month + '-' + date,
@@ -230,5 +230,13 @@ export class TimeService extends Base {
     const month = date.getMonth() + 1;
 
     return new Date(`${year}/${month}/01`);
+  }
+
+  getMonthFromStringDate(date: string): string {
+    const month = date.split('-')[1];
+
+    const index = parseInt(month);
+
+    return monthNames[index - 1];
   }
 }

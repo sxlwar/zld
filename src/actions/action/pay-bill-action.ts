@@ -84,6 +84,14 @@ export class ProjectPayProcessListSuccessAction implements Action {
     constructor(public payload: ProjectPayProcessListResponse) {}
 }
 
+export const SELECT_PROJECT_PAY_PROCESS_STATUS = 'SELECT_PROJECT_PAY_PROCESS_STATUS';
+
+export class SelectProjectPayProcessStatus implements Action {
+    readonly type = SELECT_PROJECT_PAY_PROCESS_STATUS;
+
+    constructor(public payload: string) {}
+}
+
 /* ===================================================Project bill list=================================================== */
 
 export const GET_PROJECT_BILL_LIST = 'GET_PROJECT_BILL_LIST';
@@ -121,4 +129,5 @@ export type Actions = GetPayBillListAction
 | ProjectPayProcessListSuccessAction
 | GetProjectPayBillListAction
 | ProjectPayBillListFailAction
-| ProjectPayBillListSuccessAction;
+| ProjectPayBillListSuccessAction
+| SelectProjectPayProcessStatus;

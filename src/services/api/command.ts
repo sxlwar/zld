@@ -253,7 +253,7 @@ export const projectPayProcessList: ApiUnit = {
     [Operate.querying, ['project.consumer.ProjectPayProcessList']]
   ]),
   permission: {
-    view: [PME, MM, PM ,LM,TL],
+    view: [PME, MM, PM, LM, TL],
     opt: []
   }
 }
@@ -512,7 +512,7 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
-  getProjectPayProcessList(option:ProjectPayProcessListOptions) {
+  getProjectPayProcessList(option: ProjectPayProcessListOptions) {
     const path = projectPayProcessList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);

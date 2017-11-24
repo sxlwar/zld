@@ -156,8 +156,8 @@ export interface PayBillListOptions {
 
 export interface ProjectPayProcessListOptions {
   sid: string;
-  limit: number;
-  page: number;
+  limit?: number;
+  page?: number;
   project_id?: number;
   project_name?: string;
 }

@@ -24,13 +24,13 @@ export interface ErrorMessage {
 
 //login
 export interface LoginResponse {
+  auth_pass: boolean;
+  captcha: boolean;
+  face_image: string;
+  groups_list: string[];
   realname: string;
   sid: string;
   user_id: number;
-  auth_pass: boolean;
-  captcha: boolean;
-  groups_list: string[];
-  face_image: string;
   errorMessage?: string;
 }
 
@@ -67,16 +67,16 @@ export interface CertificateResponse {
 /*=================================================Team model======================================================*/
 
 export interface Team {
-  leader_id: string;
-  name: string;
-  leader_username: string;
-  quality_manage__username: string;
-  quality_manage__employee__realname: string;
-  quality_manage_id: number;
-  leader__employee__realname: string;
-  project_id: number;
   id: number;
+  leader__employee__realname: string;
+  leader_id: string;
+  leader_username: string;
+  name: string;
+  project_id: number;
   project_name: string;
+  quality_manage__employee__realname: string;
+  quality_manage__username: string;
+  quality_manage_id: number;
   selected?: boolean;
 }
 
@@ -89,43 +89,43 @@ export interface TeamListResponse {
 /*===============================================Project model======================================================*/
 
 export interface AttendanceMachine {
-  latitude: number;
-  type: string;
   id: number;
+  latitude: number;
   longitude: number;
   name: string;
+  type: string;
 }
 
 export interface Project {
-  prime_contract__first_contracting__name: string;
-  sub_contract__labour_manager_id: number;
-  attendance_machines: AttendanceMachine[];
   address__city: string;
-  sub_contract__labour_manager__username: string;
-  id: number;
-  prime_contract__owner_id: number;
-  prime_contract__first_contracting_id: number;
-  content: string;
-  address__dist: string;
-  approvals_id: number[];
-  manager_id: number;
-  manager__username: string;
-  status: string;
-  prime_contract__prime_total_price: number;
-  prime_contract__owner__name: string;
   address__detail: string;
-  address__street: string;
-  sub_contract__contracting_id: number;
-  sub_contract__contracting__name: string;
-  fund_rource: string;
-  sub_contract__sub_total_price: number;
-  name: string;
+  address__dist: string;
   address__province: string;
-  prime_contract__plan_start_day: string;
-  range: string;
+  address__street: string;
+  approvals_id: number[];
+  attendance_machines: AttendanceMachine[];
+  content: string;
+  fund_rource: string;
+  id: number;
   manager__employee__realname: string;
+  manager__username: string;
+  manager_id: number;
+  name: string;
+  prime_contract__first_contracting__name: string;
+  prime_contract__first_contracting_id: number;
+  prime_contract__owner__name: string;
+  prime_contract__owner_id: number;
+  prime_contract__plan_finish_day: string;
+  prime_contract__plan_start_day: string;
+  prime_contract__prime_total_price: number;
+  range: string;
+  status: string;
+  sub_contract__contracting__name: string;
+  sub_contract__contracting_id: number;
   sub_contract__labour_manager__employee__realname: string;
-  prime_contract__plan_finish_day: string
+  sub_contract__labour_manager__username: string;
+  sub_contract__labour_manager_id: number;
+  sub_contract__sub_total_price: number;
 }
 
 //projectList
@@ -138,48 +138,48 @@ export interface ProjectListResponse {
 /*===========================================Worker contract model======================================================*/
 
 export interface TimePay {
-  overtime_pay_mount: number;
-  contract_id: number;
   content: string;
-  time_unit: string;
-  probation_pay_mount: number;
+  contract_id: number;
+  overtime_pay_mount: number;
   pay_mount: number;
+  probation_pay_mount: number;
+  time_unit: string;
 }
 
 export interface WorkerContract {
-  request_files: any[];
-  worker__employee__personalIdNum: string;
-  team__quality_manage__employee__realname: string;
-  team__project__sub_contract__contracting__name: string;
-  worker_id: number;
-  work_time_pay: TimePay[];
-  morning_time_on_duty: string;
-  id: number;
-  worker__employee__realname: string;
-  pay_day: number;
-  finish_day: string;
-  afternoon_time_on_duty: string;
-  worktype__name: string;
-  request__status: string;
-  team__project__sub_contract__contracting__user_name: string;
-  team__project__name: string;
-  afternoon_time_off_duty: string;
-  worktype_id: number;
-  type: string;
-  start_day: string;
-  team__quality_manage__username: string;
-  year_bonus_day: string;
-  probation_month: string;
-  team__project__sub_contract__contracting__phone: string;
   additional_content: string;
-  team__project_id: number;
-  team__name: string;
-  team__leader__username: string;
-  team_id: number;
-  team__leader__employee__realname: string;
-  request_id: number;
+  afternoon_time_off_duty: string;
+  afternoon_time_on_duty: string;
+  finish_day: string;
+  id: number;
   morning_time_off_duty: string;
+  morning_time_on_duty: string;
+  pay_day: number;
+  probation_month: string;
+  request__status: string;
+  request_files: any[];
+  request_id: number;
+  start_day: string;
+  team__leader__employee__realname: string;
+  team__leader__username: string;
+  team__name: string;
+  team__project__name: string;
+  team__project__sub_contract__contracting__name: string;
+  team__project__sub_contract__contracting__phone: string;
+  team__project__sub_contract__contracting__user_name: string;
+  team__project_id: number;
+  team__quality_manage__employee__realname: string;
+  team__quality_manage__username: string;
+  team_id: number;
+  type: string;
+  work_time_pay: TimePay[];
+  worker__employee__personalIdNum: string;
+  worker__employee__realname: string;
   worker__username: string;
+  worker_id: number;
+  worktype__name: string;
+  worktype_id: number;
+  year_bonus_day: string;
 }
 
 //workerContractList
@@ -199,7 +199,7 @@ export interface WorkType {
 
 //workTypeList
 export interface WorkTypeListResponse {
-  information: WorkType[],
+  information: WorkType[];
   errorMessage?: string;
 }
 
@@ -208,29 +208,29 @@ export interface WorkTypeListResponse {
 
 export interface AmendAttendanceResult {
   id: number;
+  off_duty: string;
+  on_duty: string;
   reason: string;
   request_id: number;
-  result_id: number
   result__status: string;
-  on_duty: string;
-  off_duty: string;
+  result_id: number;
 }
 
 export interface AttendanceResult {
-  contract__team__name: string;
-  total_gps_area_hour: number;
-  total_area_hour: number;
-  contract_id: number;
-  confirm: number;
-  contract__worker__employee__realname: string;
-  availability_work_hour: number;
-  day: string;
-  contract__worker_id: number;
   attend_amend: AmendAttendanceResult[];
+  availability_work_hour: number;
+  confirm: number;
+  contract__team__name: string;
   contract__team_id: number;
-  id: number;
+  contract__worker__employee__realname: string;
   contract__worker__username: string;
+  contract__worker_id: number;
+  contract_id: number;
+  day: string;
+  id: number;
   selected?: boolean;
+  total_area_hour: number;
+  total_gps_area_hour: number;
 }
 
 //attendResultList
@@ -241,18 +241,18 @@ export interface AttendanceResultListResponse {
 }
 
 export interface AttendanceInstant {
-  user_id: number;
+  attendance_machine__name: string;
   attendance_machine__type: string;
-  similarity: number;
   attendance_machine_id: number;
-  type: number;
   capture_image: string;
   day: string;
-  screen_image: string;
-  time: string;
-  user__employee__realname: string;
-  attendance_machine__name: string;
   id: number;
+  screen_image: string;
+  similarity: number;
+  time: string;
+  type: number;
+  user__employee__realname: string;
+  user_id: number;
 }
 
 export enum AttendanceInstantType {
@@ -278,28 +278,28 @@ export interface AttendanceResultConfirmResponse {
 /*===========================================PayBill model======================================================*/
 
 export interface PayBill {
-  contract__team__name: string;
-  project_bill__month: string;
-  hour_5: number;
-  hour_4: number;
-  hour_6: number;
-  hour_1: number;
-  id: number;
-  hour_3: number;
-  hour_2: number;
-  pay_type: string;
-  user_id: number;
-  contract__worker__employee__realname: string;
-  project_bill_id: number;
-  amount_3: number;
-  project_bill__project__name: string;
   amount_1: number;
-  project_bill__project_id: number;
   amount_2: number;
-  amount_5: number;
+  amount_3: number;
   amount_4: number;
+  amount_5: number;
   amount_6: number;
+  contract__team__name: string;
   contract__team_id: number;
+  contract__worker__employee__realname: string;
+  hour_1: number;
+  hour_2: number;
+  hour_3: number;
+  hour_4: number;
+  hour_5: number;
+  hour_6: number;
+  id: number;
+  pay_type: string;
+  project_bill__month: string;
+  project_bill__project__name: string;
+  project_bill__project_id: number;
+  project_bill_id: number;
+  user_id: number;
 }
 
 // payBillList 个人工资对帐单
@@ -311,26 +311,26 @@ export interface PayBillListResponse {
 
 export interface ProjectPayBill {
   bill_status: string;
-  pay_bill__amount_6__sum: number;
-  pay_bill__hour_3__sum: number;
-  pay_bill__amount_4__sum: number;
-  project__name: string;
-  pay_bill__amount_3__sum: number;
-  pay_bill__amount_1__sum: number;
-  pay_bill__hour_4__sum: number;
-  pay_bill__amount_all__sum: number;
-  month: string;
-  pay_bill__hour_5__sum: number;
   create_time: string;
-  pay_bill__amount_5__sum: number;
-  modify_time: string;
-  pay_bill__hour_2__sum: number;
-  pay_bill__hour_6__sum: number;
-  project_id: number;
-  pay_bill__hour_1__sum: number;
   id: number;
-  pay_bill__amount__sum: number;
+  modify_time: string;
+  month: string;
+  pay_bill__amount_1__sum: number;
   pay_bill__amount_2__sum: number;
+  pay_bill__amount_3__sum: number;
+  pay_bill__amount_4__sum: number;
+  pay_bill__amount_5__sum: number;
+  pay_bill__amount_6__sum: number;
+  pay_bill__amount__sum: number;
+  pay_bill__amount_all__sum: number;
+  pay_bill__hour_1__sum: number;
+  pay_bill__hour_2__sum: number;
+  pay_bill__hour_3__sum: number;
+  pay_bill__hour_4__sum: number;
+  pay_bill__hour_5__sum: number;
+  pay_bill__hour_6__sum: number;
+  project__name: string;
+  project_id: number;
 }
 
 //projectPayBillList 工程工资对帐单
@@ -340,26 +340,26 @@ export interface ProjectPayBillListResponse {
 }
 
 export interface PayProcess {
-  status: string;
-  bank_name: string;
-  modify_time: string;
-  pay_bill__contract__worker__username: string;
-  project_pay__project_bill__month: string;
-  tran_id: string;
-  response_msg: null;
-  tran_time: null;
-  pay_bill__contract__team__name: string;
-  name: string;
-  response_code: null;
-  pay_bill__contract__worker__employee__realname: string;
   amount: number;
-  pay_bill__contract__worker_id: number;
-  create_time: string;
-  project_pay__project_bill__project_id: number;
-  project_pay__project_bill__project__name: string;
-  id: number;
-  project_pay_id: number;
+  bank_name: string;
   bank_no: string;
+  create_time: string;
+  id: number;
+  modify_time: string;
+  name: string;
+  pay_bill__contract__team__name: string;
+  pay_bill__contract__worker__employee__realname: string;
+  pay_bill__contract__worker__username: string;
+  pay_bill__contract__worker_id: number;
+  project_pay__project_bill__month: string;
+  project_pay__project_bill__project__name: string;
+  project_pay__project_bill__project_id: number;
+  project_pay_id: number;
+  response_code: null;
+  response_msg: null;
+  status: string;
+  tran_id: string;
+  tran_time: null;
 }
 
 //payProcessList 个人工资发放单
@@ -369,19 +369,25 @@ export interface PayProcessListResponse {
   errorMessage?: string;
 }
 
+export enum PayProcessStatus {
+  grantIn = '发放中',
+  pendingRelease= "待发放",
+  alreadyIssued= "已发放"
+}
+
 export interface ProjectPayProcess {
-  status: string;
-  amount_paying: number;
-  project_bill_id: number;
-  amount_paid: number;
-  project_bill__project_id: number;
-  project_bill__project__name: string;
   amount: number;
-  create_time: string;
-  modify_time: string;
+  amount_paid: number;
+  amount_paying: number;
   bankno__num: null;
-  project_bill__month: string;
+  create_time: string;
   id: number;
+  modify_time: string;
+  project_bill__month: string;
+  project_bill__project__name: string;
+  project_bill__project_id: number;
+  project_bill_id: number;
+  status: string;
 }
 
 //projectPayProcessList 工程工资发放单 
@@ -400,16 +406,16 @@ export interface WorkerContract {
 }
 
 export interface Overtime {
-  finish: string;
-  contracts: WorkerContract[];
-  request__status: string;
-  day: string;
-  start: string;
-  reason: string;
   attachment: string;
-  request_id: number;
-  type: string;
+  contracts: WorkerContract[];
+  day: string;
+  finish: string;
   id: number;
+  reason: string;
+  request__status: string;
+  request_id: number;
+  start: string;
+  type: string;
 }
 
 // WorkOvertimeRecordList
@@ -424,25 +430,25 @@ export interface WorkOvertimeRecordListResponse {
 export interface WorkPieceFinish {
   comment: string;
   finish_date: string;
-  workpieces_id: number;
-  workpieces__contract__worker_id: number;
+  id: number;
   num: number;
   quality_percent: number;
   request_id: number;
   workpieces__contract__worker__employee__realname: string;
-  id: number;
+  workpieces__contract__worker_id: number;
+  workpieces_id: number;
 }
 
 export interface WorkPiece {
-  name: string;
   contract__worker__employee__realname: string;
-  id: number;
   contract__worker_id: number;
-  num: number;
-  location: string;
-  standard: string;
-  pay_mount: number;
   contract_id: number;
+  id: number;
+  location: string;
+  name: string;
+  num: number;
+  pay_mount: number;
+  standard: string;
 }
 
 // WorkPieceList
@@ -479,9 +485,9 @@ export interface AttendanceConfirmStatus {
 }
 
 export interface AttendanceStatistics {
-  team_name: string;
-  team_id: number;
   confirm_status: AttendanceConfirmStatus;
+  team_id: number;
+  team_name: string;
 }
 
 //attendResultTeamStatList
@@ -506,18 +512,18 @@ export interface RequestAggregationResponse {
 
 //search worker
 export interface WorkerResponse {
-  user__username: string
-  user_id: number
-  realname: string
-  age: number
-  sex: string
-  cer_status: number
-  company__name: string
-  curraddr__province: string
-  curraddr__dist: string
-  userpersonal_idnum: string
-  curraddr__city: string
-  code: number
+  age: number;
+  cer_status: number;
+  code: number;
+  company__name: string;
+  curraddr__city: string;
+  curraddr__dist: string;
+  curraddr__province: string;
+  realname: string;
+  sex: string;
+  user__username: string;
+  user_id: number;
+  userpersonal_idnum: string;
 }
 
 export type ErrorResponse = LoginResponse

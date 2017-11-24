@@ -82,7 +82,7 @@ export class AttendanceConfirmPage {
 
         const data = source.map(item => item.count);
 
-        return this.chartService.getBarChartData({ labels, data });
+        return this.chartService.getBarChartData({ labels, data}, '未确认数量');
       })
       .subscribe(data => {
         const options = {

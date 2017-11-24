@@ -1,31 +1,11 @@
-import { RequestAggregationOptions } from './../../interfaces/request-interface';
-//region
+import { GetProjectPayProcessListAction } from './../../actions/action/pay-bill-action';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
+import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
 import { Injectable } from '@angular/core';
-import {
-  AttendanceResultListOptions,
-  CertificateOptions,
-  LoginOptions,
-  PhoneVerificationCodeOptions,
-  RegisterOptions,
-  ResetPasswordOptions, TeamListOptions,
-  UploadImageOptions,
-  WorkerContractOptions,
-  AttendanceInstantListOptions,
-  PayBillListOptions,
-  WorkPieceListOptions,
-  WorkOvertimeRecordListOptions
-} from '../../interfaces/request-interface';
 import { Store } from '@ngrx/store';
 import { AppState, selectSid } from '../../reducers/index-reducer';
-import {
-  LoginAction,
-  RegisterAction,
-  RegisterPhoneVerCodeAction,
-  ResetPasswordAction,
-  ResetPhoneVerCodeAction
-} from '../../actions/action/login-action';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from '../errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -220,5 +200,14 @@ export class ProcessorService extends MapperService {
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetWorkFlowStatisticsAction(option)));
+  }
+
+  projectPayProcessProcessor(option$: Observable<ProjectPayProcessListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.projectPayProcessList);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetProjectPayProcessListAction(option)));
   }
 }
