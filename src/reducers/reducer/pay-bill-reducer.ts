@@ -32,6 +32,7 @@ export const initialState: State = {
         project_pay_process: [],
         count: 0
     }
+    
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

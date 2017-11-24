@@ -187,6 +187,8 @@
   "PENDING_RELEASE": "待发放",
   "ALREADY_ISSUED": "已发放",
   "TOTAL_AMOUNT": "总金额",
+  "TOTAL_AMOUNT_OVERVIEW": "发放金额总计",
+  "SUB_TOTAL_AMOUNT": "合计",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

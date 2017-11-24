@@ -28,10 +28,11 @@ export class ProjectProcessService {
         return this.store.select(selectProjectProcessList);
     }
 
-    getSpecificStatusProcess(status: string): Observable<ProjectPayProcess[]> {
+    getListOfSelectedStatus(): Observable<ProjectPayProcess[]> {
         return this.getProjectPayProcess()
-            .mergeMap(processes => Observable.from(processes)
-                .filter(process => process.status === status)
+            .combineLatest(this.store.select(selectProjectProcessSelectedStatus))
+            .mergeMap(([processes, status]) => Observable.from(processes)
+                .filter(process => process.status === PayProcessStatus[status])
                 .reduce((acc, cur) => {
                     acc.push(cur);
                     return acc;
@@ -56,7 +57,7 @@ export class ProjectProcessService {
     }
 
     setSelectedStatus(status: string): void {
-       this.store.dispatch(new SelectProjectPayProcessStatus(status));
+        this.store.dispatch(new SelectProjectPayProcessStatus(status));
     }
 
     private handleError() {
