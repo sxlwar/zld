@@ -9,7 +9,7 @@
 
 <ion-content padding>
   <ion-card>
-    <ion-card-header text-center>{{'PROJECT_BILL_AMOUNT' | translate}}：￥{{overviewTotal | number: '1.2-2'}}</ion-card-header>
+    <ion-card-header text-center>{{'PROJECT_BILL_AMOUNT' | translate}}：{{overviewTotal | currency: 'CNY': '1.2-2'}}</ion-card-header>
     <ion-card-content>
       <canvas #projectBillDetail></canvas>
     </ion-card-content>

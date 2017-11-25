@@ -11,7 +11,7 @@ import { WelcomePage } from './welcome';
   ],
   imports: [
     IonicPageModule.forChild(WelcomePage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
   ],
   exports: [
     WelcomePage

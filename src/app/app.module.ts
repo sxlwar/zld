@@ -26,6 +26,7 @@ import { dayNames, dayShortNames, monthNames, monthShortNames } from '../service
 import { ComponentsModule } from '../components/components.module';
 import { ProjectListComponent } from '../components/project-list/project-list';
 import { API_SERVICES, BUSINESS_SERVICES, CONFIG_SERVICES, UTIL_SERVICES } from '../services/service-import';
+import { LOCALE_ID } from '@angular/core';
 //endregion
 
 // The translate loader needs to know where to load i18n files
@@ -120,6 +121,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     BUSINESS_SERVICES,
     CONFIG_SERVICES,
     UTIL_SERVICES,
+    { provide: LOCALE_ID, useValue: 'ZH-CN' }
   ]
 })
 export class AppModule { }
