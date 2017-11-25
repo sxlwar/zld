@@ -1,5 +1,5 @@
-import { GetProjectPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions } from './../../interfaces/request-interface';
+import { GetProjectPayProcessListAction, GetProjectPayBillListAction } from './../../actions/action/pay-bill-action';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -209,5 +209,14 @@ export class ProcessorService extends MapperService {
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetProjectPayProcessListAction(option)));
+  }
+
+  projectPayBillProcessor(option$: Observable<ProjectPayBillListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.projectPayBillList);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetProjectPayBillListAction(option)));
   }
 }

@@ -29,6 +29,7 @@ import { ErrorService } from './errors/error-service';
 import { TipService } from './tip-service';
 import { ChartService } from './utils/chart-service';
 import { WorkFlowService } from './business/work-flow-service';
+import { ProjectBillService } from './business/project-bill-service';
 //endregion
 
 export const API_SERVICES = [
@@ -60,6 +61,7 @@ export const BUSINESS_SERVICES = [
     TakePhotoService,
     WorkFlowService,
     ProjectProcessService,
+    ProjectBillService,
 ]
 
 

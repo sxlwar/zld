@@ -32,6 +32,8 @@ import { ActionSheetController } from 'ionic-angular/components/action-sheet/act
 @Injectable()
 export class AttendanceService {
   subscriptions: Subscription[] = [];
+  attendance$$: Subscription;
+  statistics$$: Subscription;
 
   constructor(public store: Store<AppState>,
     public processor: ProcessorService,
@@ -222,24 +224,19 @@ export class AttendanceService {
 
   private handleError() {
     this.handleAttendanceError();
-    this.handleStatisticesError();
+    this.handleStatisticsError();
   }
 
   private handleAttendanceError() {
     const error = this.store.select(selectAttendanceResponse);
 
-    const subscription = this.error.handleErrorInSpecific(error, 'API_ERROR');
-
-    this.subscriptions.push(subscription);
-
+    this.attendance$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
   }
 
-  private handleStatisticesError() {
+  private handleStatisticsError() {
     const error = this.store.select(selectAttendanceStatisticsResponse);
 
-    const subscription = this.error.handleErrorInSpecific(error, 'API_ERROR');
-
-    this.subscriptions.push(subscription);
+    this.statistics$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
   }
 
   unSubscribe() {

@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class WorkFlowService {
     subscriptions: Subscription[] =[];
+    workFlow$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -48,9 +49,7 @@ export class WorkFlowService {
     private handleStatisticsError() {
         const error = this.store.select(selectWorkFlowStatisticsResponse);
 
-        const subscription = this.error.handleErrorInSpecific(error, 'APP_ERROR');
-
-        this.subscriptions.push(subscription);
+        this.workFlow$$ = this.error.handleErrorInSpecific(error, 'APP_ERROR');
     }
 
     unSubscribe() {

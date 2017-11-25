@@ -34,7 +34,7 @@
 
   <div [ngSwitch]="selectedStatus">
     <ion-list>
-      <ion-item>{{'SUB_TOTAL_AMOUNT' | translate}}：{{subTotal | async | number: '1.2-2'}}</ion-item>
+      <ion-item>{{'SUB_TOTAL_AMOUNT' | translate}}：￥{{subTotal | async | number: '1.2-2'}}</ion-item>
       <ion-item *ngFor="let item of list | async" (click)="goToNextPage(item)">
         <ion-icon *ngSwitchCase="'grantIn'" name="send" item-start></ion-icon>
         <ion-icon *ngSwitchCase="'pendingRelease'" name="leaf" item-start></ion-icon>

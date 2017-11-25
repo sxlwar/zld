@@ -15,6 +15,7 @@ import { ProjectService } from '..//business/project-service';
 @Injectable()
 export class WorkPieceService {
     subscriptions: Subscription[] = [];
+    workPiece$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -59,9 +60,7 @@ export class WorkPieceService {
     private handleError() {
         const error = this.store.select(selectWorkPieceResponse);
 
-        const subscription = this.error.handleErrorInSpecific(error, 'APP_ERROR');
-
-        this.subscriptions.push(subscription);
+        this.workPiece$$ = this.error.handleErrorInSpecific(error, 'APP_ERROR');
     }
 
     unSubscribe(){

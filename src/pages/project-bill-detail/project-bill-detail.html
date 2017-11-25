@@ -1,0 +1,45 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'PROJECT_BILL_LIST' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-header text-center>{{'PROJECT_BILL_AMOUNT' | translate}}：￥{{overviewTotal | number: '1.2-2'}}</ion-card-header>
+    <ion-card-content>
+      <canvas #projectBillDetail></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-list>
+    <ion-list-header>{{'BILL_LIST_DETAILS' | translate}}</ion-list-header>
+
+    <ion-item-divider>
+      <ion-grid>
+        <ion-row text-center>
+          <ion-col>{{'NAME' | translate}}</ion-col>
+          <ion-col>{{'TURN_OUT_FOR_WORK' | translate}}</ion-col>
+          <ion-col>{{'OVERTIME' | translate}}</ion-col>
+          <ion-col>{{'WORK_PIECE' | translate}}</ion-col>
+          <ion-col>{{'SUB_TOTAL_AMOUNT' | translate}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item-divider>
+
+    <ion-item *ngFor="let item of list | async">
+        <ion-grid>
+            <ion-row text-center>
+              <ion-col>{{item.name}}</ion-col>
+              <ion-col>{{item.attendance}}</ion-col>
+              <ion-col>{{item.overtime}}</ion-col>
+              <ion-col>{{item.piece}}</ion-col>
+              <ion-col>{{item.total}}</ion-col>
+            </ion-row>
+          </ion-grid> 
+    </ion-item>
+  </ion-list>
+</ion-content>

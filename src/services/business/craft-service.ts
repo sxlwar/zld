@@ -14,6 +14,7 @@ import {Subscription} from 'rxjs/Subscription';
 export class CraftService {
 
   subscriptions: Subscription[] = [];
+  craft$$: Subscription;
 
   constructor(public store: Store<AppState>,
               public processor: ProcessorService,
@@ -36,9 +37,7 @@ export class CraftService {
   }
 
   private handleError(){
-    const subscription = this.errorService.handleErrorInSpecific(this.store.select(getWorkType), '');
-
-    this.subscriptions.push(subscription);
+    this.craft$$ = this.errorService.handleErrorInSpecific(this.store.select(getWorkType), '');
   }
 
   unSubscribe() {

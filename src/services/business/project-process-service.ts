@@ -13,6 +13,7 @@ import { SelectProjectPayProcessStatus } from '../../actions/action/pay-bill-act
 @Injectable()
 export class ProjectProcessService {
     subscriptions: Subscription[] = [];
+    projectProcess$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -63,9 +64,7 @@ export class ProjectProcessService {
     private handleError() {
         const error = this.store.select(selectProjectProcessResponse);
 
-        const subscription = this.error.handleErrorInSpecific(error, 'API_ERROR');
-
-        this.subscriptions.push(subscription);
+        this.projectProcess$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
     }
 
     unSubscribe() {

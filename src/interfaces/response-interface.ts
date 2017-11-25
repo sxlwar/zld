@@ -277,6 +277,36 @@ export interface AttendanceResultConfirmResponse {
 
 /*===========================================PayBill model======================================================*/
 
+/**
+ * @description 这部分数据模型混用枚举来处理后台的这些不友好的API，实际中是不建议枚举类型中混用数据类型的。
+ * 应该保持枚举字段数据类型的统一。这么处理完全是为了对付超级恶心的以让人看不懂，看不明白为原则的后台字段。
+ * key的名称弄点让人看不懂的字段，value的值倒是弄的很直白，直白到直接上中文了。
+ * 现实情况是需要一个清楚明白的key来处理数据，value 在UI上的值根本不需要后台管，什么‘处理中’，‘完成’，‘取消’，
+ * 可以直接以数字来替代，至于要把0在UI上显示成‘处理中’还是‘正在处理中’这他娘的是前台和产品经理的事情。
+ * 这一颠倒真是爽，浪费时间处理这些无聊的东西。另外这里没有像V1中统一在一处理，而是采用了每一个接口都有自己的枚举映射，因为后台这种飘忽不定的
+ * 命名风格另人不能相信它不会变，避免到时候牵一发而动全身。
+ */ 
+export enum PayBillTime {
+  systemAtt = 1,
+  systemOvertime,
+  systemOverOvertime,
+  manualAtt,
+  manualOvertime,
+  manualOverOvertime,
+  pieceActual = '',
+  prefix = 'hour_'
+}
+
+export enum PayBillAmount {
+  systemAtt = 1,
+  systemOvertime,
+  systemOverOvertime,
+  manualAtt,
+  manualOvertime,
+  manualOverOvertime,
+  prefix = 'amount_'
+}
+
 export interface PayBill {
   amount_1: number;
   amount_2: number;
@@ -284,6 +314,7 @@ export interface PayBill {
   amount_4: number;
   amount_5: number;
   amount_6: number;
+  amount: number; // 文档和接口返回中是没有这个字段的，v1代码中却访问了这个字段，赋值给了工件的金额。
   contract__team__name: string;
   contract__team_id: number;
   contract__worker__employee__realname: string;
@@ -309,6 +340,30 @@ export interface PayBillListResponse {
   errorMessage?: string;
 }
 
+export enum ProjectPayBillTime {
+  systemAtt = 1,
+  systemOvertime,
+  systemOverOvertime,
+  manualAtt,
+  manualOvertime,
+  manualOverOvertime,
+  prefix = 'pay_bill__hour_',
+  suffix = '__sum'
+}
+
+export enum ProjectPayBillAmount {
+  systemAtt = 1,
+  systemOvertime,
+  systemOverOvertime,
+  manualAtt,
+  manualOvertime,
+  manualOverOvertime,
+  pieceShouldPay = 'all',
+  pieceActualPay = '',
+  prefix = 'pay_bill__amount_',
+  suffix = '__sum' 
+}
+
 export interface ProjectPayBill {
   bill_status: string;
   create_time: string;
@@ -321,7 +376,7 @@ export interface ProjectPayBill {
   pay_bill__amount_4__sum: number;
   pay_bill__amount_5__sum: number;
   pay_bill__amount_6__sum: number;
-  pay_bill__amount__sum: number;
+  pay_bill__amount__sum: number;  // 谁TMD能看出这个字段是和工件有关系。sum不应该是总计么？
   pay_bill__amount_all__sum: number;
   pay_bill__hour_1__sum: number;
   pay_bill__hour_2__sum: number;

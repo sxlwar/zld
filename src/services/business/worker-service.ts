@@ -33,6 +33,7 @@ import { RequestOption } from 'interfaces/request-interface';
 @Injectable()
 export class WorkerService {
   subscriptions: Subscription[] = [];
+  worker$$: Subscription;
 
   constructor(public store: Store<AppState>,
               public error: ErrorService,
@@ -121,9 +122,7 @@ export class WorkerService {
   private handleError() {
     const workerContract$ = this.store.select(selectWorkerContractResponse).filter(res => !!res.errorMessage);
 
-    const subscription = this.error.handleErrorInSpecific(workerContract$, 'API_ERROR');
-
-    this.subscriptions.push(subscription);
+    this.worker$$ = this.error.handleErrorInSpecific(workerContract$, 'API_ERROR');
   }
 
   /*==========================================refuse clean=====================================================*/

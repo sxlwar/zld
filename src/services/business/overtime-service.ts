@@ -12,6 +12,7 @@ import { Overtime } from '../../interfaces/response-interface';
 @Injectable()
 export class OvertimeService {
     subscriptions: Subscription[] = [];
+    overtime$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -45,9 +46,7 @@ export class OvertimeService {
     private handleError() {
         const error = this.store.select(selectOvertimeRecordResponse);
 
-        const subscription = this.error.handleErrorInSpecific(error, 'API_ERROR')
-
-        this.subscriptions.push(subscription);
+        this.overtime$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
     }
 
     unSubscribe() {

@@ -29,6 +29,7 @@ import { SetSelectTeams } from '../../actions/action/team-action';
 export class TeamService {
 
   subscriptions: Subscription[] = [];
+  team$$: Subscription;
 
   characterHasTeam = [TL, CW, QW, SW];
 
@@ -111,9 +112,7 @@ export class TeamService {
   private handleError() {
     const error$ = this.store.select(selectTeamResponse);
 
-    const subscription = this.error.handleErrorInSpecific(error$, 'API_ERROR');
-
-    this.subscriptions.push(subscription);
+    this.team$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
   }
 
   unSubscribe() {

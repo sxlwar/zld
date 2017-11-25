@@ -1,13 +1,16 @@
+//region
 import { ProjectService } from './../../services/business/project-service';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
 import { TimeService } from './../../services/utils/time-service';
 import { Observable } from 'rxjs/Observable';
-import { ProjectPayProcess, PayProcessStatus } from './../../interfaces/response-interface';
+import { ProjectPayProcess } from './../../interfaces/response-interface';
 import { ChartService, ChartType } from './../../services/utils/chart-service';
 import { ProjectProcessService } from './../../services/business/project-process-service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { projectBillDetailPage } from '../../pages/pages';
+//endregion
 
 export interface ProcessList {
   yearMonth: string;
@@ -67,7 +70,7 @@ export class ProjectBillPage {
   getListOfSelectedStatus(): void {
     this.list = this.processService.getListOfSelectedStatus()
     .mergeMap(processes => Observable.from(processes)
-      .map(item => ({ yearMonth: this.timeService.getDateInfo(new Date(item.project_bill__month)).dateWithoutDay, amount: item.amount }))
+      .map(item => ({ yearMonth: this.timeService.getDateInfo(new Date(item.project_bill__month)).dateWithoutDay, amount: item.amount, billId: item.project_bill_id }))
       .reduce((acc, cur) => {
         acc.push(cur);
         return acc;
@@ -98,8 +101,8 @@ export class ProjectBillPage {
     this.processService.setSelectedStatus(this.selectedStatus);
   }
 
-  goToNextPage(item): void {
-    console.log(item);
+  goToNextPage(item: ProcessList): void {
+    this.navCtrl.push(projectBillDetailPage, item).then(() => {});
   }
 
   ionViewWillUnload() {

@@ -18,8 +18,8 @@ import { SelectProjectAction } from '../../actions/action/project-action';
 
 @Injectable()
 export class ProjectService {
-
   subscriptions: Subscription[] = [];
+  project$$: Subscription;
 
   constructor(
     public store: Store<AppState>,
@@ -82,9 +82,7 @@ export class ProjectService {
     const error$ = this.store.select(selectErrorMessage)
       .filter(msg => !!msg).map(errorMessage => ({ errorMessage }));
 
-    const projectError$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
-
-    this.subscriptions.push(projectError$$);
+    this.project$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
   }
 
   /*============================================service private methods==========================================*/

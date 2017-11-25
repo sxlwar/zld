@@ -16,8 +16,8 @@ import 'rxjs/add/observable/from';
 
 @Injectable()
 export class AttendanceRecordService {
-
     subscriptions: Subscription[] = [];
+    attendanceRecord$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -30,7 +30,7 @@ export class AttendanceRecordService {
     }
 
     getAttendanceRecord(option: Observable<RequestOption>): Observable<AttendanceInstant[]> {
-        this.getAttendaceInstantList(option);
+        this.getAttendanceInstantList(option);
 
         return this.store.select(selectAttendanceRecordInstant).mergeMap(records => this.mapRecordType(records));
     }
@@ -39,7 +39,7 @@ export class AttendanceRecordService {
         return this.store.select(selectAttendanceRecordResponse);
     }
 
-    getAttendaceInstantList(option: Observable<RequestOption> = Observable.empty()): void {
+    getAttendanceInstantList(option: Observable<RequestOption> = Observable.empty()): void {
         const sid = this.userInfo.getSid();
 
         const page = this.store.select(selectAttendanceRecordPage);
@@ -100,9 +100,7 @@ export class AttendanceRecordService {
     private handleError() {
         const target = this.store.select(selectAttendanceRecordResponse);
 
-        const subscription = this.error.handleErrorInSpecific(target, 'APP_ERROR');
-
-        this.subscriptions.push(subscription);
+        this.attendanceRecord$$ = this.error.handleErrorInSpecific(target, 'APP_ERROR');
     }
 
     unSubscribe() {

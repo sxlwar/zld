@@ -189,6 +189,11 @@
   "TOTAL_AMOUNT": "总金额",
   "TOTAL_AMOUNT_OVERVIEW": "发放金额总计",
   "SUB_TOTAL_AMOUNT": "合计",
+  "PROJECT_BILL_LIST": "工程对帐单",
+  "PROJECT_BILL_AMOUNT": "对帐金额总计",
+  "OVERTIME": "加班",
+  "BILL_LIST_DETAILS": "对帐单明细",
+  
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

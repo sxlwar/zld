@@ -59,7 +59,7 @@ export class AttendanceRecordPage {
   getNextPage(infiniteScroll) {
     this.attendanceRecord.increasePage();
 
-    this.attendanceRecord.getAttendaceInstantList(this.getRecordOption());
+    this.attendanceRecord.getAttendanceInstantList(this.getRecordOption());
 
     this.pageSubscription &&  this.pageSubscription.unsubscribe();
     

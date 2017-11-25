@@ -33,6 +33,8 @@ export const attendancePage = 'AttendancePage';
 
 export const projectBillPage = 'ProjectBillPage';
 
+export const projectBillDetailPage = 'ProjectBillDetailPage';
+
 
 /*============================================mission tab pages===================================================*/
 
@@ -78,6 +80,7 @@ export const PAGES = [
 
   { title: 'Attendance', component: attendancePage },
   { title: 'ProjectBill', component: projectBillPage },
+  { title: 'ProjectBillDetail', component: projectBillDetailPage },
 
   { title: 'AttendanceRecord', component: attendanceRecordPage},
 
