@@ -194,6 +194,17 @@
   "OVERTIME": "加班",
   "BILL_LIST_DETAILS": "对帐单明细",
   
+  "SALARY": "薪资",
+  "AMOUNT": "金额",
+  "SALARY_MONTH": "薪资所属",
+  "SALARY_DETAIL":"薪资详情",  
+  "SYSTEM_ATTENDANCE_SALARY": "系统考勤工资",
+  "MANUAL_ATTENDANCE_SALARY": "人工考勤工资",
+  "SYSTEM_OVERTIME_SALARY": "系统加班工资",
+  "MANUAL_OVERTIME_SALARY": "人工加班工资",
+  "WORK_PIECE_SALARY": "工件工资",
+  "ATTENDANCE_SALARY": "考勤工资",
+  "OVERTIME_SALARY":"加班工资",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

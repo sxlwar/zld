@@ -173,8 +173,8 @@ export interface ProjectPayBillListOptions {
 
 export interface PayProcessListOptions {
   sid: string;
-  page: number;
-  limit: number;
+  page?: number; //TODO: Limit and page should be imperative parameter, but be set to optional parameters for time reason.
+  limit?: number;
   self?: number;
   user_id?: number[];
   team_id?: number[];

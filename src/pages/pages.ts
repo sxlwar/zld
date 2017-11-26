@@ -50,10 +50,14 @@ export const attendanceConfirmPage = 'AttendanceConfirmPage';
 
 export const attendanceRecordPage = 'AttendanceRecordPage';
 
+export const salaryDetailPage = 'SalaryDetailPage';
 
 /*============================================mine tab pages===================================================*/
 
 export const personalAttendancePage = 'PersonalAttendancePage';
+
+export const salaryPage = 'SalaryPage';
+
 
 export const PAGES = [
   { title: 'Tutorial', component: tutorialPage },
@@ -86,5 +90,7 @@ export const PAGES = [
 
   { title: 'AttendanceConfirm', component: attendanceConfirmPage},
 
-  { title: 'PersonalAttendance', component: personalAttendancePage}
+  { title: 'PersonalAttendance', component: personalAttendancePage},
+  { title: 'Salary', component: salaryPage},
+  { title: 'SalaryDetail', component: salaryDetailPage} 
 ];

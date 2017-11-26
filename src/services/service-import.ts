@@ -1,5 +1,6 @@
-import { ProjectProcessService } from './business/project-process-service';
 //region
+import { PayProcessService } from './business/pay-process-service';
+import { ProjectProcessService } from './business/project-process-service';
 import { TakePhotoService } from './../components/take-photo/take-photo-service';
 import { ProjectService } from './business/project-service';
 import { StatisticsService } from './business/statistics-service';
@@ -62,6 +63,7 @@ export const BUSINESS_SERVICES = [
     WorkFlowService,
     ProjectProcessService,
     ProjectBillService,
+    PayProcessService,
 ]
 
 

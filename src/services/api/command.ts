@@ -233,9 +233,12 @@ export const payProcessList: ApiUnit = {
     [Operate.querying, ['project.consumer.PayProcessList']]
   ]),
   permission: {
-    view: [PME, MM, PM, LM, TL],
+    view: [PME, MM, PM, LM, TL, SW],
     opt: []
-  }
+  },
+  specialCharacter: new Map([
+    [SW, new Iterator({ self: 1 })]
+  ])
 }
 
 export const projectPayBillList: ApiUnit = {

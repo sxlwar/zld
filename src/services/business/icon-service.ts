@@ -333,7 +333,7 @@ export const salary: IconItem = {
     view: [SW, UW],
     opt: []
   },
-  page: ''
+  page: pages.salaryPage 
 };
 export const bankCard: IconItem = {
   text: 'MY_BANK_CARD',

@@ -34,7 +34,7 @@ export class PayBillService {
     }
 
     getPayBillOfMonth(option: Observable<RequestOption>): Observable<PayBill> {
-        return this.getPayBills(option) 
+        return this.getPayBills(option)
             .mergeMap(res => Observable.from(res).take(1));
     }
 
@@ -75,16 +75,32 @@ export class PayBillService {
         return payBill[PayBillTime.prefix + PayBillTime.systemOverOvertime] + payBill[PayBillTime.prefix + PayBillTime.manualOverOvertime];
     }
 
-    countAttendanceTotalAmount(bill:PayBill): number {
-        return bill[PayBillAmount.prefix + PayBillAmount.systemAtt] + bill[PayBillAmount.prefix + PayBillAmount.manualAtt];
+    countSystemAttendanceAmount(bill: PayBill): number {
+        return bill[PayBillAmount.prefix + PayBillAmount.systemAtt];
+    }
+
+    countManualAttendanceAmount(bill: PayBill): number {
+        return bill[PayBillAmount.prefix + PayBillAmount.manualAtt];
+    }
+
+    countAttendanceTotalAmount(bill: PayBill): number {
+        return this.countSystemAttendanceAmount(bill) + this.countManualAttendanceAmount(bill);
+    }
+
+    countSystemOvertimeAmount(bill: PayBill): number {
+        return bill[PayBillAmount.prefix + PayBillAmount.systemOvertime] + bill[PayBillAmount.prefix + PayBillAmount.systemOverOvertime];
+    }
+
+    countManualOvertimeAmount(bill: PayBill): number {
+        return bill[PayBillAmount.prefix + PayBillAmount.manualOvertime] + bill[PayBillAmount.prefix + PayBillAmount.manualOverOvertime];
     }
 
     countOvertimeTotalAmount(bill: PayBill): number {
-        return bill[PayBillAmount.prefix + PayBillAmount.systemOvertime] + bill[PayBillAmount.prefix + PayBillAmount.systemOverOvertime] + bill[PayBillAmount.prefix + PayBillAmount.manualOvertime] + bill[PayBillAmount.prefix + PayBillAmount.manualOverOvertime];
+        return this.countSystemOvertimeAmount(bill) + this.countManualOvertimeAmount(bill);
     }
 
     countPieceTotalAmount(bill: PayBill): number {
-        return bill.amount;
+        return bill.amount || 0;
     }
 
     /* =================================================Error handle and refuse clean=================================================================================== */
