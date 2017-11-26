@@ -206,6 +206,11 @@
   "ATTENDANCE_SALARY": "考勤工资",
   "OVERTIME_SALARY":"加班工资",
 
+  "PROJECT_MANAGER": "项目经理",
+  "LABOUR_MANAGER":"劳务经理",
+  "QUALITY_CLERK": "质量员",
+  "FOREMAN": "班组长",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

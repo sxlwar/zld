@@ -1,4 +1,5 @@
 //region
+import { ADD_TEAM, AddTeamAction, AddTeamFailAction, AddTeamSuccessAction, UPDATE_TEAM, UpdateTeamAction, UpdateTeamFailAction, UpdateTeamSuccessAction, DELETE_TEAM, DeleteTeamFailAction, DeleteTeamAction, DeleteTeamSuccessAction } from './../actions/action/team-action';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from '../services/api/websocket-service';
@@ -27,9 +28,41 @@ export class TeamEffect extends Command {
       .catch(error => of(error))
     );
 
-  constructor(public ws: WebsocketService,
+  @Effect()
+  addTeam$: Observable<ResponseAction> = this.actions$
+    .ofType(ADD_TEAM)
+    .switchMap((action: AddTeamAction) => this.ws
+      .send(this.getTeamAdd(action.payload))
+      .takeUntil(this.actions$.ofType(ADD_TEAM))
+      .map(msg => msg.isError ? new AddTeamFailAction(msg.data) : new AddTeamSuccessAction(msg.data))
+      .catch(error => of(error))
+    )
+
+  @Effect()
+  updateTeam$: Observable<ResponseAction> = this.actions$
+    .ofType(UPDATE_TEAM)
+    .switchMap((action: UpdateTeamAction) => this.ws
+      .send(this.getTeamUpdate(action.payload))
+      .takeUntil(this.actions$.ofType(UPDATE_TEAM))
+      .map(msg => msg.isError ? new UpdateTeamFailAction(msg.data) : new UpdateTeamSuccessAction(msg.data))
+      .catch(error => of(error))
+    )
+
+  @Effect()
+  deleteTeam$: Observable<ResponseAction> = this.actions$
+    .ofType(DELETE_TEAM)
+    .switchMap((action: DeleteTeamAction) => this.ws
+      .send(this.getTeamDelete(action.payload))
+      .takeUntil(this.actions$.ofType(DELETE_TEAM))
+      .map(msg => msg.isError ? new DeleteTeamFailAction(msg.data) : new DeleteTeamSuccessAction(msg.data))
+      .catch(error => of(error))
+    )
+    
+  constructor(
+    public ws: WebsocketService,
     public store: Store<AppState>,
-    public actions$: Actions) {
+    public actions$: Actions
+  ) {
     super();
   }
 }

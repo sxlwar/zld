@@ -21,7 +21,7 @@ import 'rxjs/add/operator/defaultIfEmpty';
 import 'rxjs/add/observable/of';
 import { CW, QW, SW, TL } from '../config/character';
 import { ProjectService } from './project-service';
-import { SetSelectTeams } from '../../actions/action/team-action';
+import { SetSelectTeamsAction } from '../../actions/action/team-action';
 //endregion
 
 
@@ -106,7 +106,7 @@ export class TeamService {
       acc.push(cur);
       return acc;
     }, [])
-    .subscribe(ids => this.store.dispatch(new SetSelectTeams(ids)));
+      .subscribe(ids => this.store.dispatch(new SetSelectTeamsAction(ids)));
   }
 
   private handleError() {

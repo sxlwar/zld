@@ -1,4 +1,5 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions } from './../../interfaces/request-interface';
+//region
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Permission } from '../../interfaces/permission-interface';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
@@ -142,12 +143,16 @@ export const workTypeList: ApiUnit = {
   ])
 };
 
-/* =======================================================Work Type===================================================================== */
+/* ==============================================================Team========================================================================== */
 
 export const teamList: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['project.consumer.TeamList']]
   ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL, QW],
+    opt: []
+  },
   specialCharacter: new Map([
     [SW, new Iterator({ self: 1 })],
     [TL, new Iterator({ flag: 1 })],
@@ -156,6 +161,36 @@ export const teamList: ApiUnit = {
     [MM, new Iterator({ flag: 1 })]
   ])
 };
+
+export const teamAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['project.consumer.TeamAdd']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, PM]
+  }
+}
+
+export const teamDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['project.consumer.TeamDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PM]
+  }
+}
+
+export const teamUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['project.consumer.TeamUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PM]
+  }
+}
 
 /* =======================================================Attendance===================================================================== */
 
@@ -306,76 +341,83 @@ export const workFlowStatistics: ApiUnit = {
   }
 }
 
+/* =========================================================CompanyUser================================================================ */
+
+export const companyUserList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employer.consumer.CompanyUserList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM],
+    opt: []
+  }
+}
 @Injectable()
 export class Command {
 
-  personalIdList = "employee.consumer.PersonalIdList";
-  processCreate = "workflow.consumer.ProcessCreate";
-  multiProcessCreate = "workflow.consumer.MultiProcessCreate";
-  workerDetailList = "employee.consumer.WorkerDetailList";
-  workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
-  requestList = "workflow.consumer.RequestList";
-  workTimePayList = "project.consumer.WorkTimePayList";
-  workerBankNoList = "employee.consumer.WorkerBankNoList";
-  workerBankNoAdd = "employee.consumer.WorkerBankNoAdd";
-  workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
   amendAttendRecordList = "project.consumer.AmendAttendRecordList";
-  leaveRecordList = "project.consumer.LeaveRecordList";
   attendResultConfirm = "project.consumer.AttendResultConfirm";
-  paySalary = "project.consumer.PaySalary";
-  taskUpdate = "workflow.consumer.TaskUpdate";
-  multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
-  workCertificateList = "employee.consumer.WorkCertificateList";
-  nationalityList = "employee.consumer.NationalityList";
-  groupsList = "employee.consumer.GroupsList";
-  workCertificateDelete = "employee.consumer.WorkCertificateDelete";
-  workCertificateCreate = "employee.consumer.WorkCertificateCreate";
-  workCertificateUpdate = "employee.consumer.WorkCertificateUpdate";
-  homeInfoList = "employee.consumer.HomeInfoList";
-  homeInfoUpdate = "employee.consumer.HomeInfoUpdate";
-  educationList = "employee.consumer.EducationList";
-  educationDelete = "employee.consumer.EducationDelete";
-  educationUpdate = "employee.consumer.EducationUpdate";
-  educationAdd = "employee.consumer.EducationAdd";
-  workExperienceList = "employee.consumer.WorkExperienceList";
-  workExperienceDelete = "employee.consumer.WorkExperienceDelete";
-  workExperienceUpdate = "employee.consumer.WorkExperienceUpdate";
-  workExperienceAdd = "employee.consumer.WorkExperienceAdd";
-  myCompanyContractList = "employer.consumer.MyCompanyContractList";
-  subContractList = "employer.consumer.SubContractList";
-  attendanceMachineList = "project.consumer.AttendanceMachineList";
-  logout = "employee.consumer.Logout";
-  searchWorker = "employer.consumer.SearchWorker";
-  companyUserList = "employer.consumer.CompanyUserList";
-  primeContractList = "employer.consumer.PrimeContractList";
-  listHisLoc = "project.consumer.ListHisLoc";
-  projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
-  projectAreaList = "project.consumer.ProjectAreaList";
-  projectAreaDelete = "project.consumer.ProjectAreaDelete";
-  teamAdd = "project.consumer.TeamAdd";
-  teamUpdate = "project.consumer.TeamUpdate";
-  teamDelete = "project.consumer.TeamDelete";
-  locationCardList = "employer.consumer.LocationCardList";
-  locationCardAdd = "employer.consumer.LocationCardAdd";
-  locationCardDelete = "employer.consumer.LocationCardDelete";
-  locationCardUpdate = "employer.consumer.LocationCardUpdate";
-  attendanceCardList = "employer.consumer.AttendanceCardList";
   attendanceCardAdd = "employer.consumer.AttendanceCardAdd";
   attendanceCardDelete = "employer.consumer.AttendanceCardDelete";
+  attendanceCardList = "employer.consumer.AttendanceCardList";
   attendanceCardUpdate = "employer.consumer.AttendanceCardUpdate";
-  projectPayBillFlowList = "project.consumer.ProjectPayBillFlowList";
-  workPlatformExperienceList = "employee.consumer.WorkPlatformExperienceList";
-  deleteFiles = "operation.consumer.DeleteFiles";
-  qrLoginForApp = "employee.consumer.QRLoginForApp";
+  attendanceMachineList = "project.consumer.AttendanceMachineList";
   bankInfo = "employee.consumer.BankInfo";
-  setBankNoMaster = "employee.consumer.SetBankNoMaster";
-  workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
-  contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
-  msgTitleList = "operation.consumer.MsgTitleList";
-  unreadMsgCount = "operation.consumer.UnreadMsgCount";
-  msgTitleDelete = "operation.consumer.MsgTitleDelete";
-  readMsgContent = "operation.consumer.ReadMsgContent";
   basicInfoList = "employee.consumer.BasicInfoList";
+  contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
+  deleteFiles = "operation.consumer.DeleteFiles";
+  educationAdd = "employee.consumer.EducationAdd";
+  educationDelete = "employee.consumer.EducationDelete";
+  educationList = "employee.consumer.EducationList";
+  educationUpdate = "employee.consumer.EducationUpdate";
+  groupsList = "employee.consumer.GroupsList";
+  homeInfoList = "employee.consumer.HomeInfoList";
+  homeInfoUpdate = "employee.consumer.HomeInfoUpdate";
+  leaveRecordList = "project.consumer.LeaveRecordList";
+  listHisLoc = "project.consumer.ListHisLoc";
+  locationCardAdd = "employer.consumer.LocationCardAdd";
+  locationCardDelete = "employer.consumer.LocationCardDelete";
+  locationCardList = "employer.consumer.LocationCardList";
+  locationCardUpdate = "employer.consumer.LocationCardUpdate";
+  logout = "employee.consumer.Logout";
+  msgTitleDelete = "operation.consumer.MsgTitleDelete";
+  msgTitleList = "operation.consumer.MsgTitleList";
+  multiProcessCreate = "workflow.consumer.MultiProcessCreate";
+  multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
+  myCompanyContractList = "employer.consumer.MyCompanyContractList";
+  nationalityList = "employee.consumer.NationalityList";
+  paySalary = "project.consumer.PaySalary";
+  personalIdList = "employee.consumer.PersonalIdList";
+  primeContractList = "employer.consumer.PrimeContractList";
+  processCreate = "workflow.consumer.ProcessCreate";
+  projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
+  projectAreaDelete = "project.consumer.ProjectAreaDelete";
+  projectAreaList = "project.consumer.ProjectAreaList";
+  projectPayBillFlowList = "project.consumer.ProjectPayBillFlowList";
+  qrLoginForApp = "employee.consumer.QRLoginForApp";
+  readMsgContent = "operation.consumer.ReadMsgContent";
+  requestList = "workflow.consumer.RequestList";
+  searchWorker = "employer.consumer.SearchWorker";
+  setBankNoMaster = "employee.consumer.SetBankNoMaster";
+  subContractList = "employer.consumer.SubContractList";
+  taskUpdate = "workflow.consumer.TaskUpdate";
+  unreadMsgCount = "operation.consumer.UnreadMsgCount";
+  workCertificateCreate = "employee.consumer.WorkCertificateCreate";
+  workCertificateDelete = "employee.consumer.WorkCertificateDelete";
+  workCertificateList = "employee.consumer.WorkCertificateList";
+  workCertificateUpdate = "employee.consumer.WorkCertificateUpdate";
+  workExperienceAdd = "employee.consumer.WorkExperienceAdd";
+  workExperienceDelete = "employee.consumer.WorkExperienceDelete";
+  workExperienceList = "employee.consumer.WorkExperienceList";
+  workExperienceUpdate = "employee.consumer.WorkExperienceUpdate";
+  workPlatformExperienceList = "employee.consumer.WorkPlatformExperienceList";
+  workTimePayList = "project.consumer.WorkTimePayList";
+  workerBankNoAdd = "employee.consumer.WorkerBankNoAdd";
+  workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
+  workerBankNoList = "employee.consumer.WorkerBankNoList";
+  workerDetailList = "employee.consumer.WorkerDetailList";
+  workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
+  workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
   constructor() {
   }
 
@@ -383,6 +425,9 @@ export class Command {
     return { command: { path }, parameters }
   }
 
+  /**
+   * @description APIs before entry into the app: login, searchCompany, phoneVerificationCode, resetPhoneVerificationCode, register, resetPassword, updatePersonalIdImage.
+   */
   login(option: LoginOptions): WsRequest {
     const path = login.operates.get(Operate.querying)[0];
 
@@ -432,12 +477,18 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * @description Project API: getProjectList;
+   */
   getProjectList(option: ProjectListOptions): WsRequest {
     const path = projectList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * @description Contract related API: getWorkerContractList;
+   */
   getWorkerContractList(option: WorkerContractOptions, ...magicNumberNames: string[]): WsRequest {
     const path = workerContractList.operates.get(Operate.querying)[0];
 
@@ -449,18 +500,45 @@ export class Command {
     return this.getFullParameter(path, { ...option, ...magicOption });
   }
 
+  /**
+   * @description WorkType API: getWorkTypeList;
+   */
   getWorkTypeList(): WsRequest {
     const path = workTypeList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, {});
   }
 
+  /**
+   * @description team API: getTeamList, getTeamAdd, getTeamUpdate, getTeamDelete;
+   */
   getTeamList(option: TeamListOptions): WsRequest {
     const path = teamList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
+  getTeamAdd(option: TeamAddOptions): WsRequest {
+    const path = teamAdd.operates.get(Operate.addition)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getTeamUpdate(option: TeamUpdateOptions): WsRequest {
+    const path = teamUpdate.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getTeamDelete(option: TeamDeleteOptions): WsRequest {
+    const path = teamDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description Attendance API: getAttendanceList, getAttendanceInstantList;
+   */
   getAttendanceList(option: AttendanceResultListOptions): WsRequest {
     const path = attendanceList.operates.get(Operate.querying)[0];
 
@@ -473,32 +551,11 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * @description Salary related API: getPayBillList, getPayProcessList, getProjectPayBillList, getProjectPayProcessList;
+   */
   getPayBillList(option: PayBillListOptions): WsRequest {
     const path = payBillList.operates.get(Operate.querying)[0];
-
-    return this.getFullParameter(path, option);
-  }
-
-  getWorkPieceList(option: WorkPieceListOptions): WsRequest {
-    const path = workPieceList.operates.get(Operate.querying)[0];
-
-    return this.getFullParameter(path, option);
-  }
-
-  getWorkOvertimeRecordList(option: WorkOvertimeRecordListOptions): WsRequest {
-    const path = workOvertimeRecordList.operates.get(Operate.querying)[0];
-
-    return this.getFullParameter(path, option);
-  }
-
-  getAttendanceResultTeamStatList(option: AttendanceResultTeamStatListOptions): WsRequest {
-    const path = attendanceResultTeamStatList.operates.get(Operate.querying)[0];
-
-    return this.getFullParameter(path, option);
-  }
-
-  getWorkFlowStatistics(option: RequestAggregationOptions): WsRequest {
-    const path = workFlowStatistics.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
@@ -521,6 +578,51 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * @description Work piece API: getWorkerPieceList;
+   */
+  getWorkPieceList(option: WorkPieceListOptions): WsRequest {
+    const path = workPieceList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description Overtime API: getWorkOvertimeRecordList;
+   */
+  getWorkOvertimeRecordList(option: WorkOvertimeRecordListOptions): WsRequest {
+    const path = workOvertimeRecordList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description Statistics related API: getAttendanceResultTeamStatList, getWorkFlowStatistics;
+   */
+  getAttendanceResultTeamStatList(option: AttendanceResultTeamStatListOptions): WsRequest {
+    const path = attendanceResultTeamStatList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkFlowStatistics(option: RequestAggregationOptions): WsRequest {
+    const path = workFlowStatistics.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+  
+  /**
+   * @description Company user API: getCompanyUser;
+   */
+  getCompanyUserList(option: CompanyUserListOptions): WsRequest {
+    const path = companyUserList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description API unit interfaces for external module referring.
+   */
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
@@ -575,5 +677,21 @@ export class Command {
 
   get projectPayProcessList() {
     return projectPayProcessList;
+  }
+
+  get teamAdd() {
+    return teamAdd;
+  }
+
+  get teamUpdate() {
+    return teamUpdate;
+  }
+
+  get teamDelete() {
+    return teamDelete;
+  }
+
+  get companyUserList() {
+    return companyUserList;
   }
 }

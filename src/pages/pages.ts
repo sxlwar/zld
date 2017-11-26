@@ -10,13 +10,13 @@ export const welcomePage = 'WelcomePage';
 export const tutorialPage = 'TutorialPage';
 export const loginPage = 'LoginPage';
 export const signupPage = 'SignupPage';
-export const searchCompanyPage = 'SearchCompanyPage' ;
-export const certificationPage = 'CertificationPage' ;
+export const searchCompanyPage = 'SearchCompanyPage';
+export const certificationPage = 'CertificationPage';
 
 
 /*============================================Initial page of tabs==============================================*/
 
-export const tabsPage = 'TabsPage' ;
+export const tabsPage = 'TabsPage';
 
 export const MessageRoot = 'MessagePage';
 
@@ -35,7 +35,7 @@ export const projectBillPage = 'ProjectBillPage';
 
 export const projectBillDetailPage = 'ProjectBillDetailPage';
 
-
+export const organizationPage = 'OrganizationPage';
 /*============================================mission tab pages===================================================*/
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
@@ -77,20 +77,21 @@ export const PAGES = [
   { title: 'Settings', component: 'SettingsPage' },
   { title: 'Search', component: 'SearchPage' },
 
-  { title: 'Message', component: MessageRoot},
-  { title: 'Project', component: ProjectRoot},
-  { title: 'Mission', component: MissionRoot},
-  { title: 'Mine', component: MineRoot},
+  { title: 'Message', component: MessageRoot },
+  { title: 'Project', component: ProjectRoot },
+  { title: 'Mission', component: MissionRoot },
+  { title: 'Mine', component: MineRoot },
 
   { title: 'Attendance', component: attendancePage },
   { title: 'ProjectBill', component: projectBillPage },
   { title: 'ProjectBillDetail', component: projectBillDetailPage },
+  { title: 'Organization', component: organizationPage },
 
-  { title: 'AttendanceRecord', component: attendanceRecordPage},
+  { title: 'AttendanceRecord', component: attendanceRecordPage },
 
-  { title: 'AttendanceConfirm', component: attendanceConfirmPage},
+  { title: 'AttendanceConfirm', component: attendanceConfirmPage },
 
-  { title: 'PersonalAttendance', component: personalAttendancePage},
-  { title: 'Salary', component: salaryPage},
-  { title: 'SalaryDetail', component: salaryDetailPage} 
+  { title: 'PersonalAttendance', component: personalAttendancePage },
+  { title: 'Salary', component: salaryPage },
+  { title: 'SalaryDetail', component: salaryDetailPage }
 ];

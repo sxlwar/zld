@@ -80,6 +80,27 @@ export interface TeamListOptions {
   flag?: number;
 }
 
+export interface TeamAddOptions {
+  sid: string;
+  name: string;
+  project_id: number;
+  leader_id: number;
+  quality_manage_id: number;
+}
+
+export interface TeamUpdateOptions {
+  sid: string;
+  team_id: number;
+  name?: string;
+  leader_id?: number;
+  quality_manage_id?: number;
+}
+
+export interface TeamDeleteOptions {
+  sid: string;
+  team_id: number;
+}
+
 /*===============================================Project model======================================================*/
 
 export interface ProjectListOptions {
@@ -204,13 +225,13 @@ export interface WorkOvertimeRecordListOptions {
 
 export interface WorkPieceListOptions {
   sid: string;
+  history_view?: boolean;
   project_id?: number;
-  user_id?: number;
-  self?: number;
   request_id?: number;
   request_status?: string;
+  self?: number;
+  user_id?: number;
   work_piece_pay_id?: number;
-  history_view?: boolean;
 }
 
 /*=================================================Statistics model==================================================*/
@@ -226,22 +247,38 @@ export interface RequestAggregationOptions {
   sid: string;
 }
 
+/*=================================================Company user model==================================================*/
+
+export interface CompanyUserListOptions {
+  sid: string;
+  company_id?: number[];
+  group_name?: string;
+  limit?: number;
+  page?: number;
+  user_id?: number;
+  username?: string;
+}
+
 export type Options = LoginOptions
-  & RegisterOptions
-  & SearchCompanyOptions
-  & PhoneVerificationCodeOptions
-  & ResetPasswordOptions
-  & CertificateOptions
-  & UploadImageOptions
-  & TeamListOptions
-  & ProjectListOptions
-  & WorkerContractOptions
-  & AttendanceResultListOptions
   & AttendanceInstantListOptions
-  & PayBillListOptions
-  & WorkOvertimeRecordListOptions
-  & AttendanceResultTeamStatListOptions
   & AttendanceResultConfirmOptions
-  & ProjectPayProcessListOptions
+  & AttendanceResultListOptions
+  & AttendanceResultTeamStatListOptions
+  & CertificateOptions
+  & CompanyUserListOptions
+  & PayBillListOptions
+  & PayProcessListOptions
+  & PhoneVerificationCodeOptions
+  & ProjectListOptions
   & ProjectPayBillListOptions
-  & PayProcessListOptions;
+  & ProjectPayProcessListOptions
+  & RegisterOptions
+  & ResetPasswordOptions
+  & SearchCompanyOptions
+  & TeamAddOptions
+  & TeamDeleteOptions
+  & TeamListOptions
+  & TeamUpdateOptions
+  & UploadImageOptions
+  & WorkOvertimeRecordListOptions
+  & WorkerContractOptions;

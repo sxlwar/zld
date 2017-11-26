@@ -148,10 +148,13 @@ export const selectWorkerContractResponse = createSelector(getWorkerContracts, w
 export const getWorkType = (state: AppState) => state.workType;
 export const selectWorkTypeList = createSelector(getWorkType, workType.getWorkType);
 
-//team list
+//team api: teamList addTeam deleteTeam updateTeam; 
 export const getTeam = (state: AppState) => state.team;
 export const selectTeamResponse = createSelector(getTeam, team.getTeamListResponse);
 export const selectSelectedTeams = createSelector(getTeam, team.getSelectTeams);
+export const selectAddTeamResponse = createSelector(getTeam, team.getAddTeamResponse);
+export const selectDeleteTeamResponse = createSelector(getTeam, team.getDeleteTeamResponse);
+export const selectUpdateTeamResponse = createSelector(getTeam, team.getUpdateTeamResponse);
 
 //attendance result list
 export const getAttendance = (state: AppState) => state.attendance;

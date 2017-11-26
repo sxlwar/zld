@@ -13,19 +13,21 @@ import { Actions as payBill } from './action/pay-bill-action';
 import { Actions as overtime } from './action/overtime-action';
 import { Actions as piece } from './action/work-piece-action';
 import { Actions as statistics } from './action/statistics-action';
+import { Actions as employer } from './action/employer-action';
 
 export type Actions = config
-  | tutorial
-  | login
-  | search
-  | icons
-  | project
-  | worker
-  | workType
-  | team
   | attendance
   | attendanceRecord
-  | payBill
+  | employer
+  | icons
+  | login
   | overtime
+  | payBill
   | piece
-  | statistics;
+  | project
+  | search
+  | statistics
+  | team
+  | tutorial
+  | workType
+  | worker;

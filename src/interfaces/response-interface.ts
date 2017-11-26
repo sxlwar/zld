@@ -86,6 +86,24 @@ export interface TeamListResponse {
   errorMessage?: string;
 }
 
+//teamAdd
+export interface TeamAddResponse {
+  information: string;
+  errorMessage?: string;
+}
+
+//teamUpdate
+export interface TeamUpdateResponse {
+  information: string;
+  errorMessage?: string;
+}
+
+//teamDelete
+export interface TeamDeleteResponse {
+  information: string;
+  errorMessage?: string;
+}
+
 /*===============================================Project model======================================================*/
 
 export interface AttendanceMachine {
@@ -562,6 +580,25 @@ export interface RequestAggregationResponse {
   errorMessage?: string;
 }
 
+/*=================================================Company user model==================================================*/
+
+export interface Employer {
+  personalIdNum: number;
+  realname: string;
+  company_id: number;
+  sex: string;
+  birth_date: string;
+  nationality: string;
+  curraddr_id: number;
+  user_id: number;
+  id: number;
+}
+
+export interface CompanyUserListResponse {
+  worker: Employer[];
+  errorMessage?: string;
+}
+
 /*========================================================================================================*/
 
 
@@ -582,21 +619,25 @@ export interface WorkerResponse {
 }
 
 export type ErrorResponse = LoginResponse
-  | PhoneVerCodeResponse
-  | RegisterResponse
-  | ResetPasswordResponse
-  | CertificateResponse
-  | TeamListResponse
-  | ProjectListResponse
-  | WorkerContractListResponse
-  | WorkTypeListResponse
-  | AttendanceResultListResponse
   | AttendanceInstantListResponse
+  | AttendanceResultListResponse
+  | AttendanceResultTeamStatListResponse
+  | CertificateResponse
+  | CompanyUserListResponse
+  | MultiProcessCreateResponse
   | PayBillListResponse
+  | PhoneVerCodeResponse
+  | ProcessCreateResponse
+  | ProjectListResponse
+  | RegisterResponse
+  | RequestAggregationResponse
+  | ResetPasswordResponse
+  | TaskUpdateResponse
+  | TeamAddResponse
+  | TeamDeleteResponse
+  | TeamListResponse
+  | TeamUpdateResponse
   | WorkOvertimeRecordListResponse
   | WorkPieceListResponse
-  | RequestAggregationResponse
-  | AttendanceResultTeamStatListResponse
-  | ProcessCreateResponse
-  | MultiProcessCreateResponse
-  | TaskUpdateResponse;
+  | WorkTypeListResponse
+  | WorkerContractListResponse;

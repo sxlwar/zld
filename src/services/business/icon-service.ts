@@ -97,7 +97,7 @@ export const organization: IconItem = {
     view: [PME, EME, MM, LM, TL, QW],
     opt: [PM]
   },
-  page: ''
+  page: pages.organizationPage
 };
 
 export const workerManager: IconItem = {
