@@ -31,6 +31,7 @@ import { TipService } from './tip-service';
 import { ChartService } from './utils/chart-service';
 import { WorkFlowService } from './business/work-flow-service';
 import { ProjectBillService } from './business/project-bill-service';
+import { EmployerService } from './business/employer-service';
 //endregion
 
 export const API_SERVICES = [
@@ -44,26 +45,27 @@ export const API_SERVICES = [
 
 
 export const BUSINESS_SERVICES = [
-    AttendanceService,
     AttendanceRecordService,
+    AttendanceService,
     CertificateService,
     CraftService,
+    EmployerService,
     IconService,
     LoginService,
     OvertimeService,
     PayBillService,
+    PayProcessService,
+    ProjectBillService,
+    ProjectProcessService,
     ProjectService,
+    StatisticsService,
+    TakePhotoService,
     TeamService,
     TutorialService,
     UserService,
+    WorkFlowService,
     WorkPieceService,
     WorkerService,
-    StatisticsService,
-    TakePhotoService,
-    WorkFlowService,
-    ProjectProcessService,
-    ProjectBillService,
-    PayProcessService,
 ]
 
 

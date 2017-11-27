@@ -12,6 +12,7 @@ import { IconBarComponent } from './icon-bar/icon-bar';
 import { ProjectListComponent } from './project-list/project-list';
 import { CalendarComponent } from './calendar/calendar';
 import { AttendanceTimeChartComponent } from './attendance-time-chart/attendance-time-chart';
+import { AddTeamComponent } from './add-team/add-team';
 //endregion
 
 @NgModule({
@@ -24,6 +25,7 @@ import { AttendanceTimeChartComponent } from './attendance-time-chart/attendance
     ProjectListComponent,
     CalendarComponent,
     AttendanceTimeChartComponent,
+    AddTeamComponent,
   ],
   imports: [
     IonicModule,
@@ -40,6 +42,7 @@ import { AttendanceTimeChartComponent } from './attendance-time-chart/attendance
     ProjectListComponent,
     CalendarComponent,
     AttendanceTimeChartComponent,
+    AddTeamComponent,
   ]
 })
 export class ComponentsModule {

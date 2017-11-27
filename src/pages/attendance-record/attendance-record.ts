@@ -1,4 +1,5 @@
 //region
+import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AttendanceInstant } from '../../interfaces/response-interface';
@@ -26,6 +27,7 @@ export class AttendanceRecordPage {
     public navParams: NavParams,
     public attendance: AttendanceService,
     public attendanceRecord: AttendanceRecordService,
+    public permission: PermissionService
   ) {
     this.time = this.navParams.get('day');
   }
@@ -35,7 +37,7 @@ export class AttendanceRecordPage {
 
     const iconName = this.navParams.get('iconName');
 
-    this.operatePermission = this.attendance.getOperatePermission(iconName, rootName);
+    this.operatePermission = this.permission.getOperatePermission(iconName, rootName);
 
     this.getAttendanceRecords();
   }
@@ -73,7 +75,7 @@ export class AttendanceRecordPage {
     this.attendance.showActionSheet();
   }
 
-  ionViewWillUnlod() {
+  ionViewWillUnload() {
     this.attendanceRecord.unSubscribe();
     
     this.pageSubscription && this.pageSubscription.unsubscribe();

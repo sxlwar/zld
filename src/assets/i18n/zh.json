@@ -14,7 +14,7 @@
   "LOGIN": "登录",
   "SIGNUP": "注册",
   "MOBILE_PHONE": "手机号",
-  "COMPANY":"公司名称",
+  "COMPANY": "公司名称",
 
   "HOUR": "小时",
 
@@ -29,7 +29,7 @@
   "ACCOUNT_REQUIRED_ERROR": "手机号不能为空",
   "INPUT_IMAGE_VERIFICATION_TIP": "请先输入图形验证码，再获取手机验证码",
   "PHONE_VERIFICATION_FAIL": "获取手机验证码失败",
-  "PASSWORD_INVALID_ERROR":"密码长度必须为6-16位，可以由数字、字母、下划线组成",
+  "PASSWORD_INVALID_ERROR": "密码长度必须为6-16位，可以由数字、字母、下划线组成",
   "PASSWORD_REQUIRED_ERROR": "密码不能为空",
   "IMAGE_VERIFICATION_REQUIRED_ERROR": "图形验证码不能为空",
   "VERIFICATION_REQUIRED_ERROR": "手机验证码不能为空",
@@ -68,7 +68,7 @@
   "LOGIN_FAIL_TIP": "登录失败",
 
   "REGISTER_USER_TYPE": "用户类型",
-  "REGISTER_PERSONAL_USER":"工人",
+  "REGISTER_PERSONAL_USER": "工人",
   "REGISTER_COMPANY_USER": "企业用户",
   "REGISTER_USER_TYPE_REQUIRED_ERROR": "必须选择一个用户类型",
   "REGISTER_COMPANY_REQUIRED_ERROR": "公司名称不能为空",
@@ -97,12 +97,12 @@
 
   "PROJECT_REMAIN_DAYS": "剩余天数",
   "PROJECT_OVERDUE_DAYS": "逾期天数",
-  "PROJECT_WORKER_COUNT":"施工人数",
+  "PROJECT_WORKER_COUNT": "施工人数",
   "PROJECT_TIP": "更多功能，敬请期待！",
   "PROJECT_OVER_DUE": "已逾期",
   "PROJECT_SWITCH_PROJECT": "切换工程",
 
-  "ATTENDANCE_CHAR":"考勤表",
+  "ATTENDANCE_CHAR": "考勤表",
   "PAYROLL": "工资单",
   "ORGANIZATION": "组织架构",
   "WORKER_MANAGER": "工人管理",
@@ -150,8 +150,8 @@
   "API_ERROR": "请求失败",
   "LOADING": "数据加载中···",
   "RESPONSE_IS_EMPTY": "没有符合条件的结果",
-  
-  "SET_QUERY_CONDITION":"设置查询条件",
+
+  "SET_QUERY_CONDITION": "设置查询条件",
   "START_TIME": "开始时间",
   "END_TIME": "结束时间",
   "TEAM": "班组",
@@ -160,13 +160,13 @@
   "ATTENDANCE_APPLY_FOR_MODIFY": "申请修改",
 
   "ATTENDANCE_RECORD": "考勤记录",
-  "ATTENDANCE_MACHINE_NAME":"考勤机名称",
-  "ATTENDANCE_RECORD_TYPE":"进/出",
-  "TIME":"时间",
+  "ATTENDANCE_MACHINE_NAME": "考勤机名称",
+  "ATTENDANCE_RECORD_TYPE": "进/出",
+  "TIME": "时间",
   "CAN_NOT_READ": "不识别",
   "IN": "进",
   "OUT": "出",
-  
+
   "PERSONAL_ATTENDANCE": "我的考勤",
   "TURN_OUT_FOR_WORK": "出勤",
   "ABSENCE_FROM_DUTY": "缺勤",
@@ -181,7 +181,7 @@
   "PENDING_TO_CONFIRMED_ATTENDANCE": "待确认考勤统计",
   "TEAMS_HAVE_UNCONFIRMED_ATTENDANCE": "包含未确认考勤的班组",
   "DAYS_HAVE_UNCONFIRMED_ATTENDANCE": "包含未确认考勤的日期(最后七天）",
-  
+
   "PROJECT_PAY_PROCESS": "工程发放单",
   "GRANT_IN": "发放中",
   "PENDING_RELEASE": "待发放",
@@ -193,23 +193,30 @@
   "PROJECT_BILL_AMOUNT": "对帐金额总计",
   "OVERTIME": "加班",
   "BILL_LIST_DETAILS": "对帐单明细",
-  
+
   "SALARY": "薪资",
   "AMOUNT": "金额",
   "SALARY_MONTH": "薪资所属",
-  "SALARY_DETAIL":"薪资详情",  
+  "SALARY_DETAIL": "薪资详情",
   "SYSTEM_ATTENDANCE_SALARY": "系统考勤工资",
   "MANUAL_ATTENDANCE_SALARY": "人工考勤工资",
   "SYSTEM_OVERTIME_SALARY": "系统加班工资",
   "MANUAL_OVERTIME_SALARY": "人工加班工资",
   "WORK_PIECE_SALARY": "工件工资",
   "ATTENDANCE_SALARY": "考勤工资",
-  "OVERTIME_SALARY":"加班工资",
+  "OVERTIME_SALARY": "加班工资",
 
   "PROJECT_MANAGER": "项目经理",
-  "LABOUR_MANAGER":"劳务经理",
+  "LABOUR_MANAGER": "劳务经理",
   "QUALITY_CLERK": "质量员",
   "FOREMAN": "班组长",
+  "TEAM_NAME": "班组名称",
+  "ADD_TEAM": "添加班组",
+
+  "TEAM_NAME_REQUIRED_ERROR":"班组名称不能为空",
+  "TEAM_NAME_ERROR":"班组名称只能由中英文、数字、下划线、中划线组成,长度为2到10个字符",
+  "FOREMAN_REQUIRED_ERROR":"班组长不能为空",
+  "QUALITY_CLERK_REQUIRED_ERROR":"质量员不能为空",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

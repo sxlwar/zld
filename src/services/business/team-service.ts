@@ -1,3 +1,7 @@
+import { selectAddTeamResponse, selectUpdateTeamResponse, selectDeleteTeamResponse } from './../../reducers/index-reducer';
+import { TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse } from './../../interfaces/response-interface';
+import { TeamAddOptions } from './../../interfaces/request-interface';
+import { AddTeamFormModel, MapperService } from './../api/mapper-service';
 //region
 import { Injectable } from '@angular/core';
 import { AppState, selectTeamResponse, selectSelectedTeams } from '../../reducers/index-reducer';
@@ -27,7 +31,6 @@ import { SetSelectTeamsAction } from '../../actions/action/team-action';
 
 @Injectable()
 export class TeamService {
-
   subscriptions: Subscription[] = [];
   team$$: Subscription;
 
@@ -38,7 +41,9 @@ export class TeamService {
     public process: ProcessorService,
     public userInfo: UserService,
     public project: ProjectService,
-    public workerService: WorkerService) {
+    public workerService: WorkerService,
+    public mapper: MapperService
+  ) {
     this.handleError();
   }
 
@@ -82,7 +87,7 @@ export class TeamService {
     return character$.mergeMap(isTeamCharacter => {
       if (isTeamCharacter) return team$;
       return Observable.of(null);
-    })
+    });
   }
 
   getOwnTeams(): Observable<Team[]> {
@@ -109,6 +114,48 @@ export class TeamService {
       .subscribe(ids => this.store.dispatch(new SetSelectTeamsAction(ids)));
   }
 
+  /* ============================================Team operations======================================== */
+
+  addTeam(form: AddTeamFormModel): void {
+    const projectId = this.project.getProjectId();
+
+    const source: TeamAddOptions = this.mapper.addTeamForm(form);
+
+    const sid = this.userInfo.getSid();
+    
+    const option = projectId.zip(
+      sid,
+      Observable.of(source),
+      (project_id, sid, data) => Object.assign(data, {sid, project_id})
+    );
+
+    const subscription = this.process.teamAddProcessor(option);
+
+    this.subscriptions.push(subscription);
+  }
+
+  getAddTeamResponse(): Observable<TeamAddResponse> {
+    return this.store.select(selectAddTeamResponse);
+  }
+
+  deleteTeam(): void {
+
+  }
+
+  getDeleteTeamResponse(): Observable<TeamDeleteResponse>{
+    return this.store.select(selectDeleteTeamResponse);
+  }
+
+  updateTeam(): void {
+
+  }
+
+  getUpdateTeamResponse(): Observable<TeamUpdateResponse> {
+    return this.store.select(selectUpdateTeamResponse);
+  }
+
+  /* ============================================Error handle and refuse clean======================================== */
+  
   private handleError() {
     const error$ = this.store.select(selectTeamResponse);
 

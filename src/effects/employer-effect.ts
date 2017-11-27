@@ -1,5 +1,5 @@
 //region
-import { GET_COMPANY_USER, GetCompanyUserListAction, CompanyUserListFaiAction, CompanyUserListSuccessAction } from './../actions/action/employer-action';
+import { GET_COMPANY_USER, GetCompanyUserListAction,  CompanyUserListSuccessAction, CompanyUserListFailAction } from './../actions/action/employer-action';
 import { ResponseAction } from './../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { AppState } from './../reducers/index-reducer';
@@ -20,10 +20,10 @@ export class EmployerEffect extends Command {
         .switchMap((action: GetCompanyUserListAction) => this.ws
             .send(this.getCompanyUserList(action.payload))
             .takeUntil(this.actions$.ofType(GET_COMPANY_USER))
-            .map(msg => msg.isError ? new CompanyUserListFaiAction(msg.data) : new CompanyUserListSuccessAction(msg.data))
+            .map(msg => msg.isError ? new CompanyUserListFailAction(msg.data) : new CompanyUserListSuccessAction(msg.data))
             .catch(error => of(error))
         )
-
+    
     constructor(
         public ws: WebsocketService,
         public actions$: Actions,

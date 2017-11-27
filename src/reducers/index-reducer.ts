@@ -18,6 +18,7 @@ import * as payBill from './reducer/pay-bill-reducer';
 import * as overtime from './reducer/overtime-reducer';
 import * as piece from './reducer/work-piece-reducer';
 import * as statistics from './reducer/statistics-reducer';
+import * as employer from './reducer/employer-reducer';
 //endregion
 
 export interface AppState {
@@ -43,6 +44,7 @@ export interface AppState {
   overtime: overtime.State,
   piece: piece.State,
   statistics: statistics.State,
+  employer: employer.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -68,6 +70,7 @@ export const reducers: ActionReducerMap<AppState> = {
   overtime: overtime.reducer,
   piece: piece.reducer,
   statistics: statistics.reducer,
+  employer: employer.reducer,
 };
 
 //config
@@ -220,6 +223,13 @@ export const selectAttendanceStatisticList = createSelector(getStatistics, stati
 //request aggregation list
 export const selectWorkFlowStatisticsResponse = createSelector(getStatistics, statistics.getWorkFlowStatResponse);
 export const selectWorkFlowStatistics = createSelector(getStatistics, statistics.getWorkFlowStats);
+
+//company user list
+export const getEmployer = (state: AppState) => state.employer;
+export const selectCompanyUserResponse = createSelector(getEmployer, employer.getCompanyUserResponse);
+export const selectCompanyUsers = createSelector(getEmployer, employer.getCompanyUsers);
+export const selectSelectedForemen = createSelector(getEmployer, employer.getSelectedForemen);
+export const selectSelectedQualityClerks = createSelector(getEmployer, employer.getSelectedQualityClerks);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

@@ -1,6 +1,6 @@
+//region
 import { AttendanceStatistics } from './../../interfaces/response-interface';
 import { selectAttendanceStatisticsResponse, selectAttendanceStatistics } from './../../reducers/index-reducer';
-//region
 import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
 import {
@@ -11,7 +11,6 @@ import {
   selectAttendanceResponse,
   selectAttendanceAllSelected,
   selectAttendanceData,
-  selectIcon,
   selectAttendanceCount
 } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -88,12 +87,6 @@ export class AttendanceService {
     const subscription = this.processor.attendanceListProcessor(params);
 
     this.subscriptions.push(subscription);
-  }
-
-  getOperatePermission(iconName: string, rootName?: string): Observable<boolean> {
-    const params = rootName ? [rootName, iconName] : iconName;
-
-    return this.store.select(selectIcon(params)).map(icon => icon.permission.opt);
   }
 
   increasePage(): void {
@@ -204,7 +197,7 @@ export class AttendanceService {
     actionSheet.present().then(() => { });
   }
 
-  /* ==========================================================error handle and refuse clean=============================================== */
+  /* ==========================================================Error handle and refuse clean=============================================== */
 
   private monitorPage() {
 

@@ -1,4 +1,5 @@
 //region
+import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
@@ -38,7 +39,8 @@ export class AttendancePage {
     public timeService: TimeService,
     public teamService: TeamService,
     public translate: TranslateService,
-    public actionSheet: ActionSheetController
+    public actionSheet: ActionSheetController,
+    public permission: PermissionService
   ) {
     this.today = timeService.getDate(new Date(), true);
     this.operatePermission = this.getOperatePermission();
@@ -83,7 +85,7 @@ export class AttendancePage {
   }
 
   getOperatePermission(): Observable<boolean> {
-    return this.attendance.getOperatePermission(attendanceIcon.icon, ProjectRoot)
+    return this.permission.getOperatePermission(attendanceIcon.icon, ProjectRoot);
   }
 
   /* ========================================================Attendance operation========================================================= */

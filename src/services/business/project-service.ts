@@ -76,6 +76,10 @@ export class ProjectService {
     this.store.dispatch(new SelectProjectAction(id));
   }
 
+  getProjectPrimeCompanyId() {
+    return this.getCurrentProject().map(project => project.prime_contract__first_contracting_id);
+  }
+
   /*================================================error handle===============================================*/
 
   private handleError() {

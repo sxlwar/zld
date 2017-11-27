@@ -41,3 +41,11 @@ export function personalIdValidator(name: FormControl): {[key: string]: any} {
 
   return valid ? null : {personalIdFormat: 'PERSONAL_ID_ERROR_TIP'};
 }
+
+export const teamNameFormat = /^[\u4E00-\u9FA5\w]{2,10}$/;
+
+export function teamNameValidator(name: FormControl): {[key: string]: any} {
+  const valid: boolean = teamNameFormat.test(name.value);
+
+  return valid ? null: {teamNameFormat: 'TEAM_NAME_ERROR'};
+}

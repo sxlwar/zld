@@ -25,6 +25,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { dayNames, dayShortNames, monthNames, monthShortNames } from '../services/utils/time-service';
 import { ComponentsModule } from '../components/components.module';
 import { ProjectListComponent } from '../components/project-list/project-list';
+import { AddTeamComponent } from '../components/add-team/add-team';
 import { API_SERVICES, BUSINESS_SERVICES, CONFIG_SERVICES, UTIL_SERVICES } from '../services/service-import';
 import { LOCALE_ID } from '@angular/core';
 //endregion
@@ -100,6 +101,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
   entryComponents: [
     MyApp,
     ProjectListComponent,
+    AddTeamComponent,
   ],
   providers: [
     Api,

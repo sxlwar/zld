@@ -69,7 +69,7 @@ export interface CertificateResponse {
 export interface Team {
   id: number;
   leader__employee__realname: string;
-  leader_id: string;
+  leader_id: number;
   leader_username: string;
   name: string;
   project_id: number;
@@ -583,15 +583,21 @@ export interface RequestAggregationResponse {
 /*=================================================Company user model==================================================*/
 
 export interface Employer {
-  personalIdNum: number;
-  realname: string;
+  birth_date: string,
   company_id: number;
-  sex: string;
-  birth_date: string;
+  curraddr: number;
+  curraddr__city: string;
+  curraddr__detail: string;
+  curraddr__dist: string;
+  curraddr__province: string;
+  curraddr__street: string;
   nationality: string;
-  curraddr_id: number;
+  personalIdNum: string;
+  realname: string;
+  sex: string;
+  user__groups__name: string;
+  user__username: string;
   user_id: number;
-  id: number;
 }
 
 export interface CompanyUserListResponse {

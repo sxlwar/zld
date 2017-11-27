@@ -1,7 +1,7 @@
 //region
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { AppState, selectGroupList } from '../../reducers/index-reducer';
+import { selectIcon, AppState,  selectGroupList } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
@@ -17,8 +17,10 @@ export class PermissionService {
   // project_pieceContract_view = [PME, EME, MM, PM, LM, TL, QW];
   // project_area_view = [PME, EME, MM, PM, LM, TL];
 
-  constructor(public store: Store<AppState>,
-    public command: Command) {
+  constructor(
+    public store: Store<AppState>,
+    public command: Command
+  ) {
   }
 
   functionalPermissionValidate(target: Observable<Permission>): Observable<PermissionResult> {
@@ -40,6 +42,10 @@ export class PermissionService {
 
       return { view, opt }
     });
+  }
+
+  getOperatePermission(iconName: string, rootName: string): Observable<boolean> {
+    return this.store.select(selectIcon([rootName, iconName])).map(icon => icon.permission.opt);
   }
 
   specialOptionValidate(arg: ApiUnit): Observable<object> {

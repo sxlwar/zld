@@ -12,7 +12,7 @@ export class GetCompanyUserListAction implements Action {
 
 export const COMPANY_USER_LIST_FAIL = 'COMPANY_USER_LIST_FAIL';
 
-export class CompanyUserListFaiAction implements Action {
+export class CompanyUserListFailAction implements Action {
     readonly type = COMPANY_USER_LIST_FAIL;
 
     constructor(public payload: CompanyUserListResponse) { }
@@ -26,6 +26,24 @@ export class CompanyUserListSuccessAction implements Action {
     constructor(public payload: CompanyUserListResponse) { }
 }
 
+export const SET_SELECTED_FOREMAN = 'SET_SELECTED_FOREMAN';
+
+export class SetSelectedForemanAction implements Action {
+    readonly type = SET_SELECTED_FOREMAN;
+
+    constructor(public payload: number[]) { }
+}
+
+export const SET_SELECT_QUALITY_CLERK = 'SET_SELECT_QUALITY_CLERK';
+
+export class SetSelectedQualityClerkAction implements Action {
+    readonly type = SET_SELECT_QUALITY_CLERK;
+
+    constructor(public payload: number[]) { }
+}
+
 export type Actions = GetCompanyUserListAction
-    | CompanyUserListFaiAction
-    | CompanyUserListSuccessAction;
+    | CompanyUserListFailAction
+    | CompanyUserListSuccessAction
+    | SetSelectedForemanAction
+    | SetSelectedQualityClerkAction;

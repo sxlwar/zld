@@ -1,12 +1,6 @@
-//region
-import {Injectable} from '@angular/core';
-import {
-  CertificateOptions,
-  LoginOptions,
-  RegisterOptions,
-  ResetPasswordOptions
-} from '../../interfaces/request-interface';
-//endregion
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions } from './../../interfaces/request-interface';
+import { Injectable } from '@angular/core';
+
 
 export interface LoginFormModel {
   mobilePhone: string;
@@ -43,6 +37,18 @@ export interface CertificateFormModel {
   personalIdPhoto: {
     front: string;
     back: string;
+  }
+}
+
+export interface AddTeamFormModel {
+  teamName: string;
+  foreman: {
+    name: string;
+    id: number;
+  };
+  qualityClerk: {
+    name: string;
+    id: number;
   }
 }
 
@@ -85,6 +91,16 @@ export class MapperService {
       sid: '',
       imageface: form.personalIdPhoto.front,
       imageback: form.personalIdPhoto.back
+    }
+  }
+
+  addTeamForm(form: AddTeamFormModel): TeamAddOptions {
+    return {
+      sid: '',
+      project_id: 0,
+      leader_id: form.foreman.id,
+      quality_manage_id:form.qualityClerk.id,
+      name: form.teamName
     }
   }
 }

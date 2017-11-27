@@ -1,3 +1,4 @@
+import { TipService } from './../services/tip-service';
 //region
 import { ADD_TEAM, AddTeamAction, AddTeamFailAction, AddTeamSuccessAction, UPDATE_TEAM, UpdateTeamAction, UpdateTeamFailAction, UpdateTeamSuccessAction, DELETE_TEAM, DeleteTeamFailAction, DeleteTeamAction, DeleteTeamSuccessAction } from './../actions/action/team-action';
 import { Injectable } from '@angular/core';
@@ -34,6 +35,7 @@ export class TeamEffect extends Command {
     .switchMap((action: AddTeamAction) => this.ws
       .send(this.getTeamAdd(action.payload))
       .takeUntil(this.actions$.ofType(ADD_TEAM))
+      .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
       .map(msg => msg.isError ? new AddTeamFailAction(msg.data) : new AddTeamSuccessAction(msg.data))
       .catch(error => of(error))
     )
@@ -44,6 +46,7 @@ export class TeamEffect extends Command {
     .switchMap((action: UpdateTeamAction) => this.ws
       .send(this.getTeamUpdate(action.payload))
       .takeUntil(this.actions$.ofType(UPDATE_TEAM))
+      .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
       .map(msg => msg.isError ? new UpdateTeamFailAction(msg.data) : new UpdateTeamSuccessAction(msg.data))
       .catch(error => of(error))
     )
@@ -54,6 +57,7 @@ export class TeamEffect extends Command {
     .switchMap((action: DeleteTeamAction) => this.ws
       .send(this.getTeamDelete(action.payload))
       .takeUntil(this.actions$.ofType(DELETE_TEAM))
+      .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
       .map(msg => msg.isError ? new DeleteTeamFailAction(msg.data) : new DeleteTeamSuccessAction(msg.data))
       .catch(error => of(error))
     )
@@ -61,7 +65,8 @@ export class TeamEffect extends Command {
   constructor(
     public ws: WebsocketService,
     public store: Store<AppState>,
-    public actions$: Actions
+    public actions$: Actions,
+    public tip: TipService
   ) {
     super();
   }

@@ -1,5 +1,7 @@
+import { AddTeamAction } from './../../actions/action/team-action';
+import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -227,5 +229,23 @@ export class ProcessorService extends MapperService {
       .filter(result => result.permission.view)
       .zip(option$, (result, option) => Object.assign({}, result.option, option))
       .subscribe(option => this.store.dispatch(new GetPayProcessListAction(option)));
+  }
+
+  companyUserListProcessor(option$: Observable<CompanyUserListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.companyUserList);
+
+    return permissionResult
+      .filter(result => result.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetCompanyUserListAction(option)));
+  }
+
+  teamAddProcessor(option$: Observable<TeamAddOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.teamAdd);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new AddTeamAction(option)));
   }
 }
