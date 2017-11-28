@@ -1,7 +1,7 @@
-import { AddTeamAction } from './../../actions/action/team-action';
+import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -247,5 +247,23 @@ export class ProcessorService extends MapperService {
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new AddTeamAction(option)));
+  }
+
+  teamUpdateProcessor(option$: Observable<TeamUpdateOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.teamUpdate);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateTeamAction(option)));
+  }
+
+  teamDeleteProcessor(option$: Observable<TeamDeleteOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.teamDelete);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new DeleteTeamAction(option)));
   }
 }

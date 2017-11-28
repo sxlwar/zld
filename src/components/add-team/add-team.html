@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      {{'ADD_TEAM' | translate}}
+      {{ operateType | translate}}
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -33,8 +33,8 @@
 
       <ion-item>
         <ion-label>{{'FOREMAN' | translate}}</ion-label>
-        <ion-select formControlName="foreman" [cancelText]="'CANCEL_BUTTON' | translate"
-          [okText]="'CONFIRM_BUTTON' | translate" required>
+        <ion-select formControlName="foreman" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+          required>
           <ion-option *ngFor="let foreman of foremen | async" [value]="foreman">{{foreman.name}}</ion-option>
         </ion-select>
       </ion-item>
@@ -44,8 +44,8 @@
 
       <ion-item>
         <ion-label>{{'QUALITY_CLERK' | translate}}</ion-label>
-        <ion-select formControlName="qualityClerk" [cancelText]="'CANCEL_BUTTON' | translate"
-          [okText]="'CONFIRM_BUTTON' | translate" required>
+        <ion-select formControlName="qualityClerk" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+          required>
           <ion-option *ngFor="let clerk of qualityClerks | async" [value]="clerk">{{clerk.name}}</ion-option>
         </ion-select>
       </ion-item>
@@ -55,6 +55,6 @@
 
     </ion-list>
 
-    <button ion-button block (click)="addTeam()" [disabled]="addTeamForm.invalid" color="primary">{{'ADD_TEAM' | translate}}</button>
+    <button ion-button block (click)="confirmOperate()" [disabled]="addTeamForm.invalid" color="primary">{{operateType | translate}}</button>
   </form>
 </ion-content>

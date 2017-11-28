@@ -91,9 +91,9 @@ export interface TeamAddOptions {
 export interface TeamUpdateOptions {
   sid: string;
   team_id: number;
-  name?: string;
-  leader_id?: number;
-  quality_manage_id?: number;
+  name: string;
+  leader_id: number;
+  quality_manage_id: number;
 }
 
 export interface TeamDeleteOptions {

@@ -33,7 +33,7 @@ export class EmployerService {
         return this.store.select(selectCompanyUsers);
     }
 
-    getCompanyUserList(): void {
+    getCompanyUserList(): Subscription {
         const sid = this.userInfo.getSid();
 
         const companyId = this.project.getProjectPrimeCompanyId().map(id => ([id]));
@@ -43,9 +43,7 @@ export class EmployerService {
             (sid, company_id) => ({ sid, company_id })
         );
 
-        const subscription = this.process.companyUserListProcessor(option);
-
-        this.subscriptions.push(subscription);
+        return this.process.companyUserListProcessor(option);
     }
 
     getSpecificRoles(role: string): Observable<Employer[]> {

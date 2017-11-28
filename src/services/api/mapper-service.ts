@@ -1,4 +1,4 @@
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 
 
@@ -99,8 +99,12 @@ export class MapperService {
       sid: '',
       project_id: 0,
       leader_id: form.foreman.id,
-      quality_manage_id:form.qualityClerk.id,
+      quality_manage_id: form.qualityClerk.id,
       name: form.teamName
     }
+  }
+
+  updateTeamForm(form: AddTeamFormModel, team_id: number): TeamUpdateOptions {
+    return Object.assign({}, this.addTeamForm(form), { team_id });
   }
 }

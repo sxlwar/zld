@@ -1,7 +1,8 @@
+//region
 import { Subscription } from 'rxjs/Subscription';
 import { TeamService } from './../../services/business/team-service';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ViewController } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
 import { Employer } from './../../interfaces/response-interface';
 import { ProjectService } from './../../services/business/project-service';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmployerService } from '../../services/business/employer-service';
 import { TL, QW } from '../../services/config/character';
 import { teamNameValidator } from '../../validators/validators';
+//endregion
 
 interface Person {
   name: string;
@@ -21,6 +23,7 @@ interface Person {
   templateUrl: 'add-team.html'
 })
 export class AddTeamComponent implements OnInit {
+  operateType = 'ADD_TEAM';
 
   projectName: Observable<string>;
 
@@ -30,19 +33,26 @@ export class AddTeamComponent implements OnInit {
 
   addTeamForm: FormGroup;
 
-  addTeam$$: Subscription;
+  subscriptions: Subscription[] = [];
+
+  isUpdate = false;
 
   constructor(
     public project: ProjectService,
     public employer: EmployerService,
     public viewCtrl: ViewController,
     public fb: FormBuilder,
-    public team: TeamService
+    public team: TeamService,
+    public navParams: NavParams
   ) {
-    employer.getCompanyUserList();
+    const subscription = employer.getCompanyUserList();
+
+    this.subscriptions.push(subscription);
   }
 
   ngOnInit() {
+    this.checkType();
+
     this.createForm();
 
     this.projectName = this.project.getProjectName();
@@ -52,9 +62,18 @@ export class AddTeamComponent implements OnInit {
     this.qualityClerks = this.getSpecificCharacters(this.employer.getSpecificRoles(QW));
   }
 
+  checkType() {
+    if (this.navParams.get('update')) {
+      this.isUpdate = true;
+      this.operateType = 'UPDATE_TEAM';
+    };
+  }
+
   createForm() {
+    const name = this.isUpdate ? this.navParams.get('team').name : '';
+
     this.addTeamForm = this.fb.group({
-      teamName: ['', teamNameValidator],
+      teamName: [name, teamNameValidator],
       foreman: '',
       qualityClerk: ''
     });
@@ -70,16 +89,40 @@ export class AddTeamComponent implements OnInit {
         }, []))
   }
 
+  confirmOperate() {
+    if (this.isUpdate) {
+      this.updateTeam();
+    } else {
+      this.addTeam();
+    }
+  }
+
+  updateTeam() {
+    this.team.updateTeam(this.addTeamForm.value, this.navParams.get('team').id);
+
+    const subscription =  this.team.getUpdateTeamResponse()
+      .skip(1)
+      .subscribe(_ => {
+        this.team.updateTeamListAtLocal();
+        this.dismiss();
+      });
+
+    this.subscriptions.push(subscription);
+  }
+
   addTeam() {
     this.team.addTeam(this.addTeamForm.value);
 
-    this.addTeam$$ = this.team.getAddTeamResponse()
+    const subscription = this.team.getAddTeamResponse()
       .skip(1)
       .subscribe(_ => this.dismiss());
+
+    this.subscriptions.push(subscription);
   }
 
   dismiss() {
-    this.addTeam$$ && this.addTeam$$.unsubscribe();
+    this.subscriptions.forEach(item => item.unsubscribe());
+    
     this.viewCtrl.dismiss();
   }
 

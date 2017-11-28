@@ -1,3 +1,6 @@
+import { TipService, ConfirmProp } from './../../services/tip-service';
+import { Subscription } from 'rxjs/Subscription';
+import { TranslateService } from '@ngx-translate/core';
 import { PermissionService } from './../../services/config/permission-service';
 import { ProjectRoot } from './../pages';
 import { organization } from './../../services/business/icon-service';
@@ -5,7 +8,7 @@ import { ProjectService } from './../../services/business/project-service';
 import { Observable } from 'rxjs/Observable';
 import { TeamService } from './../../services/business/team-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { EmployerService } from '../../services/business/employer-service';
 import { AddTeamComponent } from '../../components/add-team/add-team';
 
@@ -34,6 +37,8 @@ export class OrganizationPage {
 
   project: Observable<ProjectSimple>;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -41,7 +46,10 @@ export class OrganizationPage {
     public employer: EmployerService,
     public projectService: ProjectService,
     public permission: PermissionService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public alertCtrl: AlertController,
+    public translate: TranslateService,
+    public tip: TipService
   ) {
   }
 
@@ -59,12 +67,40 @@ export class OrganizationPage {
       )
 
     this.project = this.projectService.getCurrentProject()
-      .map(project => ({id: project.id, projectManager: project.manager__employee__realname, labourManager: project.sub_contract__labour_manager__employee__realname}))
+      .map(project => ({ id: project.id, projectManager: project.manager__employee__realname, labourManager: project.sub_contract__labour_manager__employee__realname }))
   }
 
   addTeam(): void {
     const addTeamModal = this.modalCtrl.create(AddTeamComponent);
+
     addTeamModal.present();
+  }
+
+  updateTeam(team: TeamItem): void {
+    const addTeamModal = this.modalCtrl.create(AddTeamComponent, { update: true, team });
+
+    addTeamModal.present();
+  }
+
+  deleteTeam(team: TeamItem): void {
+    const texts: Observable<ConfirmProp> = this.translate
+      .get(['DELETE_TEAM', 'DELETE_TEAM_TIP', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
+      .map(res => ({
+        title: res.DELETE_TEAM,
+        message: res.DELETE_TEAM_TIP + team.name,
+        cancelText: res.CANCEL_BUTTON,
+        confirmText: res.CONFIRM_BUTTON
+      }));
+
+    const confirmFn = () => this.team.deleteTeam(team.id);
+
+    const subscription = this.tip.showConfirmProp(texts, confirmFn);
+
+    this.subscriptions.push(subscription);
+  }
+
+  ionViewWillUnload() {
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 
 }

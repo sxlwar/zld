@@ -1,8 +1,16 @@
+import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { Loading, LoadingController, ToastController } from 'ionic-angular';
+import { Loading, LoadingController, ToastController, AlertController } from 'ionic-angular';
 import { AppState, selectUploadingState } from '../reducers/index-reducer';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
+
+export interface ConfirmProp {
+  title?: string;
+  message: string;
+  cancelText: string;
+  confirmText: string;
+}
 
 @Injectable()
 export class TipService {
@@ -12,7 +20,8 @@ export class TipService {
   constructor(
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private alertCtrl: AlertController
   ) {
     this.loadingSpy();
   }
@@ -51,6 +60,27 @@ export class TipService {
 
   dismissLoading() {
     if (this.loading) this.loading.dismiss().then(() => {
+    });
+  }
+
+  showConfirmProp(source: Observable<ConfirmProp>, confirmFn, cancelFn = () => {}): Subscription {
+    return source.subscribe(data => {
+      let confirm = this.alertCtrl.create({
+        title: data.title,
+        message: data.message,
+        buttons: [
+          {
+            text: data.cancelText,
+            handler: cancelFn
+          },
+          {
+            text: data.confirmText,
+            handler: confirmFn
+          }
+        ]
+      });
+
+      confirm.present().then(_ => {});
     });
   }
 }

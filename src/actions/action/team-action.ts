@@ -1,3 +1,4 @@
+import { Employer } from './../../interfaces/response-interface';
 //region
 import { TeamDeleteResponse, TeamUpdateResponse, TeamAddResponse } from './../../interfaces/response-interface';
 import { TeamAddOptions, TeamDeleteOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
@@ -131,6 +132,17 @@ export class UpdateTeamSuccessAction implements Action {
   constructor(public payload: TeamUpdateResponse) { }
 }
 
+/**
+ * @description This action is used to update team list locally to avoid sending network request again.
+ */
+export const UPDATE_TEAM_AT_LOCAL = 'UPDATE_TEAM_AT_LOCAL';
+
+export class UpdateTeamAtLocalAction implements Action {
+  readonly type = UPDATE_TEAM_AT_LOCAL;
+
+  constructor(public payload: Employer[]) {}
+}
+
 export type Actions = GetTeamListAction
   | AddTeamAction
   | AddTeamFailAction
@@ -143,6 +155,7 @@ export type Actions = GetTeamListAction
   | TeamListFailAction
   | TeamListSuccessAction
   | UpdateTeamAction
+  | UpdateTeamAtLocalAction
   | UpdateTeamFailAction
   | UpdateTeamSuccessAction;
 

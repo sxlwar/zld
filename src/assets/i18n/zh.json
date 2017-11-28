@@ -212,11 +212,14 @@
   "FOREMAN": "班组长",
   "TEAM_NAME": "班组名称",
   "ADD_TEAM": "添加班组",
+  "UPDATE_TEAM": "修改班组",
+  "DELETE_TEAM":"删除班组",
 
   "TEAM_NAME_REQUIRED_ERROR":"班组名称不能为空",
   "TEAM_NAME_ERROR":"班组名称只能由中英文、数字、下划线、中划线组成,长度为2到10个字符",
   "FOREMAN_REQUIRED_ERROR":"班组长不能为空",
   "QUALITY_CLERK_REQUIRED_ERROR":"质量员不能为空",
+  "DELETE_TEAM_TIP":"请确认是否要删除班组 ",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

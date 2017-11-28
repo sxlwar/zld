@@ -1,16 +1,16 @@
 //region
-import {Injectable} from '@angular/core';
-import {ENV} from '@app/env';
-import {QueueingSubject} from 'queueing-subject';
+import { Injectable } from '@angular/core';
+import { ENV } from '@app/env';
+import { QueueingSubject } from 'queueing-subject';
 import websocketConnect from 'rxjs-websockets';
 import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/operator/delay';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/observable/fromEvent';
-import {Subscription} from 'rxjs/Subscription';
-import {WsRequest} from '../../interfaces/request-interface';
-import {WsResponse} from '../../interfaces/response-interface';
+import { Subscription } from 'rxjs/Subscription';
+import { WsRequest } from '../../interfaces/request-interface';
+import { WsResponse } from '../../interfaces/response-interface';
 import * as _ from 'lodash';
 //endregion
 
@@ -53,14 +53,14 @@ export class WebsocketService {
 
     if (this.messages) return;
 
-    const {messages, connectionStatus} = websocketConnect(this.url, this.inputStream = new QueueingSubject<string>());
+    const { messages, connectionStatus } = websocketConnect(this.url, this.inputStream = new QueueingSubject<string>());
 
     this.messages = messages
       .map((msg: string): WsResponse => {
         let response = JSON.parse(msg);
         response.data = this.handleDataStructure(response.data);
         response.isError = response.code > 2000;
-        if(response.isError) response.data.errorMessage = this.handleError(response);
+        if (response.isError) response.data.errorMessage = this.handleError(response);
         return response;
       })
       .retryWhen(errors => errors.delay(2000))
@@ -78,8 +78,8 @@ export class WebsocketService {
    * Deal with the problem of uncertain data structure.
    * */
   private handleDataStructure(data: any): object {
-    if(Array.isArray(data) || typeof data === 'string') return {information: data};
-    if(typeof data === 'object') return data;
+    if (Array.isArray(data) || typeof data === 'string') return { information: data }; //如果有一天后台发疯这data又有了新了类型，就在这加。稳定，稳定，稳定，接口的数据结构一定要稳定，不要当耳旁风。
+    if (typeof data === 'object') return data;
     return {};
   }
 

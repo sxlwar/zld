@@ -1,8 +1,10 @@
+//region
+import { UpdateTeamAtLocalAction } from './../../actions/action/team-action';
+import { EmployerService } from './employer-service';
 import { selectAddTeamResponse, selectUpdateTeamResponse, selectDeleteTeamResponse } from './../../reducers/index-reducer';
 import { TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse } from './../../interfaces/response-interface';
-import { TeamAddOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
 import { AddTeamFormModel, MapperService } from './../api/mapper-service';
-//region
 import { Injectable } from '@angular/core';
 import { AppState, selectTeamResponse, selectSelectedTeams } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -42,7 +44,8 @@ export class TeamService {
     public userInfo: UserService,
     public project: ProjectService,
     public workerService: WorkerService,
-    public mapper: MapperService
+    public mapper: MapperService,
+    public employer: EmployerService
   ) {
     this.handleError();
   }
@@ -122,11 +125,11 @@ export class TeamService {
     const source: TeamAddOptions = this.mapper.addTeamForm(form);
 
     const sid = this.userInfo.getSid();
-    
+
     const option = projectId.zip(
       sid,
       Observable.of(source),
-      (project_id, sid, data) => Object.assign(data, {sid, project_id})
+      (project_id, sid, data) => Object.assign(data, { sid, project_id })
     );
 
     const subscription = this.process.teamAddProcessor(option);
@@ -138,24 +141,50 @@ export class TeamService {
     return this.store.select(selectAddTeamResponse);
   }
 
-  deleteTeam(): void {
+  deleteTeam(teamId: number): void {
+    const sid = this.userInfo.getSid();
 
+    const option = sid.zip(Observable.of(teamId), (sid, team_id) => ({ sid, team_id }));
+
+    const subscription = this.process.teamDeleteProcessor(option)
+
+    this.subscriptions.push(subscription);
   }
 
-  getDeleteTeamResponse(): Observable<TeamDeleteResponse>{
+  getDeleteTeamResponse(): Observable<TeamDeleteResponse> {
     return this.store.select(selectDeleteTeamResponse);
   }
 
-  updateTeam(): void {
+  updateTeam(form: AddTeamFormModel, id: number): void {
+    const projectId = this.project.getProjectId();
 
+    const source: TeamUpdateOptions = this.mapper.updateTeamForm(form, id);
+
+    const sid = this.userInfo.getSid();
+
+    const option = projectId.zip(
+      sid,
+      Observable.of(source),
+      (project_id, sid, data) => Object.assign(data, { sid, project_id })
+    );
+
+    const subscription = this.process.teamUpdateProcessor(option);
+
+    this.subscriptions.push(subscription);
   }
 
   getUpdateTeamResponse(): Observable<TeamUpdateResponse> {
     return this.store.select(selectUpdateTeamResponse);
   }
 
+  updateTeamListAtLocal(): void {
+    const subscription = this.employer.getCompanyUsers().subscribe(users => this.store.dispatch(new UpdateTeamAtLocalAction(users)));
+
+    this.subscriptions.push(subscription);
+  }
+
   /* ============================================Error handle and refuse clean======================================== */
-  
+
   private handleError() {
     const error$ = this.store.select(selectTeamResponse);
 
