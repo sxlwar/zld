@@ -19,6 +19,7 @@ import * as overtime from './reducer/overtime-reducer';
 import * as piece from './reducer/work-piece-reducer';
 import * as statistics from './reducer/statistics-reducer';
 import * as employer from './reducer/employer-reducer';
+import * as personal from './reducer/personal-reducer';
 //endregion
 
 export interface AppState {
@@ -45,6 +46,7 @@ export interface AppState {
   piece: piece.State,
   statistics: statistics.State,
   employer: employer.State,
+  personal: personal.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -71,6 +73,7 @@ export const reducers: ActionReducerMap<AppState> = {
   piece: piece.reducer,
   statistics: statistics.reducer,
   employer: employer.reducer,
+  personal: personal.reducer,
 };
 
 //config
@@ -230,6 +233,16 @@ export const selectCompanyUserResponse = createSelector(getEmployer, employer.ge
 export const selectCompanyUsers = createSelector(getEmployer, employer.getCompanyUsers);
 export const selectSelectedForemen = createSelector(getEmployer, employer.getSelectedForemen);
 export const selectSelectedQualityClerks = createSelector(getEmployer, employer.getSelectedQualityClerks);
+
+//basic info list
+export const getPersonal = (state: AppState) => state.personal;
+export const selectBasicInfoListResponse = createSelector(getPersonal, personal.getBasicInfoListResponse);
+export const selectHomeInformation = createSelector(getPersonal, personal.getHomeInformation);
+export const selectBasicInformation = createSelector(getPersonal, personal.getBasicInformation);
+export const selectWorkExperience = createSelector(getPersonal, personal.getWorkExperience);
+export const selectPlatformWorkExperience = createSelector(getPersonal, personal.getPlatformExperience);
+export const selectPersonalIdInformation = createSelector(getPersonal, personal.getPersonalIdInformation);
+export const selectWorkCertification = createSelector(getPersonal, personal.getWorkCertification);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

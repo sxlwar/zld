@@ -259,11 +259,19 @@ export interface CompanyUserListOptions {
   username?: string;
 }
 
+/*=================================================Common API model==================================================*/
+
+export interface BasicInfoListOptions {
+  sid: string;
+  user_id: number;
+}
+
 export type Options = LoginOptions
   & AttendanceInstantListOptions
   & AttendanceResultConfirmOptions
   & AttendanceResultListOptions
   & AttendanceResultTeamStatListOptions
+  & BasicInfoListOptions
   & CertificateOptions
   & CompanyUserListOptions
   & PayBillListOptions

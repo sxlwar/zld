@@ -1,0 +1,57 @@
+<div *ngIf="family">
+  <ion-item-group>
+
+    <ion-item-divider>{{'MARRIAGE' | translate}}</ion-item-divider>
+
+    <ion-item>
+      <ion-label fixed>{{'MARRIAGE' | translate}}</ion-label>
+      <ion-input disabled [value]="family.marriage | translate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>{{'CHILDREN_COUNT' | translate}}</ion-label>
+      <ion-input disabled [value]="family.children"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>{{'MARRY_DAY' | translate}}</ion-label>
+      <ion-input disabled [value]="family.marryDay"></ion-input>
+    </ion-item>
+
+  </ion-item-group>
+
+  <ion-item-group>
+
+    <ion-item-divider>{{'EMERGENCY_CONTACT' | translate}}</ion-item-divider>
+
+    <ion-item>
+      <ion-label fixed>{{'NAME' | translate}}</ion-label>
+      <ion-input disabled [value]="family.emergencyName"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
+      <ion-input disabled [value]="family.emergencyPhone"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'RELATIONSHIP' | translate}}</ion-label>
+      <ion-input disabled [value]="family.emergencyRelation"></ion-input>
+    </ion-item>
+
+  </ion-item-group>
+
+  <ion-item-group>
+
+    <ion-item-divider>{{'ADDRESS' | translate}}</ion-item-divider>
+
+    <ion-item>
+      <ion-label fixed>{{'AREA' | translate}}</ion-label>
+      <ion-input disabled [value]="family.addressArea"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'ADDRESS_DETAIL' | translate}}</ion-label>
+      <ion-input disabled [value]="family.addressDetail"></ion-input>
+    </ion-item>
+
+  </ion-item-group>
+</div>

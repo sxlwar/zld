@@ -63,11 +63,11 @@ export class AttendanceRecordPage {
 
     this.attendanceRecord.getAttendanceInstantList(this.getRecordOption());
 
-    this.pageSubscription &&  this.pageSubscription.unsubscribe();
-    
+    this.pageSubscription && this.pageSubscription.unsubscribe();
+
     this.pageSubscription = this.attendanceRecord
       .getAttendanceRecordResponse()
-      .map(response => !!response.attendance_instants)
+      // .map(response => !!response.attendance_instants)
       .subscribe(value => infiniteScroll.complete());
   }
 
@@ -77,7 +77,7 @@ export class AttendanceRecordPage {
 
   ionViewWillUnload() {
     this.attendanceRecord.unSubscribe();
-    
+
     this.pageSubscription && this.pageSubscription.unsubscribe();
   }
 

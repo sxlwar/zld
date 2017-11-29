@@ -1,5 +1,8 @@
 //region
-import {Injectable} from '@angular/core';
+import { WorkerContractListResponse } from './../../interfaces/response-interface';
+import { Command } from './../api/command';
+import { WorkerContract as contract } from './../api/command';
+import { Injectable } from '@angular/core';
 import {
   AppState,
   selectSid,
@@ -9,25 +12,25 @@ import {
   selectWorkerLimit,
   selectWorkerPage
 } from '../../reducers/index-reducer';
-import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs/Observable';
-import {ProcessorService} from '../api/processor-service';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { ProcessorService } from '../api/processor-service';
 import {
   DecrementQueryWorkerContractPageAction,
   IncrementQueryWorkerContractPageAction,
   ResetQueryWorkerContractPageAction
 } from '../../actions/action/worker-action';
 import 'rxjs/add/operator/zip';
-import {Subscription} from 'rxjs/Subscription';
-import {ErrorService} from '../errors/error-service';
-import {WorkerContract} from '../../interfaces/response-interface';
+import { Subscription } from 'rxjs/Subscription';
+import { ErrorService } from '../errors/error-service';
+import { WorkerContract } from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
-import { RequestOption } from 'interfaces/request-interface';
+import { RequestOption } from '../../interfaces/request-interface';
 //endregion
 
 @Injectable()
@@ -35,26 +38,29 @@ export class WorkerService {
   subscriptions: Subscription[] = [];
   worker$$: Subscription;
 
-  constructor(public store: Store<AppState>,
-              public error: ErrorService,
-              public processor: ProcessorService) {
+  constructor(
+    public store: Store<AppState>,
+    public error: ErrorService,
+    public processor: ProcessorService,
+    public command: Command
+  ) {
     this.handleError();
   }
 
   /*====================================The main methods provided by the service===================================*/
 
-  getWorkerCount(option: Observable<{[key: string]: string | number }> = Observable.empty()): Observable<number> {
+  getWorkerCount(option: Observable<{ [key: string]: string | number }> = Observable.empty()): Observable<number> {
     this.getWorkerContracts(option);
 
     return this.store.select(selectWorkerContractResponse).map(res => res.count);
   }
 
-  getWorkerContracts(option: Observable<{ [key: string]: string | number }> ) {
-    const sid$ = this.store.select(selectSid).map(sid => ({sid}));
+  getWorkerContracts(option: Observable<{ [key: string]: string | number }>) {
+    const sid$ = this.store.select(selectSid).map(sid => ({ sid }));
 
-    const limit$ = this.store.select(selectWorkerLimit).map(limit => ({limit}));
+    const limit$ = this.store.select(selectWorkerLimit).map(limit => ({ limit }));
 
-    const page$ = this.store.select(selectWorkerPage).map(page => ({page}));
+    const page$ = this.store.select(selectWorkerPage).map(page => ({ page }));
 
     const option$ = option.defaultIfEmpty({}).zip(
       sid$,
@@ -81,10 +87,10 @@ export class WorkerService {
       .mergeMap(contract => {
         if (contract) return Observable.of(contract);
 
-        const option = Observable.of({limit: 1, page: 1}).zip(
+        const option = Observable.of({ limit: 1, page: 1 }).zip(
           userId,
           subOption.defaultIfEmpty({}),
-          (option, user_id, subOption) => ({...option, user_id, ...subOption})
+          (option, user_id, subOption) => ({ ...option, user_id, ...subOption })
         );
 
         this.getWorkerContracts(option);
@@ -93,7 +99,7 @@ export class WorkerService {
           .map(res => res.worker_contract)
           .zip(userId, combineFn)
           .mergeMap(contract => {
-            if(contract) return Observable.of(contract);
+            if (contract) return Observable.of(contract);
             return Observable.of(null);
           });
       })
@@ -115,6 +121,20 @@ export class WorkerService {
 
   resetPage() {
     this.store.dispatch(new ResetQueryWorkerContractPageAction());
+  }
+
+  getUnexpiredOption(): Observable<RequestOption> {
+    const result = this.command.workerContractList.noMagicNumber.get(contract.unexpired).value as RequestOption;
+
+    return Observable.of(result);
+  }
+
+  getCompleteStatusOption(): Observable<RequestOption> {
+    return Observable.of({request_status: '完成'});
+  }
+
+  getWorkerContractResponse(): Observable<WorkerContractListResponse> {
+    return this.store.select(selectWorkerContractResponse);
   }
 
   /*==========================================error handle=====================================================*/

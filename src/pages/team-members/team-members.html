@@ -1,0 +1,35 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'TEAM_MEMBER' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item (click)="goToNextPage()" detail-push>
+    <h3>{{team.foreman}}</h3>
+    <p>{{'FOREMAN' | translate}}</p>
+  </ion-item>
+
+  <ion-list>
+
+    <ion-list-header>
+      {{'WORKER_AMOUNT' | translate}}：{{workerCount | async}}
+    </ion-list-header>
+
+    <!-- TODO: 给所有的工种定制图标，另外最好实现统计接口，用来绘制本班组工种人数统计图表 -->
+    <ion-item *ngFor="let item of list | async" (click)="goToNextPage(item)" detail-push>
+      <h3>{{item.name}}</h3>
+      <p>{{item.workType}}</p>
+    </ion-item>
+
+    <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <ion-item *ngIf="!(haveMoreData | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+
+  </ion-list>
+</ion-content>

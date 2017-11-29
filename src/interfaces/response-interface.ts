@@ -289,7 +289,7 @@ export interface AttendanceInstantListResponse {
 //TODO: unused;
 //attendResultList
 export interface AttendanceResultConfirmResponse {
-  information: string; 
+  information: string;
   errorMessage?: string;
 }
 
@@ -303,7 +303,7 @@ export interface AttendanceResultConfirmResponse {
  * 可以直接以数字来替代，至于要把0在UI上显示成‘处理中’还是‘正在处理中’这他娘的是前台和产品经理的事情。
  * 这一颠倒真是爽，浪费时间处理这些无聊的东西。另外这里没有像V1中统一在一处理，而是采用了每一个接口都有自己的枚举映射，因为后台这种飘忽不定的
  * 命名风格另人不能相信它不会变，避免到时候牵一发而动全身。
- */ 
+ */
 export enum PayBillTime {
   systemAtt = 1,
   systemOvertime,
@@ -379,7 +379,7 @@ export enum ProjectPayBillAmount {
   pieceShouldPay = 'all',
   pieceActualPay = '',
   prefix = 'pay_bill__amount_',
-  suffix = '__sum' 
+  suffix = '__sum'
 }
 
 export interface ProjectPayBill {
@@ -444,8 +444,8 @@ export interface PayProcessListResponse {
 
 export enum PayProcessStatus {
   grantIn = '发放中',
-  pendingRelease= "待发放",
-  alreadyIssued= "已发放"
+  pendingRelease = "待发放",
+  alreadyIssued = "已发放"
 }
 
 export interface ProjectPayProcess {
@@ -463,7 +463,7 @@ export interface ProjectPayProcess {
   status: string;
 }
 
-//projectPayProcessList 工程工资发放单 
+//projectPayProcessList 工程工资发放单
 export interface ProjectPayProcessListResponse {
   project_pay_process: ProjectPayProcess[]
   count: number;
@@ -534,7 +534,7 @@ export interface WorkPieceListResponse {
 /*============================================Launch model==================================================*/
 
 export interface ProcessCreateResponse {
-  
+
 }
 
 export interface MultiProcessCreateResponse {
@@ -567,7 +567,7 @@ export interface AttendanceStatistics {
 export interface AttendanceResultTeamStatListResponse {
   attend_result_team_stat_list: AttendanceStatistics[];
   errorMessage?: string;
-} 
+}
 
 export interface WorkFlowAggregation {
   process_id__count: number;
@@ -605,6 +605,116 @@ export interface CompanyUserListResponse {
   errorMessage?: string;
 }
 
+/*=================================================Common API model==================================================*/
+export interface ProjectSimplest {
+  id: number;
+  name: string;
+}
+
+export interface BasicInformation {
+  project: ProjectSimplest[];
+  phone: number;
+  role: string;
+  name: string;
+  headImg: string;
+  company: string;
+  worktype: string[];
+}
+
+export interface Home {
+  emergency_contact_tel: string;
+  user_id: number,
+  homeaddr__street: string;
+  emergency_contact_relation: string;
+  homeaddr__detail: string;
+  homeaddr__dist: string;
+  childnum: number;
+  marriage: boolean;
+  homeaddr__city: string;
+  emergency_contact_name: string;
+  homeaddr__province: string;
+  marryday: string;
+}
+
+export interface Education {
+  major: string;
+  user_id: number;
+  degree: number;
+  finish_date: string;
+  id: number;
+  start_date: string;
+  school__name: string;
+}
+
+export interface Certificate {
+  firstget_date: string;
+  score: number;
+  usestart_date: string;
+  usefinish_date: string;
+  level: number;
+  mechanism: string;
+  imageback: string;
+  num: string;
+  operation_score: number;
+  user_id: number;
+  worktype_id: number;
+  education: number;
+  knowledge_score: number;
+  id: number;
+  imageface: string;
+}
+
+export interface WorkExperience {
+  project_name: string;
+  user_id: number;
+  start: string;
+  job: string;
+  finish: string;
+  company_name: string;
+  id: number;
+}
+
+export interface PlatformWorkExperience {
+  team__project__prime_contract__first_contracting__name: string;
+  finish_day: string;
+  worktype__name: string;
+  team__name: string;
+  team__project__name: string;
+  start_day: string;
+  id: number;
+}
+
+export interface PersonalId {
+  addr: string;
+  user_id: number;
+  imageface: string;
+  auth_pass: boolean;
+  indate: string;
+  num: string;
+  imageback: string;
+  birth_date: string;
+  nationality: string;
+  hasparsed: boolean;
+  sex: string;
+  id: number;
+  realname: string;
+}
+
+/**
+ * basicInfoList  
+ * 作为一个前后分离的项目，接口字段时有时无，这个接口就是个典型，实测除了basic_info以外其它字段都可能没有,
+ * 处理的时候要小心，防止出现XXX is undefined 这种SB错误。
+ */
+export interface BasicInfoListResponse {
+  home_info: Home[];
+  edu_info: Education[];
+  work_cert_info: Certificate[];
+  work_expr_info: WorkExperience[];
+  platfrom_work_expr_info: PlatformWorkExperience[];  //后台的单词用的就是错的，不敢改；
+  person_id_info: PersonalId[];
+  basic_info: BasicInformation;
+  errorMessage?: string;
+}
 /*========================================================================================================*/
 
 

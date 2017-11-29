@@ -1,3 +1,4 @@
+import { PersonalEffect } from './personal-effect';
 import { AttendanceEffect } from './attendance-effect';
 import { CraftEffect } from './craft-effect';
 import { EmployerEffect } from './employer-effect';
@@ -19,6 +20,7 @@ export const EFFECTS = [
     EmployerEffect,
     OvertimeEffect,
     PayBillEffect,
+    PersonalEffect,
     ProjectEffect,
     TeamEffect,
     WorkFlowEffect,

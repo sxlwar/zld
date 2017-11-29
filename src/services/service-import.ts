@@ -1,4 +1,5 @@
 //region
+import { PersonalService } from './business/personal-service';
 import { PayProcessService } from './business/pay-process-service';
 import { ProjectProcessService } from './business/project-process-service';
 import { TakePhotoService } from './../components/take-photo/take-photo-service';
@@ -55,6 +56,7 @@ export const BUSINESS_SERVICES = [
     OvertimeService,
     PayBillService,
     PayProcessService,
+    PersonalService,
     ProjectBillService,
     ProjectProcessService,
     ProjectService,

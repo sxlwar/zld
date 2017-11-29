@@ -13,6 +13,13 @@ import { ProjectListComponent } from './project-list/project-list';
 import { CalendarComponent } from './calendar/calendar';
 import { AttendanceTimeChartComponent } from './attendance-time-chart/attendance-time-chart';
 import { AddTeamComponent } from './add-team/add-team';
+import { BasicInformationComponent } from './basic-information/basic-information';
+import { FamilyInformationComponent } from './family-information/family-information';
+import { WorkExperienceComponent } from './work-experience/work-experience';
+import { PlatformWorkExperienceComponent } from './platform-work-experience/platform-work-experience';
+import { CertificationComponent } from './certification/certification';
+import { PersonalIdComponent } from './personal-id/personal-id';
+import { EducationComponent } from './education/education';
 //endregion
 
 @NgModule({
@@ -26,6 +33,13 @@ import { AddTeamComponent } from './add-team/add-team';
     CalendarComponent,
     AttendanceTimeChartComponent,
     AddTeamComponent,
+    BasicInformationComponent,
+    FamilyInformationComponent,
+    WorkExperienceComponent,
+    PlatformWorkExperienceComponent,
+    CertificationComponent,
+    PersonalIdComponent,
+    EducationComponent,
   ],
   imports: [
     IonicModule,
@@ -43,6 +57,13 @@ import { AddTeamComponent } from './add-team/add-team';
     CalendarComponent,
     AttendanceTimeChartComponent,
     AddTeamComponent,
+    BasicInformationComponent,
+    FamilyInformationComponent,
+    WorkExperienceComponent,
+    PlatformWorkExperienceComponent,
+    CertificationComponent,
+    PersonalIdComponent,
+    EducationComponent,
   ]
 })
 export class ComponentsModule {

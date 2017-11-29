@@ -31,7 +31,7 @@ export class ErrorService {
    * */
   private handleResponseError(obs: Observable<ErrorInfo>): Subscription {
     return obs
-      .filter(info => !!info.msg.errorMessage)
+      .filter(info => info.msg && !!info.msg.errorMessage)
       .map(info => this.alertCtrl.create({
         title: info.title,
         subTitle: info.msg.errorMessage,

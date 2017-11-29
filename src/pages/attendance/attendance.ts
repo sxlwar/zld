@@ -126,7 +126,7 @@ export class AttendancePage {
 
     this.attendance.getAttendances(this.getAttendanceOption());
 
-    return this.attendance.getAttendanceResultList().toPromise();
+    return this.attendance.getAttendanceResultList().toPromise();  //FIXME: 下拉刷新有问题。
   }
 
   sortAttendanceBy(target: string) {

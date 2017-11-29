@@ -1,3 +1,4 @@
+import { BasicInfoListOptions } from './../../interfaces/request-interface';
 //region
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
@@ -352,6 +353,19 @@ export const companyUserList: ApiUnit = {
     opt: []
   }
 }
+
+/* ==========================================================Common api================================================================ */
+
+export const basicInfoList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.BasicInfoList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  }
+}
+
 @Injectable()
 export class Command {
 
@@ -363,7 +377,6 @@ export class Command {
   attendanceCardUpdate = "employer.consumer.AttendanceCardUpdate";
   attendanceMachineList = "project.consumer.AttendanceMachineList";
   bankInfo = "employee.consumer.BankInfo";
-  basicInfoList = "employee.consumer.BasicInfoList";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
   educationAdd = "employee.consumer.EducationAdd";
@@ -621,6 +634,15 @@ export class Command {
   }
 
   /**
+   * @description Common API: getBasicInfo;
+   */
+  getBasicInfoList(option: BasicInfoListOptions): WsRequest {
+    const path = basicInfoList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
    * @description API unit interfaces for external module referring.
    */
   get uploadPersonalIdImage(): string {
@@ -693,5 +715,9 @@ export class Command {
 
   get companyUserList() {
     return companyUserList;
+  }
+
+  get basicInfoList() {
+    return basicInfoList;
   }
 }

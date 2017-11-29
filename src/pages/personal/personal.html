@@ -1,0 +1,44 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'PERSONAL_INFO' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-segment [(ngModel)]="type">
+
+    <ion-segment-button value="basic">
+      {{'BASIC_INFORMATION' | translate}}
+    </ion-segment-button>
+    <ion-segment-button value="certification">
+      {{'CERTIFICATION' | translate}}
+    </ion-segment-button>
+    <ion-segment-button value="workExperience">
+      {{'WORK_EXPERIENCE' | translate}}
+    </ion-segment-button>
+    <ion-segment-button value="educationExperience">
+      {{'EDUCATION_EXPERIENCE' | translate}}
+    </ion-segment-button>
+    <ion-segment-button value="family">
+      {{'FAMILY_INFO' | translate}}
+    </ion-segment-button>
+
+  </ion-segment>
+
+  <div [ngSwitch]="type">
+
+    <basic-information *ngSwitchCase="'basic'" [basic]="basic | async" [personalId]="personalIdInfo | async"></basic-information>
+
+    <certification *ngSwitchCase="'certification'" [certification]="certiifcation | async"></certification>
+
+    <education *ngSwitchCase="'education'" [education]="education | async"></education>
+
+    <family-information *ngSwitchCase="'family'" [family]="family | async"></family-information>
+
+  </div>
+
+</ion-content>

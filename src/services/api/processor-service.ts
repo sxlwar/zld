@@ -1,7 +1,8 @@
+import { GetBasicInformationAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -265,5 +266,14 @@ export class ProcessorService extends MapperService {
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new DeleteTeamAction(option)));
+  }
+
+  basicInfoListProcessor(option$: Observable<BasicInfoListOptions>): Subscription{
+    const permissionResult = this.permission.apiPermissionValidate(this.command.basicInfoList);
+
+    return permissionResult
+      .filter(value => value.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetBasicInformationAction(option)));
   }
 }

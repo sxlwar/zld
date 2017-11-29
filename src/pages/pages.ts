@@ -36,6 +36,9 @@ export const projectBillPage = 'ProjectBillPage';
 export const projectBillDetailPage = 'ProjectBillDetailPage';
 
 export const organizationPage = 'OrganizationPage';
+
+export const teamMembersPage = 'TeamMembersPage';
+
 /*============================================mission tab pages===================================================*/
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
@@ -51,6 +54,8 @@ export const attendanceConfirmPage = 'AttendanceConfirmPage';
 export const attendanceRecordPage = 'AttendanceRecordPage';
 
 export const salaryDetailPage = 'SalaryDetailPage';
+
+export const personalPage = 'PersonalPage';
 
 /*============================================mine tab pages===================================================*/
 
@@ -86,6 +91,8 @@ export const PAGES = [
   { title: 'ProjectBill', component: projectBillPage },
   { title: 'ProjectBillDetail', component: projectBillDetailPage },
   { title: 'Organization', component: organizationPage },
+  { title: 'TeamMembers', component: teamMembersPage },
+  { title: 'Personal', component: personalPage},
 
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 

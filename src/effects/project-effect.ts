@@ -1,10 +1,10 @@
 //region
-import {Injectable} from '@angular/core';
-import {Actions, Effect} from '@ngrx/effects';
-import {WebsocketService} from '../services/api/websocket-service';
-import {Command} from '../services/api/command';
-import {ResponseAction} from '../interfaces/response-interface';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { WebsocketService } from '../services/api/websocket-service';
+import { Command } from '../services/api/command';
+import { ResponseAction } from '../interfaces/response-interface';
+import { Observable } from 'rxjs/Observable';
 import {
   GET_PROJECT_LIST,
   GetProjectListAction,
@@ -13,7 +13,7 @@ import {
 } from '../actions/action/project-action';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/map';
-import {of} from 'rxjs/observable/of';
+import { of } from 'rxjs/observable/of';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/mergeMap';
 //endregion
@@ -31,7 +31,7 @@ export class ProjectEffect extends Command {
     );
 
   constructor(public actions$: Actions,
-              public ws: WebsocketService) {
+    public ws: WebsocketService) {
     super();
   }
 }

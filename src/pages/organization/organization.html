@@ -15,13 +15,11 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item (click)="goToPersonalInfoPage()">
+    <ion-item (click)="goToPersonalInfoPage('projectManagerId')" detail-push>
       {{'PROJECT_MANAGER' | translate}}：{{(project | async)?.projectManager}}
-      <ion-icon name="arrow-forward" item-end></ion-icon>
     </ion-item>
-    <ion-item (click)="goToPersonalInfoPage()">
+    <ion-item (click)="goToPersonalInfoPage('labourManagerId')" detail-push>
       {{'LABOUR_MANAGER' | translate}}：{{(project | async)?.labourManager}}
-      <ion-icon name="arrow-forward" item-end></ion-icon>
     </ion-item>
   </ion-list>
 
@@ -34,13 +32,11 @@
     </ion-item-divider>
 
 
-    <ion-item (click)="goToPersonalInfoPage()">
+    <ion-item (click)="goToPersonalInfoPage(item)" detail-push>
       {{'QUALITY_CLERK' | translate}}：{{item.qualityClerk}}
-      <ion-icon name="arrow-forward" item-end></ion-icon>
     </ion-item>
-    <ion-item (click)="goToNextPage()">
+    <ion-item (click)="goToNextPage(item)" detail-push>
       {{'FOREMAN' | translate}}：{{item.foreman}}
-      <ion-icon name="arrow-forward" item-end></ion-icon>
     </ion-item>
 
   </ion-item-group>
