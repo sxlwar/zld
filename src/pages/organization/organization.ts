@@ -126,7 +126,7 @@ export class OrganizationPage {
         this.navCtrl.push(personalPage, { userId: project[data] }).then(_ => { });
       });
     } else {
-      this.navCtrl.push(personalPage, { userId: data.qualityClerkId })
+      this.navCtrl.push(personalPage, { userId: data.qualityClerkId });
     }
   }
 

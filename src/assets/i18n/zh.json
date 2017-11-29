@@ -246,6 +246,10 @@
   "ADDRESS_DETAIL": "详细地址",
   "MARRIED": "已婚",
   "CELIBATE": "未婚",
+  "CUSTOM_WORK_EXPERIENCE": "自定义工作经验",
+  "PLATFORM_WORK_EXPERIENCE": "平台工作经验",
+  "WORK_TYPE": "工种",
+  "JOB_DUTY": "工作内容",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

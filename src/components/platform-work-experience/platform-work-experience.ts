@@ -1,22 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { PlatformExperience } from '../../interfaces/personal-interface';
 
-/**
- * Generated class for the PlatformWorkExperienceComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'platform-work-experience',
-  templateUrl: 'platform-work-experience.html'
+  templateUrl: 'platform-work-experience.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlatformWorkExperienceComponent {
 
-  text: string;
+  @Input() experience: PlatformExperience;
 
   constructor() {
-    console.log('Hello PlatformWorkExperienceComponent Component');
-    this.text = 'Hello World';
+    
   }
 
 }

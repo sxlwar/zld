@@ -1,6 +1,6 @@
-import { Certification, Education as EducationUI, Edu, Family } from './../../interfaces/personal-interface';
+import { Certification,  Edu, Family, CustomWorkExperience, PlatformExperience } from './../../interfaces/personal-interface';
 //region
-import { BasicInfoListResponse, Certificate, WorkType, Education, Home } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, Certificate, WorkType, Education, Home, WorkExperience, PlatformWorkExperience } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { AppState, selectBasicInfoListResponse } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { Education as EducationUI } from './../../interfaces/personal-interface';
 //endregion
 
 @Injectable()
@@ -40,6 +41,10 @@ export class PersonalService {
         this.subscriptions.push(subscription);
     }
 
+    /**
+     * transformCertification, transformEducation, transformFamily, transformWorkExperience, transformPlatformWorkExperience
+     * @description Map the data returned by the server to the information needed on the view
+     */
     transformCertification(cer: Certificate, types: WorkType[]): Certification{
         const target = types.find(item => item.id === cer.worktype_id);
         
@@ -84,6 +89,24 @@ export class PersonalService {
             emergencyRelation: source.emergency_contact_relation,
             addressArea: source.homeaddr__province + ' ' + source.homeaddr__city + ' ' + source.homeaddr__dist,
             addressDetail: source.homeaddr__street + ' ' + source.homeaddr__detail
+        }
+    }
+
+    transformWorkExperience(source: WorkExperience): CustomWorkExperience {
+        return {
+            expire: source.start + '-' + source.finish,
+            project: source.project_name,
+            company: source.company_name,
+            job: source.job
+        }
+    }
+
+    transformPlatformWorkExperience(source: PlatformWorkExperience): PlatformExperience {
+        return {
+            expire: source.start_day + '-' + source.finish_day,
+            workType: source.worktype__name,
+            project: source.team__project__name,
+            team: source.team__name
         }
     }
 

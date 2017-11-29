@@ -35,6 +35,20 @@
 
     <certification *ngSwitchCase="'certification'" [certification]="certiifcation | async"></certification>
 
+    <ion-segment *ngSwitchCase="'workExperience'" [(ngModel)]="workType">
+      
+      <ion-segment-button value="platform">{{'PLATFORM_WORK_EXPERIENCE'| translate}}</ion-segment-button>
+
+      <ion-segment-button value="custom">{{'CUSTOM_WORK_EXPERIENCE'| translate}}</ion-segment-button>
+
+    </ion-segment>
+
+    <div [ngSwitch]="workType">
+      <platform-work-experience *ngSwitchCase="'platform'"></platform-work-experience>
+      
+      <work-experience *ngSwitchCase="'custom'"></work-experience>
+    </div>
+
     <education *ngSwitchCase="'education'" [education]="education | async"></education>
 
     <family-information *ngSwitchCase="'family'" [family]="family | async"></family-information>

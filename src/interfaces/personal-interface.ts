@@ -39,3 +39,17 @@ export interface Family {
     addressArea: string;
     addressDetail: string;
 }
+
+export interface PlatformExperience {
+    expire: string;
+    team: string;
+    project: string;
+    workType: string;
+}
+
+export interface CustomWorkExperience {
+    expire: string;
+    company: string;
+    project: string;
+    job: string;
+}

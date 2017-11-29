@@ -52,13 +52,13 @@ export class TeamMembersPage {
   }
 
   getWorkerContractList() {
-    const teamId = Observable.of({team_id: this.team.id});
-    
+    const teamId = Observable.of({ team_id: this.team.id });
+
     const status = this.worker.getCompleteStatusOption();
 
     const expire = this.worker.getUnexpiredOption();
 
-    const option = teamId.zip(status, expire, (teamId, status, expire) => ({...teamId, ...status, ...expire}));
+    const option = teamId.zip(status, expire, (teamId, status, expire) => ({ ...teamId, ...status, ...expire }));
 
     this.worker.getWorkerContracts(option);
   }
@@ -72,7 +72,7 @@ export class TeamMembersPage {
           return acc;
         }, [])
       )
-      .scan((acc, cur) => acc.concat(cur),[]);
+      .scan((acc, cur) => acc.concat(cur), []);
   }
 
   monitorComplete(source: Observable<WorkerContractListResponse>): void {
@@ -90,8 +90,10 @@ export class TeamMembersPage {
       .subscribe(_ => infiniteScroll.complete());
   }
 
-  goToNextPage(data: WorkerItem) {
-    this.navCtrl.push(personalPage, {userId: data.id}).then(_ => {});
+  goToNextPage(data?: WorkerItem) {
+    const userId = data ? data.id : this.team.qualityClerkId;
+    
+    this.navCtrl.push(personalPage, { userId }).then(_ => { });
   }
 
 }

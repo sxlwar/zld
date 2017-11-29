@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { CustomWorkExperience } from './../../interfaces/personal-interface';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 /**
  * Generated class for the WorkExperienceComponent component.
@@ -8,15 +9,14 @@ import { Component } from '@angular/core';
  */
 @Component({
   selector: 'work-experience',
-  templateUrl: 'work-experience.html'
+  templateUrl: 'work-experience.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WorkExperienceComponent {
 
-  text: string;
+  @Input() experience: CustomWorkExperience;
 
   constructor() {
-    console.log('Hello WorkExperienceComponent Component');
-    this.text = 'Hello World';
   }
 
 }

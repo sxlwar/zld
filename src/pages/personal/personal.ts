@@ -1,12 +1,12 @@
 import { CraftService } from './../../services/business/craft-service';
 import { Observable } from 'rxjs/Observable';
-import { BasicInfoListResponse, BasicInformation, WorkExperience, PlatformWorkExperience, PersonalId, Sex } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, BasicInformation,  PersonalId } from './../../interfaces/response-interface';
 import { PersonalService } from './../../services/business/personal-service';
 import { UserService } from './../../services/business/user-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { Certification, Education, Family } from '../../interfaces/personal-interface';
+import { Certification, Education, Family, PlatformExperience, CustomWorkExperience } from '../../interfaces/personal-interface';
 
 
 @IonicPage()
@@ -16,14 +16,25 @@ import { Certification, Education, Family } from '../../interfaces/personal-inte
 })
 export class PersonalPage {
   type = 'basic';
+  
+  workType = 'platform';
+
   subscriptions: Subscription[] = [];
+
   userId: number;
+
   basic: Observable<BasicInformation>;
+
   family: Observable<Family>;
-  workExperience: Observable<WorkExperience[]>;
-  platformExperience: Observable<PlatformWorkExperience[]>;
+
+  workExperience: Observable<CustomWorkExperience[]>;
+
+  platformExperience: Observable<PlatformExperience[]>;
+
   certification: Observable<Certification[]>;
+
   personalIdInfo: Observable<PersonalId>;
+
   education: Observable<Education[]>;
 
   constructor(
@@ -61,7 +72,7 @@ export class PersonalPage {
 
   getHome(source: Observable<BasicInfoListResponse>): void {
     this.family = source
-      .filter(value => !!value.home_info)
+      .filter(value => !!value.home_info && !!value.home_info.length)
       .mergeMap(data => Observable.from(data.home_info)
         .first()
         .map(res => this.personal.transformFamily(res))
@@ -71,18 +82,18 @@ export class PersonalPage {
   getWorkExperience(source: Observable<BasicInfoListResponse>): void {
     this.workExperience = source
       .filter(value => !!value.work_expr_info)
-      .map(data => data.work_expr_info);
+      .map(data => data.work_expr_info.map(item => this.personal.transformWorkExperience(item)));
   }
 
   getPlatformExperience(source: Observable<BasicInfoListResponse>): void {
     this.platformExperience = source
       .filter(value => !!value.platfrom_work_expr_info)
-      .map(data => data.platfrom_work_expr_info);
+      .map(data => data.platfrom_work_expr_info.map(item => this.personal.transformPlatformWorkExperience(item)));
   }
 
   getPersonalId(source: Observable<BasicInfoListResponse>): void {
     this.personalIdInfo = source
-      .filter(value => !!value.person_id_info)
+      .filter(value => !!value.person_id_info && !!value.person_id_info.length)
       .mergeMap(data => Observable.from(data.person_id_info)
         .first()
       );

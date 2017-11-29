@@ -1,4 +1,19 @@
-<!-- Generated template for the WorkExperienceComponent component -->
-<div>
-  {{text}}
+<div *ngIf="experience">
+  <ion-item-group *ngFor="let item of experience">
+    <ion-item-divider text-center>{{item.expire}}</ion-item-divider>
+
+    <ion-item>
+      <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
+      <ion-input disabled [value]="item.compnay"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>{{'PROJECT' | translate}}</ion-label>
+      <ion-input disabled [value]="item.project"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>{{'JOB_DUTY' | translate}}</ion-label>
+      <ion-input disabled [value]="item.job"></ion-input>
+    </ion-item>
+
+  </ion-item-group>
 </div>
