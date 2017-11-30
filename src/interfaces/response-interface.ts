@@ -172,6 +172,15 @@ export interface TimePay {
   time_unit: string;
 }
 
+export interface PiecePay {
+  name: string;
+  standard: string;
+  num: number;
+  location: string;
+  id: number;
+  pay_mount: number;
+}
+
 export interface WorkerContract {
   additional_content: string;
   afternoon_time_off_duty: string;
@@ -198,7 +207,8 @@ export interface WorkerContract {
   team__quality_manage__username: string;
   team_id: number;
   type: string;
-  work_time_pay: TimePay[];
+  work_time_pay?: TimePay[];
+  work_piece_pay?: PiecePay[];
   worker__employee__personalIdNum: string;
   worker__employee__realname: string;
   worker__username: string;

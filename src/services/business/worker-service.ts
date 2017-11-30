@@ -87,15 +87,19 @@ export class WorkerService {
    * If there is a repository, use this data directly, if not, we need to get it from the server
    * */
   getContractByUserId(userId: Observable<number>, subOption: Observable<RequestOption> = Observable.empty()): Observable<WorkerContract> {
-    const combineFn = (contracts, id) => contracts.find(contract => contract.worker_id === id);
+    return this.getContractById(userId, subOption, 'worker_id')
+  }
+
+  getContractById(id: Observable<number>, subOption: Observable<RequestOption> = Observable.empty(), idType = 'id'): Observable<WorkerContract> {
+    const combineFn = (contracts, id) => contracts.find(contract => contract[idType] === id);
 
     return this.store.select(selectWorkerContracts)
-      .zip(userId, combineFn)
+      .zip(id, combineFn)
       .mergeMap(contract => {
         if (contract) return Observable.of(contract);
 
         const option = Observable.of({ limit: 1, page: 1 }).zip(
-          userId,
+          id,
           subOption.defaultIfEmpty({}),
           (option, user_id, subOption) => ({ ...option, user_id, ...subOption })
         );
@@ -104,7 +108,7 @@ export class WorkerService {
 
         return this.store.select(selectWorkerContractResponse)
           .map(res => res.worker_contract)
-          .zip(userId, combineFn)
+          .zip(id, combineFn)
           .mergeMap(contract => {
             if (contract) return Observable.of(contract);
             return Observable.of(null);

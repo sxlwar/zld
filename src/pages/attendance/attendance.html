@@ -70,9 +70,6 @@
       <ion-checkbox [(ngModel)]="attendance.selected" (ngModelChange)="toggleSelected(attendance)"></ion-checkbox>
     </ion-item>
 
-    <p *ngIf="!(attendances | async)?.length">
-      {{'RESPONSE_IS_EMPTY' | translate}}
-    </p>
   </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="$event.waitFor(getNextPage())">

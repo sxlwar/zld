@@ -54,7 +54,7 @@ export class TimeService extends Base {
   withOutSecond(str = ''): string {
     if (!str) return str;
     const ary = str.split(':');
-    ary.shift();
+    ary.pop();
     return ary.join(':');
   }
 

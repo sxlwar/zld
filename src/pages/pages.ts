@@ -59,6 +59,8 @@ export const salaryDetailPage = 'SalaryDetailPage';
 
 export const personalPage = 'PersonalPage';
 
+export const workerContractPage = 'WorkerContractPage';
+
 /*============================================mine tab pages===================================================*/
 
 export const personalAttendancePage = 'PersonalAttendancePage';
@@ -103,5 +105,6 @@ export const PAGES = [
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },
-  { title: 'SalaryDetail', component: salaryDetailPage }
+  { title: 'SalaryDetail', component: salaryDetailPage },
+  { title: 'WorkerContract', component: workerContractPage },
 ];

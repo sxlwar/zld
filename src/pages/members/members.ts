@@ -1,3 +1,4 @@
+import { workerContractPage } from './../pages';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkerContract } from './../../interfaces/response-interface';
 import { ContractType, RequestOption } from './../../interfaces/request-interface';
@@ -67,7 +68,7 @@ export class MembersPage {
 
     this.setWorkersCountDistinctByPayType();
   }
-  
+
   setWorkersCountDistinctByPayType() {
     const source = this.worker.getWorkerContractResponse().map(res => res.count);
 
@@ -103,9 +104,9 @@ export class MembersPage {
     const subscription = this.worker.getWorkerContractResponse().subscribe(res => {
       const haveMoreData = !!res.worker_contract.length;
 
-      if(isTimers) {
+      if (isTimers) {
         this.haveMoreTimer = haveMoreData;
-      }else {
+      } else {
         this.haveMorePiecer = haveMoreData;
       }
 
@@ -127,9 +128,15 @@ export class MembersPage {
     }
   }
 
-  ionViewWillUnload(){
+  goToNextPage(item: WorkerItem): void {
+    const { contractId } = item;
+
+    this.navCtrl.push(workerContractPage, { contractId }).then(_ => { });
+  }
+
+  ionViewWillUnload() {
     this.timers$$ && this.timers$$.unsubscribe();
-    
+
     this.piecers$$ && this.piecers$$.unsubscribe();
 
     this.subscriptions.forEach(item => item.unsubscribe());
