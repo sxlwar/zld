@@ -117,6 +117,11 @@ export interface ProjectListOptions {
 
 /*===========================================Worker contract model======================================================*/
 
+export enum ContractType {
+  timer = 1,
+  piecer
+}
+
 export interface WorkerContractOptions {
   sid: string;
   flag: number;
@@ -126,6 +131,7 @@ export interface WorkerContractOptions {
   request_status?: string;
   self?: number;
   team_id?: number;
+  contract_type?: number;
 }
 
 /*===========================================Attendance model=================================================*/

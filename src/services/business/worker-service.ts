@@ -1,4 +1,6 @@
 //region
+import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount } from './../../reducers/index-reducer';
+import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction } from './../../actions/action/worker-action';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
 import { Command } from './../api/command';
 import { WorkerContract as contract } from './../api/command';
@@ -30,7 +32,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
-import { RequestOption } from '../../interfaces/request-interface';
+import { RequestOption, ContractType } from '../../interfaces/request-interface';
 //endregion
 
 @Injectable()
@@ -49,13 +51,13 @@ export class WorkerService {
 
   /*====================================The main methods provided by the service===================================*/
 
-  getWorkerCount(option: Observable<{ [key: string]: string | number }> = Observable.empty()): Observable<number> {
+  getWorkerCount(option: Observable<RequestOption> = Observable.empty()): Observable<number> {
     this.getWorkerContracts(option);
 
     return this.store.select(selectWorkerContractResponse).map(res => res.count);
   }
 
-  getWorkerContracts(option: Observable<{ [key: string]: string | number }>) {
+  getWorkerContracts(option: Observable<RequestOption>) {
     const sid$ = this.store.select(selectSid).map(sid => ({ sid }));
 
     const limit$ = this.store.select(selectWorkerLimit).map(limit => ({ limit }));
@@ -74,12 +76,17 @@ export class WorkerService {
     this.subscriptions.push(subscription);
   }
 
+  /*====================================Methods used to get response from server===================================*/
+
+  getWorkerContractResponse(): Observable<WorkerContractListResponse> {
+    return this.store.select(selectWorkerContractResponse);
+  }
+
   /**
    * @description
    * If there is a repository, use this data directly, if not, we need to get it from the server
    * */
   getContractByUserId(userId: Observable<number>, subOption: Observable<RequestOption> = Observable.empty()): Observable<WorkerContract> {
-
     const combineFn = (contracts, id) => contracts.find(contract => contract.worker_id === id);
 
     return this.store.select(selectWorkerContracts)
@@ -111,18 +118,58 @@ export class WorkerService {
     return this.getContractByUserId(userId, option);
   }
 
-  incrementPage() {
-    this.store.dispatch(new IncrementQueryWorkerContractPageAction());
+  getWorkersByPayType(type: number): Observable<WorkerContract[]> {
+    const contracts = this.store.select(selectWorkerContracts);
+
+    const projectFun = (contracts, ids) => contracts.filter(item => ids.indexOf(item.id) !== -1);
+
+    if (type === ContractType.timer) {
+      return contracts.combineLatest(this.store.select(selectTimerContractIds), projectFun);
+    } else {
+      return contracts.combineLatest(this.store.select(selectPiecerContractIds), projectFun);
+    }
+  }
+
+  getWorkersCountByPayType(type: number): Observable<number> {
+    if (type === ContractType.timer) {
+      return this.store.select(selectManageTimerCount);
+    } else {
+      return this.store.select(selectManagePiecerCount);
+    }
+  }
+  setWorkersCountDistinctByPayType(count: Observable<number>, type: number): Subscription {
+    return count.subscribe(amount => {
+      if(type === ContractType.timer){
+        this.store.dispatch(new UpdateManagementTimerCountAction(amount));
+      } else {
+        this.store.dispatch(new UpdateManagementTimerCountAction(amount));
+      }
+    })
+  }
+  /*====================================Shortcut methods provided by the service===================================*/
+
+  /**
+   *@description Page operations:  incrementPage decrementPage resetPage 
+   */
+  incrementPage(type?: number) {
+    !type && this.store.dispatch(new IncrementQueryWorkerContractPageAction());
+    type === ContractType.timer && this.store.dispatch(new IncrementManagementTimerPageAction());
+    type === ContractType.piecer && this.store.dispatch(new IncrementManagementPiecerPageAction());
   }
 
   decrementPage() {
     this.store.dispatch(new DecrementQueryWorkerContractPageAction());
   }
 
-  resetPage() {
-    this.store.dispatch(new ResetQueryWorkerContractPageAction());
+  resetPage(type?: number) {
+    !type && this.store.dispatch(new ResetQueryWorkerContractPageAction());
+    type === ContractType.timer && this.store.dispatch(new ResetManagementTimerPageAction());
+    type === ContractType.piecer && this.store.dispatch(new ResetManagementPiecerPageAction());
   }
 
+  /**
+   * @description Request option methods: getUnexpiredOption  getCompleteStatusOption getContractTypeOption
+   */
   getUnexpiredOption(): Observable<RequestOption> {
     const result = this.command.workerContractList.noMagicNumber.get(contract.unexpired).value as RequestOption;
 
@@ -130,11 +177,16 @@ export class WorkerService {
   }
 
   getCompleteStatusOption(): Observable<RequestOption> {
-    return Observable.of({request_status: '完成'});
+    return Observable.of({ request_status: '完成' });
   }
 
-  getWorkerContractResponse(): Observable<WorkerContractListResponse> {
-    return this.store.select(selectWorkerContractResponse);
+  getContractTypeOption(type: string): Observable<RequestOption> {
+    return Observable.of({ contract_type: ContractType[type] });
+  }
+
+  getManagementPage(type: number): Observable<RequestOption> {
+    if (type === ContractType.timer) return this.store.select(selectManageTimerPage).map(page => ({ page }));
+    else return this.store.select(selectManagePiecerPage).map(page => ({ page }));
   }
 
   /*==========================================error handle=====================================================*/
@@ -146,6 +198,10 @@ export class WorkerService {
   }
 
   /*==========================================refuse clean=====================================================*/
+
+  resetWorkContracts() {
+    this.store.dispatch(new ResetWorkerContractsAction());
+  }
 
   unSubscribe() {
     this.subscriptions.forEach(item => item.unsubscribe());

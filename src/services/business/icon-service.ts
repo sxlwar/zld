@@ -108,7 +108,7 @@ export const workerManager: IconItem = {
     view: [PME, EME, MM, PM, CW, QW],
     opt: [LM, TL]
   },
-  page: ''
+  page: pages.membersPage
 };
 
 export const workPiece: IconItem = {

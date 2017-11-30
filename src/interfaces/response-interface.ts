@@ -155,6 +155,14 @@ export interface ProjectListResponse {
 
 /*===========================================Worker contract model======================================================*/
 
+/**
+ * 什么玩意这是？发请求时的类型是数字，响应的类型给字符串，这TMD完全是在搞事情。
+ */
+export enum ContractTypeOfResponse {
+  timer = 'work_time_pay',
+  piecer = 'work_piece_pay'
+}
+
 export interface TimePay {
   content: string;
   contract_id: number;

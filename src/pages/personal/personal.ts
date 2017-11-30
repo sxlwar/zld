@@ -1,3 +1,4 @@
+//region
 import { CraftService } from './../../services/business/craft-service';
 import { Observable } from 'rxjs/Observable';
 import { BasicInfoListResponse, BasicInformation,  PersonalId } from './../../interfaces/response-interface';
@@ -7,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Certification, Education, Family, PlatformExperience, CustomWorkExperience } from '../../interfaces/personal-interface';
-
+//endregion
 
 @IonicPage()
 @Component({

@@ -39,6 +39,8 @@ export const organizationPage = 'OrganizationPage';
 
 export const teamMembersPage = 'TeamMembersPage';
 
+export const membersPage = 'MembersPage';
+
 /*============================================mission tab pages===================================================*/
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
@@ -92,7 +94,8 @@ export const PAGES = [
   { title: 'ProjectBillDetail', component: projectBillDetailPage },
   { title: 'Organization', component: organizationPage },
   { title: 'TeamMembers', component: teamMembersPage },
-  { title: 'Personal', component: personalPage},
+  { title: 'Personal', component: personalPage },
+  { title: 'Members', component: membersPage },
 
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 

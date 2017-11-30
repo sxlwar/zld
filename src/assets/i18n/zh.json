@@ -251,6 +251,10 @@
   "WORK_TYPE": "工种",
   "JOB_DUTY": "工作内容",
 
+  "PIECE_PAY_WORKER": "计件工人",
+  "TIME_PAY_WORKER": "计时工人",
+  "WORKER_MANAGEMENT": "工人管理",
+  
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",
