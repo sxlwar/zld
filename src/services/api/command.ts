@@ -1,4 +1,4 @@
-import { BasicInfoListOptions } from './../../interfaces/request-interface';
+import { BasicInfoListOptions, AttendanceMachineListOptions } from './../../interfaces/request-interface';
 //region
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
@@ -366,6 +366,18 @@ export const basicInfoList: ApiUnit = {
   }
 }
 
+/* ==========================================================Attendance machine api================================================================ */
+
+export const attendanceMachineList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.AttendanceMachineList']]
+  ]),
+  permission: {
+    view: [PME,  MM, PM, LM, TL, QW],
+    opt: []
+  }
+}
+
 @Injectable()
 export class Command {
 
@@ -375,7 +387,6 @@ export class Command {
   attendanceCardDelete = "employer.consumer.AttendanceCardDelete";
   attendanceCardList = "employer.consumer.AttendanceCardList";
   attendanceCardUpdate = "employer.consumer.AttendanceCardUpdate";
-  attendanceMachineList = "project.consumer.AttendanceMachineList";
   bankInfo = "employee.consumer.BankInfo";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
@@ -641,6 +652,15 @@ export class Command {
 
     return this.getFullParameter(path, option);
   }
+  
+  /**
+   * @description Attendance machine API: getAttendanceMachineList
+   */
+  getAttendanceMachineList(option: AttendanceMachineListOptions): WsRequest {
+    const path = attendanceMachineList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
 
   /**
    * @description API unit interfaces for external module referring.
@@ -719,5 +739,9 @@ export class Command {
 
   get basicInfoList() {
     return basicInfoList;
+  }
+
+  get attendanceMachineList() {
+    return attendanceMachineList;
   }
 }

@@ -1,4 +1,6 @@
 //region
+import { selectAttendanceRecordMoreData, selectAttendanceRecordMaxDate } from './../../reducers/index-reducer';
+import { ToggleMoreDataFlagAction } from './../../actions/action/attendance-record-action';
 import { Injectable } from '@angular/core';
 import { AppState, selectAttendanceRecordInstant, selectAttendanceRecordPage, selectAttendanceRecordLimit, selectAttendanceRecordResponse, selectAttendanceRecordCount } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -6,11 +8,10 @@ import { ProcessorService } from '..//api/processor-service';
 import { ErrorService } from '..//errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { AttendanceInstant, AttendanceInstantType, AttendanceInstantListResponse } from '../../interfaces/response-interface';
+import { AttendanceInstant,  AttendanceInstantListResponse } from '../../interfaces/response-interface';
 import { RequestOption, AttendanceInstantListOptions } from '../../interfaces/request-interface';
 import { UserService } from '..//business/user-service';
 import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/action/attendance-record-action';
-import { ResetAttendancePageAction } from '../../actions/action/attendance-action';
 import 'rxjs/add/observable/from';
 //endregion
 
@@ -18,21 +19,24 @@ import 'rxjs/add/observable/from';
 export class AttendanceRecordService {
     subscriptions: Subscription[] = [];
     attendanceRecord$$: Subscription;
+    pageEnd$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
         public process: ProcessorService,
         public error: ErrorService,
-        public userInfo: UserService,
+        public userInfo: UserService
     ) {
         this.handleError();
-        this.monitorPage();
+        this.monitorPageEnd();
     }
+
+    /* ===============================================Data acquisition=========================================== */
 
     getAttendanceRecord(option: Observable<RequestOption>): Observable<AttendanceInstant[]> {
         this.getAttendanceInstantList(option);
 
-        return this.store.select(selectAttendanceRecordInstant).mergeMap(records => this.mapRecordType(records));
+        return this.store.select(selectAttendanceRecordInstant);
     }
 
     getAttendanceRecordResponse(): Observable<AttendanceInstantListResponse> {
@@ -59,6 +63,8 @@ export class AttendanceRecordService {
 
     }
 
+    /* ===============================================UI related operation=========================================== */
+
     increasePage(): void {
         this.store.dispatch(new IncreaseRecordPageAction());
     }
@@ -67,21 +73,27 @@ export class AttendanceRecordService {
         this.store.dispatch(new ResetRecordPageAction());
     }
     
-    mapRecordType(records: AttendanceInstant[]): Observable<AttendanceInstant[]> {
-        return Observable.from(records)
-            .map(record => {
-                const type = AttendanceInstantType[record.type];
-
-                return Object.assign({}, record, { type })
-            })
-            .reduce((acc, cur) => {
-                acc.push(cur);
-                return acc;
-            }, []);
+    toggleMoreData(flag: boolean):void {
+        this.store.dispatch(new ToggleMoreDataFlagAction(flag));
     }
 
-    private monitorPage() {
-        const subscription = this.store.select(selectAttendanceRecordPage)
+    getMoreDataFlag(): Observable<boolean> {
+        return this.store.select(selectAttendanceRecordMoreData);
+    }
+
+    getMaxDate(): Observable<Date> {
+        return this.store.select(selectAttendanceRecordMaxDate);
+    }
+
+    /* ===============================================Data monitor=================================================== */
+
+    /**
+     * @method monitorPageEnd
+     * @description This method is used to monitor whether all data has been obtained. 
+     * It will help us reset page number and turn off the data acquisition switch.
+     */
+    private monitorPageEnd() {
+        this.pageEnd$$ = this.store.select(selectAttendanceRecordPage)
             .combineLatest(
             this.store.select(selectAttendanceRecordCount),
             this.store.select(selectAttendanceRecordLimit)
@@ -89,13 +101,14 @@ export class AttendanceRecordService {
             .subscribe(value => {
                 const [page, count, limit] = value;
 
-                if (page * limit >= count) this.store.dispatch(new ResetAttendancePageAction());
+                if (page * limit >= count) {
+                    this.store.dispatch(new ResetRecordPageAction());
+                    this.toggleMoreData(false);
+                }
             });
-
-        this.subscriptions.push(subscription);
     }
 
-    /* =================================Error handle and refuse clean==================================== */
+    /* =================================Error handle and refuse clean================================================= */
 
     private handleError() {
         const target = this.store.select(selectAttendanceRecordResponse);

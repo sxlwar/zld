@@ -127,7 +127,7 @@ export interface WorkerContractOptions {
   flag: number;
   limit: number;
   page: number;
-  project_id?: string;
+  project_id?: number;
   request_status?: string;
   self?: number;
   team_id?: number;
@@ -265,6 +265,22 @@ export interface CompanyUserListOptions {
   username?: string;
 }
 
+/*=================================================Attendance machine API model==================================================*/
+
+export enum AttendanceMachineType {
+  fixedMachine = '固定式人脸识别考勤机-1',
+  mobileMachine = '移动式人脸识别考勤机-1',
+  gpsMachine = 'GPS定位考勤机-1'
+}
+
+export interface AttendanceMachineListOptions {
+  sid: string;
+  project_id?: number;
+  type?: string;
+  page?: number;
+  limit?: number;
+}
+
 /*=================================================Common API model==================================================*/
 
 export interface BasicInfoListOptions {
@@ -273,6 +289,7 @@ export interface BasicInfoListOptions {
 }
 
 export type Options = LoginOptions
+  & AttendanceMachineListOptions
   & AttendanceInstantListOptions
   & AttendanceResultConfirmOptions
   & AttendanceResultListOptions

@@ -1,4 +1,5 @@
 //region
+import { SharedModule } from './../../app/shared.modules';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { AttendanceRecordPage } from './attendance-record';
@@ -13,6 +14,7 @@ import { Actions } from '@ngrx/effects';
   imports: [
     IonicPageModule.forChild(AttendanceRecordPage),
     TranslateModule,
+    SharedModule,
   ],
   exports: [
     AttendanceRecordPage

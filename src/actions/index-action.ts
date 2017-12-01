@@ -15,6 +15,7 @@ import { Actions as piece } from './action/work-piece-action';
 import { Actions as statistics } from './action/statistics-action';
 import { Actions as employer } from './action/employer-action';
 import { Actions as personal } from './action/personal-action';
+import { Actions as machine } from './action/attendance-machine-action';
 
 export type Actions = config
   | attendance
@@ -22,6 +23,7 @@ export type Actions = config
   | employer
   | icons
   | login
+  | machine
   | overtime
   | payBill
   | personal

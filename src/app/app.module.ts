@@ -26,6 +26,7 @@ import { dayNames, dayShortNames, monthNames, monthShortNames } from '../service
 import { ComponentsModule } from '../components/components.module';
 import { ProjectListComponent } from '../components/project-list/project-list';
 import { AddTeamComponent } from '../components/add-team/add-team';
+import { FaceImageComponent } from './../components/face-image/face-image';
 import { API_SERVICES, BUSINESS_SERVICES, CONFIG_SERVICES, UTIL_SERVICES } from '../services/service-import';
 import { LOCALE_ID } from '@angular/core';
 //endregion
@@ -102,6 +103,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     MyApp,
     ProjectListComponent,
     AddTeamComponent,
+    FaceImageComponent,
   ],
   providers: [
     Api,

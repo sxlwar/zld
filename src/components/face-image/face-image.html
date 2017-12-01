@@ -1,0 +1,32 @@
+<ion-header>
+
+  <ion-navbar>
+
+      <ion-buttons start>
+          <button ion-button icon-only (click)="dismiss()">
+          <ion-icon name='close'></ion-icon>
+        </button>
+        </ion-buttons>
+
+    <ion-title text-center>{{'SIMILARITY' | translate}}  {{similarity | percent}}</ion-title>
+
+  </ion-navbar>
+  
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header text-center>{{'CAPTURE_PICTURE' | translate}}</ion-card-header>
+    <!-- <img [src]="capture" alt=""> -->
+    <img src="assets/img/advance-card-bttf.png" alt="">
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header text-center>{{'COMPARISON_PICTURE' | translate}}</ion-card-header>
+    <!-- <img [src]="screen" alt=""> -->
+    <img src="assets/img/advance-card-jp.jpg" alt="">
+  </ion-card>
+
+ 
+</ion-content>

@@ -1,3 +1,4 @@
+import { InOutPipe } from './../pipes/inOut-pipe';
 import { EveryMonthPipe } from './../pipes/every-month-pipe';
 import { SexPipe } from './../pipes/sex-pipe';
 import { BadgePipe } from './../pipes/badge-pipe';
@@ -8,10 +9,11 @@ import { PriceUnitPipe } from './../pipes/price-unit-pipe';
 
 
 export const PIPES = [
-    PositiveIntegerPipe,
     BadgePipe,
-    JoinPipe,
-    SexPipe,
-    PriceUnitPipe,
     EveryMonthPipe,
+    InOutPipe,
+    JoinPipe,
+    PositiveIntegerPipe,
+    PriceUnitPipe,
+    SexPipe,
 ]

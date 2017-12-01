@@ -20,6 +20,7 @@ import { PlatformWorkExperienceComponent } from './platform-work-experience/plat
 import { CertificationComponent } from './certification/certification';
 import { PersonalIdComponent } from './personal-id/personal-id';
 import { EducationComponent } from './education/education';
+import { FaceImageComponent } from './face-image/face-image';
 //endregion
 
 @NgModule({
@@ -40,6 +41,7 @@ import { EducationComponent } from './education/education';
     CertificationComponent,
     PersonalIdComponent,
     EducationComponent,
+    FaceImageComponent,
   ],
   imports: [
     IonicModule,
@@ -64,6 +66,7 @@ import { EducationComponent } from './education/education';
     CertificationComponent,
     PersonalIdComponent,
     EducationComponent,
+    FaceImageComponent,
   ]
 })
 export class ComponentsModule {

@@ -1,4 +1,5 @@
 //region
+import { AttendanceMachineService } from './business/attendance-machine-service';
 import { PersonalService } from './business/personal-service';
 import { PayProcessService } from './business/pay-process-service';
 import { ProjectProcessService } from './business/project-process-service';
@@ -46,6 +47,7 @@ export const API_SERVICES = [
 
 
 export const BUSINESS_SERVICES = [
+    AttendanceMachineService,
     AttendanceRecordService,
     AttendanceService,
     CertificateService,

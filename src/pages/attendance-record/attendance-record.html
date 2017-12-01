@@ -40,7 +40,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>{{record.attendance_machine__name}}</ion-col>
-            <ion-col>{{record.type | translate}}</ion-col>
+            <ion-col>{{record.type | inOut | translate}}</ion-col>
             <ion-col>{{record.time}}</ion-col>
           </ion-row>
         </ion-grid>

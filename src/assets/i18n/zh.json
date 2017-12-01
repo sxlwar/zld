@@ -175,7 +175,7 @@
   "NORMAL_OVERTIME_TIME": "正常工资加班",
   "OVER_OVERTIME_TIME": "加班工资加班",
   "ATTENDANCE_TIME_TOTAL": "出勤总时间",
-  "NO_MORE_DATA": "没有更多的记录",
+  "NO_MORE_DATA": "已显示全部记录",
 
 
   "PENDING_TO_CONFIRMED_ATTENDANCE": "待确认考勤统计",
@@ -255,7 +255,7 @@
   "TIME_PAY_WORKER": "计时工人",
   "WORKER_MANAGEMENT": "工人管理",
 
-  "WORKER_CONTRACT_DETAIL":"用工合同详情",
+  "WORKER_CONTRACT_DETAIL": "用工合同详情",
   "PARTY_A": "甲方",
   "PARTY_B": "乙方",
   "CONTRACT_EXPIRE": "合同期限",
@@ -270,9 +270,17 @@
   "PIECE_NAME": "工件名称",
   "PIECE_COUNT": "工件数量",
   "PIECE_LOCATION": "工件位置",
-  "TIME_PAY_UNIT":"元/小时",
+  "TIME_PAY_UNIT": "元/小时",
   "PIECE_PAY_UNIT": "元/件",
-  
+
+  "ATTENDANCE_MACHINE_AREA": "所处地区",
+  "ATTENDANCE_MACHINE_TYPE": "机器类型",
+  "ATTENDANCE_MACHINE_RECORD": "考勤机记录",
+  "SET_QUERY_DATE": "设置查询日期",
+  "CAPTURE_PICTURE": "抓拍照",
+  "SIMILARITY":"相似度",
+  "COMPARISON_PICTURE":"对比照",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

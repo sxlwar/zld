@@ -20,6 +20,7 @@ import * as piece from './reducer/work-piece-reducer';
 import * as statistics from './reducer/statistics-reducer';
 import * as employer from './reducer/employer-reducer';
 import * as personal from './reducer/personal-reducer';
+import * as machine from './reducer/attendance-machine-reducer';
 //endregion
 
 export interface AppState {
@@ -47,6 +48,7 @@ export interface AppState {
   statistics: statistics.State,
   employer: employer.State,
   personal: personal.State,
+  machine: machine.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -74,6 +76,7 @@ export const reducers: ActionReducerMap<AppState> = {
   statistics: statistics.reducer,
   employer: employer.reducer,
   personal: personal.reducer,
+  machine: machine.reducer,
 };
 
 //config
@@ -189,6 +192,8 @@ export const selectAttendanceRecordCount = createSelector(getAttendanceRecord, a
 export const selectAttendanceRecordInstant = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordInstants);
 export const selectAttendanceRecordPage = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordPage);
 export const selectAttendanceRecordLimit = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordLimit);
+export const selectAttendanceRecordMoreData = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordMoreData);
+export const selectAttendanceRecordMaxDate = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordMaxDate);
 
 //pay bill list
 export const getPayBill = (state: AppState) => state.payBill;
@@ -249,6 +254,12 @@ export const selectWorkExperience = createSelector(getPersonal, personal.getWork
 export const selectPlatformWorkExperience = createSelector(getPersonal, personal.getPlatformExperience);
 export const selectPersonalIdInformation = createSelector(getPersonal, personal.getPersonalIdInformation);
 export const selectWorkCertification = createSelector(getPersonal, personal.getWorkCertification);
+
+//attendance machine list 
+export const getMachines = (state: AppState) => state.machine;
+export const selectMachineListResponse = createSelector(getMachines, machine.getMachineListResponse);
+export const selectMachines = createSelector(getMachines, machine.getAttendanceMachines);
+export const selectMachineCount = createSelector(getMachines, machine.getAttendanceCount);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

@@ -149,10 +149,10 @@ export const attendanceMachine: IconItem = {
   icon: attendanceMachineIcon,
   color: 'primary',
   permission: {
-    view: [PME, EME, MM, PM, LM, TL],
+    view: [PME, MM, PM, LM, TL, QW],
     opt: []
   },
-  page: ''
+  page: pages.attendanceMachinePage
 };
 
 export const locationCard: IconItem = {

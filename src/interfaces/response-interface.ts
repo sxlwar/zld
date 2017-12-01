@@ -624,6 +624,7 @@ export interface CompanyUserListResponse {
 }
 
 /*=================================================Common API model==================================================*/
+
 export interface ProjectSimplest {
   id: number;
   name: string;
@@ -733,6 +734,25 @@ export interface BasicInfoListResponse {
   basic_info: BasicInformation;
   errorMessage?: string;
 }
+
+/*=================================================Attendance machine API model==================================================*/
+
+export interface AttendanceMachine {
+  project_area_id: number;
+  name: string;
+  longitude: number;
+  project_area__name: string;
+  latitude: number;
+  type: string;
+  id: number;
+}
+
+export interface AttendanceMachineListResponse {
+  count: number;
+  attendance_machines: AttendanceMachine[];
+  errorMessage?: string;
+}
+
 /*========================================================================================================*/
 
 

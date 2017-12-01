@@ -67,7 +67,6 @@ export class AttendanceRecordPage {
 
     this.pageSubscription = this.attendanceRecord
       .getAttendanceRecordResponse()
-      // .map(response => !!response.attendance_instants)
       .subscribe(value => infiniteScroll.complete());
   }
 
