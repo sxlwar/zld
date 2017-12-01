@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'WORK_PIECE' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item-group *ngFor="let item of pieces | async">
+
+    <ion-item-divider>
+      {{item.name}}
+      <ion-icon name="pie" item-end (click)="showStatistics(item)"></ion-icon>
+    </ion-item-divider>
+
+    <ion-item>
+      <ion-label fixed>{{'LOCATION' | translate}}</ion-label>
+      <ion-input disabled [value]="item.location"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
+      <ion-input disabled [value]="item.pay_mount | priceUnit:'piecer' | async"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'PIECE_COUNT' | translate}}</ion-label>
+      <ion-input disabled [value]="item.num"></ion-input>
+    </ion-item>
+
+  </ion-item-group>
+
+</ion-content>

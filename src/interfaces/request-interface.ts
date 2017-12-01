@@ -13,7 +13,7 @@ export class RequestAction implements Action {
 }
 
 export interface RequestOption {
-  [key: string]: string | number | number[] | string[];
+  [key: string]: string | number | number[] | string[] | boolean;
 }
 
 /*==================================Data model before enter into app=============================================*/
@@ -231,7 +231,7 @@ export interface WorkOvertimeRecordListOptions {
 
 export interface WorkPieceListOptions {
   sid: string;
-  history_view?: boolean;
+  history_view?: boolean; //文档上描述是true可查看历史人物，搞求不明白是啥东西。
   project_id?: number;
   request_id?: number;
   request_status?: string;
@@ -286,6 +286,19 @@ export interface AttendanceMachineListOptions {
 export interface BasicInfoListOptions {
   sid: string;
   user_id: number;
+}
+
+/*=================================================Work flow API model==================================================*/
+
+export enum RequestStatus {
+  processing = '处理中',
+  completed = '完成',
+  canceled = '取消'
+}
+
+export enum TaskStatus {
+  processing = '处理中',
+  completed = '完成' 
 }
 
 export type Options = LoginOptions

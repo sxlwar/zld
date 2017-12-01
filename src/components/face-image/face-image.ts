@@ -15,18 +15,18 @@ export class FaceImageComponent implements OnInit {
   similarity: number;
 
   screen: string;
-  
+
   capture: string;
 
   constructor(
     public navParams: NavParams,
     public viewCtrl: ViewController
   ) {
-    
+
   }
 
   ngOnInit() {
-    this.similarity = this.navParams.get('similarity')/100;
+    this.similarity = this.navParams.get('similarity') * 100;
 
     this.screen = this.navParams.get('screen');
 

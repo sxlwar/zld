@@ -1,3 +1,4 @@
+import { TimelineComponent, TimelineItemComponent, TimelineTimeComponent } from './timeline/timeline';
 //region
 import { SharedModule } from '../app/shared.modules';
 import { NgModule } from '@angular/core';
@@ -21,6 +22,8 @@ import { CertificationComponent } from './certification/certification';
 import { PersonalIdComponent } from './personal-id/personal-id';
 import { EducationComponent } from './education/education';
 import { FaceImageComponent } from './face-image/face-image';
+import { WorkPieceAxisComponent } from './work-piece-axis/work-piece-axis';
+import { PieceCompleteChartComponent } from './piece-complete-chart/piece-complete-chart';
 //endregion
 
 @NgModule({
@@ -42,6 +45,11 @@ import { FaceImageComponent } from './face-image/face-image';
     PersonalIdComponent,
     EducationComponent,
     FaceImageComponent,
+    WorkPieceAxisComponent,
+    TimelineComponent,
+    TimelineItemComponent,
+    TimelineTimeComponent,
+    PieceCompleteChartComponent,
   ],
   imports: [
     IonicModule,
@@ -67,6 +75,11 @@ import { FaceImageComponent } from './face-image/face-image';
     PersonalIdComponent,
     EducationComponent,
     FaceImageComponent,
+    WorkPieceAxisComponent,
+    TimelineComponent,
+    TimelineItemComponent,
+    TimelineTimeComponent,
+    PieceCompleteChartComponent,
   ]
 })
 export class ComponentsModule {

@@ -281,6 +281,13 @@
   "SIMILARITY":"相似度",
   "COMPARISON_PICTURE":"对比照",
 
+  "LOCATION":"位置",
+  "QUALITY_DESCRIPTION":"质量描述",
+  "COMPLETE_COUNT": "完成数量",
+  "UNCOMPLETED_COUNT":"未完成数量",
+  "PAY_PERCENT":"支付比例",
+  "COMPLETE_PERCENT":"完成比例",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

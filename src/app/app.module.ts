@@ -1,3 +1,4 @@
+import { WorkPieceAxisComponent } from './../components/work-piece-axis/work-piece-axis';
 //region
 import { SharedModule } from './shared.modules';
 import { ErrorHandler, NgModule } from '@angular/core';
@@ -104,6 +105,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     ProjectListComponent,
     AddTeamComponent,
     FaceImageComponent,
+    WorkPieceAxisComponent,
   ],
   providers: [
     Api,

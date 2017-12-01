@@ -119,7 +119,7 @@ export const workPiece: IconItem = {
     view: [PME, EME, MM, PM, LM, TL, QW],
     opt: []
   },
-  page: ''
+  page: pages.workPiecePage
 };
 
 export const location: IconItem = {
