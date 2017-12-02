@@ -174,7 +174,7 @@ export const attendanceCard: IconItem = {
     view: [PME, EME, MM, TL],
     opt: [PM]
   },
-  page: ''
+  page: pages.attendanceCardPage
 };
 
 export const attendanceConfirm: IconItem = {

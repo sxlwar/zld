@@ -21,6 +21,7 @@ import * as statistics from './reducer/statistics-reducer';
 import * as employer from './reducer/employer-reducer';
 import * as personal from './reducer/personal-reducer';
 import * as machine from './reducer/attendance-machine-reducer';
+import * as attendanceCard from './reducer/attendance-card-reducer';
 //endregion
 
 export interface AppState {
@@ -49,6 +50,7 @@ export interface AppState {
   employer: employer.State,
   personal: personal.State,
   machine: machine.State,
+  attendanceCard: attendanceCard.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -77,6 +79,7 @@ export const reducers: ActionReducerMap<AppState> = {
   employer: employer.reducer,
   personal: personal.reducer,
   machine: machine.reducer,
+  attendanceCard: attendanceCard.reducer,
 };
 
 //config
@@ -260,6 +263,17 @@ export const getMachines = (state: AppState) => state.machine;
 export const selectMachineListResponse = createSelector(getMachines, machine.getMachineListResponse);
 export const selectMachines = createSelector(getMachines, machine.getAttendanceMachines);
 export const selectMachineCount = createSelector(getMachines, machine.getAttendanceCount);
+
+//attendance card list
+export const getAttendanceCard = (state: AppState) => state.attendanceCard;
+export const selectAttendanceCardResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardListResponse);
+export const selectAttendanceCards = createSelector(getAttendanceCard, attendanceCard.getAttendanceCards);
+export const selectAttendanceCardPage = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardPage);
+export const selectAttendanceCardLimit = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardLimit);
+export const selectAttendanceCardUpdateOptions = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardUpdateOptions);
+export const selectAttendanceCardAddResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardAddResponse);
+export const selectAttendanceCardUpdateResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardUpdateResponse);
+export const selectAttendanceCardDeleteResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardDeleteResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

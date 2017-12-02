@@ -618,6 +618,7 @@ export interface Employer {
   user_id: number;
 }
 
+// company user list
 export interface CompanyUserListResponse {
   worker: Employer[];
   errorMessage?: string;
@@ -747,9 +748,42 @@ export interface AttendanceMachine {
   id: number;
 }
 
+// attendance machine list
 export interface AttendanceMachineListResponse {
   count: number;
   attendance_machines: AttendanceMachine[];
+  errorMessage?: string;
+}
+
+/*=================================================Attendance card API model==================================================*/
+
+export interface AttendanceCard {
+  ic_card_num: string;
+  user_id: number;
+  id: number;
+  user__employee__realname: string;
+  company_id: number;
+}
+
+//attendance card list 
+export interface AttendanceCardListResponse {
+  attendance_cards: AttendanceCard[];
+  errorMessage?: string;
+}
+
+//attendance card add 
+export interface AttendanceCardAddResponse {
+  id: number;
+  errorMessage?: string;
+}
+
+//attendance card update
+export interface AttendanceCardUpdateResponse {
+  errorMessage?: string;
+}
+
+//attendance card delete
+export interface AttendanceCardDeleteResponse {
   errorMessage?: string;
 }
 
@@ -773,9 +807,15 @@ export interface WorkerResponse {
 }
 
 export type ErrorResponse = LoginResponse
+  | AttendanceCardAddResponse
+  | AttendanceCardDeleteResponse
+  | AttendanceCardListResponse
+  | AttendanceCardUpdateResponse
+  | AttendanceMachineListResponse
   | AttendanceInstantListResponse
   | AttendanceResultListResponse
   | AttendanceResultTeamStatListResponse
+  | BasicInfoListResponse
   | CertificateResponse
   | CompanyUserListResponse
   | MultiProcessCreateResponse

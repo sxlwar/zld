@@ -1,9 +1,10 @@
+import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
 import { GetBasicInformationAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -285,5 +286,41 @@ export class ProcessorService extends MapperService {
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetAttendanceMachineListAction(option)));
+  }
+
+  attendanceCardListProcessor(option$: Observable<AttendanceCardListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardList);
+
+    return permissionResult
+      .filter(value => value.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetAttendanceCardListAction(option)));
+  }
+
+  attendanceCardAddProcessor(option$: Observable<AttendanceCardAddOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardAdd);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new AddAttendanceCardAction(option)));
+  }
+
+  attendanceCardUpdateProcessor(option$: Observable<AttendanceCardUpdateOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardUpdate);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateAttendanceCardAction(option)));
+  }
+
+  attendanceCardDeleteProcessor(option$: Observable<AttendanceCardDeleteOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardDelete);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new DeleteAttendanceCardAction(option)));
   }
 }

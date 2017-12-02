@@ -1,4 +1,4 @@
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 
 
@@ -52,6 +52,11 @@ export interface AddTeamFormModel {
   }
 }
 
+export interface AddAttendanceCardFormModel {
+  userId: number;
+  cardNumber: number;
+}
+
 @Injectable()
 export class MapperService {
   constructor() {
@@ -72,7 +77,7 @@ export class MapperService {
       code: form.phoneVerification,
       real_name: form.realname,
       captcha_code: form.imageVerification
-    }
+    };
   }
 
   resetPwdForm(form: ResetPwdFormModel): ResetPasswordOptions {
@@ -81,7 +86,7 @@ export class MapperService {
       password: form.passwordInfo.password,
       code: form.phoneVerification,
       captcha_code: form.imageVerification
-    }
+    };
   }
 
   certificateForm(form: CertificateFormModel): CertificateOptions {
@@ -91,7 +96,7 @@ export class MapperService {
       sid: '',
       imageface: form.personalIdPhoto.front,
       imageback: form.personalIdPhoto.back
-    }
+    };
   }
 
   addTeamForm(form: AddTeamFormModel): TeamAddOptions {
@@ -101,10 +106,20 @@ export class MapperService {
       leader_id: form.foreman.id,
       quality_manage_id: form.qualityClerk.id,
       name: form.teamName
-    }
+    };
   }
 
   updateTeamForm(form: AddTeamFormModel, team_id: number): TeamUpdateOptions {
     return Object.assign({}, this.addTeamForm(form), { team_id });
+  }
+
+  addAttendanceCardForm(form: AddAttendanceCardFormModel): AttendanceCardAddOptions {
+    return {
+      sid: '',
+      attendance_card_form: {
+        user_id: form.userId,
+        ic_card_num: form.cardNumber
+      }
+    };
   }
 }

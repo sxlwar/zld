@@ -47,6 +47,8 @@ export const attendanceMachineRecordPage = 'AttendanceMachineRecordPage';
 
 export const workPiecePage = 'WorkPiecePage';
 
+export const attendanceCardPage = 'AttendanceCardPage';
+
 /*============================================mission tab pages===================================================*/
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
@@ -107,7 +109,8 @@ export const PAGES = [
   { title: 'AttendanceMachine', component: attendanceMachinePage },
   { title: 'AttendanceMachineRecord', component: attendanceMachineRecordPage },
   { title: 'WorkPiece', component: workPiecePage },
-
+  { title: 'AttendanceCard', component: attendanceCardPage },
+  
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 
   { title: 'AttendanceConfirm', component: attendanceConfirmPage },

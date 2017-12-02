@@ -1,5 +1,5 @@
-import { BasicInfoListOptions, AttendanceMachineListOptions } from './../../interfaces/request-interface';
 //region
+import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Permission } from '../../interfaces/permission-interface';
@@ -373,8 +373,50 @@ export const attendanceMachineList: ApiUnit = {
     [Operate.querying, ['project.consumer.AttendanceMachineList']]
   ]),
   permission: {
-    view: [PME,  MM, PM, LM, TL, QW],
+    view: [PME, MM, PM, LM, TL, QW],
     opt: []
+  }
+}
+
+/* ==========================================================Attendance card api================================================================ */
+
+export const attendanceCardList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employer.consumer.AttendanceCardList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, TL],
+    opt: []
+  }
+}
+
+export const attendanceCardAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['employer.consumer.AttendanceCardAdd']]
+  ]),
+  permission: {
+    view: [],
+    opt: [MM, EME, PM],
+  }
+}
+
+export const attendanceCardUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employer.consumer.AttendanceCardUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, MM, EME, PM]
+  }
+}
+
+export const attendanceCardDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['employer.consumer.AttendanceCardDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [MM, PME, PM]
   }
 }
 
@@ -383,10 +425,6 @@ export class Command {
 
   amendAttendRecordList = "project.consumer.AmendAttendRecordList";
   attendResultConfirm = "project.consumer.AttendResultConfirm";
-  attendanceCardAdd = "employer.consumer.AttendanceCardAdd";
-  attendanceCardDelete = "employer.consumer.AttendanceCardDelete";
-  attendanceCardList = "employer.consumer.AttendanceCardList";
-  attendanceCardUpdate = "employer.consumer.AttendanceCardUpdate";
   bankInfo = "employee.consumer.BankInfo";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
@@ -634,7 +672,7 @@ export class Command {
 
     return this.getFullParameter(path, option);
   }
-  
+
   /**
    * @description Company user API: getCompanyUser;
    */
@@ -652,12 +690,39 @@ export class Command {
 
     return this.getFullParameter(path, option);
   }
-  
+
   /**
    * @description Attendance machine API: getAttendanceMachineList
    */
   getAttendanceMachineList(option: AttendanceMachineListOptions): WsRequest {
     const path = attendanceMachineList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description Attendance card API: getAttendanceCardList, getAttendanceCardAdd, getAttendanceCardDelete, getAttendanceCardUpdate
+   */
+  getAttendanceCardList(option: AttendanceCardListOptions): WsRequest {
+    const path = attendanceCardList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getAttendanceCardAdd(option: AttendanceCardAddOptions): WsRequest {
+    const path = attendanceCardAdd.operates.get(Operate.addition)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getAttendanceCardUpdate(option: AttendanceCardUpdateOptions): WsRequest {
+    const path = attendanceCardUpdate.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getAttendanceCardDelete(option: AttendanceCardDeleteOptions): WsRequest {
+    const path = attendanceCardDelete.operates.get(Operate.deletion)[0];
 
     return this.getFullParameter(path, option);
   }
@@ -743,5 +808,21 @@ export class Command {
 
   get attendanceMachineList() {
     return attendanceMachineList;
+  }
+
+  get attendanceCardList() {
+    return attendanceCardList;
+  }
+
+  get attendanceCardAdd() {
+    return attendanceCardAdd;
+  }
+
+  get attendanceCardUpdate() {
+    return attendanceCardUpdate;
+  }
+
+  get attendanceCardDelete() {
+    return attendanceCardDelete;
   }
 }

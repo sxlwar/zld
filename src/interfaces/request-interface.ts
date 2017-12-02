@@ -281,6 +281,40 @@ export interface AttendanceMachineListOptions {
   limit?: number;
 }
 
+/*=================================================Attendance card API model==================================================*/
+
+export interface AttendanceCardListOptions {
+  sid: string;
+  user_id?: number;
+  project_id?: number;
+  team_id?: number;
+  ic_card_num?: string;
+  realname?: string;
+  page?: number;
+  limit?: number;
+}
+
+export interface AttendanceCardForm {
+  ic_card_num: number;
+  user_id?:number;
+}
+
+export interface AttendanceCardAddOptions {
+  sid: string;
+  attendance_card_form: AttendanceCardForm; //这个地方纯属脱了裤子放屁，多加这个字段的意义只有一个就是迷惑API使用者；
+}
+
+export interface AttendanceCardUpdateOptions {
+  sid: string;
+  ic_card_num: string;
+  user_id?: number;
+}
+
+export interface AttendanceCardDeleteOptions {
+  sid: string;
+  attendance_card_id: number[];
+}
+
 /*=================================================Common API model==================================================*/
 
 export interface BasicInfoListOptions {
@@ -302,8 +336,12 @@ export enum TaskStatus {
 }
 
 export type Options = LoginOptions
-  & AttendanceMachineListOptions
+  & AttendanceCardAddOptions
+  & AttendanceCardDeleteOptions
+  & AttendanceCardListOptions
+  & AttendanceCardUpdateOptions
   & AttendanceInstantListOptions
+  & AttendanceMachineListOptions
   & AttendanceResultConfirmOptions
   & AttendanceResultListOptions
   & AttendanceResultTeamStatListOptions
@@ -326,3 +364,4 @@ export type Options = LoginOptions
   & UploadImageOptions
   & WorkOvertimeRecordListOptions
   & WorkerContractOptions;
+  
