@@ -1,3 +1,4 @@
+import { AddAttendanceCardComponent } from './../components/add-attendance-card/add-attendance-card';
 import { WorkPieceAxisComponent } from './../components/work-piece-axis/work-piece-axis';
 //region
 import { SharedModule } from './shared.modules';
@@ -106,6 +107,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     AddTeamComponent,
     FaceImageComponent,
     WorkPieceAxisComponent,
+    AddAttendanceCardComponent,
   ],
   providers: [
     Api,

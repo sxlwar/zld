@@ -1,3 +1,4 @@
+import { getAttendanceCardUpdateOptions } from './reducer/attendance-card-reducer';
 //region
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as config from './reducer/config-reducer';
@@ -270,10 +271,13 @@ export const selectAttendanceCardResponse = createSelector(getAttendanceCard, at
 export const selectAttendanceCards = createSelector(getAttendanceCard, attendanceCard.getAttendanceCards);
 export const selectAttendanceCardPage = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardPage);
 export const selectAttendanceCardLimit = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardLimit);
+export const selectAttendanceCardAddOptions = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardAddOptions);
 export const selectAttendanceCardUpdateOptions = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardUpdateOptions);
 export const selectAttendanceCardAddResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardAddResponse);
 export const selectAttendanceCardUpdateResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardUpdateResponse);
 export const selectAttendanceCardDeleteResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardDeleteResponse);
+export const selectAttendanceCardOrderOptions = createSelector(getAttendanceCard, attendanceCard.getOrderOptions);
+export const selectAttendanceCardBindingOptions = createSelector(getAttendanceCard, attendanceCard.getBindingStateOptions);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

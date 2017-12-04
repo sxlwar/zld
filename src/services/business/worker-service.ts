@@ -82,6 +82,10 @@ export class WorkerService {
     return this.store.select(selectWorkerContractResponse);
   }
 
+  getAllWorkerContracts(): Observable<WorkerContract[]> {
+    return this.store.select(selectWorkerContracts);
+  }
+
   /**
    * @description
    * If there is a repository, use this data directly, if not, we need to get it from the server
@@ -141,6 +145,7 @@ export class WorkerService {
       return this.store.select(selectManagePiecerCount);
     }
   }
+
   setWorkersCountDistinctByPayType(count: Observable<number>, type: number): Subscription {
     return count.subscribe(amount => {
       if(type === ContractType.timer){
@@ -153,7 +158,7 @@ export class WorkerService {
   /*====================================Shortcut methods provided by the service===================================*/
 
   /**
-   *@description Page operations:  incrementPage decrementPage resetPage 
+   *@description Page operations:  incrementPage decrementPage resetPage getCurrentPage getLimit
    */
   incrementPage(type?: number) {
     !type && this.store.dispatch(new IncrementQueryWorkerContractPageAction());
@@ -169,6 +174,14 @@ export class WorkerService {
     !type && this.store.dispatch(new ResetQueryWorkerContractPageAction());
     type === ContractType.timer && this.store.dispatch(new ResetManagementTimerPageAction());
     type === ContractType.piecer && this.store.dispatch(new ResetManagementPiecerPageAction());
+  }
+
+  getCurrentPage(): Observable<number> {
+    return this.store.select(selectWorkerPage);
+  }
+
+  getLimit(): Observable<number> {
+    return this.store.select(selectWorkerLimit);
   }
 
   /**

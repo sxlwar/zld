@@ -1,13 +1,13 @@
 //region
-import {Injectable} from '@angular/core';
-import {Actions, Effect} from '@ngrx/effects';
-import {WebsocketService} from '../services/api/websocket-service';
-import {Observable} from 'rxjs/Observable';
-import {SEARCH_COMPANY, SearchCompanyCompleteAction} from '../actions/action/search-action';
-import {Command} from '../services/api/command';
-import {of} from 'rxjs/observable/of';
-import {RequestAction} from '../interfaces/request-interface';
-import {ResponseAction} from '../interfaces/response-interface';
+import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { WebsocketService } from '../services/api/websocket-service';
+import { Observable } from 'rxjs/Observable';
+import { SEARCH_COMPANY, SearchCompanyCompleteAction } from '../actions/action/search-action';
+import { Command } from '../services/api/command';
+import { of } from 'rxjs/observable/of';
+import { RequestAction } from '../interfaces/request-interface';
+import { ResponseAction } from '../interfaces/response-interface';
 //endregion
 
 @Injectable()
@@ -26,9 +26,11 @@ export class SearchEffect {
     );
 
 
-  constructor(public actions$: Actions,
-              public ws: WebsocketService,
-              public command: Command) {
+  constructor(
+    public actions$: Actions,
+    public ws: WebsocketService,
+    public command: Command
+  ) {
   }
 }
 

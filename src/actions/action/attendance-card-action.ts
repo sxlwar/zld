@@ -1,3 +1,4 @@
+import { ConditionOption } from './../../interfaces/order-interface';
 import { AttendanceCardListResponse, AttendanceCardAddResponse, AttendanceCardUpdateResponse, AttendanceCardDeleteResponse } from './../../interfaces/response-interface';
 import { AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
@@ -109,7 +110,7 @@ export const UPDATE_ATTENDANCE_CARD_AT_LOCAL = 'UPDATE_ATTENDANCE_CARD_AT_LOCAL'
 export class UpdateAttendanceCardAtLocal implements Action {
     readonly type = UPDATE_ATTENDANCE_CARD_AT_LOCAL;
 
-    constructor(public payload: { name: string, companyId: number}) { }
+    constructor(public payload: { name: string, companyId: number }) { }
 }
 
 /* ========================================Page actions ======================================== */
@@ -146,6 +147,22 @@ export class GetAttendanceCardLimitAction implements Action {
     constructor() { }
 }
 
+export const UPDATE_ORDER_STATE = 'UPDATE_ORDER_STATE';
+
+export class UpdateOrderStateAction implements Action {
+    readonly type = UPDATE_ORDER_STATE;
+
+    constructor(public payload: ConditionOption) { }
+}
+
+export const UPDATE_BINDING_STATE = 'UPDATE_BINDING_STATE';
+
+export class UpdateBindingStateAction implements Action {
+    readonly type = UPDATE_BINDING_STATE;
+
+    constructor(public payload: ConditionOption) { }
+}
+
 export type Actions = GetAttendanceCardListAction
     | AddAttendanceCardAction
     | AddAttendanceCardFailAction
@@ -162,4 +179,6 @@ export type Actions = GetAttendanceCardListAction
     | UpdateAttendanceCardAction
     | UpdateAttendanceCardAtLocal
     | UpdateAttendanceCardFailAction
-    | UpdateAttendanceCardSuccessAction;
+    | UpdateAttendanceCardSuccessAction
+    | UpdateBindingStateAction
+    | UpdateOrderStateAction;

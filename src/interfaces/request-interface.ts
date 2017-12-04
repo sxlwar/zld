@@ -295,8 +295,9 @@ export interface AttendanceCardListOptions {
 }
 
 export interface AttendanceCardForm {
-  ic_card_num: number;
+  ic_card_num: string;
   user_id?:number;
+  userName?: string;
 }
 
 export interface AttendanceCardAddOptions {

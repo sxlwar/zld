@@ -709,8 +709,16 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
-  getAttendanceCardAdd(option: AttendanceCardAddOptions): WsRequest {
+  getAttendanceCardAdd(initialOption: AttendanceCardAddOptions): WsRequest {
     const path = attendanceCardAdd.operates.get(Operate.addition)[0];
+
+    const { sid, attendance_card_form } = initialOption;
+
+    // This field may have extra filed named userName which is used for update store when server response success,
+    // but it is not needed for requesting, so the request information is deconstructed here and recombination.
+    const { ic_card_num, user_id } = attendance_card_form; 
+
+    const option = { sid, attendance_card_form: { ic_card_num, user_id } };
 
     return this.getFullParameter(path, option);
   }

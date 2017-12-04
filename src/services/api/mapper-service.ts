@@ -53,8 +53,9 @@ export interface AddTeamFormModel {
 }
 
 export interface AddAttendanceCardFormModel {
-  userId: number;
-  cardNumber: number;
+  cardNumber: string;
+  userId?: number;
+  userName?: string;
 }
 
 @Injectable()
@@ -118,7 +119,8 @@ export class MapperService {
       sid: '',
       attendance_card_form: {
         user_id: form.userId,
-        ic_card_num: form.cardNumber
+        ic_card_num: form.cardNumber,
+        userName: form.userName
       }
     };
   }

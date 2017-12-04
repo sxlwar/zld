@@ -1,13 +1,16 @@
-import { UpdateAttendanceCardAtLocal } from './../../actions/action/attendance-card-action';
+import { WorkerService } from './worker-service';
+import { orderBy } from 'lodash';
+import { ConditionOption, BindingStateFlag, OrderFlag } from './../../interfaces/order-interface';
+import { UpdateAttendanceCardAtLocal, UpdateOrderStateAction, UpdateBindingStateAction } from './../../actions/action/attendance-card-action';
 import { MapperService, AddAttendanceCardFormModel } from './../api/mapper-service';
-import { AttendanceCardListOptions, RequestOption, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
+import { RequestOption, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceCardListResponse, AttendanceCard } from './../../interfaces/response-interface';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
 import { ProjectService } from './project-service';
-import { AppState, selectAttendanceCardResponse, selectAttendanceCardAddResponse, selectAttendanceCardDeleteResponse, selectAttendanceCardUpdateResponse, selectAttendanceCards } from './../../reducers/index-reducer';
+import { AppState, selectAttendanceCardResponse, selectAttendanceCardAddResponse, selectAttendanceCardDeleteResponse, selectAttendanceCardUpdateResponse, selectAttendanceCards, selectAttendanceCardBindingOptions, selectAttendanceCardOrderOptions } from './../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
@@ -21,6 +24,7 @@ export class AttendanceCardService {
         public userInfo: UserService,
         public error: ErrorService,
         public mapper: MapperService,
+        public worker: WorkerService,
         public processor: ProcessorService
     ) {
     }
@@ -33,7 +37,23 @@ export class AttendanceCardService {
         return this.store.select(selectAttendanceCards);
     }
 
-    getAttendanceCardList(option: Observable<AttendanceCardListOptions>): Subscription {
+    getCardsByConditions(): Observable<AttendanceCard[]> {
+        return this.getCards()
+            .combineLatest(
+            this.getBindingStateOptions().map(options => options.find(item => item.selected).condition),
+            this.getOrderOptions().map(options => options.find(item => item.selected).condition)
+            )
+            .map(([cards, bindCondition, orderCondition]) => {
+                let result = [...cards];
+                if (bindCondition === BindingStateFlag.binding) result = cards.filter(item => item.user_id);
+                if (bindCondition === BindingStateFlag.unbind) result = cards.filter(item => !item.user_id);
+                if (orderCondition === OrderFlag.lowToHigh) result = orderBy(result, ['ic_card_num'], ['asc']);
+                if (orderCondition === OrderFlag.highToLow) result = orderBy(result, ['ic_card_num'], ['desc']);
+                return result;
+            });
+    }
+
+    getAttendanceCardList(): Subscription {
         const sid = this.userInfo.getSid().map(sid => ({ sid }));
 
         return this.processor.attendanceCardListProcessor(sid);
@@ -76,6 +96,22 @@ export class AttendanceCardService {
 
     updateAttendanceCardAtLocal(name: string, companyId: number): void {
         this.store.dispatch(new UpdateAttendanceCardAtLocal({ name, companyId }));
+    }
+
+    getBindingStateOptions(): Observable<ConditionOption[]> {
+        return this.store.select(selectAttendanceCardBindingOptions);
+    }
+
+    getOrderOptions(): Observable<ConditionOption[]> {
+        return this.store.select(selectAttendanceCardOrderOptions);
+    }
+
+    updateOrderConditionState(option: ConditionOption): void {
+        this.store.dispatch(new UpdateOrderStateAction(option));
+    }
+
+    updateBindConditionState(option: ConditionOption): void {
+        this.store.dispatch(new UpdateBindingStateAction(option));
     }
 
     /* ===================================================Error handle================================================== */

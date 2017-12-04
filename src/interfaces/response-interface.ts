@@ -767,6 +767,7 @@ export interface AttendanceCard {
 
 //attendance card list 
 export interface AttendanceCardListResponse {
+  count: number;
   attendance_cards: AttendanceCard[];
   errorMessage?: string;
 }

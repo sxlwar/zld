@@ -24,6 +24,7 @@ import { EducationComponent } from './education/education';
 import { FaceImageComponent } from './face-image/face-image';
 import { WorkPieceAxisComponent } from './work-piece-axis/work-piece-axis';
 import { PieceCompleteChartComponent } from './piece-complete-chart/piece-complete-chart';
+import { AddAttendanceCardComponent } from './add-attendance-card/add-attendance-card';
 //endregion
 
 @NgModule({
@@ -50,6 +51,7 @@ import { PieceCompleteChartComponent } from './piece-complete-chart/piece-comple
     TimelineItemComponent,
     TimelineTimeComponent,
     PieceCompleteChartComponent,
+    AddAttendanceCardComponent,
   ],
   imports: [
     IonicModule,
@@ -80,6 +82,7 @@ import { PieceCompleteChartComponent } from './piece-complete-chart/piece-comple
     TimelineItemComponent,
     TimelineTimeComponent,
     PieceCompleteChartComponent,
+    AddAttendanceCardComponent,
   ]
 })
 export class ComponentsModule {

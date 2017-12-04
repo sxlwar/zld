@@ -93,9 +93,11 @@ export class LoginEffect {
       .catch(msg => of(msg))
     );
 
-  constructor(public actions$: Actions,
+  constructor(
+    public actions$: Actions,
     public ws: WebsocketService,
     public command: Command,
-    public tip: TipService) {
+    public tip: TipService
+  ) {
   }
 }

@@ -1,3 +1,4 @@
+import { AttendanceCardEffect } from './attendance-card-effect';
 import { AttendanceMachineEffect } from './attendance-machine-effect';
 import { PersonalEffect } from './personal-effect';
 import { AttendanceEffect } from './attendance-effect';
@@ -16,6 +17,7 @@ import { WorkerEffect } from './worker-effect';
  *  and the effects before entering the APP are only referenced when they are used.
  */
 export const EFFECTS = [
+    AttendanceCardEffect,
     AttendanceEffect,
     AttendanceMachineEffect,
     CraftEffect,

@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span ion-text color="primary">{{'CANCEL_BUTTON' | translate}}</span>
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{'ADD_ATTENDANCE_CARD' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="no-scroll">
+
+  <form action="" [formGroup]="addAttendanceCardForm" padding>
+    <ion-list>
+      <ion-item>
+        <ion-label fixed>{{'CARD_NUMBER' | translate}}</ion-label>
+        <ion-input type="number" formControlName="cardNumber" required></ion-input>
+      </ion-item>
+      <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class="form-error red-color">
+        <span *ngIf="cardNumber.errors.required">{{'CARD_NUMBER_REQUIRED_ERROR' | translate}}</span>
+        <span *ngIf="!cardNumber.errors.required && cardNumber.errors.cardNumberFormat">
+          {{addAttendanceCardForm.getError('cardNumberFormat', 'cardNumber') | translate}}
+        </span>
+      </div>
+
+      <ion-item>
+        <ion-label fixed>{{'BIND_WORKER' | translate}}</ion-label>
+        <ion-toggle [(ngModel)]="checked" formControlName="bind" (ngModelChange)="switchState.next($event)"></ion-toggle>
+      </ion-item>
+
+      <ion-item *ngIf="checked">
+        <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
+        <ion-input [value]="boundWorker?.name" disbaled="true" formControlName="selectedWorker" [required]="checked && boundWorker"></ion-input>
+      </ion-item>
+
+    </ion-list>
+  </form>
+
+  <ion-list radio-group padding *ngIf="checked" [(ngModel)]="boundWorker" class="worker-list">
+    <ion-list-header [ngClass]="{'red-color': !boundWorker}">{{'SELECT_WORKERS_BELOW' | translate}}</ion-list-header>
+
+    <ion-item *ngFor="let item of workers | async">
+      <ion-label>{{item.name}}</ion-label>
+      <ion-radio [value]="item"></ion-radio>
+    </ion-item>
+
+    <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <ion-item *ngIf="!(haveMoreData | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+  </ion-list>
+
+</ion-content>
+
+<ion-footer>
+  <button ion-button block (click)="addCard()" [disabled]="addAttendanceCardForm.invalid" color="primary" style="margin-bottom: 0;">{{'ADD_ATTENDANCE_CARD' | translate}}</button>
+</ion-footer>
