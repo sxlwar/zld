@@ -2,13 +2,12 @@
   <ion-toolbar>
 
     <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary">{{'CANCEL_BUTTON' | translate}}</span>
+      <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
       </button>
     </ion-buttons>
 
-    <ion-title>{{'ADD_ATTENDANCE_CARD' | translate}}</ion-title>
+    <ion-title>{{text | translate}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -35,7 +34,7 @@
 
       <ion-item *ngIf="checked">
         <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
-        <ion-input [value]="boundWorker?.name" disbaled="true" formControlName="selectedWorker" [required]="checked && boundWorker"></ion-input>
+        <ion-input type="text" [value]="boundWorker?.name" formControlName="selectedWorker" [required]="checked" disabled></ion-input>
       </ion-item>
 
     </ion-list>
@@ -54,9 +53,8 @@
     </ion-infinite-scroll>
     <ion-item *ngIf="!(haveMoreData | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
   </ion-list>
-
+  
 </ion-content>
-
 <ion-footer>
-  <button ion-button block (click)="addCard()" [disabled]="addAttendanceCardForm.invalid" color="primary" style="margin-bottom: 0;">{{'ADD_ATTENDANCE_CARD' | translate}}</button>
+  <button ion-button block (click)="execution()" [disabled]="addAttendanceCardForm.invalid" color="primary" style="margin-bottom: 0;">{{text | translate}}</button>
 </ion-footer>

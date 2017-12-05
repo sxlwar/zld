@@ -716,15 +716,19 @@ export class Command {
 
     // This field may have extra filed named userName which is used for update store when server response success,
     // but it is not needed for requesting, so the request information is deconstructed here and recombination.
-    const { ic_card_num, user_id } = attendance_card_form; 
+    const { ic_card_num, user_id } = attendance_card_form;
 
     const option = { sid, attendance_card_form: { ic_card_num, user_id } };
 
     return this.getFullParameter(path, option);
   }
 
-  getAttendanceCardUpdate(option: AttendanceCardUpdateOptions): WsRequest {
+  getAttendanceCardUpdate(initialOption: AttendanceCardUpdateOptions): WsRequest {
     const path = attendanceCardUpdate.operates.get(Operate.updates)[0];
+
+    const { ic_card_num, user_id, sid } = initialOption;
+
+    const option = { ic_card_num, user_id, sid };
 
     return this.getFullParameter(path, option);
   }

@@ -72,7 +72,7 @@ export class UpdateAttendanceCardFailAction implements Action {
     constructor(public payload: AttendanceCardUpdateResponse) { }
 }
 
-export const UPDATE_ATTENDANCE_CARD_SUCCESS = 'UPDATE_ATTENDANCE_CARD_FAIL';
+export const UPDATE_ATTENDANCE_CARD_SUCCESS = 'UPDATE_ATTENDANCE_CARD_SUCCESS';
 
 export class UpdateAttendanceCardSuccessAction implements Action {
     readonly type = UPDATE_ATTENDANCE_CARD_SUCCESS;
@@ -103,14 +103,6 @@ export class DeleteAttendanceCardSuccessAction implements Action {
     readonly type = DELETE_ATTENDANCE_CARD_SUCCESS;
 
     constructor(public payload: AttendanceCardDeleteResponse) { }
-}
-
-export const UPDATE_ATTENDANCE_CARD_AT_LOCAL = 'UPDATE_ATTENDANCE_CARD_AT_LOCAL';
-
-export class UpdateAttendanceCardAtLocal implements Action {
-    readonly type = UPDATE_ATTENDANCE_CARD_AT_LOCAL;
-
-    constructor(public payload: { name: string, companyId: number }) { }
 }
 
 /* ========================================Page actions ======================================== */
@@ -177,7 +169,6 @@ export type Actions = GetAttendanceCardListAction
     | IncrementAttendanceCardPageAction
     | ResetAttendanceCardPageAction
     | UpdateAttendanceCardAction
-    | UpdateAttendanceCardAtLocal
     | UpdateAttendanceCardFailAction
     | UpdateAttendanceCardSuccessAction
     | UpdateBindingStateAction

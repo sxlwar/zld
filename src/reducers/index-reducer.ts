@@ -1,4 +1,3 @@
-import { getAttendanceCardUpdateOptions } from './reducer/attendance-card-reducer';
 //region
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as config from './reducer/config-reducer';

@@ -304,6 +304,7 @@
   "CARD_NUMBER_ERROR": "卡号只能由6到10位的数字组成",
   "CARD_NUMBER_REQUIRED_ERROR": "卡号不能为空",
   "SELECT_WORKERS_BELOW": "请从以下工人中选择",
+  "BIND_ATTENDANCE_CARD":"绑定考勤卡",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

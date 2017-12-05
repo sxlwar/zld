@@ -39,6 +39,7 @@ export class AttendanceCardEffect extends Command{
         .switchMap((action: UpdateAttendanceCardAction) => this.ws
             .send(this.getAttendanceCardUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_ATTENDANCE_CARD))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new UpdateAttendanceCardFailAction(msg.data) : new UpdateAttendanceCardSuccessAction(msg.data))
             .catch(error => of(error))
     )
@@ -49,6 +50,7 @@ export class AttendanceCardEffect extends Command{
         .switchMap((action: DeleteAttendanceCardAction) => this.ws
             .send(this.getAttendanceCardDelete(action.payload))
             .takeUntil(this.actions$.ofType(DELETE_ATTENDANCE_CARD))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new DeleteAttendanceCardFailAction(msg.data): new DeleteAttendanceCardSuccessAction(msg.data))
             .catch(error => of(error))
     )

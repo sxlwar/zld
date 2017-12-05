@@ -1,7 +1,7 @@
 import { WorkerService } from './worker-service';
 import { orderBy } from 'lodash';
 import { ConditionOption, BindingStateFlag, OrderFlag } from './../../interfaces/order-interface';
-import { UpdateAttendanceCardAtLocal, UpdateOrderStateAction, UpdateBindingStateAction } from './../../actions/action/attendance-card-action';
+import { UpdateOrderStateAction, UpdateBindingStateAction } from './../../actions/action/attendance-card-action';
 import { MapperService, AddAttendanceCardFormModel } from './../api/mapper-service';
 import { RequestOption, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
@@ -92,10 +92,6 @@ export class AttendanceCardService {
         ) as Observable<AttendanceCardUpdateOptions>;
 
         return this.processor.attendanceCardUpdateProcessor(options);
-    }
-
-    updateAttendanceCardAtLocal(name: string, companyId: number): void {
-        this.store.dispatch(new UpdateAttendanceCardAtLocal({ name, companyId }));
     }
 
     getBindingStateOptions(): Observable<ConditionOption[]> {

@@ -309,6 +309,7 @@ export interface AttendanceCardUpdateOptions {
   sid: string;
   ic_card_num: string;
   user_id?: number;
+  userName?: string;
 }
 
 export interface AttendanceCardDeleteOptions {

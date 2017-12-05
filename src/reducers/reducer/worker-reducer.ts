@@ -20,7 +20,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  limit: 10,
+  limit: 20,
   page: 1,
   workerContractResponse: {
     count: -1,

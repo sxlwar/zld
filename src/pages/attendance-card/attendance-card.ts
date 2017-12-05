@@ -70,24 +70,22 @@ export class AttendanceCardPage {
     this.subscriptions.forEach(item => item.unsubscribe());
   }
 
-  updateCardAtLocal() {
-
-  }
-
   addCard() {
     this.modalCtrl.create(AddAttendanceCardComponent).present();
   }
 
-  bindCard() {
-
+  bindCard(card: AttendanceCard) {
+    this.modalCtrl.create(AddAttendanceCardComponent, { cardNumber: card.ic_card_num }).present();
   }
 
-  unbindCard() {
+  unbindCard(card: AttendanceCard) {
+    const { ic_card_num } = card;
 
+    this.attendanceCard.updateAttendanceCard(Observable.of({ ic_card_num }));
   }
 
-  deleteCard() {
-
+  deleteCard(card: AttendanceCard) {
+    this.attendanceCard.deleteAttendanceCard(Observable.of([card.id]));
   }
 
   setBindCondition() {

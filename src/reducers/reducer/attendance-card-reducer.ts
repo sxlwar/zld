@@ -56,7 +56,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.ADD_ATTENDANCE_CARD_SUCCESS: {
             const { ic_card_num, user_id, userName } = state.addOptions.attendance_card_form;
 
-            const attendance_cards = [...state.queryResponse.attendance_cards, { id: action.payload.id, ic_card_num, user_id, user__employee__realname: userName}]; // user_id is an optional param, so it is may be 'undefined';
+            const attendance_cards = [...state.queryResponse.attendance_cards, { id: action.payload.id, ic_card_num, user_id, user__employee__realname: userName }]; // user_id is an optional param, so it is may be 'undefined';
 
             const queryResponse = Object.assign({}, state.queryResponse, { attendance_cards });
 
@@ -70,17 +70,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return Object.assign({}, state, { updateResponse: action.payload });
 
         case actions.UPDATE_ATTENDANCE_CARD_SUCCESS: {
-            if (!state.updateOptions.user_id) {
-                const attendance_cards = state.queryResponse.attendance_cards.map(item => item.ic_card_num === state.updateOptions.ic_card_num ? updateCard(item) : item);
-
-                return updateQueryList(state, attendance_cards);
-            }
-
-            return Object.assign({}, state, { updateResponse: action.payload });
-        }
-
-        case actions.UPDATE_ATTENDANCE_CARD_AT_LOCAL: {
-            const attendance_cards = state.queryResponse.attendance_cards.map(item => item.ic_card_num === state.updateOptions.ic_card_num ? updateCard(item, { ...action.payload, userId: state.updateOptions.user_id }) : item);
+            const attendance_cards = state.queryResponse.attendance_cards.map(item => item.ic_card_num === state.updateOptions.ic_card_num ? updateCard(item, state.updateOptions) : item);
 
             return updateQueryList(state, attendance_cards);
         }
@@ -92,7 +82,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return Object.assign({}, state, { deleteResponse: action.payload });
 
         case actions.DELETE_ATTENDANCE_CARD_SUCCESS: {
-            const attendance_cards = state.queryResponse.attendance_cards.filter(item => state.deleteOptions.attendance_card_id.indexOf(item.id) !== -1);
+            const attendance_cards = state.queryResponse.attendance_cards.filter(item => state.deleteOptions.attendance_card_id.indexOf(item.id) === -1);
 
             return updateQueryList(state, attendance_cards);
         }
@@ -107,7 +97,6 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return Object.assign({}, state, { page: state.page + 1 });
 
         case actions.UPDATE_ORDER_STATE:
-
             return Object.assign({}, state, { orderOptions: updateConditionState(state.orderOptions, action.payload) });
 
         case actions.UPDATE_BINDING_STATE:
@@ -127,9 +116,9 @@ export function updateConditionState(source: ConditionOption[], target: Conditio
     });
 }
 
-export function updateCard(card: AttendanceCard, option?: { name: string; companyId: number, userId: number }): AttendanceCard {
-    if (option) {
-        return Object.assign({}, card, { user__employee__realname: option.name, company_id: option.companyId, user_id: option.userId });
+export function updateCard(card: AttendanceCard, option: AttendanceCardUpdateOptions): AttendanceCard {
+    if (option.user_id) {
+        return Object.assign({}, card, { user__employee__realname: option.userName, user_id: option.user_id });
     } else {
         return {
             ic_card_num: card.ic_card_num,
