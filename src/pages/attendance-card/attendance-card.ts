@@ -7,7 +7,6 @@ import { Observable } from 'rxjs/Observable';
 import { AttendanceCard } from './../../interfaces/response-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { ProjectService } from './../../services/business/project-service';
-import { WorkerService } from './../../services/business/worker-service';
 import { AttendanceCardService } from './../../services/business/attendance-card-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
@@ -38,25 +37,23 @@ export class AttendanceCardPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public attendanceCard: AttendanceCardService,
-    public worker: WorkerService,
     public modalCtrl: ModalController,
     public project: ProjectService,
     public permission: PermissionService
   ) {
-    this.subscriptions = this.attendanceCard.handleError();
   }
 
   ionViewCanEnter() {
     const { view, opt } = this.navParams.get('permission');
 
+    const result = opt || view;
+
+    result && this.launch();
+
     return opt || view;
   }
 
   ionViewDidLoad() {
-    const subscription = this.attendanceCard.getAttendanceCardList();
-
-    this.subscriptions.push(subscription);
-
     this.cards = this.attendanceCard.getCardsByConditions();
 
     this.canOperate = this.permission.getOperatePermission(attendanceCard.icon, ProjectRoot);
@@ -69,6 +66,22 @@ export class AttendanceCardPage {
   ionViewWillUnload() {
     this.subscriptions.forEach(item => item.unsubscribe());
   }
+
+  /* ===============================================Launch functions======================================== */
+  
+  launch() {
+    this.subscriptions = this.attendanceCard.handleError();
+
+    this.getAttendanceCardList();
+  }
+
+  getAttendanceCardList() {
+    const subscription = this.attendanceCard.getAttendanceCardList();
+
+    this.subscriptions.push(subscription);
+  }
+
+  /* ===============================================Operate functions======================================== */
 
   addCard() {
     this.modalCtrl.create(AddAttendanceCardComponent).present();
@@ -88,6 +101,8 @@ export class AttendanceCardPage {
     this.attendanceCard.deleteAttendanceCard(Observable.of([card.id]));
   }
 
+  /* ===============================================Condition related functions======================================== */
+  
   setBindCondition() {
     this.attendanceCard.updateBindConditionState(this.byBindingState);
   }

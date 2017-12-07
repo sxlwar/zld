@@ -1,3 +1,4 @@
+import { AddLocationCardComponent } from './../components/add-location-card/add-location-card';
 import { AddAttendanceCardComponent } from './../components/add-attendance-card/add-attendance-card';
 import { WorkPieceAxisComponent } from './../components/work-piece-axis/work-piece-axis';
 //region
@@ -108,6 +109,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     FaceImageComponent,
     WorkPieceAxisComponent,
     AddAttendanceCardComponent,
+    AddLocationCardComponent,
   ],
   providers: [
     Api,

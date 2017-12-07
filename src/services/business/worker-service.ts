@@ -148,7 +148,7 @@ export class WorkerService {
 
   setWorkersCountDistinctByPayType(count: Observable<number>, type: number): Subscription {
     return count.subscribe(amount => {
-      if(type === ContractType.timer){
+      if (type === ContractType.timer) {
         this.store.dispatch(new UpdateManagementTimerCountAction(amount));
       } else {
         this.store.dispatch(new UpdateManagementTimerCountAction(amount));
@@ -204,6 +204,10 @@ export class WorkerService {
   getManagementPage(type: number): Observable<RequestOption> {
     if (type === ContractType.timer) return this.store.select(selectManageTimerPage).map(page => ({ page }));
     else return this.store.select(selectManagePiecerPage).map(page => ({ page }));
+  }
+
+  getNoLocationCardWorker(): Observable<RequestOption> {
+    return Observable.of({ no_location_card: true });
   }
 
   /*==========================================error handle=====================================================*/

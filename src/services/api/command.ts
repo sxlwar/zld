@@ -1,9 +1,11 @@
 //region
+import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Permission } from '../../interfaces/permission-interface';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
+import { omit } from 'lodash';
 //endregion
 
 /* =======================================================Interface definition===================================================================== */
@@ -420,6 +422,48 @@ export const attendanceCardDelete: ApiUnit = {
   }
 }
 
+/* ==========================================================Location card api================================================================ */
+
+export const locationCardList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employer.consumer.LocationCardList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, TL],
+    opt: []
+  }
+}
+
+export const locationCardAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['employer.consumer.LocationCardAdd']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM]
+  }
+}
+
+export const locationCardUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employer.consumer.LocationCardUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [MM, EME, PM]
+  }
+}
+
+export const locationCardDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['employer.consumer.LocationCardDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [MM, EME, PM]
+  }
+}
+
 @Injectable()
 export class Command {
 
@@ -437,10 +481,6 @@ export class Command {
   homeInfoUpdate = "employee.consumer.HomeInfoUpdate";
   leaveRecordList = "project.consumer.LeaveRecordList";
   listHisLoc = "project.consumer.ListHisLoc";
-  locationCardAdd = "employer.consumer.LocationCardAdd";
-  locationCardDelete = "employer.consumer.LocationCardDelete";
-  locationCardList = "employer.consumer.LocationCardList";
-  locationCardUpdate = "employer.consumer.LocationCardUpdate";
   logout = "employee.consumer.Logout";
   msgTitleDelete = "operation.consumer.MsgTitleDelete";
   msgTitleList = "operation.consumer.MsgTitleList";
@@ -740,6 +780,35 @@ export class Command {
   }
 
   /**
+   * @description Location card API: getLocationCardList, getLocationCardAdd, getLocationCardUpdate, getLocationCardDelete
+   */
+  getLocationCardList(option: LocationCardListOptions): WsRequest {
+    const path = locationCardList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getLocationCardAdd(option: LocationCardAddOptions): WsRequest {
+    const path = locationCardAdd.operates.get(Operate.addition)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getLocationCardUpdate(initialOption: LocationCardUpdateOptions): WsRequest {
+    const path = locationCardUpdate.operates.get(Operate.updates)[0];
+
+    const option = omit(initialOption, ['userName']);
+
+    return this.getFullParameter(path, option);
+  }
+
+  getLocationCardDelete(option: LocationCardDeleteOptions): WsRequest {
+    const path = locationCardDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
    * @description API unit interfaces for external module referring.
    */
   get uploadPersonalIdImage(): string {
@@ -836,5 +905,21 @@ export class Command {
 
   get attendanceCardDelete() {
     return attendanceCardDelete;
+  }
+
+  get locationCardList() {
+    return locationCardList;
+  }
+
+  get locationCardAdd() {
+    return locationCardAdd;
+  }
+
+  get locationCardUpdate() {
+    return locationCardUpdate;
+  }
+
+  get locationCardDelete() {
+    return locationCardDelete;
   }
 }

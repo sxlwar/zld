@@ -33,7 +33,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-list>
+  <ion-list [sliding]="canOperate | async">
     <ion-item-sliding *ngFor="let item of cards | async">
 
       <ion-item>

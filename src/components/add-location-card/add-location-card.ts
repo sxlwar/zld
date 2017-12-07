@@ -1,57 +1,57 @@
-import { WorkerContractListResponse } from './../../interfaces/response-interface';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { ProjectService } from './../../services/business/project-service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceCardService } from './../../services/business/attendance-card-service';
-import { WorkerService } from './../../services/business/worker-service';
-import { ViewController, NavParams } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 import { cardNumberValidator } from '../../validators/validators';
+import { Subject } from 'rxjs/Subject';
+import { WorkerContractListResponse } from './../../interfaces/response-interface';
+import { Observable } from 'rxjs/Observable';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { LocationCardService } from './../../services/business/location-card-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { NavParams, ViewController } from 'ionic-angular';
+import { Component } from '@angular/core';
 
-export interface Worker {
-  name: string;
+interface Worker {
   userId: number;
+  name: string;
 }
 
 @Component({
-  selector: 'add-attendance-card',
-  templateUrl: 'add-attendance-card.html'
+  selector: 'add-location-card',
+  templateUrl: 'add-location-card.html'
 })
-export class AddAttendanceCardComponent implements OnInit, OnDestroy {
+export class AddLocationCardComponent {
 
-  text = 'ADD_ATTENDANCE_CARD';
+  subscriptions: Subscription[] = [];
 
-  addAttendanceCardForm: FormGroup;
+  text = 'ADD_LOCATION_CARD';
 
-  checked = false;
+  response: Observable<WorkerContractListResponse>;
 
   workers: Observable<Worker[]>;
 
   haveMoreData: Observable<boolean>;
 
-  boundWorker: Worker;
-
-  worker$$: Subscription;
-
-  subscriptions: Subscription[] = [];
-
   switchState = new Subject();
 
-  response: Observable<WorkerContractListResponse>;
+  boundWorker: Worker;
+
+  addLocationCardForm: FormGroup;
 
   isUpdate: boolean;
 
+  checked: boolean;
+
+  worker$$: Subscription;
+
   constructor(
-    public viewCtrl: ViewController,
+    public navParams: NavParams,
     public worker: WorkerService,
+    public locationCard: LocationCardService,
+    public viewCtrl: ViewController,
     public fb: FormBuilder,
-    public card: AttendanceCardService,
-    public project: ProjectService,
-    public navParams: NavParams
+    public project: ProjectService
   ) {
-    this.worker.resetPage();
+    worker.resetPage();
   }
 
   ngOnInit() {
@@ -81,7 +81,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
     this.isUpdate = !!cardNumber;
 
     if (this.isUpdate) {
-      this.text = 'BIND_ATTENDANCE_CARD';
+      this.text = 'BIND_LOCATION_CARD';
       this.checked = true;
       this.switchState.next(true);
     }
@@ -106,7 +106,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
     const subscription = this.switchState.filter(value => !value)
       .subscribe(_ => {
         this.boundWorker = null;
-        this.addAttendanceCardForm.patchValue({ selectedWorker: { value: '', required: false } });
+        this.addLocationCardForm.patchValue({ selectedWorker: { value: '', required: false } });
       });
 
     this.subscriptions.push(subscription);
@@ -134,7 +134,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
     const subscription = initialOpenSwitch
       .merge(getRestData)
-      .subscribe(value => this.worker.getWorkerContracts(this.getOption()));
+      .subscribe(_ => this.worker.getWorkerContracts(this.getOption()));
 
     this.subscriptions.push(subscription);
   }
@@ -151,7 +151,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
    * @description Initialize form.
    */
   createForm(number = '') {
-    this.addAttendanceCardForm = this.fb.group({
+    this.addLocationCardForm = this.fb.group({
       cardNumber: [{ value: number, disabled: this.isUpdate }, cardNumberValidator],
       bind: { value: this.checked, disabled: this.isUpdate },
       selectedWorker: ''
@@ -165,7 +165,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
   getWorkers() {
     this.workers = this.worker.getAllWorkerContracts()
       .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id })))
-      .combineLatest(this.card.getCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)))
+      .combineLatest(this.locationCard.getLocationCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)))
       .map(([workers, boundIds]) => workers.filter(item => boundIds.indexOf(item.userId) === -1));
   }
 
@@ -192,7 +192,8 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
       .zip(
       this.worker.getUnexpiredOption(),
       this.project.getProjectId().map(project_id => ({ project_id })),
-      (option1, option2, option3) => ({ ...option1, ...option2, ...option3 })
+      this.worker.getNoLocationCardWorker(),
+      (option1, option2, option3, option4) => ({ ...option1, ...option2, ...option3, ...option4 })
       );
   }
 
@@ -214,11 +215,15 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
    * @description Execute binding action.
    */
   bindCard() {
-    const  cardNumber  = this.navParams.get('cardNumber');
+    const cardNumber = this.navParams.get('cardNumber');
+
+    const id = this.navParams.get('id');
 
     const { userId, name } = this.boundWorker;
 
-    this.card.updateAttendanceCard(Observable.of({ ic_card_num: cardNumber, user_id: userId, userName: name }));
+    const subscription = this.locationCard.updateLocationCard(Observable.of({ dev_id: cardNumber, user_id: userId, location_card_id: id, userName: name }));
+
+    this.subscriptions.push(subscription);
   }
 
   /**
@@ -226,11 +231,13 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
    * @description Execute addition action.
    */
   addCard() {
-    const { cardNumber, bind } = this.addAttendanceCardForm.value;
+    const { cardNumber, bind } = this.addLocationCardForm.value;
 
-    const option = bind ? { cardNumber, userId: this.boundWorker.userId, userName: this.boundWorker.name } : { cardNumber };
+    const option = bind ? { dev_id: cardNumber, user_id: this.boundWorker.userId, userName: this.boundWorker.name } : { dev_id: cardNumber };
 
-    this.card.addAttendanceCard(option);
+    const subscription = this.locationCard.addLocationCard(Observable.of(option));
+
+    this.subscriptions.push(subscription);
   }
 
   dismiss() {
@@ -240,14 +247,15 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
   /* ===============================================Shortcut methods for templates==================================================== */
 
   get cardNumber() {
-    return this.addAttendanceCardForm.get('cardNumber');
+    return this.addLocationCardForm.get('cardNumber');
   }
 
   get bind() {
-    return this.addAttendanceCardForm.get('bind');
+    return this.addLocationCardForm.get('bind');
   }
 
   get selectedWorker() {
-    return this.addAttendanceCardForm.get('selectedWorker');
+    return this.addLocationCardForm.get('selectedWorker');
   }
+
 }

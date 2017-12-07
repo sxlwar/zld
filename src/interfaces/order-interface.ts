@@ -10,6 +10,12 @@ export enum BindingStateFlag {
     unbind
 }
 
+export enum DeviceStateFlag {
+    noneState,
+    online,
+    offline
+}
+
 export interface ConditionOption {
     selected: boolean;
     text: string;

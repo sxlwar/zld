@@ -248,7 +248,7 @@ export interface AttendanceResultTeamStatListOptions {
   start_day?: string;
   end_day?: string;
 }
- 
+
 export interface RequestAggregationOptions {
   sid: string;
 }
@@ -296,7 +296,7 @@ export interface AttendanceCardListOptions {
 
 export interface AttendanceCardForm {
   ic_card_num: string;
-  user_id?:number;
+  user_id?: number;
   userName?: string;
 }
 
@@ -317,6 +317,40 @@ export interface AttendanceCardDeleteOptions {
   attendance_card_id: number[];
 }
 
+/*=================================================Location card API model==================================================*/
+
+export interface LocationCardListOptions {
+  sid: string;
+  user_ids?: number[];
+  dev_id?: number;
+  project_id?: number;
+  team_id?: number;
+  worktype_id?: number;
+  realname?: string;
+  limit?: number;
+  page?: number;
+}
+
+export interface LocationCardAddOptions {
+  sid: string;
+  dev_id: string; //定位卡卡号？
+  user_id?: string;
+  userName?: string;
+}
+
+export interface LocationCardUpdateOptions {
+  sid: string;
+  dev_id: string; // 定位卡设备号？
+  user_id?: string;
+  location_card_id?: number; //乱七八糟的，文档中没有这个字段，是从v1的代码中抄上来的, 解绑的时候用。
+  userName?: string;
+}
+
+export interface LocationCardDeleteOptions {
+  sid: string;
+  location_card_id: number; //定位卡ID？谁TMD能看的出卡号，设备号，ID是不是一个东西。垃圾文档。响应是number， 请求是string，这个地方是被改成number的。
+}
+
 /*=================================================Common API model==================================================*/
 
 export interface BasicInfoListOptions {
@@ -334,7 +368,7 @@ export enum RequestStatus {
 
 export enum TaskStatus {
   processing = '处理中',
-  completed = '完成' 
+  completed = '完成'
 }
 
 export type Options = LoginOptions
@@ -366,4 +400,3 @@ export type Options = LoginOptions
   & UploadImageOptions
   & WorkOvertimeRecordListOptions
   & WorkerContractOptions;
-  

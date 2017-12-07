@@ -17,6 +17,7 @@ import { Actions as employer } from './action/employer-action';
 import { Actions as personal } from './action/personal-action';
 import { Actions as machine } from './action/attendance-machine-action';
 import { Actions as attendanceCard } from './action/attendance-card-action';
+import { Actions as locationCard } from './action/location-card-action';
 
 export type Actions = config
   | attendance
@@ -24,6 +25,7 @@ export type Actions = config
   | attendanceCard
   | employer
   | icons
+  | locationCard
   | login
   | machine
   | overtime

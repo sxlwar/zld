@@ -1,10 +1,11 @@
+import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
 import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
 import { GetBasicInformationAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -322,5 +323,41 @@ export class ProcessorService extends MapperService {
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new DeleteAttendanceCardAction(option)));
+  }
+
+  locationCardListProcessor(option$: Observable<LocationCardListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardList);
+
+    return permissionResult
+      .filter(value => value.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetLocationCardListAction(option)));
+  }
+
+  locationCardAddProcessor(option$: Observable<LocationCardAddOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardAdd);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new AddLocationCardAction(option)));
+  }
+
+  locationCardUpdateProcessor(option$: Observable<LocationCardUpdateOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardUpdate);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateLocationCardAction(option)));
+  }
+
+  locationCardDeleteProcessor(option$: Observable<LocationCardDeleteOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardDelete);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new DeleteLocationCardAction(option)));
   }
 }

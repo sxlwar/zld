@@ -77,7 +77,7 @@ export class AttendanceCardService {
 
         const option = sid.zip(
             ids,
-            (sid, attendance_card_id) => ({ sid, attendance_card_id }) // 这奇葩的命名，明明数组，从名字上看起来却是单个，这鸟API，一不小心就踩地雷。
+            (sid, attendance_card_id) => ({ sid, attendance_card_id }) // 这奇葩的命名，明明数组，用个单数，反人类的API。
         );
 
         return this.processor.attendanceCardDeleteProcessor(option);

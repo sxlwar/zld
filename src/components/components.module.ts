@@ -25,6 +25,7 @@ import { FaceImageComponent } from './face-image/face-image';
 import { WorkPieceAxisComponent } from './work-piece-axis/work-piece-axis';
 import { PieceCompleteChartComponent } from './piece-complete-chart/piece-complete-chart';
 import { AddAttendanceCardComponent } from './add-attendance-card/add-attendance-card';
+import { AddLocationCardComponent } from './add-location-card/add-location-card';
 //endregion
 
 @NgModule({
@@ -52,6 +53,7 @@ import { AddAttendanceCardComponent } from './add-attendance-card/add-attendance
     TimelineTimeComponent,
     PieceCompleteChartComponent,
     AddAttendanceCardComponent,
+    AddLocationCardComponent,
   ],
   imports: [
     IonicModule,
@@ -83,6 +85,7 @@ import { AddAttendanceCardComponent } from './add-attendance-card/add-attendance
     TimelineTimeComponent,
     PieceCompleteChartComponent,
     AddAttendanceCardComponent,
+    AddLocationCardComponent,
   ]
 })
 export class ComponentsModule {

@@ -163,7 +163,7 @@ export const locationCard: IconItem = {
     view: [PME, EME, MM, LM, TL],
     opt: [PM]
   },
-  page: ''
+  page: pages.locationCardPage
 };
 
 export const attendanceCard: IconItem = {

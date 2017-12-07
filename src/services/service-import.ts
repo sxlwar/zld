@@ -1,5 +1,5 @@
+import { LocationCardService } from './business/location-card-service';
 import { AttendanceCardService } from './business/attendance-card-service';
-//region
 import { AttendanceMachineService } from './business/attendance-machine-service';
 import { PersonalService } from './business/personal-service';
 import { PayProcessService } from './business/pay-process-service';
@@ -35,7 +35,6 @@ import { ChartService } from './utils/chart-service';
 import { WorkFlowService } from './business/work-flow-service';
 import { ProjectBillService } from './business/project-bill-service';
 import { EmployerService } from './business/employer-service';
-//endregion
 
 export const API_SERVICES = [
     Command,
@@ -56,6 +55,7 @@ export const BUSINESS_SERVICES = [
     CraftService,
     EmployerService,
     IconService,
+    LocationCardService,
     LoginService,
     OvertimeService,
     PayBillService,

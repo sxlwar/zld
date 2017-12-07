@@ -306,6 +306,17 @@
   "SELECT_WORKERS_BELOW": "请从以下工人中选择",
   "BIND_ATTENDANCE_CARD":"绑定考勤卡",
 
+  "ONLINE":"在线",
+  "OFFLINE": "离线",
+  "BIND_LOCATION_CARD": "绑定定位卡",
+  "LOCATION_CARD": "定位卡",
+  "SET_TEAM":"设置班组",
+  "STATUS": "状态",
+  "BY_DEVICE_STATUS": "按状态",
+  "ELECTRICITY": "电量",
+  "ADD_LOCATION_CARD": "添加定位卡",
+  "LATEST_REPORT": "最后上报",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

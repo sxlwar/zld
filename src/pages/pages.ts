@@ -49,6 +49,8 @@ export const workPiecePage = 'WorkPiecePage';
 
 export const attendanceCardPage = 'AttendanceCardPage';
 
+export const locationCardPage = 'LocationCardPage';
+
 /*============================================mission tab pages===================================================*/
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
@@ -110,6 +112,7 @@ export const PAGES = [
   { title: 'AttendanceMachineRecord', component: attendanceMachineRecordPage },
   { title: 'WorkPiece', component: workPiecePage },
   { title: 'AttendanceCard', component: attendanceCardPage },
+  { title: 'LocationCard', component: locationCardPage },
   
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 

@@ -183,6 +183,10 @@ export class TeamService {
     this.subscriptions.push(subscription);
   }
 
+  getTeamStateOptions(): Observable<{ id: number; name: string }[]> {
+    return this.getTeams().map(teams => teams.map(({ id, name }) => ({ id, name })));
+  }
+
   /* ============================================Error handle and refuse clean======================================== */
 
   private handleError() {

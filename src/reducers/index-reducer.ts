@@ -22,6 +22,7 @@ import * as employer from './reducer/employer-reducer';
 import * as personal from './reducer/personal-reducer';
 import * as machine from './reducer/attendance-machine-reducer';
 import * as attendanceCard from './reducer/attendance-card-reducer';
+import * as locationCard from './reducer/location-card-reducer';
 //endregion
 
 export interface AppState {
@@ -51,6 +52,7 @@ export interface AppState {
   personal: personal.State,
   machine: machine.State,
   attendanceCard: attendanceCard.State,
+  locationCard: locationCard.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -80,6 +82,7 @@ export const reducers: ActionReducerMap<AppState> = {
   personal: personal.reducer,
   machine: machine.reducer,
   attendanceCard: attendanceCard.reducer,
+  locationCard: locationCard.reducer,
 };
 
 //config
@@ -277,6 +280,22 @@ export const selectAttendanceCardUpdateResponse = createSelector(getAttendanceCa
 export const selectAttendanceCardDeleteResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardDeleteResponse);
 export const selectAttendanceCardOrderOptions = createSelector(getAttendanceCard, attendanceCard.getOrderOptions);
 export const selectAttendanceCardBindingOptions = createSelector(getAttendanceCard, attendanceCard.getBindingStateOptions);
+
+//location card
+export const getLocationCard = (state: AppState) => state.locationCard;
+export const selectLocationCardListResponse = createSelector(getLocationCard, locationCard.getCardAddResponse);
+export const selectLocationCardAddResponse = createSelector(getLocationCard, locationCard.getCardAddResponse);
+export const selectLocationCardUpdateResponse = createSelector(getLocationCard, locationCard.getCardUpdateResponse);
+export const selectLocationCardDeleteResponse = createSelector(getLocationCard, locationCard.getCardDeleteResponse);
+export const selectLocationCards = createSelector(getLocationCard, locationCard.getCards);
+export const selectLocationCardCount = createSelector(getLocationCard, locationCard.getCardCount);
+export const selectLocationCardAddOptions = createSelector(getLocationCard, locationCard.getAddOptions);
+export const selectLocationCardUpdateOptions = createSelector(getLocationCard, locationCard.getUpdateOptions);
+export const selectLocationCardDeleteOptions = createSelector(getLocationCard, locationCard.getDeleteOptions);
+export const selectLocationCardOrderOptions = createSelector(getLocationCard, locationCard.getOrderOptions);
+export const selectLocationCardDeviceOptions = createSelector(getLocationCard, locationCard.getDeviceStateOptions);
+export const selectLocationCardBindingOptions = createSelector(getLocationCard, locationCard.getBindingStateOptions);
+export const selectLocationCardTeamStateOptions = createSelector(getLocationCard, locationCard.getTeamStateOptions);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

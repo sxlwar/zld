@@ -638,7 +638,7 @@ export interface BasicInformation {
   name: string;
   headImg: string;
   company: string;
-  worktype: string[];
+  worktype: string[] | string;
 }
 
 export interface Home {
@@ -774,7 +774,7 @@ export interface AttendanceCardListResponse {
 
 //attendance card add 
 export interface AttendanceCardAddResponse {
-  id: number;
+  id?: number;
   errorMessage?: string;
 }
 
@@ -787,6 +787,59 @@ export interface AttendanceCardUpdateResponse {
 export interface AttendanceCardDeleteResponse {
   errorMessage?: string;
 }
+
+/*=================================================Location card API model==================================================*/
+
+export enum DeviceStatus {
+  offline,
+  online
+}
+
+/** 
+ * 很奇葩的响应，在请求中可以使用team_id查询定位卡，返回的响应中却没有team_id这个字段，大量的API都存在请求和响应无法相互印证的问题。
+ */
+export interface LocationCard {
+  battery: number;
+  company_id: number;
+  dev_id: string;
+  gps_signal: string;
+  id: number;
+  insert_time: string;
+  latitude: string;
+  login_time: string
+  longitude: string;
+  satnum: string;
+  status: number;
+  time: string;
+  user__employee__realname: string;
+  user_id: number;
+}
+
+//location card list 
+export interface LocationCardListResponse {
+  count: number;
+  location_cards: LocationCard[];
+  errorMessage?: string;
+}
+
+//location card add 
+export interface LocationCardAddResponse {
+  id?:number;
+  errorMessage?: string;
+}
+
+//location card update
+export interface LocationCardUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//location card delete
+export interface LocationCardDeleteResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
 
 /*========================================================================================================*/
 
