@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ConditionOption } from './../../interfaces/order-interface';
 import { LocationCard } from './../../interfaces/response-interface';
 import { Subscription } from 'rxjs/Subscription';
-import { RequestOption } from 'interfaces/request-interface';
 import { ProjectRoot } from './../pages';
 import { locationCard } from './../../services/business/icon-service';
 import { Observable } from 'rxjs/Observable';
@@ -85,20 +84,23 @@ export class LocationCardPage {
   }
 
   /* =============================================================Launch functions============================================ */
-  
+
   launch() {
     this.subscriptions = this.locationCard.handleError(); // Must be initial error handle first.
-    
+
     this.getLocationCardList();
 
-    this.updateTeamStateOptions();
+    const subscription = this.locationCard.getTeamStateOptions().subscribe(options => !options.length && this.updateTeamStateOptions());
+
+    this.subscriptions.push(subscription);
   }
 
   getLocationCardList(): void {
-    const subscription = this.getOptions()
-      .distinct(option => option.team_id)
-      .map(option => this.locationCard.getLocationCardList(Observable.of(option)))
-      .subscribe(subscription => this.subscriptions.push(subscription));
+    const option = this.getOptions()
+      .distinctUntilChanged()
+      .map(team_id => team_id ? { team_id } : {})
+
+    const subscription = this.locationCard.getLocationCardList(option);
 
     this.subscriptions.push(subscription);
   }
@@ -124,9 +126,9 @@ export class LocationCardPage {
   /**
    * @description Get the option for teamList api. Only need one field named 'team_id' if user select to show list of the specific team.
    */
-  getOptions(): Observable<RequestOption> {
+  getOptions(): Observable<number> {
     return this.locationCard.getSelectedTeam()
-      .map(team => team && team.condition ? { team_id: team.condition } : {});
+      .map(team => team && team.condition || null);
   }
 
   /* ===============================================Operate functions===================================================== */

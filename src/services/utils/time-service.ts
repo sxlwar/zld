@@ -1,7 +1,6 @@
-//region
 import { Injectable } from '@angular/core';
-import { Base } from './base';
-//endregion
+import { Base } from './util';
+
 export interface Calendar {
   week: string;
   days: Date[];
@@ -16,8 +15,11 @@ export interface DateInfo {
 }
 
 export const monthNames = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
+
 export const monthShortNames = monthNames;
+
 export const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+
 export const dayShortNames = dayNames;
 
 @Injectable()
@@ -31,7 +33,7 @@ export class TimeService extends Base {
     return str.length > 1 ? str : `0${str}`;
   }
 
-  getTime() {
+  getTime(isFull = true) {
     const date = new Date(),
       year = date.getFullYear(),
       month = date.getMonth() + 1,
@@ -39,7 +41,12 @@ export class TimeService extends Base {
       hour = date.getHours(),
       minute = date.getMinutes(),
       second = date.getSeconds();
-    return year + '-' + this.toTwo(String(month)) + '-' + this.toTwo(String(day)) + ' ' + this.toTwo(String(hour)) + ':' + this.toTwo(String(minute)) + ':' + this.toTwo(String(second));
+
+    const d = year + '-' + this.toTwo(String(month)) + '-' + this.toTwo(String(day));
+
+    const t = this.toTwo(String(hour)) + ':' + this.toTwo(String(minute)) + ':' + this.toTwo(String(second));
+
+    return isFull ? d + ' ' + t : t;
   }
 
   getDate(date: Date, isFullDate: boolean): string {
@@ -238,5 +245,15 @@ export class TimeService extends Base {
     const index = parseInt(month);
 
     return monthNames[index - 1];
+  }
+
+  addTime(startTime: string): string {
+    const ary = startTime.split(':');
+
+    let hour = parseInt(ary[0]) + 2;
+
+    ary[0] = hour > 23 ? '00' : String(hour);
+
+    return ary.join(':');
   }
 }

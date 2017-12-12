@@ -1,7 +1,7 @@
 //region
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { selectIcon, AppState,  selectGroupList } from '../../reducers/index-reducer';
+import { selectIcon, AppState, selectGroupList } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
@@ -32,9 +32,7 @@ export class PermissionService {
   apiPermissionValidate(arg: ApiUnit): Observable<PermissionResult> {
     return this.character.map(char => {
 
-      if (!arg.permission) {
-        return { view: true, opt: true };
-      }
+      if (!arg.permission) return { view: true, opt: true };
 
       const view = arg.permission.view.indexOf(char) !== -1;
 

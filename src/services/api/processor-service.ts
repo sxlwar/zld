@@ -1,3 +1,4 @@
+import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../actions/action/location-action';
 import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
 import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
@@ -5,7 +6,7 @@ import { GetBasicInformationAction } from './../../actions/action/personal-actio
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -359,5 +360,23 @@ export class ProcessorService extends MapperService {
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new DeleteLocationCardAction(option)));
+  }
+
+  historyLocationListProcessor(option$: Observable<HistoryLocationListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.historyLocationList);
+
+    return permissionResult
+      .filter(value => value.permission.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetHistoryLocationListAction(option)));
+  }
+
+  projectAreaListProcessor(option$: Observable<ProjectAreaListOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.projectAreaList);
+
+    return permissionResult
+      .filter(value => value.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new GetProjectAreaListAction(option)));
   }
 }

@@ -1,3 +1,4 @@
+import { AmapService } from './business/amap-service';
 import { LocationCardService } from './business/location-card-service';
 import { AttendanceCardService } from './business/attendance-card-service';
 import { AttendanceMachineService } from './business/attendance-machine-service';
@@ -35,6 +36,7 @@ import { ChartService } from './utils/chart-service';
 import { WorkFlowService } from './business/work-flow-service';
 import { ProjectBillService } from './business/project-bill-service';
 import { EmployerService } from './business/employer-service';
+import { LocationService } from './business/location-service';
 
 export const API_SERVICES = [
     Command,
@@ -47,6 +49,7 @@ export const API_SERVICES = [
 
 
 export const BUSINESS_SERVICES = [
+    AmapService,
     AttendanceCardService,
     AttendanceMachineService,
     AttendanceRecordService,
@@ -55,6 +58,7 @@ export const BUSINESS_SERVICES = [
     CraftService,
     EmployerService,
     IconService,
+    LocationService,
     LocationCardService,
     LoginService,
     OvertimeService,

@@ -23,6 +23,7 @@ import * as personal from './reducer/personal-reducer';
 import * as machine from './reducer/attendance-machine-reducer';
 import * as attendanceCard from './reducer/attendance-card-reducer';
 import * as locationCard from './reducer/location-card-reducer';
+import * as location from './reducer/location-reducer';
 //endregion
 
 export interface AppState {
@@ -53,6 +54,7 @@ export interface AppState {
   machine: machine.State,
   attendanceCard: attendanceCard.State,
   locationCard: locationCard.State,
+  location: location.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -83,6 +85,7 @@ export const reducers: ActionReducerMap<AppState> = {
   machine: machine.reducer,
   attendanceCard: attendanceCard.reducer,
   locationCard: locationCard.reducer,
+  location: location.reducer,
 };
 
 //config
@@ -296,6 +299,13 @@ export const selectLocationCardOrderOptions = createSelector(getLocationCard, lo
 export const selectLocationCardDeviceOptions = createSelector(getLocationCard, locationCard.getDeviceStateOptions);
 export const selectLocationCardBindingOptions = createSelector(getLocationCard, locationCard.getBindingStateOptions);
 export const selectLocationCardTeamStateOptions = createSelector(getLocationCard, locationCard.getTeamStateOptions);
+
+//history location list && project area list
+export const getLocation = (state: AppState) => state.location;
+export const selectHistoryLocationResponse = createSelector(getLocation, location.getHistoryLocationResponse);
+export const selectProjectAreaResponse = createSelector(getLocation, location.getProjectAreaResponse);
+export const selectHistoryLocationOptions = createSelector(getLocation, location.getHistoryLocationOptions);
+export const selectMaxEndTimeOptions = createSelector(getLocation, location.getMaxEndTime);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

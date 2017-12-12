@@ -49,7 +49,7 @@ export class LocationCardService {
 
         const projectId = this.project.getProjectId();
 
-        const options = sid.zip(projectId, option, (sid, project_id, option) => ({ sid, project_id, ...option }));
+        const options = sid.combineLatest(projectId, option, (sid, project_id, option) => ({ sid, project_id, ...option }));
 
         return this.processor.locationCardListProcessor(options);
     }

@@ -130,7 +130,7 @@ export const location: IconItem = {
     view: [PME, EME, MM, PM, LM, TL],
     opt: []
   },
-  page: ''
+  page: pages.locationPage
 };
 
 export const trajectory: IconItem = {
@@ -187,6 +187,7 @@ export const attendanceConfirm: IconItem = {
   },
   page: pages.attendanceConfirmPage
 };
+
 export const payrollAudit: IconItem = {
   text: 'PAYROLL_AUDIT',
   icon: payrollAuditIcon,

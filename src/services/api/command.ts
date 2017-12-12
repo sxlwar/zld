@@ -1,3 +1,4 @@
+import { HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
 //region
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
@@ -464,6 +465,31 @@ export const locationCardDelete: ApiUnit = {
   }
 }
 
+/* ==========================================================Location related api================================================================ */
+
+export const historyLocationList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.ListHisLoc']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, TL],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [SW, new Iterator({self: 1})]
+  ])
+}
+
+export const projectAreaList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.ProjectAreaList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL, QW],
+    opt: []
+  }
+}
+
 @Injectable()
 export class Command {
 
@@ -480,7 +506,6 @@ export class Command {
   homeInfoList = "employee.consumer.HomeInfoList";
   homeInfoUpdate = "employee.consumer.HomeInfoUpdate";
   leaveRecordList = "project.consumer.LeaveRecordList";
-  listHisLoc = "project.consumer.ListHisLoc";
   logout = "employee.consumer.Logout";
   msgTitleDelete = "operation.consumer.MsgTitleDelete";
   msgTitleList = "operation.consumer.MsgTitleList";
@@ -494,7 +519,6 @@ export class Command {
   processCreate = "workflow.consumer.ProcessCreate";
   projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
   projectAreaDelete = "project.consumer.ProjectAreaDelete";
-  projectAreaList = "project.consumer.ProjectAreaList";
   projectPayBillFlowList = "project.consumer.ProjectPayBillFlowList";
   qrLoginForApp = "employee.consumer.QRLoginForApp";
   readMsgContent = "operation.consumer.ReadMsgContent";
@@ -809,6 +833,21 @@ export class Command {
   }
 
   /**
+   * @description Location related api: getHistoryLocationList, getProjectAreaList
+   */
+  getHistoryLocationList(option: HistoryLocationListOptions): WsRequest {
+    const path = historyLocationList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getProjectAreaList(option: ProjectAreaListOptions): WsRequest {
+    const path = projectAreaList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
    * @description API unit interfaces for external module referring.
    */
   get uploadPersonalIdImage(): string {
@@ -921,5 +960,13 @@ export class Command {
 
   get locationCardDelete() {
     return locationCardDelete;
+  }
+
+  get historyLocationList() {
+    return historyLocationList;
+  }
+
+  get projectAreaList() {
+    return projectAreaList;
   }
 }

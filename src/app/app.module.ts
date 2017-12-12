@@ -1,7 +1,7 @@
+//region
 import { AddLocationCardComponent } from './../components/add-location-card/add-location-card';
 import { AddAttendanceCardComponent } from './../components/add-attendance-card/add-attendance-card';
 import { WorkPieceAxisComponent } from './../components/work-piece-axis/work-piece-axis';
-//region
 import { SharedModule } from './shared.modules';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
@@ -32,6 +32,7 @@ import { AddTeamComponent } from '../components/add-team/add-team';
 import { FaceImageComponent } from './../components/face-image/face-image';
 import { API_SERVICES, BUSINESS_SERVICES, CONFIG_SERVICES, UTIL_SERVICES } from '../services/service-import';
 import { LOCALE_ID } from '@angular/core';
+import { HistoryLocationComponent } from '../components/history-location/history-location';
 //endregion
 
 // The translate loader needs to know where to load i18n files
@@ -110,6 +111,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     WorkPieceAxisComponent,
     AddAttendanceCardComponent,
     AddLocationCardComponent,
+    HistoryLocationComponent,
   ],
   providers: [
     Api,

@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/v2/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,7 +12,6 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
 .transparent-header {
   // This is just to make the header transparent and button/icon with white color
   .toolbar-content,
@@ -35,8 +32,7 @@
   .header-ios .toolbar-background-ios,
   .footer-ios .toolbar-background-ios {
     border: 0;
-  }
-  // ---
+  } // ---
 }
 
 .form-error {
@@ -46,5 +42,26 @@
 }
 
 .scroll-content {
-  padding-bottom:0!important;
+  padding-bottom: 0!important;
+}
+
+.amap-logo {
+  right: 0 !important;
+  left: auto !important;
+  display: none !important;
+}
+
+.amap-copyright {
+  left: auto !important;
+  visibility: hidden;
+}
+
+.no-scroll {
+  .scroll-content {
+    overflow: hidden;
+  }
+}
+
+.red-color {
+  color: red;
 }

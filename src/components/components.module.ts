@@ -26,6 +26,8 @@ import { WorkPieceAxisComponent } from './work-piece-axis/work-piece-axis';
 import { PieceCompleteChartComponent } from './piece-complete-chart/piece-complete-chart';
 import { AddAttendanceCardComponent } from './add-attendance-card/add-attendance-card';
 import { AddLocationCardComponent } from './add-location-card/add-location-card';
+import { HistoryLocationComponent } from './history-location/history-location';
+import { FormsModule } from '@angular/forms';
 //endregion
 
 @NgModule({
@@ -54,12 +56,14 @@ import { AddLocationCardComponent } from './add-location-card/add-location-card'
     PieceCompleteChartComponent,
     AddAttendanceCardComponent,
     AddLocationCardComponent,
+    HistoryLocationComponent,
   ],
   imports: [
     IonicModule,
     CommonModule,
     TranslateModule,
     SharedModule,
+    FormsModule,
   ],
   exports: [
     ImageVerificationComponent,
@@ -86,6 +90,7 @@ import { AddLocationCardComponent } from './add-location-card/add-location-card'
     PieceCompleteChartComponent,
     AddAttendanceCardComponent,
     AddLocationCardComponent,
+    HistoryLocationComponent,
   ]
 })
 export class ComponentsModule {

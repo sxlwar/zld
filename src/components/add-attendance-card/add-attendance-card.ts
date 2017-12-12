@@ -180,7 +180,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
     this.worker$$ && this.worker$$.unsubscribe();
 
     this.worker$$ = this.worker.getWorkerContractResponse()
-      .subscribe(response => infiniteScroll.complete())
+      .subscribe(response => infiniteScroll.complete());
   }
 
   /**

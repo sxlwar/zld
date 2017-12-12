@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{'SET_QUERY_CONDITION' | translate}}</ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list padding>
+
+    <ion-item>
+      <ion-label>{{'TIME_SLOT' | translate}}</ion-label>
+      <ion-toggle [(ngModel)]="isTimeSlot" (ngModelChange)="updateIsTimeSlot($event)"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'DATE' | translate}}</ion-label>
+      <ion-datetime [(ngModel)]="date" displayFormat="YYYY-MM-DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        min="2017-01-01" [max]="today" required (ngModelChange)="updateDate($event)"></ion-datetime>
+    </ion-item>
+
+    <form [formGroup]="locationForm">
+      <div *ngIf="isTimeSlot">
+        <ion-item>
+          <ion-label>{{'START_TIME' | translate}}</ion-label>
+          <ion-datetime pickerFormat="HH:mm:ss" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [max]="today" formControlName="startTime"  (ngModelChange)="updateMaxEndTime($event)"></ion-datetime>
+        </ion-item>
+        <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="form-error red-color">
+          <span *ngIf="startTime.errors.required">{{'START_TIME_REQUIRED' | translate}}</span>
+        </div>
+
+        <ion-item>
+          <ion-label>{{'END_TIME' | translate}}</ion-label>
+          <ion-datetime pickerFormat="HH:mm:ss" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [hourValues]="availableHourValues" formControlName="endTime"  [disabled]="startTime.value" (ngModelChange)="updateEndTime($event)"></ion-datetime>
+        </ion-item>
+        <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="form-error red-color">
+          <span *ngIf="endTime.errors.required">{{'END_TIME_REQUIRED' | translate}}</span>
+        </div>
+      </div>
+
+      <div *ngIf="!isTimeSlot">
+        <ion-item>
+          <ion-label>{{'TIME' | translate}}</ion-label>
+          <ion-datetime pickerFormat="HH:mm:ss" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [max]="today" formControlName="time" (ngModelChange)="updateTime($event)" ></ion-datetime>
+        </ion-item>
+        <div *ngIf="time.invalid && (time.dirty || time.touched)" class="form-error red-color">
+          <span *ngIf="time.errors.required">{{'TIME_REQUIRED' | translate}}</span>
+        </div>
+      </div>
+
+    </form>
+
+    <ion-item>
+      <ion-label>{{'TEAM' | translate}}</ion-label>
+      <ion-select multiple="true" [(ngModel)]="selectedTeams" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+        (ngModelChange)="updateTeams($event)">
+        <ion-option *ngFor="let item of teams | async" [value]="item" [selected]="item.selected">{{item.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'WORK_TYPE' | translate}}</ion-label>
+      <ion-select multiple="true" [(ngModel)]="selectedWorkTypes" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+        (ngModelChange)="updateWorkType($event)">
+        <ion-option *ngFor="let item of workTypes | async" [value]="item" [selected]="item.selected">{{item.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list padding class="worker-list">
+    <ion-list-header>{{'SELECT_WORKERS_BELOW' | translate}}</ion-list-header>
+
+    <ion-item *ngFor="let item of workers | async">
+      <ion-label>{{item.name}}  <span>{{item.teamName}} {{item.workType}}</span></ion-label>
+      <ion-checkbox [(ngModel)]="item.selected" [checked]="item.selected" (ngModelChange)="updateSelectedWorker(item)"></ion-checkbox>
+    </ion-item>
+
+    <ion-infinite-scroll (ionInfinite)="getNextPage($event)" [enabled]="enableScroll">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+    <ion-item *ngIf="!enableScroll" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <button ion-button block (click)="execution()" [disabled]="locationForm.invalid" color="primary" style="margin-bottom: 0;">{{'CONFIRM_BUTTON' | translate}}</button>
+</ion-footer>

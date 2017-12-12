@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { LngLat } from 'interfaces/amap-interface';
 
 export interface WsResponse {
   code: number;
@@ -840,6 +841,45 @@ export interface LocationCardDeleteResponse {
   errorMessage?: string;
 }
 
+/* =================================================Location API model================================================== */
+
+export interface Location extends LngLat{
+  battery: number; 
+  time: string;
+}
+
+export interface HistoryLocation {
+  uname: string;
+  team_id: number;
+  user_id: number;
+  uid: number;
+  dev_id: string;
+  loc_list: Location[];
+  worktype_id: number;
+  team_name: string; 
+}
+
+//listHisLoc
+export interface HistoryLocationListResponse {  //这个地方把接口名字改了，listHisLoc这是什么鸟名字，好比爹妈给起了一个狗屎，狗蛋一样的名字。
+  data_loc_list: HistoryLocation[];
+  errorMessage: string;
+}
+
+/* =================================================Project area list API model================================================== */
+
+export interface Area {
+  bigpolygons: string | LngLat[]; 
+  id: number;
+  name: string;
+  polygons: string | LngLat[];
+  project_id: number;
+  wgspolygons: string | LngLat[]; //这个地方要转JSON，后台直接把字符串丢过来了。防火， 防盗，防后台！
+}
+
+export interface ProjectAreaListResponse {
+    project_areas: Area[];
+    errorMessage?: string;
+}
 
 /*========================================================================================================*/
 

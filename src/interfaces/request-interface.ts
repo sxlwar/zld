@@ -351,6 +351,27 @@ export interface LocationCardDeleteOptions {
   location_card_id: number; //定位卡ID？谁TMD能看的出卡号，设备号，ID是不是一个东西。垃圾文档。响应是number， 请求是string，这个地方是被改成number的。
 }
 
+/*=================================================ListHisLoc API model==================================================*/
+
+export interface HistoryLocationListOptions {
+  sid: string;
+  user_ids?: number[];
+  start_time?: string; //文档上写的类型是time，原谅我的才疏学浅，不知道time是啥数据类型。
+  time?: string;
+  end_time?: string;
+  dev_ids?: number[];
+  project_id?: number;
+  team_ids?: number[];
+  worktype_ids?: number;
+}
+
+/*=================================================Project area list API model==================================================*/
+
+export interface ProjectAreaListOptions {
+  sid: string;
+  project_id: number; //projectList返回的工程ID是number类型，文档上这个地方是string，如果必须传string，我只能说日了狗了。
+}
+
 /*=================================================Common API model==================================================*/
 
 export interface BasicInfoListOptions {

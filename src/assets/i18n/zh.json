@@ -15,6 +15,7 @@
   "SIGNUP": "注册",
   "MOBILE_PHONE": "手机号",
   "COMPANY": "公司名称",
+  "DATE": "日期",
 
   "HOUR": "小时",
 
@@ -317,6 +318,11 @@
   "ADD_LOCATION_CARD": "添加定位卡",
   "LATEST_REPORT": "最后上报",
 
+  "TIME_SLOT":"时间段",
+  "START_TIME_REQUIRED": "请输入需要查询的开始时间",
+  "END_TIME_REQUIRED": "请输入需要查询的结束时间",
+  "TIME_REQUIRED": "请输入需要查询的时间",
+   
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",
