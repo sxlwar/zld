@@ -28,6 +28,8 @@ import { AddAttendanceCardComponent } from './add-attendance-card/add-attendance
 import { AddLocationCardComponent } from './add-location-card/add-location-card';
 import { HistoryLocationComponent } from './history-location/history-location';
 import { FormsModule } from '@angular/forms';
+import { HistoryTrajectoryComponent } from './history-trajectory/history-trajectory';
+import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/history-trajectory-workers';
 //endregion
 
 @NgModule({
@@ -57,6 +59,8 @@ import { FormsModule } from '@angular/forms';
     AddAttendanceCardComponent,
     AddLocationCardComponent,
     HistoryLocationComponent,
+    HistoryTrajectoryComponent,
+    HistoryTrajectoryWorkersComponent,
   ],
   imports: [
     IonicModule,
@@ -91,6 +95,8 @@ import { FormsModule } from '@angular/forms';
     AddAttendanceCardComponent,
     AddLocationCardComponent,
     HistoryLocationComponent,
+    HistoryTrajectoryComponent,
+    HistoryTrajectoryWorkersComponent,
   ]
 })
 export class ComponentsModule {

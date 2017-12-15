@@ -13,7 +13,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-list padding>
+  <ion-list padding style="margin-bottom: 0;">
 
     <ion-item>
       <ion-label>{{'TIME_SLOT' | translate}}</ion-label>
@@ -30,8 +30,8 @@
       <div *ngIf="isTimeSlot">
         <ion-item>
           <ion-label>{{'START_TIME' | translate}}</ion-label>
-          <ion-datetime pickerFormat="HH:mm:ss" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-            min="2017-01-01" [max]="today" formControlName="startTime"  (ngModelChange)="updateMaxEndTime($event)"></ion-datetime>
+          <ion-datetime pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [max]="today" formControlName="startTime" (ngModelChange)="updateMaxEndTime($event)"></ion-datetime>
         </ion-item>
         <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="form-error red-color">
           <span *ngIf="startTime.errors.required">{{'START_TIME_REQUIRED' | translate}}</span>
@@ -39,8 +39,8 @@
 
         <ion-item>
           <ion-label>{{'END_TIME' | translate}}</ion-label>
-          <ion-datetime pickerFormat="HH:mm:ss" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-            min="2017-01-01" [hourValues]="availableHourValues" formControlName="endTime"  [disabled]="startTime.value" (ngModelChange)="updateEndTime($event)"></ion-datetime>
+          <ion-datetime pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [hourValues]="availableHourValues" [minuteValues]="availableMinuteValues" formControlName="endTime" [disabled]="!startTime.value" (ngModelChange)="updateEndTime($event)"></ion-datetime>
         </ion-item>
         <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="form-error red-color">
           <span *ngIf="endTime.errors.required">{{'END_TIME_REQUIRED' | translate}}</span>
@@ -50,8 +50,8 @@
       <div *ngIf="!isTimeSlot">
         <ion-item>
           <ion-label>{{'TIME' | translate}}</ion-label>
-          <ion-datetime pickerFormat="HH:mm:ss" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-            min="2017-01-01" [max]="today" formControlName="time" (ngModelChange)="updateTime($event)" ></ion-datetime>
+          <ion-datetime pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [max]="today" formControlName="time" (ngModelChange)="updateTime($event)"></ion-datetime>
         </ion-item>
         <div *ngIf="time.invalid && (time.dirty || time.touched)" class="form-error red-color">
           <span *ngIf="time.errors.required">{{'TIME_REQUIRED' | translate}}</span>
@@ -82,15 +82,18 @@
     <ion-list-header>{{'SELECT_WORKERS_BELOW' | translate}}</ion-list-header>
 
     <ion-item *ngFor="let item of workers | async">
-      <ion-label>{{item.name}}  <span>{{item.teamName}} {{item.workType}}</span></ion-label>
+      <ion-label>{{item.name}}
+        <span>{{item.teamName}} {{item.workType}}</span>
+      </ion-label>
       <ion-checkbox [(ngModel)]="item.selected" [checked]="item.selected" (ngModelChange)="updateSelectedWorker(item)"></ion-checkbox>
     </ion-item>
 
-    <ion-infinite-scroll (ionInfinite)="getNextPage($event)" [enabled]="enableScroll">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-    <ion-item *ngIf="!enableScroll" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="getNextPage($event)" [enabled]="enableScroll | async">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-item *ngIf="!(enableScroll | async)" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
 </ion-content>
 
 <ion-footer>

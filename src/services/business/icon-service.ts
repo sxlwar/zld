@@ -141,7 +141,7 @@ export const trajectory: IconItem = {
     view: [PME, MM, PM, LM, TL, CW, QW, SW],
     opt: []
   },
-  page: ''
+  page: pages.trajectoryPage
 };
 
 export const attendanceMachine: IconItem = {

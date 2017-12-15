@@ -62,6 +62,14 @@ export class UpdateHistoryLocationOptionAction implements Action {
     constructor(public payload: { [key: string]: string | number[] }) { }
 }
 
+export const RESET_HISTORY_LOCATION_END_TIME = 'RESET_HISTORY_LOCATION_END_TIME';
+
+export class ResetHistoryLocationEndTimeAction implements Action {
+    readonly type = RESET_HISTORY_LOCATION_END_TIME;
+
+    constructor() { };
+}
+
 export const UPDATE_SELECTED_WORKER_ID = 'UPDATE_SELECTED_WORKER_ID';
 
 export class UpdateSelectedWorkerId implements Action {
@@ -78,6 +86,47 @@ export class UpdateMaxEndTimeAction implements Action {
     constructor(public payload: string) { }
 }
 
+export const UPDATE_TRAJECTORY_OPTIONS = 'UPDATE_TRAJECTORY_OPTIONS';
+
+export class UpdateTrajectoryOptionAction implements Action {
+    readonly type = UPDATE_TRAJECTORY_OPTIONS;
+
+    constructor(public payload: { [key: string]: string | number[] }) { }
+}
+
+export const RESET_TRAJECTORY_END_TIME = 'RESET_TRAJECTORY_END_TIME';
+
+export class ResetTrajectoryEndTimeAction implements Action {
+    readonly type = RESET_TRAJECTORY_END_TIME;
+
+    constructor() { }
+}
+
+export const UPDATE_TRAJECTORY_MAX_END_TIME = 'UPDATE_TRAJECTORY_MAX_END_TIME';
+
+export class UpdateMaxEndTimeOfTrajectoryAction implements Action {
+    readonly type = UPDATE_TRAJECTORY_MAX_END_TIME;
+
+    constructor(public payload: string) { }
+}
+
+export const UPDATE_TRAJECTORY_SELECTED_WORKER_ID = 'UPDATE_TRAJECTORY_SELECTED_WORKER_ID';
+
+export class UpdateTrajectorySelectedWorkerAction implements Action {
+    readonly type = UPDATE_TRAJECTORY_SELECTED_WORKER_ID;
+
+    constructor(public payload: { id: number, selected: boolean }) { }
+}
+
+/* ====================================================================Play actions================================================== */
+
+export const UPDATE_PLAY_WORKERS = 'UPDATE_PLAY_WORKERS';
+
+export class UpdatePlayWorkersAction implements Action {
+    readonly type = UPDATE_PLAY_WORKERS;
+
+    constructor(public payload: number[]) {}
+}
 
 export type Actions = GetHistoryLocationListAction
     | GetProjectAreaListAction
@@ -85,6 +134,12 @@ export type Actions = GetHistoryLocationListAction
     | HistoryLocationListSuccessAction
     | ProjectAreaListFailAction
     | ProjectAreaListSuccessAction
+    | ResetTrajectoryEndTimeAction
+    | ResetHistoryLocationEndTimeAction
     | UpdateHistoryLocationOptionAction
+    | UpdatePlayWorkersAction
+    | UpdateTrajectoryOptionAction
     | UpdateMaxEndTimeAction
-    | UpdateSelectedWorkerId;
+    | UpdateMaxEndTimeOfTrajectoryAction
+    | UpdateSelectedWorkerId
+    | UpdateTrajectorySelectedWorkerAction;

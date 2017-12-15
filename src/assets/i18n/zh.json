@@ -322,7 +322,20 @@
   "START_TIME_REQUIRED": "请输入需要查询的开始时间",
   "END_TIME_REQUIRED": "请输入需要查询的结束时间",
   "TIME_REQUIRED": "请输入需要查询的时间",
-   
+
+  "LOCATION_ATTENDANCE_RECORD": "定位考勤记录",
+  "PLAY": "播放",
+  "NORMAL": "正常",
+  "DOUBLE_RATE": "2倍",
+  "FOUR_FOLD_RATE": "4倍",
+  "EIGHT_FOLD_RATE": "8倍",
+  "SIXTEEN_RATE": "16倍", 
+  "START": "开始",
+  "FINISH": "结束",
+  "RESUME":"恢复",
+  "PAUSE": "暂停",
+  "SELECT_TRAJECTORY": "选择播放轨迹",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

@@ -1,3 +1,5 @@
+import { HistoryTrajectoryWorkersComponent } from './../components/history-trajectory-workers/history-trajectory-workers';
+import { HistoryTrajectoryComponent } from './../components/history-trajectory/history-trajectory';
 //region
 import { AddLocationCardComponent } from './../components/add-location-card/add-location-card';
 import { AddAttendanceCardComponent } from './../components/add-attendance-card/add-attendance-card';
@@ -112,6 +114,8 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     AddAttendanceCardComponent,
     AddLocationCardComponent,
     HistoryLocationComponent,
+    HistoryTrajectoryComponent,
+    HistoryTrajectoryWorkersComponent,
   ],
   providers: [
     Api,

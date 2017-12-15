@@ -1,0 +1,45 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'WORKER_TRAJECTORY' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="selectWorker($event)" *ngIf="haveTrajectory | async">
+        <ion-icon name="man"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="setCondition()">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <div #trajectory id="trajectory" class="map"></div>
+  <ion-fab bottom right>
+    <button ion-fab>{{'PLAY' | translate}}</button>
+    <ion-fab-list side="left">
+      <button ion-fab color="primary" (click)="playSubject.next(1)">
+        <ion-icon name="play"></ion-icon>
+      </button>
+      <button ion-fab color="primary" (click)="playSubject.next(2)">
+        <ion-icon name="pause"></ion-icon>
+      </button>
+      <button ion-fab color="primary" (click)="playSubject.next(3)">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+      <button ion-fab color="primary" (click)="playSubject.next(0)">
+        <ion-icon name="square"></ion-icon>
+      </button>
+    </ion-fab-list>
+    <ion-fab-list side="top">
+      <button ion-fab color="primary" (click)="rateSubject.next(1)">{{'NORMAL' | translate}}</button>
+      <button ion-fab color="primary" (click)="rateSubject.next(2)">{{'DOUBLE_RATE' | translate}}</button>
+      <button ion-fab color="primary" (click)="rateSubject.next(4)">{{'FOUR_FOLD_RATE' | translate}}</button>
+      <button ion-fab color="primary" (click)="rateSubject.next(8)">{{'EIGHT_FOLD_RATE' | translate}}</button>
+      <button ion-fab color="primary" (click)="rateSubject.next(16)">{{'SIXTEEN_RATE' | translate}}</button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-content>

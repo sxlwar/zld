@@ -33,7 +33,16 @@ import 'rxjs/add/observable/empty';
 import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
 import { RequestOption, ContractType } from '../../interfaces/request-interface';
+import { uniqBy } from 'lodash';
 //endregion
+
+export interface WorkerItem {
+  id: number;
+  name: string;
+  teamName: string;
+  workType: string;
+  selected: boolean;
+}
 
 @Injectable()
 export class WorkerService {
@@ -208,6 +217,51 @@ export class WorkerService {
 
   getNoLocationCardWorker(): Observable<RequestOption> {
     return Observable.of({ no_location_card: true });
+  }
+
+  getRestWorkerList(option: Observable<RequestOption>): Subscription {
+    return this.getCurrentPage()
+      .skip(1)
+      .distinctUntilChanged()
+      .combineLatest(this.getLimit(), this.getWorkerContractResponse().map(item => item.count).distinctUntilChanged())
+      .filter(([page, limit, count]) => Math.ceil(count / limit) + 1 >= page)
+      .subscribe(_ => this.getWorkerContracts(option));
+  }
+
+  /**
+   * 
+   * @param options userIds
+   * @description Set selected property by userIds that passed in, 
+   * selected should be true if the item's worker_id is contained in userIds, otherwise is false;
+   */
+  getWorkerItems(options: Observable<number[]>): Observable<WorkerItem[]> {
+    return this.getWorkerContractResponse()
+      .map(res => res.worker_contract.map(item => ({ id: item.worker_id, name: item.worker__employee__realname, teamName: item.team__name, workType: item.worktype__name, selected: false })))
+      .scan((acc, cur) => acc.concat(cur))
+      .combineLatest(options)
+      .map(([workers, selectedUserIds]) => {
+        const result = workers.map(item => ({ ...item, selected: selectedUserIds.indexOf(item.id) !== -1 }));
+
+        return uniqBy(result, 'id');
+      });
+  }
+
+  /**
+   * @description In order to cope with the return of empty response from server before normal response,
+   * this stream if only allowed to send out 'false' value;
+   */
+  getEnableScroll(): Observable<boolean> {
+    return this.getWorkerContractResponse()
+      .skip(1)
+      .map(response => !!response.worker_contract.length)
+      .filter(value=> !value)
+      .startWith(true)
+  }
+
+  getNextPage(infiniteScroll): Subscription {
+    this.incrementPage();
+    
+    return  this.getWorkerContractResponse().subscribe(response => infiniteScroll.complete());
   }
 
   /*==========================================error handle=====================================================*/

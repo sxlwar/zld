@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
-import { LocationOptions } from './../../interfaces/location-interface';
-import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId } from './../../actions/action/location-action';
+import { LocationOptions, TrajectoryOptions } from './../../interfaces/location-interface';
+import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction } from './../../actions/action/location-action';
 import { TimeService } from './../utils/time-service';
 import { RequestOption } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +10,7 @@ import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
 import { ProjectService } from './project-service';
-import { AppState, selectHistoryLocationResponse, selectProjectAreaResponse, selectHistoryLocationOptions, selectMaxEndTimeOptions } from './../../reducers/index-reducer';
+import { AppState, selectHistoryLocationResponse, selectProjectAreaResponse, selectHistoryLocationOptions, selectMaxEndTimeOptions, selectTrajectoryOptions, selectTrajectoryMaxEndTimeOption, selectTrajectoryPlayWorkers } from './../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
@@ -43,12 +43,22 @@ export class LocationService {
                 const { isTimeSlot, date, startTime, endTime, time, userIds, devIds, teamIds, workTypeIds } = options;
 
                 const ids = { user_id: userIds, team_ids: teamIds, dev_ids: devIds, worktype_ids: workTypeIds };
-                
+
                 if (isTimeSlot) {
                     return { ...ids, start_time: [date, startTime].join(' '), end_time: [date, endTime].join(' ') };
                 } else {
                     return { time: [date, time].join(' '), ...ids };
                 }
+            });
+    }
+
+    getTrajectoryAvailableOptions(): Observable<RequestOption> {
+        return this.getTrajectoryOptions()
+            .withLatestFrom(this.userInfo.getUserId())
+            .map(([option, userId]) => {
+                const { date, startTime, endTime, userIds } = option;
+
+                return { start_time: [date, startTime].join(' '), end_time: [date, endTime].join(' '), user_id: userIds || [userId] }
             });
     }
 
@@ -59,7 +69,19 @@ export class LocationService {
     getHistoryLocationOptions(): Observable<LocationOptions> {
         return this.store.select(selectHistoryLocationOptions);
     }
-    
+
+    getTrajectoryOptions(): Observable<TrajectoryOptions> {
+        return this.store.select(selectTrajectoryOptions);
+    }
+
+    getTrajectoryMaxEndTime(): Observable<string> {
+        return this.store.select(selectTrajectoryMaxEndTimeOption);
+    }
+
+    getTrajectoryPlayWorkers(): Observable<number[]> {
+        return this.store.select(selectTrajectoryPlayWorkers);
+    }
+
     /* ==================================================Condition update operate================================================ */
 
     updateMaxEndTime(startTime: string): void {
@@ -72,8 +94,36 @@ export class LocationService {
         this.store.dispatch(new UpdateHistoryLocationOptionAction(option));
     }
 
+    resetHistoryLocationEndTime(): void {
+        this.store.dispatch(new ResetHistoryLocationEndTimeAction());
+    }
+
     updateSelectedWorker(data: { id: number, selected: boolean }): void {
         this.store.dispatch(new UpdateSelectedWorkerId(data));
+    }
+
+    updateTrajectoryOption(option: { [key: string]: string | number[] }): void {
+        this.store.dispatch(new UpdateTrajectoryOptionAction(option));
+    }
+
+    resetTrajectoryEndTime() {
+        this.store.dispatch(new ResetTrajectoryEndTimeAction());
+    }
+
+    updateMaxEndTimeOfTrajectory(date) {
+        const isToday = this.timeService.isToday(date);
+
+        const time = isToday ? this.timeService.getTime(false) : '23: 59: 59';
+
+        this.store.dispatch(new UpdateMaxEndTimeOfTrajectoryAction(time));
+    }
+
+    updateTrajectorySelectedWorker(data: { id: number, selected: boolean }): void {
+        this.store.dispatch(new UpdateTrajectorySelectedWorkerAction(data));
+    }
+
+    updatePlayWorkers(data: number[]): void {
+        this.store.dispatch(new UpdatePlayWorkersAction(data));
     }
 
     /* ==================================================API request operate================================================ */

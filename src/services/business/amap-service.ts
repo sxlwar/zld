@@ -7,7 +7,7 @@ import { HistoryLocation, HistoryLocationListResponse } from './../../interfaces
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { flattenDeep } from 'lodash';
-import { Map, LngLat, ConvertorResult, Size, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, IconOptions, Icon, BasicControl, MarkerClusterer } from '../../interfaces/amap-interface';
+import { Map, LngLat, ConvertorResult, Size, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, IconOptions, Icon, BasicControl, MarkerClusterer, Polyline, PolylineOptions } from '../../interfaces/amap-interface';
 import { putInArray, ReduceFn } from '../utils/util';
 
 declare var AMap: any;
@@ -24,13 +24,31 @@ const polygonConfig = {
     fillOpacity: 0.35
 }
 
-const polyline = {
+const polylineConfig = {
     strokeColor: "#6b46e5",
     strokeOpacity: 1,
     strokeWeight: 2,
     strokeStyle: "solid"
 }
 
+const walkIconStyle = {
+    src: './../../assets/svg/map_walk_icon.png',
+    style: {
+        width: '36px',
+        height: '36px',
+        display: 'none'
+    }
+}
+
+const walkIconLabelStyle = {
+   style: {
+       position: 'absolute',
+       top: '-10px',
+       left: '-3px',
+       color: 'black',
+       display: 'none'
+   } 
+}
 export const topPosition = -30;
 
 @Injectable()
@@ -44,7 +62,7 @@ export class AmapService {
         public location: LocationService,
         public translate: TranslateService
     ) {
-        
+
     }
 
     monitorHistoryLocationResponse(): Subscription {
@@ -86,11 +104,6 @@ export class AmapService {
         });
 
         return Observable.fromPromise(promise);
-    }
-
-    polyline(config, onlyConfig) {
-        // const polylineConfig = onlyConfig ? config : _.assign(config, CONFIG.mapConfig.polyline);
-        // return new AMap.Polyline(polylineConfig);
     }
 
     icon(config: IconOptions): Icon {
@@ -172,11 +185,8 @@ export class AmapService {
     /* ============================================================Marker functions ======================================================== */
 
     addMarkersOnMap(map: Map): Observable<Marker[]> {
-        const simpleMarker = this.getSimpleMarker(map);
-
-        const infoWindow = this.getMarkerInfoWindow();
-
-        return simpleMarker.zip(infoWindow)
+        return this.getSimpleMarker(map, this.getMarkers())
+            .zip(this.getMarkerInfoWindow())
             .map(([markers, infoWindows]) => {
                 const result = markers.map((marker, index) => this.addClickForMarker(marker, infoWindows[index], map));
 
@@ -188,11 +198,11 @@ export class AmapService {
         marker.on('click', () => infoWindow.open(map, marker.getPosition()));
         return marker;
     }
-    
-    getSimpleMarker(map: Map): Observable<SimpleMarker[]> {
+
+    getSimpleMarker(map: Map, source: Observable<LngLat[][]>): Observable<SimpleMarker[]> {
         const putSimpleMarkerInArray: ReduceFn<SimpleMarker> = putInArray;
 
-        return this.getMarker()
+        return source
             .zip(this.getMarkerInformation())
             .mergeMap(([coordinates, { uname }]) => Observable.from(coordinates)
                 .mergeMap(group => Observable.from(group).mergeMap(({ lng, lat }) => this.simpleMarker({ position: [lng, lat], content: `<div class="locationIcon">${uname}</div>`, map })))
@@ -204,7 +214,7 @@ export class AmapService {
         return this.markersSubject.mergeMap(res => Observable.from(res.data_loc_list.filter(item => !!item.loc_list.length)));
     }
 
-    getMarker(): Observable<LngLat[][]> {
+    getMarkers(): Observable<LngLat[][]> {
         const putLngLatInArray: ReduceFn<LngLat[]> = putInArray;
 
         return this.markersSubject
@@ -241,9 +251,53 @@ export class AmapService {
         return Observable.fromPromise(promise);
     }
 
+    /* =====================================================================Polyline functions ================================================== */
+
+    addPolylineOnMap(map: Map): Observable<Polyline[]> {
+        return this.getMarkers()
+            .map(markers => markers.map(path => new AMap.Polyline({ map, path, ...polylineConfig })));
+    }
+
+    addStartAndEndMarkerForPolyline(map: Map): Subscription {
+        const markers = this.getMarkers().map(markers => markers.map(item => ([item[0], item[item.length - 1]])));
+
+        return this.getSimpleMarker(map, markers)
+            .zip(this.getMarkerInfoWindow())
+            .subscribe(([markers, infoWindows]) => {
+                markers.forEach((marker, index) => {
+                    if (index % 2 === 0) marker.setIconStyle('green')
+                    this.addClickForMarker(marker, infoWindows[index], map)
+                });
+            })
+    }
+
+    getMoveMarkers(map: Map): Observable<SimpleMarker[]> {
+        const markers = this.getMarkers().map(markers => markers.map(item => [item[0]]));
+
+        return this.getSimpleMarker(map, markers)
+            .zip(this.getMarkerInfoWindow())
+            .map(([markers, infoWindows]) => {
+                const result = flattenDeep(markers);
+
+                result.forEach((item, index) => {
+                    item.setIconStyle(walkIconStyle);
+                    item.setIconLabel(walkIconLabelStyle);
+                    this.addClickForMarker(item, infoWindows[index], map);
+                })
+
+                return result;
+            });
+    }
+
+    polyline(config: PolylineOptions, onlyConfig: boolean): Polyline {
+        const option = onlyConfig ? config : { ...config, ...polylineConfig };
+
+        return new AMap.Polyline(option);
+    }
+
     /* ===================================================================Clear overlays on map=================================================== */
-    
-     clearMarkers(source: Observable<Marker[]>, map: Map): Subscription {
+
+    clearMarkers(source: Observable<Marker[]>, map: Map): Subscription {
         return source.subscribe(markers => map.remove(markers));
     }
 
@@ -251,5 +305,5 @@ export class AmapService {
         return source.subscribe(clusterter => clusterter.clearMarkers());
     }
 
-    
+
 }

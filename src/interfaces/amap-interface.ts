@@ -68,6 +68,7 @@ export interface MarkerOptions {
 export declare class Marker extends Overlays {
     constructor(options: MarkerOptions);
     getPosition(): LngLat;
+    moveAlone(path: LngLat[], speed: number)
 }
 
 export interface SimpleMarkerOptions extends MarkerOptions {
@@ -76,7 +77,11 @@ export interface SimpleMarkerOptions extends MarkerOptions {
 }
 
 export declare class SimpleMarker extends Marker {
-
+    setIconStyle(style: string | object): void;
+    setIconThemeAndStyle(theme: string, style: string): void;
+    setIconLabel(label: string | object): void;
+    showPositionPoint(): void;
+    hidePositionPoint(): void;
 }
 
 export interface PolygonOptions {
@@ -108,6 +113,24 @@ export declare class Icon {
     constructor(options: IconOptions)
     getImageSize(): Size;
     setImageSize(size: Size): void;
+}
+
+export interface PolylineOptions {
+    map: Map;
+    path: LngLat[]
+    zIndex?: number;
+    bubble?: boolean; //是否将覆盖物的鼠标或touch等事件冒泡到地图上 
+    strokeWeight?: number;
+    strokeColor?: string; //线条颜色，使用16进制颜色代码赋值
+    strokeOpacity?: number; //小数
+    strokeStyle?: string; // value: solid, dashed
+}
+
+export declare class Polyline extends Overlays {
+    constructor(options: PolylineOptions)
+    getPath(): LngLat[];
+    setPath(path: LngLat[]):void;
+    setMap(map: Map): void;
 }
 
 /* ==================================================================InfoWindow================================================================= */

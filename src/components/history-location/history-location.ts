@@ -1,5 +1,4 @@
 import { RequestOption } from 'interfaces/request-interface';
-import { uniqBy } from 'lodash';
 import { LocationOptions } from './../../interfaces/location-interface';
 import { ProjectService } from './../../services/business/project-service';
 import { CraftService } from './../../services/business/craft-service';
@@ -7,20 +6,14 @@ import { LocationService } from './../../services/business/location-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TeamService } from './../../services/business/team-service';
 import { TimeService } from './../../services/utils/time-service';
-import { WorkerService } from './../../services/business/worker-service';
+import { WorkerService, WorkerItem } from './../../services/business/worker-service';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkerContractListResponse } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ViewController } from 'ionic-angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { range } from 'lodash';
 
 interface TeamItem {
-  id: number;
-  name: string;
-  selected: boolean;
-}
-
-interface WorkerItem {
   id: number;
   name: string;
   selected: boolean;
@@ -29,8 +22,6 @@ interface WorkerItem {
 interface WorkTypeItem {
   id: number;
   name: string;
-  teamName: string;
-  workType: string;
   selected: boolean;
 }
 
@@ -53,14 +44,14 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
 
   workers$$: Subscription;
 
-  enableScroll = true;
-
-  workerResponse: Observable<WorkerContractListResponse>;
+  enableScroll: Observable<boolean>;
 
   locationForm: FormGroup;
 
-  availableHourValues: string;
+  availableHourValues: number[];
 
+  availableMinuteValues: number[];
+  
   selectedTeams: string;
 
   options: Observable<LocationOptions>;
@@ -85,8 +76,6 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.workerResponse = this.worker.getWorkerContractResponse();
-
     this.options = this.location.getHistoryLocationOptions();
 
     this.worker.getWorkerContracts(this.getOption());
@@ -105,26 +94,11 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
   }
 
   getWorkers() {
-    this.workers = this.workerResponse
-      .map(res => res.worker_contract.map(item => ({ id: item.worker_id, name: item.worker__employee__realname, teamName: item.team__name, workType: item.worktype__name, selected: false })))
-      .scan((acc, cur) => acc.concat(cur))
-      .combineLatest(this.options.map(option => option.userIds))
-      .map(([workers, selectedUserIds]) => {
-        const result = workers.map(item => ({ ...item, selected: selectedUserIds.indexOf(item.id) !== -1 }));
-
-        return uniqBy(result, 'id');
-      });
+    this.workers = this.worker.getWorkerItems(this.options.map(option => option.userIds));
   }
 
   getRestWorkerList() {
-    const getRestData = this.worker.getCurrentPage()
-      .skip(1)
-      .distinctUntilChanged()
-      .combineLatest(this.worker.getLimit(), this.workerResponse.map(item => item.count).distinctUntilChanged())
-      .filter(([page, limit, count]) => Math.ceil(count / limit) + 1 >= page);
-
-    const subscription = getRestData
-      .subscribe(_ => this.worker.getWorkerContracts(this.getOption()));
+    const subscription = this.worker.getRestWorkerList(this.getOption());
 
     this.subscriptions.push(subscription);
   }
@@ -184,11 +158,15 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
   /* ============================================================Update option methods================================================ */
 
   updateMaxEndTime($event) {
-    const start = $event.split(':');
+    const [hour, minute] = $event.split(':');
 
-    const h = parseInt(start);
+    const h = parseInt(hour);
 
-    this.availableHourValues = start[0] + ',' + this.timeService.toTwo(String(h + 1));
+    const m = parseInt(minute);
+
+    this.availableHourValues = [h, h + 1];
+
+    this.availableMinuteValues = range(m, 60);
 
     this.updateStartTime($event);
   }
@@ -199,6 +177,7 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
 
   updateStartTime(startTime) {
     this.location.updateHistoryLocationOption({ startTime });
+    this.location.resetHistoryLocationEndTime();
   }
 
   updateEndTime(endTime) {
@@ -237,27 +216,13 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
   }
 
   getEnableScroll() {
-    const subscription = this.workerResponse
-      .skip(1)
-      .filter(response => !response.worker_contract.length)
-      .subscribe(_ => this.enableScroll = false)
-
-    this.subscriptions.push(subscription);
+    this.enableScroll = this.worker.getEnableScroll().share();
   }
 
   getNextPage(infiniteScroll) {
-    if (this.loading) return;
-
-    this.loading = true;
-
-    this.worker.incrementPage();
-
     this.workers$$ && this.workers$$.unsubscribe();
 
-    this.workers$$ = this.workerResponse.subscribe(response => {
-      this.loading = false;
-      infiniteScroll.complete();
-    });
+    this.workers$$ = this.worker.getNextPage(infiniteScroll);
   }
 
   execution() {
