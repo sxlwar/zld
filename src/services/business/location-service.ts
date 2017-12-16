@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
-import { LocationOptions, TrajectoryOptions } from './../../interfaces/location-interface';
-import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction } from './../../actions/action/location-action';
+import { LocationOptions, TrajectoryOptions, Trajectory } from './../../interfaces/location-interface';
+import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction, UpdateTrajectoryAction, UpdatePlayStateAction, UpdateRateStateAction } from './../../actions/action/location-action';
 import { TimeService } from './../utils/time-service';
 import { RequestOption } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
@@ -10,7 +10,7 @@ import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
 import { ProjectService } from './project-service';
-import { AppState, selectHistoryLocationResponse, selectProjectAreaResponse, selectHistoryLocationOptions, selectMaxEndTimeOptions, selectTrajectoryOptions, selectTrajectoryMaxEndTimeOption, selectTrajectoryPlayWorkers } from './../../reducers/index-reducer';
+import { AppState, selectHistoryLocationResponse, selectProjectAreaResponse, selectHistoryLocationOptions, selectMaxEndTimeOptions, selectTrajectoryOptions, selectTrajectoryMaxEndTimeOption, selectTrajectoryPlayWorkers, selectTrajectories, selectTrajectoryIndexes, selectTrajectoryRateState, selectTrajectoryPlayState } from './../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
 
@@ -82,6 +82,20 @@ export class LocationService {
         return this.store.select(selectTrajectoryPlayWorkers);
     }
 
+    getTrajectories(): Observable<Trajectory[]> {
+        return this.store.select(selectTrajectories)
+            .combineLatest(this.store.select(selectTrajectoryIndexes))
+            .map(([trajectories, indexes]) => trajectories.filter((_, index) => indexes.indexOf(index) !== -1));
+    }
+
+    getPlayRate(): Observable<number> {
+        return this.store.select(selectTrajectoryRateState);
+    }
+
+    getPlayState(): Observable<number> {
+        return this.store.select(selectTrajectoryPlayState);
+    }
+
     /* ==================================================Condition update operate================================================ */
 
     updateMaxEndTime(startTime: string): void {
@@ -118,12 +132,47 @@ export class LocationService {
         this.store.dispatch(new UpdateMaxEndTimeOfTrajectoryAction(time));
     }
 
+    /* ==================================================Play related operate ============================================== */
+
     updateTrajectorySelectedWorker(data: { id: number, selected: boolean }): void {
         this.store.dispatch(new UpdateTrajectorySelectedWorkerAction(data));
     }
 
     updatePlayWorkers(data: number[]): void {
         this.store.dispatch(new UpdatePlayWorkersAction(data));
+    }
+
+    updateTrajectory(data: Observable<Trajectory[]>): Subscription {
+        return data.subscribe(source => this.store.dispatch(new UpdateTrajectoryAction(source)))
+    }
+
+    toggleTrajectoryDisplayState(): Subscription {
+        const trajectories = this.store.select(selectTrajectories);
+
+        const indexes = this.store.select(selectTrajectoryIndexes);
+
+        return trajectories.combineLatest(indexes)
+            .subscribe(([trajectories, indexes]) => {
+                trajectories.forEach((item, index) => {
+                    if (indexes.indexOf(index) !== -1) {
+                        item.endMarker.show();
+                        item.startMarker.show();
+                        item.polyline.show();
+                    }else {
+                        item.endMarker.hide();
+                        item.startMarker.hide();
+                        item.polyline.hide();
+                    }
+                })
+            });
+    }
+
+    updatePlayState(state: Observable<number>): Subscription {
+        return state.subscribe(state => this.store.dispatch(new UpdatePlayStateAction(state)));
+    }
+
+    updateRateState(state: Observable<number>): Subscription {
+        return state.subscribe(state => this.store.dispatch(new UpdateRateStateAction(state)));
     }
 
     /* ==================================================API request operate================================================ */

@@ -1,21 +1,16 @@
 import { HistoryTrajectoryWorkersComponent } from './../../components/history-trajectory-workers/history-trajectory-workers';
 import { ConfigService } from './../../services/config/config-service';
 import { AmapService } from './../../services/business/amap-service';
-import { Map, SimpleMarker, Polyline, LngLat } from '../../interfaces/amap-interface';
+import { Map } from '../../interfaces/amap-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { LocationService } from './../../services/business/location-service';
 import { HistoryTrajectoryComponent } from './../../components/history-trajectory/history-trajectory';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
+import { PlayUnit, PlayState } from '../../interfaces/location-interface';
 
 declare var AMap: any;
-
-
-interface PlayUnit {
-  path: LngLat[];
-  moveMarker: SimpleMarker;
-}
 
 @IonicPage()
 @Component({
@@ -27,17 +22,17 @@ export class TrajectoryPage {
 
   subscriptions: Subscription[] = [];
 
-  playSubject: Subject<number> = new Subject();
+  playStateSubject: Subject<number> = new Subject();
 
   rateSubject: Subject<number> = new Subject();
 
-  polyline: Observable<Polyline[]>;
+  playSubject: BehaviorSubject<PlayUnit[]> = new BehaviorSubject(null);
 
-  moveMarkers: Observable<SimpleMarker[]>;
+  rateButtonColor: Observable<number>;
+
+  playButtonColor: Observable<number>;
 
   haveTrajectory: Observable<boolean>;
-
-  speedRate = 100;
 
   constructor(
     public navCtrl: NavController,
@@ -68,13 +63,7 @@ export class TrajectoryPage {
     this.haveTrajectory = this.location.getHistoryLocationResponse()
       .map(response => !!response.data_loc_list.filter(item => item.loc_list.length).length)
 
-    this.moveMarkers = this.mapService.getMoveMarkers(this.map);
-
-    // this.moveMarkers.subscribe(markers => console.log(markers));
-
     this.launch();
-
-    // this.location.getTrajectoryPlayWorkers().subscribe(item => item);
   }
 
   launch() {
@@ -86,7 +75,7 @@ export class TrajectoryPage {
 
     this.addOverlays();
 
-    this.monitorPlayState();
+    this.monitorPlay();
   }
 
   /* ===============================================Server request=========================================== */
@@ -104,10 +93,8 @@ export class TrajectoryPage {
   }
 
   getLocationList(): void {
-    this.location.updateCondition().next(true);
-
     const subscription = this.location.getHistoryLocationList(
-      this.location.updateCondition().startWith(true).mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
+      this.location.updateCondition().mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
     );
 
     this.subscriptions.push(subscription);
@@ -116,86 +103,77 @@ export class TrajectoryPage {
   /* =================================================Overlays================================================= */
 
   addOverlays() {
-    this.getProjectArea();
 
-    this.getPolyline();
-  }
+    const projectArea$$ = this.mapService.generateArea(this.map);
 
-  getPolyline() {
-    this.polyline = this.mapService.addPolylineOnMap(this.map);
+    const trajectory$$ = this.mapService.setTrajectory(this.map);
 
-    const startAndEndMarker$$ = this.mapService.addStartAndEndMarkerForPolyline(this.map);
+    const display$$ = this.location.toggleTrajectoryDisplayState();
 
-    const polyline$$ = this.polyline.subscribe(polyline => polyline.forEach(item => item.setMap(this.map)));
-
-    this.subscriptions = [...this.subscriptions, startAndEndMarker$$, polyline$$];
-  }
-
-  getProjectArea() {
-    const subscriptions = this.mapService.generateArea(this.map);
-
-    this.subscriptions = [...this.subscriptions, ...subscriptions];
+    this.subscriptions = [...this.subscriptions, ...projectArea$$, trajectory$$, display$$];
   }
 
   /* ============================================Play related============================================= */
 
-  monitorPlayState() {
-    this.play();
+  monitorPlay() {
+    this.subscriptions = [
+      ...this.subscriptions,
+      this.mapService.getPlayUnits(this.map).subscribe(this.playSubject),
+      this.play(),
+      this.stop(),
+      this.pause(),
+      this.resume(),
+      this.location.updatePlayState(this.playStateSubject),
+      this.location.updateRateState(this.rateSubject)
+    ];
+
+    this.getRateButtonColor();
+
+    this.getPlayButtonColor();
   }
 
   getRate(): Observable<number> {
     return this.rateSubject.startWith(1);
   }
 
-  getPlayState(): Observable<number> {
-    return this.playSubject.startWith(0);
+  play(): Subscription {
+    return this.getPlayState(PlayState.play).subscribe(item => this.mapService.startPlay(item));
   }
 
-  getPlayIndex(): Observable<number[]> {
-    return this.location.getTrajectoryPlayWorkers()
-      .zip(this.location.getHistoryLocationResponse().map(res => res.data_loc_list.filter(item => !!item.loc_list.length)))
-      .map(([selectedUsers, users]) => selectedUsers.map(userId => users.findIndex(user => user.user_id === userId)))
+  stop(): Subscription {
+    return this.getPlayState(PlayState.stop).subscribe(item => this.mapService.stopPlay(item));
   }
 
-  play() {
-    const subscription = this.playSubject.filter(item => item === 1)
-      .mergeMapTo(
-      this.getPlayUnits()
-      // .do(v => console.log(v))
-      // .combineLatest(this.getRate().do(v => console.log(v)))
-      )
-      .subscribe(v => console.log(v));
-    // .subscribe(([trajectory, rate]) => {
-    //   trajectory.forEach((item, index) => {
-    //     item.moveMarker.moveAlone(item.path, rate * this.speedRate)
-    //   });
-    // });
-
-    this.subscriptions.push(subscription);
+  pause(): Subscription {
+    return this.getPlayState(PlayState.pause).subscribe(item => item.moveMarker.pauseMove())
   }
 
-  stop() {
-
+  resume(): Subscription {
+    return this.getPlayState(PlayState.resume).subscribe(item => item.moveMarker.resumeMove());
   }
 
-  getPlayUnits(): Observable<PlayUnit[]> {
-    const source = this.getPlayIndex()
-      .combineLatest(this.polyline, this.moveMarkers)
-      .map(([indexes, polyline, markers]) => {
-        console.log(indexes, polyline, markers);
+  getPlayState(state: number): Observable<PlayUnit> {
+    return this.location.getPlayState()
+      .filter(item => item === state)
+      .mergeMapTo(this.playSubject.filter(item => !!item)
+        .mergeMap(units => Observable.from(units))
+      );
+  }
 
-        return indexes.map(idx => ({ path: polyline[idx].getPath(), moveMarker: markers[idx] }))
-      })
+  /* ================================================Button color=========================================== */
 
-    source.subscribe(v => console.log(v));
+  getRateButtonColor() {
+    this.rateButtonColor = this.location.getPlayRate();
+  }
 
-    return source;
+  getPlayButtonColor() {
+    this.playButtonColor = this.location.getPlayState();
   }
 
   /* ===============================================Config related========================================== */
 
   setCondition() {
-    this.modalCtrl.create(HistoryTrajectoryComponent).present();
+    this.modalCtrl.create(HistoryTrajectoryComponent, { map: this.map }).present();
   }
 
   selectWorker(ev) {
@@ -206,6 +184,8 @@ export class TrajectoryPage {
 
   ionViewWillUnload() {
     this.config.showTabBar();
+
+    this.location.updatePlayState(Observable.of(PlayState.stop));
 
     this.subscriptions.forEach(item => item.unsubscribe());
   }

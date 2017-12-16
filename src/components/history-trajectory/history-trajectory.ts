@@ -1,3 +1,5 @@
+import { Map } from '../../interfaces/amap-interface';
+import { AmapService } from './../../services/business/amap-service';
 import { RequestOption } from './../../interfaces/request-interface';
 import { ProjectService } from './../../services/business/project-service';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
@@ -9,7 +11,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LocationService } from './../../services/business/location-service';
 import { TimeService } from './../../services/utils/time-service';
-import { ViewController } from 'ionic-angular';
+import { ViewController, NavParams } from 'ionic-angular';
 import { WorkerService } from './../../services/business/worker-service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { range } from 'lodash';
@@ -61,7 +63,9 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     public location: LocationService,
     public fb: FormBuilder,
     public permission: PermissionService,
-    public project: ProjectService
+    public project: ProjectService,
+    public mapService: AmapService,
+    public navParams: NavParams
   ) {
     this.today = this.timeService.getDate(new Date, true);
     worker.resetPage();
@@ -175,7 +179,17 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
   execution() {
     this.location.updateCondition().next(true);
 
+    this.clearPolyline();
+
     this.dismiss();
+  }
+
+  clearPolyline() {
+    const map: Map = this.navParams.get('map');
+
+    const subscription = this.mapService.clearPolyline(map);
+
+    this.subscriptions.push(subscription);
   }
 
   get startTime() {

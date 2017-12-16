@@ -17,7 +17,7 @@ export declare class Map {
     getZoom(): number;
     getLayers(): Array<any>;
     getCenter(): LngLat;
-    remove(overlays: Marker[] | Polygon[]): void;
+    remove(overlays: Marker[] | Polygon[] | Polyline | Marker): void;
     addControl(obj: Object): void;  //参数可以是插件列表中的任何插件对象，如：ToolBar、OverView、Scale等。
     setZoomAndCenter(zoomLevel: number, center: LngLat): void;
 }
@@ -54,8 +54,15 @@ export declare class Pixel {
 
 /* ======================================================Overlays============================================================== */
 
+export interface MapsEvent {
+    lnglat: LngLat;
+    pixel: Pixel;
+    type: string;
+    target: Object;
+}
+
 export declare class Overlays {
-    on(type: string, fun: () => void): void;
+    on(type: string, fun: (event: MapsEvent | MoveEvent) => void): void;
 }
 
 export interface MarkerOptions {
@@ -68,7 +75,17 @@ export interface MarkerOptions {
 export declare class Marker extends Overlays {
     constructor(options: MarkerOptions);
     getPosition(): LngLat;
-    moveAlone(path: LngLat[], speed: number)
+    moveAlong(path: LngLat[], speed: number);
+    stopMove(): void;
+    pauseMove(): void;
+    resumeMove(): void;
+    moveTo(path: LngLat, speed: number): void;
+    hide(): void;
+    show(): void;
+}
+
+export interface MoveEvent {
+    passedPath: LngLat[];
 }
 
 export interface SimpleMarkerOptions extends MarkerOptions {
@@ -131,6 +148,8 @@ export declare class Polyline extends Overlays {
     getPath(): LngLat[];
     setPath(path: LngLat[]):void;
     setMap(map: Map): void;
+    show(): void;
+    hide(): void;
 }
 
 /* ==================================================================InfoWindow================================================================= */

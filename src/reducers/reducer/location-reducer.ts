@@ -1,6 +1,6 @@
 import { TimeService } from './../../services/utils/time-service';
-import { LocationOptions, TrajectoryOptions, PlayOptions } from './../../interfaces/location-interface';
-import { HistoryLocationListResponse, ProjectAreaListResponse } from './../../interfaces/response-interface';
+import { LocationOptions, TrajectoryOptions, PlayOptions, PlayState } from './../../interfaces/location-interface';
+import { HistoryLocationListResponse, ProjectAreaListResponse, HistoryLocation } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/location-action';
 
 export interface State {
@@ -38,7 +38,11 @@ export const initialState: State = {
         userIds: []
     },
     playOptions: {
-        userIds: []
+        userIds: [],
+        indexes: [],
+        trajectories: [],
+        playState: PlayState.stop,
+        rateState: 1
     }
 }
 
@@ -49,8 +53,15 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return Object.assign({}, state, { projectAreaResponse: action.payload });
 
         case actions.HISTORY_LOCATION_LIST_FAIL:
-        case actions.HISTORY_LOCATION_LIST_SUCCESS:
-            return Object.assign({}, state, { historyLocationResponse: action.payload });
+        case actions.HISTORY_LOCATION_LIST_SUCCESS: {
+            const userIds = updatePlayOptionUserIds(action.payload.data_loc_list);
+
+            const indexes = playIndexes(userIds, action.payload.data_loc_list);
+
+            const playOptions = { ...state.playOptions, userIds, indexes };
+
+            return Object.assign({}, state, { historyLocationResponse: action.payload, playOptions });
+        }
 
         case actions.UPDATE_HISTORY_LOCATION_OPTION: {
             const locationOptions = { ...state.locationOptions, ...action.payload }
@@ -99,7 +110,16 @@ export function reducer(state = initialState, action: actions.Actions): State {
         }
 
         case actions.UPDATE_PLAY_WORKERS:
-            return { ...state, playOptions: { userIds: action.payload } };
+            return { ...state, playOptions: { ...state.playOptions, userIds: action.payload, indexes: playIndexes(action.payload, state.historyLocationResponse.data_loc_list) } };
+
+        case actions.UPDATE_PLAY_STATE:
+            return { ...state, playOptions: { ...state.playOptions, playState: action.payload } };
+
+        case actions.UPDATE_RATE_STATE:
+            return { ...state, playOptions: { ...state.playOptions, rateState: action.payload } };
+
+        case actions.UPDATE_TRAJECTORY:
+            return { ...state, playOptions: { ...state.playOptions, trajectories: action.payload } };
 
         case actions.GET_PROJECT_AREA:
         case actions.GET_HISTORY_LOCATION:
@@ -112,6 +132,22 @@ export function updateUserIds(source: number[], data: { id: number, selected: bo
     if (data.selected) return [...source, data.id];
 
     return source.filter(item => item !== data.id);
+}
+
+export function updatePlayOptionUserIds(source: HistoryLocation[]): number[] {
+    return source.filter(item => item.loc_list.length).map(item => item.user_id);
+}
+
+export function playIndexes(userIds: number[], source: HistoryLocation[]): number[] {
+    const target = source.filter(item => !!item.loc_list.length);
+
+    const result = [];
+
+    target.forEach((item, index) => {
+        if (userIds.indexOf(item.user_id) !== -1) result.push(index);
+    })
+
+    return result;
 }
 
 export const getHistoryLocationResponse = (state: State) => state.historyLocationResponse;
@@ -127,3 +163,11 @@ export const getTrajectoryOptions = (state: State) => state.trajectoryOptions;
 export const getTrajectoryMaxEndTime = (state: State) => state.trajectoryMaxEndTime;
 
 export const getPlayWorkers = (state: State) => state.playOptions.userIds;
+
+export const getTrajectories = (state: State) => state.playOptions.trajectories;
+
+export const getSelectedIndexes = (state: State) => state.playOptions.indexes;
+
+export const getPlayState = (state: State) => state.playOptions.playState;
+
+export const getRateState = (state: State) => state.playOptions.rateState;

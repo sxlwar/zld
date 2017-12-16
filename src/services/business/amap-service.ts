@@ -7,8 +7,9 @@ import { HistoryLocation, HistoryLocationListResponse } from './../../interfaces
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { flattenDeep } from 'lodash';
-import { Map, LngLat, ConvertorResult, Size, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, IconOptions, Icon, BasicControl, MarkerClusterer, Polyline, PolylineOptions } from '../../interfaces/amap-interface';
+import { Map, LngLat, ConvertorResult, Size, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, IconOptions, Icon, BasicControl, MarkerClusterer, Polyline, PolylineOptions, MoveEvent } from '../../interfaces/amap-interface';
 import { putInArray, ReduceFn } from '../utils/util';
+import { PlayUnit, PlayState } from './../../interfaces/location-interface';
 
 declare var AMap: any;
 
@@ -31,25 +32,31 @@ const polylineConfig = {
     strokeStyle: "solid"
 }
 
-const walkIconStyle = {
+const passedPolylineConfig = {
+    strokeColor: "#FF0000",
+    strokeWeight: 2
+}
+
+export const walkIconStyle = {
     src: './../../assets/svg/map_walk_icon.png',
     style: {
         width: '36px',
-        height: '36px',
-        display: 'none'
+        height: '36px'
     }
 }
 
-const walkIconLabelStyle = {
-   style: {
-       position: 'absolute',
-       top: '-10px',
-       left: '-3px',
-       color: 'black',
-       display: 'none'
-   } 
+export const walkIconLabelStyle = {
+    style: {
+        position: 'absolute',
+        top: '-10px',
+        left: '-3px',
+        color: 'black'
+    }
 }
+
 export const topPosition = -30;
+
+export const rateSpeed = 100;
 
 @Injectable()
 export class AmapService {
@@ -253,22 +260,40 @@ export class AmapService {
 
     /* =====================================================================Polyline functions ================================================== */
 
-    addPolylineOnMap(map: Map): Observable<Polyline[]> {
+    setTrajectory(map: Map): Subscription {
+        const polyline = this.getPolyline(map);
+
+        const markers = this.getStartAndEndMarkerForPolyline(map);
+
+        const moveMarkers = this.getMoveMarkers(map);
+
+        const result = polyline.zip(markers, moveMarkers)
+            .map(([lines, startAndEnd, moveMarkers]) => lines.map((polyline, index) => {
+                const [startMarker, endMarker] = startAndEnd[index];
+
+                return { polyline, startMarker, endMarker, moveMarker: moveMarkers[index] };
+            }));
+
+        return this.location.updateTrajectory(result);
+    }
+
+    getPolyline(map: Map): Observable<Polyline[]> {
         return this.getMarkers()
             .map(markers => markers.map(path => new AMap.Polyline({ map, path, ...polylineConfig })));
     }
 
-    addStartAndEndMarkerForPolyline(map: Map): Subscription {
+    getStartAndEndMarkerForPolyline(map: Map): Observable<SimpleMarker[][]> {
         const markers = this.getMarkers().map(markers => markers.map(item => ([item[0], item[item.length - 1]])));
 
         return this.getSimpleMarker(map, markers)
             .zip(this.getMarkerInfoWindow())
-            .subscribe(([markers, infoWindows]) => {
-                markers.forEach((marker, index) => {
-                    if (index % 2 === 0) marker.setIconStyle('green')
-                    this.addClickForMarker(marker, infoWindows[index], map)
-                });
-            })
+            .mergeMap(([markers, infoWindows]) => Observable.from(markers.map((marker, index) => {
+                if (index % 2 === 0) marker.setIconStyle('green');
+                this.addClickForMarker(marker, infoWindows[index], map);
+                return marker;
+            }))
+                .bufferCount(2)
+                .reduce(putInArray, []))
     }
 
     getMoveMarkers(map: Map): Observable<SimpleMarker[]> {
@@ -282,6 +307,7 @@ export class AmapService {
                 result.forEach((item, index) => {
                     item.setIconStyle(walkIconStyle);
                     item.setIconLabel(walkIconLabelStyle);
+                    item.hide();
                     this.addClickForMarker(item, infoWindows[index], map);
                 })
 
@@ -293,6 +319,57 @@ export class AmapService {
         const option = onlyConfig ? config : { ...config, ...polylineConfig };
 
         return new AMap.Polyline(option);
+    }
+
+    getPlayUnits(map: Map): Observable<PlayUnit[]> {
+        return this.location.getTrajectories()
+            .combineLatest(this.location.getPlayRate())
+            .mergeMap(([trajectories, rate]) => Observable.from(trajectories)
+                .map(trajectory => ({ path: trajectory.polyline.getPath(), moveMarker: trajectory.moveMarker, passedPolyline: new AMap.Polyline({ ...passedPolylineConfig, map }), rate: rate * rateSpeed }))
+                .reduce(putInArray, [])
+            );
+    }
+
+    startPlay(unit: PlayUnit): void {
+        unit.moveMarker.show();
+
+        unit.moveMarker.moveAlong(unit.path, unit.rate);
+
+        unit.passedPolyline.show();
+
+        this.watchMoving(unit);
+    }
+
+    watchMoving(unit: PlayUnit): void {
+        unit.moveMarker.on('moving', (event: MoveEvent) => {
+            unit.passedPolyline.setPath(event.passedPath);
+
+            const last = unit.path[unit.path.length - 1];
+
+            const current = unit.moveMarker.getPosition();
+
+            if (last.lat === current.lat && last.lng === current.lng) {
+                unit.moveMarker.hide();
+                unit.passedPolyline.hide();
+                this.location.updatePlayState(Observable.of(PlayState.stop))
+            }
+        });
+    }
+
+    stopPlay(unit: PlayUnit): void {
+        unit.moveMarker.stopMove();
+        unit.moveMarker.hide();
+        unit.passedPolyline.hide();
+    }
+
+    clearPolyline(map: Map): Subscription {
+        return this.location.getTrajectories()
+            .subscribe(trajectories => trajectories.forEach(item => {
+                map.remove(item.polyline);
+                map.remove(item.startMarker);
+                map.remove(item.endMarker);
+                map.remove(item.moveMarker);
+            }))
     }
 
     /* ===================================================================Clear overlays on map=================================================== */

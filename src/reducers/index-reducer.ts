@@ -309,6 +309,10 @@ export const selectMaxEndTimeOptions = createSelector(getLocation, location.getM
 export const selectTrajectoryOptions = createSelector(getLocation, location.getTrajectoryOptions);
 export const selectTrajectoryMaxEndTimeOption = createSelector(getLocation, location.getTrajectoryMaxEndTime);
 export const selectTrajectoryPlayWorkers = createSelector(getLocation, location.getPlayWorkers);
+export const selectTrajectories = createSelector(getLocation, location.getTrajectories);
+export const selectTrajectoryPlayState = createSelector(getLocation, location.getPlayState);
+export const selectTrajectoryRateState = createSelector(getLocation, location.getRateState);
+export const selectTrajectoryIndexes = createSelector(getLocation, location.getSelectedIndexes);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

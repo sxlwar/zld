@@ -1,6 +1,7 @@
 import { HistoryLocationListResponse, ProjectAreaListResponse } from './../../interfaces/response-interface';
 import { HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+import { Trajectory } from '../../interfaces/location-interface';
 
 /* ==================================================API actions=============================================== */
 
@@ -128,18 +129,45 @@ export class UpdatePlayWorkersAction implements Action {
     constructor(public payload: number[]) {}
 }
 
+export const UPDATE_TRAJECTORY = 'UPDATE_TRAJECTORY'; 
+
+export class UpdateTrajectoryAction implements Action {
+    readonly type = UPDATE_TRAJECTORY;
+
+    constructor(public payload: Trajectory[]) {}
+}
+
+export const UPDATE_PLAY_STATE = 'UPDATE_PLAY_STATE';
+
+export class UpdatePlayStateAction implements Action {
+    readonly type = UPDATE_PLAY_STATE;
+
+    constructor(public payload: number) {}
+}
+
+export const UPDATE_RATE_STATE = 'UPDATE_RATE_STATE';
+
+export class UpdateRateStateAction implements Action {
+    readonly type = UPDATE_RATE_STATE;
+
+    constructor(public payload: number) {}
+}
+
 export type Actions = GetHistoryLocationListAction
     | GetProjectAreaListAction
     | HistoryLocationListFailAction
     | HistoryLocationListSuccessAction
     | ProjectAreaListFailAction
     | ProjectAreaListSuccessAction
-    | ResetTrajectoryEndTimeAction
     | ResetHistoryLocationEndTimeAction
+    | ResetTrajectoryEndTimeAction
     | UpdateHistoryLocationOptionAction
-    | UpdatePlayWorkersAction
-    | UpdateTrajectoryOptionAction
     | UpdateMaxEndTimeAction
     | UpdateMaxEndTimeOfTrajectoryAction
+    | UpdatePlayStateAction
+    | UpdatePlayWorkersAction
+    | UpdateRateStateAction
+    | UpdateTrajectoryAction
     | UpdateSelectedWorkerId
+    | UpdateTrajectoryOptionAction
     | UpdateTrajectorySelectedWorkerAction;
