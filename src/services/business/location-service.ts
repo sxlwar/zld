@@ -1,6 +1,7 @@
+import { Map } from '../../interfaces/amap-interface';
 import { Subject } from 'rxjs/Subject';
-import { LocationOptions, TrajectoryOptions, Trajectory } from './../../interfaces/location-interface';
-import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction, UpdateTrajectoryAction, UpdatePlayStateAction, UpdateRateStateAction } from './../../actions/action/location-action';
+import { LocationOptions, TrajectoryOptions, Trajectory, TrajectoryInfo } from './../../interfaces/location-interface';
+import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction, UpdateTrajectoryAction, UpdatePlayStateAction, UpdateRateStateAction, UpdateMapAction } from './../../actions/action/location-action';
 import { TimeService } from './../utils/time-service';
 import { RequestOption } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
@@ -96,6 +97,18 @@ export class LocationService {
         return this.store.select(selectTrajectoryPlayState);
     }
 
+    getTrajectoryInformation(): Observable<TrajectoryInfo> {
+        const name: Observable<string> = this.getTrajectoryPlayWorkers()
+            .combineLatest(
+            this.getHistoryLocationResponse().map(res => res.data_loc_list.filter(item => !!item.loc_list.length)),
+            (userIds, list) => list.filter(item => userIds.indexOf(item.user_id) !== -1).map(item => item.uname).join(',')
+            );
+
+        return this.getTrajectoryOptions()
+            .map(option => option.date + ' ' + option.startTime + '-' + option.endTime)
+            .combineLatest(name, (time, name) => ({ time, name }));
+    }
+
     /* ==================================================Condition update operate================================================ */
 
     updateMaxEndTime(startTime: string): void {
@@ -134,6 +147,10 @@ export class LocationService {
 
     /* ==================================================Play related operate ============================================== */
 
+    updateMap(map: Map): void {
+        this.store.dispatch(new UpdateMapAction(map));
+    }
+
     updateTrajectorySelectedWorker(data: { id: number, selected: boolean }): void {
         this.store.dispatch(new UpdateTrajectorySelectedWorkerAction(data));
     }
@@ -142,23 +159,20 @@ export class LocationService {
         this.store.dispatch(new UpdatePlayWorkersAction(data));
     }
 
-    updateTrajectory(data: Observable<Trajectory[]>): Subscription {
-        return data.subscribe(source => this.store.dispatch(new UpdateTrajectoryAction(source)))
+    updateTrajectory(trajectories: Trajectory[]): void {
+        this.store.dispatch(new UpdateTrajectoryAction(trajectories));
     }
 
     toggleTrajectoryDisplayState(): Subscription {
-        const trajectories = this.store.select(selectTrajectories);
-
-        const indexes = this.store.select(selectTrajectoryIndexes);
-
-        return trajectories.combineLatest(indexes)
+        return this.store.select(selectTrajectories)
+            .combineLatest(this.store.select(selectTrajectoryIndexes))
             .subscribe(([trajectories, indexes]) => {
                 trajectories.forEach((item, index) => {
                     if (indexes.indexOf(index) !== -1) {
                         item.endMarker.show();
                         item.startMarker.show();
                         item.polyline.show();
-                    }else {
+                    } else {
                         item.endMarker.hide();
                         item.startMarker.hide();
                         item.polyline.hide();
@@ -178,21 +192,13 @@ export class LocationService {
     /* ==================================================API request operate================================================ */
 
     getHistoryLocationList(options: Observable<RequestOption>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const projectId = this.project.getProjectId();
-
-        const option = sid.combineLatest(projectId, options, ((sid, project_id, options) => ({ sid, project_id, ...options })));
+        const option = this.userInfo.getSid().combineLatest(this.project.getProjectId(), options, ((sid, project_id, options) => ({ sid, project_id, ...options })));
 
         return this.processor.historyLocationListProcessor(option);
     }
 
     getProjectAreaList(): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const projectId = this.project.getProjectId();
-
-        const option = sid.zip(projectId, (sid, project_id) => ({ sid, project_id }));
+        const option = this.userInfo.getSid().zip(this.project.getProjectId(), (sid, project_id) => ({ sid, project_id }));
 
         return this.processor.projectAreaListProcessor(option);
     }

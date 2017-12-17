@@ -20,6 +20,8 @@ export declare class Map {
     remove(overlays: Marker[] | Polygon[] | Polyline | Marker): void;
     addControl(obj: Object): void;  //参数可以是插件列表中的任何插件对象，如：ToolBar、OverView、Scale等。
     setZoomAndCenter(zoomLevel: number, center: LngLat): void;
+    getContainer(): HTMLElement;
+    destroy():void;
 }
 
 export declare class Size {

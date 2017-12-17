@@ -76,18 +76,6 @@ export class AmapService {
         return this.location.getHistoryLocationResponse().subscribe(this.markersSubject);
     }
 
-    size(width: number, height: number): Size {
-        return new AMap.Size(width, height);
-    }
-
-    lngLat(lng: number, lat: number): LngLat {
-        return new AMap.LngLat(lng, lat);
-    }
-
-    marker(config: MarkerOptions): Marker { //TODO: 检查调用更新申明文件
-        return new AMap.Marker(config);
-    }
-
     simpleMarker(config: MarkerOptions): Observable<SimpleMarker> {
         const markerConfig = {
             map: config.map,
@@ -111,10 +99,6 @@ export class AmapService {
         });
 
         return Observable.fromPromise(promise);
-    }
-
-    icon(config: IconOptions): Icon {
-        return new AMap.Icon(config);
     }
 
     addControl(map: Map) {
@@ -144,20 +128,22 @@ export class AmapService {
      * FIXME:偷懒了，没有像V1中那样，打平-转换-折叠，有空再搞吧。
      */
     generateArea(map: Map): Subscription[] {
-        const transformedLngLats$$ = this.location.getProjectAreaResponse()
-            .mergeMap(response => Observable.from(response.project_areas.map(item => item.polygons))
-                .mergeMap(area => this.convertFrom(area as LngLat[], 'baidu'))
-            ).subscribe(this.areaSubject);
-
-        const center$$ = this.setCenterToFirstArea(map);
-
         const polygon = this.getPolygon(map);
 
-        const polygon$$ = this.setPolygonOnMap(map, polygon);
+        return [
+            this.transformProjectAreaCoordinate(),
+            this.setCenterToFirstArea(map),
+            this.setPolygonOnMap(map, polygon),
+            this.addClickForEveryPolygon(map, polygon)
+        ];
+    }
 
-        const event$$ = this.addClickForEveryPolygon(map, polygon);
-
-        return [transformedLngLats$$, center$$, polygon$$, event$$];
+    transformProjectAreaCoordinate(): Subscription {
+        return this.location.getProjectAreaResponse()
+            .mergeMap(response => Observable.from(response.project_areas.map(item => item.polygons))
+                .mergeMap(area => this.convertFrom(area as LngLat[], 'baidu'))
+            )
+            .subscribe(this.areaSubject);
     }
 
     getPolygon(map: Map): Observable<Polygon> {
@@ -207,13 +193,11 @@ export class AmapService {
     }
 
     getSimpleMarker(map: Map, source: Observable<LngLat[][]>): Observable<SimpleMarker[]> {
-        const putSimpleMarkerInArray: ReduceFn<SimpleMarker> = putInArray;
-
         return source
             .zip(this.getMarkerInformation())
             .mergeMap(([coordinates, { uname }]) => Observable.from(coordinates)
-                .mergeMap(group => Observable.from(group).mergeMap(({ lng, lat }) => this.simpleMarker({ position: [lng, lat], content: `<div class="locationIcon">${uname}</div>`, map })))
-                .reduce(putSimpleMarkerInArray, [])
+                .mergeMap(group => Observable.from(group).mergeMap(({ lng, lat }) => this.simpleMarker({ position: [lng, lat], content: uname, map })))
+                .reduce(putInArray, [])
             );
     }
 
@@ -222,13 +206,11 @@ export class AmapService {
     }
 
     getMarkers(): Observable<LngLat[][]> {
-        const putLngLatInArray: ReduceFn<LngLat[]> = putInArray;
-
         return this.markersSubject
             .mergeMap(res => Observable.from(res.data_loc_list.map(item => item.loc_list))
                 .filter(item => item && !!item.length)
                 .mergeMap(coordinates => this.convertFrom(coordinates, 'gps'))
-                .reduce(putLngLatInArray, [])
+                .reduce(putInArray, [])
                 .filter(res => !!res.length)
             );
     }
@@ -252,7 +234,7 @@ export class AmapService {
 
     markerClusterer(map, markers: Marker[]): Observable<MarkerClusterer> {
         const promise: Promise<MarkerClusterer> = new Promise(resolve => {
-            map.plugin(['AMap.MarkerClusterer'], () => resolve(new AMap.MarkerClusterer(map, markers, { gridSize: 10 })))
+            map.plugin(['AMap.MarkerClusterer'], () => resolve(new AMap.MarkerClusterer(map, markers, { gridSize: 10 })));
         });
 
         return Observable.fromPromise(promise);
@@ -260,21 +242,15 @@ export class AmapService {
 
     /* =====================================================================Polyline functions ================================================== */
 
-    setTrajectory(map: Map): Subscription {
-        const polyline = this.getPolyline(map);
-
-        const markers = this.getStartAndEndMarkerForPolyline(map);
-
-        const moveMarkers = this.getMoveMarkers(map);
-
-        const result = polyline.zip(markers, moveMarkers)
+    updateTrajectory(map: Map): Subscription {
+        return this.getPolyline(map)
+            .zip(this.getStartAndEndMarkerForPolyline(map), this.getMoveMarkers(map))
             .map(([lines, startAndEnd, moveMarkers]) => lines.map((polyline, index) => {
                 const [startMarker, endMarker] = startAndEnd[index];
 
                 return { polyline, startMarker, endMarker, moveMarker: moveMarkers[index] };
-            }));
-
-        return this.location.updateTrajectory(result);
+            }))
+            .subscribe(data => this.location.updateTrajectory(data));
     }
 
     getPolyline(map: Map): Observable<Polyline[]> {
@@ -288,12 +264,12 @@ export class AmapService {
         return this.getSimpleMarker(map, markers)
             .zip(this.getMarkerInfoWindow())
             .mergeMap(([markers, infoWindows]) => Observable.from(markers.map((marker, index) => {
-                if (index % 2 === 0) marker.setIconStyle('green');
+                (index % 2 === 0) && marker.setIconStyle('green');
                 this.addClickForMarker(marker, infoWindows[index], map);
                 return marker;
             }))
                 .bufferCount(2)
-                .reduce(putInArray, []))
+                .reduce(putInArray, []));
     }
 
     getMoveMarkers(map: Map): Observable<SimpleMarker[]> {
@@ -369,7 +345,7 @@ export class AmapService {
                 map.remove(item.startMarker);
                 map.remove(item.endMarker);
                 map.remove(item.moveMarker);
-            }))
+            }));
     }
 
     /* ===================================================================Clear overlays on map=================================================== */
@@ -381,6 +357,4 @@ export class AmapService {
     clearClusterer(source: Observable<MarkerClusterer>): Subscription {
         return source.subscribe(clusterter => clusterter.clearMarkers());
     }
-
-
 }

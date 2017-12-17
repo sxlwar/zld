@@ -3,6 +3,7 @@
   <ion-navbar>
     <ion-title>{{'WORKER_TRAJECTORY' | translate}}</ion-title>
     <ion-buttons end>
+
       <button ion-button icon-only (click)="selectWorker($event)" *ngIf="haveTrajectory | async">
         <ion-icon name="man"></ion-icon>
       </button>
@@ -11,13 +12,20 @@
       </button>
 
     </ion-buttons>
+
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
+  <ion-toolbar class="location-tip-pane" *ngIf="!!(trajectoryInfo | async)?.name">
+    <div>{{(trajectoryInfo | async)?.time}}</div>
+    <div>{{(trajectoryInfo | async)?.name}}</div>
+  </ion-toolbar>
+
   <div #trajectory id="trajectory" class="map"></div>
+
   <ion-fab bottom right>
     <button ion-fab>{{'PLAY' | translate}}</button>
     <ion-fab-list side="left">

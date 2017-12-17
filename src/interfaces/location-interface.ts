@@ -45,3 +45,9 @@ export enum PlayState {
   pause,
   resume
 }
+
+export interface TrajectoryInfo {
+  time: string; //year month day + start time + end time;
+  name: string; // names split with comma;
+}
+

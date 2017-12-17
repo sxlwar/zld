@@ -1,9 +1,21 @@
 page-trajectory {
-    .map {
-        height: 100%;
-    }
+  .map {
+    height: 100%;
+  }
+  ion-fab {
+    font-size: 12px;
+  }
+  
+  .location-tip-pane {
+    position: absolute;
+    background-color: #000;
+    opacity: .3;
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+  }
 
-    ion-fab {
-        font-size: 12px;
-    }
+  ion-toolbar .toolbar-background-ios, ion-toolbar .toolbar-background-md {
+      background: none;
+  }
 }

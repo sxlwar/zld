@@ -8,7 +8,7 @@ import { HistoryTrajectoryComponent } from './../../components/history-trajector
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { PlayUnit, PlayState } from '../../interfaces/location-interface';
+import { PlayUnit, PlayState, TrajectoryInfo } from '../../interfaces/location-interface';
 
 declare var AMap: any;
 
@@ -18,21 +18,24 @@ declare var AMap: any;
   templateUrl: 'trajectory.html',
 })
 export class TrajectoryPage {
-  map: Map;
-
+  
   subscriptions: Subscription[] = [];
-
+  
   playStateSubject: Subject<number> = new Subject();
-
+  
   rateSubject: Subject<number> = new Subject();
-
+  
   playSubject: BehaviorSubject<PlayUnit[]> = new BehaviorSubject(null);
+
+  map: Map;
 
   rateButtonColor: Observable<number>;
 
   playButtonColor: Observable<number>;
 
   haveTrajectory: Observable<boolean>;
+
+  trajectoryInfo: Observable<TrajectoryInfo>;
 
   constructor(
     public navCtrl: NavController,
@@ -54,70 +57,72 @@ export class TrajectoryPage {
   }
 
   ionViewDidLoad() {
-    this.map = new AMap.Map('trajectory');
-
     this.config.hideTabBar();
 
-    this.mapService.addControl(this.map);
-
-    this.haveTrajectory = this.location.getHistoryLocationResponse()
-      .map(response => !!response.data_loc_list.filter(item => item.loc_list.length).length)
+    this.initialMap();
 
     this.launch();
   }
 
-  launch() {
-    const subscription = this.mapService.monitorHistoryLocationResponse();
+  initialMap(): void {
+    this.map = new AMap.Map('trajectory');
 
-    this.subscriptions.push(subscription);
+    this.mapService.addControl(this.map);
 
-    this.sendRequest();
+    this.trajectoryInfo = this.location.getTrajectoryInformation();
 
-    this.addOverlays();
+    this.playButtonColor = this.location.getPlayState();
 
-    this.monitorPlay();
+    this.rateButtonColor = this.location.getPlayRate();
+
+    this.haveTrajectory = this.location.getHistoryLocationResponse()
+      .map(response => !!response.data_loc_list.filter(item => item.loc_list.length).length);
+  }
+
+  launch(): void {
+    this.subscriptions = [
+      this.mapService.monitorHistoryLocationResponse(),
+      ...this.sendRequest(),
+      ...this.addOverlays(),
+      ...this.monitorPlay()
+    ];
   }
 
   /* ===============================================Server request=========================================== */
 
-  sendRequest() {
-    this.getLocationList();
-
-    this.getProjectAreaList();
+  /**
+   * @description Get project area list and history location list;
+   */
+  sendRequest(): Subscription[] {
+    return [
+      this.location.getProjectAreaList(),
+      this.getLocationList()
+    ];
   }
 
-  getProjectAreaList(): void {
-    const subscription = this.location.getProjectAreaList();
+  getLocationList(): Subscription {
+    this.location.updateCondition().next(true);
 
-    this.subscriptions.push(subscription);
-  }
-
-  getLocationList(): void {
-    const subscription = this.location.getHistoryLocationList(
-      this.location.updateCondition().mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
+    return this.location.getHistoryLocationList(
+      this.location.updateCondition().startWith(true).mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
     );
-
-    this.subscriptions.push(subscription);
   }
 
-  /* =================================================Overlays================================================= */
-
-  addOverlays() {
-
-    const projectArea$$ = this.mapService.generateArea(this.map);
-
-    const trajectory$$ = this.mapService.setTrajectory(this.map);
-
-    const display$$ = this.location.toggleTrajectoryDisplayState();
-
-    this.subscriptions = [...this.subscriptions, ...projectArea$$, trajectory$$, display$$];
+  /**
+   * @description Add overlays on current map. Include project areas and trajectories that used selected.
+   */
+  addOverlays(): Subscription[] {
+    return [
+      ...this.mapService.generateArea(this.map),
+      this.mapService.updateTrajectory(this.map),
+      this.location.toggleTrajectoryDisplayState()
+    ];
   }
 
   /* ============================================Play related============================================= */
 
-  monitorPlay() {
-    this.subscriptions = [
-      ...this.subscriptions,
+  monitorPlay(): Subscription[] {
+    return [
       this.mapService.getPlayUnits(this.map).subscribe(this.playSubject),
       this.play(),
       this.stop(),
@@ -126,14 +131,6 @@ export class TrajectoryPage {
       this.location.updatePlayState(this.playStateSubject),
       this.location.updateRateState(this.rateSubject)
     ];
-
-    this.getRateButtonColor();
-
-    this.getPlayButtonColor();
-  }
-
-  getRate(): Observable<number> {
-    return this.rateSubject.startWith(1);
   }
 
   play(): Subscription {
@@ -152,22 +149,18 @@ export class TrajectoryPage {
     return this.getPlayState(PlayState.resume).subscribe(item => item.moveMarker.resumeMove());
   }
 
+  /**
+   * @param state Play state need to handle.
+   * @description Get the stream that you need to listen to for each play control button. 
+   * With the help of behavior subject, although each flow is different, the elements propagating in the flow are the same,
+   * but are transmitted to different listeners based on different playback states.
+   */
   getPlayState(state: number): Observable<PlayUnit> {
     return this.location.getPlayState()
       .filter(item => item === state)
       .mergeMapTo(this.playSubject.filter(item => !!item)
         .mergeMap(units => Observable.from(units))
       );
-  }
-
-  /* ================================================Button color=========================================== */
-
-  getRateButtonColor() {
-    this.rateButtonColor = this.location.getPlayRate();
-  }
-
-  getPlayButtonColor() {
-    this.playButtonColor = this.location.getPlayState();
   }
 
   /* ===============================================Config related========================================== */
@@ -186,6 +179,8 @@ export class TrajectoryPage {
     this.config.showTabBar();
 
     this.location.updatePlayState(Observable.of(PlayState.stop));
+
+    this.map.destroy();
 
     this.subscriptions.forEach(item => item.unsubscribe());
   }

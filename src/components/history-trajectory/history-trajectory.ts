@@ -32,8 +32,6 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[] = [];
 
-  canSelectWork = true;
-
   date: string;
 
   today: string;
@@ -42,7 +40,7 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
   trajectoryForm: FormGroup;
 
-  canQueryOther: Observable<boolean>;
+  canQueryOther: Observable<boolean>; // Wether need to show the worker select list;
 
   workers: Observable<WorkerItem[]>;
 
@@ -86,7 +84,7 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach(item => item.unsubscribe());
   }
 
-  launch() {
+  launch(): void {
     this.getTimeOptions();
 
     this.getWorkers();
@@ -96,12 +94,32 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     this.getEnableScroll();
   }
 
-  getWorkers() {
+  /**
+   * @description Get the time related options.
+   */
+  getTimeOptions(): void {
+    const subscription = this.location.getTrajectoryOptions().subscribe(value => {
+      const { date, startTime, endTime } = value;
+
+      this.date = date;
+
+      this.trajectoryForm = this.fb.group({
+        startTime: [startTime, Validators.required],
+        endTime: [endTime, Validators.required]
+      });
+    });
+
+    this.subscriptions.push(subscription);
+  }
+
+  /* =============================================Worker related=============================================================== */
+
+  getWorkers(): void {
     this.workers = this.canQueryOther
       .mergeMapTo(this.worker.getWorkerItems(this.options.map(option => option.userIds)));
   }
 
-  getRestWorkerList() {
+  getRestWorkerList(): void {
     const subscription = this.worker.getRestWorkerList(this.canQueryOther
       .mergeMapTo(this.getOption())
     );
@@ -113,36 +131,46 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     return this.worker.getCompleteStatusOption().zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }));
   }
 
-  updateSelectedWorker(worker: WorkerItem) {
+  /**
+   * @description Update workers that user want to query.
+   */
+  updateSelectedWorker(worker: WorkerItem): void {
     const { id, selected } = worker;
 
     this.location.updateTrajectorySelectedWorker({ id, selected });
   }
 
-  getTimeOptions() {
-    const subscription = this.location.getTrajectoryOptions().subscribe(value => {
-      const { date, startTime, endTime } = value;
+  /**
+   * @param infiniteScroll - ionic's infiniteScroll instance;
+   */
+  getNextPage(infiniteScroll): void {
+    this.workers$$ && this.workers$$.unsubscribe();
 
-      this.date = date;
+    this.workers$$ = this.worker.getNextPage(infiniteScroll);
+  }
 
-      this.trajectoryForm = this.fb.group({
-        date,
-        startTime: [startTime, Validators.required],
-        endTime: [endTime, Validators.required]
-      });
-    });
-
-    this.subscriptions.push(subscription);
+  getEnableScroll(): void {
+    this.enableScroll = this.worker.getEnableScroll().share();
   }
 
   /* ===================================================Update options methods================================================= */
 
-  updateDate(date) {
+  /**
+   * @description We need to update the date and end time when user select a date.
+   */
+  updateDate(date: string): void {
     this.location.updateTrajectoryOption({ date });
+
     this.location.updateMaxEndTimeOfTrajectory(date);
   }
 
-  updateStartTime(startTime) {
+  /**
+   * @description When user select a start time, update the start time in store first.
+   * At the same time we need to  set the available hours and minutes of the
+   * end time to prevent user select an invalid one, if there is a value of end time had been selected, we
+   * need to clear that because it may be an invalid value;
+   */
+  updateStartTime(startTime: string): void {
     const [hour, minute] = startTime.split(':');
 
     const h = parseInt(hour);
@@ -158,25 +186,21 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     this.location.resetTrajectoryEndTime();
   }
 
-  updateEndTime(endTime) {
+  updateEndTime(endTime: string): void {
     this.location.updateTrajectoryOption({ endTime });
   }
 
-  getNextPage(infiniteScroll) {
-    this.workers$$ && this.workers$$.unsubscribe();
+  /* ==================================================Methods executed before modal dismiss=========================================== */
 
-    this.workers$$ = this.worker.getNextPage(infiniteScroll);
-  }
-
-  getEnableScroll() {
-    this.enableScroll = this.worker.getEnableScroll().share();
-  }
-
-  dismiss() {
+  dismiss(): void {
     this.viewCtrl.dismiss();
   }
 
-  execution() {
+  /**
+   * @description Clear polyline on current map and notify the location
+   * service that the condition has been changed when user clicked the confirm button;
+   */
+  execution(): void {
     this.location.updateCondition().next(true);
 
     this.clearPolyline();
@@ -184,13 +208,15 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     this.dismiss();
   }
 
-  clearPolyline() {
+  clearPolyline(): void {
     const map: Map = this.navParams.get('map');
 
     const subscription = this.mapService.clearPolyline(map);
 
     this.subscriptions.push(subscription);
   }
+
+  /* =========================================================== Shortcut methods for template ======================================= */
 
   get startTime() {
     return this.trajectoryForm.get('startTime');
