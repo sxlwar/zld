@@ -32,6 +32,8 @@ export class AttendanceMachineRecordPage {
 
   id: number;
 
+  resultSubscription: Subscription;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -82,8 +84,10 @@ export class AttendanceMachineRecordPage {
 
   getNextPage(infiniteScroll) {
     this.instant.increasePage();
+    
+    this.resultSubscription && this.resultSubscription.unsubscribe();
 
-    this.instant.getAttendanceInstantList(this.getOption());
+    this.resultSubscription = this.instant.getAttendanceInstantList(this.getOption());
 
     this.pageSubscription && this.pageSubscription.unsubscribe();
 
@@ -100,6 +104,8 @@ export class AttendanceMachineRecordPage {
   }
 
   ionViewWillUnload() {
+    this.resultSubscription && this.resultSubscription.unsubscribe();
+    
     this.pageSubscription && this.pageSubscription.unsubscribe();
   }
 

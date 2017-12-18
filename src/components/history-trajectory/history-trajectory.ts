@@ -77,6 +77,8 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
     this.options = this.location.getTrajectoryOptions();
 
+    this.worker.getWorkerContracts(this.getOption());
+
     this.launch();
   }
 
@@ -120,9 +122,7 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
   }
 
   getRestWorkerList(): void {
-    const subscription = this.worker.getRestWorkerList(this.canQueryOther
-      .mergeMapTo(this.getOption())
-    );
+    const subscription = this.worker.haveRestWorkers().subscribe(_ => this.worker.getWorkerContracts(this.canQueryOther.mergeMapTo(this.getOption())));
 
     this.subscriptions.push(subscription);
   }

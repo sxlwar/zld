@@ -22,6 +22,7 @@ export class AttendanceRecordPage {
   records: Observable<AttendanceInstant[]>;
   haveMoreData = true;
   pageSubscription: Subscription;
+  recordSubscription: Subscription;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -61,7 +62,9 @@ export class AttendanceRecordPage {
   getNextPage(infiniteScroll) {
     this.attendanceRecord.increasePage();
 
-    this.attendanceRecord.getAttendanceInstantList(this.getRecordOption());
+    this.recordSubscription && this.recordSubscription.unsubscribe();
+
+    this.recordSubscription = this.attendanceRecord.getAttendanceInstantList(this.getRecordOption());
 
     this.pageSubscription && this.pageSubscription.unsubscribe();
 
@@ -78,6 +81,8 @@ export class AttendanceRecordPage {
     this.attendanceRecord.unSubscribe();
 
     this.pageSubscription && this.pageSubscription.unsubscribe();
+
+    this.recordSubscription && this.recordSubscription.unsubscribe();
   }
 
   ionViewWillLeave() {

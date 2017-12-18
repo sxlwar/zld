@@ -15,38 +15,38 @@ import { IconItem } from '../../interfaces/icon-interface';
 /**
  * @description These constants are icon names used in application.
  */
-export const attendanceIcon = 'attendance';
-export const payrollIcon = 'payroll';
-export const organizationIcon = 'organization';
-export const workerManagerIcon = 'worker-manager';
-export const workPieceIcon = 'work-piece';
-export const locationIcon = 'location';
-export const trajectoryIcon = 'trajectory';
-export const attendanceMachineIcon = 'attendance-machine';
-export const locationCardIcon = 'location-card';
+export const applyIcon = 'apply';
 export const attendanceCardIcon = 'attendance-card';
 export const attendanceConfirmIcon = 'attendance-confirm';
-export const payrollAuditIcon = 'payroll-audit';
-export const leaveIcon = 'leave';
-export const overtimeIcon = 'overtime';
-export const pieceAuditIcon = 'piece-audit';
-export const modifyAttendanceIcon = 'modify-attendance';
-export const workContractIcon = 'work-contract';
-export const primeContractIcon = 'prime-contract';
-export const subContractIcon = 'sub-contract';
-export const modifyDutyIcon = 'modify-duty';
-export const workContractModifyIcon = 'work-contract-modify';
-export const myAuditedIcon = 'my-audited';
-export const myLaunchIcon = 'my-launch';
-export const myAttendanceIcon = 'my-attendance';
-export const salaryIcon = 'salary';
+export const attendanceIcon = 'attendance';
+export const attendanceMachineIcon = 'attendance-machine';
 export const bankCardIcon = 'bank-card';
 export const certificateIcon = 'certificate';
-export const applyIcon = 'apply';
-export const personalInfoIcon = 'personal-info';
-export const familyInfoIcon = 'family-info';
-export const workInfoIcon = 'work-info';
 export const educationInfoIcon = 'education-info';
+export const familyInfoIcon = 'family-info';
+export const leaveIcon = 'leave';
+export const locationCardIcon = 'location-card';
+export const locationIcon = 'location';
+export const modifyAttendanceIcon = 'modify-attendance';
+export const modifyDutyIcon = 'modify-duty';
+export const myAttendanceIcon = 'my-attendance';
+export const myAuditedIcon = 'my-audited';
+export const myLaunchIcon = 'my-launch';
+export const organizationIcon = 'organization';
+export const overtimeIcon = 'overtime';
+export const payrollAuditIcon = 'payroll-audit';
+export const payrollIcon = 'payroll';
+export const personalInfoIcon = 'personal-info';
+export const pieceAuditIcon = 'piece-audit';
+export const primeContractIcon = 'prime-contract';
+export const salaryIcon = 'salary';
+export const subContractIcon = 'sub-contract';
+export const trajectoryIcon = 'trajectory';
+export const workContractIcon = 'work-contract';
+export const workContractModifyIcon = 'work-contract-modify';
+export const workInfoIcon = 'work-info';
+export const workPieceIcon = 'work-piece';
+export const workerManagerIcon = 'worker-manager';
 
 /**
  * @description Icon badge's statistics field mapper.
@@ -176,6 +176,18 @@ export const attendanceCard: IconItem = {
   },
   page: pages.attendanceCardPage
 };
+
+export const locationAttendanceRecord: IconItem = {
+  text: 'LOCATION_ATTENDANCE',
+  icon: locationCardIcon,
+  color: 'primary',
+  permission: {
+    view: [PME, MM, PM, LM, TL, CW, QW, SW],
+    opt: []
+  },
+  page: pages.locationAttendanceRecordPage
+  
+}
 
 export const attendanceConfirm: IconItem = {
   text: 'ATTENDANCE_CONFIRM',

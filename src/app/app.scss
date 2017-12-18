@@ -74,3 +74,10 @@
   -o-transform: scale(.8);
   transform: scale(.8);
 }
+
+ion-modal.inset-modal {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 20vh 10vw;
+}

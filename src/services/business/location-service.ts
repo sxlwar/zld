@@ -1,7 +1,6 @@
-import { Map } from '../../interfaces/amap-interface';
 import { Subject } from 'rxjs/Subject';
 import { LocationOptions, TrajectoryOptions, Trajectory, TrajectoryInfo } from './../../interfaces/location-interface';
-import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction, UpdateTrajectoryAction, UpdatePlayStateAction, UpdateRateStateAction, UpdateMapAction } from './../../actions/action/location-action';
+import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction, UpdateTrajectoryAction, UpdatePlayStateAction, UpdateRateStateAction } from './../../actions/action/location-action';
 import { TimeService } from './../utils/time-service';
 import { RequestOption } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
@@ -146,10 +145,6 @@ export class LocationService {
     }
 
     /* ==================================================Play related operate ============================================== */
-
-    updateMap(map: Map): void {
-        this.store.dispatch(new UpdateMapAction(map));
-    }
 
     updateTrajectorySelectedWorker(data: { id: number, selected: boolean }): void {
         this.store.dispatch(new UpdateTrajectorySelectedWorkerAction(data));

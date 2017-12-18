@@ -57,9 +57,35 @@ export class ToggleMoreDataFlagAction implements Action {
 export const GET_ATTENDANCE_RECORD_MAX_DATE = 'GET_ATTENDANCE_RECORD_MAX_DATE';
 
 export class GetAttendanceRecordMaxDateAction implements Action {
-   readonly type =  GET_ATTENDANCE_RECORD_MAX_DATE;
+    readonly type = GET_ATTENDANCE_RECORD_MAX_DATE;
 
-   constructor() {}
+    constructor() { }
+}
+
+/* ============================================================Location attendance record =================================================== */
+
+export const SET_LOCATION_ATTENDANCE_START_DATE = 'SET_LOCATION_ATTENDANCE_START_DATE';
+
+export class SetLocationAttendanceRecordStartDateAction implements Action {
+    readonly type = SET_LOCATION_ATTENDANCE_START_DATE;
+
+    constructor(public payload: string) { }
+}
+
+export const SET_LOCATION_ATTENDANCE_END_DATE = 'SET_LOCATION_ATTENDANCE_END_TIME';
+
+export class SetLocationAttendanceRecordEndDateAction implements Action {
+    readonly type = SET_LOCATION_ATTENDANCE_END_DATE;
+
+    constructor(public payload: string) { }
+}
+
+export const SET_LOCATION_ATTENDANCE_USERS = 'SET_LOCATION_ATTENDANCE_USERS';
+
+export class SetLocationAttendanceRecordUsersAction implements Action {
+    readonly type = SET_LOCATION_ATTENDANCE_USERS;
+
+    constructor(public payload: number[]) { }
 }
 
 export type Actions = GetAttendanceRecordAction
@@ -68,4 +94,7 @@ export type Actions = GetAttendanceRecordAction
     | GetAttendanceRecordMaxDateAction
     | IncreaseRecordPageAction
     | ResetRecordPageAction
+    | SetLocationAttendanceRecordEndDateAction
+    | SetLocationAttendanceRecordStartDateAction
+    | SetLocationAttendanceRecordUsersAction
     | ToggleMoreDataFlagAction;

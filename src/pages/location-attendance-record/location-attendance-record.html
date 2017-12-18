@@ -1,0 +1,52 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'LOCATION_ATTENDANCE_RECORD' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list padding style="margin-bottom: 0;">
+
+    <ion-item>
+      <ion-label>{{'START_DATE' | translate}}</ion-label>
+      <ion-datetime [(ngModel)]="startDate" displayFormat="YYYY-MM-DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        min="2017-01-01" [max]="maxDate | async" (ngModelChange)="updateStartDate($event)" #start="ngModel"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'END_DATE' | translate}}</ion-label>
+      <ion-datetime [(ngModel)]="endDate" displayFormat="YYYY-MM-DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        min="2017-01-01" [dayValues]="availableDayValues" [monthValues]="availableMonthValues" [yearValues]="availableYearValues"
+         (ngModelChange)="updateEndDate($event)" [disabled]="!start.value"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
+      <ion-input type="text" [value]="names | async" disabled></ion-input>
+      <ion-icon name="man" item-end (click)="openWorkerSelect()"></ion-icon> 
+    </ion-item>
+
+
+  </ion-list>
+
+  <ion-list>
+    <ion-item *ngFor="let item of records | async">
+      <ion-grid>
+        <ion-row>
+          <ion-col>{{item.name}}</ion-col>
+          <ion-col>{{item.time}}</ion-col>
+          <ion-col>{{item.type | inOut | translate}}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <ion-item *ngIf="!(haveMoreData | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+
+</ion-content>

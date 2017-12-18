@@ -167,6 +167,7 @@ export const selectManageTimerPage = createSelector(getWorkerContracts, worker.g
 export const selectManagePiecerPage = createSelector(getWorkerContracts, worker.getPiecerPage);
 export const selectManageTimerCount = createSelector(getWorkerContracts, worker.getTimerCount);
 export const selectManagePiecerCount = createSelector(getWorkerContracts, worker.getPiecerCount);
+export const selectSelectedWorkers = createSelector(getWorkerContracts, worker.getSelectedWorkers);
 
 //work type list
 export const getWorkType = (state: AppState) => state.workType;
@@ -203,6 +204,7 @@ export const selectAttendanceRecordPage = createSelector(getAttendanceRecord, at
 export const selectAttendanceRecordLimit = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordLimit);
 export const selectAttendanceRecordMoreData = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordMoreData);
 export const selectAttendanceRecordMaxDate = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordMaxDate);
+export const selectLocationAttendanceOptions = createSelector(getAttendanceRecord, attendanceRecord.getLocationAttendanceRecordOptions);
 
 //pay bill list
 export const getPayBill = (state: AppState) => state.payBill;

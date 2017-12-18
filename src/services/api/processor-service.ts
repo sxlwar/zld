@@ -160,7 +160,7 @@ export class ProcessorService extends MapperService {
 
     return permissionResult
       .filter(res => res.permission.view)
-      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .combineLatest(option$, (result, option) => Object.assign({}, option, result.option))
       .subscribe(option => this.store.dispatch(new GetAttendanceRecordAction(option)));
   }
 

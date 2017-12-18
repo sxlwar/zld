@@ -24,7 +24,8 @@ const icons = [
   icon.trajectory,
   icon.attendanceMachine,
   icon.locationCard,
-  icon.attendanceCard
+  icon.attendanceCard,
+  icon.locationAttendanceRecord
 ];
 
 @IonicPage()

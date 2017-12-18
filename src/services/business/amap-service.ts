@@ -7,8 +7,8 @@ import { HistoryLocation, HistoryLocationListResponse } from './../../interfaces
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { flattenDeep } from 'lodash';
-import { Map, LngLat, ConvertorResult, Size, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, IconOptions, Icon, BasicControl, MarkerClusterer, Polyline, PolylineOptions, MoveEvent } from '../../interfaces/amap-interface';
-import { putInArray, ReduceFn } from '../utils/util';
+import { Map, LngLat, ConvertorResult, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, BasicControl, MarkerClusterer, Polyline, PolylineOptions, MoveEvent } from '../../interfaces/amap-interface';
+import { putInArray } from '../utils/util';
 import { PlayUnit, PlayState } from './../../interfaces/location-interface';
 
 declare var AMap: any;

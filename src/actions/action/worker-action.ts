@@ -149,6 +149,14 @@ export class UpdateManagementPiecerCountAction implements Action {
   constructor(public payload: number) { }
 }
 
+export const UPDATE_SELECTED_WORKERS = 'UPDATE_SELECTED_WORKERS';
+
+export class UpdateSelectedWorkersAction implements Action {
+  readonly type = UPDATE_SELECTED_WORKERS;
+
+  constructor(public payload: number[]) { }
+}
+
 export type Actions = GetWorkerContractsAction
   | DecrementQueryWorkerContractPageAction
   | GetQueryWorkerContractLimitAction
@@ -162,6 +170,7 @@ export type Actions = GetWorkerContractsAction
   | ResetWorkerContractsAction
   | SetQueryWorkerContractLimitAction
   | SetQueryWorkerContractPageAction
+  | UpdateSelectedWorkersAction
   | UpdateManagementPiecerCountAction
   | UpdateManagementTimerCountAction
   | WorkerContractListFailAction

@@ -1,6 +1,6 @@
 //region
-import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount } from './../../reducers/index-reducer';
-import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction } from './../../actions/action/worker-action';
+import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers } from './../../reducers/index-reducer';
+import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction, UpdateSelectedWorkersAction } from './../../actions/action/worker-action';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
 import { Command } from './../api/command';
 import { WorkerContract as contract } from './../api/command';
@@ -219,13 +219,13 @@ export class WorkerService {
     return Observable.of({ no_location_card: true });
   }
 
-  getRestWorkerList(option: Observable<RequestOption>): Subscription {
+  haveRestWorkers(): Observable<boolean> {
     return this.getCurrentPage()
       .skip(1)
       .distinctUntilChanged()
       .combineLatest(this.getLimit(), this.getWorkerContractResponse().map(item => item.count).distinctUntilChanged())
-      .filter(([page, limit, count]) => Math.ceil(count / limit) + 1 >= page)
-      .subscribe(_ => this.getWorkerContracts(option));
+      .map(([page, limit, count]) => Math.ceil(count / limit) + 1 >= page)
+      .filter(result => !!result);
   }
 
   /**
@@ -254,14 +254,22 @@ export class WorkerService {
     return this.getWorkerContractResponse()
       .skip(1)
       .map(response => !!response.worker_contract.length)
-      .filter(value=> !value)
+      .filter(value => !value)
       .startWith(true)
   }
 
   getNextPage(infiniteScroll): Subscription {
     this.incrementPage();
-    
-    return  this.getWorkerContractResponse().subscribe(response => infiniteScroll.complete());
+
+    return this.getWorkerContractResponse().subscribe(response => infiniteScroll.complete());
+  }
+
+  updateSelectedWorkers(userIds: number[]): void {
+    this.store.dispatch(new UpdateSelectedWorkersAction(userIds));
+  }
+
+  getSelectedWorkers(): Observable<number[]> {
+    return this.store.select(selectSelectedWorkers);
   }
 
   /*==========================================error handle=====================================================*/

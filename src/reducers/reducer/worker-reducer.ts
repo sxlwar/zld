@@ -17,6 +17,7 @@ export interface State {
   workerContractResponse: WorkerContractListResponse;
   workerContracts: WorkerContract[];
   management: ContractManagement;
+  selectedWorkers: number[]; // user ids.
 }
 
 export const initialState: State = {
@@ -34,7 +35,8 @@ export const initialState: State = {
     piecerCount: 0,
     timerContractIds: [],
     piecerContractIds: []
-  }
+  },
+  selectedWorkers: []
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -114,6 +116,10 @@ export function reducer(state = initialState, action: actions.Actions): State {
       return Object.assign({}, state, { workerContracts: [] });
     }
 
+    case actions.UPDATE_SELECTED_WORKERS: {
+      return { ...state, selectedWorkers: action.payload };
+    }
+
     case actions.GET_QUERY_WORKER_CONTRACT_PAGE:
     case actions.GET_QUERY_WORKER_CONTRACT_LIMIT:
     case actions.GET_WORKER_CONTRACTS:
@@ -150,3 +156,5 @@ export const getPiecerCount = (state: State) => state.management.piecerCount;
 export const getTimerPage = (state: State) => state.management.timerPage;
 
 export const getPiecerPage = (state: State) => state.management.piecerPage;
+
+export const getSelectedWorkers = (state: State) => state.selectedWorkers;

@@ -55,6 +55,8 @@ export const locationPage = 'LocationPage';
 
 export const trajectoryPage = 'TrajectoryPage';
 
+export const locationAttendanceRecordPage = 'LocationAttendanceRecordPage';
+
 /*============================================mission tab pages===================================================*/
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
@@ -119,7 +121,8 @@ export const PAGES = [
   { title: 'LocationCard', component: locationCardPage },
   { title: 'Location', component: locationPage },
   { title: 'Trajectory', component: trajectoryPage },
-  
+  { title: 'LocationAttendanceRecord', component: locationAttendanceRecordPage },
+
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 
   { title: 'AttendanceConfirm', component: attendanceConfirmPage },

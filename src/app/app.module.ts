@@ -1,3 +1,4 @@
+import { WorkerSelectComponent } from './../components/worker-select/worker-select';
 import { HistoryTrajectoryWorkersComponent } from './../components/history-trajectory-workers/history-trajectory-workers';
 import { HistoryTrajectoryComponent } from './../components/history-trajectory/history-trajectory';
 //region
@@ -116,6 +117,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     HistoryLocationComponent,
     HistoryTrajectoryComponent,
     HistoryTrajectoryWorkersComponent,
+    WorkerSelectComponent,
   ],
   providers: [
     Api,

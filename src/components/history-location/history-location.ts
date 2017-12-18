@@ -98,7 +98,7 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
   }
 
   getRestWorkerList() {
-    const subscription = this.worker.getRestWorkerList(this.getOption());
+    const subscription = this.worker.haveRestWorkers().subscribe(_ => this.worker.getWorkerContracts(this.getOption()));
 
     this.subscriptions.push(subscription);
   }

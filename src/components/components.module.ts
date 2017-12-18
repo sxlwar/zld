@@ -30,6 +30,7 @@ import { HistoryLocationComponent } from './history-location/history-location';
 import { FormsModule } from '@angular/forms';
 import { HistoryTrajectoryComponent } from './history-trajectory/history-trajectory';
 import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/history-trajectory-workers';
+import { WorkerSelectComponent } from './worker-select/worker-select';
 //endregion
 
 @NgModule({
@@ -61,6 +62,7 @@ import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/
     HistoryLocationComponent,
     HistoryTrajectoryComponent,
     HistoryTrajectoryWorkersComponent,
+    WorkerSelectComponent,
   ],
   imports: [
     IonicModule,
@@ -97,6 +99,7 @@ import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/
     HistoryLocationComponent,
     HistoryTrajectoryComponent,
     HistoryTrajectoryWorkersComponent,
+    WorkerSelectComponent,
   ]
 })
 export class ComponentsModule {

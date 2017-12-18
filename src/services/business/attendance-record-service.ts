@@ -1,6 +1,7 @@
+import { selectLocationAttendanceOptions } from './../../reducers/index-reducer';
 //region
 import { selectAttendanceRecordMoreData, selectAttendanceRecordMaxDate } from './../../reducers/index-reducer';
-import { ToggleMoreDataFlagAction } from './../../actions/action/attendance-record-action';
+import { ToggleMoreDataFlagAction, SetLocationAttendanceRecordStartDateAction, SetLocationAttendanceRecordEndDateAction, SetLocationAttendanceRecordUsersAction } from './../../actions/action/attendance-record-action';
 import { Injectable } from '@angular/core';
 import { AppState, selectAttendanceRecordInstant, selectAttendanceRecordPage, selectAttendanceRecordLimit, selectAttendanceRecordResponse, selectAttendanceRecordCount } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -8,7 +9,7 @@ import { ProcessorService } from '..//api/processor-service';
 import { ErrorService } from '..//errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { AttendanceInstant,  AttendanceInstantListResponse } from '../../interfaces/response-interface';
+import { AttendanceInstant, AttendanceInstantListResponse } from '../../interfaces/response-interface';
 import { RequestOption, AttendanceInstantListOptions } from '../../interfaces/request-interface';
 import { UserService } from '..//business/user-service';
 import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/action/attendance-record-action';
@@ -34,7 +35,7 @@ export class AttendanceRecordService {
     /* ===============================================Data acquisition=========================================== */
 
     getAttendanceRecord(option: Observable<RequestOption>): Observable<AttendanceInstant[]> {
-        this.getAttendanceInstantList(option);
+        this.subscriptions.push(this.getAttendanceInstantList(option));
 
         return this.store.select(selectAttendanceRecordInstant);
     }
@@ -43,24 +44,22 @@ export class AttendanceRecordService {
         return this.store.select(selectAttendanceRecordResponse);
     }
 
-    getAttendanceInstantList(option: Observable<RequestOption> = Observable.empty()): void {
+    getAttendanceInstantList(option: Observable<RequestOption> = Observable.empty()): Subscription {
         const sid = this.userInfo.getSid();
 
         const page = this.store.select(selectAttendanceRecordPage);
 
         const limit = this.store.select(selectAttendanceRecordLimit);
 
-        const params = sid.zip(
-            limit,
-            page,
-            option,
-            (sid, limit, page, option) => ({ sid, limit, page, ...option })
-        ) as Observable<AttendanceInstantListOptions>;
+        const params = sid.combineLatest([limit, page, option], (sid, limit, page, option) => ({ sid, limit, page, ...option })) as Observable<AttendanceInstantListOptions>;
 
-        const subscription = this.process.attendanceRecordListProcessor(params);
+        return this.process.attendanceRecordListProcessor(params);
+    }
 
-        this.subscriptions.push(subscription);
-
+    getOptions(): Observable<RequestOption> {
+        return this.store.select(selectLocationAttendanceOptions)
+            .filter(option => !!option.endDate && !!option.startDate && !!option.userIds.length)
+            .map(({ userIds, startDate, endDate }) => ({ start_day: startDate, end_day: endDate, user_id: userIds }));
     }
 
     /* ===============================================UI related operation=========================================== */
@@ -72,8 +71,8 @@ export class AttendanceRecordService {
     resetPage(): void {
         this.store.dispatch(new ResetRecordPageAction());
     }
-    
-    toggleMoreData(flag: boolean):void {
+
+    toggleMoreData(flag: boolean): void {
         this.store.dispatch(new ToggleMoreDataFlagAction(flag));
     }
 
@@ -83,6 +82,18 @@ export class AttendanceRecordService {
 
     getMaxDate(): Observable<Date> {
         return this.store.select(selectAttendanceRecordMaxDate);
+    }
+
+    updateLocationAttendanceRecordDate(date: string, type: string): void {
+        if (type === 'start') {
+            this.store.dispatch(new SetLocationAttendanceRecordStartDateAction(date));
+        } else {
+            this.store.dispatch(new SetLocationAttendanceRecordEndDateAction(date));
+        }
+    }
+
+    updateLocationAttendanceRecordUserIds(userIds: number[]): void {
+        this.store.dispatch(new SetLocationAttendanceRecordUsersAction(userIds));
     }
 
     /* ===============================================Data monitor=================================================== */
