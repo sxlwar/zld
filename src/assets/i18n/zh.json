@@ -339,6 +339,14 @@
   "START_DATE": "开始日期",
   "END_DATE": "结束日期",
 
+  "BASIC_INFO": "基本信息",
+  "CURRENT_ADDRESS": "现居住地",
+  "NATIONALITY": "民族",
+  "CENSUS_ADDRESS": "户籍地址",
+  "NO_WORK_TYPE": "尚未添加过工种",
+  "SELECT_WORK_TYPE": "选择工种",
+  "SELECT_ADDRESS": "请选择地区",
+
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

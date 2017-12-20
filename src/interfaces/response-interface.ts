@@ -625,7 +625,7 @@ export interface CompanyUserListResponse {
   errorMessage?: string;
 }
 
-/*=================================================Common API model==================================================*/
+/*=================================================Personal information API model==================================================*/
 
 export interface ProjectSimplest {
   id: number;
@@ -737,6 +737,40 @@ export interface BasicInfoListResponse {
   errorMessage?: string;
 }
 
+export interface WorkerDetail {
+  personalIdNum: string;
+  realname: string;
+  company_id: string;
+  sex: string;
+  birth_date: string;
+  nationality: string;
+  curraddr__province: string;
+  curraddr__city: string
+  curraddr__dist: string;
+  curraddr__street: string;
+  curraddr__detail: string;
+  workType__id: number[], // 真神奇，请求里的字段是work_type_id,也不知道到底想用哪种命名方式，乱七八糟。大多数都是worktype，在这是哪根筋搭错了写了个workType?
+  group: string[],
+  user_id: number
+}
+
+//worker detail list
+export interface WorkerDetailListResponse {
+  workers: WorkerDetail[];
+  errorMessage?: string;
+}
+
+//personal id list
+export interface PersonalIdListResponse {
+  personal_id: PersonalId[];  // 又TMD是单数，明明是个数组，真是专业埋雷手。
+  errorMessage?: string;
+}
+
+//worker detail update 
+export interface WorkerDetailUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
 /*=================================================Attendance machine API model==================================================*/
 
 export interface AttendanceMachine {
@@ -825,7 +859,7 @@ export interface LocationCardListResponse {
 
 //location card add 
 export interface LocationCardAddResponse {
-  id?:number;
+  id?: number;
   errorMessage?: string;
 }
 
@@ -843,8 +877,8 @@ export interface LocationCardDeleteResponse {
 
 /* =================================================Location API model================================================== */
 
-export interface Location extends LngLat{
-  battery: number; 
+export interface Location extends LngLat {
+  battery: number;
   time: string;
 }
 
@@ -856,7 +890,7 @@ export interface HistoryLocation {
   dev_id: string;
   loc_list: Location[];
   worktype_id: number;
-  team_name: string; 
+  team_name: string;
 }
 
 //listHisLoc
@@ -868,7 +902,7 @@ export interface HistoryLocationListResponse {  //这个地方把接口名字改
 /* =================================================Project area list API model================================================== */
 
 export interface Area {
-  bigpolygons: string | LngLat[]; 
+  bigpolygons: string | LngLat[];
   id: number;
   name: string;
   polygons: string | LngLat[];
@@ -877,8 +911,8 @@ export interface Area {
 }
 
 export interface ProjectAreaListResponse {
-    project_areas: Area[];
-    errorMessage?: string;
+  project_areas: Area[];
+  errorMessage?: string;
 }
 
 /*========================================================================================================*/

@@ -83,4 +83,27 @@ export class TipService {
       confirm.present().then(_ => {});
     });
   }
+  
+modifyAddressDetail() {
+  return  this.alertCtrl.create({
+    title: '详细地址',
+    inputs: [
+      {
+        name: 'detail',
+        placeholder: '请输入详细地址'
+      }
+    ],
+    buttons: [
+      {
+        text: '取消',
+        role: 'cancel',
+        handler: data => { }
+      },
+      {
+        text: '确定',
+        handler: data => { }
+      }
+    ]
+  });
+}
 }

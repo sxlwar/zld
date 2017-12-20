@@ -1,5 +1,4 @@
 import { TimelineComponent, TimelineItemComponent, TimelineTimeComponent } from './timeline/timeline';
-//region
 import { SharedModule } from '../app/shared.modules';
 import { NgModule } from '@angular/core';
 import { ImageVerificationComponent } from './image-verification/image-verification';
@@ -31,7 +30,7 @@ import { FormsModule } from '@angular/forms';
 import { HistoryTrajectoryComponent } from './history-trajectory/history-trajectory';
 import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/history-trajectory-workers';
 import { WorkerSelectComponent } from './worker-select/worker-select';
-//endregion
+import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
 
 @NgModule({
   declarations: [
@@ -63,6 +62,7 @@ import { WorkerSelectComponent } from './worker-select/worker-select';
     HistoryTrajectoryComponent,
     HistoryTrajectoryWorkersComponent,
     WorkerSelectComponent,
+    WorkTypeSelectComponent,
   ],
   imports: [
     IonicModule,
@@ -100,6 +100,7 @@ import { WorkerSelectComponent } from './worker-select/worker-select';
     HistoryTrajectoryComponent,
     HistoryTrajectoryWorkersComponent,
     WorkerSelectComponent,
+    WorkTypeSelectComponent,
   ]
 })
 export class ComponentsModule {

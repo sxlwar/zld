@@ -1,3 +1,4 @@
+import { AddressService } from './utils/address-service';
 import { AmapService } from './business/amap-service';
 import { LocationCardService } from './business/location-card-service';
 import { AttendanceCardService } from './business/attendance-card-service';
@@ -49,6 +50,7 @@ export const API_SERVICES = [
 
 
 export const BUSINESS_SERVICES = [
+    AddressService,
     AmapService,
     AttendanceCardService,
     AttendanceMachineService,

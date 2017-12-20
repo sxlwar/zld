@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { EmployerService } from '../../services/business/employer-service';
 import { AddTeamComponent } from '../../components/add-team/add-team';
+import { putInArray } from '../../services/utils/util';
 //endregion
 
 export interface ProjectSimple {
@@ -67,10 +68,7 @@ export class OrganizationPage {
     this.teams = this.team.getOwnTeams()
       .mergeMap(teams => Observable.from(teams)
         .map(team => ({ name: team.name, id: team.id, qualityClerk: team.quality_manage__employee__realname, foreman: team.leader__employee__realname, qualityClerkId: team.quality_manage_id }))
-        .reduce((acc, cur) => {
-          acc.push(cur);
-          return acc;
-        }, [])
+        .reduce(putInArray, [])
       )
 
     this.project = this.projectService.getCurrentProject()

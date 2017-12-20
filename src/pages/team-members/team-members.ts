@@ -1,3 +1,4 @@
+import { putInArray } from '../../services/utils/util';
 import { personalPage } from './../pages';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
@@ -67,10 +68,7 @@ export class TeamMembersPage {
     this.list = source.map(res => res.worker_contract)
       .mergeMap(result => Observable.from(result)
         .map(item => ({ name: item.worker__employee__realname, workType: item.worktype__name, id: item.worker_id }))
-        .reduce((acc, cur) => {
-          acc.push(cur);
-          return acc;
-        }, [])
+        .reduce(putInArray,[])
       )
       .scan((acc, cur) => acc.concat(cur), []);
   }

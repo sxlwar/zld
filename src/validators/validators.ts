@@ -57,3 +57,5 @@ export function cardNumberValidator(num: FormControl): { [key: string]: any } {
 
   return valid ? null : { cardNumberFormat: 'CARD_NUMBER_ERROR' };
 }
+
+export const addressAreaFormat = /\d{2}\s\d{4}\s\d{6}/;

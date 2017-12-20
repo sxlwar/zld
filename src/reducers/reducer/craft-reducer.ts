@@ -1,17 +1,26 @@
-import {WorkTypeListResponse} from '../../interfaces/response-interface';
+import { WorkTypeListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/craft-action';
 
-export const initialState: WorkTypeListResponse = {
-  information: []
+export interface State {
+  workTypeResponse: WorkTypeListResponse;
+  selectedWorkTypes: number[];
+}
+
+export const initialState: State = {
+  workTypeResponse: {
+    information: []
+  },
+  selectedWorkTypes: []
 };
 
-export function reducer(state = initialState, action: actions.Actions): WorkTypeListResponse {
+export function reducer(state = initialState, action: actions.Actions): State {
   switch (action.type) {
-    case actions.WORK_TYPE_SUCCESS_ACTION:
-      return {...action.payload};
-
     case actions.WORK_TYPE_FAIL_ACTION:
-      return {...state, ...action.payload};
+    case actions.WORK_TYPE_SUCCESS_ACTION:
+      return { ...state, workTypeResponse: action.payload }
+
+    case actions.UPDATE_SELECTED_WORK_TYPE:
+      return { ...state, selectedWorkTypes: action.payload };
 
     case actions.GET_WORK_TYPE_LIST:
     default:
@@ -19,4 +28,6 @@ export function reducer(state = initialState, action: actions.Actions): WorkType
   }
 }
 
-export const getWorkType = (state: WorkTypeListResponse) => state.information;
+export const getWorkType = (state: State) => state.workTypeResponse.information;
+
+export const getSelectedTypes = (state: State) => state.selectedWorkTypes;

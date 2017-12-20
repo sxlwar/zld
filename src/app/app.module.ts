@@ -1,7 +1,7 @@
+import { WorkTypeSelectComponent } from './../components/work-type-select/work-type-select';
 import { WorkerSelectComponent } from './../components/worker-select/worker-select';
 import { HistoryTrajectoryWorkersComponent } from './../components/history-trajectory-workers/history-trajectory-workers';
 import { HistoryTrajectoryComponent } from './../components/history-trajectory/history-trajectory';
-//region
 import { AddLocationCardComponent } from './../components/add-location-card/add-location-card';
 import { AddAttendanceCardComponent } from './../components/add-attendance-card/add-attendance-card';
 import { WorkPieceAxisComponent } from './../components/work-piece-axis/work-piece-axis';
@@ -36,7 +36,6 @@ import { FaceImageComponent } from './../components/face-image/face-image';
 import { API_SERVICES, BUSINESS_SERVICES, CONFIG_SERVICES, UTIL_SERVICES } from '../services/service-import';
 import { LOCALE_ID } from '@angular/core';
 import { HistoryLocationComponent } from '../components/history-location/history-location';
-//endregion
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -118,6 +117,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     HistoryTrajectoryComponent,
     HistoryTrajectoryWorkersComponent,
     WorkerSelectComponent,
+    WorkTypeSelectComponent,
   ],
   providers: [
     Api,

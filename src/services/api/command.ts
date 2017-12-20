@@ -1,13 +1,11 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
-//region
+import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Permission } from '../../interfaces/permission-interface';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
-import { omit } from 'lodash';
-//endregion
+import { omitBy, omit, isEmpty } from 'lodash';
 
 /* =======================================================Interface definition===================================================================== */
 
@@ -357,7 +355,7 @@ export const companyUserList: ApiUnit = {
   }
 }
 
-/* ==========================================================Common api================================================================ */
+/* ==========================================================Personal information api================================================================ */
 
 export const basicInfoList: ApiUnit = {
   operates: new Map([
@@ -366,6 +364,58 @@ export const basicInfoList: ApiUnit = {
   permission: {
     view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
     opt: []
+  }
+}
+
+export const personalIdList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.PersonalIdList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const workerDetailList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.WorkerDetailList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const workerDetailUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.WorkerDetailUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
   }
 }
 
@@ -476,7 +526,7 @@ export const historyLocationList: ApiUnit = {
     opt: []
   },
   specialCharacter: new Map([
-    [SW, new Iterator({self: 1})]
+    [SW, new Iterator({ self: 1 })]
   ])
 }
 
@@ -514,7 +564,6 @@ export class Command {
   myCompanyContractList = "employer.consumer.MyCompanyContractList";
   nationalityList = "employee.consumer.NationalityList";
   paySalary = "project.consumer.PaySalary";
-  personalIdList = "employee.consumer.PersonalIdList";
   primeContractList = "employer.consumer.PrimeContractList";
   processCreate = "workflow.consumer.ProcessCreate";
   projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
@@ -541,8 +590,6 @@ export class Command {
   workerBankNoAdd = "employee.consumer.WorkerBankNoAdd";
   workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
   workerBankNoList = "employee.consumer.WorkerBankNoList";
-  workerDetailList = "employee.consumer.WorkerDetailList";
-  workerDetailUpdate = "employee.consumer.WorkerDetailUpdate";
   workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
   constructor() {
   }
@@ -747,10 +794,38 @@ export class Command {
   }
 
   /**
-   * @description Common API: getBasicInfo;
+   * @description Personal information API: getBasicInfo, getPersonalIdList, getWorkerDetailList;
    */
   getBasicInfoList(option: BasicInfoListOptions): WsRequest {
     const path = basicInfoList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getPersonalIdList(option: PersonalIdListOptions): WsRequest {
+    const path = personalIdList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkerDetailList(option: WorkerDetailListOptions): WsRequest {
+    const path = workerDetailList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkerDetailUpdate(originOption: WorkerDetailUpdateOptions): WsRequest {
+    const path = workerDetailUpdate.operates.get(Operate.updates)[0];
+
+    const { sid, work_type_id, province, city, street, detail, dist } = originOption
+
+    const address_form = omitBy({ province, city, street, detail, dist }, (value, key) => !value);
+
+    const option = { sid };
+
+    if (work_type_id) Object.assign(option, { worker_form: { work_type_id } });
+
+    if (!isEmpty(address_form)) Object.assign(option, { address_form });
 
     return this.getFullParameter(path, option);
   }
@@ -968,5 +1043,17 @@ export class Command {
 
   get projectAreaList() {
     return projectAreaList;
+  }
+
+  get personalIdList() {
+    return personalIdList;
+  }
+
+  get workerDetailList() {
+    return workerDetailList;
+  }
+
+  get workerDetailUpdate() {
+    return workerDetailUpdate;
   }
 }

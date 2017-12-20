@@ -81,3 +81,25 @@ ion-modal.inset-modal {
   transition: opacity .25s ease-in-out;
   padding: 20vh 10vw;
 }
+
+/* ion-mutil-picker style*/
+ion-multi-picker {
+  padding: 0!important;
+  font-size: 14px;
+}
+
+.multi-picker-text {
+  white-space: pre-wrap;
+}
+
+.picker-opt {
+  font-size: 14px !important;
+}
+
+.picker-columns {
+  padding:0 5px;
+}
+
+.picker-col {
+  overflow: hidden;
+}

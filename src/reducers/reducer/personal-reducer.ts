@@ -1,12 +1,21 @@
-import { BasicInfoListResponse } from './../../interfaces/response-interface';
+import { WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/personal-action';
 
 export interface State {
-    response: BasicInfoListResponse;
+    basicResponse: BasicInfoListResponse;
+    personalIdResponse: PersonalIdListResponse;
+    workerDetailResponse: WorkerDetailListResponse;
+    workerDetailUpdateResponse: WorkerDetailUpdateResponse;
+    workerDetailOptions: WorkerDetailUpdateOptions;
 }
 
 export const initialState: State = {
-    response: null
+    basicResponse: null,
+    personalIdResponse: null,
+    workerDetailResponse: null,
+    workerDetailUpdateResponse: null,
+    workerDetailOptions: null
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -15,24 +24,66 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.BASIC_INFORMATION_SUCCESS:
             return Object.assign({}, state, { response: action.payload });
 
+        case actions.PERSONAL_ID_LIST_FAIL:
+        case actions.PERSONAL_ID_LIST_SUCCESS:
+            return { ...state, personalIdResponse: action.payload };
+
+        case actions.WORKER_DETAIL_LIST_FAIL:
+        case actions.WORKER_DETAIL_LIST_SUCCESS:
+            return { ...state, workerDetailResponse: action.payload };
+
+        case actions.UPDATE_WORKER_DETAIL_FAIL:
+            return { ...state, workerDetailUpdateResponse: action.payload };
+
+        case actions.UPDATE_WORKER_DETAIL_SUCCESS:
+            return { ...state, workerDetailUpdateResponse: action.payload, workerDetailResponse: { workers: [updateAddress(state.workerDetailResponse.workers[0], state.workerDetailOptions)] } };
+
+        case actions.UPDATE_WORK_TYPES_AT_LOCAL: {
+            return { ...state, workerDetailResponse: { workers: [{ ...state.workerDetailResponse.workers[0], workType__id: action.payload }] } };
+        }
+
+        case actions.UPDATE_WORKER_DETAIL: {
+            return { ...state, workerDetailOptions: action.payload };
+        }
+
+        case actions.GET_PERSONAL_ID_LIST:
+        case actions.GET_WORKER_DETAIL_LIST:
         case actions.GET_BASIC_INFORMATION:
         default:
             return state;
     }
 }
 
-export const getBasicInfoListResponse = (state: State) => state.response;
+export function updateAddress(source: WorkerDetail, option: WorkerDetailUpdateOptions): WorkerDetail {
+    let result = { ...source };
 
-export const getBasicInformation = (state: State) => state.response.basic_info;
+    if (option.province) Object.assign(result, { curraddr__province: option.province, curraddr__city: option.city, curraddr__dist: option.dist });
 
-export const getEducationInformation = (state: State) => state.response.edu_info;
+    if (option.detail) Object.assign(result, { curraddr__detail: option.detail });
 
-export const getWorkExperience = (state: State) => state.response.work_expr_info;
+    return result;
+}
 
-export const getPlatformExperience = (state: State) => state.response.platfrom_work_expr_info;
+export const getBasicInfoListResponse = (state: State) => state.basicResponse;
 
-export const getWorkCertification = (state: State) => state.response.work_cert_info;
+export const getBasicInformation = (state: State) => state.basicResponse.basic_info;
 
-export const getHomeInformation = (state: State) => state.response.home_info;
+export const getEducationInformation = (state: State) => state.basicResponse.edu_info;
 
-export const getPersonalIdInformation = (state: State) => state.response.person_id_info;
+export const getWorkExperience = (state: State) => state.basicResponse.work_expr_info;
+
+export const getPlatformExperience = (state: State) => state.basicResponse.platfrom_work_expr_info;
+
+export const getWorkCertification = (state: State) => state.basicResponse.work_cert_info;
+
+export const getHomeInformation = (state: State) => state.basicResponse.home_info;
+
+export const getPersonalIdInformation = (state: State) => state.basicResponse.person_id_info;
+
+export const getPersonalIdListResponse = (state: State) => state.personalIdResponse;
+
+export const getWorkerDetailListResponse = (state: State) => state.workerDetailResponse;
+
+export const getWorkerDetailUpdateResponse = (state: State) => state.workerDetailUpdateResponse;
+
+export const getWorkerDetailUpdateOptions = (state: State) => state.workerDetailOptions;

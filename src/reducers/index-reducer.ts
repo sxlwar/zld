@@ -41,7 +41,7 @@ export interface AppState {
   icons: icons.State,
   project: project.State,
   worker: worker.State,
-  workType: response.WorkTypeListResponse,
+  workType: workType.State,
   team: team.State,
   attendance: attendance.State,
   attendanceRecord: attendanceRecord.State,
@@ -172,6 +172,7 @@ export const selectSelectedWorkers = createSelector(getWorkerContracts, worker.g
 //work type list
 export const getWorkType = (state: AppState) => state.workType;
 export const selectWorkTypeList = createSelector(getWorkType, workType.getWorkType);
+export const selectSelectedWorkTypes = createSelector(getWorkType, workType.getSelectedTypes);
 
 //team api: teamList addTeam deleteTeam updateTeam; 
 export const getTeam = (state: AppState) => state.team;
@@ -265,6 +266,10 @@ export const selectWorkExperience = createSelector(getPersonal, personal.getWork
 export const selectPlatformWorkExperience = createSelector(getPersonal, personal.getPlatformExperience);
 export const selectPersonalIdInformation = createSelector(getPersonal, personal.getPersonalIdInformation);
 export const selectWorkCertification = createSelector(getPersonal, personal.getWorkCertification);
+export const selectPersonalIdResponse = createSelector(getPersonal, personal.getPersonalIdListResponse);
+export const selectWorkerDetailResponse = createSelector(getPersonal, personal.getWorkerDetailListResponse);
+export const selectWorkerDetailUpdateResponse = createSelector(getPersonal, personal.getWorkerDetailUpdateResponse);
+export const selectWorkerDetailUpdateOptions = createSelector(getPersonal, personal.getWorkerDetailUpdateOptions);
 
 //attendance machine list 
 export const getMachines = (state: AppState) => state.machine;

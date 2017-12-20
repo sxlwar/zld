@@ -1,0 +1,83 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'PERSONAL_INFO' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-item-group *ngIf="!!personalId">
+    <ion-item-divider>{{'BASIC_INFO' | translate}}</ion-item-divider>
+
+    <ion-item>
+      <ion-label fixed>{{'NAME' | translate}}</ion-label>
+      <ion-input disabled [value]="personalId.realname"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'PERSONAL_ID' | translate}}</ion-label>
+      <ion-input disabled [value]="personalId.num"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'SEX' | translate}}</ion-label>
+      <ion-input disabled [value]="personalId.sex | sex | translate"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'BIRTHDAY' | translate}}</ion-label>
+      <ion-input disabled [value]="personalId.birth_date"></ion-input>
+    </ion-item>
+
+    <ion-item *ngIf="!!workerDetail">
+      <ion-label fixed>{{'NATIONALITY' | translate}}</ion-label>
+      <ion-input disabled [value]="workerDetail.nationality"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label fixed>{{'CENSUS_ADDRESS' | translate}}</ion-label>
+      <ion-input disabled [value]="personalId.addr"></ion-input>
+    </ion-item>
+
+  </ion-item-group>
+
+  <ion-item-group>
+    <ion-item-divider>
+      {{'WORK_TYPE' | translate}}
+      <ion-icon name="list" item-end (click)="modifyWorkType()" ></ion-icon>
+    </ion-item-divider>
+
+    <ion-item *ngFor="let item of workTypes | async">
+      <ion-label>{{item}}</ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="!(workTypes | async)?.length">
+      <ion-label text-center>{{'NO_WORK_TYPE' | translate}}</ion-label>
+    </ion-item>
+  </ion-item-group>
+
+  <ion-item-group *ngIf="!!workerDetail">
+    <ion-item-divider>
+      {{'CURRENT_ADDRESS' | translate}}
+    </ion-item-divider>
+
+    <ion-item>
+        <ion-label>{{'AREA' | translate}}</ion-label>
+        <ion-multi-picker id="address" [(ngModel)]="selectedAddress" item-content [multiPickerColumns]="address | async"
+         (ngModelChange)="addressSubject.next($event)" [cancelText]="'CANCEL_BUTTON' | translate" 
+         [doneText]="'CONFIRM_BUTTON' | translate" [placeholder]="'SELECT_ADDRESS' | translate"></ion-multi-picker>
+    </ion-item>
+
+    <ion-item>
+      <!-- <ion-col col-3>{{'ADDRESS_DETAIL' | translate}}</ion-col> -->
+      <ion-label>{{'ADDRESS_DETAIL' | translate}}</ion-label>
+      <ion-input [value]="workerDetail.curraddr__detail" disabled></ion-input>
+      <ion-icon name="create" item-end (click)="modifyAddress()"></ion-icon>
+    </ion-item>
+  </ion-item-group>
+
+
+</ion-content>

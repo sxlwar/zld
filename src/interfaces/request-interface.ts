@@ -372,11 +372,52 @@ export interface ProjectAreaListOptions {
   project_id: number; //projectList返回的工程ID是number类型，文档上这个地方是string，如果必须传string，我只能说日了狗了。
 }
 
-/*=================================================Common API model==================================================*/
+/*=================================================Personal information API model==================================================*/
 
 export interface BasicInfoListOptions {
   sid: string;
   user_id: number;
+}
+
+export interface PersonalIdListOptions {
+  sid: string;
+  user_id?: number[];
+  self?: number;
+}
+
+export interface WorkerDetailListOptions {
+  sid: string;
+  user_id?: number;
+  self?: number;
+  page?: number;
+  limit?: number;
+}
+
+/** 
+ * 这是一个极其二逼的API，文档上的参数部分给出的就是WorkerDetailUpdateOptions这种格式，但是真正的格式是示例里给的格式
+ * 1、worker_form不更新也要传，否则失败；文档上没有，实测得出的结果；
+ * 2、如果address不更新则address_form 不传 否则会验证失败。文档说了这么一句废话，谁TMD的传一个不更新的东西。
+ * 3、更新地址和更新工种之间有什么关系，需要把它们耦合在一起。
+ * 4、既然N多东西都是必填项，文档上居然都是可选，这不是逗逼么，一天就是在调这种低级错误。
+ * {
+ *  sid: string;
+ *  worker_form: { work_type_id: number[]}
+ *  address_form: { province?: string; city?: string; dist?: string; street?: string; detail?: string}
+ * }
+ * 
+ * 这鸟API，让你防不甚防，数据之间又没有很强的关联性，明明可以扁平化处理，非要搞复杂, 就像返回的错误信息一样，一层套一层，难道搞的很复杂看起来就牛X点么
+ * 为了保持业务层处理起来简单一些，这个接口没有和后台保持一致，转换任务交给了对应的command服务函数去处理;
+ * 
+ * street和detail这两个字段目前来看基本无法使用，在UI层无法拿到4级地址的数据，那么用户填了以后是传哪个字段，完全可以合并的东西。
+ */
+export interface WorkerDetailUpdateOptions {
+  sid: string;
+  work_type_id?: number[]; // 又TMD是单数但传的是list
+  province?: string;
+  city?: string;
+  dist?: string;
+  street?: string;
+  detail?: string;
 }
 
 /*=================================================Work flow API model==================================================*/

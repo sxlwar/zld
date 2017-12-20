@@ -388,7 +388,7 @@ export const personalInfo: IconItem = {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
   },
-  page: ''
+  page: pages.personalInformationPage
 };
 
 export const familyInfo: IconItem = {

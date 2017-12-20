@@ -2,11 +2,11 @@ import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../
 import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
 import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
-import { GetBasicInformationAction } from './../../actions/action/personal-action';
+import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -378,5 +378,32 @@ export class ProcessorService extends MapperService {
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetProjectAreaListAction(option)));
+  }
+
+  personalIdListProcessor(option$: Observable<PersonalIdListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.personalIdList);
+
+    return permissionResult
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => Object.assign({}, result.option, option))
+      .subscribe(option => this.store.dispatch(new GetPersonalIdListAction(option)));
+  }
+
+  workerDetailListProcessor(option$: Observable<WorkerDetailListOptions>): Subscription {
+    const permissionResult = this.permission.comprehensiveValidate(this.command.workerDetailList);
+
+    return permissionResult
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
+      .subscribe(option => this.store.dispatch(new GetWorkerDetailListAction(option)));
+  }
+
+  workerDetailUpdateProcessor(option$: Observable<WorkerDetailUpdateOptions>): Subscription {
+    const permissionResult = this.permission.apiPermissionValidate(this.command.workerDetailUpdate);
+
+    return permissionResult
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateWorkerDetailAction(option)));
   }
 }

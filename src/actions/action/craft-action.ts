@@ -1,5 +1,5 @@
-import {Action} from '@ngrx/store';
-import {WorkTypeListResponse} from '../../interfaces/response-interface';
+import { Action } from '@ngrx/store';
+import { WorkTypeListResponse } from '../../interfaces/response-interface';
 
 export const GET_WORK_TYPE_LIST = 'GET_WORK_TYPE_LIST';
 
@@ -28,7 +28,15 @@ export class WorkTypeListSuccessAction implements Action {
   }
 }
 
+export const UPDATE_SELECTED_WORK_TYPE = 'UPDATE_SELECTED_WORK_TYPE';
+
+export class UpdateSelectedWorkTypesAction implements Action {
+  readonly type = UPDATE_SELECTED_WORK_TYPE;
+
+  constructor(public payload: number[]) { }
+}
 
 export type Actions = GetWorkTypeListAction
   | WorkTypeListFailAction
-  | WorkTypeListSuccessAction;
+  | WorkTypeListSuccessAction
+  | UpdateSelectedWorkTypesAction;
