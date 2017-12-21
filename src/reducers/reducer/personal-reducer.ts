@@ -1,6 +1,8 @@
-import { WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail } from './../../interfaces/response-interface';
+import { omit } from 'lodash';
+import { WorkerDetailUpdateOptions, HomeInfoUpdateOptions, homeAddressNameMapBetweenResponseAndRequest } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail, HomeInfoListResponse, HomeInfoUpdateResponse, Home } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/personal-action';
+import { rename } from '../../services/utils/util';
 
 export interface State {
     basicResponse: BasicInfoListResponse;
@@ -8,6 +10,9 @@ export interface State {
     workerDetailResponse: WorkerDetailListResponse;
     workerDetailUpdateResponse: WorkerDetailUpdateResponse;
     workerDetailOptions: WorkerDetailUpdateOptions;
+    homeInfoResponse: HomeInfoListResponse;
+    homeInfoOptions: HomeInfoUpdateOptions;
+    homeInfoUpdateResponse: HomeInfoUpdateResponse;
 }
 
 export const initialState: State = {
@@ -15,7 +20,10 @@ export const initialState: State = {
     personalIdResponse: null,
     workerDetailResponse: null,
     workerDetailUpdateResponse: null,
-    workerDetailOptions: null
+    workerDetailOptions: null,
+    homeInfoResponse: null,
+    homeInfoOptions: null,
+    homeInfoUpdateResponse: null
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -46,6 +54,20 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, workerDetailOptions: action.payload };
         }
 
+        case actions.HOME_INFO_LIST_FAIL: 
+        case actions.HOME_INFO_LIST_SUCCESS:
+            return { ...state, homeInfoResponse: action.payload };
+
+        case actions.UPDATE_HOME_INFO: 
+            return {...state, homeInfoOptions: action.payload };
+
+        case actions.HOME_INFO_UPDATE_FAIL:
+            return { ...state, homeInfoUpdateResponse: action.payload };
+
+        case actions.HOME_INFO_UPDATE_SUCCESS:
+            return { ...state, homeInfoResponse: {home_info: [updateHomeInfo(state.homeInfoResponse.home_info[0], state.homeInfoOptions)]} };
+
+        case actions.GET_HOME_INFO_LIST:
         case actions.GET_PERSONAL_ID_LIST:
         case actions.GET_WORKER_DETAIL_LIST:
         case actions.GET_BASIC_INFORMATION:
@@ -62,6 +84,12 @@ export function updateAddress(source: WorkerDetail, option: WorkerDetailUpdateOp
     if (option.detail) Object.assign(result, { curraddr__detail: option.detail });
 
     return result;
+}
+
+export function updateHomeInfo(source: Home, option: HomeInfoUpdateOptions): Home {
+    let result = omit(option, ['sid', 'user_id'])
+
+    return Object.assign({}, source, rename(result, homeAddressNameMapBetweenResponseAndRequest));
 }
 
 export const getBasicInfoListResponse = (state: State) => state.basicResponse;
@@ -87,3 +115,9 @@ export const getWorkerDetailListResponse = (state: State) => state.workerDetailR
 export const getWorkerDetailUpdateResponse = (state: State) => state.workerDetailUpdateResponse;
 
 export const getWorkerDetailUpdateOptions = (state: State) => state.workerDetailOptions;
+
+export const getHomeInfoResponse = (state: State) => state.homeInfoResponse;
+
+export const getHomeInfoUpdateResponse = (state: State) => state.homeInfoUpdateResponse;
+
+export const getHomeInfoUpdateOptions = (state: State) => state.homeInfoOptions;

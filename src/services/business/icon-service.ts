@@ -399,7 +399,7 @@ export const familyInfo: IconItem = {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
   },
-  page: ''
+  page: pages.familyInformationPage
 };
 
 export const workInfo: IconItem = {

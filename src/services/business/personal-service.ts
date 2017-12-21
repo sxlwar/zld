@@ -1,5 +1,6 @@
-import { UpdateLocalWorkerDetailWorkTypesAction, UpdateAddressAtLocalAction } from './../../actions/action/personal-action';
-import { RequestOption } from './../../interfaces/request-interface';
+import { omit } from 'lodash';
+import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/personal-action';
+import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
 import { CraftService } from './craft-service';
 import { Certification, Edu, Family, CustomWorkExperience, PlatformExperience } from './../../interfaces/personal-interface';
 import { BasicInfoListResponse, Certificate, WorkType, Education, Home, WorkExperience, PlatformWorkExperience, PersonalId, WorkerDetail } from './../../interfaces/response-interface';
@@ -8,15 +9,14 @@ import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectWorkerDetailUpdateOptions } from './../../reducers/index-reducer';
+import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
+import { rename } from '../../services/utils/util';
 
 @Injectable()
 export class PersonalService {
-    subscriptions: Subscription[] = [];
-
     basicInformation$$: Subscription;
 
     constructor(
@@ -31,14 +31,8 @@ export class PersonalService {
 
     /* ================================================================Request methods====================================================== */
 
-    getBasicInfoList(userId: Observable<number>): void {
-        const sid = this.userInfo.getSid();
-
-        const option = sid.zip(userId, (sid, user_id) => ({ sid, user_id }));
-
-        const subscription = this.process.basicInfoListProcessor(option);
-
-        this.subscriptions.push(subscription);
+    getBasicInfoList(userId: Observable<number>): Subscription {
+        return this.process.basicInfoListProcessor(this.userInfo.getSid().zip(userId, (sid, user_id) => ({ sid, user_id })));
     }
 
     getPersonalIdList(): Subscription {
@@ -51,6 +45,18 @@ export class PersonalService {
 
     updateWorkerDetail(option: Observable<RequestOption>): Subscription {
         return this.process.workerDetailUpdateProcessor(this.userInfo.getSid().combineLatest(option, (sid, option) => ({ sid, ...option })));
+    }
+
+    getHomeInfoList(): Subscription {
+        return this.process.homeInfoListProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+    }
+
+    updateHomeInfo(option: Observable<RequestOption>): Subscription {
+        return this.process.homeInfoUpdateProcessor(
+            this.store.select(selectHomeInfoListResponse)
+                .map(res => rename(omit(res.home_info[0], ['user_id']), homeAddressNameMapBetweenResponseAndRequest, true))
+                .combineLatest(option, this.userInfo.getSid().map(sid => ({ sid })), (source, sid, option) => ({ ...source, ...option, ...sid })) as Observable<HomeInfoUpdateOptions>
+        );
     }
 
     /* ================================================================Data acquisition methods====================================================== */
@@ -78,6 +84,12 @@ export class PersonalService {
 
     getWorkerDetailUpdateSuccessResult(): Observable<boolean> {
         return this.store.select(selectWorkerDetailUpdateResponse).map(res => res && !res.information).filter(value => value);
+    }
+
+    getOwnFamily(): Observable<Family> {
+        return this.store.select(selectHomeInfoListResponse)
+            .filter(value => !!value)
+            .map(res => this.transformFamily(res.home_info[0]));
     }
 
     /* =======================================================Update worker detail================================================================== */
@@ -160,9 +172,5 @@ export class PersonalService {
         const error = this.store.select(selectBasicInfoListResponse);
 
         this.basicInformation$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

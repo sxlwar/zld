@@ -1,4 +1,4 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
+import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
@@ -419,6 +419,36 @@ export const workerDetailUpdate: ApiUnit = {
   }
 }
 
+export const homeInfoList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.HomeInfoList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const homeInfoUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.HomeInfoUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
 /* ==========================================================Attendance machine api================================================================ */
 
 export const attendanceMachineList: ApiUnit = {
@@ -553,8 +583,6 @@ export class Command {
   educationList = "employee.consumer.EducationList";
   educationUpdate = "employee.consumer.EducationUpdate";
   groupsList = "employee.consumer.GroupsList";
-  homeInfoList = "employee.consumer.HomeInfoList";
-  homeInfoUpdate = "employee.consumer.HomeInfoUpdate";
   leaveRecordList = "project.consumer.LeaveRecordList";
   logout = "employee.consumer.Logout";
   msgTitleDelete = "operation.consumer.MsgTitleDelete";
@@ -830,6 +858,18 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  getHomeInfoList(option: HomeInfoListOptions): WsRequest {
+    const path = homeInfoList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getHomeInfoUpdate(option: HomeInfoUpdateOptions): WsRequest {
+    const path = homeInfoUpdate.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
   /**
    * @description Attendance machine API: getAttendanceMachineList
    */
@@ -1055,5 +1095,13 @@ export class Command {
 
   get workerDetailUpdate() {
     return workerDetailUpdate;
+  }
+
+  get homeInfoList() {
+    return homeInfoList;
+  }
+
+  get homeInfoUpdate() {
+    return homeInfoUpdate;
   }
 }

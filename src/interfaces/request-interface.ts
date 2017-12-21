@@ -420,6 +420,35 @@ export interface WorkerDetailUpdateOptions {
   detail?: string;
 }
 
+export interface HomeInfoListOptions {
+  sid: string;
+  user_id?: number[];
+}
+
+export const homeAddressNameMapBetweenResponseAndRequest = {
+  province: "homeaddr__province",
+  city: "homeaddr__city",
+  dist: "homeaddr__dist",
+  detail: "homeaddr__detail",
+  street: "homeaddr__street"
+}
+
+export interface HomeInfoUpdateOptions {
+  sid: string;
+  //home_info_form;
+  marriage: number; // 0 or 1  去你奶奶个熊，这TMD不就是一个 true/false, 响应都知道给boolean，到了请求就成了数字.
+  childnum: number;
+  marryday: string;
+  emergency_contact_name: string;
+  emergency_contact_tel: string;
+  emergency_contact_relation: string;
+  //address_form;
+  province: string; //鸟接口看的人想吐，响应的字段名称有前缀 homeaddr__，请求里又没有，home_info_from的字段请求和响应倒是统一，我相信那只是一个巧合。
+  city: string;
+  dist: string;
+  street: string;
+  detail: string;
+}
 /*=================================================Work flow API model==================================================*/
 
 export enum RequestStatus {

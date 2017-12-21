@@ -643,18 +643,18 @@ export interface BasicInformation {
 }
 
 export interface Home {
-  emergency_contact_tel: string;
-  user_id: number,
-  homeaddr__street: string;
+  childnum: number;
+  emergency_contact_name: string;
   emergency_contact_relation: string;
+  emergency_contact_tel: string;
+  homeaddr__city: string;
   homeaddr__detail: string;
   homeaddr__dist: string;
-  childnum: number;
-  marriage: boolean;
-  homeaddr__city: string;
-  emergency_contact_name: string;
   homeaddr__province: string;
+  homeaddr__street: string;
+  marriage: boolean;
   marryday: string;
+  user_id: number,
 }
 
 export interface Education {
@@ -771,6 +771,18 @@ export interface WorkerDetailUpdateResponse {
   information?: string;
   errorMessage?: string;
 }
+
+//home info list
+export interface HomeInfoListResponse {
+  home_info: Home[];
+}
+
+//home info update
+export interface HomeInfoUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
 /*=================================================Attendance machine API model==================================================*/
 
 export interface AttendanceMachine {

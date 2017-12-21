@@ -16,11 +16,11 @@
 <ion-content padding>
 
   <ion-card class="info">
-    <ion-item>
+    <ion-item (click)="showPersonalInformation()" >
       <ion-avatar item-start>
         <img [src]="(faceImage | async) || '../../assets/img/ian-avatar.png'">
       </ion-avatar>
-      <h6>{{realname | async}}</h6>
+      <h6>{{name | async}}</h6>
       <h6>{{account | async}}</h6>
       <ion-icon name="arrow-forward" color="light" item-end></ion-icon>
     </ion-item>

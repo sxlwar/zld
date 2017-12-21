@@ -2,11 +2,11 @@ import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../
 import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
 import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
-import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction } from './../../actions/action/personal-action';
+import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction, GetHomeInfoListAction, UpdateHomeInfoAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -134,276 +134,230 @@ export class ProcessorService extends MapperService {
   }
 
   teamListProcessor(option$: Observable<TeamListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.teamList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.teamList)
       .filter(res => res.permission.opt || res.permission.view)
-      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .zip(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => {
         this.store.dispatch(new GetTeamListAction(option));
       });
   }
 
   attendanceListProcessor(option$: Observable<AttendanceResultListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.attendanceList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.attendanceList)
       .filter(res => res.permission.view)
-      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .zip(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => {
         this.store.dispatch(new GetAttendanceResultListAction(option));
       })
   }
 
   attendanceRecordListProcessor(option$: Observable<AttendanceInstantListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.attendanceInstantList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.attendanceInstantList)
       .filter(res => res.permission.view)
-      .combineLatest(option$, (result, option) => Object.assign({}, option, result.option))
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => this.store.dispatch(new GetAttendanceRecordAction(option)));
   }
 
   payBillListProcessor(option$: Observable<PayBillListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.payBillList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.payBillList)
       .filter(res => res.permission.view)
-      .zip(option$, (result, option) => Object.assign({}, option, result.option))
+      .zip(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => this.store.dispatch(new GetPayBillListAction(option)));
   }
 
   workPieceListProcessor(option$: Observable<WorkPieceListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.workPieceList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.workPieceList)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetWorkPieceListAction(option)));
   }
 
   workOvertimeRecordListProcessor(option$: Observable<WorkOvertimeRecordListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.workOvertimeRecordList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.workOvertimeRecordList)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetWorkOvertimeRecordAction(option)));
   }
 
   attendanceResultTeamStatListProcessor(option$: Observable<AttendanceResultTeamStatListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceResultTeamStatList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.attendanceResultTeamStatList)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetAttendanceResultTeamStatListAction(option)));
   }
 
   workFlowStatisticsProcessor(option$: Observable<RequestAggregationOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.workFlowStatistics);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.workFlowStatistics)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetWorkFlowStatisticsAction(option)));
   }
 
   projectPayProcessProcessor(option$: Observable<ProjectPayProcessListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.projectPayProcessList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.projectPayProcessList)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetProjectPayProcessListAction(option)));
   }
 
   projectPayBillProcessor(option$: Observable<ProjectPayBillListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.projectPayBillList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.projectPayBillList)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetProjectPayBillListAction(option)));
   }
 
   payProcessProcessor(option$: Observable<PayProcessListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.payProcessList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.payProcessList)
       .filter(result => result.permission.view)
-      .zip(option$, (result, option) => Object.assign({}, result.option, option))
+      .zip(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => this.store.dispatch(new GetPayProcessListAction(option)));
   }
 
   companyUserListProcessor(option$: Observable<CompanyUserListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.companyUserList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.companyUserList)
       .filter(result => result.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetCompanyUserListAction(option)));
   }
 
   teamAddProcessor(option$: Observable<TeamAddOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.teamAdd);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.teamAdd)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new AddTeamAction(option)));
   }
 
   teamUpdateProcessor(option$: Observable<TeamUpdateOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.teamUpdate);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.teamUpdate)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new UpdateTeamAction(option)));
   }
 
   teamDeleteProcessor(option$: Observable<TeamDeleteOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.teamDelete);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.teamDelete)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new DeleteTeamAction(option)));
   }
 
   basicInfoListProcessor(option$: Observable<BasicInfoListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.basicInfoList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.basicInfoList)
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetBasicInformationAction(option)));
   }
 
   attendanceMachineListProcessor(option$: Observable<AttendanceMachineListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceMachineList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.attendanceMachineList)
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetAttendanceMachineListAction(option)));
   }
 
   attendanceCardListProcessor(option$: Observable<AttendanceCardListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.attendanceCardList)
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetAttendanceCardListAction(option)));
   }
 
   attendanceCardAddProcessor(option$: Observable<AttendanceCardAddOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardAdd);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.attendanceCardAdd)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new AddAttendanceCardAction(option)));
   }
 
   attendanceCardUpdateProcessor(option$: Observable<AttendanceCardUpdateOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardUpdate);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.attendanceCardUpdate)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new UpdateAttendanceCardAction(option)));
   }
 
   attendanceCardDeleteProcessor(option$: Observable<AttendanceCardDeleteOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.attendanceCardDelete);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.attendanceCardDelete)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new DeleteAttendanceCardAction(option)));
   }
 
   locationCardListProcessor(option$: Observable<LocationCardListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.locationCardList)
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetLocationCardListAction(option)));
   }
 
   locationCardAddProcessor(option$: Observable<LocationCardAddOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardAdd);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.locationCardAdd)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new AddLocationCardAction(option)));
   }
 
   locationCardUpdateProcessor(option$: Observable<LocationCardUpdateOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardUpdate);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.locationCardUpdate)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new UpdateLocationCardAction(option)));
   }
 
   locationCardDeleteProcessor(option$: Observable<LocationCardDeleteOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.locationCardDelete);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.locationCardDelete)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new DeleteLocationCardAction(option)));
   }
 
   historyLocationListProcessor(option$: Observable<HistoryLocationListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.historyLocationList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.historyLocationList)
       .filter(value => value.permission.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetHistoryLocationListAction(option)));
   }
 
   projectAreaListProcessor(option$: Observable<ProjectAreaListOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.projectAreaList);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.projectAreaList)
       .filter(value => value.view)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetProjectAreaListAction(option)));
   }
 
   personalIdListProcessor(option$: Observable<PersonalIdListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.personalIdList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.personalIdList)
       .filter(value => value.permission.view)
       .combineLatest(option$, (result, option) => Object.assign({}, result.option, option))
       .subscribe(option => this.store.dispatch(new GetPersonalIdListAction(option)));
   }
 
   workerDetailListProcessor(option$: Observable<WorkerDetailListOptions>): Subscription {
-    const permissionResult = this.permission.comprehensiveValidate(this.command.workerDetailList);
-
-    return permissionResult
+    return this.permission.comprehensiveValidate(this.command.workerDetailList)
       .filter(value => value.permission.view)
       .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => this.store.dispatch(new GetWorkerDetailListAction(option)));
   }
 
   workerDetailUpdateProcessor(option$: Observable<WorkerDetailUpdateOptions>): Subscription {
-    const permissionResult = this.permission.apiPermissionValidate(this.command.workerDetailUpdate);
-
-    return permissionResult
+    return this.permission.apiPermissionValidate(this.command.workerDetailUpdate)
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new UpdateWorkerDetailAction(option)));
+  }
+
+  homeInfoListProcessor(option$: Observable<HomeInfoListOptions>): Subscription {
+    return this.permission.comprehensiveValidate(this.command.homeInfoList)
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
+      .subscribe(option => this.store.dispatch(new GetHomeInfoListAction(option)));
+  }
+
+  homeInfoUpdateProcessor(option$: Observable<HomeInfoUpdateOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.homeInfoUpdate)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateHomeInfoAction(option)));
   }
 }

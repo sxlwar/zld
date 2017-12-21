@@ -1,5 +1,5 @@
 import { TipService } from './../services/tip-service';
-import { GET_BASIC_INFORMATION, GetBasicInformationAction, BasicInfoListFailAction, BasicInfoListSuccessAction, GET_PERSONAL_ID_LIST, GetPersonalIdListAction, PersonalIdListFailAction, PersonalIdListSuccessAction, GET_WORKER_DETAIL_LIST, GetWorkerDetailListAction, WorkerDetailListFailAction, WorkerDetailListSuccessAction, UPDATE_WORKER_DETAIL, UpdateWorkerDetailAction, UpdateWorkerDetailFailAction, UpdateWorkerDetailSuccessAction } from './../actions/action/personal-action';
+import { GET_BASIC_INFORMATION, GetBasicInformationAction, BasicInfoListFailAction, BasicInfoListSuccessAction, GET_PERSONAL_ID_LIST, GetPersonalIdListAction, PersonalIdListFailAction, PersonalIdListSuccessAction, GET_WORKER_DETAIL_LIST, GetWorkerDetailListAction, WorkerDetailListFailAction, WorkerDetailListSuccessAction, UPDATE_WORKER_DETAIL, UpdateWorkerDetailAction, UpdateWorkerDetailFailAction, UpdateWorkerDetailSuccessAction, GET_HOME_INFO_LIST, GetHomeInfoListAction, HomeInfoListFailAction, HomeInfoListSuccessAction, UpdateHomeInfoAction, UPDATE_HOME_INFO, HomeInfoUpdateFailAction, HomeInfoUpdateSuccessAction } from './../actions/action/personal-action';
 import { Injectable } from '@angular/core';
 import { ResponseAction } from './../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
@@ -50,6 +50,26 @@ export class PersonalEffect extends Command {
             .map(msg => msg.isError ? new UpdateWorkerDetailFailAction(msg.data) : new UpdateWorkerDetailSuccessAction(msg.data))
             .catch(error => of(error))
         );
+
+    @Effect()
+    homeInfoList$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_HOME_INFO_LIST)
+        .switchMap((action: GetHomeInfoListAction) => this.ws
+            .send(this.getHomeInfoList(action.payload))
+            .takeUntil(this.actions$.ofType(GET_HOME_INFO_LIST))
+            .map(msg => msg.isError ? new HomeInfoListFailAction(msg.data): new HomeInfoListSuccessAction(msg.data))
+            .catch(error => of(error))
+    );
+
+    @Effect()
+    homeInfoUpdate$: Observable<ResponseAction> = this.actions$
+        .ofType(UPDATE_HOME_INFO)
+        .switchMap((action: UpdateHomeInfoAction) => this.ws
+            .send(this.getHomeInfoUpdate(action.payload))
+            .takeUntil(this.actions$.ofType(UPDATE_HOME_INFO))
+            .map(msg => msg.isError ? new HomeInfoUpdateFailAction(msg.data) : new HomeInfoUpdateSuccessAction(msg.data))
+            .catch(error => of(error))
+    )
 
     constructor(
         public ws: WebsocketService,

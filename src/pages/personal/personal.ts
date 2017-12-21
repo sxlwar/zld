@@ -1,7 +1,7 @@
 //region
 import { CraftService } from './../../services/business/craft-service';
 import { Observable } from 'rxjs/Observable';
-import { BasicInfoListResponse, BasicInformation,  PersonalId } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, BasicInformation, PersonalId } from './../../interfaces/response-interface';
 import { PersonalService } from './../../services/business/personal-service';
 import { UserService } from './../../services/business/user-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -17,7 +17,7 @@ import { Certification, Education, Family, PlatformExperience, CustomWorkExperie
 })
 export class PersonalPage {
   type = 'basic';
-  
+
   workType = 'platform';
 
   subscriptions: Subscription[] = [];
@@ -45,11 +45,24 @@ export class PersonalPage {
     public personal: PersonalService,
     public craft: CraftService
   ) {
-    this.userId = this.navParams.get('userId') || this.userInfo.getUserId();
-    this.personal.getBasicInfoList(Observable.of(this.userId));
+    this.userId = this.navParams.get('userId');
   }
 
   ionViewDidLoad() {
+    this.initialModel();
+
+    this.launch();
+  }
+
+  launch() {
+    const option = this.userId ? Observable.of(this.userId) : this.userInfo.getUserId();
+
+    this.subscriptions = [
+      this.personal.getBasicInfoList(option)
+    ];
+  }
+
+  initialModel() {
     const source = this.personal.getBasicInfoResponse()
       .filter(value => !!value);
 
@@ -110,6 +123,10 @@ export class PersonalPage {
 
   getEducation(source: Observable<BasicInfoListResponse>): void {
     this.education = source.map(data => data.edu_info.map(item => this.personal.transformEducation(item)));
+  }
+
+  ionViewWillUnload(){
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 
 }

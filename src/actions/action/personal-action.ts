@@ -1,5 +1,5 @@
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse } from './../../interfaces/response-interface';
-import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, HomeInfoListResponse, HomeInfoUpdateResponse } from './../../interfaces/response-interface';
+import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 /*  ===================================================Basic information================================================== */
@@ -106,6 +106,56 @@ export class UpdateWorkerDetailSuccessAction implements Action {
     constructor(public payload: WorkerDetailUpdateResponse) { }
 }
 
+/* ====================================================Home information================================================ */
+
+export const GET_HOME_INFO_LIST = 'GET_HOME_INFO_LIST';
+
+export class GetHomeInfoListAction implements Action {
+    readonly type = GET_HOME_INFO_LIST;
+
+    constructor(public payload: HomeInfoListOptions) { }
+}
+
+export const HOME_INFO_LIST_FAIL = 'HOME_INFO_LIST_FAIL';
+
+export class HomeInfoListFailAction implements Action {
+    readonly type = HOME_INFO_LIST_FAIL;
+
+    constructor(public payload: HomeInfoListResponse) { }
+}
+
+export const HOME_INFO_LIST_SUCCESS = 'HOME_INFO_LIST_SUCCESS';
+
+export class HomeInfoListSuccessAction implements Action {
+    readonly type = HOME_INFO_LIST_SUCCESS;
+
+    constructor(public payload: HomeInfoListResponse) { }
+}
+
+export const UPDATE_HOME_INFO = 'UPDATE_HOME_INFO';
+
+export class UpdateHomeInfoAction implements Action {
+    readonly type = UPDATE_HOME_INFO;
+
+    constructor(public payload: HomeInfoUpdateOptions) { }
+}
+
+export const HOME_INFO_UPDATE_FAIL = 'HOME_INFO_UPDATE_FAIL';
+
+export class HomeInfoUpdateFailAction implements Action {
+    readonly type = HOME_INFO_UPDATE_FAIL;
+
+    constructor(public payload: HomeInfoUpdateResponse) { }
+}
+
+export const HOME_INFO_UPDATE_SUCCESS = 'HOME_INFO_UPDATE_SUCCESS';
+
+export class HomeInfoUpdateSuccessAction implements Action {
+    readonly type = HOME_INFO_UPDATE_SUCCESS;
+
+    constructor(public payload: HomeInfoUpdateResponse) { }
+}
+
 /* ====================================================Local update==================================================== */
 
 export const UPDATE_WORK_TYPES_AT_LOCAL = 'UPDATE_WORK_TYPES_AT_LOCAL'
@@ -119,13 +169,19 @@ export class UpdateLocalWorkerDetailWorkTypesAction implements Action {
 export type Actions = GetBasicInformationAction
     | BasicInfoListFailAction
     | BasicInfoListSuccessAction
+    | GetHomeInfoListAction
     | GetPersonalIdListAction
     | GetWorkerDetailListAction
+    | HomeInfoListFailAction
+    | HomeInfoUpdateFailAction
+    | HomeInfoListSuccessAction
+    | HomeInfoUpdateSuccessAction
     | PersonalIdListFailAction
     | PersonalIdListSuccessAction
+    | UpdateHomeInfoAction
     | UpdateLocalWorkerDetailWorkTypesAction
     | UpdateWorkerDetailAction
     | UpdateWorkerDetailFailAction
     | UpdateWorkerDetailSuccessAction
     | WorkerDetailListFailAction
-    | WorkerDetailListSuccessAction;
+    | WorkerDetailListSuccessAction

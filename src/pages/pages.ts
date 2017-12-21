@@ -85,6 +85,8 @@ export const salaryPage = 'SalaryPage';
 
 export const personalInformationPage = 'PersonalInformationPage';
 
+export const familyInformationPage = 'FamilyInformationPage';
+
 
 export const PAGES = [
   { title: 'Tutorial', component: tutorialPage },
@@ -133,5 +135,6 @@ export const PAGES = [
   { title: 'Salary', component: salaryPage },
   { title: 'SalaryDetail', component: salaryDetailPage },
   { title: 'WorkerContract', component: workerContractPage },
-  { title: 'PersonalInformation', component: personalInformationPage},
+  { title: 'PersonalInformation', component: personalInformationPage },
+  { title: 'FamilyInformation', component: familyInformationPage }
 ];

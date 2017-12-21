@@ -1,0 +1,14 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'FAMILY_INFO' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+    <family-information [family]="family | async" ></family-information>
+    
+</ion-content>

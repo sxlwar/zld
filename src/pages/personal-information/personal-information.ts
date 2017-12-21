@@ -98,17 +98,17 @@ export class PersonalInformationPage {
 
     return this.personal.updateWorkerDetail(
       typeOption.merge(
-        this.monitorAddressArea(workType),
-        this.monitorAddressDetail(workType)
+        this.monitorAddressArea(workType).do(value => console.log(value)),
+        this.monitorAddressDetail(workType).do(value => console.log(value))
       )
     );
   }
 
   /**
-     * @description To update the area, we have to pass the work type ids to the server.
-     * To ensure that the stream emit value when area information changes only, it is necessary to check
-     * whether the value of area has changed.
-     */
+   * @description To update the area, we have to pass the work type ids to the server.
+   * To ensure that the stream emit value when area information changes only, it is necessary to check
+   * whether the value of area has changed.
+   */
   monitorAddressArea(workType: Observable<RequestOption>): Observable<RequestOption> {
     return workType
       .combineLatest(

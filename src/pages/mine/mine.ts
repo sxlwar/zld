@@ -1,3 +1,5 @@
+import { personalInfo } from './../../services/business/icon-service';
+import { PersonalInformationPage } from './../personal-information/personal-information';
 //region
 import { MineRoot } from './../pages';
 import { Component } from '@angular/core';
@@ -48,7 +50,7 @@ export class MinePage {
 
   character: Observable<string>;
 
-  realname: Observable<string>;
+  name: Observable<string>;
 
   projectName: Observable<string>;
 
@@ -74,7 +76,7 @@ export class MinePage {
   ionViewDidLoad() {
     this.icons = this.iconService.getIcons(MineRoot, icons);
 
-    this.realname = this.userInfo.getRealname();
+    this.name = this.userInfo.getRealname();
 
     this.character = this.userInfo.getUserCharacter();
 
@@ -93,6 +95,10 @@ export class MinePage {
 
   goTo(item) {
     this.navCtrl.push(item.page, item).then(() => { });
+  }
+
+  showPersonalInformation(): void{
+    this.navCtrl.push(PersonalInformationPage, personalInfo).then(() => { });
   }
 
   ionViewWillLeave() {
