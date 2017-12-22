@@ -6,6 +6,7 @@
   "CANCEL_BUTTON": "取消",
   "ADD_BUTTON": "添加",
   "DELETE_BUTTON": "删除",
+  "UPDATE_BUTTON": "更新",
 
   "NAME": "姓名",
   "EMAIL": "邮箱",
@@ -346,6 +347,7 @@
   "NO_WORK_TYPE": "尚未添加过工种",
   "SELECT_WORK_TYPE": "选择工种",
   "SELECT_ADDRESS": "请选择地区",
+
 
 
   "TAB1_TITLE": "Items",

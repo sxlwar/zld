@@ -433,10 +433,20 @@ export const homeAddressNameMapBetweenResponseAndRequest = {
   street: "homeaddr__street"
 }
 
+export const relationShip = [
+  '配偶',
+  '子女',
+  '父母',
+  '亲戚',
+  '朋友',
+  '同事',
+  '其它'
+]
+
 export interface HomeInfoUpdateOptions {
   sid: string;
   //home_info_form;
-  marriage: number; // 0 or 1  去你奶奶个熊，这TMD不就是一个 true/false, 响应都知道给boolean，到了请求就成了数字.
+  marriage: number; // 0: 未婚 or 1: 已婚  去你奶奶个熊，这TMD不就是一个 true/false, 响应都给boolean，到了请求就成了数字.
   childnum: number;
   marryday: string;
   emergency_contact_name: string;

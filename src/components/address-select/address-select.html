@@ -1,0 +1,19 @@
+<ion-item-group>
+  <ion-item-divider>
+    {{'CURRENT_ADDRESS' | translate}}
+  </ion-item-divider>
+
+  <ion-item>
+      <ion-label>{{'AREA' | translate}}</ion-label>
+      <ion-multi-picker id="address" [(ngModel)]="selectedArea" item-content [multiPickerColumns]="address | async"
+       (ngModelChange)="addressChange.next($event)" [cancelText]="'CANCEL_BUTTON' | translate" 
+       [doneText]="'CONFIRM_BUTTON' | translate" [placeholder]="'SELECT_ADDRESS' | translate" [disabled]="disabled" ></ion-multi-picker>
+  </ion-item>
+
+
+  <ion-item>
+    <ion-label>{{'ADDRESS_DETAIL' | translate}}</ion-label>
+    <ion-input [(ngModel)]="addressDetail" [value]="addressDetail" disabled></ion-input>
+    <ion-icon name="create" item-end (click)="modifyAddress()" *ngIf="!disabled"></ion-icon>
+  </ion-item>
+</ion-item-group>

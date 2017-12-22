@@ -64,7 +64,7 @@ export class AddressService {
     }
 
     private transformAddressBetweenNameAndCode(source: Observable<string[]>, from: number, to: number): Observable<string[]> {
-        return this.address.zip(source)
+        return this.address.combineLatest(source)
         .mergeMap(([address, source]) => Observable.from(address)
             .map(item => item.options)
             .zip(Observable.from(source))

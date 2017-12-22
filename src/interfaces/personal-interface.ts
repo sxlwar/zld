@@ -30,7 +30,7 @@ export interface Education {
 }
 
 export interface Family {
-    marriage: string;
+    marriage: number;
     children: number;
     marryDay: string;
     emergencyName: string;

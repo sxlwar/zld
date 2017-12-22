@@ -67,6 +67,7 @@ export class PersonalEffect extends Command {
         .switchMap((action: UpdateHomeInfoAction) => this.ws
             .send(this.getHomeInfoUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_HOME_INFO))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new HomeInfoUpdateFailAction(msg.data) : new HomeInfoUpdateSuccessAction(msg.data))
             .catch(error => of(error))
     )

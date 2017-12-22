@@ -1,3 +1,4 @@
+import { MultiPickerModule } from 'ion-multi-picker';
 import { TimelineComponent, TimelineItemComponent, TimelineTimeComponent } from './timeline/timeline';
 import { SharedModule } from '../app/shared.modules';
 import { NgModule } from '@angular/core';
@@ -31,6 +32,7 @@ import { HistoryTrajectoryComponent } from './history-trajectory/history-traject
 import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/history-trajectory-workers';
 import { WorkerSelectComponent } from './worker-select/worker-select';
 import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
+import { AddressSelectComponent } from './address-select/address-select';
 
 @NgModule({
   declarations: [
@@ -63,6 +65,7 @@ import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
     HistoryTrajectoryWorkersComponent,
     WorkerSelectComponent,
     WorkTypeSelectComponent,
+    AddressSelectComponent,
   ],
   imports: [
     IonicModule,
@@ -70,6 +73,7 @@ import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
     TranslateModule,
     SharedModule,
     FormsModule,
+    MultiPickerModule,
   ],
   exports: [
     ImageVerificationComponent,
@@ -101,6 +105,7 @@ import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
     HistoryTrajectoryWorkersComponent,
     WorkerSelectComponent,
     WorkTypeSelectComponent,
+    AddressSelectComponent,
   ]
 })
 export class ComponentsModule {

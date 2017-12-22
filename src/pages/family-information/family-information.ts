@@ -1,3 +1,8 @@
+import { HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { MapperService } from './../../services/api/mapper-service';
+import { RequestOption } from '../../interfaces/request-interface';
+import { Subject } from 'rxjs/Subject';
+import { AddressService } from './../../services/utils/address-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Family } from './../../interfaces/personal-interface';
 import { Observable } from 'rxjs/Observable';
@@ -14,17 +19,23 @@ export class FamilyInformationPage {
 
   family: Observable<Family>;
 
+  updateFamily: Subject<Family> = new Subject();
+
   subscriptions: Subscription[] = [];
-  
+
+  disabled = true;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public personal: PersonalService,
-    public modalCtrl: ModalController
+    public modalCtrl: ModalController,
+    public addressService: AddressService,
+    public mapper: MapperService
   ) {
   }
 
-  ionViewCanEnter(){
+  ionViewCanEnter() {
     const { view, opt } = this.navParams.get('permission');
 
     return opt || view;
@@ -37,17 +48,28 @@ export class FamilyInformationPage {
   }
 
   initialData() {
-    this.family = this.personal.getOwnFamily();
+    this.family = this.personal.getOwnFamily()
+      .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' '))).map(res => res.join(' '))
+        .zip(Observable.of(res), (addressArea, res) => ({ ...res, addressArea }))
+      );
   }
 
   launch() {
     this.subscriptions = [
       this.personal.getHomeInfoList(),
-    ] 
+      this.personal.updateHomeInfo(this.getOption())
+    ]
   }
 
-  // updateHomeInfo(): Observable<RequestOption> {
-    
-  // }
+  getOption(): Observable<HomeInfoUpdateOptions> {
+    return this.updateFamily
+      .filter(value => !!value)
+      .mergeMap(item =>
+        this.addressService.getAddressName(
+          Observable.of(item.addressArea.split(' '))
+        )
+          .map(res => this.mapper.transformFamilyOptions({ ...item, addressArea: res.join(' ') }))
+      );
+  }
 
 }

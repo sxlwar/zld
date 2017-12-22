@@ -864,8 +864,16 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
-  getHomeInfoUpdate(option: HomeInfoUpdateOptions): WsRequest {
+  getHomeInfoUpdate(originOption: HomeInfoUpdateOptions): WsRequest {
     const path = homeInfoUpdate.operates.get(Operate.updates)[0];
+
+    const { sid, emergency_contact_relation, emergency_contact_name, emergency_contact_tel, marriage, marryday, childnum, province, city, detail, dist, street } = originOption;
+
+    const option = {
+      sid,
+      home_info_form: { emergency_contact_relation, emergency_contact_name, emergency_contact_tel, marriage, marryday, childnum },
+      address_form: { province, city, detail, dist, street }
+    };
 
     return this.getFullParameter(path, option);
   }

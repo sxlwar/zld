@@ -1,5 +1,4 @@
 import { RequestOption } from './../../interfaces/request-interface';
-import { TipService } from './../../services/tip-service';
 import { Subject } from 'rxjs/Subject';
 import { AddressService } from './../../services/utils/address-service';
 import { WorkTypeSelectComponent } from './../../components/work-type-select/work-type-select';
@@ -10,9 +9,7 @@ import { PersonalId, WorkerDetail } from './../../interfaces/response-interface'
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
-import { AddressColumn, Column } from '../../services/utils/address-service';
 import { addressAreaFormat } from '../../validators/validators';
-import { projectRequestOptions } from '../../services/utils/util';
 
 @IonicPage()
 @Component({
@@ -29,9 +26,7 @@ export class PersonalInformationPage {
 
   workTypes: Observable<string[]>;
 
-  address: Observable<AddressColumn<Column>[]>;
-
-  selectedAddress = '';
+  selectedArea: Observable<string>;
 
   addressSubject: Subject<string> = new Subject();
 
@@ -41,10 +36,8 @@ export class PersonalInformationPage {
     public personal: PersonalService,
     public craft: CraftService,
     public modalCtrl: ModalController,
-    public addressService: AddressService,
-    public tip: TipService
+    public addressService: AddressService
   ) {
-    this.address = addressService.address;
   }
 
   ionViewCanEnter() {
@@ -71,15 +64,14 @@ export class PersonalInformationPage {
 
       this.personal.updateWorkerDetailWorkTypeAtLocal(),
 
-      this.addressService.getAddressCode(this.personal.getWorkerDetail().map(item => [item.curraddr__province, item.curraddr__city, item.curraddr__dist]))
-        .subscribe(result => this.selectedAddress = result.join(' ')),
-
       this.monitor()
     ];
   }
 
   initialModel() {
     this.workTypes = this.personal.getOwnWorkTypes();
+
+    this.selectedArea = this.addressService.getAddressCode(this.personal.getWorkerDetail().map(item => [item.curraddr__province, item.curraddr__city, item.curraddr__dist])).map(result => result.join(' '));
   }
 
   /**
@@ -96,12 +88,11 @@ export class PersonalInformationPage {
     //基于后台的2逼逻辑，处理地址信息的时候需要把work type 的信息带上，所以加了这一行
     const workType = this.personal.getWorkerDetail().map(item => ({ work_type_id: item.workType__id })).take(1).concat(typeOption);
 
-    return this.personal.updateWorkerDetail(
-      typeOption.merge(
-        this.monitorAddressArea(workType).do(value => console.log(value)),
-        this.monitorAddressDetail(workType).do(value => console.log(value))
-      )
-    );
+    const area = this.monitorAddressArea(workType);
+
+    const detail = this.monitorAddressDetail(workType);
+
+    return this.personal.updateWorkerDetail(typeOption.merge(area, detail));
   }
 
   /**
@@ -112,13 +103,16 @@ export class PersonalInformationPage {
   monitorAddressArea(workType: Observable<RequestOption>): Observable<RequestOption> {
     return workType
       .combineLatest(
-      this.addressService.getAddressName(this.addressSubject
-        .filter(item => addressAreaFormat.test(item))
-        .map(item => item.split(' ')))
-        .distinct(value => value)
+      this.addressService.getAddressName(
+        this.addressSubject
+          .filter(item => addressAreaFormat.test(item))
+          .distinct(value => value)
+          .map(item => item.split(' '))
+      )
         .map(([province, city, dist]) => ({ province, city, dist })),
-      projectRequestOptions
-      );
+      (workType, address) => ({ ...workType, ...address })
+      )
+      .distinct(value =>  value.province + value.city + value.dist );
   }
 
   /**
@@ -131,21 +125,13 @@ export class PersonalInformationPage {
         .withLatestFrom(this.personal.getWorkerDetail()
           .map(item => ({ province: item.curraddr__province, city: item.curraddr__city, dist: item.curraddr__dist })))
         .map(([detail, other]) => ({ ...detail, ...other })),
-      projectRequestOptions
+      (workType, address) => ({ ...workType, ...address })
     )
       .distinctUntilKeyChanged('detail');
   }
 
   modifyWorkType() {
     this.modalCtrl.create(WorkTypeSelectComponent, { types: this.workerDetail.workType__id }).present();
-  }
-
-  modifyAddress() {
-    const alert = this.tip.modifyAddressDetail();
-
-    alert.present();
-
-    alert.onDidDismiss(data => data.detail && this.addressSubject.next(data.detail));
   }
 
   ionViewWillUnload() {

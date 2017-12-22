@@ -2,6 +2,11 @@
 
   <ion-navbar>
     <ion-title>{{'FAMILY_INFO' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="disabled = false" *ngIf="disabled">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -9,6 +14,6 @@
 
 <ion-content padding>
 
-    <family-information [family]="family | async" ></family-information>
-    
+  <family-information [family]="family | async" [disabled]="disabled" (updateHomeInfo)="updateFamily.next($event); disabled= true;"></family-information>
+
 </ion-content>

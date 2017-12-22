@@ -59,25 +59,6 @@
     </ion-item>
   </ion-item-group>
 
-  <ion-item-group *ngIf="!!workerDetail">
-    <ion-item-divider>
-      {{'CURRENT_ADDRESS' | translate}}
-    </ion-item-divider>
-
-    <ion-item>
-        <ion-label>{{'AREA' | translate}}</ion-label>
-        <ion-multi-picker id="address" [(ngModel)]="selectedAddress" item-content [multiPickerColumns]="address | async"
-         (ngModelChange)="addressSubject.next($event)" [cancelText]="'CANCEL_BUTTON' | translate" 
-         [doneText]="'CONFIRM_BUTTON' | translate" [placeholder]="'SELECT_ADDRESS' | translate"></ion-multi-picker>
-    </ion-item>
-
-    <ion-item>
-      <!-- <ion-col col-3>{{'ADDRESS_DETAIL' | translate}}</ion-col> -->
-      <ion-label>{{'ADDRESS_DETAIL' | translate}}</ion-label>
-      <ion-input [value]="workerDetail.curraddr__detail" disabled></ion-input>
-      <ion-icon name="create" item-end (click)="modifyAddress()"></ion-icon>
-    </ion-item>
-  </ion-item-group>
-
+  <address-select [selectedArea]="selectedArea | async" [addressDetail]="workerDetail?.curraddr__detail" (addressChange)="addressSubject.next($event)"></address-select>
 
 </ion-content>

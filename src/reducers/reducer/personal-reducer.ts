@@ -30,7 +30,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
         case actions.BASIC_INFORMATION_FAIL:
         case actions.BASIC_INFORMATION_SUCCESS:
-            return Object.assign({}, state, { response: action.payload });
+            return Object.assign({}, state, { basicResponse: action.payload });
 
         case actions.PERSONAL_ID_LIST_FAIL:
         case actions.PERSONAL_ID_LIST_SUCCESS:
@@ -65,7 +65,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, homeInfoUpdateResponse: action.payload };
 
         case actions.HOME_INFO_UPDATE_SUCCESS:
-            return { ...state, homeInfoResponse: {home_info: [updateHomeInfo(state.homeInfoResponse.home_info[0], state.homeInfoOptions)]} };
+            return { ...state, homeInfoUpdateResponse: action.payload, homeInfoResponse: {home_info: [updateHomeInfo(state.homeInfoResponse.home_info[0], state.homeInfoOptions)]} };
 
         case actions.GET_HOME_INFO_LIST:
         case actions.GET_PERSONAL_ID_LIST:
@@ -89,7 +89,7 @@ export function updateAddress(source: WorkerDetail, option: WorkerDetailUpdateOp
 export function updateHomeInfo(source: Home, option: HomeInfoUpdateOptions): Home {
     let result = omit(option, ['sid', 'user_id'])
 
-    return Object.assign({}, source, rename(result, homeAddressNameMapBetweenResponseAndRequest));
+    return Object.assign({}, source,rename(result, homeAddressNameMapBetweenResponseAndRequest));
 }
 
 export const getBasicInfoListResponse = (state: State) => state.basicResponse;
