@@ -25,7 +25,7 @@ export class PercentBatteryPipe implements PipeTransform {
 @Pipe({
     name: 'isLowPower'
 })
-export class isLowPowerPipe implements PipeTransform {
+export class IsLowPowerPipe implements PipeTransform {
     transform(value: number): boolean {
         return value < warningValue;
     }

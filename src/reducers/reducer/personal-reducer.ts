@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
-import { WorkerDetailUpdateOptions, HomeInfoUpdateOptions, homeAddressNameMapBetweenResponseAndRequest } from './../../interfaces/request-interface';
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail, HomeInfoListResponse, HomeInfoUpdateResponse, Home } from './../../interfaces/response-interface';
+import { WorkerDetailUpdateOptions, HomeInfoUpdateOptions, homeAddressNameMapBetweenResponseAndRequest, EducationAddOptions, EducationUpdateOptions, EducationDeleteOptions } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail, HomeInfoListResponse, HomeInfoUpdateResponse, Home, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/personal-action';
 import { rename } from '../../services/utils/util';
 
@@ -13,6 +13,13 @@ export interface State {
     homeInfoResponse: HomeInfoListResponse;
     homeInfoOptions: HomeInfoUpdateOptions;
     homeInfoUpdateResponse: HomeInfoUpdateResponse;
+    educationResponse: EducationListResponse;
+    educationAddResponse: EducationAddResponse;
+    educationDeleteResponse: EducationDeleteResponse;
+    educationUpdateResponse: EducationUpdateResponse;
+    educationAddOptions: EducationAddOptions;
+    educationUpdateOptions: EducationUpdateOptions;
+    educationDeleteOptions: EducationDeleteOptions;
 }
 
 export const initialState: State = {
@@ -23,7 +30,14 @@ export const initialState: State = {
     workerDetailOptions: null,
     homeInfoResponse: null,
     homeInfoOptions: null,
-    homeInfoUpdateResponse: null
+    homeInfoUpdateResponse: null,
+    educationResponse: null,
+    educationAddResponse: null,
+    educationDeleteResponse: null,
+    educationUpdateResponse: null,
+    educationAddOptions: null,
+    educationUpdateOptions: null,
+    educationDeleteOptions: null
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -35,6 +49,8 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.PERSONAL_ID_LIST_FAIL:
         case actions.PERSONAL_ID_LIST_SUCCESS:
             return { ...state, personalIdResponse: action.payload };
+
+        /* ====================================================================Worker Detail===================================================================== */
 
         case actions.WORKER_DETAIL_LIST_FAIL:
         case actions.WORKER_DETAIL_LIST_SUCCESS:
@@ -54,19 +70,57 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, workerDetailOptions: action.payload };
         }
 
-        case actions.HOME_INFO_LIST_FAIL: 
+        /* =====================================================================Home information=============================================================== */
+
+        case actions.HOME_INFO_LIST_FAIL:
         case actions.HOME_INFO_LIST_SUCCESS:
             return { ...state, homeInfoResponse: action.payload };
 
-        case actions.UPDATE_HOME_INFO: 
-            return {...state, homeInfoOptions: action.payload };
+        case actions.UPDATE_HOME_INFO:
+            return { ...state, homeInfoOptions: action.payload };
 
         case actions.HOME_INFO_UPDATE_FAIL:
             return { ...state, homeInfoUpdateResponse: action.payload };
 
         case actions.HOME_INFO_UPDATE_SUCCESS:
-            return { ...state, homeInfoUpdateResponse: action.payload, homeInfoResponse: {home_info: [updateHomeInfo(state.homeInfoResponse.home_info[0], state.homeInfoOptions)]} };
+            return { ...state, homeInfoUpdateResponse: action.payload, homeInfoResponse: { home_info: [updateHomeInfo(state.homeInfoResponse.home_info[0], state.homeInfoOptions)] } };
 
+        /* ===================================================================Education experience==============================================================*/
+
+        case actions.EDUCATION_LIST_FAIL:
+        case actions.EDUCATION_LIST_SUCCESS:
+            return { ...state, educationResponse: action.payload };
+
+        case actions.ADD_EDUCATION:
+            return { ...state, educationAddOptions: action.payload };
+
+        case actions.ADD_EDUCATION_FAIL:
+            return { ...state, educationAddResponse: action.payload };
+
+        case actions.ADD_EDUCATION_SUCCESS:
+            return { ...state, educationResponse: { education: [...state.educationResponse.education, omit(state.educationAddOptions, ['sid'])] } };
+
+        case actions.DELETE_EDUCATION:
+            return { ...state, educationDeleteOptions: action.payload };
+
+        case actions.DELETE_EDUCATION_FAIL:
+            return { ...state, educationDeleteResponse: action.payload };
+
+        case actions.DELETE_EDUCATION_SUCCESS:
+            return { ...state, educationDeleteResponse: action.payload, educationResponse: { education: state.educationResponse.education.filter(item => item.id !== state.educationDeleteOptions.education_id) } };
+
+        case actions.UPDATE_EDUCATION:
+            return { ...state, educationUpdateOptions: action.payload };
+
+        case actions.UPDATE_EDUCATION_FAIL:
+            return { ...state, educationUpdateResponse: action.payload };
+
+        case actions.UPDATE_EDUCATION_SUCCESS:
+            return { ...state, educationUpdateResponse: action.payload, educationResponse: { education: state.educationResponse.education.map(item => item.id === state.educationUpdateOptions.id ? { ...item, ...omit(state.educationUpdateOptions, ['sid']) } : item) } };
+
+        /* ===================================================================work experience==============================================================*/
+
+        case actions.GET_EDUCATION_LIST:
         case actions.GET_HOME_INFO_LIST:
         case actions.GET_PERSONAL_ID_LIST:
         case actions.GET_WORKER_DETAIL_LIST:
@@ -89,7 +143,7 @@ export function updateAddress(source: WorkerDetail, option: WorkerDetailUpdateOp
 export function updateHomeInfo(source: Home, option: HomeInfoUpdateOptions): Home {
     let result = omit(option, ['sid', 'user_id'])
 
-    return Object.assign({}, source,rename(result, homeAddressNameMapBetweenResponseAndRequest));
+    return Object.assign({}, source, rename(result, homeAddressNameMapBetweenResponseAndRequest));
 }
 
 export const getBasicInfoListResponse = (state: State) => state.basicResponse;
@@ -121,3 +175,5 @@ export const getHomeInfoResponse = (state: State) => state.homeInfoResponse;
 export const getHomeInfoUpdateResponse = (state: State) => state.homeInfoUpdateResponse;
 
 export const getHomeInfoUpdateOptions = (state: State) => state.homeInfoOptions;
+
+export const getEducationListResponse = (state: State) => state.educationResponse;

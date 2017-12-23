@@ -5,7 +5,7 @@ export const mobilePhone = /^1\d{10}$/;
 export function mobilePhoneValidator(mobile: FormControl): { [key: string]: any } {
   const valid: boolean = mobilePhone.test(mobile.value);
 
-  return valid ? null : { mobilePhoneFormat: 'ACCOUNT_INVALID_ERROR' }
+  return valid ? null : { mobilePhoneFormat: 'ACCOUNT_INVALID_ERROR' };
 }
 
 export const passwordFormat = /^\w{6,16}$/;
@@ -13,7 +13,7 @@ export const passwordFormat = /^\w{6,16}$/;
 export function passwordValidator(pwd: FormControl): { [key: string]: any } {
   const valid: boolean = passwordFormat.test(pwd.value);
 
-  return valid ? null : { pwdFormat: 'PASSWORD_INVALID_ERROR' }
+  return valid ? null : { pwdFormat: 'PASSWORD_INVALID_ERROR' };
 }
 
 
@@ -59,3 +59,11 @@ export function cardNumberValidator(num: FormControl): { [key: string]: any } {
 }
 
 export const addressAreaFormat = /\d{2}\s\d{4}\s\d{6}/;
+
+export const mustBeChineseFormat = /^[\u4E00-\u9FA5]+$/;
+
+export function mustBeChineseValidator(target: FormControl): { [key: string]: any } {
+  const valid: boolean = mustBeChineseFormat.test(target.value);
+
+  return valid ? null : { mustBeChineseFormat: 'MUST_INPUT_CHINESE_ERROR' };
+}

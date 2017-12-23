@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -59,6 +59,14 @@ export interface AddAttendanceCardFormModel {
   cardNumber: string;
   userId?: number;
   userName?: string;
+}
+
+export interface EducationAddFormModel {
+  startDate: string;
+  endDate: string;
+  major: string;
+  degree: number;
+  school: string;
 }
 
 @Injectable()
@@ -138,17 +146,17 @@ export class MapperService {
     const { education, mechanism } = cer;
 
     return {
-        workType,
-        expire,
-        mechanism,
-        education: Edu[education],
-        identifier: cer.num,
-        imageFace: cer.imageface,
-        imageBack: cer.imageback
+      workType,
+      expire,
+      mechanism,
+      education: Edu[education],
+      identifier: cer.num,
+      imageFace: cer.imageface,
+      imageBack: cer.imageback
     }
-}
+  }
 
-transformEducation(source: Education): EducationUI {
+  transformEducation(source: Education): EducationUI {
     const { degree, major } = source;
 
     const education = Edu[degree];
@@ -158,54 +166,65 @@ transformEducation(source: Education): EducationUI {
     const expire = source.start_date + '-' + source.finish_date;
 
     return { expire, school, education, major }
-}
+  }
 
   transformFamily(source: Home): Family {
     return {
-        marriage: Number(source.marriage),
-        marryDay: source.marryday,
-        children: source.childnum,
-        emergencyName: source.emergency_contact_name,
-        emergencyPhone: source.emergency_contact_tel,
-        emergencyRelation: source.emergency_contact_relation,
-        addressArea: source.homeaddr__province + ' ' + source.homeaddr__city + ' ' + source.homeaddr__dist,
-        addressDetail: source.homeaddr__street + ' ' + source.homeaddr__detail
+      marriage: Number(source.marriage),
+      marryDay: source.marryday,
+      children: source.childnum,
+      emergencyName: source.emergency_contact_name,
+      emergencyPhone: source.emergency_contact_tel,
+      emergencyRelation: source.emergency_contact_relation,
+      addressArea: source.homeaddr__province + ' ' + source.homeaddr__city + ' ' + source.homeaddr__dist,
+      addressDetail: source.homeaddr__street + ' ' + source.homeaddr__detail
     }
-}
+  }
 
-transformFamilyOptions(source: Family): HomeInfoUpdateOptions {
+  transformFamilyOptions(source: Family): HomeInfoUpdateOptions {
     const [province, city, dist] = source.addressArea.split(' ');
 
     return {
-        emergency_contact_name: source.emergencyName,
-        emergency_contact_tel: source.emergencyPhone,
-        emergency_contact_relation: source.emergencyRelation,
-        marriage: source.marriage,
-        childnum: source.children,
-        province: province,
-        city: city,
-        dist: dist,
-        street: '',
-        detail: source.addressDetail,
-        marryday: source.marryDay
+      emergency_contact_name: source.emergencyName,
+      emergency_contact_tel: source.emergencyPhone,
+      emergency_contact_relation: source.emergencyRelation,
+      marriage: source.marriage,
+      childnum: source.children,
+      province: province,
+      city: city,
+      dist: dist,
+      street: '',
+      detail: source.addressDetail,
+      marryday: source.marryDay
     } as HomeInfoUpdateOptions  // no sid;
-}
+  }
 
-transformWorkExperience(source: WorkExperience): CustomWorkExperience {
+  transformWorkExperience(source: WorkExperience): CustomWorkExperience {
     return {
-        expire: source.start + '-' + source.finish,
-        project: source.project_name,
-        company: source.company_name,
-        job: source.job
+      expire: source.start + '-' + source.finish,
+      project: source.project_name,
+      company: source.company_name,
+      job: source.job
     }
-}
+  }
 
-transformPlatformWorkExperience(source: PlatformWorkExperience): PlatformExperience {
+  transformPlatformWorkExperience(source: PlatformWorkExperience): PlatformExperience {
     return {
-        expire: source.start_day + '-' + source.finish_day,
-        workType: source.worktype__name,
-        project: source.team__project__name,
-        team: source.team__name
+      expire: source.start_day + '-' + source.finish_day,
+      workType: source.worktype__name,
+      project: source.team__project__name,
+      team: source.team__name
     }
-}
+  }
+
+  transformEducationExperience(source: EducationAddFormModel): EducationAddOptions {
+    return {
+      start_date: source.startDate,
+      finish_date: source.endDate,
+      school__name: source.school,
+      degree: source.degree,
+      major: source.major,
+      sid: ''
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
@@ -449,6 +449,58 @@ export const homeInfoUpdate: ApiUnit = {
     opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
   }
 }
+
+export const educationList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.EducationList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const educationAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['employee.consumer.EducationAdd']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const educationUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.EducationUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const educationDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['employee.consumer.EducationDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
 /* ==========================================================Attendance machine api================================================================ */
 
 export const attendanceMachineList: ApiUnit = {
@@ -578,10 +630,6 @@ export class Command {
   bankInfo = "employee.consumer.BankInfo";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
-  educationAdd = "employee.consumer.EducationAdd";
-  educationDelete = "employee.consumer.EducationDelete";
-  educationList = "employee.consumer.EducationList";
-  educationUpdate = "employee.consumer.EducationUpdate";
   groupsList = "employee.consumer.GroupsList";
   leaveRecordList = "project.consumer.LeaveRecordList";
   logout = "employee.consumer.Logout";
@@ -878,6 +926,38 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  getEducationList(option: EducationListOptions): WsRequest {
+    const path = educationList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getEducationAdd(originOption: EducationAddOptions): WsRequest {
+    const path = educationAdd.operates.get(Operate.addition)[0];
+
+    const { sid, degree, finish_date, school__name, start_date, major } = originOption;
+
+    const option = { sid, education_form: { degree, finish_date, school__name, start_date, major } };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getEducationDelete(option: EducationDeleteOptions): WsRequest {
+    const path = educationDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getEducationUpdate(originOption: EducationUpdateOptions): WsRequest {
+    const path = educationUpdate.operates.get(Operate.updates)[0];
+
+    const { sid, degree, finish_date, start_date, major, school__name, id } = originOption;
+
+    const option = { sid, education_form: { degree, finish_date, start_date, major, school__name, id } };
+
+    return this.getFullParameter(path, option);
+  }
+
   /**
    * @description Attendance machine API: getAttendanceMachineList
    */
@@ -1111,5 +1191,21 @@ export class Command {
 
   get homeInfoUpdate() {
     return homeInfoUpdate;
+  }
+
+  get educationList() {
+    return educationList;
+  }
+
+  get educationAdd() {
+    return educationAdd;
+  }
+
+  get educationDelete() {
+    return educationDelete;
+  }
+
+  get educationUpdate() {
+    return educationUpdate;
   }
 }

@@ -1,6 +1,5 @@
 import { HomeInfoUpdateOptions } from './../../interfaces/request-interface';
 import { MapperService } from './../../services/api/mapper-service';
-import { RequestOption } from '../../interfaces/request-interface';
 import { Subject } from 'rxjs/Subject';
 import { AddressService } from './../../services/utils/address-service';
 import { Subscription } from 'rxjs/Subscription';

@@ -273,6 +273,7 @@ export const selectWorkerDetailUpdateOptions = createSelector(getPersonal, perso
 export const selectHomeInfoListResponse = createSelector(getPersonal, personal.getHomeInfoResponse);
 export const selectHomeInfoUpdateResponse = createSelector(getPersonal, personal.getHomeInfoUpdateResponse);
 export const selectHomeInfoUpdateOptions = createSelector(getPersonal, personal.getHomeInfoUpdateOptions);
+export const selectEducationListResponse = createSelector(getPersonal, personal.getEducationListResponse);
 
 //attendance machine list 
 export const getMachines = (state: AppState) => state.machine;

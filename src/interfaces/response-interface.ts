@@ -654,35 +654,35 @@ export interface Home {
   homeaddr__street: string;
   marriage: boolean;
   marryday: string;
-  user_id: number,
+  user_id: number;
 }
 
 export interface Education {
-  major: string;
-  user_id: number;
   degree: number;
   finish_date: string;
   id: number;
-  start_date: string;
+  major: string;
   school__name: string;
+  start_date: string;
+  user_id: number;
 }
 
 export interface Certificate {
+  education: number;
   firstget_date: string;
-  score: number;
-  usestart_date: string;
-  usefinish_date: string;
+  id: number;
+  imageback: string;
+  imageface: string;
+  knowledge_score: number;
   level: number;
   mechanism: string;
-  imageback: string;
   num: string;
   operation_score: number;
+  score: number;
+  usefinish_date: string;
   user_id: number;
+  usestart_date: string;
   worktype_id: number;
-  education: number;
-  knowledge_score: number;
-  id: number;
-  imageface: string;
 }
 
 export interface WorkExperience {
@@ -779,6 +779,29 @@ export interface HomeInfoListResponse {
 
 //home info update
 export interface HomeInfoUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//education list
+export interface EducationListResponse {
+  education: Education[];
+}
+
+//education add 
+export interface EducationAddResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//education update 
+export interface EducationUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//education delete
+export interface EducationDeleteResponse {
   information?: string;
   errorMessage?: string;
 }

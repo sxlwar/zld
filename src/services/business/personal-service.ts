@@ -1,16 +1,16 @@
 import { MapperService } from './../api/mapper-service';
 import { omit } from 'lodash';
 import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/personal-action';
-import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions } from './../../interfaces/request-interface';
 import { CraftService } from './craft-service';
 import { Family } from './../../interfaces/personal-interface';
-import { BasicInfoListResponse, PersonalId, WorkerDetail } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, PersonalId, WorkerDetail, Education } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse } from './../../reducers/index-reducer';
+import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse, selectEducationListResponse } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { rename } from '../../services/utils/util';
@@ -64,6 +64,28 @@ export class PersonalService {
         );
     }
 
+    getEducationList(): Subscription {
+        return this.process.educationListProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+    }
+
+    updateEducation(option: Observable<EducationUpdateOptions>): Subscription {
+        return this.process.educationUpdateProcessor(
+            option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+        );
+    }
+
+    deleteEducation(option: Observable<number>): Subscription {
+        return this.process.educationDeleteProcessor(
+            option.withLatestFrom(this.userInfo.getSid(), (education_id, sid) => ({ education_id, sid }))
+        );
+    }
+
+    addEducation(option: Observable<EducationAddOptions>): Subscription {
+        return this.process.educationAddProcessor(
+            option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+        );
+    }
+
     /* ================================================================Data acquisition methods====================================================== */
 
     getBasicInfoResponse(): Observable<BasicInfoListResponse> {
@@ -95,6 +117,12 @@ export class PersonalService {
         return this.store.select(selectHomeInfoListResponse)
             .filter(value => !!value)
             .map(res => this.mapper.transformFamily(res.home_info[0]));
+    }
+
+    getOwnEducation(): Observable<Education[]> {
+        return this.store.select(selectEducationListResponse)
+            .filter(value => !!value)
+            .map(res => res.education);
     }
 
     /* =======================================================Update worker detail================================================================== */

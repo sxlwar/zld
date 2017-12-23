@@ -2,11 +2,11 @@ import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../
 import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
 import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
-import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction, GetHomeInfoListAction, UpdateHomeInfoAction } from './../../actions/action/personal-action';
+import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction, GetHomeInfoListAction, UpdateHomeInfoAction, GetEducationListAction, AddEducationAction, DeleteEducationAction, UpdateEducationAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -359,5 +359,33 @@ export class ProcessorService extends MapperService {
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new UpdateHomeInfoAction(option)));
+  }
+
+  educationListProcessor(option$: Observable<EducationListOptions>): Subscription {
+    return this.permission.comprehensiveValidate(this.command.educationList)
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
+      .subscribe(option => this.store.dispatch(new GetEducationListAction(option)));
+  }
+
+  educationAddProcessor(option$: Observable<EducationAddOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.educationAdd)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new AddEducationAction(option)));
+  }
+
+  educationDeleteProcessor(option$: Observable<EducationDeleteOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.educationDelete)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new DeleteEducationAction(option)));
+  }
+
+  educationUpdateProcessor(option$: Observable<EducationUpdateOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.educationUpdate)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateEducationAction(option)));
   }
 }

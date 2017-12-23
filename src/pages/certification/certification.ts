@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
-import {Observable} from 'rxjs/Observable';
-import {CertificateService} from '../../services/business/certificate-service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {personalIdValidator, realnameValidator} from '../../validators/validators';
-import {Subscription} from 'rxjs/Subscription';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { CertificateService } from '../../services/business/certificate-service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { personalIdValidator, realnameValidator } from '../../validators/validators';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
 /**
@@ -27,9 +27,9 @@ export class CertificationPage {
   certificate$$: Subscription;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public certificateService: CertificateService,
-              public fb: FormBuilder) {
+    public navParams: NavParams,
+    public certificateService: CertificateService,
+    public fb: FormBuilder) {
     this.initForm();
   }
 
@@ -67,7 +67,7 @@ export class CertificationPage {
 
     config[type] = url;
 
-     this.certificateForm.get('personalIdPhoto').patchValue(config);
+    this.certificateForm.get('personalIdPhoto').patchValue(config);
   }
 
   /*============================================Refuse clean======================================================*/

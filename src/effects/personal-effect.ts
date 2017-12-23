@@ -1,5 +1,5 @@
 import { TipService } from './../services/tip-service';
-import { GET_BASIC_INFORMATION, GetBasicInformationAction, BasicInfoListFailAction, BasicInfoListSuccessAction, GET_PERSONAL_ID_LIST, GetPersonalIdListAction, PersonalIdListFailAction, PersonalIdListSuccessAction, GET_WORKER_DETAIL_LIST, GetWorkerDetailListAction, WorkerDetailListFailAction, WorkerDetailListSuccessAction, UPDATE_WORKER_DETAIL, UpdateWorkerDetailAction, UpdateWorkerDetailFailAction, UpdateWorkerDetailSuccessAction, GET_HOME_INFO_LIST, GetHomeInfoListAction, HomeInfoListFailAction, HomeInfoListSuccessAction, UpdateHomeInfoAction, UPDATE_HOME_INFO, HomeInfoUpdateFailAction, HomeInfoUpdateSuccessAction } from './../actions/action/personal-action';
+import { GET_BASIC_INFORMATION, GetBasicInformationAction, BasicInfoListFailAction, BasicInfoListSuccessAction, GET_PERSONAL_ID_LIST, GetPersonalIdListAction, PersonalIdListFailAction, PersonalIdListSuccessAction, GET_WORKER_DETAIL_LIST, GetWorkerDetailListAction, WorkerDetailListFailAction, WorkerDetailListSuccessAction, UPDATE_WORKER_DETAIL, UpdateWorkerDetailAction, UpdateWorkerDetailFailAction, UpdateWorkerDetailSuccessAction, GET_HOME_INFO_LIST, GetHomeInfoListAction, HomeInfoListFailAction, HomeInfoListSuccessAction, UpdateHomeInfoAction, UPDATE_HOME_INFO, HomeInfoUpdateFailAction, HomeInfoUpdateSuccessAction, GET_EDUCATION_LIST, EducationListFailAction, EducationListSuccessAction, GetEducationListAction, ADD_EDUCATION, AddEducationAction, AddEducationFailAction, AddEducationSuccessAction, DELETE_EDUCATION, DeleteEducationAction, DeleteEducationFailAction, DeleteEducationSuccessAction, UPDATE_EDUCATION, UpdateEducationAction, UpdateEducationSuccessAction, UpdateEducationFailAction } from './../actions/action/personal-action';
 import { Injectable } from '@angular/core';
 import { ResponseAction } from './../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
@@ -57,9 +57,9 @@ export class PersonalEffect extends Command {
         .switchMap((action: GetHomeInfoListAction) => this.ws
             .send(this.getHomeInfoList(action.payload))
             .takeUntil(this.actions$.ofType(GET_HOME_INFO_LIST))
-            .map(msg => msg.isError ? new HomeInfoListFailAction(msg.data): new HomeInfoListSuccessAction(msg.data))
+            .map(msg => msg.isError ? new HomeInfoListFailAction(msg.data) : new HomeInfoListSuccessAction(msg.data))
             .catch(error => of(error))
-    );
+        );
 
     @Effect()
     homeInfoUpdate$: Observable<ResponseAction> = this.actions$
@@ -70,8 +70,51 @@ export class PersonalEffect extends Command {
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new HomeInfoUpdateFailAction(msg.data) : new HomeInfoUpdateSuccessAction(msg.data))
             .catch(error => of(error))
-    )
+        );
 
+    @Effect()
+    educationList$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_EDUCATION_LIST)
+        .switchMap((action: GetEducationListAction) => this.ws
+            .send(this.getEducationList(action.payload))
+            .takeUntil(this.actions$.ofType(GET_EDUCATION_LIST))
+            .map(msg => msg.isError ? new EducationListFailAction(msg.data) : new EducationListSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    educationAdd$: Observable<ResponseAction> = this.actions$
+        .ofType(ADD_EDUCATION)
+        .switchMap((action: AddEducationAction) => this.ws
+            .send(this.getEducationAdd(action.payload))
+            .takeUntil(this.actions$.ofType(ADD_EDUCATION))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new AddEducationFailAction(msg.data) : new AddEducationSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    educationDelete$: Observable<ResponseAction> = this.actions$
+        .ofType(DELETE_EDUCATION)
+        .switchMap((action: DeleteEducationAction) => this.ws
+            .send(this.getEducationDelete(action.payload))
+            .takeUntil(this.actions$.ofType(DELETE_EDUCATION))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new DeleteEducationFailAction(msg.data) : new DeleteEducationSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    educationUpdate$: Observable<ResponseAction> = this.actions$
+        .ofType(UPDATE_EDUCATION)
+        .switchMap((action: UpdateEducationAction) => this.ws
+            .send(this.getEducationUpdate(action.payload))
+            .takeUntil(this.actions$.ofType(UPDATE_EDUCATION))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new UpdateEducationFailAction(msg.data) : new UpdateEducationSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+        
     constructor(
         public ws: WebsocketService,
         public actions$: Actions,

@@ -1,5 +1,5 @@
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, HomeInfoListResponse, HomeInfoUpdateResponse } from './../../interfaces/response-interface';
-import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, HomeInfoListResponse, HomeInfoUpdateResponse, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse } from './../../interfaces/response-interface';
+import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 /*  ===================================================Basic information================================================== */
@@ -156,6 +156,104 @@ export class HomeInfoUpdateSuccessAction implements Action {
     constructor(public payload: HomeInfoUpdateResponse) { }
 }
 
+/* ====================================================education experience==================================================== */
+
+export const GET_EDUCATION_LIST = 'GET_EDUCATION_LIST';
+
+export class GetEducationListAction implements Action {
+    readonly type = GET_EDUCATION_LIST;
+
+    constructor(public payload: EducationListOptions) { }
+}
+
+export const EDUCATION_LIST_FAIL = 'EDUCATION_LIST_FAIL';
+
+export class EducationListFailAction implements Action {
+    readonly type = EDUCATION_LIST_FAIL;
+
+    constructor(public payload: EducationListResponse) { }
+}
+
+export const EDUCATION_LIST_SUCCESS = 'EDUCATION_LIST_SUCCESS';
+
+export class EducationListSuccessAction implements Action {
+    readonly type = EDUCATION_LIST_SUCCESS;
+
+    constructor(public payload: EducationListResponse) { }
+}
+
+export const ADD_EDUCATION = 'ADD_EDUCATION';
+
+export class AddEducationAction implements Action {
+    readonly type = ADD_EDUCATION;
+
+    constructor(public payload: EducationAddOptions) { }
+}
+
+export const ADD_EDUCATION_FAIL = 'ADD_EDUCATION_FAIL';
+
+export class AddEducationFailAction implements Action {
+    readonly type = ADD_EDUCATION_FAIL;
+
+    constructor(public payload: EducationAddResponse) { }
+}
+
+export const ADD_EDUCATION_SUCCESS = 'ADD_EDUCATION_SUCCESS';
+
+export class AddEducationSuccessAction implements Action {
+    readonly type = ADD_EDUCATION_SUCCESS;
+
+    constructor(public payload: EducationAddResponse) { }
+}
+
+export const DELETE_EDUCATION = 'DELETE_EDUCATION';
+
+export class DeleteEducationAction implements Action {
+    readonly type = DELETE_EDUCATION;
+
+    constructor(public payload: EducationDeleteOptions) { }
+}
+
+export const DELETE_EDUCATION_FAIL = 'DELETE_EDUCATION_FAIL';
+
+export class DeleteEducationFailAction implements Action {
+    readonly type = DELETE_EDUCATION_FAIL;
+
+    constructor(public payload: EducationDeleteResponse) { }
+}
+
+export const DELETE_EDUCATION_SUCCESS = 'DELETE_EDUCATION_SUCCESS';
+
+export class DeleteEducationSuccessAction implements Action {
+    readonly type = DELETE_EDUCATION_SUCCESS;
+
+    constructor(public payload: EducationDeleteResponse) { }
+}
+
+export const UPDATE_EDUCATION = 'UPDATE_EDUCATION';
+
+export class UpdateEducationAction implements Action {
+    readonly type = UPDATE_EDUCATION;
+
+    constructor(public payload: EducationUpdateOptions) { }
+}
+
+export const UPDATE_EDUCATION_FAIL = 'UPDATE_EDUCATION_FAIL';
+
+export class UpdateEducationFailAction implements Action {
+    readonly type = UPDATE_EDUCATION_FAIL;
+
+    constructor(public payload: EducationUpdateResponse) { }
+}
+
+export const UPDATE_EDUCATION_SUCCESS = 'UPDATE_EDUCATION_SUCCESS';
+
+export class UpdateEducationSuccessAction implements Action {
+    readonly type = UPDATE_EDUCATION_SUCCESS;
+
+    constructor(public payload: EducationUpdateResponse) { }
+}
+
 /* ====================================================Local update==================================================== */
 
 export const UPDATE_WORK_TYPES_AT_LOCAL = 'UPDATE_WORK_TYPES_AT_LOCAL'
@@ -167,21 +265,33 @@ export class UpdateLocalWorkerDetailWorkTypesAction implements Action {
 }
 
 export type Actions = GetBasicInformationAction
+    | AddEducationAction
+    | AddEducationFailAction
+    | AddEducationSuccessAction
     | BasicInfoListFailAction
     | BasicInfoListSuccessAction
+    | DeleteEducationAction
+    | DeleteEducationFailAction
+    | DeleteEducationSuccessAction
+    | EducationListFailAction
+    | EducationListSuccessAction
+    | GetEducationListAction
     | GetHomeInfoListAction
     | GetPersonalIdListAction
     | GetWorkerDetailListAction
     | HomeInfoListFailAction
-    | HomeInfoUpdateFailAction
     | HomeInfoListSuccessAction
+    | HomeInfoUpdateFailAction
     | HomeInfoUpdateSuccessAction
     | PersonalIdListFailAction
     | PersonalIdListSuccessAction
+    | UpdateEducationAction
+    | UpdateEducationFailAction
+    | UpdateEducationSuccessAction
     | UpdateHomeInfoAction
     | UpdateLocalWorkerDetailWorkTypesAction
     | UpdateWorkerDetailAction
     | UpdateWorkerDetailFailAction
     | UpdateWorkerDetailSuccessAction
     | WorkerDetailListFailAction
-    | WorkerDetailListSuccessAction
+    | WorkerDetailListSuccessAction;

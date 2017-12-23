@@ -406,7 +406,7 @@ export interface WorkerDetailListOptions {
  * }
  * 
  * 这鸟API，让你防不甚防，数据之间又没有很强的关联性，明明可以扁平化处理，非要搞复杂, 就像返回的错误信息一样，一层套一层，难道搞的很复杂看起来就牛X点么
- * 为了保持业务层处理起来简单一些，这个接口没有和后台保持一致，转换任务交给了对应的command服务函数去处理;
+ * 为了保持业务层处理起来简单一些，这个接口没有和后台保持一致，转换任务交给了对应的command服务函数去处理, 同样扁平化处理的还有家庭，工作经历和教育经历;
  * 
  * street和detail这两个字段目前来看基本无法使用，在UI层无法拿到4级地址的数据，那么用户填了以后是传哪个字段，完全可以合并的东西。
  */
@@ -459,6 +459,49 @@ export interface HomeInfoUpdateOptions {
   street: string;
   detail: string;
 }
+
+export interface EducationListOptions {
+  sid: string;
+  user_id?: number[];
+}
+
+export const degrees = [
+  "小学",
+  "初中",
+  "高中",
+  "中技",
+  "中专",
+  "大专",
+  "本科",
+  "硕士",
+  "博士及以上",
+  "MBA"
+];
+
+export interface EducationAddOptions {
+  sid: string;
+  degree: number;  //这个字段和上面的relationShip是一模一样的东西，不同的是后台处理的方式，上面必须传中文，这里又给搞个映射，要让传数字，TMD到底想怎样？后台的代码风格就2个字，垃圾。而且是以1开头，是不是程序员？
+  major: string;
+  start_date: string;
+  finish_date: string;
+  school__name: string;
+}
+
+export interface EducationUpdateOptions {
+  sid: string;
+  id: number;
+  degree: number;
+  major: string;
+  start_date: string;
+  finish_date: string;
+  school__name: string;
+}
+
+export interface EducationDeleteOptions {
+  sid: string;
+  education_id: number;
+}
+
 /*=================================================Work flow API model==================================================*/
 
 export enum RequestStatus {

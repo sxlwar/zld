@@ -33,6 +33,8 @@ import { HistoryTrajectoryWorkersComponent } from './history-trajectory-workers/
 import { WorkerSelectComponent } from './worker-select/worker-select';
 import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
 import { AddressSelectComponent } from './address-select/address-select';
+import { AccordionListComponent } from './accordion-list/accordion-list';
+import { AddEducationComponent } from './add-education/add-education';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { AddressSelectComponent } from './address-select/address-select';
     WorkerSelectComponent,
     WorkTypeSelectComponent,
     AddressSelectComponent,
+    AccordionListComponent,
+    AddEducationComponent,
   ],
   imports: [
     IonicModule,
@@ -106,6 +110,8 @@ import { AddressSelectComponent } from './address-select/address-select';
     WorkerSelectComponent,
     WorkTypeSelectComponent,
     AddressSelectComponent,
+    AccordionListComponent,
+    AddEducationComponent,
   ]
 })
 export class ComponentsModule {

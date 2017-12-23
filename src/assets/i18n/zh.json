@@ -348,7 +348,18 @@
   "SELECT_WORK_TYPE": "选择工种",
   "SELECT_ADDRESS": "请选择地区",
 
-
+  "SCHOOL": "学校",
+  "DEGREE": "学历",
+  "MAJOR": "专业",
+  "ADD_EDUCATION": "添加教育经历",
+  "UPDATE_EDUCATION": "更新教育经历",
+  "START_DATE_REQUIRED_ERROR": "请输入开始日期",
+  "END_DATE_REQUIRED_ERROR": "请输入结束日期",
+  "SCHOOL_REQUIRED_ERROR": "请输入学校名称",
+  "DEGREE_REQUIRED_ERROR": "请选择学历",
+  "MAJOR_REQUIRED_ERROR": "请输入专业名称",
+  "MUST_INPUT_CHINESE_ERROR": "只能输入中文",
+  "MORE_THAN_TEN_CHINESE_CHARACTERS": "最多只能输入10个汉字",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
