@@ -44,9 +44,9 @@
     </ion-segment>
 
     <div [ngSwitch]="workType">
-      <platform-work-experience *ngSwitchCase="'platform'"></platform-work-experience>
+      <platform-work-experience *ngSwitchCase="'platform'" [experience]="platformExperience | async"></platform-work-experience>
       
-      <work-experience *ngSwitchCase="'custom'"></work-experience>
+      <work-experience *ngSwitchCase="'custom'" [experience]="workExperience | async" ></work-experience>
     </div>
 
     <education *ngSwitchCase="'education'" [education]="education | async"></education>

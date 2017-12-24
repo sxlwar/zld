@@ -361,6 +361,13 @@
   "MUST_INPUT_CHINESE_ERROR": "只能输入中文",
   "MORE_THAN_TEN_CHINESE_CHARACTERS": "最多只能输入10个汉字",
 
+  "ADD_WORK_EXPERIENCE":"添加工作经历",
+  "UPDATE_WORK_EXPERIENCE": "更新工作经历",
+  "COMPANY_REQUIRED_ERROR":"请输入公司名称",
+  "PROJECT_REQUIRED_ERROR": "请输入项目名称",
+  "JOB_REQUIRED_ERROR":"请输入主要工作内容",
+  "JOB": "工作职责",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

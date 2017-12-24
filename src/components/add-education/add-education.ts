@@ -54,7 +54,6 @@ export class AddEducationComponent {
     this.buttonText = 'UPDATE_BUTTON';
     this.title = 'UPDATE_EDUCATION';
     this.educationForm.patchValue({ startDate: origin.start_date, endDate: origin.finish_date, school: origin.school__name, major: origin.major, degree: origin.degree });
-    console.log(this.educationForm);
   }
 
   updateEndDate(date: string) {

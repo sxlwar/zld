@@ -52,4 +52,5 @@ export interface CustomWorkExperience {
     company: string;
     project: string;
     job: string;
+    id: number;
 }

@@ -204,6 +204,12 @@ export class TimeService extends Base {
     return new Date(yesterday);
   }
 
+  getNextDay(date: Date): Date {
+    const tomorrow = date.getTime() + 24 * 3600 * 1000;
+
+    return new Date(tomorrow);
+  }
+
   isGreatThan(date1: string, date2: string): boolean {
     const str1 = date1.split('-').map(this.toTwo).join('');
     const str2 = date2.split('-').map(this.toTwo).join('');

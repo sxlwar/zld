@@ -39,7 +39,7 @@ export interface Address {
     level: number;
 }
 
-export enum AddressTransform{
+export enum AddressTransform {
     text,
     value
 }
@@ -65,12 +65,13 @@ export class AddressService {
 
     private transformAddressBetweenNameAndCode(source: Observable<string[]>, from: number, to: number): Observable<string[]> {
         return this.address.combineLatest(source)
-        .mergeMap(([address, source]) => Observable.from(address)
-            .map(item => item.options)
-            .zip(Observable.from(source))
-            .map(([options, comparison]) => options.find(item => item[AddressTransform[from]] === comparison)[AddressTransform[to]])
-            .reduce(putInArray, [])
-        ); 
+            .mergeMap(([address, source]) => Observable.from(address)
+                .map(item => item.options)
+                .zip(Observable.from(source))
+                //这个地方有可能会报错，调试的时候发现后台返的数据中有时候是带‘省’字的，有时候是不带‘省’字的，比如广东省，但数据给的是广省，不带带的话就会出现 XXX is undefined这种错误
+                .map(([options, comparison]) => options.find(item => item[AddressTransform[from]] === comparison)[AddressTransform[to]])
+                .reduce(putInArray, [])
+            );
     }
 
     private getAddress() {

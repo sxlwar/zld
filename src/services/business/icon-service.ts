@@ -1,4 +1,3 @@
-//region
 import { Observable } from 'rxjs/Observable';
 import { IconState } from '../../reducers/reducer/icons-reducer';
 import { AppState, getIconsState } from '../../reducers/index-reducer';
@@ -10,7 +9,6 @@ import { PermissionService } from '../config/permission-service';
 import { CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW } from '../config/character';
 import * as pages from '../../pages/pages';
 import { IconItem } from '../../interfaces/icon-interface';
-//endregion
 
 /**
  * @description These constants are icon names used in application.
@@ -66,7 +64,6 @@ export const workFlowMap = new Map([
 
 /* ================================================================Icon model START================================================================ */
 
-//region
 export const attendance: IconItem = {
   text: 'ATTENDANCE_CHAR',
   icon: attendanceIcon,
@@ -410,7 +407,7 @@ export const workInfo: IconItem = {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: [],
   },
-  page: ''
+  page: pages.workExperiencePage
 };
 
 export const educationInfo: IconItem = {
@@ -423,7 +420,6 @@ export const educationInfo: IconItem = {
   },
   page: pages.educationExperiencePage
 };
-//endregion
 
 /* ================================================================Icon model EDN================================================================= */
 

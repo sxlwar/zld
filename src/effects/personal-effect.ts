@@ -1,5 +1,5 @@
 import { TipService } from './../services/tip-service';
-import { GET_BASIC_INFORMATION, GetBasicInformationAction, BasicInfoListFailAction, BasicInfoListSuccessAction, GET_PERSONAL_ID_LIST, GetPersonalIdListAction, PersonalIdListFailAction, PersonalIdListSuccessAction, GET_WORKER_DETAIL_LIST, GetWorkerDetailListAction, WorkerDetailListFailAction, WorkerDetailListSuccessAction, UPDATE_WORKER_DETAIL, UpdateWorkerDetailAction, UpdateWorkerDetailFailAction, UpdateWorkerDetailSuccessAction, GET_HOME_INFO_LIST, GetHomeInfoListAction, HomeInfoListFailAction, HomeInfoListSuccessAction, UpdateHomeInfoAction, UPDATE_HOME_INFO, HomeInfoUpdateFailAction, HomeInfoUpdateSuccessAction, GET_EDUCATION_LIST, EducationListFailAction, EducationListSuccessAction, GetEducationListAction, ADD_EDUCATION, AddEducationAction, AddEducationFailAction, AddEducationSuccessAction, DELETE_EDUCATION, DeleteEducationAction, DeleteEducationFailAction, DeleteEducationSuccessAction, UPDATE_EDUCATION, UpdateEducationAction, UpdateEducationSuccessAction, UpdateEducationFailAction } from './../actions/action/personal-action';
+import { GET_BASIC_INFORMATION, GetBasicInformationAction, BasicInfoListFailAction, BasicInfoListSuccessAction, GET_PERSONAL_ID_LIST, GetPersonalIdListAction, PersonalIdListFailAction, PersonalIdListSuccessAction, GET_WORKER_DETAIL_LIST, GetWorkerDetailListAction, WorkerDetailListFailAction, WorkerDetailListSuccessAction, UPDATE_WORKER_DETAIL, UpdateWorkerDetailAction, UpdateWorkerDetailFailAction, UpdateWorkerDetailSuccessAction, GET_HOME_INFO_LIST, GetHomeInfoListAction, HomeInfoListFailAction, HomeInfoListSuccessAction, UpdateHomeInfoAction, UPDATE_HOME_INFO, HomeInfoUpdateFailAction, HomeInfoUpdateSuccessAction, GET_EDUCATION_LIST, EducationListFailAction, EducationListSuccessAction, GetEducationListAction, ADD_EDUCATION, AddEducationAction, AddEducationFailAction, AddEducationSuccessAction, DELETE_EDUCATION, DeleteEducationAction, DeleteEducationFailAction, DeleteEducationSuccessAction, UPDATE_EDUCATION, UpdateEducationAction, UpdateEducationSuccessAction, UpdateEducationFailAction, GET_WORK_EXPERIENCE_LIST, GetWorkExperienceListAction, WorkExperienceListFailAction, WorkExperienceListSuccessAction, ADD_WORK_EXPERIENCE, AddWorkExperienceAction, WorkExperienceAddFailAction, WorkExperienceAddSuccessAction, DELETE_WORK_EXPERIENCE, DeleteWorkExperienceAction, WorkExperienceDeleteFailAction, WorkExperienceDeleteSuccessAction, UPDATE_WORK_EXPERIENCE, UpdateWorkExperienceAction, WorkExperienceUpdateFailAction, WorkExperienceUpdateSuccessAction, GET_PLATFORM_WORK_EXPERIENCE_LIST, GetPlatformWorkExperienceListAction, PlatformWorkExperienceListFailAction, PlatformWorkExperienceListSuccessAction } from './../actions/action/personal-action';
 import { Injectable } from '@angular/core';
 import { ResponseAction } from './../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
@@ -114,7 +114,60 @@ export class PersonalEffect extends Command {
             .map(msg => msg.isError ? new UpdateEducationFailAction(msg.data) : new UpdateEducationSuccessAction(msg.data))
             .catch(error => of(error))
         );
-        
+
+    @Effect()
+    workExperienceList$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_WORK_EXPERIENCE_LIST)
+        .switchMap((action: GetWorkExperienceListAction) => this.ws
+            .send(this.getWorkExperienceList(action.payload))
+            .takeUntil(this.actions$.ofType(GET_WORK_EXPERIENCE_LIST))
+            .map(msg => msg.isError ? new WorkExperienceListFailAction(msg.data) : new WorkExperienceListSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    workExperienceAdd$: Observable<ResponseAction> = this.actions$
+        .ofType(ADD_WORK_EXPERIENCE)
+        .switchMap((action: AddWorkExperienceAction) => this.ws
+            .send(this.getWorkExperienceAdd(action.payload))
+            .takeUntil(this.actions$.ofType(ADD_WORK_EXPERIENCE))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new WorkExperienceAddFailAction(msg.data) : new WorkExperienceAddSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    workExperienceDelete$: Observable<ResponseAction> = this.actions$
+        .ofType(DELETE_WORK_EXPERIENCE)
+        .switchMap((action: DeleteWorkExperienceAction) => this.ws
+            .send(this.getWorkExperienceDelete(action.payload))
+            .takeUntil(this.actions$.ofType(DELETE_WORK_EXPERIENCE))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new WorkExperienceDeleteFailAction(msg.data) : new WorkExperienceDeleteSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    workExperienceUpdate$: Observable<ResponseAction> = this.actions$
+        .ofType(UPDATE_WORK_EXPERIENCE)
+        .switchMap((action: UpdateWorkExperienceAction) => this.ws
+            .send(this.getWorkExperienceUpdate(action.payload))
+            .takeUntil(this.actions$.ofType(UPDATE_WORK_EXPERIENCE))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new WorkExperienceUpdateFailAction(msg.data) : new WorkExperienceUpdateSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
+    @Effect()
+    platformWorkExperienceList$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_PLATFORM_WORK_EXPERIENCE_LIST)
+        .switchMap((action: GetPlatformWorkExperienceListAction) => this.ws
+            .send(this.getPlatformWorkExperienceList(action.payload))
+            .takeUntil(this.actions$.ofType(GET_PLATFORM_WORK_EXPERIENCE_LIST))
+            .map(msg => msg.isError ? new PlatformWorkExperienceListFailAction(msg.data) : new PlatformWorkExperienceListSuccessAction(msg.data))
+            .catch(error => of(error))
+        );
+
     constructor(
         public ws: WebsocketService,
         public actions$: Actions,

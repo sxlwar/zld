@@ -1,12 +1,6 @@
 import { CustomWorkExperience } from './../../interfaces/personal-interface';
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 
-/**
- * Generated class for the WorkExperienceComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'work-experience',
   templateUrl: 'work-experience.html',
@@ -14,7 +8,11 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 })
 export class WorkExperienceComponent {
 
-  @Input() experience: CustomWorkExperience;
+  @Input() experience: CustomWorkExperience[];
+
+  @Output() updateExperience: EventEmitter<CustomWorkExperience> = new EventEmitter();
+
+  @Output() deleteExperience: EventEmitter<CustomWorkExperience> = new EventEmitter();
 
   constructor() {
   }

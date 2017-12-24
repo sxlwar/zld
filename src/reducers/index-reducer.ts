@@ -257,7 +257,7 @@ export const selectCompanyUsers = createSelector(getEmployer, employer.getCompan
 export const selectSelectedForemen = createSelector(getEmployer, employer.getSelectedForemen);
 export const selectSelectedQualityClerks = createSelector(getEmployer, employer.getSelectedQualityClerks);
 
-//basic info list
+//basic info list & personal related api
 export const getPersonal = (state: AppState) => state.personal;
 export const selectBasicInfoListResponse = createSelector(getPersonal, personal.getBasicInfoListResponse);
 export const selectHomeInformation = createSelector(getPersonal, personal.getHomeInformation);
@@ -274,6 +274,8 @@ export const selectHomeInfoListResponse = createSelector(getPersonal, personal.g
 export const selectHomeInfoUpdateResponse = createSelector(getPersonal, personal.getHomeInfoUpdateResponse);
 export const selectHomeInfoUpdateOptions = createSelector(getPersonal, personal.getHomeInfoUpdateOptions);
 export const selectEducationListResponse = createSelector(getPersonal, personal.getEducationListResponse);
+export const selectWorkExperienceListResponse = createSelector(getPersonal, personal.getWorkExperienceResponse);
+export const selectPlatformWorkExperienceResponse = createSelector(getPersonal, personal.getPlatformWorkExperienceResponse);
 
 //attendance machine list 
 export const getMachines = (state: AppState) => state.machine;

@@ -502,6 +502,40 @@ export interface EducationDeleteOptions {
   education_id: number;
 }
 
+export interface WorkExperienceListOptions {
+  sid: string;
+  user_id?: number[];
+}
+
+export interface WorkExperienceAddOptions {
+  company_name: string;
+  job: string;
+  project_name: string;
+  sid: string;
+  start: string;
+  finish?: string;
+}
+
+export interface WorkExperienceDeleteOptions {
+  sid: string;
+  workexper_id: number;
+}
+
+export interface WorkExperienceUpdateOptions {
+  company_name: string;
+  finish: string;
+  id: number;
+  job: string;
+  project_name: string;
+  sid: string;
+  start: string;
+}
+
+export interface PlatformWorkExperienceListOptions {
+  sid: string;
+  user_id?: number[];
+}
+
 /*=================================================Work flow API model==================================================*/
 
 export enum RequestStatus {

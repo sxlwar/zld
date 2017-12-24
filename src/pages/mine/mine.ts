@@ -1,7 +1,5 @@
 import { personalInfo } from './../../services/business/icon-service';
-import { PersonalInformationPage } from './../personal-information/personal-information';
-//region
-import { MineRoot } from './../pages';
+import { MineRoot, personalInformationPage } from './../pages';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as icon from '../../services/business/icon-service';
@@ -12,7 +10,6 @@ import { ProjectService } from '../../services/business/project-service';
 import { UserService } from '../../services/business/user-service';
 import { CraftService } from '../../services/business/craft-service';
 import { TeamService } from '../../services/business/team-service';
-//endregion
 
 const icons = [
   icon.myAttendance,
@@ -98,7 +95,7 @@ export class MinePage {
   }
 
   showPersonalInformation(): void{
-    this.navCtrl.push(PersonalInformationPage, personalInfo).then(() => { });
+    this.navCtrl.push(personalInformationPage, personalInfo).then(() => { });
   }
 
   ionViewWillLeave() {

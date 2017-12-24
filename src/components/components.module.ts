@@ -35,6 +35,7 @@ import { WorkTypeSelectComponent } from './work-type-select/work-type-select';
 import { AddressSelectComponent } from './address-select/address-select';
 import { AccordionListComponent } from './accordion-list/accordion-list';
 import { AddEducationComponent } from './add-education/add-education';
+import { AddWorkExperienceComponent } from './add-work-experience/add-work-experience';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { AddEducationComponent } from './add-education/add-education';
     AddressSelectComponent,
     AccordionListComponent,
     AddEducationComponent,
+    AddWorkExperienceComponent,
   ],
   imports: [
     IonicModule,
@@ -112,6 +114,7 @@ import { AddEducationComponent } from './add-education/add-education';
     AddressSelectComponent,
     AccordionListComponent,
     AddEducationComponent,
+    AddWorkExperienceComponent,
   ]
 })
 export class ComponentsModule {

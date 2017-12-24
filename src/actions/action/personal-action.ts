@@ -1,5 +1,5 @@
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, HomeInfoListResponse, HomeInfoUpdateResponse, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse } from './../../interfaces/response-interface';
-import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, HomeInfoListResponse, HomeInfoUpdateResponse, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse, WorkExperienceListResponse, WorkExperienceAddResponse, WorkExperienceDeleteResponse, WorkExperienceUpdateResponse, PlatformWorkExperienceResponse } from './../../interfaces/response-interface';
+import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 /*  ===================================================Basic information================================================== */
@@ -254,6 +254,128 @@ export class UpdateEducationSuccessAction implements Action {
     constructor(public payload: EducationUpdateResponse) { }
 }
 
+/* ====================================================Work experience================================================= */
+
+export const GET_WORK_EXPERIENCE_LIST = 'GET_WORK_EXPERIENCE_LIST';
+
+export class GetWorkExperienceListAction implements Action {
+    readonly type = GET_WORK_EXPERIENCE_LIST;
+
+    constructor(public payload: WorkExperienceListOptions) { }
+}
+
+export const WORK_EXPERIENCE_LIST_FAIL = 'WORK_EXPERIENCE_LIST_FAIL';
+
+export class WorkExperienceListFailAction implements Action  {
+    readonly type = WORK_EXPERIENCE_LIST_FAIL;
+
+    constructor(public payload: WorkExperienceListResponse) { }
+}
+
+export const WORK_EXPERIENCE_LIST_SUCCESS = 'WORK_EXPERIENCE_LIST_SUCCESS';
+
+export class WorkExperienceListSuccessAction implements Action {
+    readonly type = WORK_EXPERIENCE_LIST_SUCCESS;
+
+    constructor(public payload: WorkExperienceListResponse) { }
+}
+
+export const ADD_WORK_EXPERIENCE  = 'ADD_WORK_EXPERIENCE';
+
+export class AddWorkExperienceAction implements Action {
+    readonly type = ADD_WORK_EXPERIENCE;
+
+    constructor(public payload: WorkExperienceAddOptions) { }
+}
+
+export const WORK_EXPERIENCE_ADD_FAIL = 'WORK_EXPERIENCE_ADD_FAIL';
+
+export class WorkExperienceAddFailAction implements Action {
+    readonly type = WORK_EXPERIENCE_ADD_FAIL;
+
+    constructor(public payload: WorkExperienceAddResponse) { }
+}
+
+export const WORK_EXPERIENCE_ADD_SUCCESS = 'WORK_EXPERIENCE_ADD_SUCCESS';
+
+export class WorkExperienceAddSuccessAction implements Action {
+    readonly type = WORK_EXPERIENCE_ADD_SUCCESS;
+
+    constructor(public payload: WorkExperienceAddResponse) { }
+}
+
+export const DELETE_WORK_EXPERIENCE = 'DELETE_WORK_EXPERIENCE';
+
+export class DeleteWorkExperienceAction implements Action {
+    readonly type = DELETE_WORK_EXPERIENCE;
+
+    constructor(public payload: WorkExperienceDeleteOptions) { }
+}
+
+export const WORK_EXPERIENCE_DELETE_FAIL = 'WORK_EXPERIENCE_DELETE_FAIL';
+
+export class WorkExperienceDeleteFailAction implements Action {
+    readonly type = WORK_EXPERIENCE_DELETE_FAIL;
+
+    constructor(public payload: WorkExperienceDeleteResponse) { }
+}
+
+export const WORK_EXPERIENCE_DELETE_SUCCESS = 'WORK_EXPERIENCE_DELETE_SUCCESS';
+
+export class WorkExperienceDeleteSuccessAction implements Action {
+    readonly type = WORK_EXPERIENCE_DELETE_SUCCESS;
+
+    constructor(public payload: WorkExperienceDeleteResponse) { }
+}
+
+export const UPDATE_WORK_EXPERIENCE = 'UPDATE_WORK_EXPERIENCE';
+
+export class UpdateWorkExperienceAction implements Action {
+    readonly type = UPDATE_WORK_EXPERIENCE;
+    
+    constructor(public payload: WorkExperienceUpdateOptions) { }
+}
+
+export const WORK_EXPERIENCE_UPDATE_FAIL = 'WORK_EXPERIENCE_UPDATE_FAIL';
+
+export class WorkExperienceUpdateFailAction implements Action {
+    readonly type = WORK_EXPERIENCE_UPDATE_FAIL;
+
+    constructor(public payload: WorkExperienceUpdateResponse) { }
+}
+
+export const WORK_EXPERIENCE_UPDATE_SUCCESS = 'WORK_EXPERIENCE_UPDATE_SUCCESS';
+
+export class WorkExperienceUpdateSuccessAction implements Action {
+    readonly type = WORK_EXPERIENCE_UPDATE_SUCCESS;
+
+    constructor(public payload: WorkExperienceUpdateResponse) { }
+}
+
+export const GET_PLATFORM_WORK_EXPERIENCE_LIST = 'GET_PLATFORM_WORK_EXPERIENCE_LIST';
+
+export class GetPlatformWorkExperienceListAction implements Action {
+    readonly type = GET_PLATFORM_WORK_EXPERIENCE_LIST;
+
+    constructor(public payload: PlatformWorkExperienceListOptions) { }
+}
+
+export const PLATFORM_WORK_EXPERIENCE_LIST_FAIL = 'PLATFORM_WORK_EXPERIENCE_LIST_FAIL';
+
+export class PlatformWorkExperienceListFailAction implements Action  {
+    readonly type = PLATFORM_WORK_EXPERIENCE_LIST_FAIL;
+
+    constructor(public payload: PlatformWorkExperienceResponse) { }
+}
+
+export const PLATFORM_WORK_EXPERIENCE_LIST_SUCCESS = 'PLATFORM_WORK_EXPERIENCE_LIST_SUCCESS';
+
+export class PlatformWorkExperienceListSuccessAction implements Action {
+    readonly type = PLATFORM_WORK_EXPERIENCE_LIST_SUCCESS;
+
+    constructor(public payload: PlatformWorkExperienceResponse) { }
+}
+
 /* ====================================================Local update==================================================== */
 
 export const UPDATE_WORK_TYPES_AT_LOCAL = 'UPDATE_WORK_TYPES_AT_LOCAL'
@@ -268,16 +390,20 @@ export type Actions = GetBasicInformationAction
     | AddEducationAction
     | AddEducationFailAction
     | AddEducationSuccessAction
+    | AddWorkExperienceAction
     | BasicInfoListFailAction
     | BasicInfoListSuccessAction
     | DeleteEducationAction
     | DeleteEducationFailAction
     | DeleteEducationSuccessAction
+    | DeleteWorkExperienceAction
     | EducationListFailAction
     | EducationListSuccessAction
     | GetEducationListAction
     | GetHomeInfoListAction
     | GetPersonalIdListAction
+    | GetPlatformWorkExperienceListAction
+    | GetWorkExperienceListAction
     | GetWorkerDetailListAction
     | HomeInfoListFailAction
     | HomeInfoListSuccessAction
@@ -285,13 +411,24 @@ export type Actions = GetBasicInformationAction
     | HomeInfoUpdateSuccessAction
     | PersonalIdListFailAction
     | PersonalIdListSuccessAction
+    | PlatformWorkExperienceListFailAction
+    | PlatformWorkExperienceListSuccessAction
     | UpdateEducationAction
     | UpdateEducationFailAction
     | UpdateEducationSuccessAction
     | UpdateHomeInfoAction
     | UpdateLocalWorkerDetailWorkTypesAction
+    | UpdateWorkExperienceAction
     | UpdateWorkerDetailAction
     | UpdateWorkerDetailFailAction
     | UpdateWorkerDetailSuccessAction
+    | WorkExperienceAddFailAction
+    | WorkExperienceAddSuccessAction
+    | WorkExperienceDeleteFailAction
+    | WorkExperienceDeleteSuccessAction
+    | WorkExperienceListFailAction
+    | WorkExperienceListSuccessAction
+    | WorkExperienceUpdateFailAction
+    | WorkExperienceUpdateSuccessAction
     | WorkerDetailListFailAction
     | WorkerDetailListSuccessAction;

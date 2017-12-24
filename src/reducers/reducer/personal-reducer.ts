@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
-import { WorkerDetailUpdateOptions, HomeInfoUpdateOptions, homeAddressNameMapBetweenResponseAndRequest, EducationAddOptions, EducationUpdateOptions, EducationDeleteOptions } from './../../interfaces/request-interface';
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail, HomeInfoListResponse, HomeInfoUpdateResponse, Home, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse } from './../../interfaces/response-interface';
+import { WorkerDetailUpdateOptions, HomeInfoUpdateOptions, homeAddressNameMapBetweenResponseAndRequest, EducationAddOptions, EducationUpdateOptions, EducationDeleteOptions, WorkExperienceAddOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions } from './../../interfaces/request-interface';
+import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, WorkerDetail, HomeInfoListResponse, HomeInfoUpdateResponse, Home, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse, PlatformWorkExperienceResponse, WorkExperienceAddResponse, WorkExperienceUpdateResponse, WorkExperienceDeleteResponse, WorkExperienceListResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/personal-action';
 import { rename } from '../../services/utils/util';
 
@@ -20,6 +20,14 @@ export interface State {
     educationAddOptions: EducationAddOptions;
     educationUpdateOptions: EducationUpdateOptions;
     educationDeleteOptions: EducationDeleteOptions;
+    workExperienceResponse: WorkExperienceListResponse;
+    platformWorkExperienceResponse: PlatformWorkExperienceResponse;
+    workExperienceAddResponse: WorkExperienceAddResponse;
+    workExperienceAddOptions: WorkExperienceAddOptions;
+    workExperienceDeleteResponse: WorkExperienceDeleteResponse;
+    workExperienceDeleteOptions: WorkExperienceDeleteOptions;
+    workExperienceUpdateResponse: WorkExperienceUpdateResponse;
+    workExperienceUpdateOptions: WorkExperienceUpdateOptions;
 }
 
 export const initialState: State = {
@@ -37,7 +45,15 @@ export const initialState: State = {
     educationUpdateResponse: null,
     educationAddOptions: null,
     educationUpdateOptions: null,
-    educationDeleteOptions: null
+    educationDeleteOptions: null,
+    workExperienceResponse: null,
+    platformWorkExperienceResponse: null,
+    workExperienceAddOptions: null,
+    workExperienceAddResponse: null,
+    workExperienceDeleteOptions: null,
+    workExperienceDeleteResponse: null,
+    workExperienceUpdateOptions: null,
+    workExperienceUpdateResponse: null
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -120,6 +136,43 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
         /* ===================================================================work experience==============================================================*/
 
+        case actions.WORK_EXPERIENCE_LIST_FAIL:
+        case actions.WORK_EXPERIENCE_LIST_SUCCESS:
+            return { ...state, workExperienceResponse: action.payload };
+
+        case actions.PLATFORM_WORK_EXPERIENCE_LIST_FAIL:
+        case actions.PLATFORM_WORK_EXPERIENCE_LIST_SUCCESS:
+            return { ...state, platformWorkExperienceResponse: action.payload };
+
+        case actions.ADD_WORK_EXPERIENCE:
+            return { ...state, workExperienceAddOptions: action.payload };
+
+        case actions.WORK_EXPERIENCE_ADD_FAIL:
+            return { ...state, workExperienceAddResponse: action.payload };
+
+        case actions.WORK_EXPERIENCE_ADD_SUCCESS:
+            return { ...state, workExperienceAddResponse: action.payload, workExperienceResponse: { exp_add: [...state.workExperienceResponse.exp_add, omit(state.workExperienceAddOptions, ['sid'])] } };
+
+        case actions.DELETE_WORK_EXPERIENCE:
+            return { ...state, workExperienceDeleteOptions: action.payload };
+            
+        case actions.WORK_EXPERIENCE_DELETE_FAIL:
+            return { ...state, workExperienceDeleteResponse: action.payload };
+
+        case actions.WORK_EXPERIENCE_DELETE_SUCCESS:
+            return { ...state, workExperienceDeleteResponse: action.payload, workExperienceResponse: { exp_add: state.workExperienceResponse.exp_add.filter(item => item.id !== state.workExperienceDeleteOptions.workexper_id) } };
+
+        case actions.UPDATE_WORK_EXPERIENCE:
+            return { ...state, workExperienceUpdateOptions: action.payload };
+
+        case actions.WORK_EXPERIENCE_UPDATE_FAIL:
+            return { ...state, workExperienceUpdateResponse: action.payload };
+
+        case actions.WORK_EXPERIENCE_UPDATE_SUCCESS:
+            return { ...state, workExperienceUpdateResponse: action.payload, workExperienceResponse: { exp_add: state.workExperienceResponse.exp_add.map(item => item.id === state.workExperienceUpdateOptions.id ? { ...item, ...omit(state.workExperienceUpdateOptions, ['sid']) } : item) } };
+
+        case actions.GET_WORK_EXPERIENCE_LIST:
+        case actions.GET_PLATFORM_WORK_EXPERIENCE_LIST:
         case actions.GET_EDUCATION_LIST:
         case actions.GET_HOME_INFO_LIST:
         case actions.GET_PERSONAL_ID_LIST:
@@ -177,3 +230,7 @@ export const getHomeInfoUpdateResponse = (state: State) => state.homeInfoUpdateR
 export const getHomeInfoUpdateOptions = (state: State) => state.homeInfoOptions;
 
 export const getEducationListResponse = (state: State) => state.educationResponse;
+
+export const getWorkExperienceResponse = (state: State) => state.workExperienceResponse;
+
+export const getPlatformWorkExperienceResponse = (state: State) => state.platformWorkExperienceResponse;

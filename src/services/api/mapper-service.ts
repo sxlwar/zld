@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -67,6 +67,14 @@ export interface EducationAddFormModel {
   major: string;
   degree: number;
   school: string;
+}
+
+export interface WorkExperienceFormModel {
+  startDate: string;
+  endDate: string;
+  company: string;
+  project: string;
+  job: string;
 }
 
 @Injectable()
@@ -201,16 +209,17 @@ export class MapperService {
 
   transformWorkExperience(source: WorkExperience): CustomWorkExperience {
     return {
-      expire: source.start + '-' + source.finish,
+      expire: source.start + '--' + source.finish,
       project: source.project_name,
       company: source.company_name,
-      job: source.job
+      job: source.job,
+      id: source.id
     }
   }
 
   transformPlatformWorkExperience(source: PlatformWorkExperience): PlatformExperience {
     return {
-      expire: source.start_day + '-' + source.finish_day,
+      expire: source.start_day + '--' + source.finish_day,
       workType: source.worktype__name,
       project: source.team__project__name,
       team: source.team__name
@@ -225,6 +234,17 @@ export class MapperService {
       degree: source.degree,
       major: source.major,
       sid: ''
+    }
+  }
+
+  transformWorkExperienceOptions(source: WorkExperienceFormModel): WorkExperienceAddOptions {
+    return {
+      sid: '',
+      start: source.startDate,
+      finish: source.endDate,
+      company_name: source.company,
+      project_name: source.project,
+      job: source.job
     }
   }
 }

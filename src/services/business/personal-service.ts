@@ -1,16 +1,16 @@
 import { MapperService } from './../api/mapper-service';
 import { omit } from 'lodash';
 import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/personal-action';
-import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions } from './../../interfaces/request-interface';
+import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkExperienceUpdateOptions } from './../../interfaces/request-interface';
 import { CraftService } from './craft-service';
 import { Family } from './../../interfaces/personal-interface';
-import { BasicInfoListResponse, PersonalId, WorkerDetail, Education } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse, selectEducationListResponse } from './../../reducers/index-reducer';
+import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse, selectEducationListResponse, selectWorkExperienceListResponse, selectPlatformWorkExperienceResponse } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { rename } from '../../services/utils/util';
@@ -86,6 +86,26 @@ export class PersonalService {
         );
     }
 
+    getWorkExperienceList(): Subscription {
+        return this.process.workExperienceListProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+    }
+
+    getPlatformWorkExperienceList(): Subscription {
+        return this.process.platformWorkExperienceListProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+    }
+
+    addWorkExperience(option: Observable<WorkExperienceAddOptions>): Subscription {
+        return this.process.workExperienceAddProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })));
+    }
+
+    deleteWorkExperience(id: Observable<number>): Subscription {
+        return this.process.workExperienceDeleteProcessor(id.withLatestFrom(this.userInfo.getSid(), (workexper_id, sid) => ({ workexper_id, sid })));
+    }
+
+    updateWorkExperience(option: Observable<WorkExperienceUpdateOptions>): Subscription {
+        return this.process.workExperienceUpdateProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })));
+    }
+
     /* ================================================================Data acquisition methods====================================================== */
 
     getBasicInfoResponse(): Observable<BasicInfoListResponse> {
@@ -123,6 +143,18 @@ export class PersonalService {
         return this.store.select(selectEducationListResponse)
             .filter(value => !!value)
             .map(res => res.education);
+    }
+
+    getOwnWorkExperience(): Observable<WorkExperience[]> {
+        return this.store.select(selectWorkExperienceListResponse)
+            .filter(value => !!value)
+            .map(res => res.exp_add);
+    }
+
+    getOwnPlatformExperience(): Observable<PlatformWorkExperience[]> {
+        return this.store.select(selectPlatformWorkExperienceResponse)
+            .filter(value => !!value)
+            .map(res => res.exp_platform);
     }
 
     /* =======================================================Update worker detail================================================================== */

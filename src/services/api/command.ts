@@ -1,4 +1,4 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
+import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions } from './../../interfaces/request-interface';
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
@@ -501,6 +501,78 @@ export const educationDelete: ApiUnit = {
   }
 }
 
+export const workExperienceList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.WorkExperienceList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const workExperienceAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['employee.consumer.WorkExperienceAdd']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const workExperienceDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['employee.consumer.WorkExperienceDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const workExperienceUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.WorkExperienceUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const platformWorkExperienceList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.WorkPlatformExperienceList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
 /* ==========================================================Attendance machine api================================================================ */
 
 export const attendanceMachineList: ApiUnit = {
@@ -657,11 +729,6 @@ export class Command {
   workCertificateDelete = "employee.consumer.WorkCertificateDelete";
   workCertificateList = "employee.consumer.WorkCertificateList";
   workCertificateUpdate = "employee.consumer.WorkCertificateUpdate";
-  workExperienceAdd = "employee.consumer.WorkExperienceAdd";
-  workExperienceDelete = "employee.consumer.WorkExperienceDelete";
-  workExperienceList = "employee.consumer.WorkExperienceList";
-  workExperienceUpdate = "employee.consumer.WorkExperienceUpdate";
-  workPlatformExperienceList = "employee.consumer.WorkPlatformExperienceList";
   workTimePayList = "project.consumer.WorkTimePayList";
   workerBankNoAdd = "employee.consumer.WorkerBankNoAdd";
   workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
@@ -870,7 +937,7 @@ export class Command {
   }
 
   /**
-   * @description Personal information API: getBasicInfo, getPersonalIdList, getWorkerDetailList;
+   * @description Personal information API: getBasicInfo, getPersonalIdList, getWorkerDetailList...;
    */
   getBasicInfoList(option: BasicInfoListOptions): WsRequest {
     const path = basicInfoList.operates.get(Operate.querying)[0];
@@ -954,6 +1021,44 @@ export class Command {
     const { sid, degree, finish_date, start_date, major, school__name, id } = originOption;
 
     const option = { sid, education_form: { degree, finish_date, start_date, major, school__name, id } };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkExperienceList(option: WorkExperienceListOptions): WsRequest {
+    const path = workExperienceList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkExperienceAdd(originOption: WorkExperienceAddOptions): WsRequest {
+    const path = workExperienceAdd.operates.get(Operate.addition)[0];
+
+    const { sid, start, finish, company_name, job, project_name } = originOption;
+
+    const option = { sid, work_exper_form: { start, finish, company_name, project_name, job } };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkExperienceDelete(option: WorkExperienceDeleteOptions): WsRequest {
+    const path = workExperienceDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkExperienceUpdate(originOption: WorkExperienceUpdateOptions): WsRequest {
+    const path = workExperienceUpdate.operates.get(Operate.updates)[0];
+
+    const { id, company_name, sid, project_name, start, finish, job } = originOption;
+
+    const option = { sid, work_exper_form: { start, finish, job, company_name, project_name, id } };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getPlatformWorkExperienceList(option: PlatformWorkExperienceListOptions): WsRequest {
+    const path = platformWorkExperienceList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
@@ -1207,5 +1312,25 @@ export class Command {
 
   get educationUpdate() {
     return educationUpdate;
+  }
+
+  get workExperienceList() {
+    return workExperienceList;
+  }
+
+  get workExperienceAdd() {
+    return workExperienceAdd;
+  }
+
+  get workExperienceUpdate() {
+    return workExperienceUpdate;
+  }
+
+  get workExperienceDelete() {
+    return workExperienceDelete;
+  }
+
+  get platformWorkExperienceList() {
+    return platformWorkExperienceList;
   }
 }

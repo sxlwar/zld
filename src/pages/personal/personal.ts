@@ -104,7 +104,7 @@ export class PersonalPage {
   getWorkExperience(source: Observable<BasicInfoListResponse>): void {
     this.workExperience = source
       .filter(value => !!value.work_expr_info)
-      .map(data => data.work_expr_info.map(item => this.mapper.transformWorkExperience(item)));
+      .map(data => data.work_expr_info.map(item => this.mapper.transformWorkExperience(item)))
   }
 
   getPlatformExperience(source: Observable<BasicInfoListResponse>): void {

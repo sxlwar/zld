@@ -686,13 +686,13 @@ export interface Certificate {
 }
 
 export interface WorkExperience {
-  project_name: string;
-  user_id: number;
-  start: string;
-  job: string;
-  finish: string;
   company_name: string;
+  finish: string;
   id: number;
+  job: string;
+  project_name: string;
+  start: string;
+  user_id: number;
 }
 
 export interface PlatformWorkExperience {
@@ -731,7 +731,7 @@ export interface BasicInfoListResponse {
   edu_info: Education[];
   work_cert_info: Certificate[];
   work_expr_info: WorkExperience[];
-  platfrom_work_expr_info: PlatformWorkExperience[];  //后台的单词用的就是错的，不敢改；
+  platfrom_work_expr_info: PlatformWorkExperience[];  //后台的单词用的就是错的，不敢改；和workPlatformExperienceList接口的名称还不一样；
   person_id_info: PersonalId[];
   basic_info: BasicInformation;
   errorMessage?: string;
@@ -803,6 +803,36 @@ export interface EducationUpdateResponse {
 //education delete
 export interface EducationDeleteResponse {
   information?: string;
+  errorMessage?: string;
+}
+
+//work experience list
+export interface WorkExperienceListResponse {
+  exp_add: WorkExperience[];
+  errorMessage?: string;
+}
+
+//work experience add
+export interface WorkExperienceAddResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//work experience delete
+export interface WorkExperienceDeleteResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//work experience update
+export interface WorkExperienceUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//platform work experience list
+export interface PlatformWorkExperienceResponse {  //接口名字改了，workPlatformExperienceList,这啥名字颠三倒四的.
+  exp_platform: PlatformWorkExperience[];
   errorMessage?: string;
 }
 

@@ -1,3 +1,4 @@
+import { AddWorkExperienceComponent } from './../components/add-work-experience/add-work-experience';
 import { AddEducationComponent } from './../components/add-education/add-education';
 import { WorkTypeSelectComponent } from './../components/work-type-select/work-type-select';
 import { WorkerSelectComponent } from './../components/worker-select/worker-select';
@@ -120,6 +121,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     WorkerSelectComponent,
     WorkTypeSelectComponent,
     AddEducationComponent,
+    AddWorkExperienceComponent,
   ],
   providers: [
     Api,

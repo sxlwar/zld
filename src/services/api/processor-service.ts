@@ -2,11 +2,11 @@ import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../
 import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
 import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
 import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
-import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction, GetHomeInfoListAction, UpdateHomeInfoAction, GetEducationListAction, AddEducationAction, DeleteEducationAction, UpdateEducationAction } from './../../actions/action/personal-action';
+import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction, GetHomeInfoListAction, UpdateHomeInfoAction, GetEducationListAction, AddEducationAction, DeleteEducationAction, UpdateEducationAction, GetWorkExperienceListAction, AddWorkExperienceAction, DeleteWorkExperienceAction, UpdateWorkExperienceAction, GetPlatformWorkExperienceListAction } from './../../actions/action/personal-action';
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -387,5 +387,40 @@ export class ProcessorService extends MapperService {
       .filter(value => value.opt)
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new UpdateEducationAction(option)));
+  }
+
+  workExperienceListProcessor(option$: Observable<WorkExperienceListOptions>): Subscription {
+    return this.permission.comprehensiveValidate(this.command.workExperienceList)
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
+      .subscribe(option => this.store.dispatch(new GetWorkExperienceListAction(option)));
+  }
+
+  workExperienceAddProcessor(option$: Observable<WorkExperienceAddOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.workExperienceAdd)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new AddWorkExperienceAction(option)));
+  }
+
+  workExperienceDeleteProcessor(option$: Observable<WorkExperienceDeleteOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.workExperienceDelete)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new DeleteWorkExperienceAction(option)));
+  }
+
+  workExperienceUpdateProcessor(option$: Observable<WorkExperienceUpdateOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.workExperienceUpdate)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateWorkExperienceAction(option)));
+  }
+
+  platformWorkExperienceListProcessor(option$: Observable<PlatformWorkExperienceListOptions>): Subscription {
+    return this.permission.comprehensiveValidate(this.command.platformWorkExperienceList)
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
+      .subscribe(option => this.store.dispatch(new GetPlatformWorkExperienceListAction(option)));
   }
 }
