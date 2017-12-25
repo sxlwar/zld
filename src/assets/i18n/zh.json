@@ -7,6 +7,7 @@
   "ADD_BUTTON": "添加",
   "DELETE_BUTTON": "删除",
   "UPDATE_BUTTON": "更新",
+  "OPERATE_CONFIRM": "操作确认",
 
   "NAME": "姓名",
   "EMAIL": "邮箱",
@@ -367,6 +368,20 @@
   "PROJECT_REQUIRED_ERROR": "请输入项目名称",
   "JOB_REQUIRED_ERROR":"请输入主要工作内容",
   "JOB": "工作职责",
+
+  "BANK_CARD":"银行卡",
+  "CREDIT_CARD": "信用卡",
+  "CARD_OWNER": "持卡人",
+  "SALARY_CARD": "工资卡",
+  "OPENING_BANK": "开户行",
+  "BANK_NAME": "银行名称",
+  "DELETE_BANK_CARD_TIP": "删除本卡后可能影响与本卡有关的资金业务, 确定要删除吗？",
+  "BANK_CARD_ERROR": "请输入正确的银行卡号",
+  "ADD_BANK_CARD": "添加银行卡",
+  "BANK_CARD_INFORMATION":"银行卡信息",
+  "CREDIT_CARD_NOT_ALLOWED_ERROR":"无法绑定信用卡",
+  "RESERVATION_PHONE_NUMBER": "银行预留手机号",
+  "BANKCARD_TYPE": "银行卡类型",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

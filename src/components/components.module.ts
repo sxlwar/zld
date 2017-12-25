@@ -1,3 +1,4 @@
+import { FlashCardComponent } from './flash-card/flash-card';
 import { MultiPickerModule } from 'ion-multi-picker';
 import { TimelineComponent, TimelineItemComponent, TimelineTimeComponent } from './timeline/timeline';
 import { SharedModule } from '../app/shared.modules';
@@ -36,6 +37,7 @@ import { AddressSelectComponent } from './address-select/address-select';
 import { AccordionListComponent } from './accordion-list/accordion-list';
 import { AddEducationComponent } from './add-education/add-education';
 import { AddWorkExperienceComponent } from './add-work-experience/add-work-experience';
+import { AddBankcardComponent } from './add-bankcard/add-bankcard';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,8 @@ import { AddWorkExperienceComponent } from './add-work-experience/add-work-exper
     AccordionListComponent,
     AddEducationComponent,
     AddWorkExperienceComponent,
+    AddBankcardComponent,
+    FlashCardComponent,
   ],
   imports: [
     IonicModule,
@@ -115,6 +119,8 @@ import { AddWorkExperienceComponent } from './add-work-experience/add-work-exper
     AccordionListComponent,
     AddEducationComponent,
     AddWorkExperienceComponent,
+    AddBankcardComponent,
+    FlashCardComponent,
   ]
 })
 export class ComponentsModule {

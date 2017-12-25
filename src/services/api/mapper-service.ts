@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -75,6 +75,13 @@ export interface WorkExperienceFormModel {
   company: string;
   project: string;
   job: string;
+}
+
+export interface AddBankcardFormModel {
+  cardNumber: string;
+  phoneNumber: string;
+  cardType: string;
+  isMaster: boolean;
 }
 
 @Injectable()
@@ -245,6 +252,16 @@ export class MapperService {
       company_name: source.company,
       project_name: source.project,
       job: source.job
+    }
+  }
+
+  transformAddBankcard(source: AddBankcardFormModel): WorkerBankNoAddOptions {
+    return {
+      sid: '',
+      num: source.cardNumber,
+      phone_num: source.phoneNumber,
+      is_master: source.isMaster,
+      user_id: NaN
     }
   }
 }

@@ -1,4 +1,3 @@
-//region
 import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as config from './reducer/config-reducer';
 import * as tutorial from './reducer/tutorial-reducer';
@@ -24,7 +23,7 @@ import * as machine from './reducer/attendance-machine-reducer';
 import * as attendanceCard from './reducer/attendance-card-reducer';
 import * as locationCard from './reducer/location-card-reducer';
 import * as location from './reducer/location-reducer';
-//endregion
+import * as bankCard from './reducer/bank-card-reducer';
 
 export interface AppState {
   config: config.State;
@@ -55,6 +54,7 @@ export interface AppState {
   attendanceCard: attendanceCard.State,
   locationCard: locationCard.State,
   location: location.State,
+  bankCard: bankCard.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -86,6 +86,7 @@ export const reducers: ActionReducerMap<AppState> = {
   attendanceCard: attendanceCard.reducer,
   locationCard: locationCard.reducer,
   location: location.reducer,
+  bankCard: bankCard.reducer,
 };
 
 //config
@@ -326,6 +327,14 @@ export const selectTrajectories = createSelector(getLocation, location.getTrajec
 export const selectTrajectoryPlayState = createSelector(getLocation, location.getPlayState);
 export const selectTrajectoryRateState = createSelector(getLocation, location.getRateState);
 export const selectTrajectoryIndexes = createSelector(getLocation, location.getSelectedIndexes);
+
+//bank card related 
+export const getBankCard = (state: AppState) => state.bankCard;
+export const selectBankcardList = createSelector(getBankCard, bankCard.getBankcardListResponse);
+export const selectBankInfo = createSelector(getBankCard, bankCard.getBankInfoResponse);
+export const selectBankcardAddResponse = createSelector(getBankCard, bankCard.getBankcardAddResponse);
+export const selectBankcardDeleteResponse = createSelector(getBankCard, bankCard.getBankcardDeleteResponse);
+export const selectSetMasterCardResponse = createSelector(getBankCard, bankCard.getSetMasterResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

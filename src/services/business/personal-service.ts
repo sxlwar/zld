@@ -4,7 +4,7 @@ import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/p
 import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkExperienceUpdateOptions } from './../../interfaces/request-interface';
 import { CraftService } from './craft-service';
 import { Family } from './../../interfaces/personal-interface';
-import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience, PersonalIdListResponse } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
@@ -112,8 +112,12 @@ export class PersonalService {
         return this.store.select(selectBasicInfoListResponse);
     }
 
+    getPersonalIdResponse(): Observable<PersonalIdListResponse> {
+        return this.store.select(selectPersonalIdResponse);
+    }
+
     getPersonalId(): Observable<PersonalId> {
-        return this.store.select(selectPersonalIdResponse)
+        return this.getPersonalIdResponse() 
             .filter(value => !!value)
             .map(res => res.personal_id[0]);
     }

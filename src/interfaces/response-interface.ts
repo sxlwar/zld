@@ -975,9 +975,51 @@ export interface Area {
   wgspolygons: string | LngLat[]; //这个地方要转JSON，后台直接把字符串丢过来了。防火， 防盗，防后台！
 }
 
+//project area list
 export interface ProjectAreaListResponse {
   project_areas: Area[];
   errorMessage?: string;
+}
+
+/* ===============================================================Bankcard API model======================================= */
+
+export interface Bankcard {
+  province:string; 
+  city:string; 
+  ismaster: boolean; 
+  card_type:string; 
+  num:string; 
+  id: number; 
+  bank__name:string;
+}
+
+//worker bank NO list
+export interface WorkerBankNoListResponse {
+  person_bank_no: Bankcard[];
+}
+
+//worker bank NO add
+export interface WorkerBankNoAddResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//worker bank NO delete
+export interface WorkerBankNoDeleteResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//set bank NO master
+export interface SetBankNOMasterResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//bank card information
+export interface BankInfoResponse {
+  bank_name: string;
+  brand: string;
 }
 
 /*========================================================================================================*/

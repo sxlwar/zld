@@ -536,6 +536,41 @@ export interface PlatformWorkExperienceListOptions {
   user_id?: number[];
 }
 
+/* ============================================================Bank card model================================================================== */
+
+export interface WorkerBankNoListOptions {
+  sid: string;
+}
+
+export interface WorkerBankNoAddOptions {
+  sid: string;
+  num: string;  //真恶心的东西，名字起个num，类型是string，再没有名字可起了？
+  phone_num: string;
+  user_id: number;
+  is_master:boolean; //这都知道加下划线，返回字段的名字为啥就没有那个下划线?
+}
+
+export interface WorkerBankNoDeleteOptions {
+  sid: string;
+  card_id: number; //文档上这里是个string, 响应的字段是number，所以把这里的改了；
+}
+
+export enum BankCardSetting {
+  cancel = 1,
+  setting
+}
+
+export interface SetBankNoMasterOptions {
+  sid: string;
+  bankno_id: number;
+  flag: number; // 1 cancel 2 setting; 脑子有泡吧，就是设置是否主卡，true/false就完事了还弄个1,2;
+}
+
+export interface BankInfoOptions {
+  sid: string;
+  num: string;
+}
+
 /*=================================================Work flow API model==================================================*/
 
 export enum RequestStatus {

@@ -353,7 +353,7 @@ export const bankCard: IconItem = {
     view: [PME, EME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: []
   },
-  page: ''
+  page: pages.bankcardPage
 };
 export const certificate: IconItem = {
   text: 'MY_CERTIFICATE',

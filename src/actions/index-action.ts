@@ -19,11 +19,13 @@ import { Actions as machine } from './action/attendance-machine-action';
 import { Actions as attendanceCard } from './action/attendance-card-action';
 import { Actions as locationCard } from './action/location-card-action';
 import { Actions as location } from './action/location-action';
+import { Actions as bankCard } from './action/bank-card-action';
 
 export type Actions = config
   | attendance
   | attendanceRecord
   | attendanceCard
+  | bankCard
   | employer
   | icons
   | location

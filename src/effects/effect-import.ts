@@ -13,6 +13,7 @@ import { TeamEffect } from './team-effect';
 import { WorkFlowEffect } from './work-flow-effect';
 import { WorkPieceEffect } from './work-piece-effect';
 import { WorkerEffect } from './worker-effect';
+import { BankCardEffect } from './bank-card-effect';
 
 /**
  * @description These are all needed after the user enters the APP,
@@ -22,6 +23,7 @@ export const EFFECTS = [
     AttendanceCardEffect,
     AttendanceEffect,
     AttendanceMachineEffect,
+    BankCardEffect,
     CraftEffect,
     EmployerEffect,
     LocationEffect,

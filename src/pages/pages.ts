@@ -91,6 +91,8 @@ export const educationExperiencePage = 'EducationExperiencePage';
 
 export const workExperiencePage = 'WorkExperiencePage';
 
+export const bankcardPage = 'BankcardPage';
+
 export const PAGES = [
   { title: 'Tutorial', component: tutorialPage },
   { title: 'Welcome', component: welcomePage },
@@ -142,4 +144,5 @@ export const PAGES = [
   { title: 'FamilyInformation', component: familyInformationPage },
   { title: 'EducationExperience', component: educationExperiencePage },
   { title: 'WorkExperience', component: workExperiencePage },
+  { title: 'Bankcard', component: bankcardPage },
 ];

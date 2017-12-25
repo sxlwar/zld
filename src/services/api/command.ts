@@ -1,4 +1,4 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions } from './../../interfaces/request-interface';
+import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions } from './../../interfaces/request-interface';
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
@@ -694,12 +694,74 @@ export const projectAreaList: ApiUnit = {
   }
 }
 
+/* ========================================================Bank card model=========================================== */
+
+export const bankInfo: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.BankInfo']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  }
+}
+
+export const workerBankNoList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.WorkerBankNoList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    // [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const workerBankNoAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['employee.consumer.WorkerBankNoAdd']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const workerBankNoDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['employee.consumer.WorkerBankNoDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const setBankNoMaster: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.SetBankNoMaster']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
 @Injectable()
 export class Command {
 
   amendAttendRecordList = "project.consumer.AmendAttendRecordList";
   attendResultConfirm = "project.consumer.AttendResultConfirm";
-  bankInfo = "employee.consumer.BankInfo";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
   groupsList = "employee.consumer.GroupsList";
@@ -721,7 +783,6 @@ export class Command {
   readMsgContent = "operation.consumer.ReadMsgContent";
   requestList = "workflow.consumer.RequestList";
   searchWorker = "employer.consumer.SearchWorker";
-  setBankNoMaster = "employee.consumer.SetBankNoMaster";
   subContractList = "employer.consumer.SubContractList";
   taskUpdate = "workflow.consumer.TaskUpdate";
   unreadMsgCount = "operation.consumer.UnreadMsgCount";
@@ -730,9 +791,6 @@ export class Command {
   workCertificateList = "employee.consumer.WorkCertificateList";
   workCertificateUpdate = "employee.consumer.WorkCertificateUpdate";
   workTimePayList = "project.consumer.WorkTimePayList";
-  workerBankNoAdd = "employee.consumer.WorkerBankNoAdd";
-  workerBankNoDelete = "employee.consumer.WorkerBankNoDelete";
-  workerBankNoList = "employee.consumer.WorkerBankNoList";
   workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
   constructor() {
   }
@@ -1156,6 +1214,39 @@ export class Command {
   }
 
   /**
+   * @description Bank no related api: getBankInfo, getWorkerBankNoList, getWorkerBankNoAdd, getWorkerBankNoDelete;
+   */
+  getBankInfo(option: BankInfoOptions): WsRequest {
+    const path = bankInfo.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkerBankNoList(option: WorkerBankNoListOptions): WsRequest {
+    const path = workerBankNoList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkerBankNoAdd(option: WorkerBankNoAddOptions): WsRequest {
+    const path = workerBankNoAdd.operates.get(Operate.addition)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getWorkerBankNoDelete(option: WorkerBankNoDeleteOptions): WsRequest {
+    const path = workerBankNoDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+  
+  getSetBankNoMaster(option: SetBankNoMasterOptions): WsRequest {
+    const path = setBankNoMaster.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
    * @description API unit interfaces for external module referring.
    */
   get uploadPersonalIdImage(): string {
@@ -1332,5 +1423,25 @@ export class Command {
 
   get platformWorkExperienceList() {
     return platformWorkExperienceList;
+  }
+
+  get bankInfo() {
+    return bankInfo;
+  }
+
+  get workerBankNoList() {
+    return workerBankNoList;
+  }
+
+  get workerBankNoAdd() {
+    return workerBankNoAdd;
+  }
+
+  get workerBankNoDelete() {
+    return workerBankNoDelete;
+  }
+
+  get setBankNoMaster() {
+    return setBankNoMaster;
   }
 }
