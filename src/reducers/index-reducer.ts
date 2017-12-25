@@ -24,6 +24,7 @@ import * as attendanceCard from './reducer/attendance-card-reducer';
 import * as locationCard from './reducer/location-card-reducer';
 import * as location from './reducer/location-reducer';
 import * as bankCard from './reducer/bank-card-reducer';
+import * as logout from './reducer/logout-reducer';
 
 export interface AppState {
   config: config.State;
@@ -55,6 +56,7 @@ export interface AppState {
   locationCard: locationCard.State,
   location: location.State,
   bankCard: bankCard.State,
+  logout: logout.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -87,6 +89,7 @@ export const reducers: ActionReducerMap<AppState> = {
   locationCard: locationCard.reducer,
   location: location.reducer,
   bankCard: bankCard.reducer,
+  logout: logout.reducer,
 };
 
 //config
@@ -335,6 +338,10 @@ export const selectBankInfo = createSelector(getBankCard, bankCard.getBankInfoRe
 export const selectBankcardAddResponse = createSelector(getBankCard, bankCard.getBankcardAddResponse);
 export const selectBankcardDeleteResponse = createSelector(getBankCard, bankCard.getBankcardDeleteResponse);
 export const selectSetMasterCardResponse = createSelector(getBankCard, bankCard.getSetMasterResponse);
+
+//logout
+export const getLogout = (state: AppState) => state.logout;
+export const selectLogoutResponse = createSelector(getLogout, logout.getLogoutResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

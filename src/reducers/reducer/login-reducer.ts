@@ -5,8 +5,8 @@ import {
   SHOW_SPECIFIC_SLIDE,
   UPDATE_RANDOM_CODE
 } from '../../actions/action/login-action';
-import {LoginOptions} from '../../interfaces/request-interface';
-import {ENV} from '@app/env';
+import { LoginOptions } from '../../interfaces/request-interface';
+import { ENV } from '@app/env';
 import {
   RegisterResponse, LoginResponse, ResetPasswordResponse,
   PhoneVerCodeResponse
@@ -38,13 +38,13 @@ export const initialSate: State = {
 export function reducer(state = initialSate, action: actions.Actions): State {
   switch (action.type) {
     case SHOW_SPECIFIC_SLIDE:
-      return Object.assign({}, state, {activeIndexOfSlides: action.payload});
+      return Object.assign({}, state, { activeIndexOfSlides: action.payload });
 
     case SHOW_SPECIFIC_INNER_SLIDE:
-      return Object.assign({}, state, {activeIndexOfInnerSlides: action.payload});
+      return Object.assign({}, state, { activeIndexOfInnerSlides: action.payload });
 
     case LOGIN:
-      return Object.assign({}, state, {loginForm: action.payload});
+      return Object.assign({}, state, { loginForm: action.payload });
 
     case UPDATE_RANDOM_CODE:
       return Object.assign({}, state, {
@@ -83,10 +83,13 @@ export const initialLoginResponse: LoginResponse = {
 export function userInfoReducer(state = initialLoginResponse, action: actions.Actions): LoginResponse {
   switch (action.type) {
     case actions.LOGIN_SUCCESS:
-      return {...action.payload};
+      return { ...action.payload };
 
     case actions.LOGIN_FAIL:
-      return {...initialLoginResponse, ...action.payload};
+      return { ...initialLoginResponse, ...action.payload };
+
+    case actions.RESET_SID:
+      return { ...state, sid: '' };
 
     default:
       return state;
@@ -117,10 +120,10 @@ export const initialRegisterState: RegisterResponse = {
 export function registerReducer(state = initialRegisterState, action: actions.Actions) {
   switch (action.type) {
     case actions.REGISTER_SUCCESS:
-      return {...action.payload};
+      return { ...action.payload };
 
     case actions.REGISTER_FAIL:
-      return {...action.payload, ...initialRegisterState};
+      return { ...action.payload, ...initialRegisterState };
 
     default:
       return state;
@@ -128,7 +131,7 @@ export function registerReducer(state = initialRegisterState, action: actions.Ac
   }
 }
 
-export const getRegisterUserId = (state: RegisterResponse) =>state.user_id;
+export const getRegisterUserId = (state: RegisterResponse) => state.user_id;
 
 /*================================================Reset password response============================================*/
 
@@ -139,10 +142,10 @@ export const initialResetPasswordState: ResetPasswordResponse = {
 export function resetPasswordReducer(state = initialResetPasswordState, action: actions.Actions) {
   switch (action.type) {
     case actions.RESET_PASSWORD_FAIL:
-      return {...action.payload};
+      return { ...action.payload };
 
     case actions.RESET_PASSWORD_SUCCESS:
-      return {...action.payload, ...initialResetPasswordState};
+      return { ...action.payload, ...initialResetPasswordState };
 
     default:
       return state;
@@ -162,7 +165,7 @@ export function registerPhoneVerReducer(state = initialPhoneVerCode, action: act
   switch (action.type) {
     case actions.PHONE_VERIFICATION_CODE_FAIL:
       const captcha = action.payload.captcha || false;
-      return Object.assign({}, action.payload, {captcha});
+      return Object.assign({}, action.payload, { captcha });
 
     case actions.PHONE_VERIFICATION_CODE_SUCCESS:
     default:
@@ -183,7 +186,7 @@ export function resetPwdPhoneVerReducer(state = initialResetPhoneVerCode, action
   switch (action.type) {
     case actions.RESET_PHONE_VERIFICATION_CODE_FAIL:
       const captcha = action.payload.captcha || false;
-      return Object.assign({}, action.payload, {captcha});
+      return Object.assign({}, action.payload, { captcha });
 
     case actions.RESET_PHONE_VERIFICATION_CODE_SUCCESS:
     default:

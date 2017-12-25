@@ -20,6 +20,7 @@ import { Actions as attendanceCard } from './action/attendance-card-action';
 import { Actions as locationCard } from './action/location-card-action';
 import { Actions as location } from './action/location-action';
 import { Actions as bankCard } from './action/bank-card-action';
+import { Actions as logout } from './action/logout-action';
 
 export type Actions = config
   | attendance
@@ -31,6 +32,7 @@ export type Actions = config
   | location
   | locationCard
   | login
+  | logout
   | machine
   | overtime
   | payBill

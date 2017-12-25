@@ -1,3 +1,4 @@
+import { LogoutService } from './business/logout-service';
 import { BankcardService } from './business/bank-card-service';
 import { AddressService } from './utils/address-service';
 import { AmapService } from './business/amap-service';
@@ -65,6 +66,7 @@ export const BUSINESS_SERVICES = [
     LocationService,
     LocationCardService,
     LoginService,
+    LogoutService,
     OvertimeService,
     PayBillService,
     PayProcessService,

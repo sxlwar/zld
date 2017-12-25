@@ -190,6 +190,15 @@ export class ResetPhoneVerCodeSuccessAction {
   }
 }
 
+/* ==============================================Clean data=============================================== */
+
+export const RESET_SID = 'RESET_SID';
+
+export class ResetSidAction implements Action {
+  readonly type = RESET_SID;
+
+  constructor() { }
+}
 
 export type Actions = ShowSpecificSlideAction
   | ShowSpecificInnerSlideAction
@@ -209,4 +218,5 @@ export type Actions = ShowSpecificSlideAction
   | ResetPasswordSuccessAction
   | ResetPhoneVerCodeAction
   | ResetPhoneVerCodeFailAction
-  | ResetPhoneVerCodeSuccessAction;
+  | ResetPhoneVerCodeSuccessAction
+  | ResetSidAction;

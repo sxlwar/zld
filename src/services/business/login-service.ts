@@ -1,7 +1,6 @@
-//region
 import {Injectable} from '@angular/core';
 import {Store} from '@ngrx/store';
-import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode} from '../../actions/action/login-action';
+import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode, ResetSidAction} from '../../actions/action/login-action';
 import {LoginOptions, RegisterOptions} from '../../interfaces/request-interface';
 import {Observable} from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';
@@ -34,7 +33,6 @@ import {
 import 'rxjs/add/observable/of';
 import {LoginFormModel, MapperService, ResetPwdFormModel, SignupFormModel} from '../api/mapper-service';
 import {ProcessorService} from '../api/processor-service';
-//endregion
 
 @Injectable()
 export class LoginService {
@@ -70,6 +68,10 @@ export class LoginService {
       .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
 
     this.subscriptions.push(this.updateVerImage$$);
+  }
+
+  resetSid(): void {
+    this.store.dispatch(new ResetSidAction());
   }
 
   /*=============================================No Side effect===================================================*/

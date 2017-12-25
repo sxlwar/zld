@@ -1,5 +1,9 @@
+import { LoginService } from './../../services/business/login-service';
+import { ConfigService } from './../../services/config/config-service';
+import { Subscription } from 'rxjs/Subscription';
+import { LogoutService } from './../../services/business/logout-service';
 import { personalInfo } from './../../services/business/icon-service';
-import { MineRoot, personalInformationPage } from './../pages';
+import { MineRoot, personalInformationPage, welcomePage } from './../pages';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import * as icon from '../../services/business/icon-service';
@@ -10,6 +14,7 @@ import { ProjectService } from '../../services/business/project-service';
 import { UserService } from '../../services/business/user-service';
 import { CraftService } from '../../services/business/craft-service';
 import { TeamService } from '../../services/business/team-service';
+import { App } from 'ionic-angular';
 
 const icons = [
   icon.myAttendance,
@@ -59,6 +64,8 @@ export class MinePage {
 
   faceImage: Observable<string>;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -66,11 +73,21 @@ export class MinePage {
     public workTypeService: CraftService,
     public projectService: ProjectService,
     public teamService: TeamService,
-    public iconService: IconService
+    public iconService: IconService,
+    public logoutService: LogoutService,
+    public configService: ConfigService,
+    public app: App,
+    public login: LoginService
   ) {
   }
 
   ionViewDidLoad() {
+    this.initialModel();
+
+    this.monitor();
+  }
+
+  initialModel() {
     this.icons = this.iconService.getIcons(MineRoot, icons);
 
     this.name = this.userInfo.getRealname();
@@ -90,15 +107,37 @@ export class MinePage {
     this.team = this.teamService.getOwnTeam().map(team => team && team.name || '');
   }
 
+  monitor() {
+    this.subscriptions = [
+      this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout())
+    ]
+  }
+
   goTo(item) {
     this.navCtrl.push(item.page, item).then(() => { });
   }
 
-  showPersonalInformation(): void{
+  showPersonalInformation(): void {
     this.navCtrl.push(personalInformationPage, personalInfo).then(() => { });
   }
 
   ionViewWillLeave() {
     this.workTypeService.unSubscribe();
+  }
+
+  logout(): void {
+    this.logoutService.logout();
+  }
+
+  resetValuesAfterLogout(): void {
+    this.app.getRootNav().setRoot(welcomePage);
+
+    this.login.resetSid();
+    
+    this.logoutService.resetResponse();
+  }
+
+  ionViewWillUnload() {
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

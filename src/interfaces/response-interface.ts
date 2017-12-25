@@ -1022,6 +1022,13 @@ export interface BankInfoResponse {
   brand: string;
 }
 
+/* =======================================================Logout API model================================================== */
+
+export interface LogoutResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
 /*========================================================================================================*/
 
 

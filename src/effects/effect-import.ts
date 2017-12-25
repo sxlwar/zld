@@ -1,3 +1,4 @@
+import { LogoutEffect } from './logout-effect';
 import { LocationEffect } from './location-effect';
 import { LocationCardEffect } from './location-card-effect';
 import { AttendanceCardEffect } from './attendance-card-effect';
@@ -26,6 +27,7 @@ export const EFFECTS = [
     BankCardEffect,
     CraftEffect,
     EmployerEffect,
+    LogoutEffect,
     LocationEffect,
     LocationCardEffect,
     OvertimeEffect,

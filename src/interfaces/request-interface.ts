@@ -571,6 +571,12 @@ export interface BankInfoOptions {
   num: string;
 }
 
+/*=================================================Logout API model==================================================*/
+
+export interface LogoutOptions {
+  sid: string;
+}
+
 /*=================================================Work flow API model==================================================*/
 
 export enum RequestStatus {
