@@ -15,6 +15,7 @@ import { WorkFlowEffect } from './work-flow-effect';
 import { WorkPieceEffect } from './work-piece-effect';
 import { WorkerEffect } from './worker-effect';
 import { BankCardEffect } from './bank-card-effect';
+import { QRLoginEffect } from './qr-scan-login-effect';
 
 /**
  * @description These are all needed after the user enters the APP,
@@ -34,6 +35,7 @@ export const EFFECTS = [
     PayBillEffect,
     PersonalEffect,
     ProjectEffect,
+    QRLoginEffect,
     TeamEffect,
     WorkFlowEffect,
     WorkPieceEffect,

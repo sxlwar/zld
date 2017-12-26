@@ -591,8 +591,14 @@ export enum TaskStatus {
 }
 
 /* ==========================================================Http request options============================================================ */
+
 export interface VersionOptions {
   version?: string;
+}
+
+export interface QRLoginOptions {
+  sid: string;
+  qr_sid: string;
 }
 
 export type Options = LoginOptions

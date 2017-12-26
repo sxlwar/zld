@@ -25,6 +25,7 @@ import * as locationCard from './reducer/location-card-reducer';
 import * as location from './reducer/location-reducer';
 import * as bankCard from './reducer/bank-card-reducer';
 import * as logout from './reducer/logout-reducer';
+import * as QRLogin from './reducer/qr-scan-login-reducer';
 
 export interface AppState {
   config: config.State;
@@ -57,6 +58,7 @@ export interface AppState {
   location: location.State,
   bankCard: bankCard.State,
   logout: logout.State,
+  QRLogin: QRLogin.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -90,6 +92,7 @@ export const reducers: ActionReducerMap<AppState> = {
   location: location.reducer,
   bankCard: bankCard.reducer,
   logout: logout.reducer,
+  QRLogin: QRLogin.reducer,
 };
 
 //config
@@ -342,6 +345,11 @@ export const selectSetMasterCardResponse = createSelector(getBankCard, bankCard.
 //logout
 export const getLogout = (state: AppState) => state.logout;
 export const selectLogoutResponse = createSelector(getLogout, logout.getLogoutResponse);
+
+//qr login
+export const getQRLogin = (state: AppState) => state.QRLogin;
+export const selectQRCode = createSelector(getQRLogin, QRLogin.getQRCode);
+export const selectQRLoginResponse = createSelector(getQRLogin, QRLogin.getQRLoginResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

@@ -21,6 +21,7 @@ import { Actions as locationCard } from './action/location-card-action';
 import { Actions as location } from './action/location-action';
 import { Actions as bankCard } from './action/bank-card-action';
 import { Actions as logout } from './action/logout-action';
+import { Actions as qrLogin } from './action/qr-scan-login-action';
 
 export type Actions = config
   | attendance
@@ -39,6 +40,7 @@ export type Actions = config
   | personal
   | piece
   | project
+  | qrLogin
   | search
   | statistics
   | team

@@ -1,3 +1,4 @@
+import { QRLoginService } from './business/qr-login-service';
 import { LogoutService } from './business/logout-service';
 import { BankcardService } from './business/bank-card-service';
 import { AddressService } from './utils/address-service';
@@ -74,6 +75,7 @@ export const BUSINESS_SERVICES = [
     ProjectBillService,
     ProjectProcessService,
     ProjectService,
+    QRLoginService,
     StatisticsService,
     TakePhotoService,
     TeamService,

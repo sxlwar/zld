@@ -1,25 +1,25 @@
-import {Injectable} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode, ResetSidAction} from '../../actions/action/login-action';
-import {LoginOptions, RegisterOptions} from '../../interfaces/request-interface';
-import {Observable} from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode } from '../../actions/action/login-action';
+import { LoginOptions, RegisterOptions } from '../../interfaces/request-interface';
+import { Observable } from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';
 import { getPhoneVerCode, getRegister, getResetPassword, getResetPhoneVerCode, selectPhoneVerCodeCaptcha, selectRandomCode, selectResetPhoneVerCodeCaptcha, selectSelectedCompany, selectUserInfo } from '../../reducers/index-reducer';
 import 'rxjs/add/operator/distinctUntilChanged';
-import {ENV} from '@app/env';
-import {pickBy, random} from 'lodash';
+import { ENV } from '@app/env';
+import { pickBy, random } from 'lodash';
 import 'rxjs/add/observable/range';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/zip'
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
-import {Subscription} from 'rxjs/Subscription';
-import {ErrorService} from '../errors/error-service';
+import { Subscription } from 'rxjs/Subscription';
+import { ErrorService } from '../errors/error-service';
 import { LoginResponse, PhoneVerCodeResponse, RegisterResponse, ResetPasswordResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
-import {LoginFormModel, MapperService, ResetPwdFormModel, SignUpFormModel} from '../api/mapper-service';
-import {ProcessorService} from '../api/processor-service';
+import { LoginFormModel, MapperService, ResetPwdFormModel, SignUpFormModel } from '../api/mapper-service';
+import { ProcessorService } from '../api/processor-service';
 
 @Injectable()
 export class LoginService {
@@ -28,9 +28,9 @@ export class LoginService {
   updateVerImage$$: Subscription;
 
   constructor(public store: Store<fromRoot.AppState>,
-              public process: ProcessorService,
-              public errorService: ErrorService,
-              public mapper: MapperService) {
+    public process: ProcessorService,
+    public errorService: ErrorService,
+    public mapper: MapperService) {
     this.handleError();
   }
 
@@ -55,10 +55,6 @@ export class LoginService {
       .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
 
     this.subscriptions.push(this.updateVerImage$$);
-  }
-
-  resetSid(): void {
-    this.store.dispatch(new ResetSidAction());
   }
 
   /*=============================================No Side effect===================================================*/
@@ -89,7 +85,7 @@ export class LoginService {
     return this.store.select(selectUserInfo);
   }
 
-  getSignUpPhoneVer():Observable<PhoneVerCodeResponse> {
+  getSignUpPhoneVer(): Observable<PhoneVerCodeResponse> {
     return this.store.select(getPhoneVerCode);
   }
 
@@ -120,7 +116,7 @@ export class LoginService {
 
     if (option.captcha_code) {
       const source$ = Observable.zip(
-        this.store.select(selectRandomCode).map(code => ({random_key: code})),
+        this.store.select(selectRandomCode).map(code => ({ random_key: code })),
         Observable.of(option)
       ).map(values => values.reduce((acc, cur) => Object.assign(acc, cur)));
 
@@ -139,15 +135,15 @@ export class LoginService {
    * */
   getPhoneVerCode(source: SignUpFormModel) {
 
-    const {username, captcha_code} = this.mapper.signUpFormMap(source);
+    const { username, captcha_code } = this.mapper.signUpFormMap(source);
 
     const phoneVerCode$ = this.store.select(selectPhoneVerCodeCaptcha)
       .switchMap((needImageVerCode: boolean) => {
         if (needImageVerCode) {
           return this.store.select(selectRandomCode)
-            .map(value => ({username, captcha_code, random_key: value}))
+            .map(value => ({ username, captcha_code, random_key: value }))
         }
-        return Observable.of({username});
+        return Observable.of({ username });
       });
 
     const phoneVer$$ = this.process.phoneVerificationProcessor(phoneVerCode$);
@@ -156,15 +152,15 @@ export class LoginService {
   }
 
   getResetPwdPhoneVerCode(source: ResetPwdFormModel) {
-    const {username, captcha_code} = this.mapper.resetPwdForm(source);
+    const { username, captcha_code } = this.mapper.resetPwdForm(source);
 
     const phoneVerCode$ = this.store.select(selectResetPhoneVerCodeCaptcha)
       .switchMap((needImageVerCode: boolean) => {
         if (needImageVerCode) {
           return this.store.select(selectRandomCode)
-            .map(value => ({username, captcha_code, random_key: value}))
+            .map(value => ({ username, captcha_code, random_key: value }))
         }
-        return Observable.of({username});
+        return Observable.of({ username });
       });
 
     const phoneVer$$ = this.process.resetPhoneVerificationProcessor(phoneVerCode$);
@@ -174,21 +170,21 @@ export class LoginService {
 
   signUp(source: SignUpFormModel, userType: string): void {
 
-    const {username, password, code} = this.mapper.signUpFormMap(source);
+    const { username, password, code } = this.mapper.signUpFormMap(source);
 
-    const baseOption$ = Observable.of({username, password, code});
+    const baseOption$ = Observable.of({ username, password, code });
 
     let randomKey$: Observable<object> = Observable.of({});
 
     if (source.imageVerification) {
-      randomKey$ = this.store.select(selectRandomCode).map(rand_captcha_key => ({rand_captcha_key}));
+      randomKey$ = this.store.select(selectRandomCode).map(rand_captcha_key => ({ rand_captcha_key }));
     }
 
     let companyUserOption$: Observable<any> = Observable.of({});
 
     if (userType === 'REGISTER_COMPANY_USER') {
       companyUserOption$ = this.store.select(selectSelectedCompany)
-        .map(company => ({company_id: company.id, real_name: source.realName}));
+        .map(company => ({ company_id: company.id, real_name: source.realName }));
     }
 
     const register$ = baseOption$.withLatestFrom(randomKey$, companyUserOption$)
@@ -201,9 +197,9 @@ export class LoginService {
   }
 
   resetPwd(source: ResetPwdFormModel): void {
-    const {username, password, code} = this.mapper.resetPwdForm(source);
+    const { username, password, code } = this.mapper.resetPwdForm(source);
 
-    const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({username, password, code}));
+    const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({ username, password, code }));
 
     this.subscriptions.push(resetPwd$$);
   }
@@ -224,7 +220,7 @@ export class LoginService {
     this.subscriptions = this.subscriptions.concat([login$$, signUpPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
   }
 
-  private handleLoginError(): Subscription{
+  private handleLoginError(): Subscription {
     return this.errorService.handleErrorInSpecific(
       this.getLoginInfo().do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
       'LOGIN_FAIL_TIP'
@@ -234,8 +230,8 @@ export class LoginService {
   private handleSignPhoneVerCodeError(): Subscription {
     return this.errorService
       .handleErrorInSpecific(
-        this.getSignUpPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
-        'PHONE_VERIFICATION_FAIL'
+      this.getSignUpPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
+      'PHONE_VERIFICATION_FAIL'
       );
   }
 

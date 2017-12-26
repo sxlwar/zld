@@ -1047,8 +1047,16 @@ export interface WorkerResponse {
   user_id: number;
   userpersonal_idnum: string;
 }
+/* =======================================================Qr scan login============================================ */
+
+//qr scan login
+export interface QRScanLoginResponse {
+  information?: string;
+  errorMessage?: string;
+}
 
 /* =======================================================Http response============================================ */
+
 export interface Version {
   url: string;
   text: string;
@@ -1060,9 +1068,11 @@ export interface Version {
   intro?: string[]; // Custom field ,use to render HTML; Transformed from 'text' field;
 }
 
+// version querying
 export interface VersionResponse {
   versions: Version[];
 }
+
 export type ErrorResponse = LoginResponse
   | AttendanceCardAddResponse
   | AttendanceCardDeleteResponse

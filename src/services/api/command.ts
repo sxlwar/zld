@@ -1,4 +1,4 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions } from './../../interfaces/request-interface';
+import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions } from './../../interfaces/request-interface';
 import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
@@ -763,6 +763,12 @@ export const logout: ApiUnit = {
   ])
 }
 
+export const QRLogin: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.QRLoginForApp']]
+  ])
+}
+
 @Injectable()
 export class Command {
 
@@ -784,7 +790,6 @@ export class Command {
   projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
   projectAreaDelete = "project.consumer.ProjectAreaDelete";
   projectPayBillFlowList = "project.consumer.ProjectPayBillFlowList";
-  qrLoginForApp = "employee.consumer.QRLoginForApp";
   readMsgContent = "operation.consumer.ReadMsgContent";
   requestList = "workflow.consumer.RequestList";
   searchWorker = "employer.consumer.SearchWorker";
@@ -1251,9 +1256,21 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * @description logout api
+   */
   getLogout(option: LogoutOptions): WsRequest {
     const path = logout.operates.get(Operate.querying)[0];
 
+    return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description qr login api 
+   */
+  getQRLogin(option: QRLoginOptions): WsRequest {
+    const path = QRLogin.operates.get(Operate.querying)[0];
+    
     return this.getFullParameter(path, option);
   }
 
@@ -1458,5 +1475,9 @@ export class Command {
 
   get logout() {
     return logout;
+  }
+
+  get QRLogin() {
+    return QRLogin;
   }
 }

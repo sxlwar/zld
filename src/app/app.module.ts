@@ -1,3 +1,4 @@
+import { QRScanner } from '@ionic-native/qr-scanner';
 import { AddBankcardComponent } from './../components/add-bankcard/add-bankcard';
 import { AddWorkExperienceComponent } from './../components/add-work-experience/add-work-experience';
 import { AddEducationComponent } from './../components/add-education/add-education';
@@ -145,7 +146,8 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     BUSINESS_SERVICES,
     CONFIG_SERVICES,
     UTIL_SERVICES,
-    { provide: LOCALE_ID, useValue: 'ZH-CN' }
+    { provide: LOCALE_ID, useValue: 'ZH-CN' },
+    QRScanner,
   ]
 })
 export class AppModule { }

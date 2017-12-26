@@ -1,4 +1,4 @@
-import { LoginService } from './../../services/business/login-service';
+import { QRLoginService } from './../../services/business/qr-login-service';
 import { ConfigService } from './../../services/config/config-service';
 import { Subscription } from 'rxjs/Subscription';
 import { LogoutService } from './../../services/business/logout-service';
@@ -36,8 +36,8 @@ interface Setting {
 }
 
 const setting: Setting[] = [
-  { icon: 'settings', name: 'ACCOUNT_CONFIG', page: pages.settingPage},
-  { icon: 'call', name: 'CONTACT_US', page: pages.contactPage},
+  { icon: 'settings', name: 'ACCOUNT_CONFIG', page: pages.settingPage },
+  { icon: 'call', name: 'CONTACT_US', page: pages.contactPage },
   { icon: 'document', name: 'VERSION_INTRODUCTION', page: pages.versionPage },
 ];
 
@@ -68,6 +68,8 @@ export class MinePage {
 
   subscriptions: Subscription[] = [];
 
+  QRLoginOptions: Subscription[];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -79,7 +81,7 @@ export class MinePage {
     public logoutService: LogoutService,
     public configService: ConfigService,
     public app: App,
-    public login: LoginService
+    public scan: QRLoginService
   ) {
   }
 
@@ -125,6 +127,8 @@ export class MinePage {
 
   ionViewWillLeave() {
     this.workTypeService.unSubscribe();
+
+    this.scan.resetQRCode();
   }
 
   logout(): void {
@@ -134,12 +138,20 @@ export class MinePage {
   resetValuesAfterLogout(): void {
     this.app.getRootNav().setRoot(welcomePage);
 
-    this.login.resetSid();
-    
+    this.userInfo.resetSid();
+
     this.logoutService.resetResponse();
+  }
+
+  scanToLogin(): void {
+    this.QRLoginOptions && this.QRLoginOptions.forEach(item => item.unsubscribe());
+
+    this.QRLoginOptions = this.scan.scanToLogin();
   }
 
   ionViewWillUnload() {
     this.subscriptions.forEach(item => item.unsubscribe());
+
+    this.QRLoginOptions && this.QRLoginOptions.forEach(item => item.unsubscribe());
   }
 }
