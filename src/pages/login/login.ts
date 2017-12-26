@@ -1,32 +1,12 @@
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Component, ViewChild} from '@angular/core';
-import {
-  AlertController,
-  App,
-  IonicPage,
-  LoadingController,
-  ModalController,
-  NavController,
-  NavParams,
-  Slides,
-  ViewController
-} from 'ionic-angular';
-import {LoginService} from '../../services/business/login-service';
-import {
-  mobilePhoneValidator,
-  passwordMatchValidator,
-  passwordValidator,
-  realnameValidator,
-} from '../../validators/validators';
-import {Subscription} from 'rxjs/Subscription';
-import {Observable} from 'rxjs/Observable';
-import {
-  Company,
-  LoginResponse,
-  PhoneVerCodeResponse,
-  RegisterResponse,
-  ResetPasswordResponse
-} from '../../interfaces/response-interface';
+import { Subject } from 'rxjs/Subject';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { AlertController, App, IonicPage, LoadingController, ModalController, NavController, NavParams, Slides, ViewController } from 'ionic-angular';
+import { LoginService } from '../../services/business/login-service';
+import { mobilePhoneValidator, passwordMatchValidator, passwordValidator, realNameValidator, } from '../../validators/validators';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
+import { Company, LoginResponse, PhoneVerCodeResponse, RegisterResponse } from '../../interfaces/response-interface';
 
 export class LoginForm {
   mobilePhone = ['', mobilePhoneValidator];
@@ -45,8 +25,7 @@ export class LoginPage {
   userTypes = ['REGISTER_PERSONAL_USER', 'REGISTER_COMPANY_USER'];
   direction = 'vertical';
   loginForm: FormGroup;
-  signupForm: FormGroup;
-  resetPwdForm: FormGroup;
+  signUpForm: FormGroup;
 
   private getActiveIndexOfInnerSlides$$: Subscription;
   private getActiveIndexOfSlides$$: Subscription;
@@ -54,27 +33,29 @@ export class LoginPage {
 
   loginInfo$: Observable<LoginResponse>;
   register$: Observable<RegisterResponse>;
-  resetPwd$: Observable<ResetPasswordResponse>;
-  signupImageVerification$: Observable<PhoneVerCodeResponse>;
+  signUpImageVerification$: Observable<PhoneVerCodeResponse>;
   resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
   loginVerificationImage$: Observable<string>;
   selectedCompany$: Observable<Company>;
 
-  realnameValidator = realnameValidator;
   // Slider methods
   @ViewChild('slider') slider: Slides;
   @ViewChild('innerSlider') innerSlider: Slides;
 
 
-  constructor(public loadingCtrl: LoadingController,
-              public alertCtrl: AlertController,
-              public app: App,
-              private navParams: NavParams,
-              private viewCtrl: ViewController,
-              private loginService: LoginService,
-              private fb: FormBuilder,
-              private navCtrl: NavController,
-              private modalCtrl: ModalController) {
+  subject: Subject<null> = new Subject();
+
+  constructor(
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public app: App,
+    private navParams: NavParams,
+    private viewCtrl: ViewController,
+    private loginService: LoginService,
+    private fb: FormBuilder,
+    private navCtrl: NavController,
+    private modalCtrl: ModalController
+  ) {
     this.initSlide();
     this.initForm();
   }
@@ -96,9 +77,8 @@ export class LoginPage {
   ionViewDidLoad() {
     this.loginInfo$ = this.loginService.getLoginInfo();
     this.register$ = this.loginService.getRegisterInfo();
-    this.resetPwd$ = this.loginService.getResetPasswordInfo();
     this.selectedCompany$ = this.loginService.getSelectedCompany();
-    this.signupImageVerification$ = this.loginService.getSignupPhoneVer();
+    this.signUpImageVerification$ = this.loginService.getSignUpPhoneVer();
     this.resetPwdImageVerification$ = this.loginService.getResetPwdPhoneVer();
     this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
 
@@ -109,30 +89,20 @@ export class LoginPage {
   initForm() {
     this.loginForm = this.fb.group(new LoginForm());
 
-    this.signupForm = this.fb.group({
+    this.signUpForm = this.fb.group({
       userType: '',
-      company: new FormControl({value: '', disabled: true}),
-      realname: '',
+      company: new FormControl({ value: '', disabled: true }),
+      realName: '',
       mobilePhone: ['', mobilePhoneValidator],
       phoneVerification: '',
       imageVerification: '',
       passwordInfo: this.fb.group({
         password: ['', passwordValidator],
         confirmPassword: ['', passwordValidator]
-      }, {validator: passwordMatchValidator})
+      }, { validator: passwordMatchValidator })
     });
 
-    this.resetPwdForm = this.fb.group({
-      mobilePhone: ['', mobilePhoneValidator],
-      imageVerification: '',
-      phoneVerification: '',
-      passwordInfo: this.fb.group({
-        password: ['', passwordValidator],
-        confirmPassword: ['', passwordValidator]
-      }, {validator: passwordMatchValidator}),
-    });
-
-    this.signupForm.get('userType').valueChanges.subscribe(value => {
+    this.signUpForm.get('userType').valueChanges.subscribe(value => {
       this.adjustmentValidationRules(value);
     });
   }
@@ -153,12 +123,8 @@ export class LoginPage {
     this.loginService.login(this.loginForm.value);
   }
 
-  signup() {
-    this.loginService.signup(this.signupForm.value, this.signupForm.get('userType').value);
-  }
-
-  resetPwd() {
-    this.loginService.resetPwd(this.resetPwdForm.value);
+  signUp() {
+    this.loginService.signUp(this.signUpForm.value, this.signUpForm.get('userType').value);
   }
 
   updateVerificationImage() {
@@ -172,30 +138,24 @@ export class LoginPage {
   }
 
   /**
-   * FIXME NO.1
-   * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
-   * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
+   * FIXME: 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。
    * */
   getPhoneVerCode() {
-    this.loginService.getPhoneVerCode(this.signupForm.value);
-  }
-
-  getResetPhoneVerCode() {
-    this.loginService.getResetPwdPhoneVerCode(this.resetPwdForm.value);
+    this.loginService.getPhoneVerCode(this.signUpForm.value);
   }
 
   /*========================================Component methods=====================================================*/
 
   adjustmentValidationRules(userType: string): void {
-    const realnameCtrl = this.signupForm.get('realname');
+    const realNameCtrl = this.signUpForm.get('realName');
 
     if (userType === 'REGISTER_COMPANY_USER') {
-      realnameCtrl.setValidators([Validators.required, this.realnameValidator])
+      realNameCtrl.setValidators([Validators.required, realNameValidator])
     } else {
-      realnameCtrl.clearValidators();
+      realNameCtrl.clearValidators();
     }
 
-    realnameCtrl.updateValueAndValidity();
+    realNameCtrl.updateValueAndValidity();
   }
 
   presentLoading(message) {
@@ -209,10 +169,10 @@ export class LoginPage {
         subTitle: message,
         buttons: ['Dismiss']
       });
-      alert.present().then(() => {});
+      alert.present().then(() => { });
     });
 
-    loading.present().then(() => {});
+    loading.present().then(() => { });
   }
 
 
@@ -249,55 +209,35 @@ export class LoginPage {
     return this.loginForm.get('imageVerification');
   }
 
-  get mobilePhoneReset() {
-    return this.resetPwdForm.get('mobilePhone');
-  }
-
-  get phoneVerificationReset() {
-    return this.resetPwdForm.get('phoneVerification');
-  }
-
-  get imageVerificationReset() {
-    return this.resetPwdForm.get('imageVerification');
-  }
-
-  get passwordReset() {
-    return this.resetPwdForm.get('passwordInfo.password');
-  }
-
-  get confirmPasswordReset() {
-    return this.resetPwdForm.get('passwordInfo.confirmPassword');
-  }
-
   get userType() {
-    return this.signupForm.get('userType');
+    return this.signUpForm.get('userType');
   }
 
   get company() {
-    return this.signupForm.get('company');
+    return this.signUpForm.get('company');
   }
 
-  get realname() {
-    return this.signupForm.get('realname');
+  get realName() {
+    return this.signUpForm.get('realName');
   }
 
-  get mobilePhoneSignup() {
-    return this.signupForm.get('mobilePhone');
+  get mobilePhoneSignUp() {
+    return this.signUpForm.get('mobilePhone');
   }
 
-  get phoneVerificationSignup() {
-    return this.signupForm.get('phoneVerification');
+  get phoneVerificationSignUp() {
+    return this.signUpForm.get('phoneVerification');
   }
 
-  get imageVerificationSignup() {
-    return this.signupForm.get('imageVerification');
+  get imageVerificationSignUp() {
+    return this.signUpForm.get('imageVerification');
   }
 
-  get passwordSignup() {
-    return this.signupForm.get('passwordInfo.password');
+  get passwordSignUp() {
+    return this.signUpForm.get('passwordInfo.password');
   }
 
-  get confirmPasswordSignup() {
-    return this.signupForm.get('passwordInfo.confirmPassword');
+  get confirmPasswordSignUp() {
+    return this.signUpForm.get('passwordInfo.confirmPassword');
   }
 }

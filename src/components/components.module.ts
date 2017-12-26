@@ -38,6 +38,7 @@ import { AccordionListComponent } from './accordion-list/accordion-list';
 import { AddEducationComponent } from './add-education/add-education';
 import { AddWorkExperienceComponent } from './add-work-experience/add-work-experience';
 import { AddBankcardComponent } from './add-bankcard/add-bankcard';
+import { ResetPasswordComponent } from './reset-password/reset-password';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { AddBankcardComponent } from './add-bankcard/add-bankcard';
     AddWorkExperienceComponent,
     AddBankcardComponent,
     FlashCardComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     IonicModule,
@@ -121,6 +123,7 @@ import { AddBankcardComponent } from './add-bankcard/add-bankcard';
     AddWorkExperienceComponent,
     AddBankcardComponent,
     FlashCardComponent,
+    ResetPasswordComponent,
   ]
 })
 export class ComponentsModule {

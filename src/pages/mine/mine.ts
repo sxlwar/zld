@@ -15,6 +15,7 @@ import { UserService } from '../../services/business/user-service';
 import { CraftService } from '../../services/business/craft-service';
 import { TeamService } from '../../services/business/team-service';
 import { App } from 'ionic-angular';
+import * as pages from '../../pages/pages';
 
 const icons = [
   icon.myAttendance,
@@ -31,12 +32,13 @@ const icons = [
 interface Setting {
   icon: string;
   name: string;
+  page: string;
 }
 
 const setting: Setting[] = [
-  { icon: 'settings', name: 'ACCOUNT_CONFIG' },
-  { icon: 'call', name: 'SERVICE_TELEPHONE' },
-  { icon: 'document', name: 'VERSION_INTRODUCTION' },
+  { icon: 'settings', name: 'ACCOUNT_CONFIG', page: pages.settingPage},
+  { icon: 'call', name: 'CONTACT_US', page: pages.contactPage},
+  { icon: 'document', name: 'VERSION_INTRODUCTION', page: pages.versionPage },
 ];
 
 @IonicPage()

@@ -39,7 +39,7 @@
   <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
 
   <ion-list>
-    <ion-item *ngFor="let setting of settings">
+    <ion-item *ngFor="let setting of settings" (click)="goTo(setting)" >
       <ion-icon [name]="setting.icon" item-start></ion-icon>
       {{setting.name | translate}}
       <ion-icon name="arrow-forward" item-end></ion-icon>

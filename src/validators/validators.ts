@@ -29,10 +29,10 @@ export function passwordMatchValidator(info: FormGroup): ValidatorResult {
   return valid ? null : { mismatch: 'PASSWORD_MISMATCH_ERROR' };
 }
 
-export const realnameFormat = /^[\u4E00-\u9FA5]{2,5}$/;
+export const realNameFormat = /^[\u4E00-\u9FA5]{2,5}$/;
 
-export function realnameValidator(name: FormControl): ValidatorResult {
-  const valid: boolean = realnameFormat.test(name.value);
+export function realNameValidator(name: FormControl): ValidatorResult {
+  const valid: boolean = realNameFormat.test(name.value);
 
   return valid ? null : { nameFormat: 'NAME_INVALID_ERROR' };
 }

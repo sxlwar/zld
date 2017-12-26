@@ -11,7 +11,7 @@ export interface LoginFormModel {
   imageVerification: string;
 }
 
-export interface SignupFormModel {
+export interface SignUpFormModel {
   userType: string;
   mobilePhone: string;
   phoneVerification: string;
@@ -21,7 +21,7 @@ export interface SignupFormModel {
   }
   imageVerification?: string;
   company?: string;
-  realname?: string;
+  realName?: string;
 }
 
 export interface ResetPwdFormModel {
@@ -35,7 +35,7 @@ export interface ResetPwdFormModel {
 }
 
 export interface CertificateFormModel {
-  realname: string;
+  realName: string;
   personalId: string;
   personalIdPhoto: {
     front: string;
@@ -97,12 +97,12 @@ export class MapperService {
     };
   }
 
-  signupFormMap(form: SignupFormModel): RegisterOptions {
+  signUpFormMap(form: SignUpFormModel): RegisterOptions {
     return {
       username: form.mobilePhone,
       password: form.passwordInfo.password,
       code: form.phoneVerification,
-      real_name: form.realname,
+      real_name: form.realName,
       captcha_code: form.imageVerification
     };
   }
@@ -118,7 +118,7 @@ export class MapperService {
 
   certificateForm(form: CertificateFormModel): CertificateOptions {
     return {
-      realname: form.realname,
+      realname: form.realName,
       num: form.personalId,
       sid: '',
       imageface: form.personalIdPhoto.front,

@@ -125,7 +125,7 @@ export const selectSelectedCompany = createSelector(getSearchState, search.getSe
 //userInfo  from: login api
 export const getUserInfo = (state: AppState) => state.userInfo;
 export const selectUserInfo = createSelector(getUserInfo, info => info);
-export const selectRealname = createSelector(getUserInfo, login.getRealname);
+export const selectRealName = createSelector(getUserInfo, login.getRealname);
 export const selectCapthca = createSelector(getUserInfo, login.getCaptcha);
 export const selectAuthPass = createSelector(getUserInfo, login.getAuthPass);
 export const selectSid = createSelector(getUserInfo, login.getSid);

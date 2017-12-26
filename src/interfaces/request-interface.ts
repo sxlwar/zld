@@ -590,6 +590,11 @@ export enum TaskStatus {
   completed = '完成'
 }
 
+/* ==========================================================Http request options============================================================ */
+export interface VersionOptions {
+  version?: string;
+}
+
 export type Options = LoginOptions
   & AttendanceCardAddOptions
   & AttendanceCardDeleteOptions

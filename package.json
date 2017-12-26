@@ -1,6 +1,6 @@
 {
     "name": "jianzhuren",
-    "version": "2.0.0",
+    "version": "1.7.1",
     "author": "zld",
     "homepage": "ws://zld.data.com",
     "private": true,
@@ -28,6 +28,7 @@
         "@angular/http": "4.4.3",
         "@angular/platform-browser": "4.4.3",
         "@angular/platform-browser-dynamic": "4.4.3",
+        "@ionic-native/app-version": "^4.5.2",
         "@ionic-native/camera": "^3.12.1",
         "@ionic-native/core": "^4.3.2",
         "@ionic-native/file": "^4.3.2",
@@ -50,6 +51,7 @@
         "com.synconset.imagepicker": "~2.1.8",
         "cordova-android": "^6.2.3",
         "cordova-ios": "^4.4.0",
+        "cordova-plugin-app-version": "^0.1.9",
         "cordova-plugin-camera": "^2.4.1",
         "cordova-plugin-compat": "^1.2.0",
         "cordova-plugin-device": "^1.1.4",
@@ -94,7 +96,8 @@
             "cordova-plugin-camera": {
                 "CAMERA_USAGE_DESCRIPTION": " ",
                 "PHOTOLIBRARY_USAGE_DESCRIPTION": " "
-            }
+            },
+            "cordova-plugin-app-version": {}
         },
         "platforms": [
             "android"

@@ -4,9 +4,9 @@
   </ion-header>
   <ion-slides #slider [direction]="direction" class="content-slider">
 
-    <!--========================================signup  start===================================================-->
+    <!--========================================signUp  start===================================================-->
     <ion-slide class="zoom swiper-no-swiping">
-      <form action="" [formGroup]="signupForm" style="padding: 20% 32px 0;">
+      <form action="" [formGroup]="signUpForm" style="padding: 20% 32px 0;">
 
         <!--user type-->
         <ion-item>
@@ -35,17 +35,17 @@
             <span *ngIf="userType.value === 'REGISTER_COMPANY_USER' && (company.errors)?.required">{{'REGISTER_COMPANY_REQUIRED_ERROR' | translate}}</span>
           </div>
 
-          <!--realname of company user-->
+          <!--realName of company user-->
           <ion-item>
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
-            <ion-input type="text" formControlName="realname"></ion-input>
+            <ion-input type="text" formControlName="realName"></ion-input>
           </ion-item>
           <div
-            *ngIf="userType.value === 'REGISTER_COMPANY_USER' && realname.invalid && (realname.dirty || realname.touched)"
+            *ngIf="userType.value === 'REGISTER_COMPANY_USER' && realName.invalid && (realName.dirty || realName.touched)"
             class="form-error">
-            <span *ngIf="realname.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
-            <span *ngIf="!realname.errors.required && realname.errors.nameFormat">
-              {{signupForm.getError('nameFormat', 'realname') | translate}}
+            <span *ngIf="realName.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="!realName.errors.required && realName.errors.nameFormat">
+              {{signUpForm.getError('nameFormat', 'realName') | translate}}
             </span>
           </div>
         </div>
@@ -55,27 +55,27 @@
           <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
           <ion-input type="tel" formControlName="mobilePhone" required></ion-input>
         </ion-item>
-        <div *ngIf="mobilePhoneSignup.invalid && (mobilePhoneSignup.dirty || mobilePhoneSignup.touched)"
+        <div *ngIf="mobilePhoneSignUp.invalid && (mobilePhoneSignUp.dirty || mobilePhoneSignUp.touched)"
              class="form-error">
-              <span *ngIf="mobilePhoneSignup.errors.required">
+              <span *ngIf="mobilePhoneSignUp.errors.required">
                 {{'ACCOUNT_REQUIRED_ERROR' | translate}}
               </span>
-          <span *ngIf="!mobilePhoneSignup.errors.required && mobilePhoneSignup.errors.mobilePhoneFormat">
-                {{signupForm.getError('mobilePhoneFormat', 'mobilePhone') | translate}}
+          <span *ngIf="!mobilePhoneSignUp.errors.required && mobilePhoneSignUp.errors.mobilePhoneFormat">
+                {{signUpForm.getError('mobilePhoneFormat', 'mobilePhone') | translate}}
               </span>
         </div>
 
         <!--image verification code-->
-        <div *ngIf="(signupImageVerification$ | async)?.captcha">
+        <div *ngIf="(signUpImageVerification$ | async)?.captcha">
           <ion-item>
             <ion-label fixed>{{'IMAGE_VERIFICATION' | translate}}</ion-label>
             <ion-input type="text" formControlName="imageVerification" required></ion-input>
           </ion-item>
           <image-verification [src]="loginVerificationImage$ | async" (update)="updateVerificationImage()"></image-verification>
           <div
-            *ngIf="imageVerificationSignup.invalid && (imageVerificationSignup.dirty || imageVerificationSignup.touched)"
+            *ngIf="imageVerificationSignUp.invalid && (imageVerificationSignUp.dirty || imageVerificationSignUp.touched)"
             class="form-error">
-                <span *ngIf="imageVerificationSignup.errors.required">
+                <span *ngIf="imageVerificationSignUp.errors.required">
                   {{'IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
                 </span>
           </div>
@@ -88,13 +88,13 @@
             <ion-input type="number" formControlName="phoneVerification" required></ion-input>
           </ion-item>
           <cut-down (request)="getPhoneVerCode()"
-                    [hidden]="signupForm.get('mobilePhone').invalid || signupForm.get('imageVerification').invalid">
+                    [hidden]="signUpForm.get('mobilePhone').invalid || signUpForm.get('imageVerification').invalid">
           </cut-down>
         </div>
         <div
-          *ngIf="phoneVerificationSignup.invalid && (phoneVerificationSignup.dirty || phoneVerificationSignup.touched)"
+          *ngIf="phoneVerificationSignUp.invalid && (phoneVerificationSignUp.dirty || phoneVerificationSignUp.touched)"
           class="form-error">
-              <span *ngIf="phoneVerificationSignup.errors.required">
+              <span *ngIf="phoneVerificationSignUp.errors.required">
                 {{'VERIFICATION_REQUIRED_ERROR' | translate}}
               </span>
         </div>
@@ -106,10 +106,10 @@
             <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
             <ion-input type="password" formControlName="password" required></ion-input>
           </ion-item>
-          <div *ngIf="passwordSignup.invalid && (passwordSignup.dirty || passwordSignup.touched)" class="form-error">
-            <span *ngIf="passwordSignup.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
-            <span *ngIf="!passwordSignup.errors.required && passwordSignup.errors.pwdFormat">
-                {{signupForm.getError('pwdFormat', 'passwordInfo.password') | translate}}
+          <div *ngIf="passwordSignUp.invalid && (passwordSignUp.dirty || passwordSignUp.touched)" class="form-error">
+            <span *ngIf="passwordSignUp.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="!passwordSignUp.errors.required && passwordSignUp.errors.pwdFormat">
+                {{signUpForm.getError('pwdFormat', 'passwordInfo.password') | translate}}
                 </span>
           </div>
 
@@ -118,35 +118,35 @@
             <ion-label fixed>{{'CONFIRM_PASSWORD' | translate}}</ion-label>
             <ion-input type="password" formControlName="confirmPassword" required></ion-input>
           </ion-item>
-          <div *ngIf="confirmPasswordSignup.invalid && (confirmPasswordSignup.dirty || confirmPasswordSignup.touched)"
+          <div *ngIf="confirmPasswordSignUp.invalid && (confirmPasswordSignUp.dirty || confirmPasswordSignUp.touched)"
                class="form-error">
                 <span
-                  *ngIf="confirmPasswordSignup.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
-            <span *ngIf="!confirmPasswordSignup.errors.required && confirmPasswordSignup.errors.pwdFormat">
-                  {{signupForm.getError('pwdFormat', 'passwordInfo.confirmPassword') | translate}}
+                  *ngIf="confirmPasswordSignUp.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="!confirmPasswordSignUp.errors.required && confirmPasswordSignUp.errors.pwdFormat">
+                  {{signUpForm.getError('pwdFormat', 'passwordInfo.confirmPassword') | translate}}
                 </span>
           </div>
 
           <!--password match validate-->
           <div
-            *ngIf="signupForm.hasError('mismatch', 'passwordInfo') && (confirmPasswordSignup.dirty || confirmPasswordSignup.touched)"
+            *ngIf="signUpForm.hasError('mismatch', 'passwordInfo') && (confirmPasswordSignUp.dirty || confirmPasswordSignUp.touched)"
             class="form-error">
                 <span>
-                  {{signupForm.getError('mismatch', 'passwordInfo') | translate}}
+                  {{signUpForm.getError('mismatch', 'passwordInfo') | translate}}
                 </span>
           </div>
         </div>
 
-        <button ion-button block round (click)="signup()" [disabled]="signupForm.invalid" color="light" class="login-button">{{'SIGNUP' | translate}}</button>
+        <button ion-button block round (click)="signUp()" [disabled]="signUpForm.invalid" color="light" class="login-button">{{'SIGNUP' | translate}}</button>
       </form>
 
-      <button ion-button clear (click)="changeSlidesActive(1); signupForm.reset();"
+      <button ion-button clear (click)="changeSlidesActive(1); signUpForm.reset();"
               class="slide-button position-bottom">
         {{'NEED_TO_LOGIN' | translate}}
         <ion-icon name="arrow-down"></ion-icon>
       </button>
     </ion-slide>
-    <!--========================================signup  end===================================================-->
+    <!--========================================signUp  end===================================================-->
 
     <ion-slide class="zoom swiper-no-swiping">
       <ion-slides #innerSlider class="content-slider">
@@ -217,104 +217,13 @@
 
         <!--========================================reset password start===================================================-->
         <ion-slide class="swiper-no-swiping">
-          <div [formGroup]="resetPwdForm" style="padding: 20% 32px 32px 32px">
-
-            <!--mobile phone-->
-            <ion-item>
-              <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
-              <ion-input type="tel" formControlName="mobilePhone" required></ion-input>
-            </ion-item>
-            <div *ngIf="mobilePhoneReset.invalid && (mobilePhoneReset.dirty || mobilePhoneReset.touched)"
-                 class="form-error">
-              <span *ngIf="mobilePhoneReset.errors.required">
-                {{'ACCOUNT_REQUIRED_ERROR' | translate}}
-              </span>
-              <span *ngIf="!mobilePhoneReset.errors.required && mobilePhoneReset.errors.mobilePhoneFormat">
-                {{resetPwdForm.getError('mobilePhoneFormat', 'mobilePhone') | translate}}
-              </span>
-            </div>
-
-            <!--image verification code-->
-            <div *ngIf="(resetPwdImageVerification$ | async)?.captcha">
-              <ion-item>
-                <ion-label fixed>{{'IMAGE_VERIFICATION' | translate}}</ion-label>
-                <ion-input type="text" formControlName="imageVerification" required></ion-input>
-              </ion-item>
-              <image-verification [src]="loginVerificationImage$ | async"
-                                  (update)="updateVerificationImage()"></image-verification>
-              <div
-                *ngIf="imageVerificationReset.invalid && (imageVerificationReset.dirty || imageVerificationReset.touched)"
-                class="form-error">
-                <span *ngIf="imageVerificationReset.errors.required">
-                  {{'IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
-                </span>
-              </div>
-            </div>
-
-            <!--mobile phone verification code-->
-            <div class="custom-container">
-              <ion-item>
-                <ion-label fixed>{{'PHONE_VERIFICATION' | translate}}</ion-label>
-                <ion-input type="number" formControlName="phoneVerification" required></ion-input>
-              </ion-item>
-              <cut-down (request)="getResetPhoneVerCode()"
-                        [hidden]="resetPwdForm.get('mobilePhone').invalid || resetPwdForm.get('imageVerification').invalid">
-              </cut-down>
-            </div>
-            <div
-              *ngIf="phoneVerificationReset.invalid && (phoneVerificationReset.dirty || phoneVerificationReset.touched)"
-              class="form-error">
-              <span *ngIf="phoneVerificationReset.errors.required">
-                {{'VERIFICATION_REQUIRED_ERROR' | translate}}
-              </span>
-            </div>
-
-            <div formGroupName="passwordInfo">
-              <!--new password-->
-              <ion-item>
-                <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
-                <ion-input type="password" formControlName="password" required></ion-input>
-              </ion-item>
-              <div *ngIf="passwordReset.invalid && (passwordReset.dirty || passwordReset.touched)" class="form-error">
-                <span *ngIf="passwordReset.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
-                <span *ngIf="!passwordReset.errors.required && passwordReset.errors.pwdFormat">
-                {{resetPwdForm.getError('pwdFormat', 'passwordInfo.password') | translate}}
-                </span>
-              </div>
-
-              <!--confirm new password-->
-              <ion-item class="margin-bottom">
-                <ion-label fixed>{{'CONFIRM_PASSWORD' | translate}}</ion-label>
-                <ion-input type="password" formControlName="confirmPassword" required></ion-input>
-              </ion-item>
-              <div *ngIf="confirmPasswordReset.invalid && (confirmPasswordReset.dirty || confirmPasswordReset.touched)"
-                   class="form-error">
-                <span
-                  *ngIf="confirmPasswordReset.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
-                <span *ngIf="!confirmPasswordReset.errors.required && confirmPasswordReset.errors.pwdFormat">
-                  {{resetPwdForm.getError('pwdFormat', 'passwordInfo.confirmPassword') | translate}}
-                </span>
-              </div>
-
-              <!--password match validate-->
-              <div
-                *ngIf="resetPwdForm.hasError('mismatch', 'passwordInfo') && (confirmPasswordReset.dirty || confirmPasswordReset.touched)"
-                class="form-error">
-                <span>
-                  {{resetPwdForm.getError('mismatch', 'passwordInfo') | translate}}
-                </span>
-              </div>
-            </div>
-
-            <button ion-button block round (click)="resetPwd()" [disabled]="resetPwdForm.invalid" color="light"
-                    class="login-button">
-              {{'RESET_RESET_PASSWORD' | translate}}
-            </button>
-            <button ion-button clear (click)="changeInnerSlidesActive(0); resetPwdForm.reset();" color="light"
-                    class="goback-button">
-              <ion-icon name="arrow-back"></ion-icon>
-              {{'NEED_TO_LOGIN' | translate}}
-            </button>
+          <div style="padding: 20% 32px 32px 32px">
+              <reset-password [reset]="subject"></reset-password>
+              <button ion-button clear (click)="changeInnerSlidesActive(0); subject.next(null);" color="light"
+                      class="goback-button">
+                <ion-icon name="arrow-back"></ion-icon>
+                {{'NEED_TO_LOGIN' | translate}}
+              </button>
           </div>
         </ion-slide>
         <!--========================================reset password end===================================================-->

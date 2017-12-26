@@ -4,17 +4,7 @@ import {ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode,
 import {LoginOptions, RegisterOptions} from '../../interfaces/request-interface';
 import {Observable} from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';
-import {
-  getPhoneVerCode,
-  getRegister,
-  getResetPassword,
-  getResetPhoneVerCode,
-  selectPhoneVerCodeCaptcha,
-  selectRandomCode,
-  selectResetPhoneVerCodeCaptcha,
-  selectSelectedCompany,
-  selectUserInfo
-} from '../../reducers/index-reducer';
+import { getPhoneVerCode, getRegister, getResetPassword, getResetPhoneVerCode, selectPhoneVerCodeCaptcha, selectRandomCode, selectResetPhoneVerCodeCaptcha, selectSelectedCompany, selectUserInfo } from '../../reducers/index-reducer';
 import 'rxjs/add/operator/distinctUntilChanged';
 import {ENV} from '@app/env';
 import {pickBy, random} from 'lodash';
@@ -26,12 +16,9 @@ import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/switchMap';
 import {Subscription} from 'rxjs/Subscription';
 import {ErrorService} from '../errors/error-service';
-import {
-  LoginResponse, PhoneVerCodeResponse, RegisterResponse,
-  ResetPasswordResponse
-} from '../../interfaces/response-interface';
+import { LoginResponse, PhoneVerCodeResponse, RegisterResponse, ResetPasswordResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
-import {LoginFormModel, MapperService, ResetPwdFormModel, SignupFormModel} from '../api/mapper-service';
+import {LoginFormModel, MapperService, ResetPwdFormModel, SignUpFormModel} from '../api/mapper-service';
 import {ProcessorService} from '../api/processor-service';
 
 @Injectable()
@@ -102,7 +89,7 @@ export class LoginService {
     return this.store.select(selectUserInfo);
   }
 
-  getSignupPhoneVer():Observable<PhoneVerCodeResponse> {
+  getSignUpPhoneVer():Observable<PhoneVerCodeResponse> {
     return this.store.select(getPhoneVerCode);
   }
 
@@ -150,9 +137,9 @@ export class LoginService {
    * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
    * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
    * */
-  getPhoneVerCode(source: SignupFormModel) {
+  getPhoneVerCode(source: SignUpFormModel) {
 
-    const {username, captcha_code} = this.mapper.signupFormMap(source);
+    const {username, captcha_code} = this.mapper.signUpFormMap(source);
 
     const phoneVerCode$ = this.store.select(selectPhoneVerCodeCaptcha)
       .switchMap((needImageVerCode: boolean) => {
@@ -185,9 +172,9 @@ export class LoginService {
     this.subscriptions.push(phoneVer$$);
   }
 
-  signup(source: SignupFormModel, userType: string): void {
+  signUp(source: SignUpFormModel, userType: string): void {
 
-    const {username, password, code} = this.mapper.signupFormMap(source);
+    const {username, password, code} = this.mapper.signUpFormMap(source);
 
     const baseOption$ = Observable.of({username, password, code});
 
@@ -201,7 +188,7 @@ export class LoginService {
 
     if (userType === 'REGISTER_COMPANY_USER') {
       companyUserOption$ = this.store.select(selectSelectedCompany)
-        .map(company => ({company_id: company.id, real_name: source.realname}));
+        .map(company => ({company_id: company.id, real_name: source.realName}));
     }
 
     const register$ = baseOption$.withLatestFrom(randomKey$, companyUserOption$)
@@ -226,7 +213,7 @@ export class LoginService {
   private handleError() {
     const login$$ = this.handleLoginError();
 
-    const signupPhoneVerCode$$ = this.handleSignPhoneVerCodeError();
+    const signUpPhoneVerCode$$ = this.handleSignPhoneVerCodeError();
 
     const resetPhoneVerCode$$ = this.handleResetPhoneVerCodeError();
 
@@ -234,7 +221,7 @@ export class LoginService {
 
     const resetPassword$$ = this.handleResetPassWordInfoError();
 
-    this.subscriptions = this.subscriptions.concat([login$$, signupPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
+    this.subscriptions = this.subscriptions.concat([login$$, signUpPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
   }
 
   private handleLoginError(): Subscription{
@@ -247,7 +234,7 @@ export class LoginService {
   private handleSignPhoneVerCodeError(): Subscription {
     return this.errorService
       .handleErrorInSpecific(
-        this.getSignupPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
+        this.getSignUpPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
         'PHONE_VERIFICATION_FAIL'
       );
   }

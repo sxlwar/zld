@@ -1048,6 +1048,21 @@ export interface WorkerResponse {
   userpersonal_idnum: string;
 }
 
+/* =======================================================Http response============================================ */
+export interface Version {
+  url: string;
+  text: string;
+  number: string; // /(\d{1,2}\.){3}/
+  create_time: string; //2017-12-06T15:23:36.397
+  modify_time: string;
+  type: number;
+  id: number;
+  intro?: string[]; // Custom field ,use to render HTML; Transformed from 'text' field;
+}
+
+export interface VersionResponse {
+  versions: Version[];
+}
 export type ErrorResponse = LoginResponse
   | AttendanceCardAddResponse
   | AttendanceCardDeleteResponse

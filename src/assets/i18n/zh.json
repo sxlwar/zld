@@ -383,6 +383,10 @@
   "RESERVATION_PHONE_NUMBER": "银行预留手机号",
   "BANKCARD_TYPE": "银行卡类型",
 
+  "RESET_PASSWORD": "重置密码",
+  "CONTACT_US": "联系我们",
+  "CURRENT_VERSION": "当前版本",
+
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

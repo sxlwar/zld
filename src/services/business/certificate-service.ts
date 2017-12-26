@@ -1,32 +1,26 @@
-//region
-import {Injectable} from '@angular/core';
-import {Store} from '@ngrx/store';
-import {
-  AppState,
-  getCertificate,
-  selectCertificateResult,
-  selectRealname,
-  selectSid, selectUploadResult
-} from '../../reducers/index-reducer';
-import {Observable} from 'rxjs/Observable';
-import {CertificateFormModel} from '../api/mapper-service';
-import {ProcessorService} from '../api/processor-service';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState, getCertificate, selectCertificateResult, selectRealName, selectSid, selectUploadResult } from '../../reducers/index-reducer';
+import { Observable } from 'rxjs/Observable';
+import { CertificateFormModel } from '../api/mapper-service';
+import { ProcessorService } from '../api/processor-service';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/zip';
 import 'rxjs/add/operator/zip';
-import {CertificateOptions, UploadImageOptions} from '../../interfaces/request-interface';
-import {Subscription} from 'rxjs/Subscription';
+import { CertificateOptions, UploadImageOptions } from '../../interfaces/request-interface';
+import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/withLatestFrom';
-import {ErrorService} from '../errors/error-service';
-//endregion
+import { ErrorService } from '../errors/error-service';
 
 @Injectable()
 export class CertificateService {
   subscriptions: Subscription[] = [];
 
-  constructor(private store: Store<AppState>,
-              private process: ProcessorService,
-              private errorService: ErrorService) {
+  constructor(
+    private store: Store<AppState>,
+    private process: ProcessorService,
+    private errorService: ErrorService
+  ) {
     this.handleError();
   }
 
@@ -41,8 +35,8 @@ export class CertificateService {
     return this.store.select(selectCertificateResult);
   }
 
-  get realname(): Observable<string> {
-    return this.store.select(selectRealname);
+  get realName(): Observable<string> {
+    return this.store.select(selectRealName);
   }
 
   /*===============================================Side Effect===================================================*/
@@ -56,20 +50,20 @@ export class CertificateService {
 
     const sid$ = this.store.select(selectSid);
 
-    const {realname, num, imageface, imageback} = this.process.certificateForm(source);
+    const { realname, num, imageface, imageback } = this.process.certificateForm(source);
 
     const upload$ = Observable.of(
-      {type: 'imageback', file: imageface},
-      {type: 'imageface', file: imageback}
+      { type: 'imageback', file: imageface },
+      { type: 'imageface', file: imageback }
     ).withLatestFrom(
       sid$,
-      (option, sid) => Object.assign(option, {sid})
-    ) as Observable<UploadImageOptions>;
+      (option, sid) => Object.assign(option, { sid })
+      ) as Observable<UploadImageOptions>;
 
     const option$ = Observable.zip(
       sid$,
-      Observable.of({realname, num}),
-      (sid, other) => (Object.assign({sid}, other))
+      Observable.of({ realname, num }),
+      (sid, other) => (Object.assign({ sid }, other))
     ) as Observable<CertificateOptions>;
 
     const certificate$$ = this.process.certificateProcessor(option$, upload$);
@@ -100,7 +94,7 @@ export class CertificateService {
         .reduce((acc, cur) => {
           acc.errorMessage += cur;
           return acc;
-        }, {errorMessage: ''})
+        }, { errorMessage: '' })
       );
 
     const uploadSubscription = this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');

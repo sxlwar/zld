@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { CertificateService } from '../../services/business/certificate-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { personalIdValidator, realnameValidator } from '../../validators/validators';
+import { personalIdValidator, realNameValidator } from '../../validators/validators';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
@@ -23,7 +23,7 @@ export class CertificationPage {
   frontTip = 'CER_ID_CARD_BACK_TIP';
   backTip = 'CER_ID_CARD_FRONT_TIP';
   certificateForm: FormGroup;
-  realname$: Observable<string>;
+  realName$: Observable<string>;
   certificate$$: Subscription;
 
   constructor(public navCtrl: NavController,
@@ -37,7 +37,7 @@ export class CertificationPage {
 
   initForm() {
     this.certificateForm = this.fb.group({
-      realname: ['', realnameValidator],
+      realname: ['', realNameValidator],
       personalId: ['', personalIdValidator],
       personalIdPhoto: this.fb.group({
         front: ['', Validators.required],
@@ -47,7 +47,7 @@ export class CertificationPage {
   }
 
   ionViewDidLoad() {
-    this.realname$ = this.certificateService.realname;
+    this.realName$ = this.certificateService.realName;
     this.certificate$$ = this.certificateService.certificateResult
       .filter(res => !!res)
       .subscribe(_ => {

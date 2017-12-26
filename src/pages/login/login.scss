@@ -1,13 +1,11 @@
 page-login {
-  $base-color: #00c1de;
-  // Fullscreen centered image background
+  $base-color: #00c1de; // Fullscreen centered image background
   ion-content {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-color: transparent;
-  }
-  // Slider
+  } // Slider
   .content-slider {
     ion-slides,
     .swiper-container {
@@ -24,8 +22,7 @@ page-login {
   }
   .zoom .slide-zoom {
     height: 100%;
-  }
-  // Content
+  } // Content
   .scroll-content {
     display: flex;
     flex-direction: column;
@@ -48,8 +45,7 @@ page-login {
   p,
   h3 {
     color: white;
-  }
-  // Input items
+  } // Input items
   ion-label,
   .input-has-focus {
     color: #fff !important;
@@ -71,8 +67,7 @@ page-login {
   .item-inner {
     border-bottom: 2px solid white !important;
     box-shadow: none !important;
-  }
-  //
+  } //
   .login-button {
     width: 100%;
     max-width: 40rem;
@@ -80,8 +75,7 @@ page-login {
     font-size: 1.2em;
     span {
       color: $base-color !important;
-    }
-    // border: 1px solid #fff;
+    } // border: 1px solid #fff;
   }
   .forgot-button {
     font-weight: bold;
@@ -107,7 +101,6 @@ page-login {
       font-size: 2.2rem;
     }
   }
-
   .position-bottom {
     position: absolute;
     left: 0;
@@ -116,18 +109,18 @@ page-login {
     margin: 0 auto;
     width: 200px;
   }
-   .custom-container{
-     position: relative;
-     ion-icon, cut-down{
-       color: white;
-       position: absolute;
-       right: 5%;
-       top: 50%;
-       transform: translateY(-50%);
-     }
-   }
+  .custom-container {
+    position: relative;
+    ion-icon,
+    cut-down {
+      color: white;
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
   .company-input {
     line-height: 1em;
   }
-
 }
