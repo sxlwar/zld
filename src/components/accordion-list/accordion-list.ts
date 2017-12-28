@@ -32,13 +32,28 @@ export class AccordionListComponent {
 
   ngAfterViewInit() {
     this.viewHeight = this.elementView.nativeElement.offsetHeight;
+    
     this.renderer.setStyle(this.elementView.nativeElement, 'height', 0 + 'px');
   }
 
   toggleAccordion() {
     this.expanded = !this.expanded;
+
     const newHeight = this.expanded ? '100%' : '0px';
+    
     this.renderer.setStyle(this.elementView.nativeElement, 'height', newHeight);
+  }
+
+  createClicked($event: Event) {
+    $event.stopPropagation();
+
+    this.create.next();
+  }
+
+  trashClicked($event: Event) {
+    $event.stopPropagation();
+
+    this.trash.next();
   }
 
 }

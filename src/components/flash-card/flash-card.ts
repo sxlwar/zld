@@ -14,9 +14,9 @@ export class FlashCardComponent {
   toggled: boolean = false;
 
   ngAfterViewChecked() {
-    const frontH = this.fcFront.nativeElement.querySelector('.fc-front').offsetHeight + 40;
+    const frontH = this.fcFront.nativeElement.querySelector('.fc-front').offsetHeight;
 
-    const backH = this.fcBack.nativeElement.querySelector('.fc-back').offsetHeight + 40;
+    const backH = this.fcBack.nativeElement.querySelector('.fc-back').offsetHeight;
 
     const h = ((frontH > backH) ? frontH : backH) + 'px';
 

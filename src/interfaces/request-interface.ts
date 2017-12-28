@@ -1,15 +1,7 @@
-import { Action } from '@ngrx/store';
 
 export interface WsRequest {
   command: { path: string };
   parameters: object;
-}
-
-export class RequestAction implements Action {
-  readonly type: string;
-
-  constructor(public payload: Options) {
-  };
 }
 
 export interface RequestOption {
@@ -59,14 +51,6 @@ export interface CertificateOptions {
   num: string;
   imageface?: string;
   imageback?: string;
-}
-
-export interface UploadImageOptions {
-  sid: string;
-  command: string;
-  type: string;
-  file: string;
-  id?: string | number;
 }
 
 /*=================================================Team model======================================================*/
@@ -547,7 +531,7 @@ export interface WorkerBankNoAddOptions {
   num: string;  //真恶心的东西，名字起个num，类型是string，再没有名字可起了？
   phone_num: string;
   user_id: number;
-  is_master:boolean; //这都知道加下划线，返回字段的名字为啥就没有那个下划线?
+  is_master: boolean; //这都知道加下划线，返回字段的名字为啥就没有那个下划线?
 }
 
 export interface WorkerBankNoDeleteOptions {
@@ -577,6 +561,48 @@ export interface LogoutOptions {
   sid: string;
 }
 
+/* ================================================Certificate API model========================================== */
+
+export interface CertificateListOptions {
+  sid: string;
+  user_id?: number[];
+}
+
+//注意又是个2B接口，要放到work_certificate_form字段下
+export interface CertificateAddOptions { //名字给改了，不知道为什么这个接口的增加就是create,其它的就是add，为了保持统一，改成add
+  sid: string;
+  worktype_id: number;
+  num: string;  //2B名字，其实是证书号。
+  firstget_date: string;
+  usestart_date: string;
+  usefinish_date: string;
+  education: string;  // 值必须是degrees中的一个。
+  mechanism: string;
+  imageface?: string; //这两个字段理应属于此表单，即使它们走的是HTTP。
+  imageback?: string;
+}
+
+export interface CertificateDeleteOptions {
+  sid: string;
+  work_certificate_id: number;
+}
+
+//一样，是挂在work_certificate_form字段下
+export interface CertificateUpdateOptions {
+  sid: string;
+  id: number;
+  worktype_id: number;
+  num: string;
+  firstget_date: string;
+  usestart_date: string;
+  usefinish_date: string;
+  education: string;
+  mechanism: string;
+  imageface?: string; //这两个字段理应属于此表单，即使它们走的是HTTP。
+  imageback?: string;
+}
+
+
 /*=================================================Work flow API model==================================================*/
 
 export enum RequestStatus {
@@ -592,41 +618,63 @@ export enum TaskStatus {
 
 /* ==========================================================Http request options============================================================ */
 
+// query version
 export interface VersionOptions {
   version?: string;
 }
 
+//qr login
 export interface QRLoginOptions {
   sid: string;
   qr_sid: string;
 }
 
-export type Options = LoginOptions
-  & AttendanceCardAddOptions
-  & AttendanceCardDeleteOptions
-  & AttendanceCardListOptions
-  & AttendanceCardUpdateOptions
-  & AttendanceInstantListOptions
-  & AttendanceMachineListOptions
-  & AttendanceResultConfirmOptions
-  & AttendanceResultListOptions
-  & AttendanceResultTeamStatListOptions
-  & BasicInfoListOptions
-  & CertificateOptions
-  & CompanyUserListOptions
-  & PayBillListOptions
-  & PayProcessListOptions
-  & PhoneVerificationCodeOptions
-  & ProjectListOptions
-  & ProjectPayBillListOptions
-  & ProjectPayProcessListOptions
-  & RegisterOptions
-  & ResetPasswordOptions
-  & SearchCompanyOptions
-  & TeamAddOptions
-  & TeamDeleteOptions
-  & TeamListOptions
-  & TeamUpdateOptions
-  & UploadImageOptions
-  & WorkOvertimeRecordListOptions
-  & WorkerContractOptions;
+export enum ImageFace {
+  front = 'imageface',
+  back = 'imageback'
+}
+
+export interface UploadFileOptions {
+  sid: string;
+  command?: string;
+}
+
+// upload personal id images
+export interface UploadPersonalIdImageOptions extends UploadFileOptions {
+  type: string; //ImageFace
+  file: string;
+}
+
+//upload certificate images
+export interface UploadCertificateImageOptions extends UploadFileOptions {
+  id: number; //certificate id
+  type: string; //ImageFace
+  file: string;
+}
+
+//upload work flow attachment
+export interface UploadWorkFlowAttachmentOptions extends UploadFileOptions {
+  id: number; //task id
+  type: string; // constant 'attachment';
+  file: string;
+}
+
+//upload leave task attachment
+export interface UploadLeaveTaskOptions extends UploadFileOptions {
+  id: number; //task id
+  type: string; //constant 'attachment';
+  file: string;
+}
+
+//upload overtime attachment
+export interface UploadOvertimeOptions extends UploadFileOptions {
+  id: number; //task id
+  type: string; //constant 'attachment';
+  file: string;
+}
+
+export type UploadOptions = UploadPersonalIdImageOptions
+  | UploadCertificateImageOptions
+  | UploadWorkFlowAttachmentOptions
+  | UploadLeaveTaskOptions
+  | UploadOvertimeOptions;

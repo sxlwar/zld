@@ -1,51 +1,11 @@
-import { HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions } from './../../interfaces/request-interface';
-import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
-import { BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, WsRequest, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UploadOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Permission } from '../../interfaces/permission-interface';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
-
-/* =======================================================Interface definition===================================================================== */
-
-/**
- * @description These operations define the action that an interface can perform.
- * */
-export enum Operate {
-  querying = 'query',
-  addition = 'add',
-  updates = 'update',
-  deletion = 'delete',
-  search = 'search'
-}
-
-export interface checkFn {
-  (arg: number[]): boolean
-}
-
-export interface MagicNumberMap {
-  [key: string]: number | checkFn;
-}
-
-export class Iterator {
-  value: MagicNumberMap;
-
-  constructor(value: MagicNumberMap) {
-    this.value = value;
-  }
-
-  next() {
-    return { value: this.value, done: true }
-  }
-}
-
-export interface ApiUnit {
-  operates: Map<string, string[]>;
-  permission?: Permission;
-  noMagicNumber?: Map<string, Iterator>;
-  specialCharacter?: Map<string, Iterator>;
-}
+import { ENV } from '@app/env';
+import { ApiUnit, Operate, checkFn, MagicNumberMap, Iterator } from '../../interfaces/api-interface';
+import { uploadPersonalIdImage, uploadCertificateImage } from './http-service';
 
 /* =======================================================API unit definition===================================================================== */
 
@@ -90,12 +50,6 @@ const resetPassword: ApiUnit = {
 const updatePersonalIdImage: ApiUnit = {
   operates: new Map([
     [Operate.updates, ['employee.consumer.PersonalIdUpdate']]
-  ])
-};
-
-const uploadPersonalIdImage: ApiUnit = {
-  operates: new Map([
-    [Operate.updates, ['personalIdUpdate']]
   ])
 };
 
@@ -757,6 +711,61 @@ export const setBankNoMaster: ApiUnit = {
   }
 }
 
+/* ========================================================Certificate model=========================================== */
+
+export const certificateList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.WorkCertificateList']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+export const certificateAdd: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['employee.consumer.WorkCertificateCreate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const certificateDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['employee.consumer.WorkCertificateDelete']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+export const certificateUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['employee.consumer.WorkCertificateUpdate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+  }
+}
+
+/* ========================================================Common model=========================================== */
+
 export const logout: ApiUnit = {
   operates: new Map([
     [Operate.querying, ['employee.consumer.Logout']]
@@ -796,10 +805,6 @@ export class Command {
   subContractList = "employer.consumer.SubContractList";
   taskUpdate = "workflow.consumer.TaskUpdate";
   unreadMsgCount = "operation.consumer.UnreadMsgCount";
-  workCertificateCreate = "employee.consumer.WorkCertificateCreate";
-  workCertificateDelete = "employee.consumer.WorkCertificateDelete";
-  workCertificateList = "employee.consumer.WorkCertificateList";
-  workCertificateUpdate = "employee.consumer.WorkCertificateUpdate";
   workTimePayList = "project.consumer.WorkTimePayList";
   workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
   constructor() {
@@ -1249,7 +1254,7 @@ export class Command {
 
     return this.getFullParameter(path, option);
   }
-  
+
   getSetBankNoMaster(option: SetBankNoMasterOptions): WsRequest {
     const path = setBankNoMaster.operates.get(Operate.updates)[0];
 
@@ -1270,8 +1275,49 @@ export class Command {
    */
   getQRLogin(option: QRLoginOptions): WsRequest {
     const path = QRLogin.operates.get(Operate.querying)[0];
-    
+
     return this.getFullParameter(path, option);
+  }
+
+  /**
+   * @description certificate related api: getCertificateList, getCertificateAdd, getCertificateDelete, getCertificateUpdate
+   */
+  getCertificateList(option: CertificateListOptions): WsRequest {
+    const path = certificateList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCertificateAdd(originOption: CertificateAddOptions): WsRequest {
+    const path = certificateAdd.operates.get(Operate.addition)[0];
+
+    const { sid, worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } = originOption;
+
+    const option = { sid, work_certificate_form: { worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCertificateDelete(option: CertificateDeleteOptions): WsRequest {
+    const path = certificateDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCertificateUpdate(originOption: CertificateUpdateOptions): WsRequest {
+    const path = certificateUpdate.operates.get(Operate.updates)[0];
+
+    const { sid, id, worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } = originOption;
+
+    const option = { sid, work_certificate_form: { id, worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCertificateImageUpload(option: UploadCertificateImageOptions): UploadCertificateImageOptions {
+    const command = uploadCertificateImage.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
   }
 
   /**
@@ -1280,6 +1326,12 @@ export class Command {
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
   }
+
+  get uploadCertificateImage(): string {
+    return uploadCertificateImage.operates.get(Operate.updates)[0];
+  }
+
+  /* ==========================================================Websocket commands====================================================== */
 
   get projectList() {
     return projectList;
@@ -1479,5 +1531,21 @@ export class Command {
 
   get QRLogin() {
     return QRLogin;
+  }
+
+  get certificateList() {
+    return certificateList;
+  }
+
+  get certificateAdd() {
+    return certificateAdd;
+  }
+
+  get certificateDelete() {
+    return certificateDelete;
+  }
+
+  get certificateUpdate() {
+    return certificateUpdate;
   }
 }

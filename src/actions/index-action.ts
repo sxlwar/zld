@@ -22,12 +22,14 @@ import { Actions as location } from './action/location-action';
 import { Actions as bankCard } from './action/bank-card-action';
 import { Actions as logout } from './action/logout-action';
 import { Actions as qrLogin } from './action/qr-scan-login-action';
+import { Actions as certificate } from './action/work-certificate-action'
 
 export type Actions = config
   | attendance
   | attendanceRecord
   | attendanceCard
   | bankCard
+  | certificate
   | employer
   | icons
   | location

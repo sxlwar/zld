@@ -356,14 +356,14 @@ export const bankCard: IconItem = {
   page: pages.bankcardPage
 };
 export const certificate: IconItem = {
-  text: 'MY_CERTIFICATE',
+text: 'CERTIFICATE',
   icon: certificateIcon,
   color: 'contract',
   permission: {
     view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
     opt: []
   },
-  page: ''
+  page: pages.workCertificatePage
 };
 
 export const apply: IconItem = {

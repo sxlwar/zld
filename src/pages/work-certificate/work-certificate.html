@@ -1,0 +1,93 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'MY_CERTIFICATE' | translate}}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="addCertificate()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <flash-card *ngFor="let item of certificates | async">
+    <div class="fc-front">
+      <ion-toolbar>
+
+        <ion-title>{{item.workTypeName}}</ion-title>
+
+        <ion-buttons end>
+          <button ion-button icon-only color="primary" (click)="updateCertificate($event, item)">
+            <ion-icon name="brush" item-right></ion-icon>
+          </button>
+          <button ion-button icon-only color="primary" (click)="deleteCertificate($event, item)">
+            <ion-icon name="close" item-right></ion-icon>
+          </button>
+        </ion-buttons>
+
+      </ion-toolbar>
+
+      <div class="face-image">
+        <img [src]="item.imageface || '../../assets/img/advance-card-tmntr.png'">
+      </div>
+
+      <div class="back-image">
+        <img [src]="item.imageback || '../../assets/img/advance-card-bttf.png'">
+      </div>
+
+    </div>
+    <div class="fc-back">
+      <ion-toolbar>
+
+        <ion-title>{{item.workTypeName}}</ion-title>
+
+        <ion-buttons end>
+          <button ion-button icon-only color="primary" (click)="updateCertificate($event,item)">
+            <ion-icon name="brush" item-right></ion-icon>
+          </button>
+          <button ion-button icon-only color="primary" (click)="deleteCertificate($event,item)">
+            <ion-icon name="close" item-right></ion-icon>
+          </button>
+        </ion-buttons>
+
+      </ion-toolbar>
+
+      <ion-list>
+
+        <ion-item>
+          <ion-label fixed>{{'FIRST_GET_DATE' | translate}}</ion-label>
+          <ion-input disabled [value]="item.firstget_date"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>{{'AVAILABLE_EXPIRE_START' | translate}}</ion-label>
+          <ion-input disabled [value]="item.usestart_date"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>{{'AVAILABLE_EXPIRE_END' | translate}}</ion-label>
+          <ion-input disabled [value]="item.usefinish_date"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>{{'CERTIFICATION_NUMBER' | translate}}</ion-label>
+          <ion-input disabled [value]="item.num"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>{{'DEGREE_OF_EDUCATION' | translate}}</ion-label>
+          <ion-input disabled [value]="item.education | degree"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label fixed>{{'ISSUING_AGENCY' | translate}}</ion-label>
+          <ion-input disabled [value]="item.mechanism"></ion-input>
+        </ion-item>
+
+      </ion-list>
+    </div>
+  </flash-card>
+</ion-content>

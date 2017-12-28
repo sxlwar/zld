@@ -9,18 +9,19 @@
   <ion-navbar>
     <ion-title>{{'EDUCATION_EXPERIENCE' | translate}}</ion-title>
     <ion-buttons end>
-        <button ion-button icon-only (click)="addEducation()">
-          <ion-icon name="add"></ion-icon>
-        </button>
-      </ion-buttons>
+      <button ion-button icon-only (click)="addEducation()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  
-  <accordion-list *ngFor="let item of educations | async" [title]="item.start_date + ' - ' + item.finish_date" (create)="updateEducation(item)" (trash)="deleteEducation(item)">
+
+  <accordion-list *ngFor="let item of educations | async" [title]="item.start_date + ' - ' + item.finish_date" (create)="updateEducation(item)"
+    (trash)="deleteEducation(item)">
     <ion-item>
       <ion-label fixed>{{'SCHOOL' | translate}}</ion-label>
       <ion-input disabled [value]="item.school__name"></ion-input>

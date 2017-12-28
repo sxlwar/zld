@@ -1,4 +1,4 @@
-//region
+import { LoginAction, RegisterPhoneVerCodeAction, ResetPhoneVerCodeAction, RegisterAction, ResetPasswordAction } from './../actions/action/login-action';
 import { Actions, Effect } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
@@ -11,35 +11,17 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/takeUntil';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/switchMap';
-import {
-  GET_PHONE_VERIFICATION_CODE,
-  LOGIN,
-  LoginFailAction,
-  LoginSuccessAction,
-  REGISTER,
-  RegisterFailAction,
-  RegisterPhoneVerCodeFailAction,
-  RegisterPhoneVerCodeSuccessAction,
-  RegisterSuccessAction,
-  RESET_PASSWORD,
-  RESET_PHONE_VERIFICATION_CODE,
-  ResetPasswordFailAction,
-  ResetPasswordSuccessAction,
-  ResetPhoneVerCodeFailAction,
-  ResetPhoneVerCodeSuccessAction
-} from '../actions/action/login-action';
+import { GET_PHONE_VERIFICATION_CODE, LOGIN, LoginFailAction, LoginSuccessAction, REGISTER, RegisterFailAction, RegisterPhoneVerCodeFailAction, RegisterPhoneVerCodeSuccessAction, RegisterSuccessAction, RESET_PASSWORD, RESET_PHONE_VERIFICATION_CODE, ResetPasswordFailAction, ResetPasswordSuccessAction, ResetPhoneVerCodeFailAction, ResetPhoneVerCodeSuccessAction } from '../actions/action/login-action';
 import 'rxjs/add/operator/throttle';
-import { RequestAction } from '../interfaces/request-interface';
 import { ResponseAction } from '../interfaces/response-interface';
 import { TipService } from '../services/tip-service';
-//endregion
 
 @Injectable()
 export class LoginEffect {
   @Effect()
   login$: Observable<ResponseAction> = this.actions$
     .ofType(LOGIN)
-    .mergeMap((action: RequestAction) => this.ws
+    .mergeMap((action: LoginAction) => this.ws
       .send(this.command.login(action.payload))
       .takeUntil(this.actions$.ofType(LOGIN))
       .map(msg => msg.isError ? new LoginFailAction(msg.data) : new LoginSuccessAction(msg.data))
@@ -54,7 +36,7 @@ export class LoginEffect {
   @Effect()
   phoneVerCode$: Observable<ResponseAction> = this.actions$
     .ofType(GET_PHONE_VERIFICATION_CODE)
-    .mergeMap((action: RequestAction) => this.ws
+    .mergeMap((action: RegisterPhoneVerCodeAction) => this.ws
       .send(this.command.phoneVerificationCode(action.payload))
       .takeUntil(this.actions$.ofType(GET_PHONE_VERIFICATION_CODE))
       .map(msg => msg.isError ? new RegisterPhoneVerCodeFailAction(msg.data) : new RegisterPhoneVerCodeSuccessAction(null))
@@ -64,7 +46,7 @@ export class LoginEffect {
   @Effect()
   resetPwdPhoneVerCode$: Observable<ResponseAction> = this.actions$
     .ofType(RESET_PHONE_VERIFICATION_CODE)
-    .mergeMap((action: RequestAction) => this.ws
+    .mergeMap((action: ResetPhoneVerCodeAction) => this.ws
       .send(this.command.resetPhoneVerificationCode(action.payload))
       .takeUntil(this.actions$.ofType(RESET_PHONE_VERIFICATION_CODE))
       .map(msg => msg.isError ? new ResetPhoneVerCodeFailAction(msg.data) : new ResetPhoneVerCodeSuccessAction(null))
@@ -74,7 +56,7 @@ export class LoginEffect {
   @Effect()
   register$: Observable<ResponseAction> = this.actions$
     .ofType(REGISTER)
-    .mergeMap((action: RequestAction) => this.ws
+    .mergeMap((action: RegisterAction) => this.ws
       .send(this.command.register(action.payload))
       .takeUntil(this.actions$.ofType(REGISTER))
       .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
@@ -85,7 +67,7 @@ export class LoginEffect {
   @Effect()
   resetPassword$: Observable<ResponseAction> = this.actions$
     .ofType(RESET_PASSWORD)
-    .mergeMap((action: RequestAction) => this.ws
+    .mergeMap((action: ResetPasswordAction) => this.ws
       .send(this.command.resetPassword(action.payload))
       .takeUntil(this.actions$.ofType(RESET_PASSWORD))
       .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))

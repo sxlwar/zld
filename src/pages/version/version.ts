@@ -26,6 +26,7 @@ export class VersionPage {
   ionViewDidLoad() {
     this.version = this.appVersion.getVersionNumber();
 
+    //TODO:此处绕过了store，需要重构
     this.versions = Observable.fromPromise(this.version)
       .mergeMap(version => this.httpService.getServerVersion(version)
         .mergeMap(response => Observable.from(response).map(item => {

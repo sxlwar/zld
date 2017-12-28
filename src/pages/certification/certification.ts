@@ -7,13 +7,6 @@ import { personalIdValidator, realNameValidator } from '../../validators/validat
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/filter';
 
-/**
- * Generated class for the CertificationPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-certification',
@@ -21,15 +14,21 @@ import 'rxjs/add/operator/filter';
 })
 export class CertificationPage {
   frontTip = 'CER_ID_CARD_BACK_TIP';
+
   backTip = 'CER_ID_CARD_FRONT_TIP';
+
   certificateForm: FormGroup;
+
   realName$: Observable<string>;
+
   certificate$$: Subscription;
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     public certificateService: CertificateService,
-    public fb: FormBuilder) {
+    public fb: FormBuilder
+  ) {
     this.initForm();
   }
 
@@ -37,7 +36,7 @@ export class CertificationPage {
 
   initForm() {
     this.certificateForm = this.fb.group({
-      realname: ['', realNameValidator],
+      realName: ['', realNameValidator],
       personalId: ['', personalIdValidator],
       personalIdPhoto: this.fb.group({
         front: ['', Validators.required],
@@ -50,10 +49,7 @@ export class CertificationPage {
     this.realName$ = this.certificateService.realName;
     this.certificate$$ = this.certificateService.certificateResult
       .filter(res => !!res)
-      .subscribe(_ => {
-        this.navCtrl.push('TabsPage').then(() => {
-        });
-      });
+      .subscribe(_ => this.navCtrl.push('TabsPage').then(() => { }));
   }
 
   /*============================================UI state changed=================================================*/
@@ -72,7 +68,6 @@ export class CertificationPage {
 
   /*============================================Refuse clean======================================================*/
 
-  // noinspection JSUnusedGlobalSymbols
   ionViewWillUnload() {
     this.certificate$$.unsubscribe();
     this.certificateService.unSubscribe();
@@ -80,8 +75,8 @@ export class CertificationPage {
 
   /*====================================Short cut method for template==============================================*/
 
-  get realname() {
-    return this.certificateForm.get('realname')
+  get realName() {
+    return this.certificateForm.get('realName')
   }
 
   get personalId() {

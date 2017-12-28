@@ -17,7 +17,7 @@ flash-card {
             width: 100%;
             z-index: 2;
             backface-visibility: hidden;
-            padding: 20px;
+            // padding: 20px;
             background: #f2f2f2;
 	        transform: rotateY(0deg);
         }
@@ -28,7 +28,7 @@ flash-card {
             top:0;
             left:0;
             background: #f2f2f2;
-            padding: 20px;
+            // padding: 20px;
 	        transform: rotateY(180deg);
         }
     

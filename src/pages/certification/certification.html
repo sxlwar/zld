@@ -19,14 +19,14 @@
 
     <ion-item>
       <ion-label fixed="">{{'NAME' | translate}}</ion-label>
-      <ion-input type="text" formControlName="realname" [value]="realname$ | async" required></ion-input>
+      <ion-input type="text" formControlName="realName" [value]="realName$ | async" required></ion-input>
     </ion-item>
     <div
-      *ngIf="realname.invalid && (realname.dirty || realname.touched)"
+      *ngIf="realName.invalid && (realName.dirty || realName.touched)"
       class="form-error">
-      <span *ngIf="realname.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
-      <span *ngIf="!realname.errors.required && realname.errors.nameFormat">
-              {{certificateForm.getError('nameFormat', 'realname') | translate}}
+      <span *ngIf="realName.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
+      <span *ngIf="!realName.errors.required && realName.errors.nameFormat">
+              {{certificateForm.getError('nameFormat', 'realName') | translate}}
             </span>
     </div>
 

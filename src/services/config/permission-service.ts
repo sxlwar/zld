@@ -1,4 +1,4 @@
-//region
+import { ApiUnit } from '../../interfaces/api-interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { selectIcon, AppState, selectGroupList } from '../../reducers/index-reducer';
@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
 import { ComprehensivePermissionResult, Permission, PermissionResult } from '../../interfaces/permission-interface';
-import { ApiUnit, Command } from '../api/command';
-//endregion
+import { Command } from '../api/command';
+
 
 @Injectable()
 export class PermissionService {

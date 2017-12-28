@@ -99,6 +99,8 @@ export const contactPage = 'ContactPage';
 
 export const versionPage = 'VersionPage';
 
+export const workCertificatePage = 'WorkCertificatePage';
+
 export const PAGES = [
   { title: 'Tutorial', component: tutorialPage },
   { title: 'Welcome', component: welcomePage },
@@ -154,4 +156,5 @@ export const PAGES = [
   { title: 'Setting', component: settingPage },
   { title: 'ContactPage', component: contactPage },
   { title: 'Version', component: versionPage },
+  { title: 'WorkCertificate', component: workCertificatePage },
 ];

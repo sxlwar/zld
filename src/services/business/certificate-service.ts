@@ -7,7 +7,7 @@ import { ProcessorService } from '../api/processor-service';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/zip';
 import 'rxjs/add/operator/zip';
-import { CertificateOptions, UploadImageOptions } from '../../interfaces/request-interface';
+import { CertificateOptions, UploadOptions } from '../../interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/withLatestFrom';
 import { ErrorService } from '../errors/error-service';
@@ -58,7 +58,7 @@ export class CertificateService {
     ).withLatestFrom(
       sid$,
       (option, sid) => Object.assign(option, { sid })
-      ) as Observable<UploadImageOptions>;
+      ) as Observable<UploadOptions>;
 
     const option$ = Observable.zip(
       sid$,

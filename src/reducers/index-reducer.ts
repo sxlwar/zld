@@ -26,6 +26,7 @@ import * as location from './reducer/location-reducer';
 import * as bankCard from './reducer/bank-card-reducer';
 import * as logout from './reducer/logout-reducer';
 import * as QRLogin from './reducer/qr-scan-login-reducer';
+import * as workCertificate from './reducer/work-certificate-reducer';
 
 export interface AppState {
   config: config.State;
@@ -59,6 +60,7 @@ export interface AppState {
   bankCard: bankCard.State,
   logout: logout.State,
   QRLogin: QRLogin.State,
+  workCertificate: workCertificate.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -93,6 +95,7 @@ export const reducers: ActionReducerMap<AppState> = {
   bankCard: bankCard.reducer,
   logout: logout.reducer,
   QRLogin: QRLogin.reducer,
+  workCertificate: workCertificate.reducer,
 };
 
 //config
@@ -350,6 +353,17 @@ export const selectLogoutResponse = createSelector(getLogout, logout.getLogoutRe
 export const getQRLogin = (state: AppState) => state.QRLogin;
 export const selectQRCode = createSelector(getQRLogin, QRLogin.getQRCode);
 export const selectQRLoginResponse = createSelector(getQRLogin, QRLogin.getQRLoginResponse);
+
+//work certificate 
+export const getWorkCertificate = (state: AppState) => state.workCertificate;
+export const selectCertificateListResponse = createSelector(getWorkCertificate, workCertificate.getListResponse);
+export const selectCertificateAddResponse = createSelector(getWorkCertificate, workCertificate.getAddResponse);
+export const selectCertificateDeleteResponse = createSelector(getWorkCertificate, workCertificate.getDeleteResponse);
+export const selectCertificateUpdateResponse = createSelector(getWorkCertificate, workCertificate.getUpdateResponse);
+export const selectCertificateUploadResponse = createSelector(getWorkCertificate, workCertificate.getUploadResponse);
+export const selectCertificateAddOptions = createSelector(getWorkCertificate, workCertificate.getAddOptions);
+export const selectCertificateDeleteOptions = createSelector(getWorkCertificate, workCertificate.getDeleteOptions);
+export const selectCertificateUpdateOptions = createSelector(getWorkCertificate, workCertificate.getUpdateOptions);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

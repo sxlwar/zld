@@ -1,3 +1,4 @@
+import { WorkCertificateService } from './business/work-certificate-service';
 import { QRLoginService } from './business/qr-login-service';
 import { LogoutService } from './business/logout-service';
 import { BankcardService } from './business/bank-card-service';
@@ -84,6 +85,7 @@ export const BUSINESS_SERVICES = [
     WorkFlowService,
     WorkPieceService,
     WorkerService,
+    WorkCertificateService,
 ]
 
 

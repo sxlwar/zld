@@ -1,0 +1,46 @@
+page-work-certificate {
+  img {
+    height: 240px;
+  }
+  .face-image,
+  .back-image {
+    width: 100%;
+    height: 240px;
+    position: relative
+  }
+  .face-image {
+    margin: 20px 0;
+  }
+  .face-image::before {
+    content: "正面";
+  }
+  .back-image::before {
+    content: "背面";
+  }
+  .face-image::before, .back-image::before{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: white;
+    opacity: .1;
+    height: 240px;
+    line-height: 240px;
+    text-align: center;
+    font-size: 5em;
+    font-family: cursive;
+    letter-spacing: 20px; 
+  }
+  .back ion-list {
+    min-height: 520px;
+    background: #fff;
+  }
+  .back ion-list ion-item{
+    border-bottom:none!important;
+  }
+
+  .scroll-content {
+    padding: 0!important;
+  }
+}

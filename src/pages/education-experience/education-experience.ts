@@ -52,7 +52,7 @@ export class EducationExperiencePage {
 
     modal.present();
 
-    modal.onDidDismiss(data => data && this.personal.addEducation(Observable.of(data)));
+    modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.addEducation(Observable.of(data))));
   }
 
   updateEducation(target: Education): void {
@@ -60,7 +60,7 @@ export class EducationExperiencePage {
 
     modal.present();
 
-    modal.onDidDismiss(data => data && this.personal.updateEducation(Observable.of({...data, id: target.id})));
+    modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.updateEducation(Observable.of({...data, id: target.id}))));
   }
 
   deleteEducation(target: Education): void {

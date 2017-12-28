@@ -1,3 +1,5 @@
+import { uploadCertificateImage } from './http-service';
+import { GetCertificateListAction, AddCertificateAction, DeleteCertificateAction, UpdateCertificateAction, UploadCertificateImageAction } from './../../actions/action/work-certificate-action';
 import { QRLoginAction } from './../../actions/action/qr-scan-login-action';
 import { LogoutAction } from './../../actions/action/logout-action';
 import { GetBankCardListAction, GetBankInformationAction, AddBankCardAction, DeleteBankCardAction, SetMasterBankCardAction } from './../../actions/action/bank-card-action';
@@ -9,7 +11,7 @@ import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailList
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -89,7 +91,8 @@ export class ProcessorService extends MapperService {
     })
   }
 
-  certificateProcessor(option$: Observable<CertificateOptions>, image$: Observable<UploadImageOptions>): Subscription {
+  //TODO:上传过程需要重构，过于复杂，操作符withLatesFrom不恰当。
+  certificateProcessor(option$: Observable<CertificateOptions>, image$: Observable<UploadPersonalIdImageOptions>): Subscription {
     return this.uploadService.uploadImagesProcessor(image$, this.command.uploadPersonalIdImage)
       .map(responses => responses.every(res => {
         const result = JSON.parse(res.response);
@@ -467,5 +470,37 @@ export class ProcessorService extends MapperService {
 
   qrLoginProcessor(option$: Observable<QRLoginOptions>): Subscription {
     return option$.subscribe(option => this.store.dispatch(new QRLoginAction(option)));
+  }
+
+  certificateListProcessor(option$: Observable<CertificateListOptions>): Subscription {
+    return this.permission.comprehensiveValidate(this.command.certificateList)
+      .filter(value => value.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option}))
+      .subscribe(option => this.store.dispatch(new GetCertificateListAction(option)));
+  }
+
+  certificateAddProcessor(option$: Observable<CertificateAddOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.certificateAdd)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new AddCertificateAction(option)));
+  }
+
+  certificateDeleteProcessor(option$: Observable<CertificateDeleteOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.certificateDelete)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new DeleteCertificateAction(option)));
+  }
+
+  certificateUpdateProcessor(option$: Observable<CertificateUpdateOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.certificateUpdate)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new UpdateCertificateAction(option)));
+  }
+
+  certificateImageUploadProcessor(option$: Observable<UploadCertificateImageOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new UploadCertificateImageAction(option)));
   }
 }

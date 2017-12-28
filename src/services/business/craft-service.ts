@@ -15,10 +15,12 @@ export class CraftService {
   subscriptions: Subscription[] = [];
   craft$$: Subscription;
 
-  constructor(public store: Store<AppState>,
+  constructor(
+    public store: Store<AppState>,
     public processor: ProcessorService,
     public errorService: ErrorService,
-    public workerService: WorkerService) {
+    public workerService: WorkerService
+  ) {
     this.handleError();
     processor.workTypeListProcessor();
   }

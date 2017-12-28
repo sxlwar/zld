@@ -984,13 +984,13 @@ export interface ProjectAreaListResponse {
 /* ===============================================================Bankcard API model======================================= */
 
 export interface Bankcard {
-  province:string; 
-  city:string; 
-  ismaster: boolean; 
-  card_type:string; 
-  num:string; 
-  id: number; 
-  bank__name:string;
+  province: string;
+  city: string;
+  ismaster: boolean;
+  card_type: string;
+  num: string;
+  id: number;
+  bank__name: string;
 }
 
 //worker bank NO list
@@ -1029,6 +1029,33 @@ export interface LogoutResponse {
   errorMessage?: string;
 }
 
+/* =======================================================Certificate API model================================================== */
+
+//work certificate list
+export interface CertificateListResponse {
+  work_certificates: Certificate[]
+  errorMessage?: string;
+}
+
+//work certificate add 
+export interface CertificateAddResponse {
+  work_certificate_id: number;
+  information?: string;
+  errorMessage?: string; 
+}
+
+//work certificate delete
+export interface CertificateDeleteResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+//work certificate update
+export interface CertificateUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
 /*========================================================================================================*/
 
 
@@ -1047,6 +1074,7 @@ export interface WorkerResponse {
   user_id: number;
   userpersonal_idnum: string;
 }
+
 /* =======================================================Qr scan login============================================ */
 
 //qr scan login
@@ -1071,6 +1099,11 @@ export interface Version {
 // version querying
 export interface VersionResponse {
   versions: Version[];
+}
+
+//upload certificate image 
+export interface UploadCertificateImageResponse {
+  work_certificate_id: string;
 }
 
 export type ErrorResponse = LoginResponse

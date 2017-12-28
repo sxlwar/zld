@@ -1,3 +1,4 @@
+import { AddWorkCertificateComponent } from './../components/add-work-certificate/add-work-certificate';
 import { QRScanner } from '@ionic-native/qr-scanner';
 import { AddBankcardComponent } from './../components/add-bankcard/add-bankcard';
 import { AddWorkExperienceComponent } from './../components/add-work-experience/add-work-experience';
@@ -125,6 +126,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     AddEducationComponent,
     AddWorkExperienceComponent,
     AddBankcardComponent,
+    AddWorkCertificateComponent,
   ],
   providers: [
     Api,

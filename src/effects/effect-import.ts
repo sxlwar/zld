@@ -1,3 +1,4 @@
+import { WorkCertificateEffect } from './work-certificate-effect';
 import { LogoutEffect } from './logout-effect';
 import { LocationEffect } from './location-effect';
 import { LocationCardEffect } from './location-card-effect';
@@ -40,4 +41,5 @@ export const EFFECTS = [
     WorkFlowEffect,
     WorkPieceEffect,
     WorkerEffect,
+    WorkCertificateEffect,
 ]

@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -82,6 +82,18 @@ export interface AddBankcardFormModel {
   phoneNumber: string;
   cardType: string;
   isMaster: boolean;
+}
+
+export interface AddCertificateFormModel {
+  workTypeId: number;
+  certificateNumber: string;
+  firstGetDate: string;
+  availableStartDate: string;
+  availableEndDate: string;
+  education: string;
+  mechanism: string;
+  imageFace?: string;
+  imageBack?: string;
 }
 
 @Injectable()
@@ -262,6 +274,21 @@ export class MapperService {
       phone_num: source.phoneNumber,
       is_master: source.isMaster,
       user_id: NaN
+    }
+  }
+
+  transformAddCertificate(source: AddCertificateFormModel): CertificateAddOptions {
+    return {
+      sid: '',
+      usefinish_date: source.availableEndDate,
+      usestart_date: source.availableStartDate,
+      num: source.certificateNumber,
+      firstget_date: source.firstGetDate,
+      education: source.education,
+      worktype_id: source.workTypeId,
+      mechanism: source.mechanism,
+      imageface: source.imageFace,
+      imageback: source.imageBack
     }
   }
 }
