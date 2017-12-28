@@ -1,16 +1,8 @@
 import * as actions from '../../actions/action/login-action';
-import {
-  LOGIN,
-  SHOW_SPECIFIC_INNER_SLIDE,
-  SHOW_SPECIFIC_SLIDE,
-  UPDATE_RANDOM_CODE
-} from '../../actions/action/login-action';
+import { LOGIN, SHOW_SPECIFIC_INNER_SLIDE, SHOW_SPECIFIC_SLIDE, UPDATE_RANDOM_CODE } from '../../actions/action/login-action';
 import { LoginOptions } from '../../interfaces/request-interface';
 import { ENV } from '@app/env';
-import {
-  RegisterResponse, LoginResponse, ResetPasswordResponse,
-  PhoneVerCodeResponse
-} from '../../interfaces/response-interface';
+import { RegisterResponse, LoginResponse, ResetPasswordResponse, PhoneVerCodeResponse } from '../../interfaces/response-interface';
 
 export interface State {
   activeIndexOfSlides: number
@@ -96,7 +88,7 @@ export function userInfoReducer(state = initialLoginResponse, action: actions.Ac
   }
 }
 
-export const getRealname = (state: LoginResponse) => state.realname;
+export const getRealName = (state: LoginResponse) => state.realname;
 
 export const getSid = (state: LoginResponse) => state.sid;
 

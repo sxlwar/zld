@@ -81,16 +81,11 @@ export class TeamService {
 
         this.getTeamList(option);
 
-        return this.getTeams().mergeMap(teams => {
-          if (!teams) return Observable.empty();
-          return Observable.from(teams).first();
-        });
+        return this.getTeams()
+          .mergeMap(teams => !teams.length ? Observable.of(null) : Observable.from(teams).first());
       });
 
-    return character$.mergeMap(isTeamCharacter => {
-      if (isTeamCharacter) return team$;
-      return Observable.of(null);
-    });
+    return character$.mergeMap(isTeamCharacter => isTeamCharacter ? team$ : Observable.of(null));
   }
 
   getOwnTeams(): Observable<Team[]> {

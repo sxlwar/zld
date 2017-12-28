@@ -1,18 +1,8 @@
-//region
 import { AttendanceStatistics } from './../../interfaces/response-interface';
 import { selectAttendanceStatisticsResponse, selectAttendanceStatistics } from './../../reducers/index-reducer';
 import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
-import {
-  AppState,
-  selectAttendanceDatePeriod,
-  selectAttendanceLimit,
-  selectAttendancePage,
-  selectAttendanceResponse,
-  selectAttendanceAllSelected,
-  selectAttendanceData,
-  selectAttendanceCount
-} from '../../reducers/index-reducer';
+import { AppState, selectAttendanceDatePeriod, selectAttendanceLimit, selectAttendancePage, selectAttendanceResponse, selectAttendanceAllSelected, selectAttendanceData, selectAttendanceCount } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
@@ -26,15 +16,17 @@ import { SetAttendanceEndDateAction, SetAttendanceStartDateAction, AddSelectedAt
 import { UserService } from '..//business/user-service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
-//endregion
 
 @Injectable()
 export class AttendanceService {
   subscriptions: Subscription[] = [];
+
   attendance$$: Subscription;
+  
   statistics$$: Subscription;
 
-  constructor(public store: Store<AppState>,
+  constructor(
+    public store: Store<AppState>,
     public processor: ProcessorService,
     public userInfo: UserService,
     public error: ErrorService,
@@ -114,7 +106,7 @@ export class AttendanceService {
   getAttendanceStatistics(): Observable<AttendanceStatistics[]> {
     const result = this.store.select(selectAttendanceStatistics);
 
-    const subscription = result.subscribe(value => !value.length && this.getAttendanceStatisticsByTeam());
+    const subscription = result.subscribe(value => !!value && !value.length && this.getAttendanceStatisticsByTeam());
 
     this.subscriptions.push(subscription);
 

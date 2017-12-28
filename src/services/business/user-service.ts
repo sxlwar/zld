@@ -29,7 +29,7 @@ export class UserService {
         return this.getUserInfo().map(data => data.user_id);
     }
 
-    getRealname(): Observable<string> {
+    getRealName(): Observable<string> {
         return this.getUserInfo().map(data => data.realname);
     }
 

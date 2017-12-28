@@ -1,4 +1,3 @@
-import { uploadCertificateImage } from './http-service';
 import { GetCertificateListAction, AddCertificateAction, DeleteCertificateAction, UpdateCertificateAction, UploadCertificateImageAction } from './../../actions/action/work-certificate-action';
 import { QRLoginAction } from './../../actions/action/qr-scan-login-action';
 import { LogoutAction } from './../../actions/action/logout-action';

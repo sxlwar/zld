@@ -1,3 +1,5 @@
+import { MineRoot } from './../../pages/pages';
+import { putInArray } from '../utils/util';
 import { Observable } from 'rxjs/Observable';
 import { IconState } from '../../reducers/reducer/icons-reducer';
 import { AppState, getIconsState } from '../../reducers/index-reducer';
@@ -248,15 +250,15 @@ export const modifyAttendance: IconItem = {
   page: ''
 };
 
-export const workContract: IconItem = {
+export const workerContract: IconItem = {
   text: 'WORK_CONTRACT',
   icon: workContractIcon,
   color: 'contract',
   permission: {
-    view: [],
+    view: [SW, UW],
     opt: [PM, LM, TL, SW, UW]
   },
-  page: ''
+  page: pages.workerContractPage
 };
 
 export const primeContract: IconItem = {
@@ -335,6 +337,7 @@ export const myAttendance: IconItem = {
   },
   page: pages.personalAttendancePage
 };
+
 export const salary: IconItem = {
   text: 'MY_SALARY',
   icon: salaryIcon,
@@ -345,6 +348,7 @@ export const salary: IconItem = {
   },
   page: pages.salaryPage 
 };
+
 export const bankCard: IconItem = {
   text: 'MY_BANK_CARD',
   icon: bankCardIcon,
@@ -355,6 +359,7 @@ export const bankCard: IconItem = {
   },
   page: pages.bankcardPage
 };
+
 export const certificate: IconItem = {
 text: 'CERTIFICATE',
   icon: certificateIcon,
@@ -483,15 +488,18 @@ export class IconService {
         if (!view && !opt) item.color = '';
         return item;
       })
-      .reduce((acc, cur) => {
-        acc.push(cur);
-        return acc;
-      }, []);
+      .reduce(putInArray, []);
   }
 
   private addIcons(name: string, icons: Observable<IconState[]>): Subscription {
     return icons.subscribe(icons => {
       const target = {};
+
+      if(name === MineRoot) {
+        const target = icons.find(icon => icon.text === 'WORK_CONTRACT');
+
+        if(!target.permission.view || !target.permission.opt) target.color = ''; 
+      }
 
       target[name] = icons;
 

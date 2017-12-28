@@ -56,7 +56,7 @@ export class PersonalService {
         return this.process.homeInfoUpdateProcessor(
             option.withLatestFrom(
                 this.store.select(selectHomeInfoListResponse)
-                    .filter(value => !!value && !!value.home_info.length)
+                    .filter(value => !!value && !!value.home_info && !!value.home_info.length)
                     .map(res => rename(omit(res.home_info[0], ['user_id']), homeAddressNameMapBetweenResponseAndRequest, true)),
                 this.userInfo.getSid().map(sid => ({ sid })),
                 (option, source, sid) => ({ ...source, ...option, ...sid })

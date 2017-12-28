@@ -1,27 +1,14 @@
-//region
 import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers } from './../../reducers/index-reducer';
 import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction, UpdateSelectedWorkersAction } from './../../actions/action/worker-action';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
 import { Command } from './../api/command';
 import { WorkerContract as contract } from './../api/command';
 import { Injectable } from '@angular/core';
-import {
-  AppState,
-  selectSid,
-  selectUserId,
-  selectWorkerContractResponse,
-  selectWorkerContracts,
-  selectWorkerLimit,
-  selectWorkerPage
-} from '../../reducers/index-reducer';
+import { AppState, selectSid, selectUserId, selectWorkerContractResponse, selectWorkerContracts, selectWorkerLimit, selectWorkerPage } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { ProcessorService } from '../api/processor-service';
-import {
-  DecrementQueryWorkerContractPageAction,
-  IncrementQueryWorkerContractPageAction,
-  ResetQueryWorkerContractPageAction
-} from '../../actions/action/worker-action';
+import { DecrementQueryWorkerContractPageAction, IncrementQueryWorkerContractPageAction, ResetQueryWorkerContractPageAction } from '../../actions/action/worker-action';
 import 'rxjs/add/operator/zip';
 import { Subscription } from 'rxjs/Subscription';
 import { ErrorService } from '../errors/error-service';
@@ -34,7 +21,6 @@ import 'rxjs/add/operator/first';
 import 'rxjs/add/operator/defaultIfEmpty';
 import { RequestOption, ContractType } from '../../interfaces/request-interface';
 import { uniqBy } from 'lodash';
-//endregion
 
 export interface WorkerItem {
   id: number;
@@ -122,10 +108,7 @@ export class WorkerService {
         return this.store.select(selectWorkerContractResponse)
           .map(res => res.worker_contract)
           .zip(id, combineFn)
-          .mergeMap(contract => {
-            if (contract) return Observable.of(contract);
-            return Observable.of(null);
-          });
+          .mergeMap(contract => !!contract ? Observable.of(contract) : Observable.of(null));
       })
   }
 

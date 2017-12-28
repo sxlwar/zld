@@ -1,8 +1,5 @@
-//region
 import { WorkOvertimeRecordListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/overtime-action';
-//endregion
-
 
 export interface State {
     page: number;

@@ -6,7 +6,6 @@ import { personalInfo } from './../../services/business/icon-service';
 import { MineRoot, personalInformationPage, welcomePage } from './../pages';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import * as icon from '../../services/business/icon-service';
 import { IconService } from '../../services/business/icon-service';
 import { Observable } from 'rxjs/Observable';
 import { IconState } from '../../reducers/reducer/icons-reducer';
@@ -15,6 +14,7 @@ import { UserService } from '../../services/business/user-service';
 import { CraftService } from '../../services/business/craft-service';
 import { TeamService } from '../../services/business/team-service';
 import { App } from 'ionic-angular';
+import * as icon from '../../services/business/icon-service';
 import * as pages from '../../pages/pages';
 
 const icons = [
@@ -22,7 +22,7 @@ const icons = [
   icon.salary,
   icon.bankCard,
   icon.certificate,
-  icon.workContract,
+  icon.workerContract,
   icon.personalInfo,
   icon.familyInfo,
   icon.workInfo,
@@ -94,7 +94,7 @@ export class MinePage {
   initialModel() {
     this.icons = this.iconService.getIcons(MineRoot, icons);
 
-    this.name = this.userInfo.getRealname();
+    this.name = this.userInfo.getRealName();
 
     this.character = this.userInfo.getUserCharacter();
 
@@ -106,6 +106,7 @@ export class MinePage {
 
     //TODO: 在获取自己的工种和班组时都要去拿自己的合同，如果store中没有当前用户的合同，这个地方会发出两次请求去查合同。
     this.workType = this.workTypeService.getOwnWorkType()
+      .filter(value => !!value.length)
       .mergeMap(types => Observable.from(types).first().map(workType => workType.name));
 
     this.team = this.teamService.getOwnTeam().map(team => team && team.name || '');
@@ -117,7 +118,7 @@ export class MinePage {
     ]
   }
 
-  goTo(item) {
+  goTo(item: IconState | Setting) {
     this.navCtrl.push(item.page, item).then(() => { });
   }
 

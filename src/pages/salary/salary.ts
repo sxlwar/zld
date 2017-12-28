@@ -28,6 +28,12 @@ export class SalaryPage {
 
   }
 
+  ionViewCanEnter(){
+    const { view, opt } = this.navParams.get('permission');
+
+    return opt || view;
+  }
+
   ionViewDidLoad() {
     const process = this.payProcess.getPayProcesses();
 

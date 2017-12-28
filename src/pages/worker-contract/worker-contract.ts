@@ -43,11 +43,50 @@ export class WorkerContractPage {
   ) {
   }
 
+  /**
+   * If this page is launched by worker management page ,allow user enter directly.
+   * If it is launched by mine page, user must have permission to view and modify at the same time before entering;
+   */
+  ionViewCanEnter() {
+    const id = this.navParams.get('contractId');
+
+    if (!!id) {
+      return true;
+    } else {
+      const { view, opt } = this.navParams.get('permission');
+     
+      return view && opt;
+    }
+  }
+
   ionViewDidLoad() {
     const id = this.navParams.get('contractId');
 
-    this.subscription = this.worker.getContractById(Observable.of(id))
-      .filter(value => !!value)
+    if (id) {
+      this.getContractById(id);
+    } else {
+      this.getContractByUser();
+    }
+  }
+
+  getContractById(id: number) {
+    const contract = this.worker.getContractById(Observable.of(id)).filter(value => !!value);
+
+    this.subscription = this.optimizeContract(contract);
+  }
+
+  getContractByUser() {
+    const contract = this.worker.getOwnContract(
+      this.worker.getUnexpiredOption()
+        .zip(this.worker.getCompleteStatusOption(), (option1, option2) => ({ ...option1, ...option2 }))
+    )
+      .filter(value => !!value);
+
+    this.subscription = this.optimizeContract(contract);
+  }
+
+  optimizeContract(contract: Observable<WorkerContract>): Subscription {
+    return contract
       .zip(this.project.getCurrentProject())
       .subscribe(([contract, project]) => {
         this.isTimerContract = contract.type === ContractTypeOfResponse.timer;
@@ -78,7 +117,7 @@ export class WorkerContractPage {
       .join(' ');
 
     return {
-      attendanceTimeInterval, 
+      attendanceTimeInterval,
       partyA: project.sub_contract__contracting__name,
       partyB: contract.worker__employee__realname,
       expire: contract.start_day + '~' + contract.finish_day,

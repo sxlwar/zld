@@ -1,6 +1,5 @@
 import { Subscription } from 'rxjs/Subscription';
 import { workFlowMap } from './../../services/business/icon-service';
-//region
 import { WorkFlowAggregation } from './../../interfaces/response-interface';
 import { StatisticsService } from './../../services/business/statistics-service';
 import { Component } from '@angular/core';
@@ -10,13 +9,7 @@ import { IconState } from '../../reducers/reducer/icons-reducer';
 import { IconService } from '../../services/business/icon-service';
 import * as Icons from '../../services/business/icon-service';
 import * as pages from '../../pages/pages';
-//endregion
 
-
-/* *
-  * iconState => workFlow => workFlowAggregation
-    icon:string => enum name: process_id =>  process_id: string;
- */
 const icons = [
   Icons.attendanceConfirm,
   Icons.payrollAudit,
@@ -24,7 +17,7 @@ const icons = [
   Icons.overtime,
   Icons.pieceAudit,
   Icons.modifyAttendance,
-  Icons.workContract,
+  Icons.workerContract,
   Icons.primeContract,
   Icons.subContract,
   Icons.modifyDuty,
@@ -96,6 +89,7 @@ export class MissionPage {
 
   workFlowBadges(): Observable<WorkFlowAggregation> {
     return this.statistics.getWorkFlowStatistics()
+      .filter(value => !!value)
       .mergeMap(aggregations => Observable.from(aggregations));
   }
 

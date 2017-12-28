@@ -27,7 +27,7 @@ export class WorkFlowService {
     getWorkFlowStatistics(): Observable<WorkFlowAggregation[]> {
         const result = this.store.select(selectWorkFlowStatistics);
 
-        const subscription = result.subscribe(value => !value.length && this.getWorkFlowStatistic());
+        const subscription = result.take(1).subscribe(value => !value.length && this.getWorkFlowStatistic());
         
         this.subscriptions.push(subscription);
 
