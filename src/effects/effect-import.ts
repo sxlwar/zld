@@ -1,3 +1,4 @@
+import { MessageEffect } from './message-effect';
 import { WorkCertificateEffect } from './work-certificate-effect';
 import { LogoutEffect } from './logout-effect';
 import { LocationEffect } from './location-effect';
@@ -32,6 +33,7 @@ export const EFFECTS = [
     LogoutEffect,
     LocationEffect,
     LocationCardEffect,
+    MessageEffect,
     OvertimeEffect,
     PayBillEffect,
     PersonalEffect,

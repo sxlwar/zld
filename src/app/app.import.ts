@@ -1,3 +1,4 @@
+import { MessageIconPipe, MessageSplitPipe, MessageParsePipe } from './../pipes/message-pipe';
 import { DegreePipe } from './../pipes/personal-pipe';
 import { LocationCardStatusPipe } from './../pipes/location-card-status-pipe';
 import { InOutPipe } from './../pipes/inOut-pipe';
@@ -24,4 +25,7 @@ export const PIPES = [
     PercentBatteryPipe,
     IsLowPowerPipe,
     DegreePipe,
+    MessageIconPipe,
+    MessageSplitPipe,
+    MessageParsePipe,
 ]

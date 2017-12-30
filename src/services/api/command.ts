@@ -1,4 +1,4 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
@@ -762,6 +762,32 @@ export const certificateUpdate: ApiUnit = {
   }
 }
 
+/* ========================================================Message model=========================================== */
+
+export const messageList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['operation.consumer.MsgTitleList']]
+  ])
+}
+
+export const unreadMessageCount: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['operation.consumer.UnreadMsgCount']]
+  ])
+}
+
+export const messageDelete: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['operation.consumer.MsgTitleDelete']]
+  ])
+}
+
+export const messageContent: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['operation.consumer.ReadMsgContent']]
+  ])
+}
+
 /* ========================================================Common model=========================================== */
 
 export const logout: ApiUnit = {
@@ -785,8 +811,6 @@ export class Command {
   deleteFiles = "operation.consumer.DeleteFiles";
   groupsList = "employee.consumer.GroupsList";
   leaveRecordList = "project.consumer.LeaveRecordList";
-  msgTitleDelete = "operation.consumer.MsgTitleDelete";
-  msgTitleList = "operation.consumer.MsgTitleList";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
   myCompanyContractList = "employer.consumer.MyCompanyContractList";
@@ -797,12 +821,10 @@ export class Command {
   projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
   projectAreaDelete = "project.consumer.ProjectAreaDelete";
   projectPayBillFlowList = "project.consumer.ProjectPayBillFlowList";
-  readMsgContent = "operation.consumer.ReadMsgContent";
   requestList = "workflow.consumer.RequestList";
   searchWorker = "employer.consumer.SearchWorker";
   subContractList = "employer.consumer.SubContractList";
   taskUpdate = "workflow.consumer.TaskUpdate";
-  unreadMsgCount = "operation.consumer.UnreadMsgCount";
   workTimePayList = "project.consumer.WorkTimePayList";
   workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
   constructor() {
@@ -1319,6 +1341,33 @@ export class Command {
   }
 
   /**
+   * @description message related api: getMessageList, getMessageContent, getUnreadMessageCount, getMessageDelete;
+   */
+  getMessageList(option: MessageListOptions): WsRequest {
+    const path = messageList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getMessageContent(option: MessageContentOptions): WsRequest {
+    const path = messageContent.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getMessageDelete(option: MessageDeleteOptions): WsRequest {
+    const path = messageDelete.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getUnreadMessageCount(option: UnreadMessageCountOptions): WsRequest {
+    const path = unreadMessageCount.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
    * @description API unit interfaces for external module referring.
    */
   get uploadPersonalIdImage(): string {
@@ -1545,5 +1594,21 @@ export class Command {
 
   get certificateUpdate() {
     return certificateUpdate;
+  }
+
+  get messageList() {
+    return messageList;
+  }
+
+  get messageContent() {
+    return messageContent;
+  }
+
+  get unreadMessageCount() {
+    return unreadMessageCount;
+  }
+
+  get messageDelete() {
+    return messageDelete;
   }
 }

@@ -27,6 +27,7 @@ import * as bankCard from './reducer/bank-card-reducer';
 import * as logout from './reducer/logout-reducer';
 import * as QRLogin from './reducer/qr-scan-login-reducer';
 import * as workCertificate from './reducer/work-certificate-reducer';
+import * as message from './reducer/message-reducer';
 
 export interface AppState {
   config: config.State;
@@ -61,6 +62,7 @@ export interface AppState {
   logout: logout.State,
   QRLogin: QRLogin.State,
   workCertificate: workCertificate.State,
+  message: message.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -96,6 +98,7 @@ export const reducers: ActionReducerMap<AppState> = {
   logout: logout.reducer,
   QRLogin: QRLogin.reducer,
   workCertificate: workCertificate.reducer,
+  message: message.reducer,
 };
 
 //config
@@ -364,6 +367,23 @@ export const selectCertificateUploadResponse = createSelector(getWorkCertificate
 export const selectCertificateAddOptions = createSelector(getWorkCertificate, workCertificate.getAddOptions);
 export const selectCertificateDeleteOptions = createSelector(getWorkCertificate, workCertificate.getDeleteOptions);
 export const selectCertificateUpdateOptions = createSelector(getWorkCertificate, workCertificate.getUpdateOptions);
+
+//message
+export const getMessage = (state: AppState) => state.message;
+export const selectMessageListResponse = createSelector(getMessage, message.getMessages);
+export const selectMessageContentResponse = createSelector(getMessage, message.getMessageContent);
+export const selectMessageDeleteResponse = createSelector(getMessage, message.getMessageDelete);
+export const selectUnreadMessageCountResponse = createSelector(getMessage, message.getUnreadMessageCount);
+export const selectMessageLimit = createSelector(getMessage, message.getMessageLimit);
+export const selectUnreadMessagePage = createSelector(getMessage, message.getUnreadMessagePage);
+export const selectReadMessagePage = createSelector(getMessage, message.getReadMessagePage);
+export const selectReadMessages = createSelector(getMessage, message.getReadMessages);
+export const selectUnreadMessages = createSelector(getMessage, message.getUnreadMessages);
+export const selectReadCount = createSelector(getMessage, message.getReadCount);
+export const selectUnreadMessageTimeOrder = createSelector(getMessage, message.getUnreadTimeOrder);
+export const selectReadMessageTimeOrder = createSelector(getMessage, message.getReadTimeOrder);
+export const selectUnreadMessageSelectedType = createSelector(getMessage, message.getUnreadSelectedType);
+export const selectReadMessageSelectedType = createSelector(getMessage, message.getReadSelectedType);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

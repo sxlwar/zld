@@ -404,6 +404,13 @@
   "CERTIFICATE_FRONT_TIP": "证书正面",
   "CERTIFICATE_BACK_TIP": "证书背面",
 
+  "UNREAD_MESSAGE": "未读消息",
+  "READ_MESSAGE": "已读消息",
+  "BY_CREATE_TIME":"按创建时间",
+  "BY_MESSAGE_TYPE": "按消息类型",
+  "MESSAGE_DETAIL": "消息详情",
+  "WORKER_CONTRACT_EXPIRE_TIP": "以下工人的用工合同即将到期",
+  "UNCONFIRMED_ATTENDANCE_TIP":"您有以下考勤未确认",
 
   "TAB1_TITLE": "Items",
   "TAB2_TITLE": "Search",

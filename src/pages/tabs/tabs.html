@@ -1,6 +1,6 @@
 <ion-tabs selectedIndex="1">
-  <ion-tab [root]="MessageRoot" [tabTitle]="messageTitle" tabIcon="message"></ion-tab>
-  <ion-tab [root]="ProjectRoot" [tabTitle]="projectTitle" tabIcon="project"></ion-tab>
-  <ion-tab [root]="MissionRoot" [tabTitle]="missionTitle" tabIcon="mission"></ion-tab>
-  <ion-tab [root]="MineRoot" [tabTitle]="mineTitle" tabIcon="mine"></ion-tab>
+  <ion-tab [root]="MessageRoot" [tabTitle]="messageTitle | async" tabIcon="message" [tabBadge]="messageBadge | async" tabBadgeStyle="danger"></ion-tab>
+  <ion-tab [root]="ProjectRoot" [tabTitle]="projectTitle | async" tabIcon="project"></ion-tab>
+  <ion-tab [root]="MissionRoot" [tabTitle]="missionTitle | async" tabIcon="mission"></ion-tab>
+  <ion-tab [root]="MineRoot" [tabTitle]="mineTitle | async" tabIcon="mine"></ion-tab>
 </ion-tabs>

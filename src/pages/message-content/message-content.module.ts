@@ -3,20 +3,17 @@ import { SharedModule } from './../../app/shared.modules';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { MessagePage } from './message';
+import { MessageContentPage } from './message-content';
 
 @NgModule({
   declarations: [
-    MessagePage,
+    MessageContentPage,
   ],
   imports: [
-    IonicPageModule.forChild(MessagePage),
+    IonicPageModule.forChild(MessageContentPage),
     TranslateModule,
     SharedModule,
     ComponentsModule,
   ],
-  exports: [
-    MessagePage
-  ]
 })
-export class MessagePageModule {}
+export class MessageContentPageModule {}

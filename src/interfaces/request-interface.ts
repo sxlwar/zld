@@ -616,6 +616,40 @@ export enum TaskStatus {
   completed = '完成'
 }
 
+/* ====================================================Message model============================================= */
+
+export interface UnreadMessageCountOptions {
+  sid: string;
+}
+
+export enum MessageReadTag {
+  unread = 1,
+  read
+}
+
+export enum MessageTag {
+  systemNotification = 1,
+  missionNotification
+}
+
+export interface MessageListOptions { // 名字改了，为毛有title这个词，下面2个也一样
+  sid: string;
+  page: number;
+  limit: number;
+  read_tag?: number; 
+  msg_tag?: number;
+}
+
+export interface MessageDeleteOptions {
+  sid: string;
+  title_ids: number[];  // message ids 这名字起的蛋都碎了。
+}
+
+export interface MessageContentOptions {
+  sid: string;
+  title_id: number;
+}
+
 /* ==========================================================Http request options============================================================ */
 
 // query version
@@ -672,6 +706,7 @@ export interface UploadOvertimeOptions extends UploadFileOptions {
   type: string; //constant 'attachment';
   file: string;
 }
+
 
 export type UploadOptions = UploadPersonalIdImageOptions
   | UploadCertificateImageOptions

@@ -1,12 +1,11 @@
+import { messageContentPage } from './../pages';
+import { MessageReadTag } from './../../interfaces/request-interface';
+import { MessageService } from './../../services/business/message-service';
+import { Subscription } from 'rxjs/Subscription';
+import { Message } from './../../interfaces/response-interface';
+import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the MessagePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -15,11 +14,120 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class MessagePage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  subscriptions: Subscription[] = [];
+
+  messageType = 'unread';
+
+  unreadMessages: Observable<Message[]>;
+
+  readMessages: Observable<Message[]>;
+
+  haveMoreUnreadMessage: Observable<boolean>;
+
+  haveMoreReadMessage: Observable<boolean>;
+
+  unread$$: Subscription;
+
+  read$$: Subscription;
+
+  launchReadQuery$$: Subscription;
+
+  selectedUnreadTimeOrder: Observable<number>;
+
+  selectedReadTimeOrder: Observable<number>;
+
+  selectedUnreadType: Observable<number>;
+
+  selectedReadType: Observable<number>;
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public message: MessageService
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MessagePage');
+    this.sendRequest();
+
+    this.initialModel();
+  }
+
+  sendRequest(): void {
+    this.subscriptions = [
+      this.message.getMessageListByReadState(MessageReadTag.unread)
+    ];
+  }
+
+  launchReadStateListQuery() {
+    if (!this.launchReadQuery$$) {
+      this.launchReadQuery$$ = this.message.getMessageListByReadState(MessageReadTag.read);
+    }
+  }
+
+  initialModel(): void {
+    this.unreadMessages = this.message.getUnreadMessages();
+
+    this.readMessages = this.message.getReadMessages();
+
+    this.haveMoreUnreadMessage = this.message.haveMoreUnreadMessage();
+
+    this.haveMoreReadMessage = this.message.haveMoreReadMessage();
+
+    this.selectedUnreadTimeOrder = this.message.getUnreadTimeOrder();
+
+    this.selectedReadTimeOrder = this.message.getReadTimeOrder();
+
+    this.selectedUnreadType = this.message.getUnreadSelectedType();
+
+    this.selectedReadType = this.message.getReadSelectedType();
+  }
+
+  getNextPageOfUnread(infiniteScroll: InfiniteScroll): void {
+    this.message.increaseUnreadPage();
+
+    this.unread$$ && this.unread$$.unsubscribe();
+
+    this.unread$$ = this.message.getMessageListComplete().subscribe(_ => infiniteScroll.complete());
+  }
+
+  getNextPageOfRead(infiniteScroll: InfiniteScroll): void {
+    this.message.increaseReadPage();
+
+    this.read$$ && this.read$$.unsubscribe();
+
+    this.read$$ = this.message.getMessageListComplete().subscribe(_ => infiniteScroll.complete());
+  }
+
+  goToContentPage(message: Message): void {
+    this.navCtrl.push(messageContentPage, { message }).then(() => { });
+  }
+
+  updateUnreadTimeOrder(order: string): void {
+
+    this.message.updateUnreadTimeOrder(Number(order));
+  }
+
+  updateReadTimeOrder(order: string): void {
+    this.message.updateReadTimeOrder(Number(order));
+  }
+
+  updateUnreadType(type: number): void {
+    this.message.updateUnreadSelectedType(type);
+  }
+
+  updateReadType(type: number): void {
+    this.message.updateReadSelectedType(type);
+  }
+
+  ionViewWillUnload() {
+    this.unread$$ && this.unread$$.unsubscribe();
+
+    this.read$$ && this.read$$.unsubscribe();
+
+    this.launchReadQuery$$ && this.launchReadQuery$$.unsubscribe();
+
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 
 }

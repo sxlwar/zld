@@ -1,4 +1,3 @@
-//region
 import { Injectable } from '@angular/core';
 import { AppState } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -9,7 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { ErrorMessage, ErrorResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
-//endregion
 
 export interface ErrorInfo {
   title: string;

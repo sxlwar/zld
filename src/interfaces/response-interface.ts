@@ -1041,7 +1041,7 @@ export interface CertificateListResponse {
 export interface CertificateAddResponse {
   work_certificate_id: number;
   information?: string;
-  errorMessage?: string; 
+  errorMessage?: string;
 }
 
 //work certificate delete
@@ -1081,6 +1081,74 @@ export interface WorkerResponse {
 export interface QRScanLoginResponse {
   information?: string;
   errorMessage?: string;
+}
+
+/* =======================================================Message API model============================================ */
+
+export enum MessageType {
+  "全部类型",
+  "工资发放",
+  "总包合同到期",
+  "分包合同到期",
+  "用工合同到期",
+  "工资卡不存在",
+  "工作流审核通过" = 7,
+  "考勤未确认"
+}; // 假程序员吧，这么喜欢以1开头, 我操，没有6，太恶心了，明天再写吧，让一个6搞的重写。
+
+export interface Message {
+  user_id: number;
+  msg_type: number;
+  is_delete: boolean;
+  title: string;
+  sender_id: number;
+  is_read: boolean;
+  create_time: string;
+  modify_time: string;
+  content_id: number;
+  id: number;
+}
+
+//unread message count
+export interface UnreadMessageCountResponse {
+  count: number;
+}
+
+//msg title list
+export interface MessageListResponse {
+  count: number;
+  msgs: Message[];
+}
+
+//msg title delete
+export interface MessageDeleteResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+export interface AttendanceMessage {
+  team_id: number;
+  confirm_status: string|number[][]; // 数组元素的第一个元素日期，第二个值是未确认个数；
+  team_name: string;
+}
+
+export interface WorkFlowContentMessage {
+  content: string;
+  [key: string]: any;
+}
+
+/**
+ * 文档上给了一串字符，狗屁说明也没有，如下：
+ * "{\"worker\": [[19, \"周磊\", \"电工(强电)\", \"研发部\"]], \"finish_day\": \"2017-08-19\"}"
+ */
+export interface WorkerContractMessage {
+  worker: string[]; // 0: 鬼知道是啥; 1, 看起来像名字；2，看起来像工种；3，看起来像班组；
+  finish_day: string;
+}
+
+//read message content
+export interface MessageContentResponse {
+  content: string;
 }
 
 /* =======================================================Http response============================================ */

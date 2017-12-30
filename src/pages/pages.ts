@@ -65,6 +65,7 @@ export const attendanceConfirmPage = 'AttendanceConfirmPage';
 
 /*============================================message tab pages===================================================*/
 
+export const messageContentPage = 'MessageContentPage'
 
 
 /*============================================common pages===================================================*/
@@ -123,6 +124,8 @@ export const PAGES = [
   { title: 'Project', component: ProjectRoot },
   { title: 'Mission', component: MissionRoot },
   { title: 'Mine', component: MineRoot },
+
+  { title: 'MessageContent', component: messageContentPage },
 
   { title: 'Attendance', component: attendancePage },
   { title: 'ProjectBill', component: projectBillPage },

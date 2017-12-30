@@ -40,6 +40,14 @@ import { AddWorkExperienceComponent } from './add-work-experience/add-work-exper
 import { AddBankcardComponent } from './add-bankcard/add-bankcard';
 import { ResetPasswordComponent } from './reset-password/reset-password';
 import { AddWorkCertificateComponent } from './add-work-certificate/add-work-certificate';
+import { MessageListComponent } from './message-list/message-list';
+import { SalaryMessageComponent } from './salary-message/salary-message';
+import { PrimaryContractMessageComponent } from './primary-contract-message/primary-contract-message';
+import { SubcontractMessageComponent } from './subcontract-message/subcontract-message';
+import { WorkerContractMessageComponent } from './worker-contract-message/worker-contract-message';
+import { SalaryCardMessageComponent } from './salary-card-message/salary-card-message';
+import { WorkFlowMessageComponent } from './work-flow-message/work-flow-message';
+import { AttendanceMessageComponent } from './attendance-message/attendance-message';
 
 @NgModule({
   declarations: [
@@ -80,6 +88,14 @@ import { AddWorkCertificateComponent } from './add-work-certificate/add-work-cer
     WorkPieceAxisComponent,
     WorkTypeSelectComponent,
     WorkerSelectComponent,
+    MessageListComponent,
+    SalaryMessageComponent,
+    PrimaryContractMessageComponent,
+    SubcontractMessageComponent,
+    WorkerContractMessageComponent,
+    SalaryCardMessageComponent,
+    WorkFlowMessageComponent,
+    AttendanceMessageComponent,
   ],
   imports: [
     CommonModule,
@@ -127,6 +143,14 @@ import { AddWorkCertificateComponent } from './add-work-certificate/add-work-cer
     WorkPieceAxisComponent,
     WorkTypeSelectComponent,
     WorkerSelectComponent,
+    MessageListComponent,
+    SalaryMessageComponent,
+    PrimaryContractMessageComponent,
+    SubcontractMessageComponent,
+    WorkerContractMessageComponent,
+    SalaryCardMessageComponent,
+    WorkFlowMessageComponent,
+    AttendanceMessageComponent,
   ]
 })
 export class ComponentsModule {

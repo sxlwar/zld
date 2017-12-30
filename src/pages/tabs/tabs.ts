@@ -1,6 +1,9 @@
+import { Subscription } from 'rxjs/Subscription';
+import { MessageService } from './../../services/business/message-service';
+import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage } from 'ionic-angular';
 import { MessageRoot, ProjectRoot, MissionRoot, MineRoot } from '../pages';
 
 @IonicPage()
@@ -10,24 +13,59 @@ import { MessageRoot, ProjectRoot, MissionRoot, MineRoot } from '../pages';
 })
 export class TabsPage {
   MessageRoot: any = MessageRoot;
+
   ProjectRoot: any = ProjectRoot;
+
   MissionRoot: any = MissionRoot;
+
   MineRoot: any = MineRoot;
 
-  messageTitle = " ";
-  projectTitle = " ";
-  missionTitle = " ";
-  mineTitle = " ";
+  messageTitle: Observable<string>;
+
+  projectTitle: Observable<string>;
+
+  missionTitle: Observable<string>;
+
+  mineTitle: Observable<string>;
+
+  messageBadge: Observable<number | string>;
+
+  subscriptions: Subscription[];
 
   constructor(
-    public navCtrl: NavController,
-    public translateService: TranslateService
+    public translateService: TranslateService,
+    public message: MessageService
   ) {
-    translateService.get(['MESSAGE', 'PROJECT', 'MISSION', 'MINE']).subscribe(values => {
-      this.messageTitle = values['MESSAGE'];
-      this.projectTitle = values['PROJECT'];
-      this.missionTitle = values['MISSION'];
-      this.mineTitle = values['MINE'];
-    });
+    this.initialTitle();
+  }
+
+  ionViewDidLoad() {
+    this.getUnreadMessage();
+
+    this.initialModel();
+  }
+
+  getUnreadMessage() {
+    this.subscriptions = [
+      this.message.getUnreadMessageCount(),
+    ];
+  }
+
+  initialModel() {
+    this.messageBadge = this.message.getUnreadCount();
+  }
+
+  initialTitle() {
+    this.messageTitle = this.translateService.get('MESSAGE');
+
+    this.projectTitle = this.translateService.get('PROJECT');
+
+    this.missionTitle = this.translateService.get('MISSION');
+
+    this.mineTitle = this.translateService.get('MINE');
+  }
+
+  ionViewWillUnload(){
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }
