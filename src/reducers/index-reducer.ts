@@ -28,6 +28,7 @@ import * as logout from './reducer/logout-reducer';
 import * as QRLogin from './reducer/qr-scan-login-reducer';
 import * as workCertificate from './reducer/work-certificate-reducer';
 import * as message from './reducer/message-reducer';
+import * as nationality from './reducer/nationality-reducer';
 
 export interface AppState {
   config: config.State;
@@ -63,6 +64,7 @@ export interface AppState {
   QRLogin: QRLogin.State,
   workCertificate: workCertificate.State,
   message: message.State,
+  nationality: nationality.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -99,6 +101,7 @@ export const reducers: ActionReducerMap<AppState> = {
   QRLogin: QRLogin.reducer,
   workCertificate: workCertificate.reducer,
   message: message.reducer,
+  nationality: nationality.reducer,
 };
 
 //config
@@ -384,6 +387,10 @@ export const selectUnreadMessageTimeOrder = createSelector(getMessage, message.g
 export const selectReadMessageTimeOrder = createSelector(getMessage, message.getReadTimeOrder);
 export const selectUnreadMessageSelectedType = createSelector(getMessage, message.getUnreadSelectedType);
 export const selectReadMessageSelectedType = createSelector(getMessage, message.getReadSelectedType);
+
+//nationality
+export const getNationality = (state: AppState) => state.nationality;
+export const selectNationalityResponse = createSelector(getNationality, nationality.getNationalityResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

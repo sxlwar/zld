@@ -12,16 +12,12 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class CraftService {
 
-  subscriptions: Subscription[] = [];
-  craft$$: Subscription;
-
   constructor(
     public store: Store<AppState>,
     public processor: ProcessorService,
     public errorService: ErrorService,
     public workerService: WorkerService
   ) {
-    this.handleError();
     processor.workTypeListProcessor();
   }
 
@@ -46,11 +42,7 @@ export class CraftService {
     return this.store.select(selectSelectedWorkTypes);
   }
 
-  private handleError() {
-    this.craft$$ = this.errorService.handleErrorInSpecific(this.store.select(getWorkType), '');
-  }
-
-  unSubscribe() {
-    this.subscriptions.forEach(item => item.unsubscribe());
+  handleError(): Subscription {
+    return this.errorService.handleErrorInSpecific(this.store.select(getWorkType), 'API_ERROR');
   }
 }

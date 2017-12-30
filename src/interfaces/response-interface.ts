@@ -1151,6 +1151,12 @@ export interface MessageContentResponse {
   content: string;
 }
 
+/* =======================================================nationality response============================================ */
+
+export interface NationalityResponse {
+  nationalityChoices: string[][]; // item: [string, string]; [汉,汉族]
+}
+
 /* =======================================================Http response============================================ */
 
 export interface Version {

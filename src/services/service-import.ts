@@ -1,3 +1,4 @@
+import { NationalityService } from './business/nationality-service';
 import { WorkCertificateService } from './business/work-certificate-service';
 import { QRLoginService } from './business/qr-login-service';
 import { LogoutService } from './business/logout-service';
@@ -71,6 +72,7 @@ export const BUSINESS_SERVICES = [
     LoginService,
     LogoutService,
     MessageService,
+    NationalityService,
     OvertimeService,
     PayBillService,
     PayProcessService,

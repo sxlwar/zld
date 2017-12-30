@@ -802,6 +802,12 @@ export const QRLogin: ApiUnit = {
   ])
 }
 
+export const nationalityList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.NationalityList']]
+  ])
+}
+
 @Injectable()
 export class Command {
 
@@ -814,7 +820,6 @@ export class Command {
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
   myCompanyContractList = "employer.consumer.MyCompanyContractList";
-  nationalityList = "employee.consumer.NationalityList";
   paySalary = "project.consumer.PaySalary";
   primeContractList = "employer.consumer.PrimeContractList";
   processCreate = "workflow.consumer.ProcessCreate";
@@ -847,6 +852,14 @@ export class Command {
     const path = company.operates.get(Operate.search)[0];
 
     return this.getFullParameter(path, option);
+  }
+
+  nationalityList() {
+    const path = nationalityList.operates.get(Operate.querying)[0];
+
+    const { command } = this.getFullParameter(path, {});
+
+    return { command };
   }
 
   /**

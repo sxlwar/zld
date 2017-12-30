@@ -24,6 +24,7 @@ import { Actions as logout } from './action/logout-action';
 import { Actions as qrLogin } from './action/qr-scan-login-action';
 import { Actions as certificate } from './action/work-certificate-action';
 import { Actions as message } from './action/message-action';
+import { Actions as nationality } from './action/nationality-action';
 
 export type Actions = config
   | attendance
@@ -39,6 +40,7 @@ export type Actions = config
   | logout
   | machine
   | message
+  | nationality
   | overtime
   | payBill
   | personal

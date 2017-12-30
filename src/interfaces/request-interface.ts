@@ -616,6 +616,8 @@ export enum TaskStatus {
   completed = '完成'
 }
 
+
+
 /* ====================================================Message model============================================= */
 
 export interface UnreadMessageCountOptions {
@@ -648,6 +650,12 @@ export interface MessageDeleteOptions {
 export interface MessageContentOptions {
   sid: string;
   title_id: number;
+}
+
+/* =========================================================Nationality options======================================================= */
+
+export interface NationalityOptions { 
+  
 }
 
 /* ==========================================================Http request options============================================================ */

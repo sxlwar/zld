@@ -1,3 +1,4 @@
+import { GetNationalityAction } from './../../actions/action/nationality-action';
 import { GetMessageListAction, GetMessageContentAction, DeleteMessageAction, GetUnreadMessageCountAction } from './../../actions/action/message-action';
 import { GetCertificateListAction, AddCertificateAction, DeleteCertificateAction, UpdateCertificateAction, UploadCertificateImageAction } from './../../actions/action/work-certificate-action';
 import { QRLoginAction } from './../../actions/action/qr-scan-login-action';
@@ -518,5 +519,9 @@ export class ProcessorService extends MapperService {
 
   unreadMessageCountProcessor(option$: Observable<UnreadMessageCountOptions>): Subscription {
     return option$.subscribe(option => this.store.dispatch(new GetUnreadMessageCountAction(option)));
+  }
+
+  nationalityProcessor(): void {
+    this.store.dispatch(new GetNationalityAction());
   }
 }

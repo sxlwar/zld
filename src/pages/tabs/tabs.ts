@@ -1,3 +1,5 @@
+import { CraftService } from './../../services/business/craft-service';
+import { NationalityService } from './../../services/business/nationality-service';
 import { Subscription } from 'rxjs/Subscription';
 import { MessageService } from './../../services/business/message-service';
 import { Observable } from 'rxjs/Observable';
@@ -34,7 +36,9 @@ export class TabsPage {
 
   constructor(
     public translateService: TranslateService,
-    public message: MessageService
+    public message: MessageService,
+    public nationality: NationalityService,
+    public workType: CraftService
   ) {
     this.initialTitle();
   }
@@ -47,6 +51,8 @@ export class TabsPage {
 
   getUnreadMessage() {
     this.subscriptions = [
+      this.nationality.handleError(),
+      this.workType.handleError(),
       this.message.getUnreadMessageCount(),
     ];
   }
