@@ -25,6 +25,8 @@ import { Actions as qrLogin } from './action/qr-scan-login-action';
 import { Actions as certificate } from './action/work-certificate-action';
 import { Actions as message } from './action/message-action';
 import { Actions as nationality } from './action/nationality-action';
+import { Actions as group } from './action/group-list-action';
+import { Actions as workFlow } from './action/work-flow-action';
 
 export type Actions = config
   | attendance
@@ -33,6 +35,7 @@ export type Actions = config
   | bankCard
   | certificate
   | employer
+  | group
   | icons
   | location
   | locationCard
@@ -51,5 +54,6 @@ export type Actions = config
   | statistics
   | team
   | tutorial
+  | workFlow
   | workType
   | worker;

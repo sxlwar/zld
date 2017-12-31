@@ -1,13 +1,14 @@
-//region
+import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
+import { AttendanceResultConfirmResponse } from './../../interfaces/response-interface';
 import { AttendanceResultListResponse, AttendanceResult } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-action';
 import { uniqBy } from 'lodash';
-//endregion
 
 export interface DatePeriod {
   start: Date;
   end: Date;
 }
+
 export interface State {
   limit: number;
   page: number;
@@ -17,6 +18,8 @@ export interface State {
   response: AttendanceResultListResponse;
   data: AttendanceResult[];
   rank: number;
+  attendanceResultConfirmResponse: AttendanceResultConfirmResponse;
+  attendanceResultConfirmOptions: AttendanceResultConfirmOptions;
 }
 
 export const initialState: State = {
@@ -33,7 +36,9 @@ export const initialState: State = {
   selected: [],
   allSelected: false,
   data: [],
-  rank: 1
+  rank: 1,
+  attendanceResultConfirmResponse: null,
+  attendanceResultConfirmOptions: null
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -111,6 +116,13 @@ export function reducer(state = initialState, action: actions.Actions): State {
       return Object.assign({}, state, {rank: action.payload});
     }
 
+    case actions.CONFIRM_ATTENDANCE:
+      return { ...state, attendanceResultConfirmOptions: action.payload };
+
+    case actions.ATTENDANCE_CONFIRM_FAIL:
+    case actions.ATTENDANCE_CONFIRM_SUCCESS:
+      return { ...state, attendanceResultConfirmResponse: action.payload };
+
     case actions.GET_QUERY_ATTENDANCE_PAGE:
     case actions.GET_QUERY_ATTENDANCE_LIMIT:
     case actions.GET_ATTENDANCE_RESULT_LIST:
@@ -159,3 +171,5 @@ export const getAllSelected = (state: State) => state.allSelected;
 export const getSelectedAttendanceIds = (state: State) => state.selected;
 
 export const getAttendanceData = (state: State) => state.data;
+
+export const getAttendanceResultConfirmResponse = (state: State) => state.attendanceResultConfirmResponse;

@@ -21,15 +21,17 @@ export function reducer(state = initialState, action: actions.Actions): State {
     case actions.ADD_ICONS_BAR:
       return { ...state, ...action.payload };
 
-    case actions.ADD_BADGE: {
-      const { count, path } = action.payload;
+    case actions.ADD_BADGE_FOR_ROOT_MODULE: {
+      const { count, rootName, iconName } = action.payload;
 
-      const [root, name] = path;
+      const index = state[rootName].findIndex(icon => icon.icon === iconName);
 
-      const index = state[root].findIndex(icon => icon.icon === name);
+      const { view, opt } = state[rootName][index].permission;
+      
+      if (opt || view) {
+        state[rootName][index] = Object.assign({}, state[rootName][index], { badge: count });
+      }
 
-      state[root][index] = Object.assign({}, state[root][index], {badge: count});
-    
       return state;
     }
 

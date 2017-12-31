@@ -1,11 +1,12 @@
-import { MineRoot } from './../../pages/pages';
+import { WorkFlowAggregation } from './../../interfaces/response-interface';
+import { MineRoot, MissionRoot } from './../../pages/pages';
 import { putInArray } from '../utils/util';
 import { Observable } from 'rxjs/Observable';
 import { IconState } from '../../reducers/reducer/icons-reducer';
-import { AppState, getIconsState } from '../../reducers/index-reducer';
+import { AppState, getIconsState, selectWorkFlowStatisticsResponse } from '../../reducers/index-reducer';
 import { createSelector, Store } from '@ngrx/store';
 import { Injectable } from '@angular/core';
-import { AddIconsBarAction, AddBadgeAction } from '../../actions/action/icons-action';
+import { AddIconsBarAction, AddBadgeForRootModuleAction } from '../../actions/action/icons-action';
 import { Subscription } from 'rxjs/Subscription';
 import { PermissionService } from '../config/permission-service';
 import { CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW } from '../config/character';
@@ -185,7 +186,7 @@ export const locationAttendanceRecord: IconItem = {
     opt: []
   },
   page: pages.locationAttendanceRecordPage
-  
+
 }
 
 export const attendanceConfirm: IconItem = {
@@ -261,38 +262,38 @@ export const workerContract: IconItem = {
   page: pages.workerContractPage
 };
 
-export const primeContract: IconItem = {
-  text: 'PRIME_CONTRACT',
-  icon: primeContractIcon,
-  color: 'contract',
-  permission: {
-    view: [],
-    opt: [PME, MM, PM]
-  },
-  page: ''
-};
+// export const primeContract: IconItem = {
+//   text: 'PRIME_CONTRACT',
+//   icon: primeContractIcon,
+//   color: 'contract',
+//   permission: {
+//     view: [],
+//     opt: [PME, MM, PM]
+//   },
+//   page: ''
+// };
 
-export const subContract: IconItem = {
-  text: 'SUB_CONTRACT',
-  icon: subContractIcon,
-  color: 'contract',
-  permission: {
-    view: [],
-    opt: [PME, MM, PM]
-  },
-  page: ''
-};
+// export const subContract: IconItem = {
+//   text: 'SUB_CONTRACT',
+//   icon: subContractIcon,
+//   color: 'contract',
+//   permission: {
+//     view: [],
+//     opt: [PME, MM, PM]
+//   },
+//   page: ''
+// };
 
-export const modifyDuty: IconItem = {
-  text: 'MODIFY_DUTY',
-  icon: modifyDutyIcon,
-  color: 'primary',
-  permission: {
-    view: [],
-    opt: [PM, TL]
-  },
-  page: ''
-};
+// export const modifyDuty: IconItem = {
+//   text: 'MODIFY_DUTY',
+//   icon: modifyDutyIcon,
+//   color: 'primary',
+//   permission: {
+//     view: [],
+//     opt: [PM, TL]
+//   },
+//   page: ''
+// };
 
 export const workContractModify: IconItem = {
   text: 'MODIFY_WORK_CONTRACT',
@@ -346,7 +347,7 @@ export const salary: IconItem = {
     view: [SW, UW],
     opt: []
   },
-  page: pages.salaryPage 
+  page: pages.salaryPage
 };
 
 export const bankCard: IconItem = {
@@ -361,7 +362,7 @@ export const bankCard: IconItem = {
 };
 
 export const certificate: IconItem = {
-text: 'CERTIFICATE',
+  text: 'CERTIFICATE',
   icon: certificateIcon,
   color: 'contract',
   permission: {
@@ -428,29 +429,30 @@ export const educationInfo: IconItem = {
 
 /* ================================================================Icon model EDN================================================================= */
 
+export const processIdToIcon = {
+  sign_worker_contract: workerContract.icon,
+  worker_contract_time_change: workContractModify.icon,
+  amend_worker_attend: modifyAttendance.icon,
+  workpiece_finish: pieceAudit.icon,
+  leave_apply: leave.icon,
+  workovertime_apply: overtime.icon,
+  project_payflow_apply: payrollAudit.icon,
+  attendanceConfirm: attendanceConfirm.icon
+}
+
 @Injectable()
 export class IconService {
 
-  subscriptions: Subscription[] = [];
-
-  id: number;
   constructor(
     public store: Store<AppState>,
     public permission: PermissionService
   ) {
-    this.id = Math.random();
   }
 
   getIcons(name: string, icons: IconItem[]): Observable<IconState[]> {
-    const icons$ = Observable.from(icons);
-
-    const permissionIcons$ = this.addPermissionToIcons(icons$);
-
-    const subscription = this.addIcons(name, permissionIcons$);
-
-    this.subscriptions.push(subscription);
-
-    return this.selectIcons(name);
+    return this.addPermissionToIcons(icons)
+      .do(icons => this.addIcons(name, icons))
+      .switchMapTo(this.selectIcons(name));
   }
 
   selectIcons(rootName: string): Observable<IconState[]> {
@@ -462,24 +464,24 @@ export class IconService {
       .mergeMap(icons => Observable.from(icons).filter(item => item.icon === iconName));
   }
 
-  needBadge(icon: IconState): boolean {
-    const { view, opt } = icon.permission;
+  addMissionBadge(attendanceConfirmNumber: Observable<number>): Subscription {
+    const attendance: Observable<WorkFlowAggregation> = attendanceConfirmNumber.map(count => ({ process_id: 'attendanceConfirm', process_id__count: count }));
 
-    return opt || view;
+    return this.store.select(selectWorkFlowStatisticsResponse)
+      .filter(value => !!value && !!value.request_aggregation.length)
+      .mergeMap(res => Observable.from(res.request_aggregation))
+      .merge(attendance)
+      .subscribe(({ process_id, process_id__count }) => {
+        if (processIdToIcon[process_id]) {
+          this.store.dispatch(new AddBadgeForRootModuleAction({ count: process_id__count, rootName: MissionRoot, iconName: processIdToIcon[process_id] }))
+        }
+      })
   }
 
-  addBadge(badge: Observable<number>, path: string[]): void {
-    const subscription = badge.subscribe(count => {
-      this.store.dispatch(new AddBadgeAction({ count, path }));
-    });
-
-    this.subscriptions.push(subscription);
-  }
-
-  private addPermissionToIcons(icons: Observable<IconItem>): Observable<IconState[]> {
+  private addPermissionToIcons(icons: IconItem[]): Observable<IconState[]> {
     return this.permission
-      .functionalPermissionValidate(icons.map(icon => icon.permission))
-      .zip(icons, (permission, item) => {
+      .functionalPermissionValidate(Observable.from(icons).map(icon => icon.permission))
+      .zip(Observable.from(icons), (permission, item) => {
         const { text, icon, color, page } = item;
         return { text, icon, color, page, permission };
       })
@@ -491,27 +493,21 @@ export class IconService {
       .reduce(putInArray, []);
   }
 
-  private addIcons(name: string, icons: Observable<IconState[]>): Subscription {
-    return icons.subscribe(icons => {
-      const target = {};
+  private addIcons(name: string, icons: IconState[]): void {
+    const target = {};
 
-      if(name === MineRoot) {
-        const target = icons.find(icon => icon.text === 'WORK_CONTRACT');
+    if (name === MineRoot) {
+      const target = icons.find(icon => icon.text === 'WORK_CONTRACT');
 
-        if(!target.permission.view || !target.permission.opt) target.color = ''; 
-      }
+      if (!target.permission.view || !target.permission.opt) target.color = '';
+    }
 
-      target[name] = icons;
+    target[name] = icons;
 
-      this.store.dispatch(new AddIconsBarAction(target));
-    });
+    this.store.dispatch(new AddIconsBarAction(target));
   }
 
   private select(name: string) {
     return state => state[name];
-  }
-
-  unSubscribe() {
-    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

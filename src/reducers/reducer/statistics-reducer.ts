@@ -18,9 +18,7 @@ export const initialState: State = {
     attendanceResultTeamStatResponse: {
         attend_result_team_stat_list: []
     },
-    requestAggregationResponse: {
-        request_aggregation: []
-    }
+    requestAggregationResponse: null
 }
 
 export function reducer(state = initialState, action: actions.Actions) {
@@ -107,8 +105,6 @@ export const getAttendanceStatResponse = (state: State) => state.attendanceResul
 export const getAttendanceStats = (state: State) => state.attendanceResultTeamStatResponse.attend_result_team_stat_list;
 
 export const getWorkFlowStatResponse = (state: State) => state.requestAggregationResponse;
-
-export const getWorkFlowStats = (state: State) => state.requestAggregationResponse.request_aggregation;
 
 export const getAttendanceStatisticList = (state: State) => state.attendanceConditions.statisticList;
 

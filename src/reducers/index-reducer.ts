@@ -29,42 +29,46 @@ import * as QRLogin from './reducer/qr-scan-login-reducer';
 import * as workCertificate from './reducer/work-certificate-reducer';
 import * as message from './reducer/message-reducer';
 import * as nationality from './reducer/nationality-reducer';
+import * as group from './reducer/group-list-reducer';
+import * as workFlow from './reducer/work-flow-reducer';
 
 export interface AppState {
-  config: config.State;
-  tutorialPage: tutorial.State;
-  loginPage: login.State;
-  userInfo: response.LoginResponse;
-  search: search.State;
-  phoneVerCode: response.PhoneVerCodeResponse;
-  register: response.RegisterResponse;
-  resetPhoneVerCode: response.PhoneVerCodeResponse;
-  resetPassword: response.ResetPasswordResponse;
-  uploadState: upload.State;
-  certificate: response.CertificateResponse;
-  icons: icons.State,
-  project: project.State,
-  worker: worker.State,
-  workType: workType.State,
-  team: team.State,
-  attendance: attendance.State,
-  attendanceRecord: attendanceRecord.State,
-  payBill: payBill.State,
-  overtime: overtime.State,
-  piece: piece.State,
-  statistics: statistics.State,
-  employer: employer.State,
-  personal: personal.State,
-  machine: machine.State,
-  attendanceCard: attendanceCard.State,
-  locationCard: locationCard.State,
-  location: location.State,
-  bankCard: bankCard.State,
-  logout: logout.State,
   QRLogin: QRLogin.State,
-  workCertificate: workCertificate.State,
+  attendance: attendance.State,
+  attendanceCard: attendanceCard.State,
+  attendanceRecord: attendanceRecord.State,
+  bankCard: bankCard.State,
+  certificate: response.CertificateResponse;
+  config: config.State;
+  employer: employer.State,
+  group: group.State,
+  icons: icons.State,
+  location: location.State,
+  locationCard: locationCard.State,
+  loginPage: login.State;
+  logout: logout.State,
+  machine: machine.State,
   message: message.State,
   nationality: nationality.State,
+  overtime: overtime.State,
+  payBill: payBill.State,
+  personal: personal.State,
+  phoneVerCode: response.PhoneVerCodeResponse;
+  piece: piece.State,
+  project: project.State,
+  register: response.RegisterResponse;
+  resetPassword: response.ResetPasswordResponse;
+  resetPhoneVerCode: response.PhoneVerCodeResponse;
+  search: search.State;
+  statistics: statistics.State,
+  team: team.State,
+  tutorialPage: tutorial.State;
+  uploadState: upload.State;
+  userInfo: response.LoginResponse;
+  workCertificate: workCertificate.State,
+  workFlow: workFlow.State,
+  workType: workType.State,
+  worker: worker.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -102,6 +106,8 @@ export const reducers: ActionReducerMap<AppState> = {
   workCertificate: workCertificate.reducer,
   message: message.reducer,
   nationality: nationality.reducer,
+  group: group.reducer,
+  workFlow: workFlow.reducer,
 };
 
 //config
@@ -124,7 +130,6 @@ export const selectLoginForm = createSelector(getLoginPage, login.getLoginForm);
 export const selectLoginVerificationImage = createSelector(getLoginPage, login.getLoginVerificationImage);
 export const selectRandomCode = createSelector(getLoginPage, login.getRandomCode);
 
-
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Server response selectors Start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
 //search e.g: search company , search worker
@@ -144,6 +149,9 @@ export const selectSid = createSelector(getUserInfo, login.getSid);
 export const selectUserId = createSelector(getUserInfo, login.getUserId);
 export const selectGroupList = createSelector(getUserInfo, login.getGroupList);
 
+// group
+export const getGroup = (state: AppState) => state.group;
+export const getGroupListResponse = createSelector(getGroup, group.getGroupList);
 
 //phone verification code
 export const getPhoneVerCode = (state: AppState) => state.phoneVerCode;
@@ -198,7 +206,7 @@ export const selectAddTeamResponse = createSelector(getTeam, team.getAddTeamResp
 export const selectDeleteTeamResponse = createSelector(getTeam, team.getDeleteTeamResponse);
 export const selectUpdateTeamResponse = createSelector(getTeam, team.getUpdateTeamResponse);
 
-//attendance result list
+//attendance result list && attendance result confirm;
 export const getAttendance = (state: AppState) => state.attendance;
 export const selectAttendanceResponse = createSelector(getAttendance, attendance.getAttendanceResultResponse);
 export const selectAttendanceList = createSelector(getAttendance, attendance.getAttendanceResults);
@@ -211,6 +219,7 @@ export const selectAttendanceLimit = createSelector(getAttendance, attendance.ge
 export const selectSelectedAttendanceIds = createSelector(getAttendance, attendance.getSelectedAttendanceIds);
 export const selectAttendanceAllSelected = createSelector(getAttendance, attendance.getAllSelected);
 export const selectAttendanceData = createSelector(getAttendance, attendance.getAttendanceData);
+export const selectAttendanceResultConfirmResponse = createSelector(getAttendance, attendance.getAttendanceResultConfirmResponse);
 
 //attendance instant list
 export const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
@@ -256,15 +265,12 @@ export const selectWorkPieceResponse = createSelector(getWorkPiece, piece.getPie
 export const selectWorkPiecePay = createSelector(getWorkPiece, piece.getPiecePay);
 export const selectWorkPieceFinishFlow = createSelector(getWorkPiece, piece.getPieceFinishFlow);
 
-//attendance result stat team stat list 
+//attendance result stat team stat list && request aggregation list
 export const getStatistics = (state: AppState) => state.statistics;
 export const selectAttendanceStatisticsResponse = createSelector(getStatistics, statistics.getAttendanceStatResponse);
 export const selectAttendanceStatistics = createSelector(getStatistics, statistics.getAttendanceStats);
 export const selectAttendanceStatisticList = createSelector(getStatistics, statistics.getAttendanceStatisticList);
-
-//request aggregation list
 export const selectWorkFlowStatisticsResponse = createSelector(getStatistics, statistics.getWorkFlowStatResponse);
-export const selectWorkFlowStatistics = createSelector(getStatistics, statistics.getWorkFlowStats);
 
 //company user list
 export const getEmployer = (state: AppState) => state.employer;
@@ -391,6 +397,13 @@ export const selectReadMessageSelectedType = createSelector(getMessage, message.
 //nationality
 export const getNationality = (state: AppState) => state.nationality;
 export const selectNationalityResponse = createSelector(getNationality, nationality.getNationalityResponse);
+
+//work flow
+export const getWorkFlow = (state: AppState) => state.workFlow;
+export const selectWorkFlowListResponse = createSelector(getWorkFlow, workFlow.getWorkFlowListResponse);
+export const selectProjectPayBillFlowListResponse = createSelector(getWorkFlow, workFlow.getProjectPayBillFlowListResponse);
+export const selectMultiTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getMultiTaskUpdateResponse);
+export const selectTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getTaskUpdateResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

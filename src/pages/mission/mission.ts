@@ -1,6 +1,4 @@
 import { Subscription } from 'rxjs/Subscription';
-import { workFlowMap } from './../../services/business/icon-service';
-import { WorkFlowAggregation } from './../../interfaces/response-interface';
 import { StatisticsService } from './../../services/business/statistics-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -18,9 +16,6 @@ const icons = [
   Icons.pieceAudit,
   Icons.modifyAttendance,
   Icons.workerContract,
-  Icons.primeContract,
-  Icons.subContract,
-  Icons.modifyDuty,
   Icons.workContractModify,
   Icons.myLaunch,
   Icons.myAudited
@@ -37,68 +32,39 @@ export class MissionPage {
 
   subscription: Subscription;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public iconService: IconService,
     public statistics: StatisticsService
   ) {
+  }
+
+  ionViewDidLoad() {
+    this.initialModel();
+
+    this.launch();
+  }
+
+  initialModel() {
     this.icons = this.iconService.getIcons(pages.MissionRoot, icons);
   }
 
-  ionViewWillEnter() {
-    this.addBadge();
-  }
-
-  addBadge() {
-    this.addAttendanceConfirmBadge();
-
-    this.addWorkFlowBadge();
-  }
-
-  addAttendanceConfirmBadge() {
-    this.iconService.addBadge(this.attendanceConfirmBadge(), [pages.MissionRoot, Icons.attendanceConfirm.icon]);
-  }
-
-  addWorkFlowBadge() {
-
-    const workFlowBadges = this.workFlowBadges();
-
-    this.subscription = this.getBadgeIcons()
-      .subscribe(iconState => {
-        const processId = workFlowMap.get(iconState.icon);
-
-        const iconName = iconState.icon;
-
-        const observable = workFlowBadges.filter(aggregation => aggregation.process_id === processId)
-          .map(aggregation => aggregation.process_id__count);
-
-        this.iconService.addBadge(observable, [pages.MissionRoot, iconName]);
-      });
-  }
-
-  getBadgeIcons(): Observable<IconState> {
-    return this.icons.mergeMap(icons => Observable.from(icons).filter(icon => this.iconService.needBadge(icon)));
-  }
-
-  attendanceConfirmBadge(): Observable<number> {
-    return this.getBadgeIcons()
-      .filter(item => item.icon === Icons.attendanceConfirm.icon)
-      .switchMapTo(this.statistics.getAttendanceResultStatistics('unconfirm_count'))
-  }
-
-  workFlowBadges(): Observable<WorkFlowAggregation> {
-    return this.statistics.getWorkFlowStatistics()
-      .filter(value => !!value)
-      .mergeMap(aggregations => Observable.from(aggregations));
+  launch() {
+    this.subscriptions = [
+      this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
+      this.statistics.getWorkFlowStatistic()
+    ]
   }
 
   goTo(item) {
     this.navCtrl.push(item.page, item).then(() => { });
   }
 
-  ionViewDidLeave() {
-    this.subscription.unsubscribe();
+  ionViewWillUnload() {
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 
 }

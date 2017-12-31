@@ -1,4 +1,3 @@
-//region
 import { GET_COMPANY_USER, GetCompanyUserListAction,  CompanyUserListSuccessAction, CompanyUserListFailAction } from './../actions/action/employer-action';
 import { ResponseAction } from './../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +8,6 @@ import { Command } from './../services/api/command';
 import { Injectable } from "@angular/core";
 import { Actions, Effect } from '@ngrx/effects';
 import { of } from 'rxjs/Observable/of';
-//endregion
 
 @Injectable()
 export class EmployerEffect extends Command {

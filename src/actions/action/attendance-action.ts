@@ -1,8 +1,6 @@
-//region
 import { Action } from '@ngrx/store';
-import { AttendanceResultListResponse } from '../../interfaces/response-interface';
-import { AttendanceResultListOptions } from '../../interfaces/request-interface';
-//endregion
+import { AttendanceResultListResponse, AttendanceResultConfirmResponse } from '../../interfaces/response-interface';
+import { AttendanceResultListOptions, AttendanceResultConfirmOptions } from '../../interfaces/request-interface';
 
 /*==========================================Attendance query======================================================= */
 
@@ -162,19 +160,48 @@ export class ToggleAttendanceSortTypeAction implements Action {
   }
 }
 
+/* ============================================Attendance confirm=================================================== */
+
+export const CONFIRM_ATTENDANCE = 'CONFIRM_ATTENDANCE';
+
+export class ConfirmAttendanceAction implements Action {
+  readonly type = CONFIRM_ATTENDANCE;
+
+  constructor(public payload: AttendanceResultConfirmOptions) { }
+}
+
+export const ATTENDANCE_CONFIRM_FAIL = 'ATTENDANCE_CONFIRM_FAIL';
+
+export class AttendanceConfirmFailAction implements Action {
+  readonly type = ATTENDANCE_CONFIRM_FAIL;
+
+  constructor(public payload: AttendanceResultConfirmResponse) { }
+}
+
+export const ATTENDANCE_CONFIRM_SUCCESS = 'ATTENDANCE_CONFIRM_SUCCESS';
+
+export class AttendanceConfirmSuccessAction implements Action {
+  readonly type = ATTENDANCE_CONFIRM_SUCCESS;
+
+  constructor(public payload: AttendanceResultConfirmResponse) { }
+}
+
 export type Actions = GetAttendanceResultListAction
+  | AddSelectedAttendanceAction
+  | AttendanceConfirmFailAction
+  | AttendanceConfirmSuccessAction
   | AttendanceResultListFailAction
   | AttendanceResultListSuccessAction
-  | SetAttendanceStartDateAction
-  | SetAttendanceEndDateAction
-  | SetQueryAttendancePageAction
-  | GetQueryAttendancePageAction
-  | SetQueryAttendanceLimitAction
+  | ConfirmAttendanceAction
   | GetQueryAttendanceLimitAction
-  | AddSelectedAttendanceAction
-  | RemoveSelectedAttendanceAction
-  | ToggleAllSelectedAction
+  | GetQueryAttendancePageAction
   | IncreaseAttendancePageAction
+  | RemoveSelectedAttendanceAction
   | ResetAttendancePageAction
+  | SetAttendanceEndDateAction
+  | SetAttendanceStartDateAction
+  | SetQueryAttendanceLimitAction
+  | SetQueryAttendancePageAction
   | SortAttendanceAction
+  | ToggleAllSelectedAction
   | ToggleAttendanceSortTypeAction;

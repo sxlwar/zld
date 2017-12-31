@@ -1,4 +1,4 @@
-//region
+import { Subscription } from 'rxjs/Subscription';
 import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatisticsByDate } from './../../actions/action/statistics-action';
 import { Store } from '@ngrx/store';
 import { AppState, selectAttendanceStatisticList } from './../../reducers/index-reducer';
@@ -9,7 +9,6 @@ import { AttendanceService } from "../../services/business/attendance-service";
 import { AttendanceStatistics } from "../../interfaces/response-interface";
 import { Observable } from "rxjs/Observable";
 import { values, isEmpty, toPairs, filter, orderBy } from 'lodash';
-//endregion
 
 export interface AttendanceStatisticDayItem {
     date: string;
@@ -61,6 +60,10 @@ export class StatisticsService {
 
     getWorkFlowStatistics(): Observable<WorkFlowAggregation[]> {
         return this.workFlow.getWorkFlowStatistics();
+    }
+
+    getWorkFlowStatistic(): Subscription {
+        return this.workFlow.getWorkFlowStatistic();
     }
 
     getAttendanceStatisticsByTeam(key: string): Observable<AttendanceConfirmStatisticByTeam[]> {

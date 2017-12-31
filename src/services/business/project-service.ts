@@ -1,20 +1,13 @@
-//region
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Project } from '../../interfaces/response-interface';
-import {
-  AppState,
-  selectErrorMessage,
-  selectProjects,
-  selectSelectedProject,
-} from '../../reducers/index-reducer';
+import { AppState, selectErrorMessage, selectProjects, selectSelectedProject, } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
 import { TimeService } from '../utils/time-service';
 import { SelectProjectAction } from '../../actions/action/project-action';
-//endregion
 
 @Injectable()
 export class ProjectService {

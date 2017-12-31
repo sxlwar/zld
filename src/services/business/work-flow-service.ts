@@ -1,4 +1,3 @@
-//region
 import { WorkFlowAggregation } from './../../interfaces/response-interface';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
@@ -8,51 +7,34 @@ import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from "@angular/core";
 import { ErrorService } from '../../services/errors/error-service';
 import { Observable } from 'rxjs/Observable';
-//endregion
 
 @Injectable()
 export class WorkFlowService {
-    subscriptions: Subscription[] =[];
-    workFlow$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public userInfo: UserService,
         public error: ErrorService,
         public processor: ProcessorService
-    ){
-        this.handleError();
+    ) {
     }
 
     getWorkFlowStatistics(): Observable<WorkFlowAggregation[]> {
-        const result = this.store.select(selectWorkFlowStatistics);
-
-        const subscription = result.take(1).subscribe(value => !value.length && this.getWorkFlowStatistic());
-        
-        this.subscriptions.push(subscription);
-
-        return result; 
+        return this.store.select(selectWorkFlowStatistics);
     }
 
-    getWorkFlowStatistic(): void {
-        const subscription = this.processor.workFlowStatisticsProcessor(this.userInfo.getSid().map(sid => ({sid})));
-
-        this.subscriptions.push(subscription);
+    getWorkFlowStatistic(): Subscription {
+        return this.processor.workFlowStatisticsProcessor(this.userInfo.getSid().map(sid => ({ sid })));
     }
 
     /* =====================================================Refuse clean======================================================== */
 
-    private handleError() {
-        this.handleStatisticsError();
+    handleError(): Subscription[] {
+        return [
+            this.handleStatisticsError()
+        ]
     }
 
-    private handleStatisticsError() {
-        const error = this.store.select(selectWorkFlowStatisticsResponse);
-
-        this.workFlow$$ = this.error.handleErrorInSpecific(error, 'APP_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleStatisticsError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectWorkFlowStatisticsResponse), 'APP_ERROR');
     }
 }

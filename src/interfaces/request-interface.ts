@@ -8,7 +8,7 @@ export interface RequestOption {
   [key: string]: string | number | number[] | string[] | boolean;
 }
 
-/*==================================Data model before enter into app=============================================*/
+/*===========================================================Common model options======================================================*/
 
 export interface LoginOptions {
   username: string;
@@ -51,6 +51,15 @@ export interface CertificateOptions {
   num: string;
   imageface?: string;
   imageback?: string;
+}
+
+
+export interface NationalityOptions {
+
+}
+
+export interface GroupsListOptions {
+  sid: string;
 }
 
 /*=================================================Team model======================================================*/
@@ -146,7 +155,6 @@ export interface AttendanceInstantListOptions {
   attendance_machine_id?: number;
 }
 
-//FIXME: unused;
 export interface AttendanceResultConfirmOptions {
   sid: string;
   attendance_result_id: number[];
@@ -616,8 +624,66 @@ export enum TaskStatus {
   completed = '完成'
 }
 
+export interface MultiTaskUpdateOptions {
+  sid: string;
+  id: number[]; // task ids;
+  approve: number; // 文档上是string,实际传的倒是number；1，通过，0，不通过，这还不就是true/false,又搞这魔鬼数字；
+  comment: string;
+}
 
+export interface TaskUpdateOptions {
+  sid: string;
+  id: number;
+  approve: number; //同上
+  comment: string;
+}
 
+export enum WorkFlowStatus {
+  cancel = '取消',
+  complete = '完成',
+  processing = '处理中'
+}
+
+export interface ProjectPayBillFlowListOptions {
+  sid: string;
+  id?: number; //工资单审核流的ID; 这TMD名字就不能起的清楚点?
+  project_id?: number;
+  request_id?: number; // 工作流ID；
+  request_status?: string;  //又TMD得传中文了；workFlowStatus
+}
+
+export enum ProcessId {
+  sign_prime_contract = '签订总包合同',
+  sign_sub_contract = '签订劳务分包合同',
+  sign_worker_contract = '签订用工合同',
+  prime_contract_time_change = '修改总包合同时间',
+  sub_contract_time_change = '修改劳务分包合同时间',
+  worker_contract_time_change = '修改用工合同时间',
+  amend_worker_attend = '修正工人考勤异常',
+  workpiece_finish = '工件完成工作流',
+  leave_apply = '请假工作流',
+  workovertime_apply = '加班工作流',
+  timeduty_apply = '修改出勤时间工作流',
+  project_payflow_apply = '项目工资对帐单审核工作流'
+}
+
+export enum SpecificWorkFlowState {
+  launch = 'launch',
+  completed = 'complete',
+  pending = 'pending'
+}
+
+export interface WorkFlowListOptions {  //这名字，果断改了; requestList，这两个单词和工作流有几吧的关系。
+  sid: string;
+  user_id: number;
+  user_realname: string; // 这个字段类型怎么可能是int?  
+  flag: number; //又是魔鬼参数需要处理
+  process_id: string;
+  request_status: string;
+  request_id: number; //文档上string;
+  page: number;
+  limit: number;
+}
 /* ====================================================Message model============================================= */
 
 export interface UnreadMessageCountOptions {
@@ -638,7 +704,7 @@ export interface MessageListOptions { // 名字改了，为毛有title这个词�
   sid: string;
   page: number;
   limit: number;
-  read_tag?: number; 
+  read_tag?: number;
   msg_tag?: number;
 }
 
@@ -650,12 +716,6 @@ export interface MessageDeleteOptions {
 export interface MessageContentOptions {
   sid: string;
   title_id: number;
-}
-
-/* =========================================================Nationality options======================================================= */
-
-export interface NationalityOptions { 
-  
 }
 
 /* ==========================================================Http request options============================================================ */

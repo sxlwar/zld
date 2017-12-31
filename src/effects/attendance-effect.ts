@@ -1,3 +1,4 @@
+import { AttendanceConfirmFailAction, AttendanceConfirmSuccessAction } from './../actions/action/attendance-action';
 //region
 import { GET_ATTENDANCE_RESULT_TEAM_STAT, GetAttendanceResultTeamStatListAction, AttendanceResultTeamStatFailAction, AttendanceResultTeamStatSuccessAction } from './../actions/action/statistics-action';
 import { GET_ATTENDANCE_RECORD, GetAttendanceRecordAction, AttendanceRecordFailAction, AttendanceRecordSuccessAction } from './../actions/action/attendance-record-action';
@@ -11,7 +12,9 @@ import {
   AttendanceResultListFailAction,
   AttendanceResultListSuccessAction,
   GET_ATTENDANCE_RESULT_LIST,
-  GetAttendanceResultListAction
+  GetAttendanceResultListAction,
+  CONFIRM_ATTENDANCE,
+  ConfirmAttendanceAction
 } from '../actions/action/attendance-action';
 import { of } from 'rxjs/observable/of';
 //endregion
@@ -46,7 +49,17 @@ export class AttendanceEffect extends Command {
       .takeUntil(this.actions$.ofType(GET_ATTENDANCE_RESULT_TEAM_STAT))
       .map(msg => msg.isError ? new AttendanceResultTeamStatFailAction(msg.data): new AttendanceResultTeamStatSuccessAction(msg.data))
       .catch(error => of(error))
-  )
+  );
+
+  @Effect()
+  attendanceResultConfirm$: Observable<ResponseAction> = this.actions$
+    .ofType(CONFIRM_ATTENDANCE)
+    .switchMap((action: ConfirmAttendanceAction) => this.ws
+      .send(this.getAttendanceResultConfirm(action.payload))
+      .takeUntil(this.actions$.ofType(CONFIRM_ATTENDANCE))
+      .map(msg => msg.isError ? new AttendanceConfirmFailAction(msg.data): new AttendanceConfirmSuccessAction(msg.data))
+      .catch(error => of(error))
+  );
 
   constructor(
     public ws: WebsocketService,

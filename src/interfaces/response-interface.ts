@@ -21,7 +21,7 @@ export interface ErrorMessage {
   errorMessage: string;
 }
 
-/*==================================Data model before enter into app=============================================*/
+/*===========================================================Common model Response======================================================*/
 
 //login
 export interface LoginResponse {
@@ -63,6 +63,16 @@ export interface ResetPasswordResponse {
 export interface CertificateResponse {
   auth_pass: boolean;
   errorMessage?: string;
+}
+
+//groups list 
+export interface GroupsListResponse {
+  groups_list: string[];
+}
+
+// nationality
+export interface NationalityResponse {
+  nationalityChoices: string[][]; // item: [string, string]; [汉,汉族]
 }
 
 /*=================================================Team model======================================================*/
@@ -305,8 +315,7 @@ export interface AttendanceInstantListResponse {
   errorMessage?: string;
 }
 
-//TODO: unused;
-//attendResultList
+//attendance result confirm list
 export interface AttendanceResultConfirmResponse {
   information: string;
   errorMessage?: string;
@@ -1128,7 +1137,7 @@ export interface MessageDeleteResponse {
 
 export interface AttendanceMessage {
   team_id: number;
-  confirm_status: string|number[][]; // 数组元素的第一个元素日期，第二个值是未确认个数；
+  confirm_status: string | number[][]; // 数组元素的第一个元素日期，第二个值是未确认个数；
   team_name: string;
 }
 
@@ -1151,10 +1160,78 @@ export interface MessageContentResponse {
   content: string;
 }
 
-/* =======================================================nationality response============================================ */
+/* =======================================================Work flow response============================================ */
 
-export interface NationalityResponse {
-  nationalityChoices: string[][]; // item: [string, string]; [汉,汉族]
+// multi task update 
+export interface MultiTaskUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+// task update
+export interface TaskUpdateResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+export interface ProjectPayBillFlow {
+  pay_day: string;
+  request__status: string
+  request__requester_id: number;
+  request_id: number;
+  id: number;
+  bill_id: number;
+}
+
+// project pay bill flow
+export interface ProjectPayBillFlowListResponse {
+  project_pay_bill_flow: ProjectPayBillFlow[];
+  information?: string;
+  errorMessage?: string;
+}
+
+export interface WorkFlowTask {
+  status: string;
+  comment: string;
+  user__employee__realname: string
+  user__groups__name: string
+  sequence: number;
+  create_time: string
+  id: number;
+  user_id: number;
+  task_id: string;
+  modify_time: string;
+  task_name: string;
+  approve: string;
+}
+
+export interface WorkFlowFile {
+  url: string;
+  size: string;
+}
+
+export interface WorkFlowRequest {
+  requester__groups__name: string;
+  status: string;
+  task: WorkFlowTask[];
+  title: string;
+  process_name: string;
+  id: number;
+  process_id: string;
+  create_time: string;
+  modify_time: string;
+  requester_id: number;
+  requester__employee__realname: string;
+  files: WorkFlowFile[];
+}
+
+// request list
+export interface WorkFlowListResponse {
+  count: number;
+  request: WorkFlowRequest[];
+  requests_types: string[];
+  information?: string;
+  errorMessage?: string;
 }
 
 /* =======================================================Http response============================================ */

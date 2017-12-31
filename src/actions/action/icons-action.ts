@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { State } from '../../reducers/reducer/icons-reducer';
-import { Badge } from '../../interfaces/icon-interface';
+import { RootModuleBadge } from '../../interfaces/icon-interface';
 
 export const ADD_ICONS_BAR = 'ADD_ICONS_BAR';
 
@@ -11,13 +11,14 @@ export class AddIconsBarAction implements Action {
   }
 }
 
-export const ADD_BADGE = 'ADD_BADGE';
+export const ADD_BADGE_FOR_ROOT_MODULE = 'ADD_BADGE_FOR_ROOT_MODULE';
 
-export class AddBadgeAction implements Action {
-  readonly type = ADD_BADGE;
+export class AddBadgeForRootModuleAction implements Action {
+  readonly type  = ADD_BADGE_FOR_ROOT_MODULE;
 
-  constructor(public payload: Badge) {}
+  constructor (public payload: RootModuleBadge) { }
 }
 
 export type Actions = AddIconsBarAction
- | AddBadgeAction;
+ | AddBadgeForRootModuleAction;
+ 

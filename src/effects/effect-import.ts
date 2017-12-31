@@ -1,3 +1,4 @@
+import { GroupsListEffect } from './group-list-effect';
 import { NationalityEffect } from './nationality-effect';
 import { MessageEffect } from './message-effect';
 import { WorkCertificateEffect } from './work-certificate-effect';
@@ -31,6 +32,7 @@ export const EFFECTS = [
     BankCardEffect,
     CraftEffect,
     EmployerEffect,
+    GroupsListEffect,
     LogoutEffect,
     LocationEffect,
     LocationCardEffect,

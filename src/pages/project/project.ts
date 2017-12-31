@@ -95,13 +95,7 @@ export class ProjectPage {
   }
 
   switchProject($event) {
-
-    const popover = this.popoverCtrl.create(ProjectListComponent, { option: this.createOption() });
-
-    popover.present({
-      ev: $event
-    }).then(() => {
-    });
+    this.popoverCtrl.create(ProjectListComponent, { option: this.createOption() }).present({ ev: $event }).then(() => { });
   }
 
   goTo(item) {
@@ -110,7 +104,6 @@ export class ProjectPage {
   }
 
   ionViewWillUnload() {
-    this.iconService.unSubscribe();
     this.projectService.unSubscribe();
     this.workerService.unSubscribe();
   }

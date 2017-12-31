@@ -127,8 +127,6 @@ export class MinePage {
   }
 
   ionViewWillLeave() {
-    this.workTypeService.unSubscribe();
-
     this.scan.resetQRCode();
   }
 

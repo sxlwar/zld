@@ -9,7 +9,8 @@ export interface IconItem {
   badge?: number;
 }
 
-export interface Badge {
-    path:  string [];
-    count: number; 
+export interface RootModuleBadge {
+    rootName: string;
+    count: number;
+    iconName: string;
 }

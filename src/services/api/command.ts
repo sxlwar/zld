@@ -1,4 +1,4 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
@@ -199,6 +199,12 @@ export const attendanceInstantList: ApiUnit = {
 export function onlyOwnTeam(ary: number[]): boolean {
   //TODO: 根据传进来的id:number确定这些班组是不是当前用户的班组。
   return true;
+}
+
+export const attendanceResultConfirm: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['project.consumer.AttendResultConfirm']]
+  ])
 }
 
 /* =======================================================Pay Bill===================================================================== */
@@ -808,28 +814,78 @@ export const nationalityList: ApiUnit = {
   ])
 }
 
+export const groupsList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employee.consumer.GroupsList']]
+  ]),
+  specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [EME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [SW, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ])
+}
+
+/* ========================================================Work flow model=========================================== */
+
+export const multiTaskUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['workflow.consumer.MultiTaskUpdate']]
+  ])
+}
+
+export const taskUpdate: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['workflow.consumer.TaskUpdate']]
+  ])
+}
+
+export const projectPayBillFlowList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.ProjectPayBillFlowList']]
+  ])
+}
+
+export const workFlowList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['workflow.consumer.RequestList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL, QW, SW, CW],
+    opt: []
+  },
+  specialCharacter: new Map([
+    [SW, new Iterator({ self: 1 })],
+    [CW, new Iterator({ self: 1 })]
+  ]),
+  noMagicNumber: new Map([
+    [SpecificWorkFlowState.launch, new Iterator({ flag: 1 })],
+    [SpecificWorkFlowState.completed, new Iterator({ flag: 2 })],
+    [SpecificWorkFlowState.pending, new Iterator({ flag: 3 })]
+  ])
+}
+
 @Injectable()
 export class Command {
 
   amendAttendRecordList = "project.consumer.AmendAttendRecordList";
-  attendResultConfirm = "project.consumer.AttendResultConfirm";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
-  groupsList = "employee.consumer.GroupsList";
   leaveRecordList = "project.consumer.LeaveRecordList";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
-  multiTaskUpdate = "workflow.consumer.MultiTaskUpdate";
   myCompanyContractList = "employer.consumer.MyCompanyContractList";
   paySalary = "project.consumer.PaySalary";
   primeContractList = "employer.consumer.PrimeContractList";
   processCreate = "workflow.consumer.ProcessCreate";
   projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
   projectAreaDelete = "project.consumer.ProjectAreaDelete";
-  projectPayBillFlowList = "project.consumer.ProjectPayBillFlowList";
-  requestList = "workflow.consumer.RequestList";
   searchWorker = "employer.consumer.SearchWorker";
   subContractList = "employer.consumer.SubContractList";
-  taskUpdate = "workflow.consumer.TaskUpdate";
   workTimePayList = "project.consumer.WorkTimePayList";
   workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
   constructor() {
@@ -860,6 +916,12 @@ export class Command {
     const { command } = this.getFullParameter(path, {});
 
     return { command };
+  }
+
+  getGroupsList(option: GroupsListOptions): WsRequest {
+    const path = groupsList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
   }
 
   /**
@@ -959,7 +1021,7 @@ export class Command {
   }
 
   /**
-   * @description Attendance API: getAttendanceList, getAttendanceInstantList;
+   * @description Attendance API: getAttendanceList, getAttendanceInstantList, getAttendanceResultConfirm;
    */
   getAttendanceList(option: AttendanceResultListOptions): WsRequest {
     const path = attendanceList.operates.get(Operate.querying)[0];
@@ -969,6 +1031,12 @@ export class Command {
 
   getAttendanceInstantList(option: AttendanceInstantListOptions): WsRequest {
     const path = attendanceInstantList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getAttendanceResultConfirm(option: AttendanceResultConfirmOptions): WsRequest {
+    const path = attendanceResultConfirm.operates.get(Operate.updates)[0];
 
     return this.getFullParameter(path, option);
   }
@@ -1381,6 +1449,33 @@ export class Command {
   }
 
   /**
+   * @description Work flow relates api: getWorkFlowList, getProjectPayBillFlowList, getMultiTaskUpdate;
+   */
+  getWorkFlowList(option: WorkFlowListOptions): WsRequest {
+    const path = workFlowList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getProjectPayBillFlowList(option: ProjectPayBillFlowListOptions): WsRequest {
+    const path = projectPayBillFlowList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getMultiTaskUpdate(option: MultiTaskUpdateOptions): WsRequest {
+    const path = multiTaskUpdate.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getTaskUpdate(option: TaskUpdateOptions): WsRequest {
+    const path = taskUpdate.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /**
    * @description API unit interfaces for external module referring.
    */
   get uploadPersonalIdImage(): string {
@@ -1623,5 +1718,29 @@ export class Command {
 
   get messageDelete() {
     return messageDelete;
+  }
+
+  get groupsList() {
+    return groupsList;
+  }
+
+  get projectPayBillFlowList() {
+    return projectPayBillFlowList;
+  }
+
+  get workFlowList() {
+    return workFlowList;
+  }
+
+  get multiTasUpdate() {
+    return multiTaskUpdate;
+  }
+
+  get taskUpdate() {
+    return taskUpdate;
+  }
+
+  get attendanceResultConfirm() {
+    return attendanceResultConfirm;
   }
 }

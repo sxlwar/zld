@@ -24,9 +24,10 @@ export class PermissionService {
   }
 
   functionalPermissionValidate(target: Observable<Permission>): Observable<PermissionResult> {
-    return this.character
-      .combineLatest(target)
-      .map(item => this.generatePermission(item));
+    return target
+      .withLatestFrom(this.character)
+      .map(item => this.generatePermission(item))
+
   }
 
   apiPermissionValidate(arg: ApiUnit): Observable<PermissionResult> {
@@ -71,7 +72,7 @@ export class PermissionService {
       .mergeMap(res => Observable.from(res).first())
   }
 
-  private generatePermission([character, permission]): PermissionResult {
+  private generatePermission([permission, character]): PermissionResult {
     const { view, opt } = permission;
 
     return {
