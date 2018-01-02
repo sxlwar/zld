@@ -27,6 +27,7 @@ import { Actions as message } from './action/message-action';
 import { Actions as nationality } from './action/nationality-action';
 import { Actions as group } from './action/group-list-action';
 import { Actions as workFlow } from './action/work-flow-action';
+import { Actions as leave } from './action/leave-action';
 
 export type Actions = config
   | attendance
@@ -37,6 +38,7 @@ export type Actions = config
   | employer
   | group
   | icons
+  | leave
   | location
   | locationCard
   | login

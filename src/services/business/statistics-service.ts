@@ -1,5 +1,6 @@
+import { putInArray } from '../utils/util';
 import { Subscription } from 'rxjs/Subscription';
-import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatisticsByDate } from './../../actions/action/statistics-action';
+import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatisticsByDate, UpdateSpecificWorkFlowStatisticAtLocalAction } from './../../actions/action/statistics-action';
 import { Store } from '@ngrx/store';
 import { AppState, selectAttendanceStatisticList } from './../../reducers/index-reducer';
 import { WorkFlowService } from './work-flow-service';
@@ -71,7 +72,7 @@ export class StatisticsService {
             .switchMap(statistics => Observable.from(statistics)
                 .mergeMap(item => this.countAttendanceStatus(item, key).map(count => ({ teamName: item.team_name, count })))
                 .filter(item => !!item.count)
-                .reduce(this.accumulatorToArray, [])
+                .reduce(putInArray, [])
             );
     }
 
@@ -86,7 +87,7 @@ export class StatisticsService {
                 .groupBy(data => data.date)
                 .mergeMap(group => group.reduce(this.accumulatorKey('count')))
                 .filter(item => !!item.count)
-                .reduce(this.accumulatorToArray, [])
+                .reduce(putInArray, [])
             );
     }
 
@@ -108,6 +109,12 @@ export class StatisticsService {
 
     showAttendanceByDates(days: string[]): void {
         this.store.dispatch(new ShowSpecificAttendanceStatisticsByDate(days));
+    }
+
+    updateWorkFlowStatisticAtLocal(processId: string, count: Observable<number>): Subscription {
+        return count.subscribe(count => {
+            this.store.dispatch(new UpdateSpecificWorkFlowStatisticAtLocalAction({processId, count}));
+        })
     }
 
     getAttendanceItemOf(key: string): Observable<AttendanceStatisticDayItem[]> {
@@ -149,12 +156,6 @@ export class StatisticsService {
 
     private accumulator(num1: number, num2: number): number {
         return num1 + num2;
-    }
-
-    private accumulatorToArray<T>(acc: T[], cur: T): T[] {
-        acc.push(cur);
-
-        return acc;
     }
 
     private accumulatorKey(key: string) {

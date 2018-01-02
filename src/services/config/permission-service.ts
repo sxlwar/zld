@@ -39,7 +39,7 @@ export class PermissionService {
 
       const opt = arg.permission.opt.indexOf(char) !== -1;
 
-      return { view, opt }
+      return { view, opt };
     });
   }
 

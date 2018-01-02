@@ -1,5 +1,4 @@
-import { AttendanceConfirmFailAction, AttendanceConfirmSuccessAction } from './../actions/action/attendance-action';
-//region
+import { AttendanceConfirmFailAction, AttendanceConfirmSuccessAction, GET_ATTENDANCE_MODIFY_RECORD_LIST, GetAttendanceModifyRecordListAction, AttendanceModifyRecordListFailAction, AttendanceModifyRecordListSuccessAction } from './../actions/action/attendance-action';
 import { GET_ATTENDANCE_RESULT_TEAM_STAT, GetAttendanceResultTeamStatListAction, AttendanceResultTeamStatFailAction, AttendanceResultTeamStatSuccessAction } from './../actions/action/statistics-action';
 import { GET_ATTENDANCE_RECORD, GetAttendanceRecordAction, AttendanceRecordFailAction, AttendanceRecordSuccessAction } from './../actions/action/attendance-record-action';
 import { Injectable } from '@angular/core';
@@ -8,16 +7,8 @@ import { WebsocketService } from '../services/api/websocket-service';
 import { Command } from '../services/api/command';
 import { ResponseAction } from '../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
-import {
-  AttendanceResultListFailAction,
-  AttendanceResultListSuccessAction,
-  GET_ATTENDANCE_RESULT_LIST,
-  GetAttendanceResultListAction,
-  CONFIRM_ATTENDANCE,
-  ConfirmAttendanceAction
-} from '../actions/action/attendance-action';
+import { AttendanceResultListFailAction, AttendanceResultListSuccessAction, GET_ATTENDANCE_RESULT_LIST, GetAttendanceResultListAction, CONFIRM_ATTENDANCE, ConfirmAttendanceAction } from '../actions/action/attendance-action';
 import { of } from 'rxjs/observable/of';
-//endregion
 
 @Injectable()
 export class AttendanceEffect extends Command {
@@ -58,6 +49,16 @@ export class AttendanceEffect extends Command {
       .send(this.getAttendanceResultConfirm(action.payload))
       .takeUntil(this.actions$.ofType(CONFIRM_ATTENDANCE))
       .map(msg => msg.isError ? new AttendanceConfirmFailAction(msg.data): new AttendanceConfirmSuccessAction(msg.data))
+      .catch(error => of(error))
+  );
+
+  @Effect()
+  attendanceModifyRecordList$: Observable<ResponseAction> = this.actions$
+    .ofType(GET_ATTENDANCE_MODIFY_RECORD_LIST)
+    .switchMap((action: GetAttendanceModifyRecordListAction) => this.ws
+      .send(this.getAttendanceModifyRecordList(action.payload))
+      .takeUntil(this.actions$.ofType(GET_ATTENDANCE_MODIFY_RECORD_LIST))
+      .map(msg => msg.isError ? new AttendanceModifyRecordListFailAction(msg.data): new AttendanceModifyRecordListSuccessAction(msg.data))
       .catch(error => of(error))
   );
 

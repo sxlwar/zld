@@ -85,21 +85,48 @@ export class GetProjectPayBillFlowListAction implements Action {
 export const PROJECT_PAY_BILL_FLOW_FAIL = 'PROJECT_PAY_BILL_FLOW_FAIL';
 
 export class ProjectPayBillFlowListFailAction implements Action {
-   readonly type =  PROJECT_PAY_BILL_FLOW_FAIL ;
+    readonly type = PROJECT_PAY_BILL_FLOW_FAIL;
 
-   constructor(public payload: ProjectPayBillFlowListResponse) { }
+    constructor(public payload: ProjectPayBillFlowListResponse) { }
 }
 
 export const PROJECT_PAY_BILL_FLOW_SUCCESS = 'PROJECT_PAY_BILL_FLOW_SUCCESS';
 
 export class ProjectPayBillFlowListSuccessAction implements Action {
-   readonly type =  PROJECT_PAY_BILL_FLOW_SUCCESS ;
+    readonly type = PROJECT_PAY_BILL_FLOW_SUCCESS;
 
-   constructor(public payload: ProjectPayBillFlowListResponse) { }
+    constructor(public payload: ProjectPayBillFlowListResponse) { }
 }
 
-export type Actions = GetWorkFlowListAction 
+export const INCREASE_PAGE = 'INCREASE_PAGE';
+
+export class IncreasePageAction implements Action {
+    readonly type = INCREASE_PAGE;
+
+    constructor(public payload: string) { }
+}
+
+export const RESET_PAGE = 'RESET_PAGE';
+
+export class ResetPageAction implements Action {
+    readonly type = RESET_PAGE;
+
+    constructor(public payload: string) { }
+}
+
+export const RESET_WORK_FLOW_RESPONSE = 'RESET_WORK_FLOW_RESPONSE';
+
+export class ResetWorkFlowResponseAction implements Action {
+    readonly type = RESET_WORK_FLOW_RESPONSE;
+
+    constructor() { }
+}
+
+export type Actions = GetWorkFlowListAction
     | GetProjectPayBillFlowListAction
+    | IncreasePageAction
+    | ResetPageAction
+    | ResetWorkFlowResponseAction
     | ProjectPayBillFlowListFailAction
     | ProjectPayBillFlowListSuccessAction
     | WorkFlowListFailAction

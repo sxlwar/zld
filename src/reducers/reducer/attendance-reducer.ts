@@ -1,5 +1,5 @@
 import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
-import { AttendanceResultConfirmResponse } from './../../interfaces/response-interface';
+import { AttendanceResultConfirmResponse, AttendanceModifyRecordListResponse } from './../../interfaces/response-interface';
 import { AttendanceResultListResponse, AttendanceResult } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-action';
 import { uniqBy } from 'lodash';
@@ -20,6 +20,7 @@ export interface State {
   rank: number;
   attendanceResultConfirmResponse: AttendanceResultConfirmResponse;
   attendanceResultConfirmOptions: AttendanceResultConfirmOptions;
+  attendanceModifyRecordListResponse: AttendanceModifyRecordListResponse;
 }
 
 export const initialState: State = {
@@ -38,7 +39,8 @@ export const initialState: State = {
   data: [],
   rank: 1,
   attendanceResultConfirmResponse: null,
-  attendanceResultConfirmOptions: null
+  attendanceResultConfirmOptions: null,
+  attendanceModifyRecordListResponse: null
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -86,7 +88,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
     case actions.TOGGLE_ALL_SELECTED_ATTENDANCE: {
       const selected = action.payload ? state.response.attendance_results.map(item => item.id) : [];
-      
+
       state.data.forEach(item => item.selected = action.payload);
 
       return Object.assign({}, state, { selected, allSelected: action.payload });
@@ -99,21 +101,21 @@ export function reducer(state = initialState, action: actions.Actions): State {
     case actions.RESET_ATTENDANCE_PAGE: {
       return Object.assign({}, state, { page: 1 });
     }
-    
+
     case actions.SORT_ATTENDANCE: {
       const key = action.payload;
 
       state.data.sort((att1, att2) => {
-        if(att1[key] > att2[key]) return state.rank;
-        if(att1[key] < att2[key]) return -state.rank;
+        if (att1[key] > att2[key]) return state.rank;
+        if (att1[key] < att2[key]) return -state.rank;
         return 0;
       });
 
-      return {...state};
+      return { ...state };
     }
 
     case actions.TOGGLE_SORT_TYPE: {
-      return Object.assign({}, state, {rank: action.payload});
+      return Object.assign({}, state, { rank: action.payload });
     }
 
     case actions.CONFIRM_ATTENDANCE:
@@ -123,6 +125,11 @@ export function reducer(state = initialState, action: actions.Actions): State {
     case actions.ATTENDANCE_CONFIRM_SUCCESS:
       return { ...state, attendanceResultConfirmResponse: action.payload };
 
+    case actions.ATTENDANCE_MODIFY_RECORD_LIST_FAIL:
+    case actions.ATTENDANCE_MODIFY_RECORD_LIST_SUCCESS:
+      return { ...state, attendanceModifyRecordListResponse: action.payload };
+
+    case actions.GET_ATTENDANCE_MODIFY_RECORD_LIST:
     case actions.GET_QUERY_ATTENDANCE_PAGE:
     case actions.GET_QUERY_ATTENDANCE_LIMIT:
     case actions.GET_ATTENDANCE_RESULT_LIST:
@@ -173,3 +180,5 @@ export const getSelectedAttendanceIds = (state: State) => state.selected;
 export const getAttendanceData = (state: State) => state.data;
 
 export const getAttendanceResultConfirmResponse = (state: State) => state.attendanceResultConfirmResponse;
+
+export const getAttendanceModifyRecordListResponse = (state: State) => state.attendanceModifyRecordListResponse;

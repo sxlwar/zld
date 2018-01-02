@@ -1,4 +1,4 @@
-import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, AttendanceStatistics } from './../../interfaces/response-interface';
+import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, AttendanceStatistics, WorkFlowAggregation } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/statistics-action';
 
 export interface AttendanceConditions {
@@ -7,10 +7,9 @@ export interface AttendanceConditions {
     statisticList: AttendanceStatistics[];
 }
 export interface State {
-
     attendanceConditions: AttendanceConditions;
     attendanceResultTeamStatResponse: AttendanceResultTeamStatListResponse;
-    requestAggregationResponse: RequestAggregationResponse
+    requestAggregationResponse: RequestAggregationResponse;
 }
 
 export const initialState: State = {
@@ -63,12 +62,29 @@ export function reducer(state = initialState, action: actions.Actions) {
 
         case actions.WORK_FLOW_STATISTICS_FAIL:
         case actions.WORK_FLOW_STATISTICS_SUCCESS:
-            return Object.assign({}, state, { requestAggregationResponse: action.payload })
+            return Object.assign({}, state, { requestAggregationResponse: action.payload });
+
+        case actions.UPDATE_SPECIFIC_WORK_FLOW_STATISTIC:
+            return { ...state, requestAggregationResponse: { request_aggregation: updateWorkFlowAggregation(state.requestAggregationResponse.request_aggregation, action.payload) } };
 
         case actions.GET_ATTENDANCE_RESULT_TEAM_STAT:
         case actions.GET_WORK_FLOW_STATISTICS:
         default:
             return state;
+    }
+}
+
+export function updateWorkFlowAggregation(source: WorkFlowAggregation[], data: { processId: string, count: number }): WorkFlowAggregation[] {
+    const index = source.findIndex(item => item.process_id === data.processId);
+
+    if (index !== -1) {
+        const result = [...source];
+        
+        result[index].process_id__count = result[index].process_id__count - data.count;
+
+        return result;
+    } else {
+        return source;
     }
 }
 
@@ -93,11 +109,11 @@ export function filterConfirmStatusByDate(data: AttendanceStatistics, dates: str
     const status = data.confirm_status;
 
     const result = dates.reduce((acc, cur) => {
-        if(status[cur]) acc[cur] = status[cur];
+        if (status[cur]) acc[cur] = status[cur];
         return acc;
-    },{});
+    }, {});
 
-    return Object.assign({}, data, {confirm_status: result});
+    return Object.assign({}, data, { confirm_status: result });
 }
 
 export const getAttendanceStatResponse = (state: State) => state.attendanceResultTeamStatResponse;

@@ -54,6 +54,14 @@ export class WorkFlowStatisticsSuccessAction implements Action {
     constructor(public payload: RequestAggregationOptions) { }
 }
 
+export const UPDATE_SPECIFIC_WORK_FLOW_STATISTIC = 'UPDATE_SPECIFIC_WORK_FLOW_STATISTIC';
+
+export class UpdateSpecificWorkFlowStatisticAtLocalAction implements Action {
+    readonly type = UPDATE_SPECIFIC_WORK_FLOW_STATISTIC;
+
+    constructor(public payload: {processId: string, count: number}) { }
+}
+
 /* ===============================================Data condition======================================================== */
 
 export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM  = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM';
@@ -80,4 +88,5 @@ export type Actions = GetAttendanceResultTeamStatListAction
     | WorkFlowStatisticsFailAction
     | WorkFlowStatisticsSuccessAction
     | ShowSpecificAttendanceStatisticsByTeam
-    | ShowSpecificAttendanceStatisticsByDate;
+    | ShowSpecificAttendanceStatisticsByDate
+    | UpdateSpecificWorkFlowStatisticAtLocalAction;

@@ -1,3 +1,5 @@
+import { AttendanceModifyRecordListResponse } from './../../interfaces/response-interface';
+import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 import { AttendanceResultListResponse, AttendanceResultConfirmResponse } from '../../interfaces/response-interface';
 import { AttendanceResultListOptions, AttendanceResultConfirmOptions } from '../../interfaces/request-interface';
@@ -186,13 +188,42 @@ export class AttendanceConfirmSuccessAction implements Action {
   constructor(public payload: AttendanceResultConfirmResponse) { }
 }
 
+/* ============================================Attendance modify=================================================== */
+
+export const GET_ATTENDANCE_MODIFY_RECORD_LIST = 'GET_ATTENDANCE_MODIFY_RECORD_LIST';
+
+export class GetAttendanceModifyRecordListAction implements Action {
+  readonly type = GET_ATTENDANCE_MODIFY_RECORD_LIST;
+  
+  constructor(public payload: AttendanceModifyRecordListOptions) { }
+}
+
+export const ATTENDANCE_MODIFY_RECORD_LIST_FAIL = 'ATTENDANCE_MODIFY_RECORD_LIST_FAIL';
+
+export class AttendanceModifyRecordListFailAction implements Action {
+  readonly type = ATTENDANCE_MODIFY_RECORD_LIST_FAIL;
+  
+  constructor(public payload: AttendanceModifyRecordListResponse) { }
+}
+
+export const ATTENDANCE_MODIFY_RECORD_LIST_SUCCESS = 'ATTENDANCE_MODIFY_RECORD_LIST_SUCCESS';
+
+export class AttendanceModifyRecordListSuccessAction implements Action {
+  readonly type = ATTENDANCE_MODIFY_RECORD_LIST_SUCCESS;
+  
+  constructor(public payload: AttendanceModifyRecordListResponse) { }
+}
+
 export type Actions = GetAttendanceResultListAction
   | AddSelectedAttendanceAction
   | AttendanceConfirmFailAction
   | AttendanceConfirmSuccessAction
+  | AttendanceModifyRecordListFailAction
+  | AttendanceModifyRecordListSuccessAction
   | AttendanceResultListFailAction
   | AttendanceResultListSuccessAction
   | ConfirmAttendanceAction
+  | GetAttendanceModifyRecordListAction
   | GetQueryAttendanceLimitAction
   | GetQueryAttendancePageAction
   | IncreaseAttendancePageAction

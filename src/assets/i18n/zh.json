@@ -411,8 +411,28 @@
   "MESSAGE_DETAIL": "消息详情",
   "WORKER_CONTRACT_EXPIRE_TIP": "以下工人的用工合同即将到期",
   "UNCONFIRMED_ATTENDANCE_TIP":"您有以下考勤未确认",
+  
+  "REQUESTER":"发起人",
+  "REQUEST_TIME": "发起时间",
+  "PENDING_COUNT": "未处理申请",
+  "AUDIT":"审核",
+  "WORK_FLOW_AUDIT_TIP":"请审核以下申请",
+  "WORK_FLOW_AUDIT_COMMENT":"请输入审核意见",
+  "CREATE": "创建",
+  "PASS": "通过",
+  "REJECT": "驳回",
+  "PENDING": "未处理",
+  "REAPPLY": "重新发起",
 
-  "TAB1_TITLE": "Items",
+  "APPLY_REASON": "申请原因",
+  "APPLY_PEOPLE":"申请员工",
+  "AUDITOR": "审核人",
+
+  "LEAVE_DETAIL":"请假详情",
+  "VACATION_TYPE":"假期类型",
+  "COMMENT": "备注",
+  "ATTACH": "附件",
+  
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",
 

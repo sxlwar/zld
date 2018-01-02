@@ -48,6 +48,8 @@ import { WorkerContractMessageComponent } from './worker-contract-message/worker
 import { SalaryCardMessageComponent } from './salary-card-message/salary-card-message';
 import { WorkFlowMessageComponent } from './work-flow-message/work-flow-message';
 import { AttendanceMessageComponent } from './attendance-message/attendance-message';
+import { MissionListComponent } from './mission-list/mission-list';
+import { WorkFlowAuditComponent } from './work-flow-audit/work-flow-audit';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,8 @@ import { AttendanceMessageComponent } from './attendance-message/attendance-mess
     SalaryCardMessageComponent,
     WorkFlowMessageComponent,
     AttendanceMessageComponent,
+    MissionListComponent,
+    WorkFlowAuditComponent,
   ],
   imports: [
     CommonModule,
@@ -151,6 +155,8 @@ import { AttendanceMessageComponent } from './attendance-message/attendance-mess
     SalaryCardMessageComponent,
     WorkFlowMessageComponent,
     AttendanceMessageComponent,
+    MissionListComponent,
+    WorkFlowAuditComponent,
   ]
 })
 export class ComponentsModule {

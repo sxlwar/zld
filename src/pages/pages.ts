@@ -67,6 +67,15 @@ export const attendanceConfirmPage = 'AttendanceConfirmPage';
 
 export const messageContentPage = 'MessageContentPage'
 
+export const overtimePage = 'OvertimePage';
+
+export const leavePage = 'LeavePage';
+
+export const leaveDetailPage  = 'LeaveDetailPage';
+
+export const pieceAuditPage = 'PieceAuditPage';
+
+export const attendanceModifyPage = 'AttendanceModifyPage';
 
 /*============================================common pages===================================================*/
 
@@ -146,6 +155,11 @@ export const PAGES = [
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 
   { title: 'AttendanceConfirm', component: attendanceConfirmPage },
+  { title: 'Overtime', component: overtimePage },
+  { title: 'LeavePage', component: leavePage },
+  { title: 'LeaveDetail', component: leaveDetailPage },
+  { title: 'PieceAuditPage', component: pieceAuditPage },
+  { title: 'AttendanceModifyPage', component: attendanceModifyPage },
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },

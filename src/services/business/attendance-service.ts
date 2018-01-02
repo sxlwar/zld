@@ -1,5 +1,6 @@
-import { AttendanceStatistics } from './../../interfaces/response-interface';
-import { selectAttendanceStatisticsResponse, selectAttendanceStatistics } from './../../reducers/index-reducer';
+import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
+import { AttendanceStatistics, AttendanceModify } from './../../interfaces/response-interface';
+import { selectAttendanceStatisticsResponse, selectAttendanceStatistics, selectAttendanceModifyRecordListResponse } from './../../reducers/index-reducer';
 import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
 import { AppState, selectAttendanceDatePeriod, selectAttendanceLimit, selectAttendancePage, selectAttendanceResponse, selectAttendanceAllSelected, selectAttendanceData, selectAttendanceCount } from '../../reducers/index-reducer';
@@ -22,7 +23,7 @@ export class AttendanceService {
   subscriptions: Subscription[] = [];
 
   attendance$$: Subscription;
-  
+
   statistics$$: Subscription;
 
   constructor(
@@ -81,6 +82,12 @@ export class AttendanceService {
     this.subscriptions.push(subscription);
   }
 
+  getAttendanceModifyRecordLists(): Observable<AttendanceModify[]> {
+    return this.store.select(selectAttendanceModifyRecordListResponse)
+      .filter(value => !!value)
+      .map(res => res.attend_amends)
+  }
+
   increasePage(): void {
     this.store.dispatch(new IncreaseAttendancePageAction());
   }
@@ -89,18 +96,18 @@ export class AttendanceService {
     this.store.dispatch(new ResetAttendancePageAction());
   }
 
-  getAttendanceStatisticsByTeam():void {
+  getAttendanceStatisticsByTeam(): void {
     const sid = this.userInfo.getSid();
 
     const teamIds = this.teamService.getOwnTeams()
       .filter(teams => !!teams.length)
       .map(teams => teams.map(team => team.id));
 
-    const option = sid.zip(teamIds, (sid, team_ids) => ({sid, team_ids}));
+    const option = sid.zip(teamIds, (sid, team_ids) => ({ sid, team_ids }));
 
     const subscription = this.processor.attendanceResultTeamStatListProcessor(option);
-    
-    this.subscriptions.push(subscription); 
+
+    this.subscriptions.push(subscription);
   }
 
   getAttendanceStatistics(): Observable<AttendanceStatistics[]> {
@@ -110,7 +117,11 @@ export class AttendanceService {
 
     this.subscriptions.push(subscription);
 
-    return result; 
+    return result;
+  }
+
+  getAttendanceModifyRecord(option: Observable<RequestOption>): Subscription {
+    return this.processor.attendanceModifyRecordListProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })) as Observable<AttendanceModifyRecordListOptions>);
   }
 
   /* =========================================================Attendance date operation================================================= */
@@ -204,7 +215,7 @@ export class AttendanceService {
         if (page * limit >= count) this.store.dispatch(new ResetAttendancePageAction());
       });
 
-      this.subscriptions.push(subscription);
+    this.subscriptions.push(subscription);
   }
 
   private handleError() {
@@ -222,6 +233,10 @@ export class AttendanceService {
     const error = this.store.select(selectAttendanceStatisticsResponse);
 
     this.statistics$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
+  }
+
+  handleAttendanceModifyError(): Subscription {
+    return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyRecordListResponse), 'API_ERROR');
   }
 
   unSubscribe() {

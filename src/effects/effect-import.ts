@@ -1,3 +1,4 @@
+import { LeaveEffect } from './leave-effect';
 import { GroupsListEffect } from './group-list-effect';
 import { NationalityEffect } from './nationality-effect';
 import { MessageEffect } from './message-effect';
@@ -33,6 +34,7 @@ export const EFFECTS = [
     CraftEffect,
     EmployerEffect,
     GroupsListEffect,
+    LeaveEffect,
     LogoutEffect,
     LocationEffect,
     LocationCardEffect,

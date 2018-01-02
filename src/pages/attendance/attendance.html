@@ -54,19 +54,18 @@
   </ion-list>
 
   <ion-list style="background: grey">
-    <ion-item *ngFor="let attendance of (attendances | async)">
+    <ion-item *ngFor="let attendance of (attendances | async)" detail-push>
+      
       <ion-label>
         <ion-grid>
           <ion-row (click)="goToDetailPage(attendance)">
             <ion-col>{{attendance.contract__worker__employee__realname}}</ion-col>
             <ion-col>{{attendance.total_area_hour}}</ion-col>
             <ion-col>{{attendance.availability_work_hour}}</ion-col>
-            <ion-col>
-              <ion-icon name="arrow-forward" item-end></ion-icon>
-            </ion-col>
           </ion-row>
         </ion-grid>
       </ion-label>
+      
       <ion-checkbox [(ngModel)]="attendance.selected" (ngModelChange)="toggleSelected(attendance)"></ion-checkbox>
     </ion-item>
 

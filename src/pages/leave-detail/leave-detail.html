@@ -1,0 +1,109 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'LEAVE_DETAIL' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list *ngIf="leave | async; let data">
+
+    <ion-item>
+      <ion-label>{{'APPLY_PEOPLE' | translate}}</ion-label>
+      <ion-input disabled [value]="data.contracts | names"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
+      <ion-input disabled [value]="data.reason"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'VACATION_TYPE' | translate}}</ion-label>
+      <ion-input disabled [value]="data.type"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'START_TIME' | translate}}</ion-label>
+      <ion-input disabled [value]="data.start"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'END_TIME' | translate}}</ion-label>
+      <ion-input disabled [value]="data.finish"></ion-input>
+    </ion-item>
+
+  </ion-list>
+
+  <ion-list *ngIf="workFlow | async; let workFlow;">
+    <ion-list-header *ngIf="workFlow.files.length">{{'ATTACH' | translate}}</ion-list-header>
+    <ion-item *ngFor="let item of workFlow.files ">
+      <img [src]="imagePrefix + item.url">
+    </ion-item>
+  </ion-list>
+
+  <timeline endIcon="call" *ngIf="workFlow | async; let workFlow;">
+
+    <timeline-item>
+
+      <timeline-time [time]="workFlow.create_time"></timeline-time>
+
+      <ion-icon name="calendar" class="time-line-icon"></ion-icon>
+
+      <ion-card>
+        <ion-card-content>
+
+          <ion-item>
+            <ion-label fixed>{{'STATUS' | translate}}</ion-label>
+            <ion-input disabled [value]="'CREATE' | translate"></ion-input>
+            <ion-icon name="create" color="secondary" item-start></ion-icon>
+          </ion-item>
+
+          <ion-item>
+            <ion-label fixed>{{'REQUESTER' | translate}}</ion-label>
+            <ion-input disabled [value]="workFlow.requester__employee__realname"></ion-input>
+            <ion-icon name="person" color="primary" item-start></ion-icon>
+          </ion-item>
+
+        </ion-card-content>
+      </ion-card>
+    </timeline-item>
+
+    <timeline-item *ngFor="let item of workFlow.task">
+
+      <timeline-time [time]="item.modify_time"></timeline-time>
+
+      <ion-icon name="calendar" class="time-line-icon"></ion-icon>
+
+      <ion-card>
+
+        <ion-card-content>
+
+          <ion-item>
+            <ion-label fixed>{{'STATUS' | translate}}</ion-label>
+            <ion-input disabled [value]="item.status"></ion-input>
+            <ion-icon [name]="item.status | taskStatus" [color]="item.status | taskStatusColor" item-start></ion-icon>
+          </ion-item>
+
+          <ion-item>
+            <ion-label fixed>{{'AUDITOR' | translate}}</ion-label>
+            <ion-input disabled [value]="item.user__employee__realname"></ion-input>
+            <ion-icon name="person" color="primary" item-start></ion-icon>
+          </ion-item>
+
+          <ion-item>
+            {{'COMMENT' | translate}}
+          </ion-item>
+          <ion-textarea disabled [value]="item.comment"></ion-textarea>
+
+        </ion-card-content>
+
+      </ion-card>
+
+    </timeline-item>
+
+  </timeline>
+</ion-content>

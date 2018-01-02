@@ -31,6 +31,7 @@ import * as message from './reducer/message-reducer';
 import * as nationality from './reducer/nationality-reducer';
 import * as group from './reducer/group-list-reducer';
 import * as workFlow from './reducer/work-flow-reducer';
+import * as leave from './reducer/leave-reducer';
 
 export interface AppState {
   QRLogin: QRLogin.State,
@@ -69,6 +70,7 @@ export interface AppState {
   workFlow: workFlow.State,
   workType: workType.State,
   worker: worker.State,
+  leave: leave.State,
 }
 
 export const reducers: ActionReducerMap<AppState> = {
@@ -108,6 +110,7 @@ export const reducers: ActionReducerMap<AppState> = {
   nationality: nationality.reducer,
   group: group.reducer,
   workFlow: workFlow.reducer,
+  leave: leave.reducer,
 };
 
 //config
@@ -220,6 +223,7 @@ export const selectSelectedAttendanceIds = createSelector(getAttendance, attenda
 export const selectAttendanceAllSelected = createSelector(getAttendance, attendance.getAllSelected);
 export const selectAttendanceData = createSelector(getAttendance, attendance.getAttendanceData);
 export const selectAttendanceResultConfirmResponse = createSelector(getAttendance, attendance.getAttendanceResultConfirmResponse);
+export const selectAttendanceModifyRecordListResponse = createSelector(getAttendance, attendance.getAttendanceModifyRecordListResponse);
 
 //attendance instant list
 export const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
@@ -404,6 +408,17 @@ export const selectWorkFlowListResponse = createSelector(getWorkFlow, workFlow.g
 export const selectProjectPayBillFlowListResponse = createSelector(getWorkFlow, workFlow.getProjectPayBillFlowListResponse);
 export const selectMultiTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getMultiTaskUpdateResponse);
 export const selectTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getTaskUpdateResponse);
+export const selectWorkFlowLimit = createSelector(getWorkFlow, workFlow.getLimit);
+export const selectLeavePage = createSelector(getWorkFlow, workFlow.getLeavePage);
+export const selectOvertimePage = createSelector(getWorkFlow, workFlow.getOvertimePage);
+export const selectPieceAuditPage = createSelector(getWorkFlow, workFlow.getPieceAuditPage);
+export const selectAttendanceModifyPage = createSelector(getWorkFlow, workFlow.getAttendanceModifyPage);
+export const selectMultiTaskUpdateOptions = createSelector(getWorkFlow, workFlow.getMultiTaskUpdateOptions);
+export const selectTaskUpdateOptions = createSelector(getWorkFlow, workFlow.getTaskUpdateOptions);
+
+//leave record list
+export const getLeave = (state: AppState) => state.leave;
+export const selectLeaveRecordListResponse = createSelector(getLeave, leave.getLeaveResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 

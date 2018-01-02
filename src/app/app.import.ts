@@ -1,3 +1,4 @@
+import { NamesPipe, TaskStatusPipe, TaskStatusColorPipe } from './../pipes/work-flow-pipe';
 import { MessageIconPipe, MessageSplitPipe, MessageParsePipe } from './../pipes/message-pipe';
 import { DegreePipe } from './../pipes/personal-pipe';
 import { LocationCardStatusPipe } from './../pipes/location-card-status-pipe';
@@ -9,6 +10,7 @@ import { PositiveIntegerPipe } from './../pipes/positive-integer-pipe';
 import { JoinPipe } from './../pipes/join-pipe';
 import { PriceUnitPipe } from './../pipes/price-unit-pipe';
 import { BatteryPipe, PercentBatteryPipe, IsLowPowerPipe } from './../pipes/battery-pipe';
+import { directives } from '../directives/directives-import';
 
 
 
@@ -28,4 +30,9 @@ export const PIPES = [
     MessageIconPipe,
     MessageSplitPipe,
     MessageParsePipe,
-]
+    NamesPipe,
+    TaskStatusPipe,
+    TaskStatusColorPipe,
+];
+
+export const DIRECTIVES = directives;

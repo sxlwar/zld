@@ -1,4 +1,4 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
@@ -860,6 +860,12 @@ export const workFlowList: ApiUnit = {
     opt: []
   },
   specialCharacter: new Map([
+    [PME, new Iterator({ self: 1 })],
+    [MM, new Iterator({ self: 1 })],
+    [PM, new Iterator({ self: 1 })],
+    [LM, new Iterator({ self: 1 })],
+    [TL, new Iterator({ self: 1 })],
+    [QW, new Iterator({ self: 1 })],
     [SW, new Iterator({ self: 1 })],
     [CW, new Iterator({ self: 1 })]
   ]),
@@ -870,13 +876,30 @@ export const workFlowList: ApiUnit = {
   ])
 }
 
+export const attendanceModifyRecordList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.AmendAttendRecordList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
+export const leaveRecordList: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['project.consumer.LeaveRecordList']]
+  ]),
+  permission: {
+    view: [PME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
 @Injectable()
 export class Command {
-
-  amendAttendRecordList = "project.consumer.AmendAttendRecordList";
   contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
   deleteFiles = "operation.consumer.DeleteFiles";
-  leaveRecordList = "project.consumer.LeaveRecordList";
   multiProcessCreate = "workflow.consumer.MultiProcessCreate";
   myCompanyContractList = "employer.consumer.MyCompanyContractList";
   paySalary = "project.consumer.PaySalary";
@@ -1466,17 +1489,41 @@ export class Command {
   getMultiTaskUpdate(option: MultiTaskUpdateOptions): WsRequest {
     const path = multiTaskUpdate.operates.get(Operate.updates)[0];
 
-    return this.getFullParameter(path, option);
+    const { sid, comment, id, approve } = option;
+
+    return this.getFullParameter(path, { sid, task: { comment, id, approve } });
   }
 
   getTaskUpdate(option: TaskUpdateOptions): WsRequest {
     const path = taskUpdate.operates.get(Operate.updates)[0];
 
+    const { sid, comment, id, approve } = option;
+
+    return this.getFullParameter(path, { sid, task: { comment, id, approve } });
+  }
+
+  /**
+   * @description Leave relate api: getLeaveRecordList;
+   */
+  getLeaveRecordList(option: LeaveRecordListOptions): WsRequest {
+    const path = leaveRecordList.operates.get(Operate.querying)[0];
+
     return this.getFullParameter(path, option);
   }
 
   /**
-   * @description API unit interfaces for external module referring.
+   * @description Attendance modify related api: getAttendanceModifyRecordList
+   */
+  getAttendanceModifyRecordList(option: AttendanceModifyRecordListOptions): WsRequest {
+    const path = attendanceModifyRecordList.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  /* ==========================================================Api unit reference api====================================================== */
+
+  /**
+   * @description API unit interfaces for http methods;
    */
   get uploadPersonalIdImage(): string {
     return uploadPersonalIdImage.operates.get(Operate.updates)[0];
@@ -1486,8 +1533,9 @@ export class Command {
     return uploadCertificateImage.operates.get(Operate.updates)[0];
   }
 
-  /* ==========================================================Websocket commands====================================================== */
-
+  /**
+   * @description API unit interfaces for websocket methods;
+   */
   get projectList() {
     return projectList;
   }
@@ -1742,5 +1790,13 @@ export class Command {
 
   get attendanceResultConfirm() {
     return attendanceResultConfirm;
+  }
+
+  get leaveRecordList() {
+    return leaveRecordList;
+  }
+
+  get attendanceModifyRecordList() {
+    return attendanceModifyRecordList;
   }
 }

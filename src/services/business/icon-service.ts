@@ -210,6 +210,7 @@ export const payrollAudit: IconItem = {
   },
   page: ''
 };
+
 export const leave: IconItem = {
   text: 'LEAVE_APPLY',
   icon: leaveIcon,
@@ -218,8 +219,9 @@ export const leave: IconItem = {
     view: [PME, EME, MM],
     opt: [PM, LM]
   },
-  page: ''
+  page: pages.leavePage
 };
+
 export const overtime: IconItem = {
   text: 'LEAVE_APPLY',
   icon: overtimeIcon,
@@ -228,8 +230,9 @@ export const overtime: IconItem = {
     view: [PME, EME, MM, TL],
     opt: [PM]
   },
-  page: ''
+  page: pages.overtimePage
 };
+
 export const pieceAudit: IconItem = {
   text: 'PIECE_AUDIT',
   icon: pieceAuditIcon,
@@ -238,8 +241,9 @@ export const pieceAudit: IconItem = {
     view: [PME, EME, MM, TL],
     opt: [PM, QW]
   },
-  page: ''
+  page: pages.pieceAuditPage
 };
+
 export const modifyAttendance: IconItem = {
   text: 'MODIFY_ATTENDANCE',
   icon: modifyAttendanceIcon,
@@ -248,7 +252,7 @@ export const modifyAttendance: IconItem = {
     view: [PME, EME, MM, TL],
     opt: [PM, LM]
   },
-  page: ''
+  page: pages.attendanceModifyPage
 };
 
 export const workerContract: IconItem = {
@@ -468,7 +472,7 @@ export class IconService {
     const attendance: Observable<WorkFlowAggregation> = attendanceConfirmNumber.map(count => ({ process_id: 'attendanceConfirm', process_id__count: count }));
 
     return this.store.select(selectWorkFlowStatisticsResponse)
-      .filter(value => !!value && !!value.request_aggregation.length)
+      .filter(value => !!value && !!value.request_aggregation && !!value.request_aggregation.length)
       .mergeMap(res => Observable.from(res.request_aggregation))
       .merge(attendance)
       .subscribe(({ process_id, process_id__count }) => {

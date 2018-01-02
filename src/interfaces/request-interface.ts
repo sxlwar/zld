@@ -624,6 +624,12 @@ export enum TaskStatus {
   completed = '完成'
 }
 
+/** 又是两个2B接口，multiTaskUpdateOptions 和 taskUpdateOptions，格式:
+ *  `{
+ *    sid: string;
+ *    task: {...}; 
+ * }` 
+ */
 export interface MultiTaskUpdateOptions {
   sid: string;
   id: number[]; // task ids;
@@ -667,6 +673,21 @@ export enum ProcessId {
   project_payflow_apply = '项目工资对帐单审核工作流'
 }
 
+export enum ProcessIdOptions {
+  primaryContract = 'sign_prime_contract',
+  subcontract = 'sign_sub_contract',
+  workerContract = 'sign_worker_contract',
+  primaryContractExpire = 'prime_contract_time_change',
+  subcontractExpire = 'sub_contract_time_change',
+  workerContractExpire = 'worker_contract_time_change',
+  attendanceModity = 'amend_worker_attend',
+  pieceAudit = 'workpiece_finish',
+  leave = 'leave_apply',
+  overtime = 'workovertime_apply',
+  duty = 'timeduty_apply',
+  projectPayFlow = 'project_payflow_apply'
+}
+
 export enum SpecificWorkFlowState {
   launch = 'launch',
   completed = 'complete',
@@ -674,16 +695,46 @@ export enum SpecificWorkFlowState {
 }
 
 export interface WorkFlowListOptions {  //这名字，果断改了; requestList，这两个单词和工作流有几吧的关系。
-  sid: string;
-  user_id: number;
-  user_realname: string; // 这个字段类型怎么可能是int?  
-  flag: number; //又是魔鬼参数需要处理
-  process_id: string;
-  request_status: string;
-  request_id: number; //文档上string;
-  page: number;
+  flag?: number; //又是魔鬼参数需要处理
   limit: number;
+  page: number;
+  process_id?: string; //非常恶心的东西，明明叫ID，传个数字多好，弄个字符串到中方的映射，太TMD奇葩了, 然后返回的request_types再返回一段中文，python难道是中文开发语言？
+  request_id?: number; //文档上string
+  request_status?: string;
+  sid: string;
+  user_id?: number;
+  user_realname?: string; // 这个字段类型怎么可能是int?  
 }
+
+/* ====================================================Leave model============================================= */
+
+export interface LeaveRecordListOptions {
+  end_day?:string; // 我操，这居然用的是end，其它地方用的是finish,是不是一个写的代码
+  history_view:string;
+  limit?:string;
+  page?:string;
+  project_id?:string; //文档上是必选参数，看了一下v1的参数，根本没有传;
+  request_id?:number;
+  request_status?:string; //WorkFlowStatus;
+  sid:string;
+  start_day?:string;
+  team_id?:number[]; // 2B字段，复数
+  user_id?:number[]; // 2B字段, 复数
+}
+
+/* ====================================================Attendance modify model============================================= */
+
+export interface AttendanceModifyRecordListOptions { //名字改了
+  end_day?:string; // 我操，这居然用的是end，其它地方用的是finish,是不是一个写的代码
+  history_view:string;
+  request_id?:number;
+  request_status?:string; //WorkFlowStatus;
+  sid:string;
+  start_day?:string;
+  team_id?:number[]; // 2B字段，复数
+  user_id?:number[]; // 2B字段, 复数
+}
+
 /* ====================================================Message model============================================= */
 
 export interface UnreadMessageCountOptions {

@@ -1,3 +1,4 @@
+import { TipService } from './../services/tip-service';
 import { GET_WORK_FLOW_LIST, GetWorkFlowListAction, WorkFlowListFailAction, WorkFlowListSuccessAction, GET_PROJECT_PAY_BILL_FLOW_LIST, GetProjectPayBillFlowListAction, ProjectPayBillFlowListFailAction, ProjectPayBillFlowListSuccessAction, UPDATE_MULTI_TASK, UpdateMultiTaskAction, UpdateMultiTaskFailAction, UpdateMultiTaskSuccessAction, UPDATE_TASK, UpdateTaskAction, UpdateTaskFailAction, UpdateTaskSuccessAction } from './../actions/action/work-flow-action';
 import { GET_WORK_FLOW_STATISTICS, GetWorkFlowStatisticsAction, WorkFlowStatisticsFailAction, WorkFlowStatisticsSuccessAction } from './../actions/action/statistics-action';
 import { ResponseAction } from './../interfaces/response-interface';
@@ -48,6 +49,7 @@ export class WorkFlowEffect extends Command {
         .switchMap((action: UpdateMultiTaskAction) => this.ws
             .send(this.getMultiTaskUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_MULTI_TASK))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new UpdateMultiTaskFailAction(msg.data) : new UpdateMultiTaskSuccessAction(msg.data))
             .catch(error => of(error))
         );
@@ -58,13 +60,15 @@ export class WorkFlowEffect extends Command {
         .switchMap((action: UpdateTaskAction) => this.ws
             .send(this.getTaskUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_TASK))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new UpdateTaskFailAction(msg.data) : new UpdateTaskSuccessAction(msg.data))
             .catch(error => of(error))
         );
 
     constructor(
         public ws: WebsocketService,
-        public actions$: Actions
+        public actions$: Actions,
+        public tip: TipService
     ) {
         super();
     }

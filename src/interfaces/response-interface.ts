@@ -500,7 +500,7 @@ export interface ProjectPayProcessListResponse {
 
 /*==========================================Over time model====================================================*/
 
-export interface WorkerContract {
+export interface WorkerContractSimple {
   worker__employee__realname: string;
   id: number;
   team__name: string;
@@ -1202,7 +1202,7 @@ export interface WorkFlowTask {
   task_id: string;
   modify_time: string;
   task_name: string;
-  approve: string;
+  approve: string; // 这几鸟字段有一个隐藏状态文档上是压根没有说明的, null的时候是未处理；0，驳回， 1，通过；
 }
 
 export interface WorkFlowFile {
@@ -1210,7 +1210,7 @@ export interface WorkFlowFile {
   size: string;
 }
 
-export interface WorkFlowRequest {
+export interface WorkFlow {
   requester__groups__name: string;
   status: string;
   task: WorkFlowTask[];
@@ -1228,10 +1228,45 @@ export interface WorkFlowRequest {
 // request list
 export interface WorkFlowListResponse {
   count: number;
-  request: WorkFlowRequest[];
-  requests_types: string[];
+  request: WorkFlow[];
+  requests_types: string[]; //process_id的值
   information?: string;
   errorMessage?: string;
+}
+
+/* =======================================================Leave response============================================ */
+
+export interface Leave {
+  finish:string;
+  contracts: WorkerContract[];
+  request__status:string;
+  start:string;
+  reason:string;
+  request_id: number;
+  type:string;
+  id: number;
+}
+
+export interface LeaveRecordListResponse {
+  leaves: Leave[];
+}
+
+/* =======================================================Attendance modify response============================================ */
+
+export interface AttendanceModify {
+  result__contract__worker__employee__realname: string;
+  result__contract__team__name:string;
+  request__status:string;
+  id: number;
+  reason: string;
+  request_id: number;
+  result__day:string;
+  on_duty:string;
+  off_duty: string;
+}
+
+export interface AttendanceModifyRecordListResponse {
+  attend_amends: AttendanceModify[];
 }
 
 /* =======================================================Http response============================================ */

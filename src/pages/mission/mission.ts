@@ -56,7 +56,7 @@ export class MissionPage {
     this.subscriptions = [
       this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
       this.statistics.getWorkFlowStatistic()
-    ]
+    ];
   }
 
   goTo(item) {
