@@ -553,6 +553,9 @@ export class ProcessorService extends MapperService {
     return option$.subscribe(option => this.store.dispatch(new UpdateMultiTaskAction(option)));
   }
 
+  /**
+   * FIXME: unused;
+   */
   taskUpdateProcessor(option$: Observable<TaskUpdateOptions>): Subscription {
     return option$.subscribe(option => this.store.dispatch(new UpdateTaskAction(option)));
   }

@@ -1,23 +1,23 @@
-import { LeaveService } from './../../services/business/leave-service';
+import { OvertimeService } from './../../services/business/overtime-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
-import { Leave, WorkFlow } from './../../interfaces/response-interface';
+import { WorkFlow, Overtime } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-leave-detail',
-  templateUrl: 'leave-detail.html',
+  selector: 'page-overtime-detail',
+  templateUrl: 'overtime-detail.html',
 })
-export class LeaveDetailPage {
+export class OvertimeDetailPage {
 
   id: number;
 
   workFlow: Observable<WorkFlow>;
 
-  leave: Observable<Leave>;
+  overtime: Observable<Overtime>;
 
   subscriptions: Subscription[] = [];
 
@@ -27,7 +27,7 @@ export class LeaveDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
-    public leaveService: LeaveService,
+    public overtimeService: OvertimeService,
     public modalCtrl: ModalController
   ) {
     this.id = navParams.get('id');
@@ -42,13 +42,13 @@ export class LeaveDetailPage {
   initialModel() {
     this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.leave = this.leaveService.getLeaveRecordLists().map(res => res[0]);
+    this.overtime = this.overtimeService.getOvertimeRecords().map(res => res[0]);
   }
 
   launch() {
     this.subscriptions = [
-      this.leaveService.getLeaveRecord(this.leaveService.getProcessingRecordOptions(this.id)),
-      this.leaveService.handleError()
+      this.overtimeService.getOvertimeRecordList(this.overtimeService.getProcessingRecordOptions(this.id)),
+      this.overtimeService.handleError(),
     ];
   }
 

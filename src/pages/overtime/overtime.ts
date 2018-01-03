@@ -1,22 +1,23 @@
-import { StatisticsService } from './../../services/business/statistics-service';
-import { leave } from './../../services/business/icon-service';
-import { MissionRoot, leaveDetailPage } from './../pages';
-import { PermissionService } from './../../services/config/permission-service';
-import { AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions } from './../../interfaces/request-interface';
+import { MissionRoot, overtimeDetailPage } from './../pages';
+import { overtime } from './../../services/business/icon-service';
+import { MissionListItem, AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { Observable } from 'rxjs/Observable';
+import { StatisticsService } from './../../services/business/statistics-service';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
-import { MissionListItem } from '../../interfaces/mission-interface';
+import { PermissionService } from '../../services/config/permission-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-leave',
-  templateUrl: 'leave.html',
+  selector: 'page-overtime',
+  templateUrl: 'overtime.html',
 })
-export class LeavePage {
+export class OvertimePage {
+
+  subscriptions: Subscription[] = [];
 
   total: Observable<number>;
 
@@ -25,8 +26,6 @@ export class LeavePage {
   operate: Observable<boolean>;
 
   haveMoreData: Observable<boolean>;
-
-  subscriptions: Subscription[] = [];
 
   page$$: Subscription;
 
@@ -57,18 +56,18 @@ export class LeavePage {
 
     this.list = this.workFlow.getList();
 
-    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getLeavePage());
+    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getOvertimePage());
 
-    this.operate = this.permission.getOperatePermission(leave.icon, MissionRoot)
+    this.operate = this.permission.getOperatePermission(overtime.icon, MissionRoot)
   }
 
   launch(): void {
     this.subscriptions = [
       this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.leave, ...this.workFlow.getPendingOption() }),
-        this.workFlow.getLeavePage()
+        Observable.of({ process_id: ProcessIdOptions.overtime, ...this.workFlow.getPendingOption() }),
+        this.workFlow.getOvertimePage()
       ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.leave, this.workFlow.getTaskUpdateSuccessCount())
+      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.overtime, this.workFlow.getTaskUpdateSuccessCount())
     ];
   }
 
@@ -78,14 +77,14 @@ export class LeavePage {
     this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
   }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
+  getNextPage(infiniteScroll: InfiniteScroll): void {
     this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.leavePage);
+    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.overtimePage);
   }
 
   goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(leaveDetailPage, { id: target.id }).then(() => {});
+    this.navCtrl.push(overtimeDetailPage, { id: target.id }).then(() => { });
   }
 
   ionViewWillUnload() {
@@ -95,5 +94,4 @@ export class LeavePage {
     
     this.subscriptions.forEach(item => item.unsubscribe());
   }
-
 }

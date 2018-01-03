@@ -9,15 +9,18 @@ import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
+import { RecordOptionService } from './record-option-service';
 
 @Injectable()
-export class LeaveService {
+export class LeaveService extends RecordOptionService {
     constructor(
         public store: Store<AppState>,
         public userInfo: UserService,
         public error: ErrorService,
         public processor: ProcessorService
-    ) { }
+    ) { 
+        super();
+    }
 
     getLeaveRecordListResponse(): Observable<LeaveRecordListResponse> {
         return this.store.select(selectLeaveRecordListResponse)

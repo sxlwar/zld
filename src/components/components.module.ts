@@ -50,6 +50,8 @@ import { WorkFlowMessageComponent } from './work-flow-message/work-flow-message'
 import { AttendanceMessageComponent } from './attendance-message/attendance-message';
 import { MissionListComponent } from './mission-list/mission-list';
 import { WorkFlowAuditComponent } from './work-flow-audit/work-flow-audit';
+import { WorkFlowTimeLineComponent } from './work-flow-time-line/work-flow-time-line';
+import { WorkFlowAttachComponent } from './work-flow-attach/work-flow-attach';
 
 @NgModule({
   declarations: [
@@ -100,6 +102,8 @@ import { WorkFlowAuditComponent } from './work-flow-audit/work-flow-audit';
     AttendanceMessageComponent,
     MissionListComponent,
     WorkFlowAuditComponent,
+    WorkFlowTimeLineComponent,
+    WorkFlowAttachComponent,
   ],
   imports: [
     CommonModule,
@@ -157,6 +161,8 @@ import { WorkFlowAuditComponent } from './work-flow-audit/work-flow-audit';
     AttendanceMessageComponent,
     MissionListComponent,
     WorkFlowAuditComponent,
+    WorkFlowTimeLineComponent,
+    WorkFlowAttachComponent,
   ]
 })
 export class ComponentsModule {

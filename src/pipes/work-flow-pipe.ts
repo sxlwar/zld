@@ -37,3 +37,12 @@ export class TaskStatusColorPipe implements PipeTransform {
 
     }
 }
+
+@Pipe({
+    name: 'overtimePay'
+})
+export class OvertimePayPipe implements PipeTransform {
+    transform(source: string): string {
+        return `按${source}工资结算`;  // 懒的处理后台的SB字段了, 一直传你妈的中文。
+    }
+}

@@ -500,23 +500,29 @@ export interface ProjectPayProcessListResponse {
 
 /*==========================================Over time model====================================================*/
 
+export interface Record {
+  id: number;
+  reason: string;
+  request__status: string;
+  request_id: number;
+}
+
+export interface RecordResponse extends Record{
+  contracts: WorkerContractSimple[];
+  finish: string;
+  start: string;
+  type: string; // 又TMD是中文，玩个屌。
+}
+
 export interface WorkerContractSimple {
   worker__employee__realname: string;
   id: number;
   team__name: string;
 }
 
-export interface Overtime {
-  attachment: string;
-  contracts: WorkerContract[];
+export interface Overtime extends RecordResponse{
+  attachment: string; //文档上没有这个鬼东西。
   day: string;
-  finish: string;
-  id: number;
-  reason: string;
-  request__status: string;
-  request_id: number;
-  start: string;
-  type: string;
 }
 
 // WorkOvertimeRecordList
@@ -524,6 +530,29 @@ export interface WorkOvertimeRecordListResponse {
   count: number;
   work_overtimes: Overtime[];
   errorMessage?: string;
+}
+
+/* =======================================================Leave response============================================ */
+
+export interface Leave extends RecordResponse {
+}
+
+export interface LeaveRecordListResponse {
+  leaves: Leave[];
+}
+
+/* =======================================================Attendance modify response============================================ */
+
+export interface AttendanceModify extends Record{
+  result__contract__worker__employee__realname: string;
+  result__contract__team__name:string;
+  result__day:string;
+  on_duty:string;
+  off_duty: string;
+}
+
+export interface AttendanceModifyRecordListResponse {
+  attend_amends: AttendanceModify[];
 }
 
 /*==========================================Work Piece model====================================================*/
@@ -1232,41 +1261,6 @@ export interface WorkFlowListResponse {
   requests_types: string[]; //process_id的值
   information?: string;
   errorMessage?: string;
-}
-
-/* =======================================================Leave response============================================ */
-
-export interface Leave {
-  finish:string;
-  contracts: WorkerContract[];
-  request__status:string;
-  start:string;
-  reason:string;
-  request_id: number;
-  type:string;
-  id: number;
-}
-
-export interface LeaveRecordListResponse {
-  leaves: Leave[];
-}
-
-/* =======================================================Attendance modify response============================================ */
-
-export interface AttendanceModify {
-  result__contract__worker__employee__realname: string;
-  result__contract__team__name:string;
-  request__status:string;
-  id: number;
-  reason: string;
-  request_id: number;
-  result__day:string;
-  on_duty:string;
-  off_duty: string;
-}
-
-export interface AttendanceModifyRecordListResponse {
-  attend_amends: AttendanceModify[];
 }
 
 /* =======================================================Http response============================================ */

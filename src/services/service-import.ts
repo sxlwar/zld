@@ -45,6 +45,7 @@ import { ProjectBillService } from './business/project-bill-service';
 import { EmployerService } from './business/employer-service';
 import { LocationService } from './business/location-service';
 import { MessageService } from './business/message-service';
+import { RecordOptionService } from './business/record-option-service';
 
 export const API_SERVICES = [
     Command,
@@ -83,6 +84,7 @@ export const BUSINESS_SERVICES = [
     ProjectProcessService,
     ProjectService,
     QRLoginService,
+    RecordOptionService,
     StatisticsService,
     TakePhotoService,
     TeamService,

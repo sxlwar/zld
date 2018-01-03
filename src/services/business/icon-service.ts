@@ -223,7 +223,7 @@ export const leave: IconItem = {
 };
 
 export const overtime: IconItem = {
-  text: 'LEAVE_APPLY',
+  text: 'OVERTIME_APPLY',
   icon: overtimeIcon,
   color: 'primary',
   permission: {

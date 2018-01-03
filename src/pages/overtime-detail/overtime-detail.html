@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{'LEAVE_DETAIL' | translate}}</ion-title>
+    <ion-title>{{'OVERTIME_DETAIL' | translate}}</ion-title>
     <ion-buttons end>
       <button ion-button small clear (click)="audit()">
         {{'AUDIT' | translate}}
@@ -14,9 +14,7 @@
 
 <ion-content padding>
 
-  <!--这部分内容和加班看起来都一样，但是字段的内容是有差别的，例如:start,finish,type, contracts
-    ,为了方便处理，不要抽象到到组件中,否则耦合起来处理又是麻烦事-->
-  <ion-list *ngIf="leave | async; let data">
+  <ion-list *ngIf="overtime | async; let data">
 
     <ion-item>
       <ion-label>{{'APPLY_PEOPLE' | translate}}</ion-label>
@@ -29,18 +27,18 @@
     </ion-item>
 
     <ion-item>
-      <ion-label>{{'VACATION_TYPE' | translate}}</ion-label>
-      <ion-input disabled [value]="data.type"></ion-input>
+      <ion-label>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
+      <ion-input disabled [value]="data.type | overtimePay"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>{{'START_TIME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.start"></ion-input>
+      <ion-input disabled [value]="data.day + ' ' + data.start"></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label>{{'END_TIME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.finish"></ion-input>
+      <ion-input disabled [value]="data.day + ' ' + data.finish"></ion-input>
     </ion-item>
 
   </ion-list>
@@ -48,5 +46,4 @@
   <work-flow-attach [workFlow]="workFlow | async"></work-flow-attach>
 
   <work-flow-time-line [workFlow]="workFlow | async"></work-flow-time-line>
-
 </ion-content>

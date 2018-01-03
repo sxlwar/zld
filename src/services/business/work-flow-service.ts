@@ -1,4 +1,6 @@
-import { MissionListItem } from './../../interfaces/mission-interface';
+import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-flow-audit';
+import { InfiniteScroll, ModalController } from 'ionic-angular';
+import { MissionListItem, AuditTarget } from './../../interfaces/mission-interface';
 import { MultiTaskUpdateOptions } from './../../interfaces/request-interface';
 import { IncreasePageAction } from './../../actions/action/work-flow-action';
 import { Command } from './../api/command';
@@ -21,7 +23,8 @@ export class WorkFlowService {
         public userInfo: UserService,
         public error: ErrorService,
         public processor: ProcessorService,
-        public command: Command
+        public command: Command,
+        public modalCtrl: ModalController
     ) {
     }
 
@@ -106,6 +109,12 @@ export class WorkFlowService {
             .map(source => source.request.find(item => item.id === id));
     }
 
+    getNextPage(infiniteScroll: InfiniteScroll, page: string): Subscription {
+        this.increasePage(page);
+
+        return this.getWorkFlowResponseComplete().subscribe(_ => infiniteScroll.complete());
+    }
+
     /* =====================================================Request methods===================================================== */
 
     getWorkFlowStatistic(): Subscription {
@@ -137,6 +146,18 @@ export class WorkFlowService {
 
     increasePage(page: string) {
         this.store.dispatch(new IncreasePageAction(page));
+    }
+
+    auditTask(id: number): Subscription {
+        return this.getList()
+            .map(source => source.filter(item => item.id === id))
+            .subscribe(list => {
+                const modal = this.modalCtrl.create(WorkFlowAuditComponent, { list });
+
+                modal.present();
+
+                modal.onDidDismiss((data: AuditTarget) => data && this.updateMultiTask(Observable.of({ approve: Number(data.approve), id: data.ids, comment: data.comment })));
+            });
     }
 
     /* =====================================================Refuse clean======================================================== */

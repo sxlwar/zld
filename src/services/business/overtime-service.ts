@@ -8,11 +8,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { RequestOption } from '../../interfaces/request-interface';
 import { Overtime } from '../../interfaces/response-interface';
+import { RecordOptionService } from './record-option-service';
 
 @Injectable()
-export class OvertimeService {
-    subscriptions: Subscription[] = [];
-    overtime$$: Subscription;
+export class OvertimeService extends RecordOptionService {
 
     constructor(
         public store: Store<AppState>,
@@ -20,36 +19,22 @@ export class OvertimeService {
         public userInfo: UserService,
         public processor: ProcessorService
     ) {
-        this.handleError();
+        super();
     }
 
-    getOvertimeRecord(option: Observable<RequestOption> = Observable.empty()): Observable<Overtime[]> {
-        this.getOvertimeRecordList(option);
-
+    getOvertimeRecords(): Observable<Overtime[]> {
         return this.store.select(selectOvertimeRecord);
     }
 
-    getOvertimeRecordList(option: Observable<RequestOption>): void {
-        const sid = this.userInfo.getSid();
-
-        const params = sid.zip( option, (sid, option) => ({sid, ...option}));
-
-        const subscription = this.processor.workOvertimeRecordListProcessor(params);
-
-        this.subscriptions.push(subscription);
+    getOvertimeRecordList(option: Observable<RequestOption>): Subscription {
+        return this.processor.workOvertimeRecordListProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })));
     }
 
     getOvertimeCount(): Observable<number> {
         return this.store.select(selectOvertimeRecordCount);
     }
 
-    private handleError() {
-        const error = this.store.select(selectOvertimeRecordResponse);
-
-        this.overtime$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError() {
+        return this.error.handleErrorInSpecific(this.store.select(selectOvertimeRecordResponse), 'API_ERROR');
     }
 }

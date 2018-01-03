@@ -432,6 +432,8 @@
   "VACATION_TYPE":"假期类型",
   "COMMENT": "备注",
   "ATTACH": "附件",
+
+  "OVERTIME_DETAIL": "加班详情",
   
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",
