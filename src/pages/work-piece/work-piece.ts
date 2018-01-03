@@ -16,7 +16,7 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 export class WorkPiecePage {
   pieces: Observable<WorkPiece[]>
 
-  subscription: Subscription;
+  subscriptions: Subscription[] = [];
 
   constructor(
     public navCtrl: NavController,
@@ -34,9 +34,16 @@ export class WorkPiecePage {
   }
 
   ionViewDidLoad() {
-    this.subscription = this.piece.getWorkPieceList(this.getOption());
+    this.launch();
 
     this.pieces = this.piece.getWorkPieces();
+  }
+
+  launch() {
+    this.subscriptions = [
+      this.piece.getWorkPieceList(this.getOption()),
+      this.piece.handleError()
+    ];
   }
 
   getOption(): Observable<RequestOption> {
@@ -44,10 +51,14 @@ export class WorkPiecePage {
       this.piece.getCompleteOption(),
       this.piece.getHistoryOption(),
       (project_id, statue, history) => ({ project_id, ...statue, ...history })
-    )
+    );
   }
 
   showStatistics(source: WorkPiece): void {
-    this.modal.create(WorkPieceAxisComponent, { id: source.id}).present();
+    this.modal.create(WorkPieceAxisComponent, { id: source.id }).present();
+  }
+
+  ionViewWillUnload(){
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

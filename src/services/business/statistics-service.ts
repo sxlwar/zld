@@ -2,11 +2,10 @@ import { putInArray } from '../utils/util';
 import { Subscription } from 'rxjs/Subscription';
 import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatisticsByDate, UpdateSpecificWorkFlowStatisticAtLocalAction } from './../../actions/action/statistics-action';
 import { Store } from '@ngrx/store';
-import { AppState, selectAttendanceStatisticList } from './../../reducers/index-reducer';
+import { AppState, selectAttendanceStatisticList, selectAttendanceStatistics } from './../../reducers/index-reducer';
 import { WorkFlowService } from './work-flow-service';
 import { WorkFlowAggregation } from './../../interfaces/response-interface';
 import { Injectable } from "@angular/core";
-import { AttendanceService } from "../../services/business/attendance-service";
 import { AttendanceStatistics } from "../../interfaces/response-interface";
 import { Observable } from "rxjs/Observable";
 import { values, isEmpty, toPairs, filter, orderBy } from 'lodash';
@@ -39,13 +38,12 @@ export class StatisticsService {
 
     constructor(
         public store: Store<AppState>,
-        public attendance: AttendanceService,
         public workFlow: WorkFlowService
     ) {
     }
 
     getAttendanceResultStatistics(key: string): Observable<number> {
-        return this.attendance.getAttendanceStatistics()
+        return this.store.select(selectAttendanceStatisticList)
             .mergeMap(item => Observable.from(item)
                 .mergeMap(item => this.countAttendanceStatus(item, key).reduce(this.accumulator))
                 .reduce(this.accumulator)
@@ -68,7 +66,7 @@ export class StatisticsService {
     }
 
     getAttendanceStatisticsByTeam(key: string): Observable<AttendanceConfirmStatisticByTeam[]> {
-        return this.attendance.getAttendanceStatistics()
+        return this.store.select(selectAttendanceStatistics)
             .switchMap(statistics => Observable.from(statistics)
                 .mergeMap(item => this.countAttendanceStatus(item, key).map(count => ({ teamName: item.team_name, count })))
                 .filter(item => !!item.count)
@@ -77,7 +75,7 @@ export class StatisticsService {
     }
 
     getAttendanceConfirmByDay(key: string): Observable<AttendanceConfirmStatisticByDay[]> {
-        return this.getAttendanceByDay(this.attendance.getAttendanceStatistics(), key);
+        return this.getAttendanceByDay(this.store.select(selectAttendanceStatistics), key);
     }
 
     getAttendanceByDay(source: Observable<AttendanceStatistics[]>, key: string): Observable<AttendanceConfirmStatisticByDay[]> {

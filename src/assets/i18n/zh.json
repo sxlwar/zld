@@ -434,7 +434,13 @@
   "ATTACH": "附件",
 
   "OVERTIME_DETAIL": "加班详情",
+
+  "PIECE_AUDIT_DETAIL": "工件审核详情",
+  "COMPLETE_DATE": "完成日期",
   
+  "ATTENDANCE_MODIFY_DETAIL": "考勤修改详情",
+  "MODIFY_DATE": "修改日期",
+
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",
 

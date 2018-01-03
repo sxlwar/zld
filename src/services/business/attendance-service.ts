@@ -1,9 +1,10 @@
+import { RecordOptionService } from './record-option-service';
 import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
-import { AttendanceStatistics, AttendanceModify } from './../../interfaces/response-interface';
+import { AttendanceStatistics, AttendanceModify, AttendanceResultListResponse } from './../../interfaces/response-interface';
 import { selectAttendanceStatisticsResponse, selectAttendanceStatistics, selectAttendanceModifyRecordListResponse } from './../../reducers/index-reducer';
 import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
-import { AppState, selectAttendanceDatePeriod, selectAttendanceLimit, selectAttendancePage, selectAttendanceResponse, selectAttendanceAllSelected, selectAttendanceData, selectAttendanceCount } from '../../reducers/index-reducer';
+import { AppState, selectAttendanceDatePeriod, selectAttendanceLimit, selectAttendancePage, selectAttendanceResponse, selectAttendanceAllSelected } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
@@ -19,12 +20,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
 
 @Injectable()
-export class AttendanceService {
-  subscriptions: Subscription[] = [];
-
-  attendance$$: Subscription;
-
-  statistics$$: Subscription;
+export class AttendanceService extends RecordOptionService {
 
   constructor(
     public store: Store<AppState>,
@@ -35,51 +31,34 @@ export class AttendanceService {
     public actionSheet: ActionSheetController,
     public teamService: TeamService
   ) {
-    this.handleError();
-    this.monitorPage();
+    super();
   }
 
   /* =========================================================Attendance data========================================================== */
 
-  /**
-   * @description  Data returned from this method contains cached.
-   * */
-  getAttendanceData(option: Observable<RequestOption>): Observable<AttendanceResult[]> {
-    this.getAttendances(option);
-
-    return this.store.select(selectAttendanceData);
-  }
-
-  /**
-   * @description Data returned from this method does not contain cached data.
-   */
-  getAttendanceResult(option: Observable<RequestOption>): Observable<AttendanceResult[]> {
-    this.getAttendances(option);
-
+  getAttendanceResult(): Observable<AttendanceResult[]> {
     return this.getAttendanceResultList();
   }
 
-  getAttendanceResultList(): Observable<AttendanceResult[]> {
-    return this.store.select(selectAttendanceResponse).map(res => res.attendance_results);
+  getAttendanceResultResponse(): Observable<AttendanceResultListResponse> {
+    return this.store.select(selectAttendanceResponse).filter(value => !!value);
   }
 
-  getAttendances(option: Observable<RequestOption> = Observable.empty()): void {
-    const sid = this.userInfo.getSid();
+  getAttendanceResultList(): Observable<AttendanceResult[]> {
+    return this.getAttendanceResultResponse().map(res => res.attendance_results);
+  }
 
-    const page = this.store.select(selectAttendancePage);
+  getAttendanceCount(): Observable<number> {
+    return this.getAttendanceResultResponse().map(res => res.count);
+  }
 
-    const limit = this.store.select(selectAttendanceLimit);
-
-    const params = sid.zip(
-      page,
-      limit,
-      option,
-      (sid, limit, page, option) => ({ sid, page, limit, ...option })
-    );
-
-    const subscription = this.processor.attendanceListProcessor(params);
-
-    this.subscriptions.push(subscription);
+  getAttendances(option: Observable<RequestOption> = Observable.empty()): Subscription {
+    return this.processor.attendanceListProcessor(option.combineLatest(
+      this.userInfo.getSid(),
+      this.store.select(selectAttendancePage),
+      this.store.select(selectAttendanceLimit),
+      (option, sid, page, limit) => ({ ...option, sid, page, limit })
+    ));
   }
 
   getAttendanceModifyRecordLists(): Observable<AttendanceModify[]> {
@@ -96,7 +75,7 @@ export class AttendanceService {
     this.store.dispatch(new ResetAttendancePageAction());
   }
 
-  getAttendanceStatisticsByTeam(): void {
+  getAttendanceStatisticsByTeam(): Subscription {
     const sid = this.userInfo.getSid();
 
     const teamIds = this.teamService.getOwnTeams()
@@ -105,19 +84,11 @@ export class AttendanceService {
 
     const option = sid.zip(teamIds, (sid, team_ids) => ({ sid, team_ids }));
 
-    const subscription = this.processor.attendanceResultTeamStatListProcessor(option);
-
-    this.subscriptions.push(subscription);
+    return this.processor.attendanceResultTeamStatListProcessor(option);
   }
 
   getAttendanceStatistics(): Observable<AttendanceStatistics[]> {
-    const result = this.store.select(selectAttendanceStatistics);
-
-    const subscription = result.subscribe(value => !!value && !value.length && this.getAttendanceStatisticsByTeam());
-
-    this.subscriptions.push(subscription);
-
-    return result;
+    return this.store.select(selectAttendanceStatistics);
   }
 
   getAttendanceModifyRecord(option: Observable<RequestOption>): Subscription {
@@ -167,11 +138,9 @@ export class AttendanceService {
 
   /* =========================================================Attendance modify operation================================================= */
 
-  showActionSheet() {
-    const subscription = this.translate.get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
+  showActionSheet(): Subscription {
+    return this.translate.get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
       .subscribe(value => this.createActionSheet(value));
-
-    this.subscriptions.push(subscription);
   }
 
   private createActionSheet(buttonText: { [key: string]: string }) {
@@ -202,11 +171,10 @@ export class AttendanceService {
 
   /* ==========================================================Error handle and refuse clean=============================================== */
 
-  private monitorPage() {
-
-    const subscription = this.store.select(selectAttendancePage)
+  monitorPage(): Subscription {
+    return this.store.select(selectAttendancePage)
       .combineLatest(
-      this.store.select(selectAttendanceCount),
+      this.getAttendanceCount(),
       this.store.select(selectAttendanceLimit)
       )
       .subscribe(value => {
@@ -214,32 +182,17 @@ export class AttendanceService {
 
         if (page * limit >= count) this.store.dispatch(new ResetAttendancePageAction());
       });
-
-    this.subscriptions.push(subscription);
   }
 
-  private handleError() {
-    this.handleAttendanceError();
-    this.handleStatisticsError();
+  handleAttendanceError(): Subscription {
+    return this.error.handleErrorInSpecific(this.getAttendanceResultResponse(), 'API_ERROR');
   }
 
-  private handleAttendanceError() {
-    const error = this.store.select(selectAttendanceResponse);
-
-    this.attendance$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-  }
-
-  private handleStatisticsError() {
-    const error = this.store.select(selectAttendanceStatisticsResponse);
-
-    this.statistics$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
+  handleStatisticsError(): Subscription {
+    return this.error.handleErrorInSpecific(this.store.select(selectAttendanceStatisticsResponse), 'API_ERROR');
   }
 
   handleAttendanceModifyError(): Subscription {
     return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyRecordListResponse), 'API_ERROR');
-  }
-
-  unSubscribe() {
-    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

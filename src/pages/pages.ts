@@ -26,6 +26,9 @@ export const MissionRoot = 'MissionPage';
 
 export const MineRoot = 'MinePage';
 
+/*============================================message tab pages===================================================*/
+
+export const messageContentPage = 'MessageContentPage'
 
 /*============================================project tab pages===================================================*/
 
@@ -67,15 +70,15 @@ export const overtimeDetailPage = 'OvertimeDetailPage';
 
 export const leavePage = 'LeavePage';
 
-export const leaveDetailPage  = 'LeaveDetailPage';
+export const leaveDetailPage = 'LeaveDetailPage';
 
 export const pieceAuditPage = 'PieceAuditPage';
 
+export const pieceAuditDetailPage = 'PieceAuditDetailPage';
+
 export const attendanceModifyPage = 'AttendanceModifyPage';
 
-/*============================================message tab pages===================================================*/
-
-export const messageContentPage = 'MessageContentPage'
+export const attendanceModifyDetailPage = 'AttendanceModifyDetailPage';
 
 /*============================================common pages===================================================*/
 
@@ -160,7 +163,9 @@ export const PAGES = [
   { title: 'LeavePage', component: leavePage },
   { title: 'LeaveDetail', component: leaveDetailPage },
   { title: 'PieceAuditPage', component: pieceAuditPage },
+  { title: 'PieceAuditDetailPage', component: pieceAuditDetailPage },
   { title: 'AttendanceModifyPage', component: attendanceModifyPage },
+  { title: 'AttendanceModifyDetailPage', component: attendanceModifyDetailPage },
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },

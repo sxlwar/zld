@@ -18,11 +18,18 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class AttendanceRecordPage {
   time: string;
+
   operatePermission: Observable<boolean>;
+
   records: Observable<AttendanceInstant[]>;
+
   haveMoreData = true;
+
   pageSubscription: Subscription;
+
   recordSubscription: Subscription;
+
+  actionSheet$$: Subscription;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -74,7 +81,9 @@ export class AttendanceRecordPage {
   }
 
   showActionSheet() {
-    this.attendance.showActionSheet();
+    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+    
+    this.actionSheet$$ = this.attendance.showActionSheet();
   }
 
   ionViewWillUnload() {
@@ -83,6 +92,8 @@ export class AttendanceRecordPage {
     this.pageSubscription && this.pageSubscription.unsubscribe();
 
     this.recordSubscription && this.recordSubscription.unsubscribe();
+
+    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
   }
 
   ionViewWillLeave() {

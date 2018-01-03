@@ -1,23 +1,23 @@
-import { OvertimeService } from './../../services/business/overtime-service';
-import { WorkFlowService } from './../../services/business/work-flow-service';
+import { AttendanceService } from './../../services/business/attendance-service';
+import { WorkFlowService } from '../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkFlow, Overtime } from './../../interfaces/response-interface';
+import { WorkFlow, AttendanceModify } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-overtime-detail',
-  templateUrl: 'overtime-detail.html',
+  selector: 'page-attendance-modify-detail',
+  templateUrl: 'attendance-modify-detail.html',
 })
-export class OvertimeDetailPage {
+export class AttendanceModifyDetailPage {
 
   id: number;
 
   workFlow: Observable<WorkFlow>;
 
-  overtime: Observable<Overtime>;
+  attendance: Observable<AttendanceModify>;
 
   subscriptions: Subscription[] = [];
 
@@ -27,7 +27,7 @@ export class OvertimeDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
-    public overtimeService: OvertimeService
+    public attendanceService: AttendanceService
   ) {
     this.id = navParams.get('id');
   }
@@ -41,13 +41,13 @@ export class OvertimeDetailPage {
   initialModel() {
     this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.overtime = this.overtimeService.getOvertimeRecords().map(res => res[0]);
+    this.attendance = this.attendanceService.getAttendanceModifyRecordLists().map(res => res[0]);
   }
 
   launch() {
     this.subscriptions = [
-      this.overtimeService.getOvertimeRecordList(this.overtimeService.getProcessingRecordOptions(this.id)),
-      this.overtimeService.handleError(),
+      this.attendanceService.getAttendanceModifyRecord(this.attendanceService.getProcessingRecordOptions(this.id)),
+      this.attendanceService.handleAttendanceModifyError()
     ];
   }
 

@@ -25,7 +25,7 @@ export class TakePhotoComponent implements OnDestroy {
 
   showActionSheet() {
 
-    if (this.subscription) this.subscription.unsubscribe();
+    this.subscription && this.subscription.unsubscribe();
 
     const text$ = this.translate.get(['TAKE_PHOTO', 'PICK_PHOTO', 'CANCEL_BUTTON']);
 

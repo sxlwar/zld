@@ -30,10 +30,7 @@ export const initialState: State = {
     start: new Date(),
     end: new Date()
   },
-  response: {
-    count: 0,
-    attendance_results: []
-  },
+  response: null,
   selected: [],
   allSelected: false,
   data: [],

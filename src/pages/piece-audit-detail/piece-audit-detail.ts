@@ -1,23 +1,25 @@
-import { OvertimeService } from './../../services/business/overtime-service';
+import { WorkPieceService } from './../../services/business/work-piece-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkFlow, Overtime } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
+import { WorkFlow, WorkPieceFinish, WorkPiece } from './../../interfaces/response-interface';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-overtime-detail',
-  templateUrl: 'overtime-detail.html',
+  selector: 'page-piece-audit-detail',
+  templateUrl: 'piece-audit-detail.html',
 })
-export class OvertimeDetailPage {
+export class PieceAuditDetailPage {
 
   id: number;
 
   workFlow: Observable<WorkFlow>;
 
-  overtime: Observable<Overtime>;
+  pieceFlow: Observable<WorkPieceFinish>;
+
+  piece: Observable<WorkPiece>;
 
   subscriptions: Subscription[] = [];
 
@@ -27,7 +29,8 @@ export class OvertimeDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
-    public overtimeService: OvertimeService
+    public workPiece: WorkPieceService,
+
   ) {
     this.id = navParams.get('id');
   }
@@ -41,13 +44,20 @@ export class OvertimeDetailPage {
   initialModel() {
     this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.overtime = this.overtimeService.getOvertimeRecords().map(res => res[0]);
+    this.pieceFlow = this.workPiece.getWorkPieceFinish().map(res => res[0]);
+
+    this.piece = this.pieceFlow.withLatestFrom(
+      this.workPiece.getWorkPieces(),
+      (pieceFinish, pieces) => pieces.find(item => item.id === pieceFinish.workpieces_id)
+    )
+      .filter(value => !!value)
+      .share();
   }
 
   launch() {
     this.subscriptions = [
-      this.overtimeService.getOvertimeRecordList(this.overtimeService.getProcessingRecordOptions(this.id)),
-      this.overtimeService.handleError(),
+      this.workPiece.getWorkPieceList(this.workPiece.getProcessingRecordOptions(this.id)),
+      this.workPiece.handleError()
     ];
   }
 

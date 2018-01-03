@@ -562,7 +562,7 @@ export interface WorkPieceFinish {
   finish_date: string;
   id: number;
   num: number;
-  quality_percent: number;
+  quality_percent: number; //支付比例, 2B名字，一眼看上去不就是质量百分比。
   request_id: number;
   workpieces__contract__worker__employee__realname: string;
   workpieces__contract__worker_id: number;
@@ -584,7 +584,7 @@ export interface WorkPiece {
 // WorkPieceList
 export interface WorkPieceListResponse {
   work_piece_finish_flow: WorkPieceFinish[];
-  work_piece_pay: WorkPiece[];
+  work_piece_pay: WorkPiece[]; // 这为啥叫工件支付？这风骚的名字是要迷惑谁？
   errorMessage?: string;
 }
 

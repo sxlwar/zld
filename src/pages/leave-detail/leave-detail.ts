@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Leave, WorkFlow } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -27,8 +27,7 @@ export class LeaveDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
-    public leaveService: LeaveService,
-    public modalCtrl: ModalController
+    public leaveService: LeaveService
   ) {
     this.id = navParams.get('id');
   }

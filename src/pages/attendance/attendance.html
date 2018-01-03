@@ -71,7 +71,7 @@
 
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="$event.waitFor(getNextPage())">
+  <ion-infinite-scroll (ionInfinite)="getNextPage($event)">
     <ion-infinite-scroll-content
     loadingSpinner="bubbles"
     [loadingText]="LOADING | translate"></ion-infinite-scroll-content>

@@ -13,7 +13,7 @@
 
     </ion-label>
 
-    <ion-checkbox [(ngModel)]="allSelected" (ngModelChange)="toggleAllSelected($event)"></ion-checkbox>
+    <ion-checkbox *ngIf="operate" [(ngModel)]="allSelected" (ngModelChange)="toggleAllSelected($event)"></ion-checkbox>
   </ion-list-header>
 
   <ion-item *ngFor="let item of list" detail-push>

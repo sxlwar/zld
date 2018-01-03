@@ -1,7 +1,7 @@
-//region
+import { RequestOption } from '../../interfaces/request-interface';
 import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { AttendanceService } from '../../services/business/attendance-service';
 import { TimeService } from '../../services/utils/time-service';
@@ -13,8 +13,6 @@ import { attendanceList, attendance } from '../../services/api/command';
 import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
 import { attendance as attendanceIcon } from '../../services/business/icon-service';
 import { ProjectRoot, attendanceRecordPage } from '../../pages/pages';
-import { uniqBy } from 'lodash';
-//endregion
 
 @IonicPage()
 @Component({
@@ -23,14 +21,26 @@ import { uniqBy } from 'lodash';
 })
 export class AttendancePage {
   startDate: string;
+
   endDate: string;
+
   today: string;
+
   teams: Observable<Team[]>;
+
   attendances: Observable<AttendanceResult[]>;
+
   subscriptions: Subscription[] = [];
+
   allSelected: boolean;
+
   sortType = 1;
-  operatePermission: Observable<boolean>
+
+  operatePermission: Observable<boolean>;
+
+  actionSheet$$: Subscription;
+
+  page$$: Subscription;
 
   constructor(
     public navCtrl: NavController,
@@ -47,30 +57,30 @@ export class AttendancePage {
   }
 
   ionViewCanEnter() {
-    const {view, opt} = this.navParams.get('permission');
+    const { view, opt } = this.navParams.get('permission');
 
-    return opt || view; 
+    return opt || view;
   }
 
   ionViewDidLoad() {
-    this.initialDate();
-    this.initialTeam();
-    this.getAttendances();
-    this.monitorAllSelect();
+    this.launch();
+
+    this.initialModel();
   }
 
-  /* ========================================================Initial data model========================================================= */
-
-  initialDate() {
-    const subscription = this.attendance.getSelectedDate()
-      .subscribe(data => {
-        this.startDate = this.timeService.getDate(data.start, true);
-        this.endDate = this.timeService.getDate(data.end, true);
-      });
-    this.subscriptions.push(subscription);
+  launch() {
+    this.subscriptions = [
+      this.attendance.monitorPage(),
+      this.attendance.getAttendances(this.getAttendanceOption()),
+      this.getDate(),
+      this.attendance.getAllSelectedState().subscribe(all => this.allSelected = all),
+      this.attendance.handleAttendanceError()
+    ];
   }
 
-  initialTeam() {
+  initialModel() {
+    this.attendances = this.attendance.getAttendanceResult();
+
     this.teams = this.teamService.getOwnTeams()
       .withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => {
         teams.forEach(team => team.selected = ids.indexOf(team.id) !== -1);
@@ -78,10 +88,14 @@ export class AttendancePage {
       });
   }
 
-  getAttendances() {
-    const option = this.getAttendanceOption();
+  /* ========================================================Initial data model========================================================= */
 
-    this.attendances = this.attendance.getAttendanceResult(option);
+  getDate(): Subscription {
+    return this.attendance.getSelectedDate()
+      .subscribe(data => {
+        this.startDate = this.timeService.getDate(data.start, true);
+        this.endDate = this.timeService.getDate(data.end, true);
+      });
   }
 
   getOperatePermission(): Observable<boolean> {
@@ -90,19 +104,19 @@ export class AttendancePage {
 
   /* ========================================================Attendance operation========================================================= */
 
-  getAttendanceOption() {
-    const queryType = attendanceList.noMagicNumber.get(attendance.unconfirmed).value;
-
+  getAttendanceOption(): Observable<RequestOption> {
     return this.teamService.getSelectedTeams()
-      .map(ids => ({ start_day: this.startDate, end_day: this.endDate, team_id: ids, ...queryType }));
+      .combineLatest(
+      this.attendance.getSelectedDate().map(data => ({ start_day: this.timeService.getDate(data.start, true), end_day: this.timeService.getDate(data.end, true) })),
+      Observable.of(attendanceList.noMagicNumber.get(attendance.unconfirmed).value)
+      )
+      .map(([ids, date, queryType]) => ({ ...date, team_id: ids, ...queryType }));
   }
 
   setDate(type: string) {
     const data = type === 'start' ? this.startDate : this.endDate;
 
     this.attendance.setDate(type, data);
-
-    this.getAttendances();
   }
 
   toggleAllSelected(isSelected) {
@@ -113,20 +127,12 @@ export class AttendancePage {
     this.attendance.toggleSelected(att);
   }
 
-  monitorAllSelect() {
-    const subscription = this.attendance.getAllSelectedState().subscribe(all => this.allSelected = all);
-
-    this.subscriptions.push(subscription);
-  }
-
-  getNextPage(infiniteScroll) {
+  getNextPage(infiniteScroll: InfiniteScroll) {
     this.attendance.increasePage();
 
-    this.attendances = this.attendances.scan((acc, cur) => acc.concat(cur)).map(res => uniqBy(res, 'id'));
+    this.page$$ && this.page$$.unsubscribe();
 
-    this.attendance.getAttendances(this.getAttendanceOption());
-
-    return this.attendance.getAttendanceResultList().toPromise();  //FIXME: 下拉刷新有问题。
+    this.page$$ = this.attendance.getAttendanceResultResponse().subscribe(_ => infiniteScroll.complete());
   }
 
   sortAttendanceBy(target: string) {
@@ -143,24 +149,21 @@ export class AttendancePage {
     const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
 
     this.teamService.setSelectTeams(teamIds);
-
-    this.getAttendances();
   }
 
   showActionSheet() {
-    this.attendance.showActionSheet();
+    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+
+    this.actionSheet$$ = this.attendance.showActionSheet();
   }
 
   goToDetailPage(attendance: AttendanceResult) {
-    const day = attendance.day;
-
-    const workerId = attendance.contract__worker_id;
-
-    this.navCtrl.push(attendanceRecordPage, { day, workerId, rootName: ProjectRoot, iconName: attendanceIcon.icon }).then(() => { });
+    this.navCtrl.push(attendanceRecordPage, { day: attendance.day, workerId: attendance.contract__worker_id, rootName: ProjectRoot, iconName: attendanceIcon.icon }).then(() => { });
   }
 
   ionViewWillUnload() {
     this.subscriptions.forEach(item => item && item.unsubscribe());
-    this.attendance.unSubscribe();
+
+    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
   }
 }

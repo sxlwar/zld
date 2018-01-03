@@ -217,7 +217,7 @@ export const leave: IconItem = {
   color: 'primary',
   permission: {
     view: [PME, EME, MM],
-    opt: [PM, LM]
+    opt: [PM, LM, TL]
   },
   page: pages.leavePage
 };
@@ -227,8 +227,8 @@ export const overtime: IconItem = {
   icon: overtimeIcon,
   color: 'primary',
   permission: {
-    view: [PME, EME, MM, TL],
-    opt: [PM]
+    view: [PME, EME, MM],
+    opt: [PM, TL]
   },
   page: pages.overtimePage
 };
@@ -238,8 +238,8 @@ export const pieceAudit: IconItem = {
   icon: pieceAuditIcon,
   color: 'piece',
   permission: {
-    view: [PME, EME, MM, TL],
-    opt: [PM, QW]
+    view: [PME, EME, MM],
+    opt: [PM, QW, TL]
   },
   page: pages.pieceAuditPage
 };
@@ -249,8 +249,8 @@ export const modifyAttendance: IconItem = {
   icon: modifyAttendanceIcon,
   color: 'primary',
   permission: {
-    view: [PME, EME, MM, TL],
-    opt: [PM, LM]
+    view: [PME, EME, MM],
+    opt: [PM, LM, TL]
   },
   page: pages.attendanceModifyPage
 };
@@ -260,44 +260,11 @@ export const workerContract: IconItem = {
   icon: workContractIcon,
   color: 'contract',
   permission: {
-    view: [SW, UW],
+    view: [],
     opt: [PM, LM, TL, SW, UW]
   },
   page: pages.workerContractPage
 };
-
-// export const primeContract: IconItem = {
-//   text: 'PRIME_CONTRACT',
-//   icon: primeContractIcon,
-//   color: 'contract',
-//   permission: {
-//     view: [],
-//     opt: [PME, MM, PM]
-//   },
-//   page: ''
-// };
-
-// export const subContract: IconItem = {
-//   text: 'SUB_CONTRACT',
-//   icon: subContractIcon,
-//   color: 'contract',
-//   permission: {
-//     view: [],
-//     opt: [PME, MM, PM]
-//   },
-//   page: ''
-// };
-
-// export const modifyDuty: IconItem = {
-//   text: 'MODIFY_DUTY',
-//   icon: modifyDutyIcon,
-//   color: 'primary',
-//   permission: {
-//     view: [],
-//     opt: [PM, TL]
-//   },
-//   page: ''
-// };
 
 export const workContractModify: IconItem = {
   text: 'MODIFY_WORK_CONTRACT',

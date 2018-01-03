@@ -680,7 +680,7 @@ export enum ProcessIdOptions {
   primaryContractExpire = 'prime_contract_time_change',
   subcontractExpire = 'sub_contract_time_change',
   workerContractExpire = 'worker_contract_time_change',
-  attendanceModity = 'amend_worker_attend',
+  attendanceModify = 'amend_worker_attend',
   pieceAudit = 'workpiece_finish',
   leave = 'leave_apply',
   overtime = 'workovertime_apply',

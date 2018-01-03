@@ -212,7 +212,6 @@ export const selectUpdateTeamResponse = createSelector(getTeam, team.getUpdateTe
 //attendance result list && attendance result confirm;
 export const getAttendance = (state: AppState) => state.attendance;
 export const selectAttendanceResponse = createSelector(getAttendance, attendance.getAttendanceResultResponse);
-export const selectAttendanceList = createSelector(getAttendance, attendance.getAttendanceResults);
 export const selectAttendanceCount = createSelector(getAttendance, attendance.getAttendanceCount);
 export const selectAttendanceDatePeriod = createSelector(getAttendance, attendance.getAttendanceDatePeriod);
 export const selectAttendanceDateStart = createSelector(selectAttendanceDatePeriod, attendance.getAttendanceStartDate);
@@ -266,7 +265,7 @@ export const selectOvertimeRecord = createSelector(getOvertime, overtime.getOver
 //work piece 
 export const getWorkPiece = (state: AppState) => state.piece;
 export const selectWorkPieceResponse = createSelector(getWorkPiece, piece.getPieceResponse);
-export const selectWorkPiecePay = createSelector(getWorkPiece, piece.getPiecePay);
+export const selectWorkPieces = createSelector(getWorkPiece, piece.getPieces);
 export const selectWorkPieceFinishFlow = createSelector(getWorkPiece, piece.getPieceFinishFlow);
 
 //attendance result stat team stat list && request aggregation list

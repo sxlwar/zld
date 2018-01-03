@@ -28,6 +28,6 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
 export const getPieceResponse = (state: State) => state.response;
 
-export const getPiecePay = (state: State) => state.response.work_piece_pay;
+export const getPieces = (state: State) => state.response.work_piece_pay;
 
 export const getPieceFinishFlow = (state: State) => state.response.work_piece_finish_flow;

@@ -1,3 +1,4 @@
+import { AttendanceService } from './../../services/business/attendance-service';
 import { orderBy } from 'lodash';
 import { AttendanceConfirmStatisticByTeam, AttendanceConfirmStatisticByDay, AttendanceStatisticDayItem } from './../../services/business/statistics-service';
 import { Observable } from 'rxjs/Observable';
@@ -30,7 +31,8 @@ export class AttendanceConfirmPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public statistics: StatisticsService,
-    public chartService: ChartService
+    public chartService: ChartService,
+    public attendance: AttendanceService
   ) {
   }
 
@@ -41,23 +43,39 @@ export class AttendanceConfirmPage {
   }
 
   ionViewDidLoad() {
-    const teamSource = this.statistics.getAttendanceStatisticsByTeam('unconfirm_count');
+    this.launch();
 
-    this.generateTeamChart(teamSource);
-
-    this.getTeams(teamSource);
-
-    const daySource = this.statistics.getAttendanceConfirmByDay('unconfirm_count');
-
-    this.generateDayChart(daySource);
-
-    this.getDays(daySource);
-
-    this.statisticList = this.statistics.getAttendanceItemOf('unconfirm_count');
+    this.initialModel();
   }
 
-  generateTeamChart(sourceData: Observable<AttendanceConfirmStatisticByTeam[]>) {
-    const subscription = sourceData.map(source => {
+  launch(): void {
+    this.subscriptions = [
+      this.attendance.getAttendanceStatisticsByTeam(),
+
+      this.generateTeamChart(this.getTeams()),
+
+      this.generateDayChart(this.getDays()),
+    ]
+  }
+
+  initialModel(): void {
+    this.statisticList = this.statistics.getAttendanceItemOf('unconfirm_count');
+
+    this.teams = this.getTeams().map(data => data.map(item => ({ name: item.teamName })));
+
+    this.days = this.getDays().map(data => orderBy(data.map(item => ({ date: item.date })), ['date'], ['desc']));
+  }
+
+  getTeams(): Observable<AttendanceConfirmStatisticByTeam[]> {
+    return this.statistics.getAttendanceStatisticsByTeam('unconfirm_count');
+  }
+
+  getDays(): Observable<AttendanceConfirmStatisticByDay[]> {
+    return this.statistics.getAttendanceConfirmByDay('unconfirm_count');
+  }
+
+  generateTeamChart(sourceData: Observable<AttendanceConfirmStatisticByTeam[]>): Subscription {
+    return sourceData.map(source => {
       const labels = source.map(item => item.teamName);
 
       const data = source.map(item => item.count);
@@ -67,22 +85,16 @@ export class AttendanceConfirmPage {
       .subscribe(data => {
         this.chartService.getChart(this.teamChart.nativeElement, ChartType.doughnut, data);
       });
-
-    this.subscriptions.push(subscription);
   }
 
-  getTeams(sourceData: Observable<AttendanceConfirmStatisticByTeam[]>) {
-    this.teams = sourceData.map(data => data.map(item => ({ name: item.teamName })));
-  }
-
-  generateDayChart(sourceData: Observable<AttendanceConfirmStatisticByDay[]>) {
-    const subscription = sourceData
+  generateDayChart(sourceData: Observable<AttendanceConfirmStatisticByDay[]>): Subscription {
+    return sourceData
       .map(source => {
         const labels = source.map(item => item.date);
 
         const data = source.map(item => item.count);
 
-        return this.chartService.getBarChartData({ labels, data}, '未确认数量');
+        return this.chartService.getBarChartData({ labels, data }, '未确认数量');
       })
       .subscribe(data => {
         const options = {
@@ -93,24 +105,14 @@ export class AttendanceConfirmPage {
 
         this.chartService.getChart(this.dayChart.nativeElement, ChartType.bar, data, options);
       });
-
-    this.subscriptions.push(subscription);
-  }
-
-  getDays(sourceData: Observable<AttendanceConfirmStatisticByDay[]>) {
-    this.days = sourceData.map(data => {
-      let result = data.map(item => ({ date: item.date }));
-
-      return orderBy(result,['date'], ['desc']);
-    });
   }
 
   filterDataBy(type: string, event): void {
-    if(type === 'team') {
+    if (type === 'team') {
       this.statistics.showAttendanceByTeams(event.map(item => item.name));
     }
 
-    if(type === 'day') {
+    if (type === 'day') {
       this.statistics.showAttendanceByDates(event.map(item => item.date));
     }
   }

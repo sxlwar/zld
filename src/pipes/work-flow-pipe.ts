@@ -32,7 +32,7 @@ export class TaskStatusColorPipe implements PipeTransform {
         if (source === TaskStatus.processing) {
             return 'primary';
         } else {
-            return 'danger';
+            return 'secondary';
         }
 
     }
