@@ -66,7 +66,8 @@ export class PieceAuditPage {
         Observable.of({ process_id: ProcessIdOptions.pieceAudit, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
         this.workFlow.getPieceAuditPage()
       ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.pieceAudit, this.workFlow.getTaskUpdateSuccessCount())
+      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.pieceAudit, this.workFlow.getTaskUpdateSuccessCount()),
+      this.workFlow.handleWorkFlowError()
     ];
   }
 

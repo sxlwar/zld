@@ -408,6 +408,7 @@ export const selectProjectPayBillFlowListResponse = createSelector(getWorkFlow, 
 export const selectMultiTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getMultiTaskUpdateResponse);
 export const selectTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getTaskUpdateResponse);
 export const selectWorkFlowLimit = createSelector(getWorkFlow, workFlow.getLimit);
+export const selectPayrollPage = createSelector(getWorkFlow, workFlow.getPayrollPage);
 export const selectLeavePage = createSelector(getWorkFlow, workFlow.getLeavePage);
 export const selectOvertimePage = createSelector(getWorkFlow, workFlow.getOvertimePage);
 export const selectPieceAuditPage = createSelector(getWorkFlow, workFlow.getPieceAuditPage);

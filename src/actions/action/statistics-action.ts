@@ -51,7 +51,7 @@ export const WORK_FLOW_STATISTICS_SUCCESS = 'WORK_FLOW_STATISTICS_SUCCESS';
 export class WorkFlowStatisticsSuccessAction implements Action {
     readonly type = WORK_FLOW_STATISTICS_SUCCESS;
 
-    constructor(public payload: RequestAggregationOptions) { }
+    constructor(public payload: RequestAggregationResponse) { }
 }
 
 export const UPDATE_SPECIFIC_WORK_FLOW_STATISTIC = 'UPDATE_SPECIFIC_WORK_FLOW_STATISTIC';

@@ -1,3 +1,4 @@
+import { putInArray } from '../../services/utils/util';
 import { PayBillService } from './../../services/business/pay-bill-service';
 import { TranslateService } from '@ngx-translate/core';
 import { ChartService, ChartType } from './../../services/utils/chart-service';
@@ -35,9 +36,6 @@ export class ProjectBillDetailPage {
     public payBill: PayBillService,
     public translate: TranslateService
   ) {
-    const id = this.navParams.get('billId');
-
-    projectBill.getProjectBillList(Observable.of(id));
   }
 
   ionViewDidLoad() {
@@ -45,16 +43,24 @@ export class ProjectBillDetailPage {
       .filter(value => !!value.length)
       .mergeMap(bills => Observable.from(bills).first());
 
-    this.getProjectBillChart(bills);
-
     this.getPayBillList(bills);
+
+    this.launch(bills);
   }
 
-  getProjectBillChart(bill: Observable<ProjectPayBill>): void {
+  launch(bills: Observable<ProjectPayBill>): void {
+    this.subscriptions = [
+      this.projectBill.getProjectBillList(Observable.of(this.navParams.get('billId'))),
+      this.getProjectBillChart(bills),
+      this.projectBill.handleError()
+    ];
+  }
+
+  getProjectBillChart(bill: Observable<ProjectPayBill>): Subscription {
     const labels = this.translate.get(['TURN_OUT_FOR_WORK', 'OVERTIME', 'WORK_PIECE'])
       .map(res => ([res.TURN_OUT_FOR_WORK, res.OVERTIME, res.WORK_PIECE]));
 
-    const subscription = bill.withLatestFrom(labels)
+    return bill.withLatestFrom(labels)
       .map(([bill, labels]) => {
         const data = [this.projectBill.countAttendanceAmount(bill), this.projectBill.countOvertimeAmount(bill), this.projectBill.countPieceAmount(bill)];
 
@@ -63,8 +69,6 @@ export class ProjectBillDetailPage {
         return this.chartService.getPieChartData({ labels, data });
       })
       .subscribe(data => this.chartService.getChart(this.projectBillDetail.nativeElement, ChartType.doughnut, data));
-
-    this.subscriptions.push(subscription);
   }
 
   getPayBillList(bill: Observable<ProjectPayBill>): void {
@@ -91,10 +95,7 @@ export class ProjectBillDetailPage {
               return { piece, total, name, attendance: 0, overtime: 0 };
             }
           })
-          .reduce((acc, cur) => {
-            acc.push(cur);
-            return acc;
-          }, []);
+          .reduce(putInArray, []);
       });
   }
 

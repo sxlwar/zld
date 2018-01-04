@@ -208,7 +208,7 @@ export const payrollAudit: IconItem = {
     view: [PME, EME, MM],
     opt: [PM, LM, TL]
   },
-  page: ''
+  page: pages.payrollAuditPage
 };
 
 export const leave: IconItem = {
@@ -442,11 +442,7 @@ export class IconService {
       .filter(value => !!value && !!value.request_aggregation && !!value.request_aggregation.length)
       .mergeMap(res => Observable.from(res.request_aggregation))
       .merge(attendance)
-      .subscribe(({ process_id, process_id__count }) => {
-        if (processIdToIcon[process_id]) {
-          this.store.dispatch(new AddBadgeForRootModuleAction({ count: process_id__count, rootName: MissionRoot, iconName: processIdToIcon[process_id] }))
-        }
-      })
+      .subscribe(({ process_id, process_id__count }) => processIdToIcon[process_id] && this.store.dispatch(new AddBadgeForRootModuleAction({ count: process_id__count, rootName: MissionRoot, iconName: processIdToIcon[process_id] })));
   }
 
   private addPermissionToIcons(icons: IconItem[]): Observable<IconState[]> {

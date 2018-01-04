@@ -1,3 +1,4 @@
+import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
 import { StatisticsService } from './../../services/business/statistics-service';
 import { Component } from '@angular/core';
@@ -38,7 +39,8 @@ export class MissionPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public iconService: IconService,
-    public statistics: StatisticsService
+    public statistics: StatisticsService,
+    public workFlow: WorkFlowService
   ) {
   }
 
@@ -55,7 +57,8 @@ export class MissionPage {
   launch() {
     this.subscriptions = [
       this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
-      this.statistics.getWorkFlowStatistic()
+      this.workFlow.getWorkFlowStatistic(),
+      this.workFlow.handleStatisticsError()
     ];
   }
 

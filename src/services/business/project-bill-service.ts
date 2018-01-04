@@ -1,4 +1,4 @@
-import { ProjectPayBill,  ProjectPayBillAmount} from './../../interfaces/response-interface';
+import { ProjectPayBill, ProjectPayBillAmount } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { UserService } from './user-service';
 import { ProjectService } from './project-service';
@@ -11,37 +11,21 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ProjectBillService {
-    subscriptions: Subscription[] = [];
-    projectBill$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public process: ProcessorService,
         public error: ErrorService,
         public userInfo: UserService,
         public project: ProjectService
-    ){
-        this.handleError();
+    ) {
     }
 
     getProjectPayBills(): Observable<ProjectPayBill[]> {
         return this.store.select(selectProjectBillList);
     }
 
-    getProjectBillList(id: Observable<number>): void {
-        const sid = this.userInfo.getSid();
-
-        const projectId = this.project.getProjectId();
-
-        const option = sid.zip(
-            projectId,
-            id,
-            (sid, project_id, id) => ({sid, project_id, id})
-        );
-
-        const subscription = this.process.projectPayBillProcessor(option);
-
-        this.subscriptions.push(subscription);
+    getProjectBillList(id: Observable<number> = Observable.of(null)): Subscription {
+        return this.process.projectPayBillProcessor(id.combineLatest(this.userInfo.getSid(), this.project.getProjectId(), (id, sid, project_id) => id ? { id, sid, project_id } : { sid, project_id }));
     }
 
     /**
@@ -64,19 +48,12 @@ export class ProjectBillService {
     }
 
     private getFullKey(key: number | string): string {
-        if(!!key) return ProjectPayBillAmount.prefix + key + ProjectPayBillAmount.suffix;
-        else return ProjectPayBillAmount.prefix + '_sum'; //工件，就是pay_bill__amount__sum这个字段,前后缀加起来多一个‘_’
+        return !!key ? ProjectPayBillAmount.prefix + key + ProjectPayBillAmount.suffix : ProjectPayBillAmount.prefix + '_sum'; //工件，就是pay_bill__amount__sum这个字段,前后缀加起来多一个‘_’
     }
 
     /* ==========================================================refuse clean===================================================== */
 
-    handleError() {
-        const error = this.store.select(selectProjectBillResponse);
-
-        this.projectBill$$ = this.error.handleErrorInSpecific(error, 'APP_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectProjectBillResponse), 'APP_ERROR');
     }
 }

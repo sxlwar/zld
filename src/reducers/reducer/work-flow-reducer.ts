@@ -10,6 +10,7 @@ export interface State {
     workFlowListOptions: WorkFlowListOptions;
     multiTaskUpdateOptions: MultiTaskUpdateOptions;
     taskUpdateOptions: TaskUpdateOptions;
+    payrollPage: number;
     leavePage: number;
     overtimePage: number;
     pieceAuditPage: number;
@@ -28,6 +29,7 @@ export const initialState: State = {
     workFlowListOptions: null,
     multiTaskUpdateOptions: null,
     taskUpdateOptions: null,
+    payrollPage: 1,
     leavePage: 1,
     overtimePage: 1,
     pieceAuditPage: 1,
@@ -117,6 +119,8 @@ export const getMultiTaskUpdateResponse = (state: State) => state.multiTaskUpdat
 export const getTaskUpdateResponse = (state: State) => state.taskUpdateResponse;
 
 export const getProjectPayBillFlowListResponse = (state: State) => state.projectPayBillFlowListResponse;
+
+export const getPayrollPage = (state: State) => state.payrollPage;
 
 export const getLeavePage = (state: State) => state.leavePage;
 

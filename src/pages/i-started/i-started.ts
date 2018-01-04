@@ -69,7 +69,8 @@ export class IStartedPage {
         Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.launch)),
         this.workFlow.getIStartedPage()
       ),
-      this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening)
+      this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
+      this.workFlow.handleWorkFlowError()
     ];
   }
 

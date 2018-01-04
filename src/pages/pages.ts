@@ -64,6 +64,8 @@ export const locationAttendanceRecordPage = 'LocationAttendanceRecordPage';
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
 
+export const payrollAuditPage = 'PayrollAuditPage';
+
 export const overtimePage = 'OvertimePage';
 
 export const overtimeDetailPage = 'OvertimeDetailPage';
@@ -162,6 +164,7 @@ export const PAGES = [
   { title: 'AttendanceRecord', component: attendanceRecordPage },
 
   { title: 'AttendanceConfirm', component: attendanceConfirmPage },
+  { title: 'PayrollAudit', component: payrollAuditPage },
   { title: 'Overtime', component: overtimePage },
   { title: 'OvertimeDetail', component: overtimeDetailPage },
   { title: 'LeavePage', component: leavePage },

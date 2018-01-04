@@ -4,7 +4,6 @@ import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatistic
 import { Store } from '@ngrx/store';
 import { AppState, selectAttendanceStatisticList, selectAttendanceStatistics } from './../../reducers/index-reducer';
 import { WorkFlowService } from './work-flow-service';
-import { WorkFlowAggregation } from './../../interfaces/response-interface';
 import { Injectable } from "@angular/core";
 import { AttendanceStatistics } from "../../interfaces/response-interface";
 import { Observable } from "rxjs/Observable";
@@ -55,14 +54,6 @@ export class StatisticsService {
             .filter(item => !!item[key])
             .map(item => item[key])
             .reduce(this.accumulator, 0);
-    }
-
-    getWorkFlowStatistics(): Observable<WorkFlowAggregation[]> {
-        return this.workFlow.getWorkFlowStatistics();
-    }
-
-    getWorkFlowStatistic(): Subscription {
-        return this.workFlow.getWorkFlowStatistic();
     }
 
     getAttendanceStatisticsByTeam(key: string): Observable<AttendanceConfirmStatisticByTeam[]> {

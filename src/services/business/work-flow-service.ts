@@ -1,3 +1,4 @@
+import { ProjectService } from './project-service';
 import { processIdToIcon } from './icon-service';
 import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-flow-audit';
 import { InfiniteScroll, ModalController } from 'ionic-angular';
@@ -11,7 +12,7 @@ import { WorkFlowAggregation, WorkFlow } from './../../interfaces/response-inter
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectWorkFlowStatisticsResponse, selectWorkFlowLimit, selectLeavePage, selectOvertimePage, selectPieceAuditPage, selectAttendanceModifyPage, selectWorkFlowListResponse, selectMultiTaskUpdateResponse, selectMultiTaskUpdateOptions, selectTaskUpdateResponse, selectIStartedPage, selectICompletedPage, selectScreeningCondition } from './../../reducers/index-reducer';
+import { AppState, selectWorkFlowStatisticsResponse, selectWorkFlowLimit, selectLeavePage, selectOvertimePage, selectPieceAuditPage, selectAttendanceModifyPage, selectWorkFlowListResponse, selectMultiTaskUpdateResponse, selectMultiTaskUpdateOptions, selectTaskUpdateResponse, selectIStartedPage, selectICompletedPage, selectScreeningCondition, selectPayrollPage, selectProjectPayBillFlowListResponse } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from "@angular/core";
 import { ErrorService } from '../../services/errors/error-service';
@@ -25,7 +26,8 @@ export class WorkFlowService {
         public error: ErrorService,
         public processor: ProcessorService,
         public command: Command,
-        public modalCtrl: ModalController
+        public modalCtrl: ModalController,
+        public project: ProjectService
     ) {
     }
 
@@ -63,6 +65,10 @@ export class WorkFlowService {
 
     getICompletedPage(): Observable<number> {
         return this.store.select(selectICompletedPage);
+    }
+
+    getPayrollPage(): Observable<number> {
+        return this.store.select(selectPayrollPage);
     }
 
     getWorkFlowStateOption(state: string): RequestOption {
@@ -154,6 +160,10 @@ export class WorkFlowService {
         return this.processor.multiTaskUpdateProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })) as Observable<MultiTaskUpdateOptions>);
     }
 
+    getProjectPayBillFlowList(): Subscription {
+        return this.processor.projectPayBillFlowListProcessor(this.project.getProjectId().withLatestFrom(this.userInfo.getSid(), (project_id, sid) => ({ project_id, sid })));
+    }
+
     /* =====================================================Local action======================================================== */
 
     resetWorkFlowResponse(): void {
@@ -186,13 +196,15 @@ export class WorkFlowService {
 
     /* =====================================================Refuse clean======================================================== */
 
-    handleError(): Subscription[] {
-        return [
-            this.handleStatisticsError()
-        ];
-    }
-
     handleStatisticsError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkFlowStatisticsResponse), 'APP_ERROR');
+    }
+
+    handleWorkFlowError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectWorkFlowListResponse), 'API_ERROR');
+    }
+
+    handleProjectPayBillFlowError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectProjectPayBillFlowListResponse), 'API_ERROR');
     }
 }

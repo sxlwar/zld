@@ -66,7 +66,8 @@ export class AttendanceModifyPage {
         Observable.of({ process_id: ProcessIdOptions.attendanceModify,...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
         this.workFlow.getPieceAuditPage()
       ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount())
+      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount()),
+      this.workFlow.handleWorkFlowError()
     ];
   }
 

@@ -68,7 +68,8 @@ export class ICompletedPage {
         Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.completed)),
         this.workFlow.getICompletedPage()
       ),
-      this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening)
+      this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
+      this.workFlow.handleWorkFlowError()
     ];
   }
 
