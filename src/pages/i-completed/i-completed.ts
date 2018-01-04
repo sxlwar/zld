@@ -1,21 +1,20 @@
-import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
-import { modifyAttendance } from './../../services/business/icon-service';
-import { MissionRoot, attendanceModifyDetailPage } from './../pages';
-import { StatisticsService } from './../../services/business/statistics-service';
+import { SpecificWorkFlowState } from './../../interfaces/request-interface';
+import { MissionRoot } from './../pages';
 import { PermissionService } from './../../services/config/permission-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
-import { MissionListItem, AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
+import { MissionListItem, AuditTarget, WorkFlowPageType, processIdToPage, ScreeningCondition, screeningConditions } from './../../interfaces/mission-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { iCompleted } from '../../services/business/icon-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-attendance-modify',
-  templateUrl: 'attendance-modify.html',
+  selector: 'page-i-completed',
+  templateUrl: 'i-completed.html',
 })
-export class AttendanceModifyPage {
+export class ICompletedPage {
 
   total: Observable<number>;
 
@@ -29,12 +28,15 @@ export class AttendanceModifyPage {
 
   page$$: Subscription;
 
+  screeningConditions: ScreeningCondition[] = screeningConditions;
+
+  screening: string;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlow: WorkFlowService,
     public permission: PermissionService,
-    public statistic: StatisticsService
   ) {
   }
 
@@ -53,20 +55,20 @@ export class AttendanceModifyPage {
   initialModel(): void {
     this.total = this.workFlow.getCount();
 
-    this.list = this.workFlow.getList();
+    this.list = this.workFlow.getList().combineLatest(this.workFlow.getScreeningCondition(), (list, condition) => list.filter(item => !condition || item.processId === condition));
 
-    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getAttendanceModifyPage());
+    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getICompletedPage());
 
-    this.operate = this.permission.getOperatePermission(modifyAttendance.icon, MissionRoot)
+    this.operate = this.permission.getOperatePermission(iCompleted.icon, MissionRoot);
   }
 
   launch(): void {
     this.subscriptions = [
       this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.attendanceModify,...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
-        this.workFlow.getPieceAuditPage()
+        Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.completed)),
+        this.workFlow.getICompletedPage()
       ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount())
+      this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening)
     ];
   }
 
@@ -76,20 +78,24 @@ export class AttendanceModifyPage {
     this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
   }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
+  getNextPage(infiniteScroll: InfiniteScroll): void {
     this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.attendanceModifyPage);
+    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.iCompletedPage);
   }
 
   goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(attendanceModifyDetailPage, { id: target.id, status: target.status }).then(() => { });
+    this.navCtrl.push(processIdToPage[target.processId], { id: target.id }).then(() => { });
+  }
+
+  setScreeningCondition(processId: string): void {
+    this.workFlow.setScreeningCondition(processId);
   }
 
   ionViewWillUnload() {
     this.workFlow.resetWorkFlowResponse();
 
-    this.workFlow.resetPage(WorkFlowPageType.attendanceModifyPage);
+    this.workFlow.resetPage(WorkFlowPageType.iCompletedPage);
 
     this.page$$ && this.page$$.unsubscribe();
 

@@ -3,12 +3,12 @@ import { leave } from './../../services/business/icon-service';
 import { MissionRoot, leaveDetailPage } from './../pages';
 import { PermissionService } from './../../services/config/permission-service';
 import { AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
-import { ProcessIdOptions } from './../../interfaces/request-interface';
+import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { MissionListItem } from '../../interfaces/mission-interface';
 
 @IonicPage()
@@ -34,7 +34,6 @@ export class LeavePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlow: WorkFlowService,
-    public modalCtrl: ModalController,
     public permission: PermissionService,
     public statistic: StatisticsService
   ) {
@@ -65,7 +64,7 @@ export class LeavePage {
   launch(): void {
     this.subscriptions = [
       this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.leave, ...this.workFlow.getPendingOption() }),
+        Observable.of({ process_id: ProcessIdOptions.leave, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
         this.workFlow.getLeavePage()
       ),
       this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.leave, this.workFlow.getTaskUpdateSuccessCount())
@@ -85,12 +84,14 @@ export class LeavePage {
   }
 
   goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(leaveDetailPage, { id: target.id }).then(() => {});
+    this.navCtrl.push(leaveDetailPage, { id: target.id, status: target.status }).then(() => {});
   }
 
   ionViewWillUnload() {
     this.workFlow.resetWorkFlowResponse();
 
+    this.workFlow.resetPage(WorkFlowPageType.leavePage);
+    
     this.page$$ && this.page$$.unsubscribe();
     
     this.subscriptions.forEach(item => item.unsubscribe());

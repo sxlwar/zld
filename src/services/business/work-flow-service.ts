@@ -1,16 +1,17 @@
+import { processIdToIcon } from './icon-service';
 import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-flow-audit';
 import { InfiniteScroll, ModalController } from 'ionic-angular';
 import { MissionListItem, AuditTarget } from './../../interfaces/mission-interface';
-import { MultiTaskUpdateOptions } from './../../interfaces/request-interface';
-import { IncreasePageAction } from './../../actions/action/work-flow-action';
+import { MultiTaskUpdateOptions, WorkFlowStatus } from './../../interfaces/request-interface';
+import { IncreasePageAction, ResetPageAction, SetScreeningConditionAction } from './../../actions/action/work-flow-action';
 import { Command } from './../api/command';
-import { RequestOption, WorkFlowListOptions, SpecificWorkFlowState } from '../../interfaces/request-interface';
+import { RequestOption, WorkFlowListOptions } from '../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import { WorkFlowAggregation, WorkFlow } from './../../interfaces/response-interface';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectWorkFlowStatisticsResponse, selectWorkFlowLimit, selectLeavePage, selectOvertimePage, selectPieceAuditPage, selectAttendanceModifyPage, selectWorkFlowListResponse, selectMultiTaskUpdateResponse, selectMultiTaskUpdateOptions, selectTaskUpdateResponse } from './../../reducers/index-reducer';
+import { AppState, selectWorkFlowStatisticsResponse, selectWorkFlowLimit, selectLeavePage, selectOvertimePage, selectPieceAuditPage, selectAttendanceModifyPage, selectWorkFlowListResponse, selectMultiTaskUpdateResponse, selectMultiTaskUpdateOptions, selectTaskUpdateResponse, selectIStartedPage, selectICompletedPage, selectScreeningCondition } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from "@angular/core";
 import { ErrorService } from '../../services/errors/error-service';
@@ -56,8 +57,16 @@ export class WorkFlowService {
         return this.store.select(selectAttendanceModifyPage);
     }
 
-    getPendingOption(): RequestOption {
-        return this.command.workFlowList.noMagicNumber.get(SpecificWorkFlowState.pending).value as RequestOption;
+    getIStartedPage(): Observable<number> {
+        return this.store.select(selectIStartedPage);
+    }
+
+    getICompletedPage(): Observable<number> {
+        return this.store.select(selectICompletedPage);
+    }
+
+    getWorkFlowStateOption(state: string): RequestOption {
+        return this.command.workFlowList.noMagicNumber.get(state).value as RequestOption;
     }
 
     getList(): Observable<MissionListItem[]> {
@@ -70,7 +79,10 @@ export class WorkFlowService {
                 createTime: item.create_time,
                 taskId: item.task[item.task.length - 1].id,
                 isRequester: item.task[item.task.length - 1].user_id === item.requester_id,
-                id: item.id
+                id: item.id,
+                processId: item.process_id,
+                status: item.status,
+                icon: processIdToIcon[item.process_id]
             })));
     }
 
@@ -78,12 +90,6 @@ export class WorkFlowService {
         return this.store.select(selectWorkFlowListResponse)
             .filter(value => !!value)
             .map(res => res.count);
-    }
-
-    getWorkFlowResponseComplete(): Observable<boolean> {
-        return this.store.select(selectWorkFlowListResponse)
-            .filter(value => !!value)
-            .mapTo(true);
     }
 
     haveMoreData(page: Observable<number>): Observable<boolean> {
@@ -112,7 +118,17 @@ export class WorkFlowService {
     getNextPage(infiniteScroll: InfiniteScroll, page: string): Subscription {
         this.increasePage(page);
 
-        return this.getWorkFlowResponseComplete().subscribe(_ => infiniteScroll.complete());
+        return this.store.select(selectWorkFlowListResponse)
+            .filter(value => !!value)
+            .subscribe(_ => infiniteScroll.complete());
+    }
+
+    isAuditButtonVisibility(status: string, permission: Observable<boolean>): Observable<boolean> {
+        return permission.map(permission => permission && status === WorkFlowStatus.processing);
+    }
+
+    getScreeningCondition(): Observable<string> {
+        return this.store.select(selectScreeningCondition);
     }
 
     /* =====================================================Request methods===================================================== */
@@ -140,8 +156,12 @@ export class WorkFlowService {
 
     /* =====================================================Local action======================================================== */
 
-    resetWorkFlowResponse() {
+    resetWorkFlowResponse(): void {
         this.store.dispatch(new ResetWorkFlowResponseAction());
+    }
+
+    resetPage(page: string): void {
+        this.store.dispatch(new ResetPageAction(page));
     }
 
     increasePage(page: string) {
@@ -158,6 +178,10 @@ export class WorkFlowService {
 
                 modal.onDidDismiss((data: AuditTarget) => data && this.updateMultiTask(Observable.of({ approve: Number(data.approve), id: data.ids, comment: data.comment })));
             });
+    }
+
+    setScreeningCondition(condition: string): void {
+        this.store.dispatch(new SetScreeningConditionAction(condition));
     }
 
     /* =====================================================Refuse clean======================================================== */

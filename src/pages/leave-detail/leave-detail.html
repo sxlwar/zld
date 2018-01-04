@@ -2,7 +2,7 @@
 
   <ion-navbar>
     <ion-title>{{'LEAVE_DETAIL' | translate}}</ion-title>
-    <ion-buttons end>
+    <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
       <button ion-button small clear (click)="audit()">
         {{'AUDIT' | translate}}
       </button>

@@ -1,4 +1,4 @@
-import { ProcessIdOptions } from './../../interfaces/request-interface';
+import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
 import { MissionRoot, overtimeDetailPage } from './../pages';
 import { overtime } from './../../services/business/icon-service';
 import { MissionListItem, AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
@@ -7,7 +7,7 @@ import { StatisticsService } from './../../services/business/statistics-service'
 import { Subscription } from 'rxjs/Subscription';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { PermissionService } from '../../services/config/permission-service';
 
 @IonicPage()
@@ -33,7 +33,6 @@ export class OvertimePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlow: WorkFlowService,
-    public modalCtrl: ModalController,
     public permission: PermissionService,
     public statistic: StatisticsService
   ) {
@@ -64,7 +63,7 @@ export class OvertimePage {
   launch(): void {
     this.subscriptions = [
       this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.overtime, ...this.workFlow.getPendingOption() }),
+        Observable.of({ process_id: ProcessIdOptions.overtime, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
         this.workFlow.getOvertimePage()
       ),
       this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.overtime, this.workFlow.getTaskUpdateSuccessCount())
@@ -84,14 +83,16 @@ export class OvertimePage {
   }
 
   goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(overtimeDetailPage, { id: target.id }).then(() => { });
+    this.navCtrl.push(overtimeDetailPage, { id: target.id, status: target.status }).then(() => { });
   }
 
   ionViewWillUnload() {
     this.workFlow.resetWorkFlowResponse();
 
+    this.workFlow.resetPage(WorkFlowPageType.overtimePage);
+
     this.page$$ && this.page$$.unsubscribe();
-    
+
     this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

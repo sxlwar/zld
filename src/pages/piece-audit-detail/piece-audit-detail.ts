@@ -1,3 +1,6 @@
+import { MissionRoot } from './../pages';
+import { pieceAudit } from './../../services/business/icon-service';
+import { PermissionService } from './../../services/config/permission-service';
 import { WorkPieceService } from './../../services/business/work-piece-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -25,12 +28,14 @@ export class PieceAuditDetailPage {
 
   audit$$: Subscription;
 
+  isAuditButtonVisibility: Observable<boolean>;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
     public workPiece: WorkPieceService,
-
+    public permission: PermissionService
   ) {
     this.id = navParams.get('id');
   }
@@ -46,6 +51,11 @@ export class PieceAuditDetailPage {
 
     this.pieceFlow = this.workPiece.getWorkPieceFinish().map(res => res[0]);
 
+    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+      this.navParams.get('status'),
+      this.permission.getOperatePermission(pieceAudit.icon, MissionRoot)
+    );
+
     this.piece = this.pieceFlow.withLatestFrom(
       this.workPiece.getWorkPieces(),
       (pieceFinish, pieces) => pieces.find(item => item.id === pieceFinish.workpieces_id)
@@ -56,7 +66,7 @@ export class PieceAuditDetailPage {
 
   launch() {
     this.subscriptions = [
-      this.workPiece.getWorkPieceList(this.workPiece.getProcessingRecordOptions(this.id)),
+      this.workPiece.getWorkPieceList(this.workPiece.getRecordOptions(this.id, this.navParams.get('status'))),
       this.workPiece.handleError()
     ];
   }

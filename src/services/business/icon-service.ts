@@ -277,7 +277,7 @@ export const workContractModify: IconItem = {
   page: ''
 };
 
-export const myAudited: IconItem = {
+export const iCompleted: IconItem = {
   text: 'MY_AUDIT',
   icon: myAuditedIcon,
   color: 'related',
@@ -285,10 +285,10 @@ export const myAudited: IconItem = {
     view: [PME, EME, MM, PM, LM, TL, QW, SW, UW],
     opt: []
   },
-  page: ''
+  page: pages.iCompletedPage
 };
 
-export const myLaunch: IconItem = {
+export const iStarted: IconItem = {
   text: 'MY_APPLY',
   icon: myLaunchIcon,
   color: 'related',
@@ -296,7 +296,7 @@ export const myLaunch: IconItem = {
     view: [PME, EME, MM, PM, LM, TL, QW],
     opt: []
   },
-  page: ''
+  page: pages.iStartedPage
 };
 
 export const myAttendance: IconItem = {

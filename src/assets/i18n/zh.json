@@ -414,7 +414,7 @@
   
   "REQUESTER":"发起人",
   "REQUEST_TIME": "发起时间",
-  "PENDING_COUNT": "未处理申请",
+  "PENDING_COUNT": "未处理申请总数",
   "AUDIT":"审核",
   "WORK_FLOW_AUDIT_TIP":"请审核以下申请",
   "WORK_FLOW_AUDIT_COMMENT":"请输入审核意见",
@@ -440,6 +440,9 @@
   
   "ATTENDANCE_MODIFY_DETAIL": "考勤修改详情",
   "MODIFY_DATE": "修改日期",
+  "I_STARTED_COUNT": "发起申请总数",
+  "I_COMPLETED_COUNT": "已审批数量",
+  "SCREENING": "筛选",
 
   "TAB2_TITLE": "Search",
   "TAB3_TITLE": "Settings",

@@ -412,8 +412,11 @@ export const selectLeavePage = createSelector(getWorkFlow, workFlow.getLeavePage
 export const selectOvertimePage = createSelector(getWorkFlow, workFlow.getOvertimePage);
 export const selectPieceAuditPage = createSelector(getWorkFlow, workFlow.getPieceAuditPage);
 export const selectAttendanceModifyPage = createSelector(getWorkFlow, workFlow.getAttendanceModifyPage);
+export const selectIStartedPage = createSelector(getWorkFlow, workFlow.getIStartedPage);
+export const selectICompletedPage = createSelector(getWorkFlow, workFlow.getICompletedPage);
 export const selectMultiTaskUpdateOptions = createSelector(getWorkFlow, workFlow.getMultiTaskUpdateOptions);
 export const selectTaskUpdateOptions = createSelector(getWorkFlow, workFlow.getTaskUpdateOptions);
+export const selectScreeningCondition = createSelector(getWorkFlow, workFlow.getScreeningCondition);
 
 //leave record list
 export const getLeave = (state: AppState) => state.leave;

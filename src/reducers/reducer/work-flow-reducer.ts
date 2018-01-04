@@ -14,7 +14,10 @@ export interface State {
     overtimePage: number;
     pieceAuditPage: number;
     attendanceModifyPage: number;
+    iStartedPage: number;
+    iCompletedPage: number;
     limit: number;
+    screeningCondition: string;
 }
 
 export const initialState: State = {
@@ -29,8 +32,13 @@ export const initialState: State = {
     overtimePage: 1,
     pieceAuditPage: 1,
     attendanceModifyPage: 1,
-    limit: 20
+    iStartedPage: 1,
+    iCompletedPage: 1,
+    limit: 20,
+    screeningCondition: ''
 }
+
+
 
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
@@ -77,7 +85,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.RESET_PAGE: {
             const result = {};
 
-            result[state[action.payload]] = 1;
+            result[action.payload] = 1;
 
             return { ...state, ...result };
         }
@@ -85,13 +93,16 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.INCREASE_PAGE: {
             const result = {};
 
-            result[state[action.payload]] = state[action.payload] + 1;
+            result[action.payload] = state[action.payload] + 1;
 
             return { ...state, ...result };
         }
 
         case actions.RESET_WORK_FLOW_RESPONSE:
             return { ...state, workFlowListResponse: null };
+
+        case actions.SET_SCREENING_CONDITION:
+            return { ...state, screeningCondition: action.payload };
 
         case actions.GET_PROJECT_PAY_BILL_FLOW_LIST:
         default:
@@ -115,8 +126,14 @@ export const getPieceAuditPage = (state: State) => state.pieceAuditPage;
 
 export const getAttendanceModifyPage = (state: State) => state.attendanceModifyPage;
 
+export const getIStartedPage = (state: State) => state.iStartedPage;
+
+export const getICompletedPage = (state: State) => state.iCompletedPage;
+
 export const getLimit = (state: State) => state.limit;
 
 export const getMultiTaskUpdateOptions = (state: State) => state.multiTaskUpdateOptions;
 
 export const getTaskUpdateOptions = (state: State) => state.taskUpdateOptions;
+
+export const getScreeningCondition = (state: State) => state.screeningCondition;

@@ -1,3 +1,6 @@
+import { leave } from '../../services/business/icon-service';
+import { MissionRoot } from './../pages';
+import { PermissionService } from './../../services/config/permission-service';
 import { LeaveService } from './../../services/business/leave-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,13 +24,16 @@ export class LeaveDetailPage {
 
   subscriptions: Subscription[] = [];
 
+  isAuditButtonVisibility: Observable<boolean>;
+
   audit$$: Subscription;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
-    public leaveService: LeaveService
+    public leaveService: LeaveService,
+    public permission: PermissionService
   ) {
     this.id = navParams.get('id');
   }
@@ -42,11 +48,16 @@ export class LeaveDetailPage {
     this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
     this.leave = this.leaveService.getLeaveRecordLists().map(res => res[0]);
+
+    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+      this.navParams.get('status'),
+      this.permission.getOperatePermission(leave.icon, MissionRoot)
+    );
   }
 
   launch() {
     this.subscriptions = [
-      this.leaveService.getLeaveRecord(this.leaveService.getProcessingRecordOptions(this.id)),
+      this.leaveService.getLeaveRecord(this.leaveService.getRecordOptions(this.id, this.navParams.get('status'))),
       this.leaveService.handleError()
     ];
   }

@@ -1,4 +1,4 @@
-import { WorkFlowStatus, RequestOption } from './../../interfaces/request-interface';
+import { RequestOption } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 
@@ -8,11 +8,11 @@ export class RecordOptionService {
 
     }
 
-    getProcessingRecordOptions(id: number): Observable<RequestOption> {
+    getRecordOptions(id: number, status: string, needHistory = true): Observable<RequestOption> {
         return Observable.of({
-            history_view: true,
+            history_view: needHistory,
             request_id: id,
-            request_status: WorkFlowStatus.processing
+            request_status: status
         });
     }
 }

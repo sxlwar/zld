@@ -1,4 +1,4 @@
-import { ProcessIdOptions } from './../../interfaces/request-interface';
+import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
 import { MissionRoot, pieceAuditDetailPage } from './../pages';
 import { pieceAudit } from './../../services/business/icon-service';
 import { StatisticsService } from './../../services/business/statistics-service';
@@ -8,7 +8,7 @@ import { MissionListItem, AuditTarget, WorkFlowPageType } from './../../interfac
 import { Observable } from 'rxjs/Observable';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -33,7 +33,6 @@ export class PieceAuditPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlow: WorkFlowService,
-    public modalCtrl: ModalController,
     public permission: PermissionService,
     public statistic: StatisticsService
   ) {
@@ -64,7 +63,7 @@ export class PieceAuditPage {
   launch(): void {
     this.subscriptions = [
       this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.pieceAudit, ...this.workFlow.getPendingOption() }),
+        Observable.of({ process_id: ProcessIdOptions.pieceAudit, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
         this.workFlow.getPieceAuditPage()
       ),
       this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.pieceAudit, this.workFlow.getTaskUpdateSuccessCount())
@@ -84,12 +83,14 @@ export class PieceAuditPage {
   }
 
   goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(pieceAuditDetailPage, { id: target.id }).then(() => {});
+    this.navCtrl.push(pieceAuditDetailPage, { id: target.id, status: target.status }).then(() => {});
   }
 
   ionViewWillUnload() {
     this.workFlow.resetWorkFlowResponse();
 
+    this.workFlow.resetPage(WorkFlowPageType.pieceAuditPage);
+    
     this.page$$ && this.page$$.unsubscribe();
     
     this.subscriptions.forEach(item => item.unsubscribe());

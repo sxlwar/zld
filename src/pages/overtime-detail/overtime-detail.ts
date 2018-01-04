@@ -1,3 +1,6 @@
+import { MissionRoot } from './../pages';
+import { overtime } from './../../services/business/icon-service';
+import { PermissionService } from './../../services/config/permission-service';
 import { OvertimeService } from './../../services/business/overtime-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -20,6 +23,8 @@ export class OvertimeDetailPage {
   overtime: Observable<Overtime>;
 
   subscriptions: Subscription[] = [];
+  
+  isAuditButtonVisibility: Observable<boolean>;
 
   audit$$: Subscription;
 
@@ -27,7 +32,8 @@ export class OvertimeDetailPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public workFlowService: WorkFlowService,
-    public overtimeService: OvertimeService
+    public overtimeService: OvertimeService,
+    public permission: PermissionService
   ) {
     this.id = navParams.get('id');
   }
@@ -42,11 +48,16 @@ export class OvertimeDetailPage {
     this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
     this.overtime = this.overtimeService.getOvertimeRecords().map(res => res[0]);
+
+    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+      this.navParams.get('status'),
+      this.permission.getOperatePermission(overtime.icon, MissionRoot)
+    );
   }
 
   launch() {
     this.subscriptions = [
-      this.overtimeService.getOvertimeRecordList(this.overtimeService.getProcessingRecordOptions(this.id)),
+      this.overtimeService.getOvertimeRecordList(this.overtimeService.getRecordOptions(this.id, this.navParams.get('status'))),
       this.overtimeService.handleError(),
     ];
   }

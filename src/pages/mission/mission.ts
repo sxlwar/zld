@@ -17,8 +17,8 @@ const icons = [
   Icons.modifyAttendance,
   Icons.workerContract,
   Icons.workContractModify,
-  Icons.myLaunch,
-  Icons.myAudited
+  Icons.iStarted,
+  Icons.iCompleted
 ];
 
 @IonicPage()

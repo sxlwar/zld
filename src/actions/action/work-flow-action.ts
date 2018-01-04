@@ -122,11 +122,20 @@ export class ResetWorkFlowResponseAction implements Action {
     constructor() { }
 }
 
+export const SET_SCREENING_CONDITION = 'SET_SCREENING_CONDITION';
+
+export class SetScreeningConditionAction implements Action {
+    readonly type = SET_SCREENING_CONDITION;
+
+    constructor(public payload: string) { }
+}
+
 export type Actions = GetWorkFlowListAction
     | GetProjectPayBillFlowListAction
     | IncreasePageAction
     | ResetPageAction
     | ResetWorkFlowResponseAction
+    | SetScreeningConditionAction
     | ProjectPayBillFlowListFailAction
     | ProjectPayBillFlowListSuccessAction
     | WorkFlowListFailAction

@@ -17,6 +17,10 @@ export class MissionListComponent {
 
   @Input() haveMoreData: boolean = true;
 
+  @Input() countText = 'PENDING_COUNT';
+
+  @Input() showIcon = false;
+
   @Output() auditApply: EventEmitter<AuditTarget> = new EventEmitter();
 
   @Output() getNextPage: EventEmitter<null> = new EventEmitter();

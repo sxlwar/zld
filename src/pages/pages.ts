@@ -80,6 +80,10 @@ export const attendanceModifyPage = 'AttendanceModifyPage';
 
 export const attendanceModifyDetailPage = 'AttendanceModifyDetailPage';
 
+export const iStartedPage = 'IStartedPage';
+
+export const iCompletedPage = 'ICompletedPage';
+
 /*============================================common pages===================================================*/
 
 export const attendanceRecordPage = 'AttendanceRecordPage';
@@ -166,6 +170,8 @@ export const PAGES = [
   { title: 'PieceAuditDetailPage', component: pieceAuditDetailPage },
   { title: 'AttendanceModifyPage', component: attendanceModifyPage },
   { title: 'AttendanceModifyDetailPage', component: attendanceModifyDetailPage },
+  { title: 'IStartedPage', component: iStartedPage },
+  { title: 'ICompletedPage', component: iCompletedPage },
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },

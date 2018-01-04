@@ -3,7 +3,7 @@
   <ion-list-header>
     <ion-label>
 
-      <span id="count">{{'PENDING_COUNT' | translate}}: {{total}}</span>
+      <span id="count">{{countText | translate}}: {{total}}</span>
 
       <ion-buttons *ngIf="operate" end>
         <button ion-button small clear (click)="showComment()">
@@ -33,6 +33,7 @@
     </ion-label>
     <ion-checkbox *ngIf="operate" [(ngModel)]="item.selected" (ngModelChange)="checkAllSelectedFlag($event)"></ion-checkbox>
 
+    <ion-icon *ngIf="showIcon" [name]="item.icon" color="primary" item-start></ion-icon>
   </ion-item>
 
   <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">
