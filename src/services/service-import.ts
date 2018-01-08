@@ -1,3 +1,5 @@
+import { SearchService } from './business/search-service';
+import { LaunchService } from './business/launch-service';
 import { LeaveService } from './business/leave-service';
 import { NationalityService } from './business/nationality-service';
 import { WorkCertificateService } from './business/work-certificate-service';
@@ -69,6 +71,7 @@ export const BUSINESS_SERVICES = [
     CraftService,
     EmployerService,
     IconService,
+    LaunchService,
     LeaveService,
     LocationService,
     LocationCardService,
@@ -85,6 +88,7 @@ export const BUSINESS_SERVICES = [
     ProjectService,
     QRLoginService,
     RecordOptionService,
+    SearchService,
     StatisticsService,
     TakePhotoService,
     TeamService,

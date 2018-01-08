@@ -1,3 +1,8 @@
+import { SearchCompanyAction } from './../../actions/action/search-company-action';
+import { EditWorkerContractAction } from './../../actions/action/worker-action';
+import { DeleteImagesAction } from './../../actions/action/delete-images-action';
+import { SearchWorkerAction } from './../../actions/action/search-worker-action';
+import { CreateWorkerContractAction, CreateWorkerContractModifyAction, CreateLeaveAction, CreateOvertimeAction, CreatePieceAuditAction, CreateAttendanceModifyAction, UploadWorkerContractAttachAction } from './../../actions/action/launch-action';
 import { GetLeaveRecordListAction } from './../../actions/action/leave-action';
 import { GetWorkFlowListAction, GetProjectPayBillFlowListAction, UpdateMultiTaskAction, UpdateTaskAction } from './../../actions/action/work-flow-action';
 import { GetGroupListAction } from './../../actions/action/group-list-action';
@@ -16,7 +21,7 @@ import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailList
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, PayProcessListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -96,7 +101,11 @@ export class ProcessorService extends MapperService {
     })
   }
 
-  //TODO:上传过程需要重构，过于复杂，操作符withLatesFrom不恰当。
+  searchCompanyProcessor(option$: Observable<SearchCompanyOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new SearchCompanyAction(option)));
+  }
+
+  //TODO:上传过程需要重构，过于复杂，操作符withLatestFrom不恰当。
   certificateProcessor(option$: Observable<CertificateOptions>, image$: Observable<UploadPersonalIdImageOptions>): Subscription {
     return this.uploadService.uploadImagesProcessor(image$, this.command.uploadPersonalIdImage)
       .map(responses => responses.every(res => {
@@ -573,4 +582,75 @@ export class ProcessorService extends MapperService {
       .mergeMapTo(option$)
       .subscribe(option => this.store.dispatch(new GetAttendanceModifyRecordListAction(option)));
   }
+
+  multiProcessCreateProcessor(): Observable<boolean> {
+    return this.permission.apiPermissionValidate(this.command.multiProcessCreate)
+      .map(value => value.opt)
+      .filter(value => !!value);
+  }
+
+  processCreateProcessor(): Observable<boolean> {
+    return this.permission.apiPermissionValidate(this.command.processCreate)
+      .map(value => value.opt)
+      .filter(value => !!value);
+  }
+
+  createWorkerContractProcessor(option$: Observable<CreateWorkerContractOptions>): Subscription {
+    return this.multiProcessCreateProcessor()
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new CreateWorkerContractAction(option)));
+  }
+
+  createWorkerContractModifyProcessor(option$: Observable<CreateWorkerContractModifyOptions>): Subscription {
+    return this.processCreateProcessor()
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new CreateWorkerContractModifyAction(option)));
+  }
+
+  createLeaveProcessor(option$: Observable<CreateLeaveOptions>): Subscription {
+    return this.processCreateProcessor()
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new CreateLeaveAction(option)));
+  }
+
+  createOvertimeProcessor(option$: Observable<CreateOvertimeOptions>): Subscription {
+    return this.processCreateProcessor()
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new CreateOvertimeAction(option)));
+  }
+
+  createPieceAuditProcessor(option$: Observable<CreatePieceAuditOptions>): Subscription {
+    return this.processCreateProcessor()
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new CreatePieceAuditAction(option)));
+  }
+
+  createAttendanceModifyProcessor(option$: Observable<CreateAttendanceModifyOptions>): Subscription {
+    return this.multiProcessCreateProcessor()
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new CreateAttendanceModifyAction(option)));
+  }
+
+  deleteImagesProcessor(option$: Observable<DeleteImagesOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new DeleteImagesAction(option)));
+  }
+
+  searchWorkerProcessor(option$: Observable<SearchWorkerOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.searchWorker)
+      .filter(value => value.view)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new SearchWorkerAction(option)));
+  }
+
+  workerContractEditProcessor(option$: Observable<WorkerContractEditOptions>): Subscription {
+    return this.permission.apiPermissionValidate(this.command.workerContractEdit)
+      .filter(value => value.opt)
+      .mergeMapTo(option$)
+      .subscribe(option => this.store.dispatch(new EditWorkerContractAction(option)));
+  }
+
+  uploadWorkerContractAttachProcessor(option$: Observable<UploadWorkerContractAttachOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new UploadWorkerContractAttachAction(option)));
+  }
+
 }

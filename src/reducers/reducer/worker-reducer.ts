@@ -1,3 +1,4 @@
+import { WorkerContractEditResponse } from './../../interfaces/response-interface';
 import { uniqBy } from 'lodash';
 import { WorkerContract, WorkerContractListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/worker-action';
@@ -18,6 +19,7 @@ export interface State {
   workerContracts: WorkerContract[];
   management: ContractManagement;
   selectedWorkers: number[]; // user ids.
+  contractEditResponse: WorkerContractEditResponse;
 }
 
 export const initialState: State = {
@@ -36,7 +38,8 @@ export const initialState: State = {
     timerContractIds: [],
     piecerContractIds: []
   },
-  selectedWorkers: []
+  selectedWorkers: [],
+  contractEditResponse: null
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -120,6 +123,11 @@ export function reducer(state = initialState, action: actions.Actions): State {
       return { ...state, selectedWorkers: action.payload };
     }
 
+    case actions.EDIT_WORKER_CONTRACT_FAIL:
+    case actions.EDIT_WORKER_CONTRACT_SUCCESS:
+      return { ...state, contractEditResponse: action.payload };
+
+    case actions.EDIT_WORKER_CONTRACT:
     case actions.GET_QUERY_WORKER_CONTRACT_PAGE:
     case actions.GET_QUERY_WORKER_CONTRACT_LIMIT:
     case actions.GET_WORKER_CONTRACTS:
@@ -158,3 +166,5 @@ export const getTimerPage = (state: State) => state.management.timerPage;
 export const getPiecerPage = (state: State) => state.management.piecerPage;
 
 export const getSelectedWorkers = (state: State) => state.selectedWorkers;
+
+export const getContractEditResponse = (state: State) => state.contractEditResponse;

@@ -1,3 +1,5 @@
+import { WorkerContractEditResponse } from './../../interfaces/response-interface';
+import { WorkerContractEditOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 import { WorkerContractOptions } from '../../interfaces/request-interface';
 import { WorkerContractListResponse } from '../../interfaces/response-interface';
@@ -157,8 +159,37 @@ export class UpdateSelectedWorkersAction implements Action {
   constructor(public payload: number[]) { }
 }
 
+/* ================================================Contract Edit actions=================================================== */
+
+export const EDIT_WORKER_CONTRACT = 'EDIT_WORKER_CONTRACT';
+
+export class EditWorkerContractAction implements Action {
+  readonly type = EDIT_WORKER_CONTRACT;
+  
+  constructor(public payload: WorkerContractEditOptions) { }
+}
+
+export const EDIT_WORKER_CONTRACT_FAIL = 'EDIT_WORKER_CONTRACT_FAIL';
+
+export class EditWorkerContractFailAction implements Action {
+  readonly type = EDIT_WORKER_CONTRACT_FAIL;
+  
+  constructor(public payload: WorkerContractEditResponse) { }
+}
+
+export const EDIT_WORKER_CONTRACT_SUCCESS = 'EDIT_WORKER_CONTRACT_SUCCESS';
+
+export class EditWorkerContractSuccessAction implements Action {
+  readonly type = EDIT_WORKER_CONTRACT_SUCCESS;
+  
+  constructor(public payload: WorkerContractEditResponse) { }
+}
+
 export type Actions = GetWorkerContractsAction
   | DecrementQueryWorkerContractPageAction
+  | EditWorkerContractAction
+  | EditWorkerContractFailAction
+  | EditWorkerContractSuccessAction
   | GetQueryWorkerContractLimitAction
   | GetQueryWorkerContractPageAction
   | IncrementManagementPiecerPageAction

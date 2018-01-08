@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AttendanceInstant } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
 
 
 @IonicPage()
@@ -62,13 +62,7 @@ export class AttendanceMachineRecordPage {
   }
 
   getOption(): Observable<RequestOption> {
-    const id = this.id;
-
-    const start_day = this.date;
-
-    const end_day = this.date;
-
-    return Observable.of({ id, start_day, end_day });
+    return Observable.of({ id: this.id, start_day: this.date, end_day: this.date });
   }
 
   getAttendanceInstant() {
@@ -82,9 +76,9 @@ export class AttendanceMachineRecordPage {
       .map(result => uniqBy(result, 'id'));
   }
 
-  getNextPage(infiniteScroll) {
+  getNextPage(infiniteScroll: InfiniteScroll) {
     this.instant.increasePage();
-    
+
     this.resultSubscription && this.resultSubscription.unsubscribe();
 
     this.resultSubscription = this.instant.getAttendanceInstantList(this.getOption());
@@ -105,7 +99,7 @@ export class AttendanceMachineRecordPage {
 
   ionViewWillUnload() {
     this.resultSubscription && this.resultSubscription.unsubscribe();
-    
+
     this.pageSubscription && this.pageSubscription.unsubscribe();
   }
 

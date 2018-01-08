@@ -35,10 +35,15 @@ export interface LoginResponse {
   errorMessage?: string;
 }
 
-//search company
 export interface Company {
   name: string;
   id: number;
+}
+
+//search company
+export interface SearchCompanyResponse {
+  companies: Company[];
+  errorMessage?: string;
 }
 
 //phone verification code
@@ -68,11 +73,33 @@ export interface CertificateResponse {
 //groups list 
 export interface GroupsListResponse {
   groups_list: string[];
+  errorMessage?: string;
 }
 
 // nationality
 export interface NationalityResponse {
   nationalityChoices: string[][]; // item: [string, string]; [汉,汉族]
+  errorMessage?: string;
+}
+
+export interface WorkerInfo {
+  user__username: string;
+  user_id: number;
+  realname: string;
+  age: number;
+  sex: string;
+  cer_status: number;
+  company__name: string;
+  curraddr__province: string;
+  curraddr__dist: string;
+  user__personal_id__num: string;
+  curraddr__city: string;
+}
+
+//search worker
+export interface SearchWorkerResponse {
+  workers: WorkerInfo[];
+  errorMessage?: string;
 }
 
 /*=================================================Team model======================================================*/
@@ -84,7 +111,7 @@ export interface Team {
   leader_username: string;
   name: string;
   project_id: number;
-  project_name: string;
+  project_name: string; // 这个地方搞不清到底是1个还是2个下划线,有的地方是一个，有的地方是2个，后台居然以这方式来区分字段的归属，除了牛B还能说啥
   quality_manage__employee__realname: string;
   quality_manage__username: string;
   quality_manage_id: number;
@@ -507,7 +534,7 @@ export interface Record {
   request_id: number;
 }
 
-export interface RecordResponse extends Record{
+export interface RecordResponse extends Record {
   contracts: WorkerContractSimple[];
   finish: string;
   start: string;
@@ -520,7 +547,7 @@ export interface WorkerContractSimple {
   team__name: string;
 }
 
-export interface Overtime extends RecordResponse{
+export interface Overtime extends RecordResponse {
   attachment: string; //文档上没有这个鬼东西。
   day: string;
 }
@@ -537,22 +564,26 @@ export interface WorkOvertimeRecordListResponse {
 export interface Leave extends RecordResponse {
 }
 
+// leave record list response
 export interface LeaveRecordListResponse {
   leaves: Leave[];
+  errorMessage?: string;
 }
 
 /* =======================================================Attendance modify response============================================ */
 
-export interface AttendanceModify extends Record{
+export interface AttendanceModify extends Record {
   result__contract__worker__employee__realname: string;
-  result__contract__team__name:string;
-  result__day:string;
-  on_duty:string;
+  result__contract__team__name: string;
+  result__day: string;
+  on_duty: string;
   off_duty: string;
 }
 
+// attendance modify record list 
 export interface AttendanceModifyRecordListResponse {
   attend_amends: AttendanceModify[];
+  errorMessage?: string;
 }
 
 /*==========================================Work Piece model====================================================*/
@@ -590,16 +621,16 @@ export interface WorkPieceListResponse {
 
 /*============================================Launch model==================================================*/
 
+//process create
 export interface ProcessCreateResponse {
-
+  information?: string;
+  errorMessage?: string;
 }
 
+// multi process create
 export interface MultiProcessCreateResponse {
-
-}
-
-export interface TaskUpdateResponse {
-
+  information?: { WorkerContract_id: number }[];  //这还是个大写，我操。
+  errorMessage?: string;
 }
 
 /*=================================================Statistics model==================================================*/
@@ -813,6 +844,7 @@ export interface WorkerDetailUpdateResponse {
 //home info list
 export interface HomeInfoListResponse {
   home_info: Home[];
+  errorMessage?: string;
 }
 
 //home info update
@@ -824,6 +856,7 @@ export interface HomeInfoUpdateResponse {
 //education list
 export interface EducationListResponse {
   education: Education[];
+  errorMessage?: string;
 }
 
 //education add 
@@ -1034,6 +1067,7 @@ export interface Bankcard {
 //worker bank NO list
 export interface WorkerBankNoListResponse {
   person_bank_no: Bankcard[];
+  errorMessage?: string;
 }
 
 //worker bank NO add
@@ -1058,6 +1092,7 @@ export interface SetBankNOMasterResponse {
 export interface BankInfoResponse {
   bank_name: string;
   brand: string;
+  errorMessage?: string;
 }
 
 /* =======================================================Logout API model================================================== */
@@ -1092,25 +1127,6 @@ export interface CertificateDeleteResponse {
 export interface CertificateUpdateResponse {
   information?: string;
   errorMessage?: string;
-}
-
-/*========================================================================================================*/
-
-
-//search worker
-export interface WorkerResponse {
-  age: number;
-  cer_status: number;
-  code: number;
-  company__name: string;
-  curraddr__city: string;
-  curraddr__dist: string;
-  curraddr__province: string;
-  realname: string;
-  sex: string;
-  user__username: string;
-  user_id: number;
-  userpersonal_idnum: string;
 }
 
 /* =======================================================Qr scan login============================================ */
@@ -1150,12 +1166,14 @@ export interface Message {
 //unread message count
 export interface UnreadMessageCountResponse {
   count: number;
+  errorMessage?: string;
 }
 
 //msg title list
 export interface MessageListResponse {
   count: number;
   msgs: Message[];
+  errorMessage?: string;
 }
 
 //msg title delete
@@ -1187,6 +1205,7 @@ export interface WorkerContractMessage {
 //read message content
 export interface MessageContentResponse {
   content: string;
+  errorMessage?: string;
 }
 
 /* =======================================================Work flow response============================================ */
@@ -1263,6 +1282,20 @@ export interface WorkFlowListResponse {
   errorMessage?: string;
 }
 
+/* =======================================================Delete images response============================================ */
+
+// delete images
+export interface DeleteImagesResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
+// worker contract edit
+export interface WorkerContractEditResponse {
+  information?: string;
+  errorMessage?: string;
+}
+
 /* =======================================================Http response============================================ */
 
 export interface Version {
@@ -1279,11 +1312,22 @@ export interface Version {
 // version querying
 export interface VersionResponse {
   versions: Version[];
+  errorMessage?: string;
 }
 
 //upload certificate image 
 export interface UploadCertificateImageResponse {
   work_certificate_id: string;
+}
+
+export interface AttachResponse {
+  relative_url: string;
+  size: string;
+}
+
+//upload worker contract attach 
+export interface UploadWorkerContractAttachResponse {
+  [key: string]: AttachResponse;
 }
 
 export type ErrorResponse = LoginResponse

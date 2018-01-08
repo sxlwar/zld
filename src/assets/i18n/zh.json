@@ -444,39 +444,39 @@
   "I_COMPLETED_COUNT": "已审批数量",
   "SCREENING": "筛选",
 
-  "TAB2_TITLE": "Search",
-  "TAB3_TITLE": "Settings",
-
-  "MAP_TITLE": "Map",
-
-
-  "SETTINGS_TITLE": "Settings",
-  "SETTINGS_OPTION1": "Option 1",
-  "SETTINGS_OPTION2": "Option 2",
-  "SETTINGS_OPTION3": "Option 3",
-  "SETTINGS_OPTION4": "Option 4",
-
-  "SETTINGS_PROFILE_BUTTON": "Edit Profile",
-
-  "SETTINGS_PAGE_PROFILE": "Edit Profile",
-
-  "WELCOME_TITLE": "Welcome",
-
-  "LOGIN_ERROR": "Unable to sign in. Please check your account information and try again.",
-  "SIGNUP_ERROR": "Unable to create account. Please check your account information and try again.",
-
-  "LIST_MASTER_TITLE": "Items",
-
-  "ITEM_CREATE_TITLE": "New Item",
-  "ITEM_CREATE_CHOOSE_IMAGE": "Add Image",
-
-  "ITEM_NAME_PLACEHOLDER": "Name",
-  "ITEM_ABOUT_PLACEHOLDER": "About",
-
-  "DONE_BUTTON": "Done",
-
-  "CARDS_TITLE": "Social",
-
-  "SEARCH_TITLE": "Search",
-  "SEARCH_PLACEHOLDER": "Search the items list, e.g. \"Donald Duck\""
+  "CREATE_WORKER_CONTRACT": "创建用工合同",
+  "PROJECT_NAME": "项目名称",
+  "CONTRACT_TYPE_REQUIRED_ERROR": "请选择合同类型",
+  "TEAM_REQUIRED_ERROR": "请选择班组",
+  "WORK_TYPE_REQUIRED_ERROR": "请选择工种",
+  "CONTRACT_START_DATE_REQUIRED_ERROR": "请输入合同开始时间",
+  "CONTRACT_END_DATE_REQUIRED_ERROR": "请输入合同结束时间",
+  "ON_DUTY_TIME_REQUIRED_ERROR": "请输入上班时间",
+  "OFF_DUTY_TIME_REQUIRED_ERROR": "请输入下班时间",
+  "SEARCH_WORKERS": "搜索工人",
+  "PAYDAY_REQUIRED_ERROR": "请输入发薪日期",
+  "HOURLY_WAGE_REQUIRED_ERROR": "请输入时薪金额",
+  "OVERTIME_HOURLY_WAGE_REQUIRED_ERROR": "请输入加班时薪金额",
+  "ATTENDANCE_TIME": "出勤时间",
+  "FIRST_DUTY": "第一段",
+  "SECOND_DUTY": "第二段",
+  "ON_DUTY_TIME": "上班时间",
+  "OFF_DUTY_TIME": "下班时间",
+  "SUPPLEMENT_CONTENT": "补充内容",
+  "SUPPLEMENT_TIP": "请输入补充内容",
+  "WORKERS_REQUIRED_ERROR": "请选择工人",
+  "HOURLY_WAGE": "时薪",
+  "OVERTIME_HOURLY_WAGE": "加班时薪",
+  "STANDARD": "质量标准",
+  "DATE_RANGE_ERROR": "请输入正确的日期",
+  "PIECE_NAME_REQUIRED_ERROR": "请输入工件名称",
+  "PIECE_LOCATION_REQUIRED_ERROR": "请输入工件位置",
+  "PIECE_COUNT_REQUIRED_ERROR": "请输入工件预估数量",
+  "PIECE_PRICE_REQUIRED_ERROR": "请输入工件单价",
+  "PIECE_STANDARD_REQUIRED_ERROR": "请输入工件质量标准",
+  "PIECE_WISE_SETTING": "分段设置",
+  "CANCEL_PIECE_WISE": "取消分段",
+  "ADD_ATTACH": "添加附件",
+  
+  "INPUT_QUERY_CONTENT": "请输入查询内容"
 }

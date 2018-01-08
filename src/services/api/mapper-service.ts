@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -94,6 +94,40 @@ export interface AddCertificateFormModel {
   mechanism: string;
   imageFace?: string;
   imageBack?: string;
+}
+
+export interface WorkerContractFormModel {
+  formType: string;
+  teamId: number;
+  workTypeId: number;
+  startDay: string;
+  endDay: string;
+  payDay: number;
+  morningOnDuty: string;
+  morningOffDuty: string;
+  comment: string;
+  afternoonOnDuty: string;
+  afternoonOffDuty: string;
+  workerIds: number[];
+  attach: string[];
+}
+
+export interface TimeTypeWorkerContractFormModel extends WorkerContractFormModel {
+  hourlyWage: number;
+  overtimeHourlyWage: number;
+  content: string;
+  // timeUnit: string;
+}
+
+export interface PieceTypeFormModel {
+  name: string;
+  location: string;
+  pieceWage: number;
+  num: number;
+  standard?: string;
+}
+export interface PieceTypeWorkerContractFormModel extends WorkerContractFormModel {
+  pieces: PieceTypeFormModel[];
 }
 
 @Injectable()
@@ -291,4 +325,46 @@ export class MapperService {
       imageback: source.imageBack
     }
   }
+
+  private getWorkerContractCommonPart(source: WorkerContractFormModel): LaunchWorkerContractOptions {
+    return {
+      team_id: source.teamId,
+      worktype_id: source.workTypeId,
+      start_day: source.startDay,
+      finish_day: source.endDay,
+      pay_day: source.payDay,
+      morning_time_on_duty: source.morningOnDuty,
+      morning_time_off_duty: source.morningOffDuty,
+      afternoon_time_off_duty: source.afternoonOnDuty,
+      afternoon_time_on_duty: source.afternoonOffDuty,
+      worker_id: source.workerIds,
+      additional_content: source.comment,
+      attach: source.attach
+    }
+  }
+  private transformTimeTypeWorkerContractForm(source: TimeTypeWorkerContractFormModel): CreateWorkerContractOptions {
+    return {
+      sid: '',
+      worker_contract: this.getWorkerContractCommonPart(source),
+      work_time_pay: [{
+        pay_mount: source.hourlyWage,
+        overtime_pay_mount: source.overtimeHourlyWage,
+        content: source.content,
+        time_unit: '小时'
+      }]
+    }
+  }
+  
+  private transformPieceTypeWorkerContractForm(source: PieceTypeWorkerContractFormModel): CreateWorkerContractOptions {
+    return {
+      sid: '',
+      worker_contract: this.getWorkerContractCommonPart(source),
+      work_piece_pay: source.pieces.map(({ name, pieceWage, location, num, standard }) => ({ name, location, num, pay_mount: pieceWage, standard }))
+    }
+  }
+
+  transformWorkerContractForm(source: WorkerContractFormModel): CreateWorkerContractOptions {
+    return source.formType === '1' ? this.transformTimeTypeWorkerContractForm(source as TimeTypeWorkerContractFormModel) : this.transformPieceTypeWorkerContractForm(source as PieceTypeWorkerContractFormModel);
+  }
+
 }

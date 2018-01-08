@@ -82,6 +82,10 @@ export const attendanceModifyPage = 'AttendanceModifyPage';
 
 export const attendanceModifyDetailPage = 'AttendanceModifyDetailPage';
 
+export const signWorkerContractPage = 'SignWorkerContractPage';
+
+export const searchWorkerPage = 'SearchWorkerPage';
+
 export const iStartedPage = 'IStartedPage';
 
 export const iCompletedPage = 'ICompletedPage';
@@ -175,6 +179,8 @@ export const PAGES = [
   { title: 'AttendanceModifyDetailPage', component: attendanceModifyDetailPage },
   { title: 'IStartedPage', component: iStartedPage },
   { title: 'ICompletedPage', component: iCompletedPage },
+  { title: 'SignWorkerContractPage', component: signWorkerContractPage },
+  { title: 'SearchWorkerPage', component: searchWorkerPage },
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },

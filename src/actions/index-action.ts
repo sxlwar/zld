@@ -1,7 +1,7 @@
 import { Actions as login } from './action/login-action';
 import { Actions as config } from './action/config-action';
 import { Actions as tutorial } from './action/tutorial-action';
-import { Actions as search } from './action/search-action';
+import { Actions as searchCompany } from './action/search-company-action';
 import { Actions as icons } from './action/icons-action';
 import { Actions as project } from './action/project-action';
 import { Actions as worker } from './action/worker-action';
@@ -28,6 +28,9 @@ import { Actions as nationality } from './action/nationality-action';
 import { Actions as group } from './action/group-list-action';
 import { Actions as workFlow } from './action/work-flow-action';
 import { Actions as leave } from './action/leave-action';
+import { Actions as launch } from './action/launch-action';
+import { Actions as searchWorker } from './action/search-worker-action';
+import { Actions as deleteImages } from './action/delete-images-action';
 
 export type Actions = config
   | attendance
@@ -35,9 +38,11 @@ export type Actions = config
   | attendanceCard
   | bankCard
   | certificate
+  | deleteImages
   | employer
   | group
   | icons
+  | launch
   | leave
   | location
   | locationCard
@@ -52,7 +57,8 @@ export type Actions = config
   | piece
   | project
   | qrLogin
-  | search
+  | searchCompany
+  | searchWorker
   | statistics
   | team
   | tutorial

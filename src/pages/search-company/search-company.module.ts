@@ -1,12 +1,10 @@
-//region
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { SearchCompanyPage } from './search-company';
 import { ComponentsModule } from '../../components/components.module';
 import { EffectsModule } from '@ngrx/effects';
-import { SearchEffect } from '../../effects/search-effect';
+import { SearchCompanyEffect } from '../../effects/search-company-effect';
 import { TranslateModule } from '@ngx-translate/core';
-//endregion
 
 @NgModule({
   declarations: [
@@ -15,7 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     IonicPageModule.forChild(SearchCompanyPage),
     ComponentsModule,
-    EffectsModule.forRoot([SearchEffect]),
+    EffectsModule.forRoot([SearchCompanyEffect]),
     TranslateModule
   ],
   exports: [

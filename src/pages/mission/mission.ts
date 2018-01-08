@@ -16,7 +16,7 @@ const icons = [
   Icons.overtime,
   Icons.pieceAudit,
   Icons.modifyAttendance,
-  Icons.workerContract,
+  Icons.signWorkerContract,
   Icons.workContractModify,
   Icons.iStarted,
   Icons.iCompleted

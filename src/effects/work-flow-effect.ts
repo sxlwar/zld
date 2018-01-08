@@ -7,8 +7,6 @@ import { Effect, Actions } from '@ngrx/effects';
 import { WebsocketService } from './../services/api/websocket-service';
 import { Command } from './../services/api/command';
 import { Injectable } from "@angular/core";
-import { of } from 'rxjs/Observable/of';
-
 
 @Injectable()
 export class WorkFlowEffect extends Command {
@@ -20,7 +18,7 @@ export class WorkFlowEffect extends Command {
             .send(this.getWorkFlowStatistics(action.payload))
             .takeUntil(this.actions$.ofType(GET_WORK_FLOW_STATISTICS))
             .map(msg => msg.isError ? new WorkFlowStatisticsFailAction(msg.data) : new WorkFlowStatisticsSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -30,7 +28,7 @@ export class WorkFlowEffect extends Command {
             .send(this.getWorkFlowList(action.payload))
             .takeUntil(this.actions$.ofType(GET_WORK_FLOW_LIST))
             .map(msg => msg.isError ? new WorkFlowListFailAction(msg.data) : new WorkFlowListSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -40,7 +38,7 @@ export class WorkFlowEffect extends Command {
             .send(this.getProjectPayBillFlowList(action.payload))
             .takeUntil(this.actions$.ofType(GET_PROJECT_PAY_BILL_FLOW_LIST))
             .map(msg => msg.isError ? new ProjectPayBillFlowListFailAction(msg.data) : new ProjectPayBillFlowListSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -51,7 +49,7 @@ export class WorkFlowEffect extends Command {
             .takeUntil(this.actions$.ofType(UPDATE_MULTI_TASK))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new UpdateMultiTaskFailAction(msg.data) : new UpdateMultiTaskSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -62,7 +60,7 @@ export class WorkFlowEffect extends Command {
             .takeUntil(this.actions$.ofType(UPDATE_TASK))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new UpdateTaskFailAction(msg.data) : new UpdateTaskSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     constructor(

@@ -7,7 +7,6 @@ import { WebsocketService } from '../services/api/websocket-service';
 import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';
-import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class WorkCertificateEffect extends Command {
@@ -18,7 +17,7 @@ export class WorkCertificateEffect extends Command {
             .send(this.getCertificateList(action.payload))
             .takeUntil(this.actions$.ofType(GET_CERTIFICATE_LIST))
             .map(msg => msg.isError ? new CertificateListFailAction(msg.data) : new CertificateListSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -29,7 +28,7 @@ export class WorkCertificateEffect extends Command {
             .takeUntil(this.actions$.ofType(ADD_CERTIFICATE))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new CertificateAddFailAction(msg.data) : new CertificateAddSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -40,7 +39,7 @@ export class WorkCertificateEffect extends Command {
             .takeUntil(this.actions$.ofType(DELETE_CERTIFICATE))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new CertificateDeleteFailAction(msg.data) : new CertificateDeleteSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -51,7 +50,7 @@ export class WorkCertificateEffect extends Command {
             .takeUntil(this.actions$.ofType(UPDATE_CERTIFICATE))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new CertificateUpdateFailAction(msg.data) : new CertificateUpdateSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -60,7 +59,7 @@ export class WorkCertificateEffect extends Command {
         .mergeMap((action: UploadCertificateImageAction) => this.http
             .transferFileObservable(this.getCertificateImageUpload(action.payload))
             .map(res => res.responseCode === 200 ? new CertificateImageUploadSuccessAction(JSON.parse(res.response)) : new CertificateImageUploadFailAction(JSON.parse(res.response)))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     constructor(

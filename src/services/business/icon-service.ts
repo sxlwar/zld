@@ -255,6 +255,17 @@ export const modifyAttendance: IconItem = {
   page: pages.attendanceModifyPage
 };
 
+export const signWorkerContract: IconItem = {
+  text: 'WORK_CONTRACT',
+  icon: workContractIcon,
+  color: 'contract',
+  permission: {
+    view: [],
+    opt: [PM, LM, TL]
+  },
+  page: pages.signWorkerContractPage
+};
+
 export const workerContract: IconItem = {
   text: 'WORK_CONTRACT',
   icon: workContractIcon,

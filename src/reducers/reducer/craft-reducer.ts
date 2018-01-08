@@ -31,3 +31,5 @@ export function reducer(state = initialState, action: actions.Actions): State {
 export const getWorkType = (state: State) => state.workTypeResponse.information;
 
 export const getSelectedTypes = (state: State) => state.selectedWorkTypes;
+
+export const getWorkTypeResponse = (state: State) => state.workTypeResponse;

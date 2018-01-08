@@ -1,4 +1,4 @@
-import { UploadOptions } from './../../interfaces/request-interface';
+import { UploadOptions, AttachOptions } from './../../interfaces/request-interface';
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { FileTransfer, FileTransferObject, FileUploadOptions, FileUploadResult } from '@ionic-native/file-transfer';
@@ -22,6 +22,13 @@ export const uploadPersonalIdImage: HttpApiUnit = {
 export const uploadCertificateImage: HttpApiUnit = {
   operates: new Map([
     [Operate.updates, ['workCertificateCreate']]
+  ]),
+  url: `http://${ENV.DOMAIN}/upload_file/`
+}
+
+export const uploadWorkerContractAttach: HttpApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['workerContractAttach']]
   ]),
   url: `http://${ENV.DOMAIN}/upload_file/`
 }
@@ -55,9 +62,9 @@ export class HttpService {
     return fileTransfer.upload(file, url, options)
   }
 
- transferFileObservable(option: UploadOptions): Observable<FileUploadResult> {
-   return Observable.fromPromise(this.transferFile(option));
- }
+  transferFileObservable(option: UploadOptions): Observable<FileUploadResult> {
+    return Observable.fromPromise(this.transferFile(option));
+  }
 
   getServerVersion(version?: string): Observable<Version[]> {
     const url = `http://${ENV.DOMAIN}/check_version/`;
@@ -69,5 +76,17 @@ export class HttpService {
 
       return data.data.versions;
     }) as Observable<Version[]>;
+  }
+
+  uploadAttach(options: AttachOptions): Observable<FileUploadResult> {
+    const fileTransfer = this.fileTransfer.create();
+
+    const url = encodeURI(`http://${ENV.DOMAIN}/upload_file/`);
+
+    const { sid, command, id } = options;
+
+    const promise = fileTransfer.upload(options.file, url, { params: { sid, command, id } }); // FIXME: 这个地方传不成功，因为后台需要把所有的数据都在一个formData下边一次传上去。
+
+    return Observable.fromPromise(promise);
   }
 }

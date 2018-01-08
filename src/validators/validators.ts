@@ -23,7 +23,9 @@ export function passwordValidator(pwd: FormControl): ValidatorResult {
 
 export function passwordMatchValidator(info: FormGroup): ValidatorResult {
   const password: FormControl = info.get('password') as FormControl;
+
   const confirmPassword: FormControl = info.get('confirmPassword') as FormControl;
+
   const valid: boolean = password.value === confirmPassword.value;
 
   return valid ? null : { mismatch: 'PASSWORD_MISMATCH_ERROR' };

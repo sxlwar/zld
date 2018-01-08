@@ -5,7 +5,6 @@ import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from './../services/api/websocket-service';
 import { Command } from './../services/api/command';
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs/observable/of';
 
 @Injectable()
 export class LocationEffect extends Command {
@@ -16,7 +15,7 @@ export class LocationEffect extends Command {
             .send(this.getHistoryLocationList(action.payload))
             .takeUntil(this.actions$.ofType(GET_HISTORY_LOCATION))
             .map(msg => msg.isError ? new HistoryLocationListFailAction(msg.data) : new HistoryLocationListSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -45,7 +44,7 @@ export class LocationEffect extends Command {
 
                 return new ProjectAreaListSuccessAction({ project_areas: areas });
             })
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     constructor(

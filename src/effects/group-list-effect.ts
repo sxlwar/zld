@@ -5,7 +5,6 @@ import { WebsocketService } from './../services/api/websocket-service';
 import { Command } from './../services/api/command';
 import { Injectable } from "@angular/core";
 import { Actions, Effect } from '@ngrx/effects';
-import { of } from 'rxjs/Observable/of';
 
 @Injectable()
 export class GroupsListEffect extends Command {
@@ -17,9 +16,9 @@ export class GroupsListEffect extends Command {
             .send(this.getGroupsList(action.payload))
             .takeUntil(this.actions$.ofType(GET_GROUP_LIST))
             .map(msg => msg.isError ? new GroupListFailAction(msg.data) : new GroupListSuccessAction(msg.data))
-            .catch(error => of(error))
-        )
-    
+            .catch(error => Observable.of(error))
+        );
+
     constructor(
         public ws: WebsocketService,
         public actions$: Actions

@@ -5,7 +5,6 @@ import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from '../services/api/websocket-service';
 import { Observable } from 'rxjs/Observable';
 import { Command } from '../services/api/command';
-import { of } from 'rxjs/observable/of';
 import { ResponseAction } from '../interfaces/response-interface';
 
 @Injectable()
@@ -18,7 +17,7 @@ export class QRLoginEffect extends Command {
             .takeUntil(this.actions$.ofType(QR_LOGIN))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new ScanLoginFailAction(msg.data) : new ScanLoginSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     constructor(

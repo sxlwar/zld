@@ -1,4 +1,4 @@
-//region
+import { EDIT_WORKER_CONTRACT, EditWorkerContractAction, EditWorkerContractFailAction, EditWorkerContractSuccessAction } from './../actions/action/worker-action';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from '../services/api/websocket-service';
@@ -7,36 +7,35 @@ import { Store } from '@ngrx/store';
 import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';
-import {
-  GET_WORKER_CONTRACTS,
-  GetWorkerContractsAction,
-  WorkerContractListFailAction,
-  WorkerContractListSuccessAction
-} from '../actions/action/worker-action';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/switchMap';
-//endregion
+import { GET_WORKER_CONTRACTS, GetWorkerContractsAction, WorkerContractListFailAction, WorkerContractListSuccessAction } from '../actions/action/worker-action';
 
 @Injectable()
 export class WorkerEffect extends Command {
-  @Effect()
-  workerContracts$: Observable<ResponseAction> = this.actions$
-    .ofType(GET_WORKER_CONTRACTS)
-    .switchMap((action: GetWorkerContractsAction) => this.ws
-      .send(this.getWorkerContractList(action.payload))
-      .takeUntil(this.actions$.ofType(GET_WORKER_CONTRACTS))
-      .map(msg => msg.isError ? new WorkerContractListFailAction(msg.data) : new WorkerContractListSuccessAction(msg.data))
-      .catch(error => of(error))
-    );
+    @Effect()
+    workerContracts$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_WORKER_CONTRACTS)
+        .switchMap((action: GetWorkerContractsAction) => this.ws
+            .send(this.getWorkerContractList(action.payload))
+            .takeUntil(this.actions$.ofType(GET_WORKER_CONTRACTS))
+            .map(msg => msg.isError ? new WorkerContractListFailAction(msg.data) : new WorkerContractListSuccessAction(msg.data))
+            .catch(error => Observable.of(error))
+        );
 
-  constructor(
-    public ws: WebsocketService,
-    public store: Store<AppState>,
-    private actions$: Actions
-  ) {
-    super();
-  }
+    @Effect()
+    workerContractEdit$: Observable<ResponseAction> = this.actions$
+        .ofType(EDIT_WORKER_CONTRACT)
+        .switchMap((action: EditWorkerContractAction) => this.ws
+            .send(this.getWorkerContractEdit(action.payload))
+            .takeUntil(this.actions$.ofType(EDIT_WORKER_CONTRACT))
+            .map(msg => msg.isError ? new EditWorkerContractFailAction(msg.data) : new EditWorkerContractSuccessAction(msg.data))
+            .catch(error => Observable.of(error))
+        );
+
+    constructor(
+        public ws: WebsocketService,
+        public store: Store<AppState>,
+        private actions$: Actions
+    ) {
+        super();
+    }
 }

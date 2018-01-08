@@ -1,3 +1,5 @@
+import { SearchWorkerEffect } from './search-worker-effect';
+import { LaunchEffect } from './launch-effect';
 import { LeaveEffect } from './leave-effect';
 import { GroupsListEffect } from './group-list-effect';
 import { NationalityEffect } from './nationality-effect';
@@ -34,6 +36,7 @@ export const EFFECTS = [
     CraftEffect,
     EmployerEffect,
     GroupsListEffect,
+    LaunchEffect,
     LeaveEffect,
     LogoutEffect,
     LocationEffect,
@@ -45,6 +48,7 @@ export const EFFECTS = [
     PersonalEffect,
     ProjectEffect,
     QRLoginEffect,
+    SearchWorkerEffect,
     TeamEffect,
     WorkFlowEffect,
     WorkPieceEffect,

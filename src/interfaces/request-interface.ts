@@ -62,6 +62,31 @@ export interface GroupsListOptions {
   sid: string;
 }
 
+export enum CertificateStatus {
+  noCertificate,
+  available,
+  overdue
+}
+
+export interface SearchWorkerOptions {
+  sid: string;
+  worktype_id?: number;
+  group_name?: string;
+  nationality?: string;
+  personalIdNum?: string;
+  username?: string;
+  sex?: string;
+  age_range?: string; //e.g.: '11-22';
+  province?: string;
+  realname?: string;
+  flag?: string; // 1 下属 2 没有合同或合同过期的
+  page?: number;
+  limit?: number;
+  contract_search?: string; //在创建用工合同的时候搜索使用该参数，该参数值为工种id ，如果有此参数会增加2个字段 userpersonal_idnum和cer_status
+  userpersonal_idnum?: string; // 身份证号
+  cer_status?: number;
+}
+
 /*=================================================Team model======================================================*/
 
 export interface TeamListOptions {
@@ -125,6 +150,28 @@ export interface WorkerContractOptions {
   self?: number;
   team_id?: number;
   contract_type?: number;
+}
+
+export interface EditTimePayOptions extends LaunchTimePayOptions {
+  id?: number;
+}
+
+export interface EditPiecePayOptions extends LaunchPiecePayOptions {
+  id?: number;
+}
+
+export interface WorkerContractEditOptions {
+  sid: string;
+  contract_id: number;
+  morning_time_on_duty: string;
+  morning_time_off_duty: string;
+  afternoon_time_on_duty: string;
+  afternoon_time_off_duty: string;
+  finish_day: string;
+  pay_day: string;
+  additional_content: string;
+  work_time_pay?: EditTimePayOptions[];
+  work_piece_pay?: EditPiecePayOptions[];
 }
 
 /*===========================================Attendance model=================================================*/
@@ -709,30 +756,30 @@ export interface WorkFlowListOptions {  //这名字，果断改了; requestList�
 /* ====================================================Leave model============================================= */
 
 export interface LeaveRecordListOptions {
-  end_day?:string; // 我操，这居然用的是end，其它地方用的是finish,是不是一个写的代码
-  history_view:string;
-  limit?:string;
-  page?:string;
-  project_id?:string; //文档上是必选参数，看了一下v1的参数，根本没有传;
-  request_id?:number;
-  request_status?:string; //WorkFlowStatus;
-  sid:string;
-  start_day?:string;
-  team_id?:number[]; // 2B字段，复数
-  user_id?:number[]; // 2B字段, 复数
+  end_day?: string; // 我操，这居然用的是end，其它地方用的是finish,是不是一个写的代码
+  history_view: string;
+  limit?: string;
+  page?: string;
+  project_id?: string; //文档上是必选参数，看了一下v1的参数，根本没有传;
+  request_id?: number;
+  request_status?: string; //WorkFlowStatus;
+  sid: string;
+  start_day?: string;
+  team_id?: number[]; // 2B字段，复数
+  user_id?: number[]; // 2B字段, 复数
 }
 
 /* ====================================================Attendance modify model============================================= */
 
 export interface AttendanceModifyRecordListOptions { //名字改了
-  end_day?:string; // 我操，这居然用的是end，其它地方用的是finish,是不是一个写的代码
-  history_view:string;
-  request_id?:number;
-  request_status?:string; //WorkFlowStatus;
-  sid:string;
-  start_day?:string;
-  team_id?:number[]; // 2B字段，复数
-  user_id?:number[]; // 2B字段, 复数
+  end_day?: string; // 我操，这居然用的是end，其它地方用的是finish,是不是一个写的代码
+  history_view: string;
+  request_id?: number;
+  request_status?: string; //WorkFlowStatus;
+  sid: string;
+  start_day?: string;
+  team_id?: number[]; // 2B字段，复数
+  user_id?: number[]; // 2B字段, 复数
 }
 
 /* ====================================================Message model============================================= */
@@ -769,6 +816,126 @@ export interface MessageContentOptions {
   title_id: number;
 }
 
+/* ==========================================================Launch options============================================================ */
+
+export interface LaunchTimePayOptions {
+  time_unit: string; // 常量传个毛线； ‘小时’
+  pay_mount: number;
+  overtime_pay_mount: number;
+  content: string;
+}
+
+export interface LaunchPiecePayOptions {
+  name: string;
+  location: string;
+  pay_mount: number;
+  num: number;
+  standard?: string;
+}
+
+export interface LaunchWorkerContractOptions {
+  team_id: number;
+  worktype_id: number;
+  worker_id: number[]; //单人的参数没个鸟用，可以直接用多人的传一个ID就行。
+  start_day: string;
+  finish_day: string;
+  pay_day: number;
+  morning_time_on_duty: string;
+  morning_time_off_duty: string;
+  afternoon_time_on_duty?: string;
+  afternoon_time_off_duty?: string;
+  additional_content?: string;
+  attach?: string[]
+}
+
+export interface LaunchWorkerContractModifyOptions {
+  date_after: string;
+  contract_id: number;
+}
+
+export interface LaunchLeaveOptions {
+  type: string;
+  start: string;
+  finish: string;
+  reason: string;
+  contract_id: number[];
+}
+
+export interface LaunchOvertimeOptions {
+  type: string;
+  day: string;
+  start: string;
+  finish: string;
+  reason: string;
+  contracts_id: number[];
+}
+
+export interface LaunchAttendanceModifyOptions {
+  result_id: number[]; // 一样的,单人的参数没有卵用。
+  on_duty: string;
+  off_duty: string;
+  reason: string;
+}
+
+export interface LaunchPieceAuditOptions {
+  num: number;
+  finish_date: string;
+  comment: string;
+  quality_percent: number;
+  work_piece_pay_id: number;
+}
+
+//接口名字改了，拆分到各个业务的接口中。
+export interface ProcessCreateOptions {
+  sid: string;
+  //实际是必选参数，性质和command path 一样所以由command服务进行添加；
+  flow_name?: string; // 自己起的名字都不一样，其它地方不是叫process_id？
+}
+
+export interface MultiProcessCreateOptions extends ProcessCreateOptions {
+}
+
+// worker contract process create
+export interface CreateWorkerContractOptions extends MultiProcessCreateOptions {
+  worker_contract: LaunchWorkerContractOptions;
+  work_time_pay?: LaunchTimePayOptions[];
+  work_piece_pay?: LaunchPiecePayOptions[];
+}
+
+// leave
+export interface CreateLeaveOptions extends ProcessCreateOptions {
+  leave: LaunchLeaveOptions;
+}
+
+// worker contract modify
+export interface CreateWorkerContractModifyOptions extends ProcessCreateOptions {
+  contract_time_change_flow: LaunchWorkerContractModifyOptions;
+}
+
+// overtime 
+export interface CreateOvertimeOptions extends ProcessCreateOptions {
+  work_over_time: LaunchOvertimeOptions;
+}
+
+// piece audit
+export interface CreatePieceAuditOptions extends ProcessCreateOptions {
+  work_piece_finish_flow: LaunchPieceAuditOptions;
+}
+
+//attendance modify
+export interface CreateAttendanceModifyOptions extends MultiProcessCreateOptions {
+  attend_amend: LaunchAttendanceModifyOptions;
+}
+
+/* ==========================================================Image delete options============================================================ */
+
+export interface DeleteImagesOptions { // 名字改了，deleteFiles
+  sid: string;
+  type: string;
+  command: string;
+  id?: string;
+}
+
 /* ==========================================================Http request options============================================================ */
 
 // query version
@@ -789,7 +956,7 @@ export enum ImageFace {
 
 export interface UploadFileOptions {
   sid: string;
-  command?: string;
+  command?: string;  // This filed is a necessary filed but set as optional here, it would be added at command service before request send.
 }
 
 // upload personal id images
@@ -826,9 +993,15 @@ export interface UploadOvertimeOptions extends UploadFileOptions {
   file: string;
 }
 
+export interface UploadWorkerContractAttachOptions extends UploadFileOptions {
+  id: number; //worker contract id
+  file: string;
+}
 
 export type UploadOptions = UploadPersonalIdImageOptions
   | UploadCertificateImageOptions
   | UploadWorkFlowAttachmentOptions
   | UploadLeaveTaskOptions
   | UploadOvertimeOptions;
+
+export type AttachOptions = UploadWorkerContractAttachOptions;

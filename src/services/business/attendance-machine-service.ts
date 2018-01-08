@@ -11,9 +11,6 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AttendanceMachineService {
-    subscriptions: Subscription[] = [];
-
-    machine$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -22,17 +19,15 @@ export class AttendanceMachineService {
         public project: ProjectService,
         public error: ErrorService
     ) {
-        this.handleError();
     }
 
     getMachineList(): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const projectId = this.project.getProjectId();
-
-        const option = sid.zip(projectId, (sid, project_id) => ({ sid, project_id }));
-
-        return this.process.attendanceMachineListProcessor(option);
+        return this.process.attendanceMachineListProcessor(
+            this.userInfo.getSid().zip(
+                this.project.getProjectId(),
+                (sid, project_id) => ({ sid, project_id })
+            )
+        );
     }
 
     getMachines(): Observable<AttendanceMachine[]> {
@@ -48,14 +43,8 @@ export class AttendanceMachineService {
     }
 
     /* ========================================Error handle and refuse clean======================================== */
-    
-    handleError() {
-        const error = this.store.select(selectMachineListResponse);
 
-        this.machine$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectMachineListResponse), 'API_ERROR');
     }
 }

@@ -2,7 +2,7 @@ import { ActionReducerMap, createSelector } from '@ngrx/store';
 import * as config from './reducer/config-reducer';
 import * as tutorial from './reducer/tutorial-reducer';
 import * as login from './reducer/login-reducer';
-import * as search from './reducer/search-reducer';
+import * as search from './reducer/search-company-reducer';
 import * as upload from './reducer/upload-reducer';
 import * as certificate from './reducer/certificate-reducer';
 import * as response from '../interfaces/response-interface';
@@ -32,101 +32,110 @@ import * as nationality from './reducer/nationality-reducer';
 import * as group from './reducer/group-list-reducer';
 import * as workFlow from './reducer/work-flow-reducer';
 import * as leave from './reducer/leave-reducer';
+import * as launch from './reducer/launch-reducer';
+import * as searchWorker from './reducer/search-worker-reducer';
+import * as deleteImages from './reducer/delete-images-reducer';
 
 export interface AppState {
-  QRLogin: QRLogin.State,
-  attendance: attendance.State,
-  attendanceCard: attendanceCard.State,
-  attendanceRecord: attendanceRecord.State,
-  bankCard: bankCard.State,
+  QRLogin: QRLogin.State;
+  attendance: attendance.State;
+  attendanceCard: attendanceCard.State;
+  attendanceRecord: attendanceRecord.State;
+  bankCard: bankCard.State;
   certificate: response.CertificateResponse;
   config: config.State;
-  employer: employer.State,
-  group: group.State,
-  icons: icons.State,
-  location: location.State,
-  locationCard: locationCard.State,
+  deleteImages: deleteImages.State;
+  employer: employer.State;
+  group: group.State;
+  icons: icons.State;
+  launch: launch.State;
+  leave: leave.State;
+  location: location.State;
+  locationCard: locationCard.State;
   loginPage: login.State;
-  logout: logout.State,
-  machine: machine.State,
-  message: message.State,
-  nationality: nationality.State,
-  overtime: overtime.State,
-  payBill: payBill.State,
-  personal: personal.State,
+  logout: logout.State;
+  machine: machine.State;
+  message: message.State;
+  nationality: nationality.State;
+  overtime: overtime.State;
+  payBill: payBill.State;
+  personal: personal.State;
   phoneVerCode: response.PhoneVerCodeResponse;
-  piece: piece.State,
-  project: project.State,
+  piece: piece.State;
+  project: project.State;
   register: response.RegisterResponse;
   resetPassword: response.ResetPasswordResponse;
   resetPhoneVerCode: response.PhoneVerCodeResponse;
-  search: search.State;
-  statistics: statistics.State,
-  team: team.State,
+  searchCompany: search.State;
+  searchWorker: searchWorker.State;
+  statistics: statistics.State;
+  team: team.State;
   tutorialPage: tutorial.State;
   uploadState: upload.State;
   userInfo: response.LoginResponse;
-  workCertificate: workCertificate.State,
-  workFlow: workFlow.State,
-  workType: workType.State,
-  worker: worker.State,
-  leave: leave.State,
+  workCertificate: workCertificate.State;
+  workFlow: workFlow.State;
+  workType: workType.State;
+  worker: worker.State;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  config: config.reducer,
-  tutorialPage: tutorial.reducer,
-  loginPage: login.reducer,
-  userInfo: login.userInfoReducer,
-  search: search.reducer,
-  phoneVerCode: login.registerPhoneVerReducer,
-  register: login.registerReducer,
-  resetPhoneVerCode: login.resetPwdPhoneVerReducer,
-  resetPassword: login.resetPasswordReducer,
-  uploadState: upload.reducer,
-  certificate: certificate.reducer,
-  icons: icons.reducer,
-  project: project.reducer,
-  worker: worker.reducer,
-  workType: workType.reducer,
-  team: team.reducer,
-  attendance: attendance.reducer,
-  attendanceRecord: attendanceRecord.reducer,
-  payBill: payBill.reducer,
-  overtime: overtime.reducer,
-  piece: piece.reducer,
-  statistics: statistics.reducer,
-  employer: employer.reducer,
-  personal: personal.reducer,
-  machine: machine.reducer,
-  attendanceCard: attendanceCard.reducer,
-  locationCard: locationCard.reducer,
-  location: location.reducer,
-  bankCard: bankCard.reducer,
-  logout: logout.reducer,
   QRLogin: QRLogin.reducer,
-  workCertificate: workCertificate.reducer,
+  attendance: attendance.reducer,
+  attendanceCard: attendanceCard.reducer,
+  attendanceRecord: attendanceRecord.reducer,
+  bankCard: bankCard.reducer,
+  certificate: certificate.reducer,
+  config: config.reducer,
+  deleteImages: deleteImages.reducer,
+  employer: employer.reducer,
+  group: group.reducer,
+  icons: icons.reducer,
+  launch: launch.reducer,
+  leave: leave.reducer,
+  location: location.reducer,
+  locationCard: locationCard.reducer,
+  loginPage: login.reducer,
+  logout: logout.reducer,
+  machine: machine.reducer,
   message: message.reducer,
   nationality: nationality.reducer,
-  group: group.reducer,
+  overtime: overtime.reducer,
+  payBill: payBill.reducer,
+  personal: personal.reducer,
+  phoneVerCode: login.registerPhoneVerReducer,
+  piece: piece.reducer,
+  project: project.reducer,
+  register: login.registerReducer,
+  resetPassword: login.resetPasswordReducer,
+  resetPhoneVerCode: login.resetPwdPhoneVerReducer,
+  searchCompany: search.reducer,
+  searchWorker: searchWorker.reducer,
+  statistics: statistics.reducer,
+  team: team.reducer,
+  tutorialPage: tutorial.reducer,
+  uploadState: upload.reducer,
+  userInfo: login.userInfoReducer,
+  workCertificate: workCertificate.reducer,
   workFlow: workFlow.reducer,
-  leave: leave.reducer,
+  workType: workType.reducer,
+  worker: worker.reducer,
 };
 
 //config
-export const getConfig = (state: AppState) => state.config;
+const getConfig = (state: AppState) => state.config;
 export const selectButtonText = createSelector(getConfig, config.getBackButtonText);
 export const selectPlatformDirection = createSelector(getConfig, config.getPlatFormDirection);
 
 /*==============================================Pages selectors====================================================*/
 
 //tutorialPage
-export const getTutorialPage = (state: AppState) => state.tutorialPage;
+const getTutorialPage = (state: AppState) => state.tutorialPage;
 export const selectSkipState = createSelector(getTutorialPage, tutorial.getSkipState);
 export const selectTutorialSlides = createSelector(getTutorialPage, tutorial.getTutorialSlides);
 
 //loginPage
-export const getLoginPage = (state: AppState) => state.loginPage;
+const getLoginPage = (state: AppState) => state.loginPage;
 export const selectActiveIndexOfSlides = createSelector(getLoginPage, login.getActiveIndexOfSlides);
 export const selectActiveIndexOfInnerSlides = createSelector(getLoginPage, login.getActiveIndexOfInnerSlides);
 export const selectLoginForm = createSelector(getLoginPage, login.getLoginForm);
@@ -135,15 +144,15 @@ export const selectRandomCode = createSelector(getLoginPage, login.getRandomCode
 
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Server response selectors Start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/
 
-//search e.g: search company , search worker
-export const getSearchState = (state: AppState) => state.search;
-export const selectSearchCompanies = createSelector(getSearchState, search.getCompanies);
-export const selectSearchQuery = createSelector(getSearchState, search.getQuery);
-export const selectSearchLoading = createSelector(getSearchState, search.getLoading);
-export const selectSelectedCompany = createSelector(getSearchState, search.getSelectedCompany);
+//search company
+const getSearchCompany = (state: AppState) => state.searchCompany;
+export const selectSearchCompanyResponse = createSelector(getSearchCompany, search.getSearchCompanyResponse);
+export const selectSearchQuery = createSelector(getSearchCompany, search.getQuery);
+export const selectSearchLoading = createSelector(getSearchCompany, search.getLoading);
+export const selectSelectedCompany = createSelector(getSearchCompany, search.getSelectedCompany);
 
 //userInfo  from: login api
-export const getUserInfo = (state: AppState) => state.userInfo;
+const getUserInfo = (state: AppState) => state.userInfo;
 export const selectUserInfo = createSelector(getUserInfo, info => info);
 export const selectRealName = createSelector(getUserInfo, login.getRealName);
 export const selectCapthca = createSelector(getUserInfo, login.getCaptcha);
@@ -153,7 +162,7 @@ export const selectUserId = createSelector(getUserInfo, login.getUserId);
 export const selectGroupList = createSelector(getUserInfo, login.getGroupList);
 
 // group
-export const getGroup = (state: AppState) => state.group;
+const getGroup = (state: AppState) => state.group;
 export const getGroupListResponse = createSelector(getGroup, group.getGroupList);
 
 //phone verification code
@@ -177,13 +186,13 @@ export const getCertificate = (state: AppState) => state.certificate;
 export const selectCertificateResult = createSelector(getCertificate, certificate.getAuthPass);
 
 //project list
-export const getProject = (state: AppState) => state.project;
+const getProject = (state: AppState) => state.project;
 export const selectSelectedProject = createSelector(getProject, project.getSelectedProject);
 export const selectProjects = createSelector(getProject, project.getProjects);
 export const selectErrorMessage = createSelector(getProject, project.getErrorMessage);
 
 //worker contract list
-export const getWorkerContracts = (state: AppState) => state.worker;
+const getWorkerContracts = (state: AppState) => state.worker;
 export const selectWorkerPage = createSelector(getWorkerContracts, worker.getWorkerContractPage);
 export const selectWorkerLimit = createSelector(getWorkerContracts, worker.getWorkerContractLimit);
 export const selectWorkerContracts = createSelector(getWorkerContracts, worker.getWorkerContracts);
@@ -195,14 +204,16 @@ export const selectManagePiecerPage = createSelector(getWorkerContracts, worker.
 export const selectManageTimerCount = createSelector(getWorkerContracts, worker.getTimerCount);
 export const selectManagePiecerCount = createSelector(getWorkerContracts, worker.getPiecerCount);
 export const selectSelectedWorkers = createSelector(getWorkerContracts, worker.getSelectedWorkers);
+export const selectWorkerContractEditResponse = createSelector(getWorkerContracts, worker.getContractEditResponse);
 
 //work type list
-export const getWorkType = (state: AppState) => state.workType;
+const getWorkType = (state: AppState) => state.workType;
+export const selectWorkTypeResponse = createSelector(getWorkType, workType.getWorkTypeResponse);
 export const selectWorkTypeList = createSelector(getWorkType, workType.getWorkType);
 export const selectSelectedWorkTypes = createSelector(getWorkType, workType.getSelectedTypes);
 
 //team api: teamList addTeam deleteTeam updateTeam; 
-export const getTeam = (state: AppState) => state.team;
+const getTeam = (state: AppState) => state.team;
 export const selectTeamResponse = createSelector(getTeam, team.getTeamListResponse);
 export const selectSelectedTeams = createSelector(getTeam, team.getSelectTeams);
 export const selectAddTeamResponse = createSelector(getTeam, team.getAddTeamResponse);
@@ -210,7 +221,7 @@ export const selectDeleteTeamResponse = createSelector(getTeam, team.getDeleteTe
 export const selectUpdateTeamResponse = createSelector(getTeam, team.getUpdateTeamResponse);
 
 //attendance result list && attendance result confirm;
-export const getAttendance = (state: AppState) => state.attendance;
+const getAttendance = (state: AppState) => state.attendance;
 export const selectAttendanceResponse = createSelector(getAttendance, attendance.getAttendanceResultResponse);
 export const selectAttendanceCount = createSelector(getAttendance, attendance.getAttendanceCount);
 export const selectAttendanceDatePeriod = createSelector(getAttendance, attendance.getAttendanceDatePeriod);
@@ -225,7 +236,7 @@ export const selectAttendanceResultConfirmResponse = createSelector(getAttendanc
 export const selectAttendanceModifyRecordListResponse = createSelector(getAttendance, attendance.getAttendanceModifyRecordListResponse);
 
 //attendance instant list
-export const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
+const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
 export const selectAttendanceRecordResponse = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceResponse);
 export const selectAttendanceRecordCount = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordCount);
 export const selectAttendanceRecordInstant = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordInstants);
@@ -236,7 +247,7 @@ export const selectAttendanceRecordMaxDate = createSelector(getAttendanceRecord,
 export const selectLocationAttendanceOptions = createSelector(getAttendanceRecord, attendanceRecord.getLocationAttendanceRecordOptions);
 
 //pay bill list
-export const getPayBill = (state: AppState) => state.payBill;
+const getPayBill = (state: AppState) => state.payBill;
 export const selectPayBillListResponse = createSelector(getPayBill, payBill.getPayBillResponse);
 export const selectPayBillListCount = createSelector(getPayBill, payBill.getPayBillCount);
 export const selectPayBillList = createSelector(getPayBill, payBill.getPayBillList);
@@ -257,33 +268,33 @@ export const selectProjectProcessList = createSelector(getPayBill, payBill.getPr
 export const selectProjectProcessSelectedStatus = createSelector(getPayBill, payBill.getSelectedProjectPayProcessStatus);
 
 //overtime record list
-export const getOvertime = (state: AppState) => state.overtime;
+const getOvertime = (state: AppState) => state.overtime;
 export const selectOvertimeRecordResponse = createSelector(getOvertime, overtime.getOvertimeRecordResponse);
 export const selectOvertimeRecordCount = createSelector(getOvertime, overtime.getOvertimeRecordCount);
 export const selectOvertimeRecord = createSelector(getOvertime, overtime.getOvertimeRecord);
 
 //work piece 
-export const getWorkPiece = (state: AppState) => state.piece;
+const getWorkPiece = (state: AppState) => state.piece;
 export const selectWorkPieceResponse = createSelector(getWorkPiece, piece.getPieceResponse);
 export const selectWorkPieces = createSelector(getWorkPiece, piece.getPieces);
 export const selectWorkPieceFinishFlow = createSelector(getWorkPiece, piece.getPieceFinishFlow);
 
 //attendance result stat team stat list && request aggregation list
-export const getStatistics = (state: AppState) => state.statistics;
+const getStatistics = (state: AppState) => state.statistics;
 export const selectAttendanceStatisticsResponse = createSelector(getStatistics, statistics.getAttendanceStatResponse);
 export const selectAttendanceStatistics = createSelector(getStatistics, statistics.getAttendanceStats);
 export const selectAttendanceStatisticList = createSelector(getStatistics, statistics.getAttendanceStatisticList);
 export const selectWorkFlowStatisticsResponse = createSelector(getStatistics, statistics.getWorkFlowStatResponse);
 
 //company user list
-export const getEmployer = (state: AppState) => state.employer;
+const getEmployer = (state: AppState) => state.employer;
 export const selectCompanyUserResponse = createSelector(getEmployer, employer.getCompanyUserResponse);
 export const selectCompanyUsers = createSelector(getEmployer, employer.getCompanyUsers);
 export const selectSelectedForemen = createSelector(getEmployer, employer.getSelectedForemen);
 export const selectSelectedQualityClerks = createSelector(getEmployer, employer.getSelectedQualityClerks);
 
 //basic info list & personal related api
-export const getPersonal = (state: AppState) => state.personal;
+const getPersonal = (state: AppState) => state.personal;
 export const selectBasicInfoListResponse = createSelector(getPersonal, personal.getBasicInfoListResponse);
 export const selectHomeInformation = createSelector(getPersonal, personal.getHomeInformation);
 export const selectBasicInformation = createSelector(getPersonal, personal.getBasicInformation);
@@ -303,13 +314,13 @@ export const selectWorkExperienceListResponse = createSelector(getPersonal, pers
 export const selectPlatformWorkExperienceResponse = createSelector(getPersonal, personal.getPlatformWorkExperienceResponse);
 
 //attendance machine list 
-export const getMachines = (state: AppState) => state.machine;
+const getMachines = (state: AppState) => state.machine;
 export const selectMachineListResponse = createSelector(getMachines, machine.getMachineListResponse);
 export const selectMachines = createSelector(getMachines, machine.getAttendanceMachines);
 export const selectMachineCount = createSelector(getMachines, machine.getAttendanceCount);
 
 //attendance card list
-export const getAttendanceCard = (state: AppState) => state.attendanceCard;
+const getAttendanceCard = (state: AppState) => state.attendanceCard;
 export const selectAttendanceCardResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardListResponse);
 export const selectAttendanceCards = createSelector(getAttendanceCard, attendanceCard.getAttendanceCards);
 export const selectAttendanceCardPage = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardPage);
@@ -323,7 +334,7 @@ export const selectAttendanceCardOrderOptions = createSelector(getAttendanceCard
 export const selectAttendanceCardBindingOptions = createSelector(getAttendanceCard, attendanceCard.getBindingStateOptions);
 
 //location card
-export const getLocationCard = (state: AppState) => state.locationCard;
+const getLocationCard = (state: AppState) => state.locationCard;
 export const selectLocationCardListResponse = createSelector(getLocationCard, locationCard.getCardAddResponse);
 export const selectLocationCardAddResponse = createSelector(getLocationCard, locationCard.getCardAddResponse);
 export const selectLocationCardUpdateResponse = createSelector(getLocationCard, locationCard.getCardUpdateResponse);
@@ -339,7 +350,7 @@ export const selectLocationCardBindingOptions = createSelector(getLocationCard, 
 export const selectLocationCardTeamStateOptions = createSelector(getLocationCard, locationCard.getTeamStateOptions);
 
 //history location list && project area list
-export const getLocation = (state: AppState) => state.location;
+const getLocation = (state: AppState) => state.location;
 export const selectHistoryLocationResponse = createSelector(getLocation, location.getHistoryLocationResponse);
 export const selectProjectAreaResponse = createSelector(getLocation, location.getProjectAreaResponse);
 export const selectHistoryLocationOptions = createSelector(getLocation, location.getHistoryLocationOptions);
@@ -353,7 +364,7 @@ export const selectTrajectoryRateState = createSelector(getLocation, location.ge
 export const selectTrajectoryIndexes = createSelector(getLocation, location.getSelectedIndexes);
 
 //bank card related 
-export const getBankCard = (state: AppState) => state.bankCard;
+const getBankCard = (state: AppState) => state.bankCard;
 export const selectBankcardList = createSelector(getBankCard, bankCard.getBankcardListResponse);
 export const selectBankInfo = createSelector(getBankCard, bankCard.getBankInfoResponse);
 export const selectBankcardAddResponse = createSelector(getBankCard, bankCard.getBankcardAddResponse);
@@ -361,16 +372,16 @@ export const selectBankcardDeleteResponse = createSelector(getBankCard, bankCard
 export const selectSetMasterCardResponse = createSelector(getBankCard, bankCard.getSetMasterResponse);
 
 //logout
-export const getLogout = (state: AppState) => state.logout;
+const getLogout = (state: AppState) => state.logout;
 export const selectLogoutResponse = createSelector(getLogout, logout.getLogoutResponse);
 
 //qr login
-export const getQRLogin = (state: AppState) => state.QRLogin;
+const getQRLogin = (state: AppState) => state.QRLogin;
 export const selectQRCode = createSelector(getQRLogin, QRLogin.getQRCode);
 export const selectQRLoginResponse = createSelector(getQRLogin, QRLogin.getQRLoginResponse);
 
 //work certificate 
-export const getWorkCertificate = (state: AppState) => state.workCertificate;
+const getWorkCertificate = (state: AppState) => state.workCertificate;
 export const selectCertificateListResponse = createSelector(getWorkCertificate, workCertificate.getListResponse);
 export const selectCertificateAddResponse = createSelector(getWorkCertificate, workCertificate.getAddResponse);
 export const selectCertificateDeleteResponse = createSelector(getWorkCertificate, workCertificate.getDeleteResponse);
@@ -381,7 +392,7 @@ export const selectCertificateDeleteOptions = createSelector(getWorkCertificate,
 export const selectCertificateUpdateOptions = createSelector(getWorkCertificate, workCertificate.getUpdateOptions);
 
 //message
-export const getMessage = (state: AppState) => state.message;
+const getMessage = (state: AppState) => state.message;
 export const selectMessageListResponse = createSelector(getMessage, message.getMessages);
 export const selectMessageContentResponse = createSelector(getMessage, message.getMessageContent);
 export const selectMessageDeleteResponse = createSelector(getMessage, message.getMessageDelete);
@@ -398,11 +409,11 @@ export const selectUnreadMessageSelectedType = createSelector(getMessage, messag
 export const selectReadMessageSelectedType = createSelector(getMessage, message.getReadSelectedType);
 
 //nationality
-export const getNationality = (state: AppState) => state.nationality;
+const getNationality = (state: AppState) => state.nationality;
 export const selectNationalityResponse = createSelector(getNationality, nationality.getNationalityResponse);
 
 //work flow
-export const getWorkFlow = (state: AppState) => state.workFlow;
+const getWorkFlow = (state: AppState) => state.workFlow;
 export const selectWorkFlowListResponse = createSelector(getWorkFlow, workFlow.getWorkFlowListResponse);
 export const selectProjectPayBillFlowListResponse = createSelector(getWorkFlow, workFlow.getProjectPayBillFlowListResponse);
 export const selectMultiTaskUpdateResponse = createSelector(getWorkFlow, workFlow.getMultiTaskUpdateResponse);
@@ -420,15 +431,32 @@ export const selectTaskUpdateOptions = createSelector(getWorkFlow, workFlow.getT
 export const selectScreeningCondition = createSelector(getWorkFlow, workFlow.getScreeningCondition);
 
 //leave record list
-export const getLeave = (state: AppState) => state.leave;
+const getLeave = (state: AppState) => state.leave;
 export const selectLeaveRecordListResponse = createSelector(getLeave, leave.getLeaveResponse);
+
+//multi process create
+const getLaunch = (state: AppState) => state.launch;
+export const selectMultiProcessResponse = createSelector(getLaunch, launch.getMultiProcessResponse);
+export const selectWorkerContractOptions = createSelector(getLaunch, launch.getWorkerContractOptions);
+export const selectProcessResponse = createSelector(getLaunch, launch.getProcessCreateResponse);
+
+// search worker
+const getSearchWorker = (state: AppState) => state.searchWorker;
+export const selectSearchWorkerResponse = createSelector(getSearchWorker, searchWorker.getSearchWorkerResponse);
+export const selectSelectedWorkersFromSearch = createSelector(getSearchWorker, searchWorker.getSelectedWorkers);
+export const selectSearchWorkerContent = createSelector(getSearchWorker, searchWorker.getQuery);
+export const selectSearchWorkerCondition = createSelector(getSearchWorker, searchWorker.getQueryCondition);
+
+// delete images
+const getDeleteImages = (state: AppState) => state.deleteImages;
+export const selectDeleteImagesResponse = createSelector(getDeleteImages, deleteImages.getDeleteImagesResponse);
 
 /*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
 
 /*================================================HTTP===========================================================*/
 
 //upload
-export const getUploadState = (state: AppState) => state.uploadState;
+const getUploadState = (state: AppState) => state.uploadState;
 export const selectUploadingState = createSelector(getUploadState, upload.getUploadingState);
 export const selectUploadedState = createSelector(getUploadState, upload.getUploadedState);
 export const selectUploadResult = createSelector(getUploadState, upload.getUploadResult);

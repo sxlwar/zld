@@ -25,11 +25,16 @@ export class AttendanceMachinePage {
   }
 
   ionViewDidLoad() {
-    const subscription = this.machine.getMachineList();
-
-    this.subscriptions.push(subscription);
-
     this.machines = this.machine.getMachines();
+
+    this.launch();
+  }
+
+  launch(): void {
+    this.subscriptions = [
+      this.machine.getMachineList(),
+      this.machine.handleError()
+    ]
   }
 
   ionViewWillUnload() {

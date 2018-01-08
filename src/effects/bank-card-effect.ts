@@ -5,11 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';
 import { WebsocketService } from '../services/api/websocket-service';
 import { Command } from '../services/api/command';
-import { of } from 'rxjs/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/switchMap';
-import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/catch';
 import { Injectable } from '@angular/core';
 
 @Injectable()
@@ -22,7 +17,7 @@ export class BankCardEffect extends Command {
             .send(this.getWorkerBankNoList(action.payload))
             .takeUntil(this.actions$.ofType(GET_BANK_CARD_LIST))
             .map(msg => msg.isError ? new BankCardListFailAction(msg.data) : new BankCardListSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -32,7 +27,7 @@ export class BankCardEffect extends Command {
             .send(this.getBankInfo(action.payload))
             .takeUntil(this.actions$.ofType(GET_BANK_INFORMATION))
             .map(msg => msg.isError ? new BankInformationFailAction(msg.data) : new BankInformationSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -43,7 +38,7 @@ export class BankCardEffect extends Command {
             .takeUntil(this.actions$.ofType(ADD_BANK_CARD))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new BankCardAddFailAction(msg.data) : new BankCardAddSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -54,7 +49,7 @@ export class BankCardEffect extends Command {
             .takeUntil(this.actions$.ofType(DELETE_BANK_CARD))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new BankCardDeleteFailAction(msg.data) : new BankCardDeleteSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     @Effect()
@@ -65,7 +60,7 @@ export class BankCardEffect extends Command {
             .takeUntil(this.actions$.ofType(SET_MASTER_BANK_CARD))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new SetMasterBankCardFailAction(msg.data) : new SetMasterBankCardSuccessAction(msg.data))
-            .catch(error => of(error))
+            .catch(error => Observable.of(error))
         );
 
     constructor(

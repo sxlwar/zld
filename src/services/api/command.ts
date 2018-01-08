@@ -1,9 +1,9 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, PayProcessListOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
 import { ApiUnit, Operate, Iterator } from '../../interfaces/api-interface';
-import { uploadPersonalIdImage, uploadCertificateImage } from './http-service';
+import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach } from './http-service';
 
 /* =======================================================API unit definition===================================================================== */
 
@@ -896,21 +896,59 @@ export const leaveRecordList: ApiUnit = {
   }
 }
 
+/* =========================================================Launch related======================================= */
+
+export const multiProcessCreate: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['workflow.consumer.MultiProcessCreate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PM, LM, TL]
+  }
+}
+
+export const deleteImages: ApiUnit = {
+  operates: new Map([
+    [Operate.deletion, ['operation.consumer.DeleteFiles']]
+  ])
+}
+
+export const processCreate: ApiUnit = {
+  operates: new Map([
+    [Operate.addition, ['workflow.consumer.ProcessCreate']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PM, LM, TL]
+  }
+}
+
+export const workerContractEdit: ApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['project.consumer.WorkerContractEdit']]
+  ]),
+  permission: {
+    view: [],
+    opt: [PM, LM, TL]
+  }
+}
+
+export const searchWorker: ApiUnit = {
+  operates: new Map([
+    [Operate.querying, ['employer.consumer.SearchWorker']]
+  ]),
+  permission: {
+    view: [PME, EME, MM, PM, LM, TL],
+    opt: []
+  }
+}
+
+/* ===================================================API END====================================================== */
+
 @Injectable()
 export class Command {
-  contractTimeChangeFlowList = "project.consumer.ContractTimeChangeFlowList";
-  deleteFiles = "operation.consumer.DeleteFiles";
-  multiProcessCreate = "workflow.consumer.MultiProcessCreate";
-  myCompanyContractList = "employer.consumer.MyCompanyContractList";
-  paySalary = "project.consumer.PaySalary";
-  primeContractList = "employer.consumer.PrimeContractList";
-  processCreate = "workflow.consumer.ProcessCreate";
-  projectAreaAddUpdate = "project.consumer.ProjectAreaAddUpdate";
-  projectAreaDelete = "project.consumer.ProjectAreaDelete";
-  searchWorker = "employer.consumer.SearchWorker";
-  subContractList = "employer.consumer.SubContractList";
-  workTimePayList = "project.consumer.WorkTimePayList";
-  workerTimeDutyApplyList = "project.consumer.WorkerTimeDutyApplyList";
+  workTimePayList = "project.consumer.WorkTimePayList"; // 工人管理下的接口，工时支付列表；
   constructor() {
   }
 
@@ -1073,19 +1111,13 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
-  getPayProcessList(option: PayProcessListOptions): WsRequest {
-    const path = payProcessList.operates.get(Operate.querying)[0];
-
-    return this.getFullParameter(path, option);
-  }
-
-  getProjectPayBillList(option: ProjectPayBillListOptions) {
+  getProjectPayBillList(option: ProjectPayBillListOptions): WsRequest {
     const path = projectPayBillList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
   }
 
-  getProjectPayProcessList(option: ProjectPayProcessListOptions) {
+  getProjectPayProcessList(option: ProjectPayProcessListOptions): WsRequest {
     const path = projectPayProcessList.operates.get(Operate.querying)[0];
 
     return this.getFullParameter(path, option);
@@ -1520,6 +1552,81 @@ export class Command {
     return this.getFullParameter(path, option);
   }
 
+  /**
+   * @description launch related api: getProcessCreate, getDeleteImages, getWorkerTimeDuty, getWorkerContractEdit ...
+   */
+  getWorkerContractEdit(option: WorkerContractEditOptions): WsRequest {
+    const path = workerContractEdit.operates.get(Operate.updates)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getDeleteImages(option: DeleteImagesOptions): WsRequest {
+    const path = deleteImages.operates.get(Operate.deletion)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCreateWorkerContract(originOption: CreateWorkerContractOptions): WsRequest {
+    const path = multiProcessCreate.operates.get(Operate.addition)[0];
+
+    const option = { ...originOption, flow_name: ProcessIdOptions.workerContract };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCreateWorkerContractModify(originOption: CreateWorkerContractModifyOptions): WsRequest {
+    const path = processCreate.operates.get(Operate.addition)[0];
+
+    const option = { ...originOption, flow_name: ProcessIdOptions.workerContractExpire };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCreateLeave(originOption: CreateLeaveOptions): WsRequest {
+    const path = processCreate.operates.get(Operate.addition)[0];
+
+    const option = { ...originOption, flow_name: ProcessIdOptions.leave };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCreateOvertime(originOption: CreateOvertimeOptions): WsRequest {
+    const path = processCreate.operates.get(Operate.addition)[0];
+
+    const option = { ...originOption, flow_name: ProcessIdOptions.overtime };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCreatePieceAudit(originOption: CreatePieceAuditOptions): WsRequest {
+    const path = processCreate.operates.get(Operate.addition)[0];
+
+    const option = { ...originOption, flow_name: ProcessIdOptions.pieceAudit };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getCreateAttendanceModify(originOption: CreateAttendanceModifyOptions): WsRequest {
+    const path = multiProcessCreate.operates.get(Operate.addition)[0];
+
+    const option = { ...originOption, flow_name: ProcessIdOptions.attendanceModify };
+
+    return this.getFullParameter(path, option);
+  }
+
+  getSearchWorker(option: SearchWorkerOptions): WsRequest {
+    const path = searchWorker.operates.get(Operate.querying)[0];
+
+    return this.getFullParameter(path, option);
+  }
+
+  getUploadWorkerContractAttach(option: UploadWorkerContractAttachOptions): UploadWorkerContractAttachOptions {
+    const command = uploadWorkerContractAttach.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
+  }
+
   /* ==========================================================Api unit reference api====================================================== */
 
   /**
@@ -1798,5 +1905,25 @@ export class Command {
 
   get attendanceModifyRecordList() {
     return attendanceModifyRecordList;
+  }
+
+  get multiProcessCreate() {
+    return multiProcessCreate;
+  }
+
+  get deleteImages() {
+    return deleteImages;
+  }
+
+  get processCreate() {
+    return processCreate;
+  }
+
+  get workerContractEdit() {
+    return workerContractEdit;
+  }
+
+  get searchWorker() {
+    return searchWorker;
   }
 }

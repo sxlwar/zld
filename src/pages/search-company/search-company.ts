@@ -1,15 +1,15 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
-import {Observable} from 'rxjs/Observable';
-import {Company} from '../../interfaces/response-interface';
-import * as fromRoot from '../../reducers/index-reducer';
-import {AppState} from '../../reducers/index-reducer';
-import {Store} from '@ngrx/store';
-import {SearchCompanyAction, SelectCompanyAction} from '../../actions/action/search-action';
+import { SearchCompanyOptions } from './../../interfaces/request-interface';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Company } from '../../interfaces/response-interface';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/withLatestFrom';
 import 'rxjs/add/operator/map';
+import { SearchService } from '../../services/business/search-service';
 
 
 @IonicPage()
@@ -18,6 +18,7 @@ import 'rxjs/add/operator/map';
   templateUrl: 'search-company.html',
 })
 export class SearchCompanyPage {
+  
   selectType = 'radio';
 
   companies$: Observable<Company[]>;
@@ -26,30 +27,52 @@ export class SearchCompanyPage {
 
   searchQuery$: Observable<string>;
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public viewCtrl: ViewController,
-              public store: Store<AppState>) {
-    this.searchQuery$ = store.select(fromRoot.selectSearchQuery);
-    this.companies$ = store.select(fromRoot.selectSearchCompanies);
-    this.loading$ = store.select(fromRoot.selectSearchLoading);
+  searchTarget: Subject<SearchCompanyOptions> = new Subject();
+
+  subscriptions: Subscription[] = [];
+
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public search: SearchService
+  ) {
   }
 
   ionViewDidLoad() {
+    this.initialModel();
 
+    this.launch();
+  }
+
+  initialModel() {
+    this.searchQuery$ = this.search.getSearchTargetOfCompany();
+
+    this.companies$ = this.search.getSearchResultOfCompany();
+    
+    this.loading$ = this.search.getLoadingState();
+  }
+
+  launch(): void {
+    this.subscriptions = [
+      this.search.searchCompany(this.searchTarget),
+      this.search.handleCompanyError() 
+    ];
   }
 
   dismiss() {
-    this.viewCtrl.dismiss().then(() => {
-    });
+    this.viewCtrl.dismiss().then(() => { });
   }
 
   getSearch(name: string) {
-    if (!name) return;
-    this.store.dispatch(new SearchCompanyAction({name}));
+    !!name && this.searchTarget.next({ name });
   }
 
   selectCompany(id) {
-    this.store.dispatch(new SelectCompanyAction(Number(id)))
+    this.search.setSelectedCompany(Number(id));
+  }
+
+  ionViewWillUnload() {
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

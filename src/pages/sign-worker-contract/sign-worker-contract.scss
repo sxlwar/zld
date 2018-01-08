@@ -1,0 +1,21 @@
+page-sign-worker-contract {
+  .attach-container {
+    position: relative;
+    ion-icon {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-size: 24px;
+    }
+  }
+
+  ion-item-divider {
+      margin-top: 10px;
+  }
+
+  .workers {
+      span {
+        margin-left: 2em;
+      }
+  }
+}

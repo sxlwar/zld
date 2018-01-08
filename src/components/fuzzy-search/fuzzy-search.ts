@@ -1,12 +1,7 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import 'rxjs/add/operator/scan'
+import { SearchItem } from '../../interfaces/search-interface';
 
-/**
- * Generated class for the FuzzySearchComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'fuzzy-search',
   templateUrl: 'fuzzy-search.html'
@@ -15,15 +10,18 @@ export class FuzzySearchComponent {
 
   @Input() selectType: string;
 
-  @Input() items: any[];
+  @Input() items: SearchItem[];
+
+  @Input() type = 'text';
+
+  @Input() placeholder = '';
 
   @Output() confirm = new EventEmitter();
 
-  @Output() search = new EventEmitter();
+  @Output() search: EventEmitter<string> = new EventEmitter();
 
-  @Output() select = new EventEmitter();
+  @Output() select: EventEmitter<SearchItem> = new EventEmitter();
 
   constructor() {
   }
-
 }

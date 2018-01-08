@@ -1,6 +1,6 @@
 import { UpdateSelectedWorkTypesAction } from './../../actions/action/craft-action';
 import { Injectable } from '@angular/core';
-import { AppState, selectWorkTypeList, getWorkType, selectSelectedWorkTypes } from '../../reducers/index-reducer';
+import { AppState, selectWorkTypeList, selectSelectedWorkTypes, selectWorkTypeResponse } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { WorkType } from '../../interfaces/response-interface';
@@ -43,6 +43,6 @@ export class CraftService {
   }
 
   handleError(): Subscription {
-    return this.errorService.handleErrorInSpecific(this.store.select(getWorkType), 'API_ERROR');
+    return this.errorService.handleErrorInSpecific(this.store.select(selectWorkTypeResponse), 'API_ERROR');
   }
 }

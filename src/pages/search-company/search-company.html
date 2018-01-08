@@ -18,6 +18,7 @@
 <ion-content padding>
   <fuzzy-search [selectType]="selectType"
                 [items]="companies$ | async"
+                [placeholder]="'REGISTER_SEARCH_COMPANY_TIP' | translate"
                 (select)="selectCompany($event)"
                 (search)="getSearch($event)"></fuzzy-search>
 </ion-content>
