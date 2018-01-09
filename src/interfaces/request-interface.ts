@@ -204,7 +204,7 @@ export interface AttendanceInstantListOptions {
 
 export interface AttendanceResultConfirmOptions {
   sid: string;
-  attendance_result_id: number[];
+  attendance_result_id: number[]; // 复数，复数，复数，操！
 }
 
 /*===========================================PayBill model======================================================*/

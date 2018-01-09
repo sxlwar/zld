@@ -9,9 +9,9 @@
 
 <ion-content padding>
 
-  <ion-item-divider color="light">{{'SET_QUERY_CONDITION' | translate}}</ion-item-divider>
-
   <ion-list>
+
+    <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
     <ion-item>
       <ion-label>{{'START_TIME' | translate}}</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
@@ -32,48 +32,44 @@
       </ion-select>
     </ion-item>
 
-  </ion-list>
-
-  <ion-list class="identity" style="margin: 16px 0 0 0">
-    <ion-item-divider>
-      <ion-label>
-        <ion-grid>
-          <ion-row>
-            <ion-col (click)="sortAttendanceBy('contract__worker__employee__realname')">{{'NAME' | translate}}</ion-col>
-            <ion-col (click)="sortAttendanceBy('total_area_hour')">{{'TOTAL_TIME' | translate}}</ion-col>
-            <ion-col (click)="sortAttendanceBy('availability_work_hour')">{{'VALID_TIME' | translate}}</ion-col>
-            <ion-col>
-              <ion-icon *ngIf="operatePermission | async" name="more" (click)="showActionSheet()"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-      <ion-checkbox [(ngModel)]="allSelected" (ngModelChange)="toggleAllSelected($event)"></ion-checkbox>
-
-    </ion-item-divider>
-  </ion-list>
-
-  <ion-list style="background: grey">
-    <ion-item *ngFor="let attendance of (attendances | async)" detail-push>
-      
-      <ion-label>
-        <ion-grid>
-          <ion-row (click)="goToDetailPage(attendance)">
-            <ion-col>{{attendance.contract__worker__employee__realname}}</ion-col>
-            <ion-col>{{attendance.total_area_hour}}</ion-col>
-            <ion-col>{{attendance.availability_work_hour}}</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-label>
-      
-      <ion-checkbox [(ngModel)]="attendance.selected" (ngModelChange)="toggleSelected(attendance)"></ion-checkbox>
+    <ion-item>
+      <ion-label>{{'ATTENDANCE_STATUS' | translate}}</ion-label>
+      <ion-select [(ngModel)]="selectedAttendanceState" (ngModelChange)="updateSelectedAttendanceState($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+        [okText]="'CONFIRM_BUTTON' | translate">
+        <ion-option value="0" [selected]="selectedAttendanceState === 0">{{'UNCONFIRMED' | translate}}</ion-option>
+        <ion-option value="1" [selected]="selectedAttendanceState === 1">{{'CONFIRMED' | translate}}</ion-option>
+        <ion-option value="2" [selected]="selectedAttendanceState === 2">{{'AUDITING' | translate}}</ion-option>
+        <ion-option value="3" [selected]="selectedAttendanceState === 3">{{'ALL' | translate}}</ion-option>
+      </ion-select>
     </ion-item>
 
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="getNextPage($event)">
-    <ion-infinite-scroll-content
-    loadingSpinner="bubbles"
-    [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+  <ion-list>
+    <ion-list-header>{{'SET_VIEW_ORDER' | translate}}</ion-list-header>
+
+    <ion-item>
+      <ion-label>{{'VIEW_ORDER' | translate}}</ion-label>
+      <ion-select [(ngModel)]="orderType" (ngModelChange)="switchOrderType($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+        [okText]="'CONFIRM_BUTTON' | translate">
+        <ion-option value="asc" [selected]="orderType === 'asc'">{{'LOW_TO_HIGH' | translate}}</ion-option>
+        <ion-option value="desc" [selected]="orderType === 'desc'">{{'HIGH_TO_LOW' | translate}}</ion-option>
+      </ion-select>
+      {{orderType}}
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'VIEW_TYPE' | translate}}</ion-label>
+      <ion-select [(ngModel)]="sortType" (ngModelChange)="sortAttendanceBy($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+        [okText]="'CONFIRM_BUTTON' | translate">
+        <ion-option value="0" [selected]="sortType === 0">{{'NAME' | translate}}</ion-option>
+        <ion-option value="1" [selected]="sortType === 1">{{'TOTAL_TIME' | translate}}</ion-option>
+        <ion-option value="2" [selected]="sortType === 2">{{'VALID_TIME' | translate}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+
+  <attendance-list [list]="attendances | async"  [total]="count | async" [operate]="operatePermission | async" (audit)="showActionSheet($event)"
+    (showDetail)="goToDetailPage($event)" (getNextPage)="getNextPage($event)" [haveMoreData]="haveMoreData | async"></attendance-list>
 </ion-content>

@@ -164,10 +164,8 @@ export class ProcessorService extends MapperService {
   attendanceListProcessor(option$: Observable<AttendanceResultListOptions>): Subscription {
     return this.permission.comprehensiveValidate(this.command.attendanceList)
       .filter(res => res.permission.view)
-      .zip(option$, (result, option) => ({ ...result.option, ...option }))
-      .subscribe(option => {
-        this.store.dispatch(new GetAttendanceResultListAction(option));
-      })
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
+      .subscribe(option => this.store.dispatch(new GetAttendanceResultListAction(option)));
   }
 
   attendanceRecordListProcessor(option$: Observable<AttendanceInstantListOptions>): Subscription {

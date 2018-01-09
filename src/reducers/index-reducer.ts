@@ -229,11 +229,12 @@ export const selectAttendanceDateStart = createSelector(selectAttendanceDatePeri
 export const selectAttendanceDateEnd = createSelector(selectAttendanceDatePeriod, attendance.getAttendanceEndDate);
 export const selectAttendancePage = createSelector(getAttendance, attendance.getAttendancePage);
 export const selectAttendanceLimit = createSelector(getAttendance, attendance.getAttendanceLimit);
-export const selectSelectedAttendanceIds = createSelector(getAttendance, attendance.getSelectedAttendanceIds);
-export const selectAttendanceAllSelected = createSelector(getAttendance, attendance.getAllSelected);
-export const selectAttendanceData = createSelector(getAttendance, attendance.getAttendanceData);
 export const selectAttendanceResultConfirmResponse = createSelector(getAttendance, attendance.getAttendanceResultConfirmResponse);
 export const selectAttendanceModifyRecordListResponse = createSelector(getAttendance, attendance.getAttendanceModifyRecordListResponse);
+export const selectSelectedAttendanceState = createSelector(getAttendance, attendance.getSelectedAttendanceState);
+export const selectAttendanceSortType = createSelector(getAttendance, attendance.getSortType);
+export const selectAttendanceOrderType = createSelector(getAttendance, attendance.getOrderType);
+export const selectAttendanceConfirmOptions = createSelector(getAttendance, attendance.getAttendanceConfirmOptions);
 
 //attendance instant list
 const getAttendanceRecord = (state: AppState) => state.attendanceRecord;

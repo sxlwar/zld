@@ -170,7 +170,7 @@ export class SignWorkerContractPage {
     toggleAttendanceTime(): void {
         this.isPieceWiseAttendance = !this.isPieceWiseAttendance;
 
-        if (!this.isPieceWiseAttendance) this.contract.patchValue({ afternoonOnDuty: '', afternoonOffDuty: '' });
+        !this.isPieceWiseAttendance && this.contract.patchValue({ afternoonOnDuty: '', afternoonOffDuty: '' });
 
         this.attendanceTimeSettingText = this.isPieceWiseAttendance ? 'CANCEL_PIECE_WISE' : 'PIECE_WISE_SETTING';
     }

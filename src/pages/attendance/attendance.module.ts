@@ -1,3 +1,5 @@
+import { SharedModule } from './../../app/shared.modules';
+import { ComponentsModule } from './../../components/components.module';
 //region
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -12,6 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
   imports: [
     IonicPageModule.forChild(AttendancePage),
     TranslateModule,
+    ComponentsModule,
+    SharedModule,
   ],
   exports: [
     AttendancePage,

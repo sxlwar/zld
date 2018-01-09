@@ -1,19 +1,10 @@
 page-attendance {
-  identity {
-    white-space: nowrap;
-    text-align: center;
-    margin: 10px 0 0 0 !important;
-  }
-
-  ion-row:last-child {
-    text-align: center;
-  }
 
   ion-col ion-icon {
     margin: 0 !important;
   }
 
-  p {
-    text-align: center;
+  ion-list-header {
+    margin-bottom: 0!important;
   }
 }

@@ -1,3 +1,4 @@
+import { TipService } from './../services/tip-service';
 import { AttendanceConfirmFailAction, AttendanceConfirmSuccessAction, GET_ATTENDANCE_MODIFY_RECORD_LIST, GetAttendanceModifyRecordListAction, AttendanceModifyRecordListFailAction, AttendanceModifyRecordListSuccessAction } from './../actions/action/attendance-action';
 import { GET_ATTENDANCE_RESULT_TEAM_STAT, GetAttendanceResultTeamStatListAction, AttendanceResultTeamStatFailAction, AttendanceResultTeamStatSuccessAction } from './../actions/action/statistics-action';
 import { GET_ATTENDANCE_RECORD, GetAttendanceRecordAction, AttendanceRecordFailAction, AttendanceRecordSuccessAction } from './../actions/action/attendance-record-action';
@@ -47,6 +48,7 @@ export class AttendanceEffect extends Command {
         .switchMap((action: ConfirmAttendanceAction) => this.ws
             .send(this.getAttendanceResultConfirm(action.payload))
             .takeUntil(this.actions$.ofType(CONFIRM_ATTENDANCE))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new AttendanceConfirmFailAction(msg.data) : new AttendanceConfirmSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
@@ -63,7 +65,8 @@ export class AttendanceEffect extends Command {
 
     constructor(
         public ws: WebsocketService,
-        public actions$: Actions
+        public actions$: Actions,
+        public tip: TipService
     ) {
         super();
     }

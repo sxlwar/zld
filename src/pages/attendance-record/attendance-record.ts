@@ -2,7 +2,7 @@
 import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { AttendanceInstant } from '../../interfaces/response-interface';
+import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceService } from '../../services/business/attendance-service';
 import { AttendanceRecordService } from '../../services/business/attendance-record-service';
@@ -17,6 +17,9 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: 'attendance-record.html',
 })
 export class AttendanceRecordPage {
+
+  attendanceResult: AttendanceResult;
+
   time: string;
 
   operatePermission: Observable<boolean>;
@@ -37,7 +40,7 @@ export class AttendanceRecordPage {
     public attendanceRecord: AttendanceRecordService,
     public permission: PermissionService
   ) {
-    this.time = this.navParams.get('day');
+    this.attendanceResult = this.navParams.get('attendance');
   }
 
   ionViewDidLoad() {
@@ -47,10 +50,18 @@ export class AttendanceRecordPage {
 
     this.operatePermission = this.permission.getOperatePermission(iconName, rootName);
 
-    this.getAttendanceRecords();
+    this.initialModel();
+
+    this.launch();
   }
 
-  getAttendanceRecords() {
+  launch(): void {
+
+  }
+
+  initialModel(): void {
+    this.time = this.attendanceResult.day;
+
     this.records = this.attendanceRecord
       .getAttendanceRecord(this.getRecordOption())
       .do(value => this.haveMoreData = !!value.length)
@@ -59,9 +70,7 @@ export class AttendanceRecordPage {
   }
 
   getRecordOption(): Observable<RequestOption> {
-    const workerId = this.navParams.get('workerId');
-
-    const option = { start_day: this.time, end_day: this.time, user_id: [workerId] };
+    const option = { start_day: this.time, end_day: this.time, user_id: [this.attendanceResult.contract__worker_id] };
 
     return Observable.of(option);
   }
@@ -82,8 +91,8 @@ export class AttendanceRecordPage {
 
   showActionSheet() {
     this.actionSheet$$ && this.actionSheet$$.unsubscribe();
-    
-    this.actionSheet$$ = this.attendance.showActionSheet();
+
+    this.actionSheet$$ = this.attendance.showActionSheet([this.attendanceResult]);
   }
 
   ionViewWillUnload() {

@@ -1,0 +1,25 @@
+attendance-list {
+  #count {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  ion-col {
+    padding: 0!important;
+  }
+  ion-grid ion-row:nth-child(2),
+  ion-grid ion-row:nth-child(3) {
+    font-size: 12px;
+  }
+
+  .total-time {
+    display: inline-block;
+    margin-right: 2em;
+  }
+
+  h6 {
+    position: absolute;
+    top: 11px;
+    right: 32px;
+  }
+}

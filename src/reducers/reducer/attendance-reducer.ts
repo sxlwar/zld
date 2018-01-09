@@ -1,8 +1,7 @@
 import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
 import { AttendanceResultConfirmResponse, AttendanceModifyRecordListResponse } from './../../interfaces/response-interface';
-import { AttendanceResultListResponse, AttendanceResult } from '../../interfaces/response-interface';
+import { AttendanceResultListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-action';
-import { uniqBy } from 'lodash';
 
 export interface DatePeriod {
   start: Date;
@@ -13,14 +12,13 @@ export interface State {
   limit: number;
   page: number;
   datePeriod: DatePeriod;
-  selected: number[];
-  allSelected: boolean;
   response: AttendanceResultListResponse;
-  data: AttendanceResult[];
-  rank: number;
+  sortType: number;
+  orderType: string;
   attendanceResultConfirmResponse: AttendanceResultConfirmResponse;
   attendanceResultConfirmOptions: AttendanceResultConfirmOptions;
   attendanceModifyRecordListResponse: AttendanceModifyRecordListResponse;
+  selectedAttendanceState: number;
 }
 
 export const initialState: State = {
@@ -31,89 +29,44 @@ export const initialState: State = {
     end: new Date()
   },
   response: null,
-  selected: [],
-  allSelected: false,
-  data: [],
-  rank: 1,
+  sortType: 0,
+  orderType: 'asc',
   attendanceResultConfirmResponse: null,
   attendanceResultConfirmOptions: null,
-  attendanceModifyRecordListResponse: null
+  attendanceModifyRecordListResponse: null,
+  selectedAttendanceState: 0
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
   switch (action.type) {
     case actions.ATTENDANCE_RESULT_LIST_FAIL:
-      return Object.assign({}, state, {
-        response: action.payload
-      });
-
-    case actions.ATTENDANCE_RESULT_LIST_SUCCESS: {
-      const data = state.data.concat(action.payload.attendance_results);
-
-      return Object.assign({}, state, {
-        response: action.payload,
-        data: uniqBy(data, 'id')
-      });
-    }
+    case actions.ATTENDANCE_RESULT_LIST_SUCCESS:
+      return { ...state, response: action.payload };
 
     case actions.SET_ATTENDANCE_START_DATE:
-    case actions.SET_ATTENDANCE_END_DATE: {
-      const datePeriod = datePeriodReducer(state.datePeriod, action);
-
-      return Object.assign({}, state, { datePeriod });
-    }
+    case actions.SET_ATTENDANCE_END_DATE:
+      return { ...state, datePeriod: datePeriodReducer(state.datePeriod, action) };
 
     case actions.SET_QUERY_ATTENDANCE_PAGE:
-      return Object.assign({}, state, { page: action.payload });
+      return { ...state, page: action.payload };
 
     case actions.SET_QUERY_ATTENDANCE_LIMIT:
       return Object.assign({}, state, { limit: action.payload });
 
-    case actions.ADD_SELECTED_ATTENDANCE: {
-      const selected = state.selected.concat([action.payload]);
+    case actions.INCREASE_ATTENDANCE_PAGE:
+      return { ...state, page: state.page + 1 };
 
-      const allSelected = selected.length === state.data.length;
+    case actions.RESET_ATTENDANCE_PAGE:
+      return { ...state, page: 1 };
 
-      return Object.assign({}, state, { selected, allSelected });
-    }
+    case actions.TOGGLE_SORT_TYPE:
+      return { ...state, sortType: action.payload };
 
-    case actions.REMOVE_SELECTED_ATTENDANCE: {
-      const selected = state.selected.filter(item => item !== action.payload);
+    case actions.TOGGLE_ORDER_TYPE:
+      return { ...state, orderType: action.payload };
 
-      return Object.assign({}, state, { selected, allSelected: false });
-    }
-
-    case actions.TOGGLE_ALL_SELECTED_ATTENDANCE: {
-      const selected = action.payload ? state.response.attendance_results.map(item => item.id) : [];
-
-      state.data.forEach(item => item.selected = action.payload);
-
-      return Object.assign({}, state, { selected, allSelected: action.payload });
-    }
-
-    case actions.INCREASE_ATTENDANCE_PAGE: {
-      return Object.assign({}, state, { page: state.page + 1 });
-    }
-
-    case actions.RESET_ATTENDANCE_PAGE: {
-      return Object.assign({}, state, { page: 1 });
-    }
-
-    case actions.SORT_ATTENDANCE: {
-      const key = action.payload;
-
-      state.data.sort((att1, att2) => {
-        if (att1[key] > att2[key]) return state.rank;
-        if (att1[key] < att2[key]) return -state.rank;
-        return 0;
-      });
-
-      return { ...state };
-    }
-
-    case actions.TOGGLE_SORT_TYPE: {
-      return Object.assign({}, state, { rank: action.payload });
-    }
+    case actions.RESET_ATTENDANCE_DATA:
+      return { ...state, page: 1, response: null, attendanceResultConfirmOptions: { ...state.attendanceResultConfirmOptions, attendance_result_id: [] } };
 
     case actions.CONFIRM_ATTENDANCE:
       return { ...state, attendanceResultConfirmOptions: action.payload };
@@ -125,6 +78,9 @@ export function reducer(state = initialState, action: actions.Actions): State {
     case actions.ATTENDANCE_MODIFY_RECORD_LIST_FAIL:
     case actions.ATTENDANCE_MODIFY_RECORD_LIST_SUCCESS:
       return { ...state, attendanceModifyRecordListResponse: action.payload };
+
+    case actions.SET_QUERY_ATTENDANCE_STATE:
+      return { ...state, selectedAttendanceState: action.payload };
 
     case actions.GET_ATTENDANCE_MODIFY_RECORD_LIST:
     case actions.GET_QUERY_ATTENDANCE_PAGE:
@@ -170,12 +126,14 @@ export const getAttendancePage = (state: State) => state.page;
 
 export const getAttendanceLimit = (state: State) => state.limit;
 
-export const getAllSelected = (state: State) => state.allSelected;
-
-export const getSelectedAttendanceIds = (state: State) => state.selected;
-
-export const getAttendanceData = (state: State) => state.data;
-
 export const getAttendanceResultConfirmResponse = (state: State) => state.attendanceResultConfirmResponse;
 
 export const getAttendanceModifyRecordListResponse = (state: State) => state.attendanceModifyRecordListResponse;
+
+export const getSelectedAttendanceState = (state: State) => state.selectedAttendanceState;
+
+export const getSortType = (state: State) => state.sortType;
+
+export const getOrderType = (state: State) => state.orderType;
+
+export const getAttendanceConfirmOptions = (state: State) => state.attendanceResultConfirmOptions;
