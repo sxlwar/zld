@@ -1,24 +1,20 @@
-import { RequestOption } from '../../interfaces/request-interface';
-import { PermissionService } from './../../services/config/permission-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
-import { AttendanceService } from '../../services/business/attendance-service';
-import { TimeService } from '../../services/utils/time-service';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceResult, Team } from '../../interfaces/response-interface';
-import { TeamService } from '../../services/business/team-service';
+import { RequestOption } from 'interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
+import { Team, AttendanceResult } from './../../interfaces/response-interface';
+import { Observable } from 'rxjs/Observable';
+import { TeamService } from './../../services/business/team-service';
+import { TimeService } from './../../services/utils/time-service';
+import { AttendanceService } from './../../services/business/attendance-service';
+import { ViewController, InfiniteScroll } from 'ionic-angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { attendanceList } from '../../services/api/command';
-import { attendance as attendanceIcon } from '../../services/business/icon-service';
-import { ProjectRoot, attendanceRecordPage, applyAttendanceModifyPage } from '../../pages/pages';
 import { AttendanceState } from '../../interfaces/attendance-interface';
 
-@IonicPage()
 @Component({
-  selector: 'page-attendance',
-  templateUrl: 'attendance.html',
+  selector: 'revisable-attendance-list',
+  templateUrl: 'revisable-attendance-list.html'
 })
-export class AttendancePage {
+export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
   startDate: string;
 
   endDate: string;
@@ -31,39 +27,21 @@ export class AttendancePage {
 
   subscriptions: Subscription[] = [];
 
-  operatePermission: Observable<boolean>;
-
-  actionSheet$$: Subscription;
-
   page$$: Subscription;
-
-  selectedAttendanceState: number;
 
   haveMoreData: Observable<boolean>;
 
   count: Observable<number>;
 
-  orderType: string;
-
-  sortType: number;
-
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    public viewCtrl: ViewController,
     public attendance: AttendanceService,
     public timeService: TimeService,
-    public teamService: TeamService,
-    public permission: PermissionService
+    public teamService: TeamService
   ) {
   }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
-
-    return opt || view;
-  }
-
-  ionViewDidLoad() {
+  ngOnInit() {
     this.initialModel();
 
     this.launch();
@@ -73,10 +51,7 @@ export class AttendancePage {
     this.subscriptions = [
       this.attendance.getAttendances(this.getAttendanceOption()),
       this.getDate(),
-      this.attendance.getSelectedAttendanceState().subscribe(state => this.selectedAttendanceState = state),
       this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
-      this.attendance.getOrderType().subscribe(type => this.orderType = type),
-      this.attendance.getSortType().subscribe(type => this.sortType = type),
       this.attendance.handleAttendanceError()
     ];
   }
@@ -90,8 +65,6 @@ export class AttendancePage {
     this.teams = this.teamService.getOwnTeams().withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 })));
 
     this.haveMoreData = this.attendance.getAttendanceResultMoreData();
-
-    this.operatePermission = this.permission.getOperatePermission(attendanceIcon.icon, ProjectRoot);
 
     this.count = this.attendance.getWrappedAttendanceCount();
   }
@@ -108,7 +81,7 @@ export class AttendancePage {
     return this.teamService.getSelectedTeams()
       .combineLatest(
       this.attendance.getSelectedDate().map(data => ({ start_day: this.timeService.getDate(data.start, true), end_day: this.timeService.getDate(data.end, true) })),
-      this.attendance.getSelectedAttendanceState().map(state => attendanceList.noMagicNumber.get(AttendanceState[state]).value),
+      Observable.of(attendanceList.noMagicNumber.get(AttendanceState[0]).value),
       (ids, date, queryType) => ({ ...date, team_id: ids, ...queryType })
       );
   }
@@ -129,7 +102,7 @@ export class AttendancePage {
     this.attendance.resetAttendance();
   }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
+  getNextPage(infiniteScroll: InfiniteScroll): void {
     this.attendance.increasePage();
 
     this.page$$ && this.page$$.unsubscribe();
@@ -145,31 +118,27 @@ export class AttendancePage {
     this.attendance.switchOrderType(order);
   }
 
-  /* ========================================================Team operation========================================================= */
-
-  setTeam(teams) {
+  setTeam(teams): void {
     const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
 
     this.teamService.setSelectTeams(teamIds);
   }
 
-  showActionSheet(attendances: AttendanceResult[]) {
-    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+  audit(attendances: AttendanceResult[]): void {
+    this.attendance.addAttendancesToModify(attendances);
 
-    const applyFn = () => this.navCtrl.push(applyAttendanceModifyPage);
-
-    this.actionSheet$$ = this.attendance.showActionSheet(attendances, applyFn);
+    this.dismiss();
   }
 
-  goToDetailPage(attendance: AttendanceResult) {
-    this.navCtrl.push(attendanceRecordPage, { attendance, rootName: ProjectRoot, iconName: attendanceIcon.icon }).then(() => { });
+  dismiss(): void {
+    this.viewCtrl.dismiss();
   }
 
-  ionViewWillUnload() {
+  ngOnDestroy() {
     this.subscriptions.forEach(item => item && item.unsubscribe());
 
-    this.attendance.resetAttendance();
+    this.page$$ && this.page$$.unsubscribe();
 
-    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+    this.attendance.resetAttendance();
   }
 }

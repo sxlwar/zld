@@ -1,5 +1,5 @@
 import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
-import { AttendanceResultConfirmResponse, AttendanceModifyRecordListResponse } from './../../interfaces/response-interface';
+import { AttendanceResultConfirmResponse, AttendanceModifyRecordListResponse, AttendanceResult } from './../../interfaces/response-interface';
 import { AttendanceResultListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-action';
 
@@ -19,6 +19,7 @@ export interface State {
   attendanceResultConfirmOptions: AttendanceResultConfirmOptions;
   attendanceModifyRecordListResponse: AttendanceModifyRecordListResponse;
   selectedAttendanceState: number;
+  readyToModify: AttendanceResult[];
 }
 
 export const initialState: State = {
@@ -34,7 +35,8 @@ export const initialState: State = {
   attendanceResultConfirmResponse: null,
   attendanceResultConfirmOptions: null,
   attendanceModifyRecordListResponse: null,
-  selectedAttendanceState: 0
+  selectedAttendanceState: 0,
+  readyToModify: null
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -81,6 +83,15 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
     case actions.SET_QUERY_ATTENDANCE_STATE:
       return { ...state, selectedAttendanceState: action.payload };
+
+    case actions.ADD_ATTENDANCES_TO_MODIFY:
+      return { ...state, readyToModify: action.payload };
+
+    case actions.RESET_ATTENDANCES_TO_MODIFY:
+      return { ...state, readyToModify: [] };
+
+    case actions.REMOVE_ATTENDANCE_FORM_READY_TO_MODIFY:
+      return { ...state, readyToModify: state.readyToModify.filter(item => item.id !== action.payload) };
 
     case actions.GET_ATTENDANCE_MODIFY_RECORD_LIST:
     case actions.GET_QUERY_ATTENDANCE_PAGE:
@@ -137,3 +148,5 @@ export const getSortType = (state: State) => state.sortType;
 export const getOrderType = (state: State) => state.orderType;
 
 export const getAttendanceConfirmOptions = (state: State) => state.attendanceResultConfirmOptions;
+
+export const getAttendancesToModify = (state: State) => state.readyToModify;

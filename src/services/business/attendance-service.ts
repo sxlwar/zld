@@ -1,10 +1,11 @@
+import { AddAttendancesToModifyAction, ResetAttendancesToModifyAction, RemoveAttendanceFromReadyToModify } from './../../actions/action/attendance-action';
 import { uniqBy, orderBy } from 'lodash';
 import { TimeService } from './../utils/time-service';
 import { AttendanceSortType, AttendanceState } from './../../interfaces/attendance-interface';
 import { RecordOptionService } from './record-option-service';
 import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
 import { AttendanceStatistics, AttendanceModify, AttendanceResultListResponse } from './../../interfaces/response-interface';
-import { selectAttendanceStatisticsResponse, selectAttendanceStatistics, selectAttendanceModifyRecordListResponse, selectSelectedAttendanceState, selectAttendanceSortType, selectAttendanceOrderType, selectAttendanceResultConfirmResponse, selectAttendanceConfirmOptions } from './../../reducers/index-reducer';
+import { selectAttendanceStatisticsResponse, selectAttendanceStatistics, selectAttendanceModifyRecordListResponse, selectSelectedAttendanceState, selectAttendanceSortType, selectAttendanceOrderType, selectAttendanceResultConfirmResponse, selectAttendanceConfirmOptions, selectAttendancesToModify } from './../../reducers/index-reducer';
 import { TeamService } from './team-service';
 import { Injectable } from '@angular/core';
 import { AppState, selectAttendanceDatePeriod, selectAttendanceLimit, selectAttendancePage, selectAttendanceResponse } from '../../reducers/index-reducer';
@@ -115,6 +116,10 @@ export class AttendanceService extends RecordOptionService {
       .startWith([]);
   }
 
+  getAttendancesToModify(): Observable<AttendanceResult[]> {
+    return this.store.select(selectAttendancesToModify).filter(value => !!value);
+  }
+
   /* =========================================================API request operation================================================= */
 
   getAttendances(option: Observable<RequestOption> = Observable.empty()): Subscription {
@@ -179,15 +184,25 @@ export class AttendanceService extends RecordOptionService {
     this.store.dispatch(new ResetAttendanceDataAction());
   }
 
-  /* =========================================================Attendance modify operation================================================= */
-
-  showActionSheet(attendances: AttendanceResult[]): Subscription {
-    console.log(attendances);
-    return this.translate.get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
-      .subscribe(value => this.createActionSheet(value, attendances));
+  resetAttendancesToModify(): void {
+    this.store.dispatch(new ResetAttendancesToModifyAction());
   }
 
-  private createActionSheet(buttonText: { [key: string]: string }, attendances: AttendanceResult[]) {
+  addAttendancesToModify(attendances: AttendanceResult[]): void {
+    this.store.dispatch(new AddAttendancesToModifyAction(attendances));
+  }
+  
+  removeAttendanceFromReadyToModify(id: number): void {
+    this.store.dispatch(new RemoveAttendanceFromReadyToModify(id));
+  }
+  /* =========================================================Attendance modify operation================================================= */
+
+  showActionSheet(attendances: AttendanceResult[], applyModifyFn): Subscription {
+    return this.translate.get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
+      .subscribe(value => this.createActionSheet(value, attendances, applyModifyFn));
+  }
+
+  private createActionSheet(buttonText: { [key: string]: string }, attendances: AttendanceResult[], applyModifyFn) {
     const actionSheet = this.actionSheet.create({
       buttons: [
         {
@@ -203,9 +218,11 @@ export class AttendanceService extends RecordOptionService {
         {
           text: buttonText.ATTENDANCE_APPLY_FOR_MODIFY,
           handler: () => {
-            console.log('navigation to apply modifyt option');
+            this.addAttendancesToModify(attendances);
 
-            actionSheet.dismiss('modify');
+            applyModifyFn();
+
+            actionSheet.dismiss();
 
             return false;
           }

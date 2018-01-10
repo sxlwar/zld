@@ -486,5 +486,10 @@
   "CANCEL_PIECE_WISE": "取消分段",
   "ADD_ATTACH": "添加附件",
   
-  "INPUT_QUERY_CONTENT": "请输入查询内容"
+  "INPUT_QUERY_CONTENT": "请输入查询内容",
+
+  "ATTENDANCE_REQUIRED_ERROR": "请选择需要修改的考勤",
+
+  "SELECT_ATTENDANCE": "选择考勤",
+  "ATTENDANCE_MODIFY_REASON_REQUIRED_ERROR": "请输入考勤修改原因"
 }

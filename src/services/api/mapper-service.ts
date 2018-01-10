@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions, CreateAttendanceModifyOptions, CreateLeaveOptions, CreatePieceAuditOptions, CreateOvertimeOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -126,8 +126,45 @@ export interface PieceTypeFormModel {
   num: number;
   standard?: string;
 }
+
 export interface PieceTypeWorkerContractFormModel extends WorkerContractFormModel {
   pieces: PieceTypeFormModel[];
+}
+
+export interface AttendanceModifyFormModel {
+  reason: string;
+  attendanceIds: number[];
+  onDutyTime: string;
+  offDutyTime: string;
+  attach: string[];
+}
+
+export interface LeaveFormModel {
+  leaveType: string;
+  startDay: string;
+  endDay: string;
+  reason: string;
+  contractIds: number[];
+  attach: string[];
+}
+
+export interface OvertimeFormModel {
+  payType: string;
+  day: string;
+  startTime: string;
+  endTime: string;
+  reason: string;
+  contractIds: number[];
+  attach: string[];
+}
+
+export interface PieceAuditFormModel {
+  num: number;
+  finishDate: string;
+  comment: string;
+  qualityPercent: number;
+  piecePayId: number;
+  attach: string[];
 }
 
 @Injectable()
@@ -339,7 +376,8 @@ export class MapperService {
       afternoon_time_on_duty: source.afternoonOffDuty,
       worker_id: source.workerIds,
       additional_content: source.comment,
-      attach: source.attach
+      attach: source.attach,
+      formType: source.formType
     }
   }
   private transformTimeTypeWorkerContractForm(source: TimeTypeWorkerContractFormModel): CreateWorkerContractOptions {
@@ -354,7 +392,7 @@ export class MapperService {
       }]
     }
   }
-  
+
   private transformPieceTypeWorkerContractForm(source: PieceTypeWorkerContractFormModel): CreateWorkerContractOptions {
     return {
       sid: '',
@@ -365,6 +403,62 @@ export class MapperService {
 
   transformWorkerContractForm(source: WorkerContractFormModel): CreateWorkerContractOptions {
     return source.formType === '1' ? this.transformTimeTypeWorkerContractForm(source as TimeTypeWorkerContractFormModel) : this.transformPieceTypeWorkerContractForm(source as PieceTypeWorkerContractFormModel);
+  }
+
+  transformAttendanceModifyForm(source: AttendanceModifyFormModel): CreateAttendanceModifyOptions {
+    return {
+      sid: '',
+      attend_amend: {
+        reason: source.reason,
+        result_id: source.attendanceIds,
+        on_duty: source.onDutyTime,
+        off_duty: source.offDutyTime,
+        attach: source.attach
+      }
+    }
+  }
+
+  transformLeaveForm(source: LeaveFormModel): CreateLeaveOptions {
+    return {
+      sid: '',
+      leave: {
+        reason: source.reason,
+        type: source.leaveType,
+        start: source.startDay,
+        finish: source.endDay,
+        contract_id: source.contractIds,
+        attach: source.attach
+      }
+    }
+  }
+
+  transformOvertimeForm(source: OvertimeFormModel): CreateOvertimeOptions {
+    return {
+      sid: '',
+      work_over_time: {
+        type: source.payType,
+        day: source.day,
+        start: source.startTime,
+        finish: source.endTime,
+        reason: source.reason,
+        contracts_id: source.contractIds,
+        attach: source.attach
+      }
+    }
+  }
+
+  transformPieceAuditForm(source: PieceAuditFormModel): CreatePieceAuditOptions {
+    return {
+      sid: '',
+      work_piece_finish_flow: {
+        num: source.num,
+        quality_percent: source.qualityPercent,
+        comment: source.comment,
+        finish_date: source.finishDate,
+        work_piece_pay_id: source.piecePayId,
+        attach: source.attach
+      }
+    }
   }
 
 }

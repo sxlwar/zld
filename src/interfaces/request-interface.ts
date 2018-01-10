@@ -833,6 +833,11 @@ export interface LaunchPiecePayOptions {
   standard?: string;
 }
 
+export enum WorkerContractFormType {
+  timePayType = '1',
+  pieceType = '2'
+}
+
 export interface LaunchWorkerContractOptions {
   team_id: number;
   worktype_id: number;
@@ -845,12 +850,14 @@ export interface LaunchWorkerContractOptions {
   afternoon_time_on_duty?: string;
   afternoon_time_off_duty?: string;
   additional_content?: string;
-  attach?: string[]
+  attach?: string[];
+  formType?: string;
 }
 
 export interface LaunchWorkerContractModifyOptions {
   date_after: string;
   contract_id: number;
+  attach?: string[];
 }
 
 export interface LaunchLeaveOptions {
@@ -859,6 +866,7 @@ export interface LaunchLeaveOptions {
   finish: string;
   reason: string;
   contract_id: number[];
+  attach?: string[];
 }
 
 export interface LaunchOvertimeOptions {
@@ -868,13 +876,15 @@ export interface LaunchOvertimeOptions {
   finish: string;
   reason: string;
   contracts_id: number[];
+  attach?: string[];
 }
 
 export interface LaunchAttendanceModifyOptions {
-  result_id: number[]; // 一样的,单人的参数没有卵用。
+  result_id: number[]; // 一样的,单人的参数没有卵用， 就是实际是attendance result id ,这名字起的，不看文档谁知道是啥结果的ID, 明明传列表还用个单数，一个字段都定义不好。
   on_duty: string;
   off_duty: string;
   reason: string;
+  attach?: string[];
 }
 
 export interface LaunchPieceAuditOptions {
@@ -883,6 +893,7 @@ export interface LaunchPieceAuditOptions {
   comment: string;
   quality_percent: number;
   work_piece_pay_id: number;
+  attach?: string[];
 }
 
 //接口名字改了，拆分到各个业务的接口中。
@@ -998,10 +1009,16 @@ export interface UploadWorkerContractAttachOptions extends UploadFileOptions {
   file: string;
 }
 
+export interface UploadAttendanceModifyAttachOptions extends UploadFileOptions {
+  id: string; //这TMD居然要传字符串；
+  file: string;
+}
+
 export type UploadOptions = UploadPersonalIdImageOptions
   | UploadCertificateImageOptions
   | UploadWorkFlowAttachmentOptions
   | UploadLeaveTaskOptions
   | UploadOvertimeOptions;
 
-export type AttachOptions = UploadWorkerContractAttachOptions;
+export type AttachOptions = UploadWorkerContractAttachOptions
+  | UploadAttendanceModifyAttachOptions;

@@ -235,6 +235,7 @@ export const selectSelectedAttendanceState = createSelector(getAttendance, atten
 export const selectAttendanceSortType = createSelector(getAttendance, attendance.getSortType);
 export const selectAttendanceOrderType = createSelector(getAttendance, attendance.getOrderType);
 export const selectAttendanceConfirmOptions = createSelector(getAttendance, attendance.getAttendanceConfirmOptions);
+export const selectAttendancesToModify = createSelector(getAttendance, attendance.getAttendancesToModify);
 
 //attendance instant list
 const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
@@ -435,11 +436,20 @@ export const selectScreeningCondition = createSelector(getWorkFlow, workFlow.get
 const getLeave = (state: AppState) => state.leave;
 export const selectLeaveRecordListResponse = createSelector(getLeave, leave.getLeaveResponse);
 
-//multi process create
+//process create
 const getLaunch = (state: AppState) => state.launch;
-export const selectMultiProcessResponse = createSelector(getLaunch, launch.getMultiProcessResponse);
-export const selectWorkerContractOptions = createSelector(getLaunch, launch.getWorkerContractOptions);
-export const selectProcessResponse = createSelector(getLaunch, launch.getProcessCreateResponse);
+export const selectSignWorkerContractResponse = createSelector(getLaunch, launch.getWorkerContractResponse);
+export const selectSignWorkerContractOptions = createSelector(getLaunch, launch.getWorkerContractOptions);
+export const selectAttendanceModifyResponse = createSelector(getLaunch, launch.getAttendanceModifyResponse);
+export const selectAttendanceModifyOptions = createSelector(getLaunch, launch.getAttendanceModifyOptions);
+export const selectLeaveResponse = createSelector(getLaunch, launch.getLeaveResponse);
+export const selectLeaveOptions = createSelector(getLaunch, launch.getLeaveOptions);
+export const selectOvertimeResponse = createSelector(getLaunch, launch.getOvertimeResponse);
+export const selectOvertimeOptions = createSelector(getLaunch, launch.getOvertimeOptions);
+export const selectPieceAuditResponse = createSelector(getLaunch, launch.getPieceAuditResponse);
+export const selectPieceAuditOptions = createSelector(getLaunch, launch.getPieceAuditOptions);
+export const selectWorkerContractModifyResponse = createSelector(getLaunch, launch.getWorkerContractModifyResponse);
+export const selectWorkerContractModifyOptions = createSelector(getLaunch, launch.getWorkerContractModifyOptions);
 
 // search worker
 const getSearchWorker = (state: AppState) => state.searchWorker;

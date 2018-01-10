@@ -33,6 +33,13 @@ export const uploadWorkerContractAttach: HttpApiUnit = {
   url: `http://${ENV.DOMAIN}/upload_file/`
 }
 
+export const uploadAttendanceModifyAttach: HttpApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['requestFileAdd']]
+  ]),
+  url: `http://${ENV.DOMAIN}/upload_file/`
+}
+
 @Injectable()
 export class HttpService {
 

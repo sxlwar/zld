@@ -1,0 +1,73 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'MODIFY_ATTENDANCE' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list [formGroup]="form">
+
+    <ion-list-header>
+      {{'ATTENDANCE_RECORD' | translate}}
+      <ion-icon name="search" (click)="searchAttendance()" item-end></ion-icon>
+    </ion-list-header>
+
+    <ion-item *ngFor="let item of attendances | async">
+      <ion-label fixed>{{item.contract__worker__employee__realname}}</ion-label>
+      <ion-input disabled [value]="item.day"></ion-input>
+      <ion-icon name="trash" (click)="removeAttendance(item)" item-end></ion-icon>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'ON_DUTY_TIME' | translate}}</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        formControlName="onDutyTime" (ngModelChange)="resetOffDuty()" required></ion-datetime>
+    </ion-item>
+    <div *ngIf="onDutyTime.invalid && (onDutyTime.dirty || onDutyTime.touched)" class="form-error red-color">
+      <span *ngIf="onDutyTime.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'OFF_DUTY_TIME' | translate}}</ion-label>
+      <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        [min]="onDutyTime.value" formControlName="offDutyTime" [disabled]="!onDutyTime.value" required></ion-datetime>
+    </ion-item>
+    <div *ngIf="offDutyTime.invalid && (offDutyTime.dirty || offDutyTime.touched)" class="form-error red-color">
+      <span *ngIf="offDutyTime.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
+    </div>
+
+    <ion-item>
+      <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
+      <ion-textarea autoSize formControlName="reason" required></ion-textarea>
+    </ion-item>
+    <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-error red-color">
+      <span *ngIf="reason.errors.required">{{'ATTENDANCE_MODIFY_REASON_REQUIRED_ERROR' | translate}}</span>
+    </div>
+
+  </ion-list>
+  
+  <ion-item-divider>
+    {{'ATTACH' | translate}}
+    <ion-icon name="add" color="primary" (click)="addAttach()" float-right></ion-icon>
+  </ion-item-divider>
+
+  <div *ngFor="let item of attachList; index as index;">
+    
+    <div class="attach-container">
+      <ion-icon name="close" color="primary" (click)="deleteAttach($event,index)"></ion-icon>
+      <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
+    </div>
+
+  </div>
+
+
+</ion-content>
+
+
+<ion-footer>
+  <button ion-button block no-margin color="primary" [disabled]="form.invalid" (click)="modify$.next(true)">{{'CONFIRM_BUTTON' | translate}}</button>
+</ion-footer>

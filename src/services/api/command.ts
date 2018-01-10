@@ -1,9 +1,9 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
 import { ApiUnit, Operate, Iterator } from '../../interfaces/api-interface';
-import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach } from './http-service';
+import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach, uploadAttendanceModifyAttach } from './http-service';
 
 /* =======================================================API unit definition===================================================================== */
 
@@ -1570,15 +1570,27 @@ export class Command {
   getCreateWorkerContract(originOption: CreateWorkerContractOptions): WsRequest {
     const path = multiProcessCreate.operates.get(Operate.addition)[0];
 
-    const option = { ...originOption, flow_name: ProcessIdOptions.workerContract };
+    let { worker_contract, work_piece_pay, work_time_pay } = originOption;
 
-    return this.getFullParameter(path, option);
+    const { formType } = worker_contract;
+
+    worker_contract = omit(worker_contract, ['attach', 'formType']);
+
+    if (formType === WorkerContractFormType.timePayType) {
+      return this.getFullParameter(path, { worker_contract, flow_name: ProcessIdOptions.workerContract, work_time_pay });
+    } else {
+      return this.getFullParameter(path, { worker_contract, flow_name: ProcessIdOptions.workerContract, work_piece_pay });
+    }
   }
 
   getCreateWorkerContractModify(originOption: CreateWorkerContractModifyOptions): WsRequest {
     const path = processCreate.operates.get(Operate.addition)[0];
 
-    const option = { ...originOption, flow_name: ProcessIdOptions.workerContractExpire };
+    let { sid, contract_time_change_flow } = originOption;
+
+    contract_time_change_flow = omit(contract_time_change_flow, ['attach']);
+
+    const option = { sid, contract_time_change_flow, flow_name: ProcessIdOptions.workerContractExpire };
 
     return this.getFullParameter(path, option);
   }
@@ -1586,7 +1598,11 @@ export class Command {
   getCreateLeave(originOption: CreateLeaveOptions): WsRequest {
     const path = processCreate.operates.get(Operate.addition)[0];
 
-    const option = { ...originOption, flow_name: ProcessIdOptions.leave };
+    let { sid, leave } = originOption
+
+    leave = omit(leave, ['attach']);
+
+    const option = { sid, leave, flow_name: ProcessIdOptions.leave };
 
     return this.getFullParameter(path, option);
   }
@@ -1594,7 +1610,11 @@ export class Command {
   getCreateOvertime(originOption: CreateOvertimeOptions): WsRequest {
     const path = processCreate.operates.get(Operate.addition)[0];
 
-    const option = { ...originOption, flow_name: ProcessIdOptions.overtime };
+    let { sid, work_over_time} = originOption;
+
+    work_over_time = omit(work_over_time, ['attach']);
+    
+    const option = { sid, work_over_time, flow_name: ProcessIdOptions.overtime };
 
     return this.getFullParameter(path, option);
   }
@@ -1602,7 +1622,11 @@ export class Command {
   getCreatePieceAudit(originOption: CreatePieceAuditOptions): WsRequest {
     const path = processCreate.operates.get(Operate.addition)[0];
 
-    const option = { ...originOption, flow_name: ProcessIdOptions.pieceAudit };
+    let { sid, work_piece_finish_flow } = originOption;
+
+    work_piece_finish_flow = omit(work_piece_finish_flow, ['attach']);
+
+    const option = { sid, work_piece_finish_flow, flow_name: ProcessIdOptions.pieceAudit };
 
     return this.getFullParameter(path, option);
   }
@@ -1610,7 +1634,11 @@ export class Command {
   getCreateAttendanceModify(originOption: CreateAttendanceModifyOptions): WsRequest {
     const path = multiProcessCreate.operates.get(Operate.addition)[0];
 
-    const option = { ...originOption, flow_name: ProcessIdOptions.attendanceModify };
+    let { sid, attend_amend } = originOption;
+
+    attend_amend = omit(attend_amend, ['attach']);
+
+    const option = { sid, attend_amend, flow_name: ProcessIdOptions.attendanceModify };
 
     return this.getFullParameter(path, option);
   }
@@ -1623,6 +1651,12 @@ export class Command {
 
   getUploadWorkerContractAttach(option: UploadWorkerContractAttachOptions): UploadWorkerContractAttachOptions {
     const command = uploadWorkerContractAttach.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
+  }
+
+  getUploadAttendanceModifyAttach(option: UploadAttendanceModifyAttachOptions): UploadAttendanceModifyAttachOptions {
+    const command = uploadAttendanceModifyAttach.operates.get(Operate.updates)[0];
 
     return { ...option, command };
   }

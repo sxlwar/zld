@@ -192,7 +192,7 @@
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
         formControlName="morningOnDuty" (ngModelChange)="resetMorningOffDuty()" required></ion-datetime>
     </ion-item>
-    <div *ngIf="morningOnDuty.invalid && (morningOnDuty.dirty || morningOnDuty.touched)" class="form-error red-color red-color">
+    <div *ngIf="morningOnDuty.invalid && (morningOnDuty.dirty || morningOnDuty.touched)" class="form-error red-color">
       <span *ngIf="morningOnDuty.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
     </div>
 
@@ -201,7 +201,7 @@
       <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
         [min]="morningOnDuty.value" formControlName="morningOffDuty" [disabled]="!morningOnDuty.value" required></ion-datetime>
     </ion-item>
-    <div *ngIf="morningOffDuty.invalid && (morningOffDuty.dirty || morningOffDuty.touched)" class="form-error red-color red-color">
+    <div *ngIf="morningOffDuty.invalid && (morningOffDuty.dirty || morningOffDuty.touched)" class="form-error red-color">
       <span *ngIf="morningOffDuty.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
     </div>
 

@@ -623,13 +623,53 @@ export interface WorkPieceListResponse {
 
 //process create
 export interface ProcessCreateResponse {
-  information?: string;
   errorMessage?: string;
 }
 
 // multi process create
 export interface MultiProcessCreateResponse {
-  information?: { WorkerContract_id: number }[];  //这还是个大写，我操。
+  errorMessage?: string;
+}
+
+export interface WorkerContractRes {
+  WorkerContract_id: number;
+}
+
+// create sign worker contract
+export interface CreateSignWorkerContractResponse extends MultiProcessCreateResponse {
+  information?: WorkerContractRes[];  //这还是个大写，我操。
+}
+
+export interface AttendanceModifyRes {
+  AttendAmend_id: number;
+  request_id: number;
+}
+
+// create attendance modify 
+export interface CreateAttendanceModifyResponse extends MultiProcessCreateResponse {
+  information: AttendanceModifyRes[];
+}
+
+// create leave modify
+export interface CreateLeaveResponse extends ProcessCreateResponse {
+  Leave_id: number;
+  request_id: number;
+}
+
+// create overtime
+export interface CreateOvertimeResponse extends ProcessCreateResponse {
+  WorkOvertime_id: number;
+  request_id: number;
+}
+
+// create piece audit 
+export interface CreatePieceAuditResponse extends ProcessCreateResponse {
+  WorkPieceFinishFlow_id: number;
+  request_id: number;
+}
+
+// create worker contract modify
+export interface CreateWorkerContractModifyResponse extends WorkerContractRes {
   errorMessage?: string;
 }
 
@@ -1325,9 +1365,18 @@ export interface AttachResponse {
   size: string;
 }
 
-//upload worker contract attach 
-export interface UploadWorkerContractAttachResponse {
+export interface UploadAttachResponse {
   [key: string]: AttachResponse;
+}
+
+//upload worker contract attach 
+export interface UploadWorkerContractAttachResponse extends UploadAttachResponse {
+
+}
+
+//upload attendance modify attach
+export interface UploadAttendanceModifyAttachResponse extends UploadAttachResponse {
+
 }
 
 export type ErrorResponse = LoginResponse

@@ -1,4 +1,4 @@
-import { AttendanceModifyRecordListResponse } from './../../interfaces/response-interface';
+import { AttendanceModifyRecordListResponse, AttendanceResult } from './../../interfaces/response-interface';
 import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 import { AttendanceResultListResponse, AttendanceResultConfirmResponse } from '../../interfaces/response-interface';
@@ -188,7 +188,32 @@ export class SetQueryAttendanceStateAction implements Action {
   constructor(public payload: number) { }
 }
 
+export const ADD_ATTENDANCES_TO_MODIFY = 'ADD_ATTENDANCES_TO_MODIFY';
+
+export class AddAttendancesToModifyAction implements Action {
+  readonly type = ADD_ATTENDANCES_TO_MODIFY;
+
+  constructor(public payload: AttendanceResult[]) { }
+}
+
+export const RESET_ATTENDANCES_TO_MODIFY = 'RESET_ATTENDANCES_TO_MODIFY';
+
+export class ResetAttendancesToModifyAction implements Action {
+  readonly type = RESET_ATTENDANCES_TO_MODIFY;
+
+  constructor() { }
+}
+
+export const REMOVE_ATTENDANCE_FORM_READY_TO_MODIFY = 'REMOVE_ATTENDANCE_FORM_READY_TO_MODIFY';
+
+export class RemoveAttendanceFromReadyToModify implements Action {
+  readonly type = REMOVE_ATTENDANCE_FORM_READY_TO_MODIFY;
+
+  constructor(public payload: number) { }
+}
+
 export type Actions = GetAttendanceResultListAction
+  | AddAttendancesToModifyAction
   | AttendanceConfirmFailAction
   | AttendanceConfirmSuccessAction
   | AttendanceModifyRecordListFailAction
@@ -200,12 +225,14 @@ export type Actions = GetAttendanceResultListAction
   | GetQueryAttendanceLimitAction
   | GetQueryAttendancePageAction
   | IncreaseAttendancePageAction
-  | ResetAttendancePageAction
+  | RemoveAttendanceFromReadyToModify 
   | ResetAttendanceDataAction
+  | ResetAttendancePageAction
+  | ResetAttendancesToModifyAction
   | SetAttendanceEndDateAction
   | SetAttendanceStartDateAction
   | SetQueryAttendanceLimitAction
   | SetQueryAttendancePageAction
-  | ToggleOrderTypeAction
+  | SetQueryAttendanceStateAction
   | ToggleAttendanceSortTypeAction
-  | SetQueryAttendanceStateAction;
+  | ToggleOrderTypeAction;

@@ -1,6 +1,6 @@
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
 import { modifyAttendance } from './../../services/business/icon-service';
-import { MissionRoot, attendanceModifyDetailPage } from './../pages';
+import { MissionRoot, attendanceModifyDetailPage, applyAttendanceModifyPage } from './../pages';
 import { StatisticsService } from './../../services/business/statistics-service';
 import { PermissionService } from './../../services/config/permission-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
@@ -63,7 +63,7 @@ export class AttendanceModifyPage {
   launch(): void {
     this.subscriptions = [
       this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.attendanceModify,...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
+        Observable.of({ process_id: ProcessIdOptions.attendanceModify, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
         this.workFlow.getPieceAuditPage()
       ),
       this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount()),
@@ -85,6 +85,10 @@ export class AttendanceModifyPage {
 
   goToNextPage(target: MissionListItem): void {
     this.navCtrl.push(attendanceModifyDetailPage, { id: target.id, status: target.status }).then(() => { });
+  }
+
+  applyAttendanceModify(): void {
+    this.navCtrl.push(applyAttendanceModifyPage);
   }
 
   ionViewWillUnload() {

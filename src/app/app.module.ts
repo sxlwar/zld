@@ -1,3 +1,4 @@
+import { RevisableAttendanceListComponent } from './../components/revisable-attendance-list/revisable-attendance-list';
 import { WorkFlowAuditComponent } from './../components/work-flow-audit/work-flow-audit';
 import { AddWorkCertificateComponent } from './../components/add-work-certificate/add-work-certificate';
 import { QRScanner } from '@ionic-native/qr-scanner';
@@ -129,6 +130,7 @@ export const metaReducers: MetaReducer<any>[] = [debug1, debug2];
     AddBankcardComponent,
     AddWorkCertificateComponent,
     WorkFlowAuditComponent,
+    RevisableAttendanceListComponent,
   ],
   providers: [
     Api,

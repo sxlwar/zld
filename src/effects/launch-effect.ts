@@ -1,5 +1,5 @@
 import { HttpService } from './../services/api/http-service';
-import { CREATE_WORKER_CONTRACT, CreateWorkerContractAction, CreateWorkerContractFailAction, CreateWorkerContractSuccessAction, CREATE_WORKER_CONTRACT_MODIFY, CreateWorkerContractModifyAction, CreateWorkerContractModifyFailAction, CreateWorkerContractModifySuccessAction, CREATE_LEAVE, CreateLeaveAction, CreateLeaveSuccessAction, CreateLeaveFailAction, CREATE_OVERTIME, CreateOvertimeAction, CreateOvertimeFailAction, CreateOvertimeSuccessAction, CREATE_PIECE_AUDIT, CreatePieceAuditAction, CreatePieceAuditFailAction, CreatePieceAuditSuccessAction, CREATE_ATTENDANCE_MODIFY, CreateAttendanceModifyAction, CreateAttendanceModifyFailAction, CreateAttendanceModifySuccessAction, UPLOAD_WORKER_CONTRACT_ATTACH, UploadWorkerContractAttachAction, UploadWorkerContractAttachFailAction, UploadWorkerContractAttachSuccessAction } from './../actions/action/launch-action';
+import { CREATE_WORKER_CONTRACT, CreateWorkerContractAction, CreateWorkerContractFailAction, CreateWorkerContractSuccessAction, CREATE_WORKER_CONTRACT_MODIFY, CreateWorkerContractModifyAction, CreateWorkerContractModifyFailAction, CreateWorkerContractModifySuccessAction, CREATE_LEAVE, CreateLeaveAction, CreateLeaveSuccessAction, CreateLeaveFailAction, CREATE_OVERTIME, CreateOvertimeAction, CreateOvertimeFailAction, CreateOvertimeSuccessAction, CREATE_PIECE_AUDIT, CreatePieceAuditAction, CreatePieceAuditFailAction, CreatePieceAuditSuccessAction, CREATE_ATTENDANCE_MODIFY, CreateAttendanceModifyAction, CreateAttendanceModifyFailAction, CreateAttendanceModifySuccessAction, UPLOAD_WORKER_CONTRACT_ATTACH, UploadWorkerContractAttachAction, UploadWorkerContractAttachFailAction, UploadWorkerContractAttachSuccessAction, UPLOAD_ATTENDANCE_MODIFY_ATTACH, UploadAttendanceModifyAttachAction, UploadAttendanceModifyAttachFailAction, UploadAttendanceModifyAttachSuccessAction } from './../actions/action/launch-action';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from './../interfaces/response-interface';
 import { TipService } from './../services/tip-service';
@@ -82,6 +82,15 @@ export class LaunchEffect extends Command {
         .mergeMap((action: UploadWorkerContractAttachAction) => this.http
             .uploadAttach(this.getUploadWorkerContractAttach(action.payload))
             .map(res => res.responseCode === 200 ? new UploadWorkerContractAttachFailAction(JSON.parse(res.response)) : new UploadWorkerContractAttachSuccessAction(JSON.parse(res.response)))
+            .catch(error => Observable.of(error))
+        );
+
+    @Effect()
+    uploadAttendanceModifyAttach$: Observable<ResponseAction> = this.actions$
+        .ofType(UPLOAD_ATTENDANCE_MODIFY_ATTACH)
+        .mergeMap((action: UploadAttendanceModifyAttachAction) => this.http
+            .uploadAttach(this.getUploadAttendanceModifyAttach(action.payload))
+            .map(res => res.responseCode === 200 ? new UploadAttendanceModifyAttachFailAction(JSON.parse(res.response)) : new UploadAttendanceModifyAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 

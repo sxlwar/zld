@@ -1,5 +1,5 @@
-import { MultiProcessCreateResponse, ProcessCreateResponse, UploadWorkerContractAttachResponse } from './../../interfaces/response-interface';
-import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions } from './../../interfaces/request-interface';
+import { UploadWorkerContractAttachResponse, UploadAttendanceModifyAttachResponse, CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateWorkerContractModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse } from './../../interfaces/response-interface';
+import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 export const CREATE_WORKER_CONTRACT = 'CREATE_WORKER_CONTRACT';
@@ -15,7 +15,7 @@ export const CREATE_WORKER_CONTRACT_FAIL = 'CREATE_WORKER_CONTRACT_FAIL';
 export class CreateWorkerContractFailAction implements Action {
     readonly type = CREATE_WORKER_CONTRACT_FAIL;
 
-    constructor(public payload: MultiProcessCreateResponse) { }
+    constructor(public payload: CreateSignWorkerContractResponse) { }
 }
 
 export const CREATE_WORKER_CONTRACT_SUCCESS = 'CREATE_WORKER_CONTRACT_SUCCESS';
@@ -23,7 +23,7 @@ export const CREATE_WORKER_CONTRACT_SUCCESS = 'CREATE_WORKER_CONTRACT_SUCCESS';
 export class CreateWorkerContractSuccessAction implements Action {
     readonly type = CREATE_WORKER_CONTRACT_SUCCESS;
 
-    constructor(public payload: MultiProcessCreateResponse) { }
+    constructor(public payload: CreateSignWorkerContractResponse) { }
 }
 
 export const CREATE_WORKER_CONTRACT_MODIFY = 'CREATE_WORKER_CONTRACT_MODIFY';
@@ -39,7 +39,7 @@ export const CREATE_WORKER_CONTRACT_MODIFY_FAIL = 'CREATE_WORKER_CONTRACT_MODIFY
 export class CreateWorkerContractModifyFailAction implements Action {
     readonly type = CREATE_WORKER_CONTRACT_MODIFY_FAIL;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreateWorkerContractModifyResponse) { }
 }
 
 export const CREATE_WORKER_CONTRACT_MODIFY_SUCCESS = 'CREATE_WORKER_CONTRACT_MODIFY_SUCCESS';
@@ -47,7 +47,7 @@ export const CREATE_WORKER_CONTRACT_MODIFY_SUCCESS = 'CREATE_WORKER_CONTRACT_MOD
 export class CreateWorkerContractModifySuccessAction implements Action {
     readonly type = CREATE_WORKER_CONTRACT_MODIFY_SUCCESS;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreateWorkerContractModifyResponse) { }
 }
 
 export const CREATE_LEAVE = 'CREATE_LEAVE';
@@ -63,7 +63,7 @@ export const CREATE_LEAVE_FAIL = 'CREATE_LEAVE_FAIL';
 export class CreateLeaveFailAction implements Action {
     readonly type = CREATE_LEAVE_FAIL;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreateLeaveResponse) { }
 }
 
 export const CREATE_LEAVE_SUCCESS = 'CREATE_LEAVE_SUCCESS';
@@ -71,7 +71,7 @@ export const CREATE_LEAVE_SUCCESS = 'CREATE_LEAVE_SUCCESS';
 export class CreateLeaveSuccessAction implements Action {
     readonly type = CREATE_LEAVE_SUCCESS;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreateLeaveResponse) { }
 }
 
 export const CREATE_OVERTIME = 'CREATE_OVERTIME';
@@ -87,7 +87,7 @@ export const CREATE_OVERTIME_FAIL = 'CREATE_OVERTIME_FAIL';
 export class CreateOvertimeFailAction implements Action {
     readonly type = CREATE_OVERTIME_FAIL;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreateOvertimeResponse) { }
 }
 
 export const CREATE_OVERTIME_SUCCESS = 'CREATE_OVERTIME_SUCCESS';
@@ -95,7 +95,7 @@ export const CREATE_OVERTIME_SUCCESS = 'CREATE_OVERTIME_SUCCESS';
 export class CreateOvertimeSuccessAction implements Action {
     readonly type = CREATE_OVERTIME_SUCCESS;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload:CreateOvertimeResponse) { }
 }
 
 export const CREATE_PIECE_AUDIT = 'CREATE_PIECE_AUDIT';
@@ -111,7 +111,7 @@ export const CREATE_PIECE_AUDIT_FAIL = 'CREATE_PIECE_AUDIT_FAIL';
 export class CreatePieceAuditFailAction implements Action {
     readonly type = CREATE_PIECE_AUDIT_FAIL;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreatePieceAuditResponse ) { }
 }
 
 export const CREATE_PIECE_AUDIT_SUCCESS = 'CREATE_PIECE_AUDIT_SUCCESS';
@@ -119,7 +119,7 @@ export const CREATE_PIECE_AUDIT_SUCCESS = 'CREATE_PIECE_AUDIT_SUCCESS';
 export class CreatePieceAuditSuccessAction implements Action {
     readonly type = CREATE_PIECE_AUDIT_SUCCESS;
 
-    constructor(public payload: ProcessCreateResponse) { }
+    constructor(public payload: CreatePieceAuditResponse) { }
 }
 
 export const CREATE_ATTENDANCE_MODIFY = 'CREATE_ATTENDANCE_MODIFY';
@@ -135,7 +135,7 @@ export const CREATE_ATTENDANCE_MODIFY_FAIL = 'CREATE_ATTENDANCE_MODIFY_FAIL';
 export class CreateAttendanceModifyFailAction implements Action {
     readonly type = CREATE_ATTENDANCE_MODIFY_FAIL;
 
-    constructor(public payload: MultiProcessCreateResponse) { }
+    constructor(public payload: CreateAttendanceModifyResponse) { }
 }
 
 export const CREATE_ATTENDANCE_MODIFY_SUCCESS = 'CREATE_ATTENDANCE_MODIFY_SUCCESS';
@@ -143,7 +143,7 @@ export const CREATE_ATTENDANCE_MODIFY_SUCCESS = 'CREATE_ATTENDANCE_MODIFY_SUCCES
 export class CreateAttendanceModifySuccessAction implements Action {
     readonly type = CREATE_ATTENDANCE_MODIFY_SUCCESS;
 
-    constructor(public payload: MultiProcessCreateResponse) { }
+    constructor(public payload: CreateAttendanceModifyResponse) { }
 }
 
 export const UPLOAD_WORKER_CONTRACT_ATTACH = 'UPLOAD_WORKER_CONTRACT_ATTACH';
@@ -158,7 +158,7 @@ export const UPLOAD_WORKER_CONTRACT_ATTACH_FAIL = 'UPLOAD_WORKER_CONTRACT_ATTACH
 
 export class UploadWorkerContractAttachFailAction implements Action {
     readonly type = UPLOAD_WORKER_CONTRACT_ATTACH_FAIL;
-    
+
     constructor(public payload: UploadWorkerContractAttachResponse) { }
 }
 
@@ -166,9 +166,34 @@ export const UPLOAD_WORKER_CONTRACT_ATTACH_SUCCESS = 'UPLOAD_WORKER_CONTRACT_ATT
 
 export class UploadWorkerContractAttachSuccessAction implements Action {
     readonly type = UPLOAD_WORKER_CONTRACT_ATTACH_SUCCESS;
-    
+
     constructor(public payload: UploadWorkerContractAttachResponse) { }
 }
+
+export const UPLOAD_ATTENDANCE_MODIFY_ATTACH = 'UPLOAD_ATTENDANCE_MODIFY_ATTACH';
+
+export class UploadAttendanceModifyAttachAction implements Action {
+    readonly type = UPLOAD_ATTENDANCE_MODIFY_ATTACH;
+
+    constructor(public payload: UploadAttendanceModifyAttachOptions) { }
+}
+
+export const UPLOAD_ATTENDANCE_MODIFY_ATTACH_FAIL = 'UPLOAD_ATTENDANCE_MODIFY_ATTACH_FAIL';
+
+export class UploadAttendanceModifyAttachFailAction implements Action {
+    readonly type = UPLOAD_ATTENDANCE_MODIFY_ATTACH_FAIL;
+
+    constructor(public payload: UploadAttendanceModifyAttachResponse) { }
+}
+
+export const UPLOAD_ATTENDANCE_MODIFY_ATTACH_SUCCESS = 'UPLOAD_ATTENDANCE_MODIFY_ATTACH_SUCCESS';
+
+export class UploadAttendanceModifyAttachSuccessAction implements Action {
+    readonly type = UPLOAD_ATTENDANCE_MODIFY_ATTACH_SUCCESS;
+
+    constructor(public payload: UploadAttendanceModifyAttachResponse) { }
+}
+
 
 export type Actions = CreateWorkerContractAction
     | CreateAttendanceModifyAction
@@ -190,4 +215,7 @@ export type Actions = CreateWorkerContractAction
     | CreateWorkerContractSuccessAction
     | UploadWorkerContractAttachAction
     | UploadWorkerContractAttachFailAction
-    | UploadWorkerContractAttachSuccessAction;
+    | UploadWorkerContractAttachSuccessAction
+    | UploadAttendanceModifyAttachAction
+    | UploadAttendanceModifyAttachFailAction
+    | UploadAttendanceModifyAttachSuccessAction;

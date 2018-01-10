@@ -1,0 +1,45 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{'SELECT_ATTENDANCE' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+
+    <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
+    <ion-item>
+      <ion-label>{{'START_TIME' | translate}}</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        min="2017-01-01" [max]="today" [(ngModel)]="startDate" (ngModelChange)="setDate('start')"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'END_TIME' | translate}}</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        [min]="startDate" [max]="today" [(ngModel)]="endDate" (ngModelChange)="setDate('end')"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'TEAM' | translate}}</ion-label>
+      <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="setTeam($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+        [okText]="'CONFIRM_BUTTON' | translate">
+        <ion-option *ngFor="let team of (teams | async)" [value]="team" [selected]="team.selected">{{team.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+  </ion-list>
+
+  <attendance-list [list]="attendances | async" [total]="count | async" [operate]="true" [haveMoreData]="haveMoreData | async"
+    (getNextPage)="getNextPage($event)" (audit)="audit($event)"></attendance-list>
+</ion-content>

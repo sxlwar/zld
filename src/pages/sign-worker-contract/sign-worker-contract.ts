@@ -85,7 +85,7 @@ export class SignWorkerContractPage {
             this.searchService.getSelectedWorkers().subscribe(source => this.contract.patchValue({ workerIds: source.map(item => item.user_id) })),
             this.launchService.createWorkerContract(this.contract$.map(_ => ({ ...this.contract.value, ...this.timePayContract.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList.filter(item => !!item) }))),
             this.launchService.uploadWorkerContractAttach(),
-            this.launchService.getMultiProcessCreateResponse().subscribe(_ => this.resetForm()),
+            this.launchService.getSignWorkerContractResponse().subscribe(_ => this.resetForm()),
             this.launchService.handleMultiProcessError(),
         ];
     }

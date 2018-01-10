@@ -1,3 +1,4 @@
+import { applyAttendanceModifyPage } from './../pages';
 //region
 import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
@@ -92,7 +93,9 @@ export class AttendanceRecordPage {
   showActionSheet() {
     this.actionSheet$$ && this.actionSheet$$.unsubscribe();
 
-    this.actionSheet$$ = this.attendance.showActionSheet([this.attendanceResult]);
+    const applyFn = () => this.navCtrl.push(applyAttendanceModifyPage);
+
+    this.actionSheet$$ = this.attendance.showActionSheet([this.attendanceResult], applyFn);
   }
 
   ionViewWillUnload() {

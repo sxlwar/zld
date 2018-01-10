@@ -90,6 +90,14 @@ export const iStartedPage = 'IStartedPage';
 
 export const iCompletedPage = 'ICompletedPage';
 
+export const applyAttendanceModifyPage = 'ApplyAttendanceModifyPage';
+
+export const applyLeavePage = 'ApplyLeavePage';
+
+export const applyOvertimePage = 'ApplyOvertimePage';
+
+export const applyPieceAuditPage = 'ApplyPieceAuditPage';
+
 /*============================================common pages===================================================*/
 
 export const attendanceRecordPage = 'AttendanceRecordPage';
@@ -181,6 +189,10 @@ export const PAGES = [
   { title: 'ICompletedPage', component: iCompletedPage },
   { title: 'SignWorkerContractPage', component: signWorkerContractPage },
   { title: 'SearchWorkerPage', component: searchWorkerPage },
+  { title: 'ApplyAttendancePage', component: applyAttendanceModifyPage },
+  { title: 'ApplyLeavePage', component: applyLeavePage },
+  { title: 'ApplyOvertimePage', component: applyOvertimePage },
+  { title: 'ApplyPieceAuditPage', component: applyPieceAuditPage },
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },
