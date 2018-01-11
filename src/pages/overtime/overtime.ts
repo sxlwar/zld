@@ -1,5 +1,5 @@
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
-import { MissionRoot, overtimeDetailPage } from './../pages';
+import { MissionRoot, overtimeDetailPage, applyOvertimePage } from './../pages';
 import { overtime } from './../../services/business/icon-service';
 import { MissionListItem, AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { Observable } from 'rxjs/Observable';
@@ -75,6 +75,10 @@ export class OvertimePage {
     const { comment, ids, approve } = target;
 
     this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
+  }
+
+  applyOvertime(): void {
+    this.navCtrl.push(applyOvertimePage).then(() => {});
   }
 
   getNextPage(infiniteScroll: InfiniteScroll): void {

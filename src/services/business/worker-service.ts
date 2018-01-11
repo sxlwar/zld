@@ -42,11 +42,11 @@ export class WorkerService {
 
     getWorkerContracts(option: Observable<RequestOption>): Subscription {
         return this.processor.workerContractListProcessor(
-            option.do(v => console.log(v))
+            option
                 .combineLatest(
                 this.userInfo.getSid(),
                 this.store.select(selectWorkerLimit),
-                this.store.select(selectWorkerPage).distinctUntilChanged().do(v => console.log(v)),
+                this.store.select(selectWorkerPage).distinctUntilChanged(),
                 (options, sid, limit, page) => ({ sid, limit, page, ...options }) as WorkerContractOptions // use option parameters first;
                 )
         );

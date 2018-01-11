@@ -37,7 +37,13 @@ export class LaunchService {
 
     getSuccessResponseOfLeave(): Observable<boolean> {
         return this.store.select(selectLeaveResponse)
-            .filter(value => !!value && ! value.errorMessage)
+            .filter(value => !!value && !value.errorMessage)
+            .mapTo(true);
+    }
+
+    getSuccessResponseOfOvertime(): Observable<boolean> {
+        return this.store.select(selectOvertimeResponse)
+            .filter(value => !!value && !value.errorMessage)
             .mapTo(true);
     }
 

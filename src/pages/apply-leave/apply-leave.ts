@@ -87,6 +87,7 @@ export class ApplyLeavePage {
             this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractIds: !!ids.length ? ids : '' })),
             this.launchService.getSuccessResponseOfLeave().subscribe(_ => this.worker.resetSelectedWorkers()),
             this.launchService.handlerProcessError(),
+            this.worker.handleError(),
         ];
     }
 
