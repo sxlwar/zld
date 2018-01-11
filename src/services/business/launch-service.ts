@@ -47,6 +47,12 @@ export class LaunchService {
             .mapTo(true);
     }
 
+    getSuccessResponseOfPieceAudit(): Observable<boolean> {
+        return this.store.select(selectPieceAuditResponse)
+            .filter(value => !!value && !value.errorMessage)
+            .mapTo(true);
+    }
+
     /* ====================================================API request=======================================================*/
 
     createWorkerContract(form: Observable<WorkerContractFormModel>): Subscription {

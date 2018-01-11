@@ -451,8 +451,8 @@ export class MapperService {
     return {
       sid: '',
       work_piece_finish_flow: {
-        num: source.num,
-        quality_percent: source.qualityPercent,
+        num: Number(source.num),
+        quality_percent: Number(source.qualityPercent) / 100,
         comment: source.comment,
         finish_date: source.finishDate,
         work_piece_pay_id: source.piecePayId,

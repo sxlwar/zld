@@ -1,5 +1,5 @@
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
-import { MissionRoot, pieceAuditDetailPage } from './../pages';
+import { MissionRoot, pieceAuditDetailPage, applyPieceAuditPage } from './../pages';
 import { pieceAudit } from './../../services/business/icon-service';
 import { StatisticsService } from './../../services/business/statistics-service';
 import { PermissionService } from './../../services/config/permission-service';
@@ -77,6 +77,10 @@ export class PieceAuditPage {
     this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
   }
 
+  applyPieceAudit(): void {
+    this.navCtrl.push(applyPieceAuditPage).then(() => { });
+  }
+
   getNextPage(infiniteScroll: InfiniteScroll) {
     this.page$$ && this.page$$.unsubscribe();
 
@@ -84,16 +88,16 @@ export class PieceAuditPage {
   }
 
   goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(pieceAuditDetailPage, { id: target.id, status: target.status }).then(() => {});
+    this.navCtrl.push(pieceAuditDetailPage, { id: target.id, status: target.status }).then(() => { });
   }
 
   ionViewWillUnload() {
     this.workFlow.resetWorkFlowResponse();
 
     this.workFlow.resetPage(WorkFlowPageType.pieceAuditPage);
-    
+
     this.page$$ && this.page$$.unsubscribe();
-    
+
     this.subscriptions.forEach(item => item.unsubscribe());
   }
 }

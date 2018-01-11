@@ -13,7 +13,7 @@
 
 <ion-content>
 
-  <ion-list padding class="worker-list" *ngIf="canQueryOther | async">
+  <ion-list padding class="worker-list" *ngIf="(canQueryOther | async) && !single">
 
     <ion-item *ngFor="let item of workerSubject | async">
       <ion-label>
@@ -21,9 +21,23 @@
         <span>{{item.teamName}} {{item.workType}}</span>
       </ion-label>
       <ion-checkbox [(ngModel)]="item.selected" [checked]="item.selected"></ion-checkbox>
+      <ion-radio *ngIf="single" [value]="item"></ion-radio>
     </ion-item>
 
   </ion-list>
+  
+  <ion-list padding  radio-group class="worker-list" [(ngModel)]="selectedWorker" *ngIf="(canQueryOther | async) && single">
+
+    <ion-item *ngFor="let item of workerSubject | async">
+      <ion-label>
+        {{item.name}}
+        <span>{{item.teamName}} {{item.workType}}</span>
+      </ion-label>
+      <ion-radio [value]="item"></ion-radio>
+    </ion-item>
+
+  </ion-list>
+  
 
   <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async; let moreData;">
     <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>

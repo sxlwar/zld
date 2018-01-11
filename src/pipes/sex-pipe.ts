@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SexPipe implements PipeTransform {
     transform(value: number): string {
-        if (value === 0) return 'FEMALE';
-        return 'MALE';
+        return value === 0 ? 'FEMALE' : 'MALE';
     }
 }

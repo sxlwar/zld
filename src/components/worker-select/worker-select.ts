@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import { RequestOption } from 'interfaces/request-interface';
-import { ViewController, InfiniteScroll } from 'ionic-angular';
+import { ViewController, InfiniteScroll, NavParams } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { ProjectService } from './../../services/business/project-service';
 import { workerContractList } from './../../services/api/command';
@@ -36,12 +36,18 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     selectedWorkers: Observable<number[]>;
 
+    selectedWorker: WorkerItem;
+    
+    single = false;
+
     constructor(
         public worker: WorkerService,
         public permission: PermissionService,
         public project: ProjectService,
-        public viewCtrl: ViewController
+        public viewCtrl: ViewController,
+        public navParams: NavParams
     ) {
+        this.single = !!this.navParams.get('single');
         worker.resetPage();
     }
 
@@ -64,7 +70,6 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
         this.subscriptions = [
             this.getWorkers(),
             this.worker.getWorkerContracts(this.getOption()),
-            // this.getRestWorkerList(),
             this.worker.handleError(),
         ];
     }
@@ -85,8 +90,18 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     }
 
     getOption(): Observable<RequestOption> {
+
         return this.worker.getCompleteStatusOption()
             .zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }))
+            .map(option => {
+                const passedInOption: RequestOption = this.navParams.get('option');
+
+                if (!!passedInOption) {
+                    return { ...option, ...passedInOption };
+                } else {
+                    return option;
+                }
+            });
     }
 
     getNextPage(infiniteScroll: InfiniteScroll): void {
@@ -97,7 +112,11 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     updateSelectedWorkers(): void {
         const subscription = this.workerSubject.take(1).subscribe(workers => {
-            this.worker.updateSelectedWorkers(workers.filter(item => item.selected).map(item => item.id));
+            if(!this.single) {
+                this.worker.updateSelectedWorkers(workers.filter(item => item.selected).map(item => item.id));
+            }else {
+                this.worker.updateSelectedWorkers([this.selectedWorker.id]);
+            }
 
             this.dismiss();
         });
