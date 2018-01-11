@@ -1,6 +1,6 @@
 import { StatisticsService } from './../../services/business/statistics-service';
 import { leave } from './../../services/business/icon-service';
-import { MissionRoot, leaveDetailPage } from './../pages';
+import { MissionRoot, leaveDetailPage, applyLeavePage } from './../pages';
 import { PermissionService } from './../../services/config/permission-service';
 import { AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
@@ -86,6 +86,10 @@ export class LeavePage {
 
   goToNextPage(target: MissionListItem): void {
     this.navCtrl.push(leaveDetailPage, { id: target.id, status: target.status }).then(() => {});
+  }
+
+  applyLeave(): void {
+    this.navCtrl.push(applyLeavePage).then(() => { });
   }
 
   ionViewWillUnload() {

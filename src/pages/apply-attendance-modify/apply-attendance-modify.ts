@@ -23,7 +23,7 @@ export class ApplyAttendanceModifyPage {
 
   subscriptions: Subscription[] = [];
 
-  attachList: string[] = [''];
+  attachList: string[] = [];
 
   modify$: Subject<AttendanceModifyFormModel> = new Subject();
 
@@ -84,19 +84,9 @@ export class ApplyAttendanceModifyPage {
   removeAttendance(attendance: AttendanceResult): void {
     this.attendanceService.removeAttendanceFromReadyToModify(attendance.id);
   }
-
-  addAttach(): void {
-    this.attachList.push('');
-  }
-
-  deleteAttach($event: Event, index: number): void {
-    $event.stopPropagation();
-
-    this.attachList.splice(index, 1);
-  }
-
-  getAttach(url: string, index: number): void {
-    this.attachList[index] = url;
+  
+  getAttach(attach: string[]): void {
+    this.attachList = attach;
   }
 
   ionViewWillUnload() {

@@ -231,25 +231,7 @@
 
     <ion-item-divider>{{'SUPPLEMENT_CONTENT' | translate}}</ion-item-divider>
 
-    <ion-item>
-      <ion-label>{{'COMMENT' | translate}}</ion-label>
-      <ion-textarea formControlName="comment" [placeholder]="'SUPPLEMENT_TIP' | translate" autoSize></ion-textarea>
-    </ion-item>
-
-    <div *ngIf="workerIds && workerIds.value?.length === 1">
-      <ion-item-divider>
-        {{'ATTACH' | translate}}
-        <ion-icon name="add" color="primary" (click)="addAttach()" float-right></ion-icon>
-      </ion-item-divider>
-
-      <div *ngFor="let item of attachList; index as index;">
-        <div class="attach-container">
-          <ion-icon name="close" color="primary" (click)="deleteAttach($event,index)"></ion-icon>
-          <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
-        </div>
-
-      </div>
-    </div>
+    <attach-list (file)="getAttach($event)"></attach-list>
 
   </ion-item-group>
 </ion-content>

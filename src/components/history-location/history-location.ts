@@ -6,244 +6,235 @@ import { LocationService } from './../../services/business/location-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TeamService } from './../../services/business/team-service';
 import { TimeService } from './../../services/utils/time-service';
-import { WorkerService, WorkerItem } from './../../services/business/worker-service';
+import { WorkerService } from './../../services/business/worker-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { ViewController } from 'ionic-angular';
+import { ViewController, InfiniteScroll } from 'ionic-angular';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { range } from 'lodash';
+import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
 
 interface TeamItem {
-  id: number;
-  name: string;
-  selected: boolean;
+    id: number;
+    name: string;
+    selected: boolean;
 }
 
 interface WorkTypeItem {
-  id: number;
-  name: string;
-  selected: boolean;
+    id: number;
+    name: string;
+    selected: boolean;
 }
 
 @Component({
-  selector: 'history-location',
-  templateUrl: 'history-location.html'
+    selector: 'history-location',
+    templateUrl: 'history-location.html'
 })
 export class HistoryLocationComponent implements OnInit, OnDestroy {
-  today: string;
+    today: string;
 
-  isTimeSlot: boolean;
+    isTimeSlot: boolean;
 
-  date: string;
+    date: string;
 
-  teams: Observable<TeamItem[]>;
+    teams: Observable<TeamItem[]>;
 
-  workTypes: Observable<WorkTypeItem[]>;
+    workTypes: Observable<WorkTypeItem[]>;
 
-  workers: Observable<WorkerItem[]>;
+    workers: Observable<DistinguishableWorkerItem[]>;
 
-  workers$$: Subscription;
+    workers$$: Subscription;
 
-  enableScroll: Observable<boolean>;
+    enableScroll: Observable<boolean>;
 
-  locationForm: FormGroup;
+    locationForm: FormGroup;
 
-  availableHourValues: number[];
+    availableHourValues: number[];
 
-  availableMinuteValues: number[];
-  
-  selectedTeams: string;
+    availableMinuteValues: number[];
 
-  options: Observable<LocationOptions>;
+    selectedTeams: string;
 
-  subscriptions: Subscription[] = [];
+    options: Observable<LocationOptions>;
 
-  loading = false;
+    subscriptions: Subscription[] = [];
 
-  constructor(
-    public viewCtrl: ViewController,
-    public worker: WorkerService,
-    public timeService: TimeService,
-    public teamService: TeamService,
-    public fb: FormBuilder,
-    public project: ProjectService,
-    public location: LocationService,
-    public workType: CraftService
-  ) {
-    this.today = this.timeService.getDate(new Date, true);
-    worker.resetPage();
-  }
+    loading = false;
 
-  ngOnInit() {
+    constructor(
+        public viewCtrl: ViewController,
+        public worker: WorkerService,
+        public timeService: TimeService,
+        public teamService: TeamService,
+        public fb: FormBuilder,
+        public project: ProjectService,
+        public location: LocationService,
+        public workType: CraftService
+    ) {
+        this.today = this.timeService.getDate(new Date, true);
+        worker.resetPage();
+    }
 
-    this.options = this.location.getHistoryLocationOptions();
+    ngOnInit() {
+        this.initialModel();
 
-    this.worker.getWorkerContracts(this.getOption());
+        this.launch();
+    }
 
-    this.getRestWorkerList();
+    initialModel(): void {
+        this.options = this.location.getHistoryLocationOptions();
 
-    this.getTeams();
+        this.teams = this.getTeams();
 
-    this.getWorkTypes();
+        this.workTypes = this.getWorkTypes();
 
-    this.getWorkers();
+        this.workers = this.worker.getWorkerItems(this.options.map(option => option.userIds));
 
-    this.getTimeRelatedOptions();
+        this.enableScroll = this.worker.getEnableScroll().share();
+    }
 
-    this.getEnableScroll();
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.worker.getWorkerContracts(this.getOption()),
+            this.getRestWorkerList(),
+            this.getTimeRelatedOptions(),
+            this.worker.handleError(),
+            this.workType.handleError()
+        ];
+    }
 
-  getWorkers() {
-    this.workers = this.worker.getWorkerItems(this.options.map(option => option.userIds));
-  }
+    getOption(): Observable<RequestOption> {
+        return this.worker.getCompleteStatusOption().zip(this.project.getProjectId(), (option, project_id) => ({ ...option, project_id }));
+    }
 
-  getRestWorkerList() {
-    const subscription = this.worker.haveRestWorkers().subscribe(_ => this.worker.getWorkerContracts(this.getOption()));
+    getTeams(): Observable<TeamItem[]> {
+        return this.teamService.getOwnTeams().map(teams => teams.map(({ id, name }) => ({ id, name, selected: false })))
+            .combineLatest(this.options.map(option => option.teamIds))
+            .map(([teams, selectedIds]) => teams.map(item => ({ ...item, selected: selectedIds.indexOf(item.id) !== -1 })));
+    }
 
-    this.subscriptions.push(subscription);
-  }
+    getWorkTypes(): Observable<WorkTypeItem[]> {
+        return this.workType.getWorkTypeList().map(list => list.map(({ id, name }) => ({ id, name, selected: false })))
+            .combineLatest(this.options.map(option => option.workTypeIds))
+            .map(([types, selectedIds]) => types.map(type => ({ ...type, selected: selectedIds.indexOf(type.id) !== -1 })));
+    }
 
-  getOption(): Observable<RequestOption> {
-    return this.worker.getCompleteStatusOption().zip(this.project.getProjectId(), (option, project_id) => ({ ...option, project_id }));
-  }
+    /* ============================================================Launch methods================================================ */
 
-  getTeams(): void {
-    this.teams = this.teamService.getOwnTeams().map(teams => teams.map(({ id, name }) => ({ id, name, selected: false })))
-      .combineLatest(this.options.map(option => option.teamIds))
-      .map(([teams, selectedIds]) => teams.map(item => {
-        item.selected = selectedIds.indexOf(item.id) !== -1;
+    getRestWorkerList(): Subscription {
+        return this.worker.getWorkerContracts(this.worker.haveRestWorkers().mergeMapTo(this.getOption()));
+    }
 
-        return item;
-      }));
-  }
+    getTimeRelatedOptions(): Subscription {
+        return this.options
+            .subscribe(option => {
+                const { time, startTime, endTime, isTimeSlot } = option;
 
-  getWorkTypes(): void {
-    this.workTypes = this.workType.getWorkTypeList().map(list => list.map(({ id, name }) => ({ id, name, selected: false })))
-      .combineLatest(this.options.map(option => option.workTypeIds))
-      .map(([types, selectedIds]) => types.map(type => {
-        type.selected = selectedIds.indexOf(type.id) !== -1;
+                this.date = option.date;
 
-        return type;
-      }));
-  }
+                this.isTimeSlot = isTimeSlot;
 
-  /* ============================================================Get option methods================================================ */
+                const form = isTimeSlot ? {
+                    startTime: [startTime, Validators.required],
+                    endTime: [endTime, Validators.required],
+                    time: time
+                } : {
+                        startTime,
+                        endTime,
+                        time: [time, Validators.required]
 
-  getTimeRelatedOptions() {
-    const subscription = this.options
-      .subscribe(option => {
-        const { time, startTime, endTime, isTimeSlot } = option;
+                    }
 
-        this.date = option.date;
+                this.locationForm = this.fb.group(form);
+            });
+    }
 
-        this.isTimeSlot = isTimeSlot;
+    /* ============================================================Update option methods================================================ */
 
-        const form = isTimeSlot ? {
-          startTime: [startTime, Validators.required],
-          endTime: [endTime, Validators.required],
-          time: time
-        } : {
-            startTime,
-            endTime,
-            time: [time, Validators.required]
+    updateMaxEndTime($event): void {
+        const [hour, minute] = $event.split(':');
 
-          }
+        const h = parseInt(hour);
 
-        this.locationForm = this.fb.group(form);
-      });
+        const m = parseInt(minute);
 
-    this.subscriptions.push(subscription);
-  }
+        this.availableHourValues = [h, h + 1];
 
-  /* ============================================================Update option methods================================================ */
+        this.availableMinuteValues = range(m, 60);
 
-  updateMaxEndTime($event) {
-    const [hour, minute] = $event.split(':');
+        this.updateStartTime($event);
+    }
 
-    const h = parseInt(hour);
+    updateIsTimeSlot(isTimeSlot): void {
+        this.location.updateHistoryLocationOption({ isTimeSlot });
+    }
 
-    const m = parseInt(minute);
+    updateStartTime(startTime): void {
+        this.location.updateHistoryLocationOption({ startTime });
 
-    this.availableHourValues = [h, h + 1];
+        this.location.resetHistoryLocationEndTime();
+    }
 
-    this.availableMinuteValues = range(m, 60);
+    updateEndTime(endTime): void {
+        this.location.updateHistoryLocationOption({ endTime });
+    }
 
-    this.updateStartTime($event);
-  }
+    updateTime(time): void {
+        this.location.updateHistoryLocationOption({ time });
+    }
 
-  updateIsTimeSlot(isTimeSlot) {
-    this.location.updateHistoryLocationOption({ isTimeSlot });
-  }
+    updateTeams(teams): void {
+        const teamIds = teams.map(item => item.id);
 
-  updateStartTime(startTime) {
-    this.location.updateHistoryLocationOption({ startTime });
-    this.location.resetHistoryLocationEndTime();
-  }
+        this.location.updateHistoryLocationOption({ teamIds });
+    }
 
-  updateEndTime(endTime) {
-    this.location.updateHistoryLocationOption({ endTime });
-  }
+    updateWorkType(workTypes): void {
+        const workTypeIds = workTypes.map(item => item.id);
 
-  updateTime(time) {
-    this.location.updateHistoryLocationOption({ time });
-  }
+        this.location.updateHistoryLocationOption({ workTypeIds });
+    }
 
-  updateTeams(teams) {
-    const teamIds = teams.map(item => item.id);
+    updateSelectedWorker(worker: DistinguishableWorkerItem): void {
+        const { id, selected } = worker;
 
-    this.location.updateHistoryLocationOption({ teamIds });
-  }
+        this.location.updateSelectedWorker({ id, selected });
+    }
 
-  updateWorkType(workTypes) {
-    const workTypeIds = workTypes.map(item => item.id);
+    updateDate(date): void {
+        this.location.updateHistoryLocationOption({ date });
+    }
 
-    this.location.updateHistoryLocationOption({ workTypeIds });
-  }
+    /* ============================================================================================================= */
+    dismiss(): void {
+        this.viewCtrl.dismiss();
+    }
 
-  updateSelectedWorker(worker: WorkerItem) {
-    const { id, selected } = worker;
+    getNextPage(infiniteScroll: InfiniteScroll): void {
+        this.workers$$ && this.workers$$.unsubscribe();
 
-    this.location.updateSelectedWorker({ id, selected });
-  }
+        this.workers$$ = this.worker.getNextPage(infiniteScroll);
+    }
 
-  updateDate(date) {
-    this.location.updateHistoryLocationOption({ date });
-  }
+    execution(): void {
+        this.location.updateCondition().next(true);
 
-  /* ============================================================================================================= */
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
+        this.dismiss();
+    }
 
-  getEnableScroll() {
-    this.enableScroll = this.worker.getEnableScroll().share();
-  }
+    ngOnDestroy() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  getNextPage(infiniteScroll) {
-    this.workers$$ && this.workers$$.unsubscribe();
+    get time() {
+        return this.locationForm.get('time');
+    }
 
-    this.workers$$ = this.worker.getNextPage(infiniteScroll);
-  }
+    get startTime() {
+        return this.locationForm.get('startTime');
+    }
 
-  execution() {
-    this.location.updateCondition().next(true);
-
-    this.dismiss();
-  }
-
-  ngOnDestroy() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
-
-  get time() {
-    return this.locationForm.get('time');
-  }
-
-  get startTime() {
-    return this.locationForm.get('startTime');
-  }
-
-  get endTime() {
-    return this.locationForm.get('endTime');
-  }
+    get endTime() {
+        return this.locationForm.get('endTime');
+    }
 }

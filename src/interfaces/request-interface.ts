@@ -861,11 +861,11 @@ export interface LaunchWorkerContractModifyOptions {
 }
 
 export interface LaunchLeaveOptions {
-  type: string;
+  type: string; // 这传的又TMD是中文
   start: string;
   finish: string;
   reason: string;
-  contract_id: number[];
+  contracts_id: number[]; // 脑子有泡吧，工人要请假肯定要工人的ID，还能要合同ID？ 什么几吧逻辑。
   attach?: string[];
 }
 
@@ -991,14 +991,14 @@ export interface UploadWorkFlowAttachmentOptions extends UploadFileOptions {
 }
 
 //upload leave task attachment
-export interface UploadLeaveTaskOptions extends UploadFileOptions {
+export interface UploadLeaveAttachOptions extends UploadFileOptions {
   id: number; //task id
   type: string; //constant 'attachment';
   file: string;
 }
 
 //upload overtime attachment
-export interface UploadOvertimeOptions extends UploadFileOptions {
+export interface UploadOvertimeAttachOptions extends UploadFileOptions {
   id: number; //task id
   type: string; //constant 'attachment';
   file: string;
@@ -1014,11 +1014,23 @@ export interface UploadAttendanceModifyAttachOptions extends UploadFileOptions {
   file: string;
 }
 
+// upload piece audit attachment
+export interface UploadPieceAuditAttachOptions extends UploadWorkFlowAttachmentOptions {
+  
+}
+
+// upload worker contract modify attachment
+export interface UploadWorkerContractModifyAttachOptions extends UploadWorkFlowAttachmentOptions {
+  
+}
+
 export type UploadOptions = UploadPersonalIdImageOptions
   | UploadCertificateImageOptions
   | UploadWorkFlowAttachmentOptions
-  | UploadLeaveTaskOptions
-  | UploadOvertimeOptions;
+  | UploadLeaveAttachOptions
+  | UploadOvertimeAttachOptions
+  | UploadPieceAuditAttachOptions
+  | UploadWorkerContractModifyAttachOptions;
 
 export type AttachOptions = UploadWorkerContractAttachOptions
   | UploadAttendanceModifyAttachOptions;

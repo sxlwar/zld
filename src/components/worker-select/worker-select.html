@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-     <ion-buttons start>
+    <ion-buttons start>
       <button ion-button icon-only (click)="dismiss()">
         <ion-icon name="close"></ion-icon>
       </button>
@@ -25,10 +25,11 @@
 
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="getNextPage($event)" [enabled]="enableScroll | async">
+  <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async; let moreData;">
     <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  <ion-item *ngIf="!(enableScroll | async)" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+
+  <ion-item *ngIf="!moreData" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
 
 </ion-content>
 

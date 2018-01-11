@@ -1,3 +1,4 @@
+import { WorkerItem } from '../../interfaces/worker-interface';
 import { AttendanceMachineType } from './../../interfaces/request-interface';
 import { WorkerService } from './../../services/business/worker-service';
 import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
@@ -13,11 +14,6 @@ export interface RecordItem {
   name: string;
   type: number;
   time: string;
-}
-
-export interface WorkerItem {
-  id: number;
-  name: string;
 }
 
 @IonicPage()
@@ -73,9 +69,9 @@ export class LocationAttendanceRecordPage {
 
     this.haveMoreData = this.record.getMoreDataFlag().startWith(true);
 
-    this.workers = this.getSelectedWorkers();
+    this.workers = this.worker.getSelectedWorkersContainsWorkerId();
 
-    this.names = this.getNames();
+    this.names = this.workers.map(workers => workers.map(item => item.name).join(','));
 
     this.records = this.getRecords();
   }
@@ -92,17 +88,6 @@ export class LocationAttendanceRecordPage {
       )
       .scan((acc, cur) => acc.concat(cur), []);
   }
-
-  getSelectedWorkers(): Observable<WorkerItem[]> {
-    return this.worker.getSelectedWorkers()
-      .combineLatest(this.worker.getAllWorkerContracts())
-      .map(([userIds, workers]) => workers.filter(item => userIds.indexOf(item.worker_id) !== -1).map(item => ({ id: item.worker_id, name: item.worker__employee__realname })));
-  }
-
-  getNames(): Observable<string> {
-    return this.workers.map(workers => workers.map(item => item.name).join(','));
-  }
-
 
   launch() {
     this.subscriptions = [

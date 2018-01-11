@@ -1366,7 +1366,7 @@ export interface AttachResponse {
 }
 
 export interface UploadAttachResponse {
-  [key: string]: AttachResponse;
+  [key: string]: AttachResponse[];
 }
 
 //upload worker contract attach 
@@ -1377,6 +1377,26 @@ export interface UploadWorkerContractAttachResponse extends UploadAttachResponse
 //upload attendance modify attach
 export interface UploadAttendanceModifyAttachResponse extends UploadAttachResponse {
 
+}
+
+//upload leave attach
+export interface UploadLeaveAttachResponse extends UploadAttachResponse {
+
+}
+
+//upload overtime attach
+export interface UploadOvertimeAttachResponse extends UploadAttachResponse {
+
+}
+
+//upload piece attach
+export interface UploadPieceAuditAttachResponse extends UploadAttachResponse {
+
+}
+
+//upload worker contract modify
+export interface UploadWorkerContractModifyAttachResponse extends UploadAttachResponse {
+  
 }
 
 export type ErrorResponse = LoginResponse

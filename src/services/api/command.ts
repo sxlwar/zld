@@ -1,9 +1,9 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
 import { ApiUnit, Operate, Iterator } from '../../interfaces/api-interface';
-import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach, uploadAttendanceModifyAttach } from './http-service';
+import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach, uploadAttendanceModifyAttach, uploadLeaveAttach, uploadOvertimeAttach, uploadPieceAuditAttach, uploadWorkerContractModifyAttach } from './http-service';
 
 /* =======================================================API unit definition===================================================================== */
 
@@ -1610,10 +1610,10 @@ export class Command {
   getCreateOvertime(originOption: CreateOvertimeOptions): WsRequest {
     const path = processCreate.operates.get(Operate.addition)[0];
 
-    let { sid, work_over_time} = originOption;
+    let { sid, work_over_time } = originOption;
 
     work_over_time = omit(work_over_time, ['attach']);
-    
+
     const option = { sid, work_over_time, flow_name: ProcessIdOptions.overtime };
 
     return this.getFullParameter(path, option);
@@ -1657,6 +1657,30 @@ export class Command {
 
   getUploadAttendanceModifyAttach(option: UploadAttendanceModifyAttachOptions): UploadAttendanceModifyAttachOptions {
     const command = uploadAttendanceModifyAttach.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
+  }
+
+  getUploadLeaveAttach(option: UploadLeaveAttachOptions): UploadLeaveAttachOptions {
+    const command = uploadLeaveAttach.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
+  }
+
+  getUploadOvertimeAttach(option: UploadOvertimeAttachOptions): UploadOvertimeAttachOptions {
+    const command = uploadOvertimeAttach.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
+  }
+
+  getUploadPieceAuditAttach(option: UploadPieceAuditAttachOptions): UploadPieceAuditAttachOptions {
+    const command = uploadPieceAuditAttach.operates.get(Operate.updates)[0];
+
+    return { ...option, command };
+  }
+
+  getUploadWorkerContractModifyAttach(option: UploadWorkerContractModifyAttachOptions): UploadWorkerContractModifyAttachOptions {
+    const command = uploadWorkerContractModifyAttach.operates.get(Operate.updates)[0];
 
     return { ...option, command };
   }

@@ -40,6 +40,34 @@ export const uploadAttendanceModifyAttach: HttpApiUnit = {
   url: `http://${ENV.DOMAIN}/upload_file/`
 }
 
+export const uploadLeaveAttach: HttpApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['leaveTask']]
+  ]),
+  url: `http://${ENV.DOMAIN}/upload_file/`
+}
+
+export const uploadOvertimeAttach: HttpApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['workOverTimeTask']]  // 好BB的，这个地方的time就大写了。
+  ]),
+  url: `http://${ENV.DOMAIN}/upload_file/`
+}
+
+export const uploadPieceAuditAttach: HttpApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['requestFileAdd']]
+  ]),
+  url: `http://${ENV.DOMAIN}/upload_file/`
+}
+
+export const uploadWorkerContractModifyAttach: HttpApiUnit = {
+  operates: new Map([
+    [Operate.updates, ['requestFileAdd']]
+  ]),
+  url: `http://${ENV.DOMAIN}/upload_file/`
+}
+
 @Injectable()
 export class HttpService {
 

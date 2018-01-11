@@ -2,7 +2,7 @@ import { SearchCompanyAction } from './../../actions/action/search-company-actio
 import { EditWorkerContractAction } from './../../actions/action/worker-action';
 import { DeleteImagesAction } from './../../actions/action/delete-images-action';
 import { SearchWorkerAction } from './../../actions/action/search-worker-action';
-import { CreateWorkerContractAction, CreateWorkerContractModifyAction, CreateLeaveAction, CreateOvertimeAction, CreatePieceAuditAction, CreateAttendanceModifyAction, UploadWorkerContractAttachAction, UploadAttendanceModifyAttachAction } from './../../actions/action/launch-action';
+import { CreateWorkerContractAction, CreateWorkerContractModifyAction, CreateLeaveAction, CreateOvertimeAction, CreatePieceAuditAction, CreateAttendanceModifyAction, UploadWorkerContractAttachAction, UploadAttendanceModifyAttachAction, UploadLeaveAttachAction, UploadOvertimeAttachAction, UploadPieceAuditAttachAction, UploadWorkerContractModifyAttachAction } from './../../actions/action/launch-action';
 import { GetLeaveRecordListAction } from './../../actions/action/leave-action';
 import { GetWorkFlowListAction, GetProjectPayBillFlowListAction, UpdateMultiTaskAction, UpdateTaskAction } from './../../actions/action/work-flow-action';
 import { GetGroupListAction } from './../../actions/action/group-list-action';
@@ -21,7 +21,7 @@ import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailList
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -133,18 +133,9 @@ export class ProcessorService extends MapperService {
   }
 
   workerContractListProcessor(option$: Observable<WorkerContractOptions>): Subscription {
-    const viewPermission$ = this.permission
-      .apiPermissionValidate(this.command.workerContractList)
-      .map(result => result.view);
-
-    const specialOption$ = this.permission.specialOptionValidate(this.command.workerContractList);
-
-    return viewPermission$.zip(
-      specialOption$,
-      option$,
-      (passed, option1, option2) => passed ? { ...option1, ...option2 } : null
-    )
-      .filter(res => !!res)
+    return this.permission.comprehensiveValidate(this.command.workerContractList)
+      .filter(result => result.permission.view)
+      .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
       .subscribe(option => this.store.dispatch(new GetWorkerContractsAction(option)));
   }
 
@@ -651,6 +642,22 @@ export class ProcessorService extends MapperService {
 
   uploadAttendanceModifyAttachProcessor(option$: Observable<UploadAttendanceModifyAttachOptions>): Subscription {
     return option$.subscribe(option => this.store.dispatch(new UploadAttendanceModifyAttachAction(option)));
+  }
+
+  uploadLeaveAttachProcessor(option$: Observable<UploadLeaveAttachOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new UploadLeaveAttachAction(option)));
+  }
+
+  uploadOvertimeAttachProcessor(option$: Observable<UploadOvertimeAttachOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new UploadOvertimeAttachAction(option)))
+  }
+
+  uploadPieceAuditAttachProcessor(option$: Observable<UploadPieceAuditAttachOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new UploadPieceAuditAttachAction(option)));
+  }
+
+  uploadWorkerContractModifyAttachProcessor(option$: Observable<UploadWorkerContractModifyAttachOptions>): Subscription {
+    return option$.subscribe(option => this.store.dispatch(new UploadWorkerContractModifyAttachAction(option)));
   }
 
 }

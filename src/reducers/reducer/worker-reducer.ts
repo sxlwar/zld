@@ -25,10 +25,7 @@ export interface State {
 export const initialState: State = {
   limit: 20,
   page: 1,
-  workerContractResponse: {
-    count: -1,
-    worker_contract: []
-  },
+  workerContractResponse: null,
   workerContracts: [],
   management: {
     timerPage: 1,
@@ -45,9 +42,8 @@ export const initialState: State = {
 export function reducer(state = initialState, action: actions.Actions): State {
   switch (action.type) {
 
-    case actions.WORKER_CONTRACT_LIST_FAIL: {
+    case actions.WORKER_CONTRACT_LIST_FAIL: 
       return Object.assign({}, state, { workerContractResponse: action.payload });
-    }
 
     case actions.WORKER_CONTRACT_LIST_SUCCESS: {
       const workerContractResponse = action.payload;
@@ -59,25 +55,20 @@ export function reducer(state = initialState, action: actions.Actions): State {
       return Object.assign({}, state, { workerContractResponse, workerContracts, management });
     }
 
-    case actions.SET_QUERY_WORKER_CONTRACT_LIMIT: {
+    case actions.SET_QUERY_WORKER_CONTRACT_LIMIT: 
       return Object.assign({}, state, { limit: action.payload });
-    }
 
-    case actions.SET_QUERY_WORKER_CONTRACT_PAGE: {
+    case actions.SET_QUERY_WORKER_CONTRACT_PAGE: 
       return Object.assign({}, state, { page: action.payload });
-    }
 
-    case actions.RESET_QUERY_WORKER_CONTRACT_PAGE: {
+    case actions.RESET_QUERY_WORKER_CONTRACT_PAGE: 
       return Object.assign({}, state, { page: initialState.page });
-    }
 
-    case actions.INCREMENT_QUERY_WORKER_CONTRACT_PAGE: {
+    case actions.INCREMENT_QUERY_WORKER_CONTRACT_PAGE: 
       return Object.assign({}, state, { page: state.page + 1 });
-    }
 
-    case actions.DECREMENT_QUERY_WORKER_CONTRACT_PAGE: {
+    case actions.DECREMENT_QUERY_WORKER_CONTRACT_PAGE: 
       return Object.assign({}, state, { page: state.page - 1 });
-    }
 
     case actions.INCREMENT_MANAGE_TIMER_PAGE: {
       const management = Object.assign({}, state.management, { timerPage: state.management.timerPage + 1 });
@@ -115,13 +106,14 @@ export function reducer(state = initialState, action: actions.Actions): State {
       return Object.assign({}, state, { management });
     }
 
-    case actions.RESET_WORKER_CONTRACTS: {
+    case actions.RESET_WORKER_CONTRACTS: 
       return Object.assign({}, state, { workerContracts: [] });
-    }
 
-    case actions.UPDATE_SELECTED_WORKERS: {
+    case actions.UPDATE_SELECTED_WORKERS:
       return { ...state, selectedWorkers: action.payload };
-    }
+
+    case actions.RESET_SELECTED_WORKERS:
+      return { ...state, selectedWorkers: [] };
 
     case actions.EDIT_WORKER_CONTRACT_FAIL:
     case actions.EDIT_WORKER_CONTRACT_SUCCESS:

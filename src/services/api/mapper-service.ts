@@ -426,7 +426,7 @@ export class MapperService {
         type: source.leaveType,
         start: source.startDay,
         finish: source.endDay,
-        contract_id: source.contractIds,
+        contracts_id: source.contractIds,
         attach: source.attach
       }
     }

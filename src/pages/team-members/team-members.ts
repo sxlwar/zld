@@ -5,7 +5,7 @@ import { WorkerContractListResponse } from './../../interfaces/response-interfac
 import { Observable } from 'rxjs/Observable';
 import { WorkerService } from './../../services/business/worker-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { TeamItem } from '../organization/organization';
 
 export interface WorkerItem {
@@ -30,68 +30,76 @@ export class TeamMembersPage {
 
   pageSubscription: Subscription;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public worker: WorkerService
   ) {
     this.team = this.navParams.get('team');
+    this.worker.resetPage();
   }
 
   ionViewDidLoad() {
-    this.worker.resetPage();
+    this.initialModel();
 
-    this.getWorkerContractList();
+    this.launch();
+  }
 
+  initialModel(): void {
     const response = this.worker.getWorkerContractResponse().skip(1);
 
-    this.getWorkerList(response);
+    this.list = this.getWorkerList(response);
 
-    this.monitorComplete(response);
+    this.haveMoreData = response.map(res => !!res.worker_contract.length);
 
     this.workerCount = response.map(res => res.count);
   }
 
-  getWorkerContractList() {
-    const teamId = Observable.of({ team_id: this.team.id });
-
-    const status = this.worker.getCompleteStatusOption();
-
-    const expire = this.worker.getUnexpiredOption();
-
-    const option = teamId.zip(status, expire, (teamId, status, expire) => ({ ...teamId, ...status, ...expire }));
-
-    this.worker.getWorkerContracts(option);
+  launch(): void {
+    this.subscriptions = [
+      this.getWorkerContractList(),
+      this.worker.handleError(),
+    ];
   }
 
-  getWorkerList(source: Observable<WorkerContractListResponse>): void {
-    this.list = source.map(res => res.worker_contract)
+  getWorkerContractList(): Subscription {
+    return this.worker.getWorkerContracts(
+      Observable.of({ team_id: this.team.id })
+        .zip(
+        this.worker.getCompleteStatusOption(),
+        this.worker.getUnexpiredOption(),
+        (teamId, status, expire) => ({ ...teamId, ...status, ...expire })
+        )
+    );
+  }
+
+  getWorkerList(source: Observable<WorkerContractListResponse>): Observable<WorkerItem[]> {
+    return source.map(res => res.worker_contract)
       .mergeMap(result => Observable.from(result)
         .map(item => ({ name: item.worker__employee__realname, workType: item.worktype__name, id: item.worker_id }))
-        .reduce(putInArray,[])
+        .reduce(putInArray, [])
       )
       .scan((acc, cur) => acc.concat(cur), []);
   }
 
-  monitorComplete(source: Observable<WorkerContractListResponse>): void {
-    this.haveMoreData = source.map(res => !!res.worker_contract.length);
-  }
-
-  getNextPage(infiniteScroll) {
-    this.worker.incrementPage();
-
-    this.getWorkerContractList();
-
+  getNextPage(infiniteScroll: InfiniteScroll): void {
     this.pageSubscription && this.pageSubscription.unsubscribe();
 
-    this.pageSubscription = this.worker.getWorkerContractResponse()
-      .subscribe(_ => infiniteScroll.complete());
+    this.pageSubscription = this.worker.getNextPage(infiniteScroll);
   }
 
   goToNextPage(data?: WorkerItem) {
     const userId = data ? data.id : this.team.qualityClerkId;
-    
+
     this.navCtrl.push(personalPage, { userId }).then(_ => { });
+  }
+
+  ionViewWillUnload(){
+    this.subscriptions.forEach(item => item.unsubscribe());
+
+    this.pageSubscription && this.pageSubscription.unsubscribe();
   }
 
 }

@@ -11,218 +11,209 @@ import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LocationService } from './../../services/business/location-service';
 import { TimeService } from './../../services/utils/time-service';
-import { ViewController, NavParams } from 'ionic-angular';
+import { ViewController, NavParams, InfiniteScroll } from 'ionic-angular';
 import { WorkerService } from './../../services/business/worker-service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { range } from 'lodash';
-
-interface WorkerItem {
-  id: number;
-  name: string;
-  teamName: string;
-  workType: string;
-  selected: boolean;
-}
+import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
 
 @Component({
-  selector: 'history-trajectory',
-  templateUrl: 'history-trajectory.html'
+    selector: 'history-trajectory',
+    templateUrl: 'history-trajectory.html'
 })
 export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  date: string;
+    date: string;
 
-  today: string;
+    today: string;
 
-  workerResponse: Observable<WorkerContractListResponse>;
+    workerResponse: Observable<WorkerContractListResponse>;
 
-  trajectoryForm: FormGroup;
+    trajectoryForm: FormGroup;
 
-  canQueryOther: Observable<boolean>; // Wether need to show the worker select list;
+    canQueryOther: Observable<boolean>; // Wether need to show the worker select list;
 
-  workers: Observable<WorkerItem[]>;
+    workers: Observable<DistinguishableWorkerItem[]>;
 
-  options: Observable<TrajectoryOptions>;
+    options: Observable<TrajectoryOptions>;
 
-  workers$$: Subscription;
+    workers$$: Subscription;
 
-  availableHourValues: number[];
+    availableHourValues: number[];
 
-  availableMinuteValues: number[];
+    availableMinuteValues: number[];
 
-  enableScroll: Observable<boolean>;
+    enableScroll: Observable<boolean>;
 
-  constructor(
-    public worker: WorkerService,
-    public viewCtrl: ViewController,
-    public timeService: TimeService,
-    public location: LocationService,
-    public fb: FormBuilder,
-    public permission: PermissionService,
-    public project: ProjectService,
-    public mapService: AmapService,
-    public navParams: NavParams
-  ) {
-    this.today = this.timeService.getDate(new Date, true);
-    worker.resetPage();
-  }
+    constructor(
+        public worker: WorkerService,
+        public viewCtrl: ViewController,
+        public timeService: TimeService,
+        public location: LocationService,
+        public fb: FormBuilder,
+        public permission: PermissionService,
+        public project: ProjectService,
+        public mapService: AmapService,
+        public navParams: NavParams
+    ) {
+        this.today = this.timeService.getDate(new Date, true);
+        worker.resetPage();
+    }
 
-  ngOnInit() {
-    this.canQueryOther = this.permission.specialOptionValidate(workerContractList)
-      .map(result => !result['self'])
-      .take(1)
-      .filter(value => !!value);
+    ngOnInit() {
+        this.initialModel();
+        
+        this.launch();
+    }
 
-    this.options = this.location.getTrajectoryOptions();
+    initialModel(): void {
+        this.canQueryOther = this.permission.specialOptionValidate(workerContractList)
+            .map(result => !result['self'])
+            .take(1)
+            .filter(value => !!value);
 
-    this.worker.getWorkerContracts(this.getOption());
+        this.options = this.location.getTrajectoryOptions();
 
-    this.launch();
-  }
+        this.workers = this.canQueryOther.mergeMapTo(this.worker.getWorkerItems(this.options.map(option => option.userIds)));
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.enableScroll = this.worker.getEnableScroll().share();
+    }
 
-  launch(): void {
-    this.getTimeOptions();
+    launch(): void {
+        this.subscriptions = [
+            this.worker.getWorkerContracts(this.getOption()),
+            this.getTimeOptions(),
+            this.getRestWorkerList(),
+            this.worker.handleError()
+        ];
+    }
 
-    this.getWorkers();
+    /**
+     * @description Get the time related options.
+     */
+    getTimeOptions(): Subscription {
+        return this.location.getTrajectoryOptions().subscribe(value => {
+            const { date, startTime, endTime } = value;
 
-    this.getRestWorkerList();
+            this.date = date;
 
-    this.getEnableScroll();
-  }
+            this.trajectoryForm = this.fb.group({
+                startTime: [startTime, Validators.required],
+                endTime: [endTime, Validators.required]
+            });
+        });
+    }
 
-  /**
-   * @description Get the time related options.
-   */
-  getTimeOptions(): void {
-    const subscription = this.location.getTrajectoryOptions().subscribe(value => {
-      const { date, startTime, endTime } = value;
+    /* =============================================Worker related=============================================================== */
 
-      this.date = date;
+    getRestWorkerList(): Subscription {
+        return this.worker.getWorkerContracts(
+            this.worker.haveRestWorkers()
+                .combineLatest(this.canQueryOther, (haveRest, canQuery) => haveRest && canQuery)
+                .mergeMapTo(this.getOption())
+        );
+    }
 
-      this.trajectoryForm = this.fb.group({
-        startTime: [startTime, Validators.required],
-        endTime: [endTime, Validators.required]
-      });
-    });
+    getOption(): Observable<RequestOption> {
+        return this.worker.getCompleteStatusOption().zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }));
+    }
 
-    this.subscriptions.push(subscription);
-  }
+    /**
+     * @description Update workers that user want to query.
+     */
+    updateSelectedWorker(worker: DistinguishableWorkerItem): void {
+        const { id, selected } = worker;
 
-  /* =============================================Worker related=============================================================== */
+        this.location.updateTrajectorySelectedWorker({ id, selected });
+    }
 
-  getWorkers(): void {
-    this.workers = this.canQueryOther
-      .mergeMapTo(this.worker.getWorkerItems(this.options.map(option => option.userIds)));
-  }
+    /**
+     * @param infiniteScroll - ionic's infiniteScroll instance;
+     */
+    getNextPage(infiniteScroll: InfiniteScroll): void {
+        this.workers$$ && this.workers$$.unsubscribe();
 
-  getRestWorkerList(): void {
-    const subscription = this.worker.haveRestWorkers().subscribe(_ => this.worker.getWorkerContracts(this.canQueryOther.mergeMapTo(this.getOption())));
+        this.workers$$ = this.worker.getNextPage(infiniteScroll);
+    }
 
-    this.subscriptions.push(subscription);
-  }
+    /* ===================================================Update options methods================================================= */
 
-  getOption(): Observable<RequestOption> {
-    return this.worker.getCompleteStatusOption().zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }));
-  }
+    /**
+     * @description We need to update the date and end time when user select a date.
+     */
+    updateDate(date: string): void {
+        this.location.updateTrajectoryOption({ date });
 
-  /**
-   * @description Update workers that user want to query.
-   */
-  updateSelectedWorker(worker: WorkerItem): void {
-    const { id, selected } = worker;
+        this.location.updateMaxEndTimeOfTrajectory(date);
+    }
 
-    this.location.updateTrajectorySelectedWorker({ id, selected });
-  }
+    /**
+     * @description When user select a start time, update the start time in store first.
+     * At the same time we need to  set the available hours and minutes of the
+     * end time to prevent user select an invalid one, if there is a value of end time had been selected, we
+     * need to clear that because it may be an invalid value;
+     */
+    updateStartTime(startTime: string): void {
+        const [hour, minute] = startTime.split(':');
 
-  /**
-   * @param infiniteScroll - ionic's infiniteScroll instance;
-   */
-  getNextPage(infiniteScroll): void {
-    this.workers$$ && this.workers$$.unsubscribe();
+        const h = parseInt(hour);
 
-    this.workers$$ = this.worker.getNextPage(infiniteScroll);
-  }
+        const m = parseInt(minute);
 
-  getEnableScroll(): void {
-    this.enableScroll = this.worker.getEnableScroll().share();
-  }
+        this.availableHourValues = range(h, 24);
 
-  /* ===================================================Update options methods================================================= */
+        this.availableMinuteValues = range(m, 60);
 
-  /**
-   * @description We need to update the date and end time when user select a date.
-   */
-  updateDate(date: string): void {
-    this.location.updateTrajectoryOption({ date });
+        this.location.updateTrajectoryOption({ startTime });
 
-    this.location.updateMaxEndTimeOfTrajectory(date);
-  }
+        this.location.resetTrajectoryEndTime();
+    }
 
-  /**
-   * @description When user select a start time, update the start time in store first.
-   * At the same time we need to  set the available hours and minutes of the
-   * end time to prevent user select an invalid one, if there is a value of end time had been selected, we
-   * need to clear that because it may be an invalid value;
-   */
-  updateStartTime(startTime: string): void {
-    const [hour, minute] = startTime.split(':');
+    updateEndTime(endTime: string): void {
+        this.location.updateTrajectoryOption({ endTime });
+    }
 
-    const h = parseInt(hour);
+    /* ==================================================Methods executed before modal dismiss=========================================== */
 
-    const m = parseInt(minute);
+    dismiss(): void {
+        this.viewCtrl.dismiss();
+    }
 
-    this.availableHourValues = range(h, 24);
+    /**
+     * @description Clear polyline on current map and notify the location
+     * service that the condition has been changed when user clicked the confirm button;
+     */
+    execution(): void {
+        this.location.updateCondition().next(true);
 
-    this.availableMinuteValues = range(m, 60);
+        this.clearPolyline();
 
-    this.location.updateTrajectoryOption({ startTime });
+        this.dismiss();
+    }
 
-    this.location.resetTrajectoryEndTime();
-  }
+    clearPolyline(): void {
+        const map: Map = this.navParams.get('map');
 
-  updateEndTime(endTime: string): void {
-    this.location.updateTrajectoryOption({ endTime });
-  }
+        const subscription = this.mapService.clearPolyline(map);
 
-  /* ==================================================Methods executed before modal dismiss=========================================== */
+        this.subscriptions.push(subscription);
+    }
 
-  dismiss(): void {
-    this.viewCtrl.dismiss();
-  }
+    ngOnDestroy() {
+        this.subscriptions.forEach(item => item.unsubscribe());
 
-  /**
-   * @description Clear polyline on current map and notify the location
-   * service that the condition has been changed when user clicked the confirm button;
-   */
-  execution(): void {
-    this.location.updateCondition().next(true);
+        this.workers$$ && this.workers$$.unsubscribe();
+    }
 
-    this.clearPolyline();
+    /* =========================================================== Shortcut methods for template ======================================= */
 
-    this.dismiss();
-  }
+    get startTime() {
+        return this.trajectoryForm.get('startTime');
+    }
 
-  clearPolyline(): void {
-    const map: Map = this.navParams.get('map');
-
-    const subscription = this.mapService.clearPolyline(map);
-
-    this.subscriptions.push(subscription);
-  }
-
-  /* =========================================================== Shortcut methods for template ======================================= */
-
-  get startTime() {
-    return this.trajectoryForm.get('startTime');
-  }
-
-  get endTime() {
-    return this.trajectoryForm.get('endTime');
-  }
+    get endTime() {
+        return this.trajectoryForm.get('endTime');
+    }
 }

@@ -166,9 +166,9 @@
   "UNCONFIRMED": "未确认",
   "AUDITING": "修改审核中",
   "ATTENDANCE_TOTAL": "符合条件的考勤总数",
-  "SET_VIEW_ORDER":"设置显示顺序",
+  "SET_VIEW_ORDER": "设置显示顺序",
   "VIEW_ORDER": "显示顺序",
-  "VIEW_TYPE":"排序类型",
+  "VIEW_TYPE": "排序类型",
 
   "ATTENDANCE_RECORD": "考勤记录",
   "ATTENDANCE_MACHINE_NAME": "考勤机名称",
@@ -370,14 +370,14 @@
   "MUST_INPUT_CHINESE_ERROR": "只能输入中文",
   "MORE_THAN_TEN_CHINESE_CHARACTERS": "最多只能输入10个汉字",
 
-  "ADD_WORK_EXPERIENCE":"添加工作经历",
+  "ADD_WORK_EXPERIENCE": "添加工作经历",
   "UPDATE_WORK_EXPERIENCE": "更新工作经历",
-  "COMPANY_REQUIRED_ERROR":"请输入公司名称",
+  "COMPANY_REQUIRED_ERROR": "请输入公司名称",
   "PROJECT_REQUIRED_ERROR": "请输入项目名称",
-  "JOB_REQUIRED_ERROR":"请输入主要工作内容",
+  "JOB_REQUIRED_ERROR": "请输入主要工作内容",
   "JOB": "工作职责",
 
-  "BANK_CARD":"银行卡",
+  "BANK_CARD": "银行卡",
   "CREDIT_CARD": "信用卡",
   "CARD_OWNER": "持卡人",
   "SALARY_CARD": "工资卡",
@@ -386,8 +386,8 @@
   "DELETE_BANK_CARD_TIP": "删除本卡后可能影响与本卡有关的资金业务, 确定要删除吗？",
   "BANK_CARD_ERROR": "请输入正确的银行卡号",
   "ADD_BANK_CARD": "添加银行卡",
-  "BANK_CARD_INFORMATION":"银行卡信息",
-  "CREDIT_CARD_NOT_ALLOWED_ERROR":"无法绑定信用卡",
+  "BANK_CARD_INFORMATION": "银行卡信息",
+  "CREDIT_CARD_NOT_ALLOWED_ERROR": "无法绑定信用卡",
   "RESERVATION_PHONE_NUMBER": "银行预留手机号",
   "BANKCARD_TYPE": "银行卡类型",
 
@@ -395,37 +395,37 @@
   "CONTACT_US": "联系我们",
   "CURRENT_VERSION": "当前版本",
   "PERMISSION_DENIED": "无访问权限",
-  "CAMERA_PERMISSION_DENIED":"建筑人没有权限使用您的相机，请在手机设置中设置相关选项。",
+  "CAMERA_PERMISSION_DENIED": "建筑人没有权限使用您的相机，请在手机设置中设置相关选项。",
 
-  "MY_CERTIFICATE":"我的证书",
-  "FIRST_GET_DATE":"颁发日期",
-  "AVAILABLE_EXPIRE_START":"有效期开始",
-  "AVAILABLE_EXPIRE_END":"有效期结束",
-  "ADD_CERTIFICATE":"添加证书",
+  "MY_CERTIFICATE": "我的证书",
+  "FIRST_GET_DATE": "颁发日期",
+  "AVAILABLE_EXPIRE_START": "有效期开始",
+  "AVAILABLE_EXPIRE_END": "有效期结束",
+  "ADD_CERTIFICATE": "添加证书",
   "UPDATE_CERTIFICATE": "更新证书",
   "WORK_TYPE_REQUIRE_ERROR": "请选择工种",
   "CERTIFICATE_NUMBER_REQUIRED_ERROR": "请输入证书编号",
-  "FIRST_GET_DATE_REQUIRED_ERROR":"请输入证书颁发时间",
-  "EXPIRE_START_DATE_REQUIRED_ERROR":"请输入有效期开始时间",
-  "EXPIRE_END_DATE_REQUIRED_ERROR":"请输入有效期结束时间",
+  "FIRST_GET_DATE_REQUIRED_ERROR": "请输入证书颁发时间",
+  "EXPIRE_START_DATE_REQUIRED_ERROR": "请输入有效期开始时间",
+  "EXPIRE_END_DATE_REQUIRED_ERROR": "请输入有效期结束时间",
   "ISSUING_AGENCY_REQUIRED_ERROR": "请输入证书颁发机构",
   "CERTIFICATE_FRONT_TIP": "证书正面",
   "CERTIFICATE_BACK_TIP": "证书背面",
 
   "UNREAD_MESSAGE": "未读消息",
   "READ_MESSAGE": "已读消息",
-  "BY_CREATE_TIME":"按创建时间",
+  "BY_CREATE_TIME": "按创建时间",
   "BY_MESSAGE_TYPE": "按消息类型",
   "MESSAGE_DETAIL": "消息详情",
   "WORKER_CONTRACT_EXPIRE_TIP": "以下工人的用工合同即将到期",
-  "UNCONFIRMED_ATTENDANCE_TIP":"您有以下考勤未确认",
-  
-  "REQUESTER":"发起人",
+  "UNCONFIRMED_ATTENDANCE_TIP": "您有以下考勤未确认",
+
+  "REQUESTER": "发起人",
   "REQUEST_TIME": "发起时间",
   "PENDING_COUNT": "未处理申请总数",
-  "AUDIT":"审核",
-  "WORK_FLOW_AUDIT_TIP":"请审核以下申请",
-  "WORK_FLOW_AUDIT_COMMENT":"请输入审核意见",
+  "AUDIT": "审核",
+  "WORK_FLOW_AUDIT_TIP": "请审核以下申请",
+  "WORK_FLOW_AUDIT_COMMENT": "请输入审核意见",
   "CREATE": "创建",
   "PASS": "通过",
   "REJECT": "驳回",
@@ -433,11 +433,11 @@
   "REAPPLY": "重新发起",
 
   "APPLY_REASON": "申请原因",
-  "APPLY_PEOPLE":"申请员工",
+  "APPLY_PEOPLE": "申请员工",
   "AUDITOR": "审核人",
 
-  "LEAVE_DETAIL":"请假详情",
-  "VACATION_TYPE":"假期类型",
+  "LEAVE_DETAIL": "请假详情",
+  "VACATION_TYPE": "假期类型",
   "COMMENT": "备注",
   "ATTACH": "附件",
 
@@ -445,7 +445,7 @@
 
   "PIECE_AUDIT_DETAIL": "工件审核详情",
   "COMPLETE_DATE": "完成日期",
-  
+
   "ATTENDANCE_MODIFY_DETAIL": "考勤修改详情",
   "MODIFY_DATE": "修改日期",
   "I_STARTED_COUNT": "发起申请总数",
@@ -485,11 +485,23 @@
   "PIECE_WISE_SETTING": "分段设置",
   "CANCEL_PIECE_WISE": "取消分段",
   "ADD_ATTACH": "添加附件",
-  
+
   "INPUT_QUERY_CONTENT": "请输入查询内容",
 
   "ATTENDANCE_REQUIRED_ERROR": "请选择需要修改的考勤",
 
   "SELECT_ATTENDANCE": "选择考勤",
-  "ATTENDANCE_MODIFY_REASON_REQUIRED_ERROR": "请输入考勤修改原因"
+  "ATTENDANCE_MODIFY_REASON_REQUIRED_ERROR": "请输入考勤修改原因",
+  "LEAVE_REASON_REQUIRED_ERROR": "请输入请假原因",
+
+  "SICK_LEAVE": "病假",
+  "ABSENCE_LEAVE": "事假",
+  "ANNUAL_LEAVE": "年假",
+  "MATERNITY_LEAVE": "产假",
+  "FUNERAL_LEAVE": "丧假",
+  "MARRIAGE_LEAVE": "婚假",
+  "WORK_RELATED_LEAVE": "工伤假",
+  "LEAVE_TYPE_REQUIRED_ERROR": "请选择请假类型",
+  "LEAVE_START_TIME_REQUIRED_ERROR": "请输入请假的开始时间",
+  "LEAVE_END_TIME_REQUIRED_ERROR": "请输入请假的结束时间"
 }

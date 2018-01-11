@@ -1,5 +1,5 @@
-import { UploadWorkerContractAttachResponse, UploadAttendanceModifyAttachResponse, CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateWorkerContractModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse } from './../../interfaces/response-interface';
-import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions } from './../../interfaces/request-interface';
+import { UploadWorkerContractAttachResponse, UploadAttendanceModifyAttachResponse, CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateWorkerContractModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, UploadLeaveAttachResponse, UploadOvertimeAttachResponse, UploadPieceAuditAttachResponse, UploadWorkerContractModifyAttachResponse } from './../../interfaces/response-interface';
+import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 export const CREATE_WORKER_CONTRACT = 'CREATE_WORKER_CONTRACT';
@@ -145,6 +145,7 @@ export class CreateAttendanceModifySuccessAction implements Action {
 
     constructor(public payload: CreateAttendanceModifyResponse) { }
 }
+/* ====================================================Upload attachment actions======================================= */
 
 export const UPLOAD_WORKER_CONTRACT_ATTACH = 'UPLOAD_WORKER_CONTRACT_ATTACH';
 
@@ -194,6 +195,101 @@ export class UploadAttendanceModifyAttachSuccessAction implements Action {
     constructor(public payload: UploadAttendanceModifyAttachResponse) { }
 }
 
+export const UPLOAD_LEAVE_ATTACH = 'UPLOAD_LEAVE_ATTACH';
+
+export class UploadLeaveAttachAction implements Action {
+    readonly type = UPLOAD_LEAVE_ATTACH;
+
+    constructor(public payload: UploadLeaveAttachOptions) { }
+}
+
+export const UPLOAD_LEAVE_ATTACH_FAIL = 'UPLOAD_LEAVE_ATTACH_FAIL';
+
+export class UploadLeaveAttachFailAction implements Action {
+    readonly type = UPLOAD_LEAVE_ATTACH_FAIL;
+    
+    constructor(public payload: UploadLeaveAttachResponse) { }
+}
+
+export const UPLOAD_LEAVE_ATTACH_SUCCESS = 'UPLOAD_LEAVE_ATTACH_SUCCESS';
+
+export class UploadLeaveAttachSuccessAction implements Action {
+    readonly type = UPLOAD_LEAVE_ATTACH_SUCCESS;
+    
+    constructor(public payload: UploadLeaveAttachResponse) { }
+}
+
+export const UPLOAD_OVERTIME_ATTACH = 'UPLOAD_OVERTIME_ATTACH';
+
+export class UploadOvertimeAttachAction implements Action {
+    readonly type = UPLOAD_OVERTIME_ATTACH;
+
+    constructor(public payload: UploadOvertimeAttachOptions) { }
+}
+
+export const UPLOAD_OVERTIME_ATTACH_FAIL = 'UPLOAD_OVERTIME_ATTACH_FAIL';
+
+export class UploadOvertimeAttachFailAction implements Action {
+    readonly type = UPLOAD_OVERTIME_ATTACH_FAIL;
+    
+    constructor(public payload: UploadOvertimeAttachResponse) { }
+}
+
+export const UPLOAD_OVERTIME_ATTACH_SUCCESS = 'UPLOAD_OVERTIME_ATTACH_SUCCESS';
+
+export class UploadOvertimeAttachSuccessAction implements Action {
+    readonly type = UPLOAD_OVERTIME_ATTACH_SUCCESS;
+    
+    constructor(public payload: UploadOvertimeAttachResponse) { }
+}
+
+export const UPLOAD_PIECE_AUDIT_ATTACH = 'UPLOAD_PIECE_AUDIT_ATTACH';
+
+export class UploadPieceAuditAttachAction implements Action {
+    readonly type = UPLOAD_PIECE_AUDIT_ATTACH;
+
+    constructor(public payload: UploadPieceAuditAttachOptions) { }
+}
+
+export const UPLOAD_PIECE_AUDIT_ATTACH_FAIL = 'UPLOAD_PIECE_AUDIT_ATTACH_FAIL';
+
+export class UploadPieceAuditAttachFailAction implements Action {
+    readonly type = UPLOAD_PIECE_AUDIT_ATTACH_FAIL;
+    
+    constructor(public payload: UploadPieceAuditAttachResponse) { }
+}
+
+export const UPLOAD_PIECE_AUDIT_ATTACH_SUCCESS = 'UPLOAD_PIECE_AUDIT_ATTACH_SUCCESS';
+
+export class UploadPieceAuditAttachSuccessAction implements Action {
+    readonly type = UPLOAD_PIECE_AUDIT_ATTACH_SUCCESS;
+    
+    constructor(public payload: UploadPieceAuditAttachResponse) { }
+}
+
+export const UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH = 'UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH';
+
+export class UploadWorkerContractModifyAttachAction implements Action {
+    readonly type = UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH;
+
+    constructor(public payload: UploadWorkerContractModifyAttachOptions) { }
+}
+
+export const UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_FAIL = 'UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_FAIL';
+
+export class UploadWorkerContractModifyAttachFailAction implements Action {
+    readonly type = UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_FAIL;
+    
+    constructor(public payload: UploadWorkerContractModifyAttachResponse) { }
+}
+
+export const UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_SUCCESS = 'UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_SUCCESS';
+
+export class UploadWorkerContractModifyAttachSuccessAction implements Action {
+    readonly type = UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_SUCCESS;
+    
+    constructor(public payload: UploadWorkerContractModifyAttachResponse) { }
+}
 
 export type Actions = CreateWorkerContractAction
     | CreateAttendanceModifyAction
@@ -213,9 +309,21 @@ export type Actions = CreateWorkerContractAction
     | CreateWorkerContractModifyFailAction
     | CreateWorkerContractModifySuccessAction
     | CreateWorkerContractSuccessAction
-    | UploadWorkerContractAttachAction
-    | UploadWorkerContractAttachFailAction
-    | UploadWorkerContractAttachSuccessAction
     | UploadAttendanceModifyAttachAction
     | UploadAttendanceModifyAttachFailAction
-    | UploadAttendanceModifyAttachSuccessAction;
+    | UploadAttendanceModifyAttachSuccessAction
+    | UploadLeaveAttachAction
+    | UploadLeaveAttachFailAction
+    | UploadLeaveAttachSuccessAction
+    | UploadOvertimeAttachAction
+    | UploadOvertimeAttachFailAction
+    | UploadOvertimeAttachSuccessAction
+    | UploadPieceAuditAttachAction
+    | UploadPieceAuditAttachFailAction
+    | UploadPieceAuditAttachSuccessAction
+    | UploadWorkerContractAttachAction
+    | UploadWorkerContractAttachAction
+    | UploadWorkerContractAttachFailAction
+    | UploadWorkerContractAttachFailAction
+    | UploadWorkerContractAttachSuccessAction
+    | UploadWorkerContractModifyAttachSuccessAction;

@@ -1,6 +1,6 @@
 import { Subject } from 'rxjs/Subject';
 import { RequestOption } from 'interfaces/request-interface';
-import { ViewController } from 'ionic-angular';
+import { ViewController, InfiniteScroll } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 import { ProjectService } from './../../services/business/project-service';
 import { workerContractList } from './../../services/api/command';
@@ -11,102 +11,107 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 interface WorkerItem {
-  id: number;
-  name: string;
-  teamName: string;
-  workType: string;
-  selected: boolean;
+    id: number;
+    name: string;
+    teamName: string;
+    workType: string;
+    selected: boolean;
 }
 
 @Component({
-  selector: 'worker-select',
-  templateUrl: 'worker-select.html'
+    selector: 'worker-select',
+    templateUrl: 'worker-select.html'
 })
 export class WorkerSelectComponent implements OnInit, OnDestroy {
 
-  // @Input() selectedWorkers: number[]; // userIds
+    workerSubject: Subject<WorkerItem[]> = new BehaviorSubject([])
 
-  // @Output() selectWorker: EventEmitter<WorkerItem> = new EventEmitter();
+    subscriptions: Subscription[] = [];
 
-  workerSubject: Subject<WorkerItem[]> = new BehaviorSubject([])
+    workers$$: Subscription;
 
-  subscriptions: Subscription[] = [];
+    canQueryOther: Observable<boolean>;
 
-  workers$$: Subscription;
+    haveMoreData: Observable<boolean>;
 
-  canQueryOther: Observable<boolean>;
+    selectedWorkers: Observable<number[]>;
 
-  enableScroll: Observable<boolean>;
+    constructor(
+        public worker: WorkerService,
+        public permission: PermissionService,
+        public project: ProjectService,
+        public viewCtrl: ViewController
+    ) {
+        worker.resetPage();
+    }
 
-  selectedWorkers: Observable<number[]>;
+    ngOnInit() {
+        this.initialModel();
 
-  constructor(
-    public worker: WorkerService,
-    public permission: PermissionService,
-    public project: ProjectService,
-    public viewCtrl: ViewController
-  ) {
-    worker.resetPage();
-  }
+        this.launch();
+    }
 
-  ngOnInit() {
-    this.canQueryOther = this.permission.specialOptionValidate(workerContractList)
-      .map(result => !result['self'])
-      .take(1)
-      .filter(value => !!value);
+    initialModel(): void {
+        this.canQueryOther = this.permission.specialOptionValidate(workerContractList)
+            .map(result => !result['self'])
+            .take(1)
+            .filter(value => !!value);
 
-    this.enableScroll = this.worker.getEnableScroll().share();
+        this.haveMoreData = this.worker.getHaveMoreData();
+    }
 
-    this.worker.getWorkerContracts(this.getOption());
+    launch(): void {
+        this.subscriptions = [
+            this.getWorkers(),
+            this.worker.getWorkerContracts(this.getOption()),
+            // this.getRestWorkerList(),
+            this.worker.handleError(),
+        ];
+    }
 
-    this.launch();
-  }
+    getWorkers(): Subscription {
+        return this.canQueryOther
+            .mergeMapTo(this.worker.getWorkerItems(this.worker.getSelectedWorkers().take(1)))
+            .subscribe(this.workerSubject)
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.getWorkers(),
-      this.getRestWorkerList()
-    ];
-  }
+    getRestWorkerList(): Subscription {
+        return this.worker.getWorkerContracts(
+            this.worker.haveRestWorkers()
+                .combineLatest(this.canQueryOther, (haveRest, canQuery) => haveRest && canQuery)
+                .mergeMapTo(this.getOption())
+        );
 
-  getWorkers(): Subscription {
-    return this.canQueryOther
-      .mergeMapTo(this.worker.getWorkerItems(this.worker.getSelectedWorkers().take(1)))
-      .subscribe(this.workerSubject)
-  }
+    }
 
-  getRestWorkerList(): Subscription {
-    return this.worker.haveRestWorkers().subscribe(_ => this.worker.getWorkerContracts(this.canQueryOther.mergeMapTo(this.getOption())));
-  }
+    getOption(): Observable<RequestOption> {
+        return this.worker.getCompleteStatusOption()
+            .zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }))
+    }
 
-  getOption(): Observable<RequestOption> {
-    return this.worker.getCompleteStatusOption()
-      .zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }))
-  }
+    getNextPage(infiniteScroll: InfiniteScroll): void {
+        this.workers$$ && this.workers$$.unsubscribe();
 
-  getNextPage(infiniteScroll): void {
-    this.workers$$ && this.workers$$.unsubscribe();
+        this.workers$$ = this.worker.getNextPage(infiniteScroll);
+    }
 
-    this.workers$$ = this.worker.getNextPage(infiniteScroll);
-  }
+    updateSelectedWorkers(): void {
+        const subscription = this.workerSubject.take(1).subscribe(workers => {
+            this.worker.updateSelectedWorkers(workers.filter(item => item.selected).map(item => item.id));
 
-  updateSelectedWorkers(): void {
-    const subscription =  this.workerSubject.take(1).subscribe(workers => {
-      this.worker.updateSelectedWorkers(workers.filter(item => item.selected).map(item => item.id));
+            this.dismiss();
+        });
 
-      this.dismiss();
-    });
+        this.subscriptions.push(subscription);
+    }
 
-    this.subscriptions.push(subscription);
-  }
+    dismiss() {
+        this.viewCtrl.dismiss();
+    }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
+    ngOnDestroy() {
+        this.workers$$ && this.workers$$.unsubscribe();
 
-  ngOnDestroy() {
-    this.workers$$ && this.workers$$.unsubscribe();
-
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

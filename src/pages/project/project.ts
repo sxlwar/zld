@@ -1,3 +1,5 @@
+import { RequestOption } from 'interfaces/request-interface';
+import { Subscription } from 'rxjs/Subscription';
 //region
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
@@ -53,6 +55,8 @@ export class ProjectPage {
 
   projects: Observable<Project[]>;
 
+  subscriptions: Subscription[] = [];
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -80,31 +84,43 @@ export class ProjectPage {
     this.isExpired = this.remainDays.map(num => num < 0);
 
     this.haveMultipleProject = this.projects.map(value => value.length > 1);
+
+    this.workerCount = this.workerService.getWorkerCount();
+
   }
 
   ionViewWillEnter() {
-    this.workerCount = this.workerService.getWorkerCount(this.createOption());
+    this.launch();
   }
 
-  createOption(): Observable<{ [key: string]: string | number }> {
-    return Observable.of({ request_status: '完成', limit: 1 })
+  launch(): void {
+    this.subscriptions = [
+      this.workerService.getWorkerContracts(this.getOption()),
+      this.workerService.handleError(),
+    ];
+  }
+
+  getOption(): Observable<RequestOption> {
+    return this.workerService.getCompleteStatusOption()
       .zip(
       this.currentProject.map(project => ({ project_id: project.id })),
-      (status, id) => Object.assign(id, status)
+      (status, id) => ({ ...status, ...id, limit: 1 })
       );
   }
 
   switchProject($event) {
-    this.popoverCtrl.create(ProjectListComponent, { option: this.createOption() }).present({ ev: $event }).then(() => { });
+    this.popoverCtrl.create(ProjectListComponent, { option: this.getOption() }).present({ ev: $event }).then(() => { });
   }
 
   goTo(item) {
-    if (!item.page) return;
-    this.navCtrl.push(item.page, item).then(() => { });
+    !!item.page && this.navCtrl.push(item.page, item).then(() => { });
+  }
+
+  ionViewDidLeave(){
+    this.subscriptions.forEach(item => item.unsubscribe());
   }
 
   ionViewWillUnload() {
     this.projectService.unSubscribe();
-    this.workerService.unSubscribe();
   }
 }

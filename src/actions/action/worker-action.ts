@@ -159,6 +159,14 @@ export class UpdateSelectedWorkersAction implements Action {
   constructor(public payload: number[]) { }
 }
 
+export const RESET_SELECTED_WORKERS = 'RESET_SELECTED_WORKERS';
+
+export class ResetSelectedWorkersAction implements Action {
+  readonly type = RESET_SELECTED_WORKERS;
+
+  constructor() { }
+}
+
 /* ================================================Contract Edit actions=================================================== */
 
 export const EDIT_WORKER_CONTRACT = 'EDIT_WORKER_CONTRACT';
@@ -197,6 +205,7 @@ export type Actions = GetWorkerContractsAction
   | IncrementQueryWorkerContractPageAction
   | ResetManagementPiecerPageAction
   | ResetManagementTimerPageAction
+  | ResetSelectedWorkersAction
   | ResetQueryWorkerContractPageAction
   | ResetWorkerContractsAction
   | SetQueryWorkerContractLimitAction

@@ -32,8 +32,6 @@ export class SignWorkerContractPage {
 
     workTypes: Observable<WorkType[]>;
 
-    expireDate: string;
-
     subscriptions: Subscription[] = [];
 
     workers: Observable<string>;
@@ -46,7 +44,7 @@ export class SignWorkerContractPage {
 
     contract$: Subject<WorkerContractFormModel> = new Subject();
 
-    attachList: string[] = [''];
+    attachList: string[] = [];
 
     constructor(
         public navCtrl: NavController,
@@ -83,7 +81,7 @@ export class SignWorkerContractPage {
     launch() {
         this.subscriptions = [
             this.searchService.getSelectedWorkers().subscribe(source => this.contract.patchValue({ workerIds: source.map(item => item.user_id) })),
-            this.launchService.createWorkerContract(this.contract$.map(_ => ({ ...this.contract.value, ...this.timePayContract.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList.filter(item => !!item) }))),
+            this.launchService.createWorkerContract(this.contract$.map(_ => ({ ...this.contract.value, ...this.timePayContract.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList }))),
             this.launchService.uploadWorkerContractAttach(),
             this.launchService.getSignWorkerContractResponse().subscribe(_ => this.resetForm()),
             this.launchService.handleMultiProcessError(),
@@ -134,8 +132,6 @@ export class SignWorkerContractPage {
     }
 
     updateExpireDate(start: string): void {
-        this.expireDate = start;
-
         this.contract.patchValue({ endDay: '' });
     }
 
@@ -174,19 +170,9 @@ export class SignWorkerContractPage {
 
         this.attendanceTimeSettingText = this.isPieceWiseAttendance ? 'CANCEL_PIECE_WISE' : 'PIECE_WISE_SETTING';
     }
-
-    addAttach(): void {
-        this.attachList.push('');
-    }
-
-    deleteAttach($event: Event, index: number): void {
-        $event.stopPropagation();
-
-        this.attachList.splice(index, 1);
-    }
-
-    getAttach(url: string, index: number): void {
-        this.attachList[index] = url;
+    
+    getAttach(attach: string[]):void {
+        this.attachList = attach;
     }
 
     resetForm(): void {
