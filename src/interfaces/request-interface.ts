@@ -153,23 +153,28 @@ export interface WorkerContractOptions {
 }
 
 export interface EditTimePayOptions extends LaunchTimePayOptions {
-    id?: number;
+    id: number; //垃圾文档，用工合同计时id, 计时下面有个狗屁的ID。
 }
 
 export interface EditPiecePayOptions extends LaunchPiecePayOptions {
     id?: number;
 }
 
-export interface WorkerContractEditOptions {
-    sid: string;
-    contract_id: number;
+export interface EditWorkerContractOptions {
     morning_time_on_duty: string;
     morning_time_off_duty: string;
-    afternoon_time_on_duty: string;
-    afternoon_time_off_duty: string;
+    afternoon_time_on_duty?: string;
+    afternoon_time_off_duty?: string;
     finish_day: string;
     pay_day: string;
     additional_content: string;
+}
+
+export interface WorkerContractEditOptions {
+    sid: string;
+    contract_id: number;
+    attach?: string[]; // custom field delete in command before request;
+    worker_contract: EditWorkerContractOptions;
     work_time_pay?: EditTimePayOptions[];
     work_piece_pay?: EditPiecePayOptions[];
 }
@@ -819,7 +824,7 @@ export interface MessageContentOptions {
 /* ==========================================================Launch options============================================================ */
 
 export interface LaunchTimePayOptions {
-    time_unit: string; // 常量传个毛线； ‘小时’
+    time_unit?: string; // 常量传个毛线； ‘小时’
     pay_mount: number;
     overtime_pay_mount: number;
     content: string;

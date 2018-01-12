@@ -660,4 +660,8 @@ export class ProcessorService extends MapperService {
     return option$.subscribe(option => this.store.dispatch(new UploadWorkerContractModifyAttachAction(option)));
   }
 
+  uploadWorkerContractEditAttachProcessor(option$: Observable<UploadWorkerContractAttachOptions>): Subscription {
+    return this.uploadWorkerContractAttachProcessor(option$);
+  }
+
 }

@@ -205,6 +205,7 @@ export const selectManageTimerCount = createSelector(getWorkerContracts, worker.
 export const selectManagePiecerCount = createSelector(getWorkerContracts, worker.getPiecerCount);
 export const selectSelectedWorkers = createSelector(getWorkerContracts, worker.getSelectedWorkers);
 export const selectWorkerContractEditResponse = createSelector(getWorkerContracts, worker.getContractEditResponse);
+export const selectWorkerContractEditOptions = createSelector(getWorkerContracts, worker.getContractEditOptions);
 
 //work type list
 const getWorkType = (state: AppState) => state.workType;

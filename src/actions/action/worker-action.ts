@@ -193,6 +193,14 @@ export class EditWorkerContractSuccessAction implements Action {
   constructor(public payload: WorkerContractEditResponse) { }
 }
 
+export const RESET_WORKER_CONTRACT_EDIT_RESPONSE = 'RESET_WORKER_CONTRACT_EDIT_RESPONSE';
+
+export class ResetWorkerContractEditResponseAction implements Action {
+  readonly type = RESET_WORKER_CONTRACT_EDIT_RESPONSE;
+
+  constructor() { }
+}
+
 export type Actions = GetWorkerContractsAction
   | DecrementQueryWorkerContractPageAction
   | EditWorkerContractAction
@@ -207,6 +215,7 @@ export type Actions = GetWorkerContractsAction
   | ResetManagementTimerPageAction
   | ResetSelectedWorkersAction
   | ResetQueryWorkerContractPageAction
+  | ResetWorkerContractEditResponseAction
   | ResetWorkerContractsAction
   | SetQueryWorkerContractLimitAction
   | SetQueryWorkerContractPageAction

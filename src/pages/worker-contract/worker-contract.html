@@ -2,6 +2,12 @@
 
   <ion-navbar>
     <ion-title>{{'WORKER_CONTRACT_DETAIL' | translate}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only  (click)="editContract()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>

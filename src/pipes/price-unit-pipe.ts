@@ -13,6 +13,8 @@ export class PriceUnitPipe implements PipeTransform {
     }
 
     transform(value: number, type: string): Observable<string> {
+        if(!value) return;
+        
         const map = {
             timer: 'TIME_PAY_UNIT',
             piecer: 'PIECE_PAY_UNIT'

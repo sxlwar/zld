@@ -3,17 +3,17 @@ import { SharedModule } from './../../app/shared.modules';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ApplyWorkerContractModifyPage } from './apply-worker-contract-modify';
+import { EditWorkerContractPage } from './edit-worker-contract';
 
 @NgModule({
   declarations: [
-    ApplyWorkerContractModifyPage,
+    EditWorkerContractPage,
   ],
   imports: [
-    IonicPageModule.forChild(ApplyWorkerContractModifyPage),
+    IonicPageModule.forChild(EditWorkerContractPage),
     TranslateModule,
     SharedModule,
     ComponentsModule,
   ],
 })
-export class ApplyWorkerContractModifyPageModule {}
+export class EditWorkerContractPageModule {}

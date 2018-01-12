@@ -11,6 +11,7 @@ import { JoinPipe } from './../pipes/join-pipe';
 import { PriceUnitPipe } from './../pipes/price-unit-pipe';
 import { BatteryPipe, PercentBatteryPipe, IsLowPowerPipe } from './../pipes/battery-pipe';
 import { directives } from '../directives/directives-import';
+import { WorkerContractTypePipe } from './../pipes/worker-contract-pipe';
 
 
 
@@ -34,6 +35,7 @@ export const PIPES = [
     TaskStatusPipe,
     TaskStatusColorPipe,
     OvertimePayPipe,
+    WorkerContractTypePipe,
 ];
 
 export const DIRECTIVES = directives;

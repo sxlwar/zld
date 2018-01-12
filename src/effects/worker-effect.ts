@@ -1,9 +1,9 @@
+import { TipService } from './../services/tip-service';
 import { EDIT_WORKER_CONTRACT, EditWorkerContractAction, EditWorkerContractFailAction, EditWorkerContractSuccessAction } from './../actions/action/worker-action';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from '../services/api/websocket-service';
 import { AppState } from '../reducers/index-reducer';
-import { Store } from '@ngrx/store';
 import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';
@@ -27,13 +27,14 @@ export class WorkerEffect extends Command {
         .switchMap((action: EditWorkerContractAction) => this.ws
             .send(this.getWorkerContractEdit(action.payload))
             .takeUntil(this.actions$.ofType(EDIT_WORKER_CONTRACT))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new EditWorkerContractFailAction(msg.data) : new EditWorkerContractSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
     constructor(
         public ws: WebsocketService,
-        public store: Store<AppState>,
+        private tip: TipService,
         private actions$: Actions
     ) {
         super();

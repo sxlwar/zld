@@ -518,5 +518,7 @@
   "PAY_PERCENT_REQUIRED_ERROR": "请输入支付比例",
   "PAY_PERCENT_INVALID_ERROR": "请输入正确的支付比例，1至100之间的整数",
   "QUALITY_DESCRIPTION_REQUIRED_ERROR": "请输入正确的支付比例，1至100之间的整数",
-  "WORK_PIECE_REQUIRED_ERROR": "请选择需要审核的工件"
+  "WORK_PIECE_REQUIRED_ERROR": "请选择需要审核的工件",
+
+  "EDIT_WORKER_CONTRACT": "编辑用工合同"
 }

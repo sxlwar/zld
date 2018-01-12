@@ -1,91 +1,37 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{'CREATE_WORKER_CONTRACT' | translate}}</ion-title>
+
+    <ion-buttons start>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-title>{{'EDIT_WORKER_CONTRACT' | translate}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
-  <ion-item-group [formGroup]="contract">
-
-    <ion-item>
-      <ion-label>{{'CONTRACT_TYPE' | translate}}</ion-label>
-      <ion-select [(ngModel)]="contractType" formControlName="formType" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-        <ion-option value="1">{{'WORK_TIME_PAY' | translate}}</ion-option>
-        <ion-option value="2">{{'WORK_PIECE_PAY' | translate}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <div *ngIf="formType.invalid && (formType.dirty || formType.touched)" class="form-error red-color">
-      <span *ngIf="formType.errors.required">{{'CONTRACT_TYPE_REQUIRED_ERROR' | translate}}</span>
-    </div>
-
-    <ion-item-divider>{{'PARTY_A' | translate}}</ion-item-divider>
+  
+  <ion-item-group [formGroup]="form">
 
     <ion-item>
-      <ion-label>{{'TEAM' | translate}}</ion-label>
-      <ion-select formControlName="teamId" (ngModelChange)="showPartyAInfo($event)" required [cancelText]="'CANCEL_BUTTON' | translate"
-        [okText]="'CONFIRM_BUTTON' | translate">
-        <ion-option *ngFor="let item of teams | async" [value]="item.id">{{item.name}}</ion-option>
-      </ion-select>
+      <ion-label fixed>{{'CONTRACT_TYPE' | translate}}</ion-label>
+      <ion-input disabled [value]="contract.type | workerContractType | translate"></ion-input>
     </ion-item>
-    <div *ngIf="teamId.invalid && (teamId.dirty || teamId.touched)" class="form-error red-color">
-      <span *ngIf="teamId.errors.required">{{'TEAM_REQUIRED_ERROR' | translate}}</span>
-    </div>
-
-    <div *ngIf="selectedTeam | async; let selectedTeam;">
-      <ion-item>
-        <ion-label fixed>{{'PROJECT_NAME' | translate}}</ion-label>
-        <!--不知道为什么这个地方是project__name，也许是后台疯了吧-->
-        <ion-input [value]="selectedTeam?.project__name" disabled></ion-input>
-      </ion-item>
-
-      <ion-item>
-        <ion-label fixed>{{'FOREMAN' | translate}}</ion-label>
-        <ion-input [value]="selectedTeam?.leader__employee__realname" disabled></ion-input>
-      </ion-item>
-    </div>
-
-    <ion-item-divider>{{'PARTY_B' | translate}}</ion-item-divider>
 
     <ion-item class="workers">
-      <ion-label>
-        {{'NAME' | translate}}
-        <span>{{workers | async}}</span>
-      </ion-label>
-      <ion-icon name="search" item-end (click)="searchWorker($event)"></ion-icon>
+      <ion-label fixed>{{'NAME' | translate}}</ion-label>
+      <ion-input disabled [value]="contract.worker__employee__realname"></ion-input>
     </ion-item>
-    <div *ngIf="workerIds.invalid && (workerIds.dirty || workerIds.touched)" class="form-error red-color">
-      <span *ngIf="workerIds.errors.required">{{'WORKERS_REQUIRED_ERROR' | translate}}</span>
-    </div>
-
-    <ion-item>
-      <ion-label>{{'WORK_TYPE' | translate}}</ion-label>
-      <ion-select formControlName="workTypeId" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-        <ion-option *ngFor="let item of workTypes | async" [value]="item.id">{{item.name}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <div *ngIf="workTypeId.invalid && (workTypeId.dirty || workTypeId.touched)" class="form-error red-color">
-      <span *ngIf="workTypeId.errors.required">{{'WORK_TYPE_REQUIRED_ERROR' | translate}}</span>
-    </div>
-
-    <ion-item-divider>{{'CONTRACT_EXPIRE' | translate}}</ion-item-divider>
-
-    <ion-item>
-      <ion-label>{{'START_DATE' | translate}}</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-        formControlName="startDay" (ngModelChange)="updateExpireDate($event)" required></ion-datetime>
-    </ion-item>
-    <div *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)" class="form-error red-color">
-      <span *ngIf="startDay.errors.required">{{'CONTRACT_START_DATE_REQUIRED_ERROR' | translate}}</span>
-    </div>
 
     <ion-item>
       <ion-label>{{'END_DATE' | translate}}</ion-label>
       <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-        [min]="startDay.value" formControlName="endDay" required [disabled]="!startDay.value"></ion-datetime>
+        [min]="contract.finish_day" formControlName="endDay" required></ion-datetime>
     </ion-item>
     <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-error red-color">
       <span *ngIf="endDay.errors.required">{{'CONTRACT_END_DATE_REQUIRED_ERROR' | translate}}</span>
@@ -93,13 +39,13 @@
 
     <ion-item-divider>
       {{'SALARY_PAY_TYPE' | translate}}
-      <ion-icon *ngIf="formType.value === '2'" name="add" item-end (click)="addPiece()"></ion-icon>
+      <ion-icon *ngIf="contract.type === 'work_piece_pay'" name="add" item-end (click)="addPiece()"></ion-icon>
     </ion-item-divider>
 
     <!--FIXME:使用日期组件，只选择日期的时候这个地方搞不清楚是哪的问题，payDay的值无法正确设置-->
     <ion-item>
       <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
-      <ion-input type="number" formControlName="payDay" required></ion-input>
+      <ion-input type="number" formControlName="payDay" [(ngModel)]="contract.pay_day" required></ion-input>
     </ion-item>
     <div *ngIf="payDay.invalid && (payDay.dirty || payDay.touched)" class="form-error red-color">
       <span *ngIf="payDay.errors.required">{{'PAYDAY_REQUIRED_ERROR' | translate}}</span>
@@ -108,7 +54,7 @@
       </span>
     </div>
 
-    <div *ngIf="formType.value === '1'" [formGroup]="timePayContract">
+    <div *ngIf="contract.type === 'work_time_pay'" [formGroup]="timePayContract">
       <ion-item>
         <ion-label fixed>{{'HOURLY_WAGE' | translate}}</ion-label>
         <ion-input type="number" formControlName="hourlyWage" required></ion-input>
@@ -126,7 +72,7 @@
       </div>
     </div>
 
-    <div *ngIf="formType.value === '2'">
+    <div *ngIf="contract.type === 'work_piece_pay'">
       <div *ngFor="let form of piecePayContracts;  index as index;" [formGroup]="form">
 
         <ion-card>

@@ -194,7 +194,7 @@ export interface ProjectListResponse {
 /*===========================================Worker contract model======================================================*/
 
 /**
- * 什么玩意这是？发请求时的类型是数字，响应的类型给字符串，这TMD完全是在搞事情。
+ * 什么玩意这是？发请求时的类型是数字，响应的类型给字符串, SB.
  */
 export enum ContractTypeOfResponse {
   timer = 'work_time_pay',
@@ -204,10 +204,11 @@ export enum ContractTypeOfResponse {
 export interface TimePay {
   content: string;
   contract_id: number;
-  overtime_pay_mount: number;
+  overtime_pay_mount: number; // 这个字段可能没有，垃圾数据结构，没有数据时哪怕有个空值,居然TMD字段都没有了。
   pay_mount: number;
   probation_pay_mount: number;
   time_unit: string;
+  id: number; // 这个东西在是文档的示例里找到的，垃圾文档和一坨屎一样
 }
 
 export interface PiecePay {
@@ -244,7 +245,7 @@ export interface WorkerContract {
   team__quality_manage__employee__realname: string;
   team__quality_manage__username: string;
   team_id: number;
-  type: string;
+  type: string; // contract type
   work_time_pay?: TimePay[];
   work_piece_pay?: PiecePay[];
   worker__employee__personalIdNum: string;
