@@ -291,6 +291,14 @@ export class UploadWorkerContractModifyAttachSuccessAction implements Action {
     constructor(public payload: UploadWorkerContractModifyAttachResponse) { }
 }
 
+export const RESET_LAUNCH_RESPONSE = 'RESET_LAUNCH_RESPONSE';
+
+export class ResetLaunchResponseAction implements Action {
+    readonly type = RESET_LAUNCH_RESPONSE;
+
+    constructor(public payload: string) { }
+}
+
 export type Actions = CreateWorkerContractAction
     | CreateAttendanceModifyAction
     | CreateAttendanceModifyFailAction
@@ -308,6 +316,7 @@ export type Actions = CreateWorkerContractAction
     | CreateWorkerContractModifyAction
     | CreateWorkerContractModifyFailAction
     | CreateWorkerContractModifySuccessAction
+    | ResetLaunchResponseAction
     | CreateWorkerContractSuccessAction
     | UploadAttendanceModifyAttachAction
     | UploadAttendanceModifyAttachFailAction

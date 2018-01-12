@@ -11,6 +11,7 @@ import { LaunchService } from './../../services/business/launch-service';
 import { AttendanceService } from './../../services/business/attendance-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 @IonicPage()
 @Component({
@@ -60,7 +61,7 @@ export class ApplyAttendanceModifyPage {
       this.attendances.subscribe(attendances => this.form.patchValue({ attendanceIds: attendances.map(item => item.id) })),
       this.launchService.getSuccessResponseOfAttendanceModify().subscribe(_ => this.attendanceService.resetAttendancesToModify()),
       this.launchService.uploadAttendanceModifyAttach(),
-      this.launchService.handleMultiProcessError()
+      this.launchService.handlerAttendanceModifyError()
     ];
   }
 
@@ -90,6 +91,8 @@ export class ApplyAttendanceModifyPage {
   }
 
   ionViewWillUnload() {
+    this.launchService.resetResponse(LaunchResponse.attendanceModify);
+    
     this.subscriptions.forEach(item => item.unsubscribe());
 
     this.attendanceService.resetAttendancesToModify();

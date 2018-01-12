@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
 import { NavController, NavParams, ModalController, IonicPage } from 'ionic-angular';
+import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 
 @IonicPage()
@@ -84,7 +85,7 @@ export class SignWorkerContractPage {
             this.launchService.createWorkerContract(this.contract$.map(_ => ({ ...this.contract.value, ...this.timePayContract.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList }))),
             this.launchService.uploadWorkerContractAttach(),
             this.launchService.getSignWorkerContractResponse().subscribe(_ => this.resetForm()),
-            this.launchService.handleMultiProcessError(),
+            this.launchService.handlerWorkerContractError(),
         ];
     }
 
@@ -184,6 +185,8 @@ export class SignWorkerContractPage {
     ionViewWillUnload(): void {
         this.config.showTabBar();
 
+        this.launchService.resetResponse(LaunchResponse.workerContract);
+        
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 

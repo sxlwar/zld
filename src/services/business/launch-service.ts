@@ -1,4 +1,4 @@
-import { MapperService, WorkerContractFormModel, AttendanceModifyFormModel, LeaveFormModel, OvertimeFormModel, PieceAuditFormModel } from './../api/mapper-service';
+import { MapperService, WorkerContractFormModel, AttendanceModifyFormModel, LeaveFormModel, OvertimeFormModel, PieceAuditFormModel, WorkerContractModifyFormModel } from './../api/mapper-service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
@@ -7,6 +7,7 @@ import { UserService } from './user-service';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { Injectable } from '@angular/core';
+import { ResetLaunchResponseAction } from '../../actions/action/launch-action';
 
 @Injectable()
 export class LaunchService {
@@ -53,6 +54,12 @@ export class LaunchService {
             .mapTo(true);
     }
 
+    getSuccessResponseOfWorkerContractModify(): Observable<boolean> {
+        return this.store.select(selectWorkerContractModifyResponse)
+            .filter(value => !!value && !value.errorMessage)
+            .mapTo(true);
+    }
+
     /* ====================================================API request=======================================================*/
 
     createWorkerContract(form: Observable<WorkerContractFormModel>): Subscription {
@@ -86,6 +93,13 @@ export class LaunchService {
     createPieceAudit(form: Observable<PieceAuditFormModel>): Subscription {
         return this.processor.createPieceAuditProcessor(
             form.map(form => this.mapper.transformPieceAuditForm(form))
+                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+        );
+    }
+
+    createWorkerContractModify(form: Observable<WorkerContractModifyFormModel>): Subscription {
+        return this.processor.createWorkerContractModifyProcessor(
+            form.map(form => this.mapper.transformWorkerContractModifyForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
         );
     }
@@ -159,6 +173,7 @@ export class LaunchService {
         return this.processor.uploadWorkerContractModifyAttachProcessor(
             this.store.select(selectWorkerContractModifyOptions)
                 .filter(value => !!value && !!value.contract_time_change_flow.attach.length)
+                .distinct(value => value)
                 .mergeMap(option => Observable.from(option.contract_time_change_flow.attach))
                 .withLatestFrom(
                 this.store.select(selectWorkerContractModifyResponse).filter(value => !!value).map(res => res.WorkerContract_id),
@@ -168,25 +183,35 @@ export class LaunchService {
         );
     }
 
-    /* ====================================================Error handle=======================================================*/
+    /* ====================================================Local state update=======================================================*/
 
-    handleMultiProcessError(): Subscription {
-        return this.error.handleErrorInSpecific(
-            this.store.select(selectWorkerContractResponse)
-                .merge(this.store.select(selectAttendanceModifyResponse)),
-            'API_ERROR'
-        );
+    resetResponse(response: string): void {
+       this.store.dispatch(new ResetLaunchResponseAction(response));
     }
 
-    handlerProcessError(): Subscription {
-        return this.error.handleErrorInSpecific(
-            this.store.select(selectLeaveResponse)
-                .merge(
-                this.store.select(selectOvertimeResponse),
-                this.store.select(selectPieceAuditResponse),
-                this.store.select(selectWorkerContractModifyResponse)
-                ),
-            'API_ERROR'
-        );
+    /* ====================================================Error handle=======================================================*/
+    
+    handlerLeaveError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectLeaveResponse), 'API_ERROR');
+    }
+
+    handlerOvertimeError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectOvertimeResponse), 'API_ERROR');
+    }
+
+    handlerPieceAuditError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectPieceAuditResponse), 'API_ERROR');
+    }
+
+    handlerWorkerContractModifyError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractModifyResponse), 'API_ERROR');
+    }
+
+    handlerWorkerContractError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractResponse), 'API_ERROR');
+    }
+
+    handlerAttendanceModifyError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyResponse), 'API_ERROR');
     }
 }

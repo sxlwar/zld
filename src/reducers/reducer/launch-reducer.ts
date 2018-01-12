@@ -2,6 +2,15 @@ import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateL
 import { CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, CreateWorkerContractModifyResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/launch-action';
 
+export enum LaunchResponse {
+    attendanceModify = 'attendanceModifyResponse',
+    leave = 'leaveResponse',
+    overtime = 'overtimeResponse',
+    pieceAudit = 'pieceAuditResponse',
+    workerContractModify = 'workerContractModifyResponse',
+    workerContract = 'workerContractResponse',
+
+}
 export interface State {
     attendanceModifyOptions: CreateAttendanceModifyOptions;
     attendanceModifyResponse: CreateAttendanceModifyResponse;
@@ -75,6 +84,14 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.CREATE_WORKER_CONTRACT_MODIFY_FAIL:
         case actions.CREATE_WORKER_CONTRACT_MODIFY_SUCCESS:
             return { ...state, workerContractModifyResponse: action.payload };
+
+        case actions.RESET_LAUNCH_RESPONSE: {
+            const target = {};
+
+            target[action.payload] = null;
+
+            return { ...state, ...target };
+        }
 
         default:
             return state;

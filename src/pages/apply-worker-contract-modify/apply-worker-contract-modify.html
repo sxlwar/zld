@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'MODIFY_WORK_CONTRACT' | translate}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list [formGroup]="form">
+    <ion-item>
+      <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
+      <ion-input type="text" [value]="names | async" disabled></ion-input>
+      <ion-icon name="man" item-end (click)="openWorkerSelect()"></ion-icon>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{'END_DATE' | translate}}</ion-label>
+      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+        formControlName="date" required></ion-datetime>
+    </ion-item>
+    <div *ngIf="date.invalid && (date.dirty || date.touched)" class="form-error red-color">
+      <span *ngIf="date.errors.required">{{'END_DATE_REQUIRED_ERROR' | translate}}</span>
+    </div>
+
+  </ion-list>
+
+  <attach-list (file)="getAttach($event)"></attach-list>
+
+</ion-content>
+
+<ion-footer>
+  <button ion-button block no-margin color="primary" [disabled]="form.invalid" (click)="apply$.next(true)">{{'CONFIRM_BUTTON' | translate}}</button>
+</ion-footer>

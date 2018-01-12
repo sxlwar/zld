@@ -285,7 +285,7 @@ export const workContractModify: IconItem = {
     view: [],
     opt: [PM, LM]
   },
-  page: ''
+  page: pages.applyWorkerContractModifyPage
 };
 
 export const iCompleted: IconItem = {

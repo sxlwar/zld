@@ -2,7 +2,7 @@ import { WorkerSelectComponent } from './../../components/worker-select/worker-s
 import { ConfigService } from './../../services/config/config-service';
 import { WorkerService } from './../../services/business/worker-service';
 import { LaunchService } from './../../services/business/launch-service';
-import { OvertimeFormModel } from './../../services/api/mapper-service';
+import { WorkerContractModifyFormModel } from './../../services/api/mapper-service';
 import { Subject } from 'rxjs/Subject';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { WorkerItem } from './../../interfaces/worker-interface';
@@ -14,10 +14,10 @@ import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 @IonicPage()
 @Component({
-    selector: 'page-apply-overtime',
-    templateUrl: 'apply-overtime.html',
+    selector: 'page-apply-worker-contract-modify',
+    templateUrl: 'apply-worker-contract-modify.html',
 })
-export class ApplyOvertimePage {
+export class ApplyWorkerContractModifyPage {
 
     subscriptions: Subscription[] = [];
 
@@ -29,9 +29,7 @@ export class ApplyOvertimePage {
 
     attachList: string[] = [];
 
-    apply$: Subject<OvertimeFormModel> = new Subject();
-
-    type: string;
+    apply$: Subject<WorkerContractModifyFormModel> = new Subject();
 
     constructor(
         public navCtrl: NavController,
@@ -61,22 +59,18 @@ export class ApplyOvertimePage {
 
     initialForm(): void {
         this.form = this.fb.group({
-            payType: '',
-            day: '',
-            startTime: '',
-            endTime: '',
-            reason: '',
-            contractIds: ['', Validators.required]
+            date: '',
+            contractId: ['', Validators.required]
         });
     }
 
     launch(): void {
         this.subscriptions = [
-            this.launchService.createOvertime(this.apply$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
-            this.launchService.uploadOvertimeAttach(),
-            this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractIds: !!ids.length ? ids : '' })),
-            this.launchService.getSuccessResponseOfOvertime().subscribe(_ => this.worker.resetSelectedWorkers()),
-            this.launchService.handlerOvertimeError(),
+            this.launchService.createWorkerContractModify(this.apply$.mergeMap(_ => Observable.from(this.form.get('contractId').value).map((contractId: number) => ({ contractId, date: this.form.get('date').value, attach: this.attachList })))),
+            this.launchService.uploadWorkerContractModifyAttach(),
+            this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractId: !!ids.length ? ids : '' })),
+            this.launchService.getSuccessResponseOfWorkerContractModify().subscribe(_ => this.worker.resetSelectedWorkers()),
+            this.launchService.handlerWorkerContractModifyError(),
             this.worker.handleError(),
         ];
     }
@@ -84,44 +78,30 @@ export class ApplyOvertimePage {
     getAttach(attach: string[]): void {
         this.attachList = attach;
     }
-
-    openWorkerSelect(): void {
+    
+    /**
+     * @description None parameters passed to the component here, so multi select would be used.
+     * These values will eventually be passed to the service in turn in the pipeline.
+     */
+    openWorkerSelect() {
         this.modalCtrl.create(WorkerSelectComponent, null, { cssClass: 'inset-modal' }).present();
     }
 
-    resetEndTime(time: string): void {
-        this.form.patchValue({endTime: ''});
-    }
-
     ionViewWillUnload() {
-        this.launchService.resetResponse(LaunchResponse.overtime);
+        this.launchService.resetResponse(LaunchResponse.workerContractModify);
         
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.config.showTabBar();
     }
 
-    get payType() {
-        return this.form.get('payType');
+    get date() {
+        return this.form.get('date');
     }
 
-    get day() {
-        return this.form.get('day');
+    get contractId() {
+        return this.form.get('contractId');
     }
 
-    get startTime() {
-        return this.form.get('startTime');
-    }
 
-    get endTime() {
-        return this.form.get('endTime');
-    }
-
-    get reason() {
-        return this.form.get('reason');
-    }
-
-    get contractIds() {
-        return this.form.get('contractIds');
-    }
 }

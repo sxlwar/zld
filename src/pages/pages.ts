@@ -98,6 +98,8 @@ export const applyOvertimePage = 'ApplyOvertimePage';
 
 export const applyPieceAuditPage = 'ApplyPieceAuditPage';
 
+export const applyWorkerContractModifyPage = 'ApplyWorkerContractModifyPage';
+
 /*============================================common pages===================================================*/
 
 export const attendanceRecordPage = 'AttendanceRecordPage';
@@ -193,6 +195,7 @@ export const PAGES = [
   { title: 'ApplyLeavePage', component: applyLeavePage },
   { title: 'ApplyOvertimePage', component: applyOvertimePage },
   { title: 'ApplyPieceAuditPage', component: applyPieceAuditPage },
+  { title: 'ApplyWorkerContractModifyPage', comment: applyWorkerContractModifyPage },
 
   { title: 'PersonalAttendance', component: personalAttendancePage },
   { title: 'Salary', component: salaryPage },

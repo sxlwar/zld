@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 @IonicPage()
 @Component({
@@ -79,7 +80,7 @@ export class ApplyPieceAuditPage {
             this.launchService.createPieceAudit(this.apply$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
             this.launchService.uploadPieceAuditAttach(),
             this.launchService.getSuccessResponseOfPieceAudit().subscribe(_ => this.form.patchValue({ piecePayId: '' })),
-            this.launchService.handlerProcessError(),
+            this.launchService.handlerPieceAuditError(),
             this.worker.handleError(),
         ];
     }
@@ -93,6 +94,8 @@ export class ApplyPieceAuditPage {
     }
 
     ionViewWillUnload() {
+        this.launchService.resetResponse(LaunchResponse.pieceAudit);
+        
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.config.showTabBar();

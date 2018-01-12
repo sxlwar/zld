@@ -10,6 +10,7 @@ import { WorkerService } from './../../services/business/worker-service';
 import { LaunchService } from './../../services/business/launch-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 export const leaveTypes = [
     'SICK_LEAVE',
@@ -86,7 +87,7 @@ export class ApplyLeavePage {
             this.launchService.uploadLeaveAttach(),
             this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractIds: !!ids.length ? ids : '' })),
             this.launchService.getSuccessResponseOfLeave().subscribe(_ => this.worker.resetSelectedWorkers()),
-            this.launchService.handlerProcessError(),
+            this.launchService.handlerLeaveError(),
             this.worker.handleError(),
         ];
     }
@@ -104,6 +105,8 @@ export class ApplyLeavePage {
     }
 
     ionViewWillUnload() {
+        this.launchService.resetResponse(LaunchResponse.leave);
+
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.config.showTabBar();
