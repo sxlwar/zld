@@ -124,7 +124,6 @@ export const reducers: ActionReducerMap<AppState> = {
 
 //config
 const getConfig = (state: AppState) => state.config;
-export const selectButtonText = createSelector(getConfig, config.getBackButtonText);
 export const selectPlatformDirection = createSelector(getConfig, config.getPlatFormDirection);
 
 /*==============================================Pages selectors====================================================*/

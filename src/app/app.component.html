@@ -1,17 +1,19 @@
-<ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Pages</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<!-- <ion-menu [content]="content">
+    <ion-header>
+        <ion-toolbar>
+            <ion-title>{{'WELCOME_INTRO' | translate}}</ion-title>
+        </ion-toolbar>
+    </ion-header>
 
-  <ion-content>
-    <ion-list>
-      <button menuClose ion-item *ngFor="let page of pages" (click)="openPage(page)">
-        {{page.title}}
-      </button>
-    </ion-list>
-  </ion-content>
-</ion-menu>
+    <ion-content>
+        <ion-list>
+            <div *ngFor="let page of pages">
+                <button menuClose ion-item *ngIf="page.inMenu" (click)="openPage(page)">
+                    {{page.title | translate}}
+                </button>
+            </div>
+        </ion-list>
+    </ion-content>
+</ion-menu> -->
 
 <ion-nav #content [root]="rootPage"></ion-nav>

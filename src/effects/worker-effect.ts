@@ -3,7 +3,6 @@ import { EDIT_WORKER_CONTRACT, EditWorkerContractAction, EditWorkerContractFailA
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from '../services/api/websocket-service';
-import { AppState } from '../reducers/index-reducer';
 import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';

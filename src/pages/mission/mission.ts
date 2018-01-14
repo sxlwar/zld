@@ -11,7 +11,6 @@ import * as pages from '../../pages/pages';
 
 const icons = [
   Icons.attendanceConfirm,
-  Icons.payrollAudit,
   Icons.leave,
   Icons.overtime,
   Icons.pieceAudit,

@@ -27,13 +27,11 @@ export class TipService {
   }
 
   showServerResponseSuccess(message: string): void {
-    const toast = this.toastCtrl.create({
-      message,
-      duration: 3000,
-      position: 'top'
-    });
-    toast.present().then(() => {
-    });
+    this.showTipOnTop(message);
+  }
+
+  showTipOnTop(message: string, duration = 3000, position = 'top'): void {
+    this.toastCtrl.create({ message, duration, position, }).present().then(() => { });
   }
 
   loadingSpy() {
@@ -63,7 +61,7 @@ export class TipService {
     });
   }
 
-  showConfirmProp(source: Observable<ConfirmProp>, confirmFn, cancelFn = () => {}): Subscription {
+  showConfirmProp(source: Observable<ConfirmProp>, confirmFn, cancelFn = () => { }): Subscription {
     return source.subscribe(data => {
       let confirm = this.alertCtrl.create({
         title: data.title,
@@ -80,30 +78,40 @@ export class TipService {
         ]
       });
 
-      confirm.present().then(_ => {});
+      confirm.present().then(_ => { });
     });
   }
-  
-modifyAddressDetail() {
-  return  this.alertCtrl.create({
-    title: '详细地址',
-    inputs: [
-      {
-        name: 'detail',
-        placeholder: '请输入详细地址'
-      }
-    ],
-    buttons: [
-      {
-        text: '取消',
-        role: 'cancel',
-        handler: data => { }
-      },
-      {
-        text: '确定',
-        handler: data => { }
-      }
-    ]
-  });
-}
+
+  modifyAddressDetail() {
+    return this.alertCtrl.create({
+      title: '详细地址',
+      inputs: [
+        {
+          name: 'detail',
+          placeholder: '请输入详细地址'
+        }
+      ],
+      buttons: [
+        {
+          text: '取消',
+          role: 'cancel',
+          handler: data => { }
+        },
+        {
+          text: '确定',
+          handler: data => { }
+        }
+      ]
+    });
+  }
+
+  alert(message: Observable<string>, confirmFn = () => {}): Subscription {
+    return message.subscribe(subTitle => {
+      const alert = this.alertCtrl.create({ subTitle, buttons: ['OK'] });
+
+      alert.present();
+
+      alert.onDidDismiss(confirmFn);
+    });
+  }
 }

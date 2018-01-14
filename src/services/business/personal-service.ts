@@ -117,7 +117,7 @@ export class PersonalService {
     }
 
     getPersonalId(): Observable<PersonalId> {
-        return this.getPersonalIdResponse() 
+        return this.getPersonalIdResponse()
             .filter(value => !!value)
             .map(res => res.personal_id[0]);
     }

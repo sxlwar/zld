@@ -135,7 +135,7 @@
   "MY_SALARY": "薪资",
   "MY_BANK_CARD": "银行卡",
   "CERTIFICATE": "证书",
-  "MY_CONTRACT": "合同",
+  "MY_CONTRACT": "我的合同",
   "MY_ACCOUNT_CURRENT_INFO": "当前所属",
   "LAUNCH_APPLY": "发起申请",
   "TRAJECTORY": "轨迹",
@@ -520,5 +520,10 @@
   "QUALITY_DESCRIPTION_REQUIRED_ERROR": "请输入正确的支付比例，1至100之间的整数",
   "WORK_PIECE_REQUIRED_ERROR": "请选择需要审核的工件",
 
-  "EDIT_WORKER_CONTRACT": "编辑用工合同"
+  "EDIT_WORKER_CONTRACT": "编辑用工合同",
+  "MAIN_PAGE": "首页",
+  
+  "OFF_LINE": "无法访问网络，请检查网络状态",
+  "LOW_VERSION_ANDROID": "当前系统版本过低，请升级至6.0.0或以上版本",
+  "LOW_VERSION_IOS": "当前系统版本过低，请升级至10.0.0或以上版本"
 }

@@ -1,64 +1,170 @@
+import { tabsPage } from './../pages/pages';
+import { GroupListService } from './../services/business/group-list-service';
+import { TranslateService } from '@ngx-translate/core';
+import { TipService } from './../services/tip-service';
+import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { Config, Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, AlertController } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
-import { FirstRunPage, PAGES } from '../pages/pages';
-import { Settings } from '../providers/providers';
-import { Store } from '@ngrx/store';
+import { FirstRunPage, PAGES, Page } from '../pages/pages';
 import { ConfigService } from '../services/config/config-service';
-import * as fromRoot from '../reducers/index-reducer';
 import { ENV } from '@app/env';
-
+import { Network } from '@ionic-native/network';
+import { Device } from '@ionic-native/device';
 
 console.log(ENV.DOMAIN);
 
 @Component({
-  templateUrl: './app.component.html'
+    templateUrl: './app.component.html'
 })
 export class MyApp {
-  rootPage = FirstRunPage;
 
-  @ViewChild(Nav) nav: Nav;
+    rootPage = FirstRunPage;
 
-  pages: any[] = PAGES;
+    @ViewChild(Nav) nav: Nav;
 
-  constructor(private platform: Platform,
-    settings: Settings,
-    private config: Config,
-    private statusBar: StatusBar,
-    private splashScreen: SplashScreen,
-    private configService: ConfigService,
-    private store: Store<fromRoot.AppState>,
-    private keyboard: Keyboard) {
-    this.configService.init();
-    this.store.select(fromRoot.selectButtonText).subscribe(text => this.config.set('backButtonText', text));
-  }
+    pages: Page[] = PAGES;
 
-  /**
-   * @ionViewDidLoad
-   * Ionic lifecycle event, ionic implements 8 lifecycle hooks. 6 about them are run time related, the other are permission related.
-   * */
-  ionViewDidLoad() {
-    this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      if (this.platform.is('ios')) {
-        this.keyboard.disableScroll(true);
-      }
-    });
-  }
+    subscriptions: Subscription[] = [];
 
-  openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
+    readonly androidMinVersion = '6.0.0';
 
-    // noinspection JSIgnoredPromiseFromCall
-    this.nav.setRoot(page.component);
-  }
+    readonly iOSMinVersion = '8.0';
 
+    private isAndroid: Boolean;
+
+    private isIos: Boolean;
+
+    constructor(
+        private platform: Platform,
+        private statusBar: StatusBar,
+        private splashScreen: SplashScreen,
+        private configService: ConfigService,
+        private keyboard: Keyboard,
+        private netWork: Network,
+        private tip: TipService,
+        private device: Device,
+        private translate: TranslateService,
+        private groupList: GroupListService
+    ) {
+        this.configService.init();
+
+        this.isAndroid = this.platform.is('android');
+
+        this.isIos = this.platform.is('ios');
+    }
+
+    /**
+     * @ionViewDidLoad
+     * Ionic life cycle event, ionic implements 8 life cycle hooks. 6 about them are run time related, the other are permission related.
+     * */
+    ionViewDidLoad() {
+        console.log('app component loaded...');
+
+        this.platform.ready().then(() => {
+
+            // Okay, so the platform is ready and our plugins are available.
+            // Here you can do any higher level native things you might need.
+            this.statusBar.styleDefault();
+
+            this.splashScreen.hide();
+
+            this.isIos && this.keyboard.disableScroll(true);
+
+            this.isAndroid && this.platform.registerBackButtonAction(this.registerBackButton, 101);
+
+            this.launch();
+        });
+    }
+
+    launch(): void {
+        this.checkSystemVersion();
+
+        this.subscriptions = [
+            this.checkNetWorkState(),
+            this.groupList.attemptLogin(),
+            this.groupList.getGroupListResponse().subscribe(_ => this.nav.setRoot(tabsPage)),
+            this.groupList.handleError(),
+        ];
+    }
+
+    checkNetWorkState(): Subscription {
+        return this.netWork.onDisconnect()
+            .withLatestFrom(
+            this.translate.get('OFF_LINE'),
+            (_, msg) => msg
+            )
+            .subscribe(msg => this.tip.showTipOnTop(msg, 10000));
+    }
+
+    checkSystemVersion(): void {
+        let dVersion = this.device.version.split(".");
+
+        let rVersion = undefined;
+
+        if (this.isIos) {
+            rVersion = this.iOSMinVersion.split('.');
+        }
+
+        if (this.isAndroid) {
+            rVersion = this.androidMinVersion.split('.');
+        }
+
+        if (!rVersion) {
+            const ary = new Array(dVersion.length);
+
+            try {
+                ary.forEach((item, idx) => {
+                    +rVersion[idx] > +dVersion[idx] && new Error('1');
+                    +rVersion[idx] < +dVersion[idx] && new Error('0');
+                })
+            } catch (error) {
+                if (Boolean(error.message)) {
+                    const exist = () => this.platform.exitApp();
+
+                    if (this.isIos) {
+                        const subscription = this.tip.alert(this.translate.get('LOW_VERSION_IOS'), exist);
+
+                        this.subscriptions.push(subscription);
+                    }
+
+                    if (this.isAndroid) {
+                        const subscription = this.tip.alert(this.translate.get('LOW_VERSION_ANDROID'), exist);
+
+                        this.subscriptions.push(subscription);
+                    }
+                }
+            }
+        }
+    }
+
+    registerBackButton(event: Event): void {
+        event.preventDefault();
+
+        this.keyboard.close();
+
+        if (this.nav.canGoBack()) {
+            this.nav.pop();
+        } else {
+            this.platform.exitApp();
+        }
+    }
+
+    /**
+     * @description This method is unused at current time, it is used for the menu component;
+     */
+    openPage(page: Page): void {
+
+        // Reset the content nav to have just this page
+        // we wouldn't want the back button to show in this scenario
+        this.nav.setRoot(page.component);
+    }
+
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }
 
 /**
@@ -66,32 +172,43 @@ export class MyApp {
  * */
 
 let coordinateY;
+
 let viewPortHeight;
+
 let offsetY;
 
 function tapCoordinates(event) {
-  coordinateY = event.touches[0].clientY;
-  viewPortHeight = window.innerHeight;
-  offsetY = (viewPortHeight - coordinateY);
+    coordinateY = event.touches[0].clientY;
+
+    viewPortHeight = window.innerHeight;
+
+    offsetY = (viewPortHeight - coordinateY);
 }
 
 function keyboardShowHandler(event) {
-  const keyboardHeight = event.keyboardHeight;
-  const bodyMove = <HTMLElement>document.querySelector("ion-app");
-  const bodyMoveStyle = bodyMove.style;
-  const compensationHeight = 60;
+    const keyboardHeight = event.keyboardHeight;
 
-  if (offsetY < keyboardHeight + compensationHeight) {
-    bodyMoveStyle.bottom = (keyboardHeight - offsetY + compensationHeight) + "px";
-    bodyMoveStyle.top = "initial";
-  }
+    const bodyMove = <HTMLElement>document.querySelector("ion-app");
+
+    const bodyMoveStyle = bodyMove.style;
+
+    const compensationHeight = 60;
+
+    if (offsetY < keyboardHeight + compensationHeight) {
+        bodyMoveStyle.bottom = (keyboardHeight - offsetY + compensationHeight) + "px";
+
+        bodyMoveStyle.top = "initial";
+    }
 }
 
 function keyboardHideHandler() {
-  const removeStyles = <HTMLElement>document.querySelector("ion-app");
-  removeStyles.removeAttribute("style");
+    const removeStyles = <HTMLElement>document.querySelector("ion-app");
+
+    removeStyles.removeAttribute("style");
 }
 
 window.addEventListener('native.keyboardshow', keyboardShowHandler);
+
 window.addEventListener('native.keyboardhide', keyboardHideHandler);
+
 window.addEventListener('touchstart', tapCoordinates);

@@ -1,3 +1,4 @@
+import { GroupListService } from './business/group-list-service';
 import { SearchService } from './business/search-service';
 import { LaunchService } from './business/launch-service';
 import { LeaveService } from './business/leave-service';
@@ -70,6 +71,7 @@ export const BUSINESS_SERVICES = [
     CertificateService,
     CraftService,
     EmployerService,
+    GroupListService,
     IconService,
     LaunchService,
     LeaveService,

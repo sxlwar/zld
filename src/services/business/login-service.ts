@@ -1,3 +1,4 @@
+import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode } from '../../actions/action/login-action';
@@ -24,239 +25,243 @@ import { ProcessorService } from '../api/processor-service';
 @Injectable()
 export class LoginService {
 
-  subscriptions: Subscription[] = [];
-  updateVerImage$$: Subscription;
+    subscriptions: Subscription[] = [];
 
-  constructor(public store: Store<fromRoot.AppState>,
-    public process: ProcessorService,
-    public errorService: ErrorService,
-    public mapper: MapperService) {
-    this.handleError();
-  }
+    updateVerImage$$: Subscription;
 
-  /**
-   * @description
-   * These methods are used for change the state of the UI, which has no side effects.
-   * */
-  changeSlidesActive(index: number) {
-    this.store.dispatch(new ShowSpecificSlideAction(index));
-  }
-
-  changeInnerSlidesActive(index: number) {
-    this.store.dispatch(new ShowSpecificInnerSlideAction(index));
-  }
-
-  updateVerificationImageUrl() {
-    if (this.updateVerImage$$) this.updateVerImage$$.unsubscribe();
-
-    this.updateVerImage$$ = Observable.range(1, 5)
-      .map(_ => random(1, 26).toString(36))
-      .reduce((acc, cur) => acc + cur)
-      .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
-
-    this.subscriptions.push(this.updateVerImage$$);
-  }
-
-  /*=============================================No Side effect===================================================*/
-
-  /**
-   * @description
-   * These methods used for generate an observable to the component and. They are not affected by side effects.
-   * */
-  getActiveIndexOfSlides() {
-    return this.store.select(fromRoot.selectActiveIndexOfSlides);
-  }
-
-  getActiveIndexOfInnerSlides() {
-    return this.store.select(fromRoot.selectActiveIndexOfInnerSlides).distinctUntilChanged();
-  }
-
-  getVerificationImageUrl() {
-    return this.store.select(selectRandomCode).map(randomCode => `http://${ENV.DOMAIN}/check_captcha/${randomCode}`);
-  }
-
-  getSelectedCompany() {
-    return this.store.select(selectSelectedCompany);
-  }
-
-  /*==============================================Side effect===================================================*/
-
-  getLoginInfo(): Observable<LoginResponse> {
-    return this.store.select(selectUserInfo);
-  }
-
-  getSignUpPhoneVer(): Observable<PhoneVerCodeResponse> {
-    return this.store.select(getPhoneVerCode);
-  }
-
-  getResetPwdPhoneVer(): Observable<PhoneVerCodeResponse> {
-    return this.store.select(getResetPhoneVerCode);
-  }
-
-  getRegisterInfo(): Observable<RegisterResponse> {
-    return this.store.select(getRegister);
-  }
-
-  getResetPasswordInfo(): Observable<ResetPasswordResponse> {
-    return this.store.select(getResetPassword);
-  }
-
-  /*==============================================Request handle===================================================*/
-
-  /**
-   * @description
-   * These methods used for generate an observable that contains all the information for an api.
-   * The form data model is first mapped to the interface data model, then the logic between the data is processed.
-   * The data that contains the complete request information is then sent to data services.
-   * */
-  login(source: LoginFormModel) {
-    const option: LoginOptions = this.mapper.loginFormMap(source);
-
-    let login$$;
-
-    if (option.captcha_code) {
-      const source$ = Observable.zip(
-        this.store.select(selectRandomCode).map(code => ({ random_key: code })),
-        Observable.of(option)
-      ).map(values => values.reduce((acc, cur) => Object.assign(acc, cur)));
-
-      login$$ = this.process.loginProcessor(source$ as Observable<LoginOptions>);
-    } else {
-      login$$ = this.process.loginProcessor(Observable.of(pickBy(option, value => !!value)))
+    constructor(
+        public store: Store<fromRoot.AppState>,
+        public process: ProcessorService,
+        public errorService: ErrorService,
+        public mapper: MapperService,
+        public userInfo: UserService
+    ) {
+        this.handleError();
     }
 
-    this.subscriptions.push(login$$);
-  }
+    /**
+     * @description
+     * These methods are used for change the state of the UI, which has no side effects.
+     * */
+    changeSlidesActive(index: number) {
+        this.store.dispatch(new ShowSpecificSlideAction(index));
+    }
 
-  /**
-   * TODO NO.1
-   * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
-   * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
-   * */
-  getPhoneVerCode(source: SignUpFormModel) {
+    changeInnerSlidesActive(index: number) {
+        this.store.dispatch(new ShowSpecificInnerSlideAction(index));
+    }
 
-    const { username, captcha_code } = this.mapper.signUpFormMap(source);
+    updateVerificationImageUrl() {
+        if (this.updateVerImage$$) this.updateVerImage$$.unsubscribe();
 
-    const phoneVerCode$ = this.store.select(selectPhoneVerCodeCaptcha)
-      .switchMap((needImageVerCode: boolean) => {
-        if (needImageVerCode) {
-          return this.store.select(selectRandomCode)
-            .map(value => ({ username, captcha_code, random_key: value }))
+        this.updateVerImage$$ = Observable.range(1, 5)
+            .map(_ => random(1, 26).toString(36))
+            .reduce((acc, cur) => acc + cur)
+            .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
+
+        this.subscriptions.push(this.updateVerImage$$);
+    }
+
+    /*=============================================No Side effect===================================================*/
+
+    /**
+     * @description
+     * These methods used for generate an observable to the component and. They are not affected by side effects.
+     * */
+    getActiveIndexOfSlides() {
+        return this.store.select(fromRoot.selectActiveIndexOfSlides);
+    }
+
+    getActiveIndexOfInnerSlides() {
+        return this.store.select(fromRoot.selectActiveIndexOfInnerSlides).distinctUntilChanged();
+    }
+
+    getVerificationImageUrl() {
+        return this.store.select(selectRandomCode).map(randomCode => `http://${ENV.DOMAIN}/check_captcha/${randomCode}`);
+    }
+
+    getSelectedCompany() {
+        return this.store.select(selectSelectedCompany);
+    }
+
+    /*==============================================Side effect===================================================*/
+
+    getLoginInfo(): Observable<LoginResponse> {
+        return this.store.select(selectUserInfo);
+    }
+
+    getSignUpPhoneVer(): Observable<PhoneVerCodeResponse> {
+        return this.store.select(getPhoneVerCode);
+    }
+
+    getResetPwdPhoneVer(): Observable<PhoneVerCodeResponse> {
+        return this.store.select(getResetPhoneVerCode);
+    }
+
+    getRegisterInfo(): Observable<RegisterResponse> {
+        return this.store.select(getRegister);
+    }
+
+    getResetPasswordInfo(): Observable<ResetPasswordResponse> {
+        return this.store.select(getResetPassword);
+    }
+
+    /*==============================================Request handle===================================================*/
+
+    /**
+     * @description
+     * These methods used for generate an observable that contains all the information for an api.
+     * The form data model is first mapped to the interface data model, then the logic between the data is processed.
+     * The data that contains the complete request information is then sent to data services.
+     * */
+    login(source: LoginFormModel) {
+        const option: LoginOptions = this.mapper.loginFormMap(source);
+
+        let login$$;
+
+        if (option.captcha_code) {
+            const source$ = Observable.zip(
+                this.store.select(selectRandomCode).map(code => ({ random_key: code })),
+                Observable.of(option)
+            ).map(values => values.reduce((acc, cur) => Object.assign(acc, cur)));
+
+            login$$ = this.process.loginProcessor(source$ as Observable<LoginOptions>);
+        } else {
+            login$$ = this.process.loginProcessor(Observable.of(pickBy(option, value => !!value)))
         }
-        return Observable.of({ username });
-      });
 
-    const phoneVer$$ = this.process.phoneVerificationProcessor(phoneVerCode$);
+        this.subscriptions.push(login$$);
+    }
 
-    this.subscriptions.push(phoneVer$$);
-  }
+    /**
+     * TODO NO.1
+     * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
+     * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
+     * */
+    getPhoneVerCode(source: SignUpFormModel) {
 
-  getResetPwdPhoneVerCode(source: ResetPwdFormModel) {
-    const { username, captcha_code } = this.mapper.resetPwdForm(source);
+        const { username, captcha_code } = this.mapper.signUpFormMap(source);
 
-    const phoneVerCode$ = this.store.select(selectResetPhoneVerCodeCaptcha)
-      .switchMap((needImageVerCode: boolean) => {
-        if (needImageVerCode) {
-          return this.store.select(selectRandomCode)
-            .map(value => ({ username, captcha_code, random_key: value }))
+        const phoneVerCode$ = this.store.select(selectPhoneVerCodeCaptcha)
+            .switchMap((needImageVerCode: boolean) => {
+                if (needImageVerCode) {
+                    return this.store.select(selectRandomCode)
+                        .map(value => ({ username, captcha_code, random_key: value }))
+                }
+                return Observable.of({ username });
+            });
+
+        const phoneVer$$ = this.process.phoneVerificationProcessor(phoneVerCode$);
+
+        this.subscriptions.push(phoneVer$$);
+    }
+
+    getResetPwdPhoneVerCode(source: ResetPwdFormModel) {
+        const { username, captcha_code } = this.mapper.resetPwdForm(source);
+
+        const phoneVerCode$ = this.store.select(selectResetPhoneVerCodeCaptcha)
+            .switchMap((needImageVerCode: boolean) => {
+                if (needImageVerCode) {
+                    return this.store.select(selectRandomCode)
+                        .map(value => ({ username, captcha_code, random_key: value }))
+                }
+                return Observable.of({ username });
+            });
+
+        const phoneVer$$ = this.process.resetPhoneVerificationProcessor(phoneVerCode$);
+
+        this.subscriptions.push(phoneVer$$);
+    }
+
+    signUp(source: SignUpFormModel, userType: string): void {
+
+        const { username, password, code } = this.mapper.signUpFormMap(source);
+
+        const baseOption$ = Observable.of({ username, password, code });
+
+        let randomKey$: Observable<object> = Observable.of({});
+
+        if (source.imageVerification) {
+            randomKey$ = this.store.select(selectRandomCode).map(rand_captcha_key => ({ rand_captcha_key }));
         }
-        return Observable.of({ username });
-      });
 
-    const phoneVer$$ = this.process.resetPhoneVerificationProcessor(phoneVerCode$);
+        let companyUserOption$: Observable<any> = Observable.of({});
 
-    this.subscriptions.push(phoneVer$$);
-  }
+        if (userType === 'REGISTER_COMPANY_USER') {
+            companyUserOption$ = this.store.select(selectSelectedCompany)
+                .map(company => ({ company_id: company.id, real_name: source.realName }));
+        }
 
-  signUp(source: SignUpFormModel, userType: string): void {
+        const register$ = baseOption$.withLatestFrom(randomKey$, companyUserOption$)
+            .map(data => data.reduce((acc, cur) => Object.assign(acc, cur)) as RegisterOptions);
 
-    const { username, password, code } = this.mapper.signUpFormMap(source);
+        const register$$ = this.process.registerProcessor(register$);
 
-    const baseOption$ = Observable.of({ username, password, code });
+        this.subscriptions.push(register$$);
 
-    let randomKey$: Observable<object> = Observable.of({});
-
-    if (source.imageVerification) {
-      randomKey$ = this.store.select(selectRandomCode).map(rand_captcha_key => ({ rand_captcha_key }));
     }
 
-    let companyUserOption$: Observable<any> = Observable.of({});
+    resetPwd(source: ResetPwdFormModel): void {
+        const { username, password, code } = this.mapper.resetPwdForm(source);
 
-    if (userType === 'REGISTER_COMPANY_USER') {
-      companyUserOption$ = this.store.select(selectSelectedCompany)
-        .map(company => ({ company_id: company.id, real_name: source.realName }));
+        const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({ username, password, code }));
+
+        this.subscriptions.push(resetPwd$$);
     }
 
-    const register$ = baseOption$.withLatestFrom(randomKey$, companyUserOption$)
-      .map(data => data.reduce((acc, cur) => Object.assign(acc, cur)) as RegisterOptions);
+    /*=========================================error handle========================================================*/
 
-    const register$$ = this.process.registerProcessor(register$);
+    private handleError() {
+        const login$$ = this.handleLoginError();
 
-    this.subscriptions.push(register$$);
+        const signUpPhoneVerCode$$ = this.handleSignPhoneVerCodeError();
 
-  }
+        const resetPhoneVerCode$$ = this.handleResetPhoneVerCodeError();
 
-  resetPwd(source: ResetPwdFormModel): void {
-    const { username, password, code } = this.mapper.resetPwdForm(source);
+        const register$$ = this.handleRegisterError();
 
-    const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({ username, password, code }));
+        const resetPassword$$ = this.handleResetPassWordInfoError();
 
-    this.subscriptions.push(resetPwd$$);
-  }
+        this.subscriptions = this.subscriptions.concat([login$$, signUpPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
+    }
 
-  /*=========================================error handle========================================================*/
+    private handleLoginError(): Subscription {
+        return this.errorService.handleErrorInSpecific(
+            this.getLoginInfo().do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
+            'LOGIN_FAIL_TIP'
+        );
+    }
 
-  private handleError() {
-    const login$$ = this.handleLoginError();
+    private handleSignPhoneVerCodeError(): Subscription {
+        return this.errorService
+            .handleErrorInSpecific(
+            this.getSignUpPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
+            'PHONE_VERIFICATION_FAIL'
+            );
+    }
 
-    const signUpPhoneVerCode$$ = this.handleSignPhoneVerCodeError();
+    private handleResetPhoneVerCodeError(): Subscription {
+        return this.errorService.handleErrorInSpecific(
+            this.getResetPwdPhoneVer().do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl()),
+            'PHONE_VERIFICATION_FAIL'
+        );
+    }
 
-    const resetPhoneVerCode$$ = this.handleResetPhoneVerCodeError();
+    private handleRegisterError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.getRegisterInfo(), 'REGISTER_FAIL_TIP');
+    }
 
-    const register$$ = this.handleRegisterError();
+    private handleResetPassWordInfoError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.getResetPasswordInfo(), 'RESET_PASSWORD_FAIL_TIP');
+    }
 
-    const resetPassword$$ = this.handleResetPassWordInfoError();
+    /*=============================================refuse cleaning====================================================*/
 
-    this.subscriptions = this.subscriptions.concat([login$$, signUpPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
-  }
-
-  private handleLoginError(): Subscription {
-    return this.errorService.handleErrorInSpecific(
-      this.getLoginInfo().do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
-      'LOGIN_FAIL_TIP'
-    );
-  }
-
-  private handleSignPhoneVerCodeError(): Subscription {
-    return this.errorService
-      .handleErrorInSpecific(
-      this.getSignUpPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
-      'PHONE_VERIFICATION_FAIL'
-      );
-  }
-
-  private handleResetPhoneVerCodeError(): Subscription {
-    return this.errorService.handleErrorInSpecific(
-      this.getResetPwdPhoneVer().do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl()),
-      'PHONE_VERIFICATION_FAIL'
-    );
-  }
-
-  private handleRegisterError(): Subscription {
-    return this.errorService.handleErrorInSpecific(this.getRegisterInfo(), 'REGISTER_FAIL_TIP');
-  }
-
-  private handleResetPassWordInfoError(): Subscription {
-    return this.errorService.handleErrorInSpecific(this.getResetPasswordInfo(), 'RESET_PASSWORD_FAIL_TIP');
-  }
-
-  /*=============================================refuse cleaning====================================================*/
-
-  /**
-   * @description
-   * This method used for cancel all the subscription when component dismissed.
-   * */
-  unSubscribe() {
-    this.subscriptions.forEach(unSub => unSub.unsubscribe());
-  }
+    /**
+     * @description
+     * This method used for cancel all the subscription when component dismissed.
+     * */
+    unSubscribe() {
+        this.subscriptions.forEach(unSub => unSub.unsubscribe());
+    }
 }
