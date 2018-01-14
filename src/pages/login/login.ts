@@ -1,7 +1,9 @@
+import { tabsPage, certificationPage } from './../pages';
+import { LoginFormModel, SignUpFormModel } from './../../services/api/mapper-service';
 import { Subject } from 'rxjs/Subject';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
-import { AlertController, App, IonicPage, LoadingController, ModalController, NavController, NavParams, Slides, ViewController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, NavParams, Slides, ViewController } from 'ionic-angular';
 import { LoginService } from '../../services/business/login-service';
 import { mobilePhoneValidator, passwordMatchValidator, passwordValidator, realNameValidator, } from '../../validators/validators';
 import { Subscription } from 'rxjs/Subscription';
@@ -9,235 +11,225 @@ import { Observable } from 'rxjs/Observable';
 import { Company, LoginResponse, PhoneVerCodeResponse, RegisterResponse } from '../../interfaces/response-interface';
 
 export class LoginForm {
-  mobilePhone = ['', mobilePhoneValidator];
-  password = ['', passwordValidator];
-  imageVerification = '';
+    mobilePhone = ['', mobilePhoneValidator];
+    password = ['', passwordValidator];
+    imageVerification = '';
 }
 
 @IonicPage()
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
+    selector: 'page-login',
+    templateUrl: 'login.html',
 })
 export class LoginPage {
 
-  backgroundImage = 'assets/img/background/login-background.png';
-  userTypes = ['REGISTER_PERSONAL_USER', 'REGISTER_COMPANY_USER'];
-  direction = 'vertical';
-  loginForm: FormGroup;
-  signUpForm: FormGroup;
+    readonly backgroundImage = 'assets/img/background/login-background.png';
 
-  private getActiveIndexOfInnerSlides$$: Subscription;
-  private getActiveIndexOfSlides$$: Subscription;
-  private navSubscription$$: Subscription;
+    readonly direction = 'vertical';
 
-  loginInfo$: Observable<LoginResponse>;
-  register$: Observable<RegisterResponse>;
-  signUpImageVerification$: Observable<PhoneVerCodeResponse>;
-  resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
-  loginVerificationImage$: Observable<string>;
-  selectedCompany$: Observable<Company>;
+    loginForm: FormGroup;
 
-  // Slider methods
-  @ViewChild('slider') slider: Slides;
-  @ViewChild('innerSlider') innerSlider: Slides;
+    signUpForm: FormGroup;
 
+    getActiveIndexOfInnerSlides$$: Subscription;
 
-  subject: Subject<null> = new Subject();
+    getActiveIndexOfSlides$$: Subscription;
 
-  constructor(
-    public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController,
-    public app: App,
-    private navParams: NavParams,
-    private viewCtrl: ViewController,
-    private loginService: LoginService,
-    private fb: FormBuilder,
-    private navCtrl: NavController,
-    private modalCtrl: ModalController
-  ) {
-    this.initSlide();
-    this.initForm();
-  }
+    slide$$: Subscription;
 
-  /*=========================================Init model=============================================================*/
-  initSlide() {
-    this.viewCtrl.willEnter.subscribe(() => {
+    subscriptions: Subscription[] = [];
 
-      this.loginService.changeSlidesActive(this.navParams.get('index'));
+    loginInfo$: Observable<LoginResponse>;
 
-      this.getActiveIndexOfSlides$$ = this.loginService.getActiveIndexOfSlides()
-        .subscribe(index => this.slider.slideTo(index));
+    register$: Observable<RegisterResponse>;
 
-      this.getActiveIndexOfInnerSlides$$ = this.loginService.getActiveIndexOfInnerSlides()
-        .subscribe(index => this.innerSlider.slideTo(index));
-    });
-  }
+    signUpImageVerification$: Observable<PhoneVerCodeResponse>;
 
-  ionViewDidLoad() {
-    this.loginInfo$ = this.loginService.getLoginInfo();
-    this.register$ = this.loginService.getRegisterInfo();
-    this.selectedCompany$ = this.loginService.getSelectedCompany();
-    this.signUpImageVerification$ = this.loginService.getSignUpPhoneVer();
-    this.resetPwdImageVerification$ = this.loginService.getResetPwdPhoneVer();
-    this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
+    resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
 
-    this.navSubscription$$ = this.loginInfo$
-      .subscribe(userInfo => userInfo.sid && this.goToNextPage(userInfo.auth_pass));
-  }
+    loginVerificationImage$: Observable<string>;
 
-  initForm() {
-    this.loginForm = this.fb.group(new LoginForm());
+    selectedCompany$: Observable<Company>;
 
-    this.signUpForm = this.fb.group({
-      userType: '',
-      company: new FormControl({ value: '', disabled: true }),
-      realName: '',
-      mobilePhone: ['', mobilePhoneValidator],
-      phoneVerification: '',
-      imageVerification: '',
-      passwordInfo: this.fb.group({
-        password: ['', passwordValidator],
-        confirmPassword: ['', passwordValidator]
-      }, { validator: passwordMatchValidator })
-    });
+    @ViewChild('slider') slider: Slides;
 
-    this.signUpForm.get('userType').valueChanges.subscribe(value => {
-      this.adjustmentValidationRules(value);
-    });
-  }
+    @ViewChild('innerSlider') innerSlider: Slides;
 
-  /*=============================================UI state change===================================================*/
+    subject: Subject<null> = new Subject();
 
-  changeSlidesActive(index) {
-    this.loginService.changeSlidesActive(index);
-  }
+    updateImage$: Subject<boolean> = new Subject();
 
-  changeInnerSlidesActive(index) {
-    this.loginService.changeInnerSlidesActive(index);
-  }
+    login$: Subject<LoginFormModel> = new Subject();
 
-  /*=============================================Date state change===================================================*/
+    signUp$: Subject<SignUpFormModel> = new Subject();
 
-  login() {
-    this.loginService.login(this.loginForm.value);
-  }
+    phoneVerCode$: Subject<boolean> = new Subject();
 
-  signUp() {
-    this.loginService.signUp(this.signUpForm.value, this.signUpForm.get('userType').value);
-  }
+    constructor(
+        private navParams: NavParams,
+        private viewCtrl: ViewController,
+        private loginService: LoginService,
+        private fb: FormBuilder,
+        private navCtrl: NavController,
+        private modalCtrl: ModalController
+    ) {
+        this.initSlide();
 
-  updateVerificationImage() {
-    this.loginService.updateVerificationImageUrl();
-  }
-
-  getCompany() {
-    const modal = this.modalCtrl.create('SearchCompanyPage');
-    modal.present().then(() => {
-    });
-  }
-
-  /**
-   * FIXME: 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。
-   * */
-  getPhoneVerCode() {
-    this.loginService.getPhoneVerCode(this.signUpForm.value);
-  }
-
-  /*========================================Component methods=====================================================*/
-
-  adjustmentValidationRules(userType: string): void {
-    const realNameCtrl = this.signUpForm.get('realName');
-
-    if (userType === 'REGISTER_COMPANY_USER') {
-      realNameCtrl.setValidators([Validators.required, realNameValidator])
-    } else {
-      realNameCtrl.clearValidators();
+        this.initForm();
     }
 
-    realNameCtrl.updateValueAndValidity();
-  }
+    /*=========================================Init model=============================================================*/
 
-  presentLoading(message) {
-    const loading = this.loadingCtrl.create({
-      duration: 500
-    });
+    initSlide() {
+        this.slide$$ = this.viewCtrl.willEnter.subscribe(() => {
 
-    loading.onDidDismiss(() => {
-      const alert = this.alertCtrl.create({
-        title: 'Success',
-        subTitle: message,
-        buttons: ['Dismiss']
-      });
-      alert.present().then(() => { });
-    });
+            this.loginService.changeSlidesActive(this.navParams.get('index'));
 
-    loading.present().then(() => { });
-  }
+            this.getActiveIndexOfSlides$$ = this.loginService.getActiveIndexOfSlides()
+                .subscribe(index => this.slider.slideTo(index));
 
-
-  goToNextPage(haveAuthPassed) {
-    if (haveAuthPassed) {
-      this.navCtrl.setRoot('TabsPage').then(() => {
-      });
-    } else {
-      this.navCtrl.push('CertificationPage').then(() => {
-      });
+            this.getActiveIndexOfInnerSlides$$ = this.loginService.getActiveIndexOfInnerSlides()
+                .subscribe(index => this.innerSlider.slideTo(index));
+        });
     }
-  }
 
-  /*=============================================Refuse cleaning====================================================*/
+    ionViewDidLoad() {
+        this.initialModel();
 
-  // noinspection JSUnusedGlobalSymbols
-  ionViewWillUnload() {
-    this.getActiveIndexOfSlides$$.unsubscribe();
-    this.getActiveIndexOfInnerSlides$$.unsubscribe();
-    this.loginService.unSubscribe();
-  }
+        this.launch();
+    }
 
-  /*====================================Short cut method for template==============================================*/
+    initialModel(): void {
+        this.loginInfo$ = this.loginService.getLoginInfo();
 
-  get mobilePhone() {
-    return this.loginForm.get('mobilePhone');
-  }
+        this.register$ = this.loginService.getRegisterInfo();
 
-  get password() {
-    return this.loginForm.get('password');
-  }
+        this.selectedCompany$ = this.loginService.getSelectedCompany();
 
-  get imageVerification() {
-    return this.loginForm.get('imageVerification');
-  }
+        this.signUpImageVerification$ = this.loginService.getSignUpPhoneVer();
 
-  get userType() {
-    return this.signUpForm.get('userType');
-  }
+        this.resetPwdImageVerification$ = this.loginService.getResetPwdPhoneVer();
 
-  get company() {
-    return this.signUpForm.get('company');
-  }
+        this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
+    }
 
-  get realName() {
-    return this.signUpForm.get('realName');
-  }
+    launch(): void {
+        this.subscriptions = [
+            ...this.loginService.handleError(),
+            this.loginService.updateVerificationImageUrl(this.updateImage$),
+            this.loginService.login(this.login$.map(_ => this.loginForm.value)),
+            this.loginService.signUp(this.signUp$.map(_ => this.signUpForm.value)),
+            this.loginService.getPhoneVerCode(this.phoneVerCode$.map(_ => this.signUpForm.value)),
+            this.loginInfo$.subscribe(userInfo => userInfo.sid && this.goToNextPage(userInfo.auth_pass)),
+        ];
+    }
 
-  get mobilePhoneSignUp() {
-    return this.signUpForm.get('mobilePhone');
-  }
+    initForm() {
+        this.loginForm = this.fb.group(new LoginForm());
 
-  get phoneVerificationSignUp() {
-    return this.signUpForm.get('phoneVerification');
-  }
+        this.signUpForm = this.fb.group({
+            userType: '',
+            company: new FormControl({ value: '', disabled: true }),
+            realName: '',
+            mobilePhone: ['', mobilePhoneValidator],
+            phoneVerification: '',
+            imageVerification: '',
+            passwordInfo: this.fb.group({
+                password: ['', passwordValidator],
+                confirmPassword: ['', passwordValidator]
+            }, { validator: passwordMatchValidator })
+        });
+    }
 
-  get imageVerificationSignUp() {
-    return this.signUpForm.get('imageVerification');
-  }
+    /*=============================================UI state change===================================================*/
 
-  get passwordSignUp() {
-    return this.signUpForm.get('passwordInfo.password');
-  }
+    changeSlidesActive(index) {
+        this.loginService.changeSlidesActive(index);
+    }
 
-  get confirmPasswordSignUp() {
-    return this.signUpForm.get('passwordInfo.confirmPassword');
-  }
+    changeInnerSlidesActive(index) {
+        this.loginService.changeInnerSlidesActive(index);
+    }
+
+    getCompany() {
+        this.modalCtrl.create('SearchCompanyPage').present().then(() => { });
+    }
+
+    adjustmentValidationRules(userType: string): void {
+        const realNameCtrl = this.signUpForm.get('realName');
+
+        if (userType === '1') {
+            realNameCtrl.setValidators([Validators.required, realNameValidator])
+        } else {
+            realNameCtrl.clearValidators();
+        }
+
+        realNameCtrl.updateValueAndValidity();
+    }
+
+    goToNextPage(haveAuthPassed) {
+        if (haveAuthPassed) {
+            this.navCtrl.setRoot(tabsPage).then(() => { });
+        } else {
+            this.navCtrl.push(certificationPage).then(() => { });
+        }
+    }
+
+    /*=============================================Refuse cleaning====================================================*/
+
+    ionViewWillUnload() {
+        this.getActiveIndexOfSlides$$.unsubscribe();
+
+        this.getActiveIndexOfInnerSlides$$.unsubscribe();
+
+        this.slide$$.unsubscribe();
+
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
+
+    /*====================================Short cut method for template==============================================*/
+
+    get mobilePhone() {
+        return this.loginForm.get('mobilePhone');
+    }
+
+    get password() {
+        return this.loginForm.get('password');
+    }
+
+    get imageVerification() {
+        return this.loginForm.get('imageVerification');
+    }
+
+    get userType() {
+        return this.signUpForm.get('userType');
+    }
+
+    get company() {
+        return this.signUpForm.get('company');
+    }
+
+    get realName() {
+        return this.signUpForm.get('realName');
+    }
+
+    get mobilePhoneSignUp() {
+        return this.signUpForm.get('mobilePhone');
+    }
+
+    get phoneVerificationSignUp() {
+        return this.signUpForm.get('phoneVerification');
+    }
+
+    get imageVerificationSignUp() {
+        return this.signUpForm.get('imageVerification');
+    }
+
+    get passwordSignUp() {
+        return this.signUpForm.get('passwordInfo.password');
+    }
+
+    get confirmPasswordSignUp() {
+        return this.signUpForm.get('passwordInfo.confirmPassword');
+    }
 }

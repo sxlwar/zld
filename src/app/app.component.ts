@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { Nav, Platform, AlertController } from 'ionic-angular';
+import { Nav, Platform } from 'ionic-angular';
 import { Keyboard } from '@ionic-native/keyboard';
 import { FirstRunPage, PAGES, Page } from '../pages/pages';
 import { ConfigService } from '../services/config/config-service';

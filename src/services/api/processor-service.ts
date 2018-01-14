@@ -90,9 +90,7 @@ export class ProcessorService extends MapperService {
   }
 
   registerProcessor(option$: Observable<RegisterOptions>): Subscription {
-    return option$.subscribe(option => {
-      this.store.dispatch(new RegisterAction(option));
-    });
+    return option$.subscribe(option => this.store.dispatch(new RegisterAction(option)));
   }
 
   resetPwdProcessor(option$: Observable<ResetPasswordOptions>): Subscription {

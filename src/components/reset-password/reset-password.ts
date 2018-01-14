@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { LoginService } from './../../services/business/login-service';
 import { ResetPasswordResponse } from './../../interfaces/response-interface';
@@ -8,85 +9,97 @@ import { Component, Input, OnDestroy } from '@angular/core';
 import { mobilePhoneValidator, passwordValidator, passwordMatchValidator } from '../../validators/validators';
 
 @Component({
-  selector: 'reset-password',
-  templateUrl: 'reset-password.html'
+    selector: 'reset-password',
+    templateUrl: 'reset-password.html'
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy{
+export class ResetPasswordComponent implements OnInit, OnDestroy {
 
-  @Input() reset: Observable<null>;
+    @Input() reset: Observable<null>;
 
-  @Input() account: string;
+    @Input() account: string;
 
-  @Input() errorColor = 'white';
+    @Input() errorColor = 'white';
 
-  @Input() buttonColor = 'light';
+    @Input() buttonColor = 'light';
 
-  resetPwd$: Observable<ResetPasswordResponse>;
+    resetPwd$: Observable<ResetPasswordResponse>;
 
-  resetPwdForm: FormGroup;
+    resetPwdForm: FormGroup;
 
-  reset$$: Subscription;
+    reset$$: Subscription;
 
-  constructor(
-    public fb: FormBuilder,
-    public loginService: LoginService
-  ) {
-    this.initialForm();
-  }
+    updateImage$: Subject<boolean> = new Subject();
 
-  ngOnInit() {
-    this.resetPwd$ = this.loginService.getResetPasswordInfo();
+    subscriptions: Subscription[] = [];
 
-    if (this.reset) {
-      this.reset$$ = this.reset.subscribe(_ => this.resetPwdForm.reset());
+    phoneVerCode$: Subject<boolean> = new Subject();
+
+    reset$: Subject<boolean> = new Subject();
+
+    constructor(
+        public fb: FormBuilder,
+        public loginService: LoginService
+    ) {
+        this.initialForm();
     }
-  }
 
-  ngOnDestroy() {
-    this.reset$$ && this.reset$$.unsubscribe();
-  }
+    ngOnInit() {
+        this.initialModel();
 
-  initialForm(): void {
-    this.resetPwdForm = this.fb.group({
-      mobilePhone: ['', mobilePhoneValidator],
-      imageVerification: '',
-      phoneVerification: '',
-      passwordInfo: this.fb.group({
-        password: ['', passwordValidator],
-        confirmPassword: ['', passwordValidator]
-      }, { validator: passwordMatchValidator }),
-    });
-  }
+        this.launch();
+    }
 
-  resetPwd() {
-    this.loginService.resetPwd(this.resetPwdForm.value);
-  }
+    initialModel(): void {
+        this.resetPwd$ = this.loginService.getResetPasswordInfo();
+    }
 
-  getResetPhoneVerCode() {
-    this.loginService.getResetPwdPhoneVerCode(this.resetPwdForm.value);
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.loginService.updateVerificationImageUrl(this.updateImage$),
+            this.loginService.getResetPwdPhoneVerCode(this.phoneVerCode$.map(_ => this.resetPwdForm.value)),
+            this.loginService.resetPwd(this.reset$.map(_ => this.resetPwdForm.value)),
+            this.loginService.handleResetPassWordInfoError(),
+            this.loginService.handleResetPhoneVerCodeError(),
+        ];
 
-  updateVerificationImage() {
-    this.loginService.updateVerificationImageUrl();
-  }
+        if(this.reset) {
+            this.subscriptions.push(this.reset.subscribe(_ => this.resetPwdForm.reset()))
+        }
+    }
 
-  get mobilePhone() {
-    return this.resetPwdForm.get('mobilePhone');
-  }
+    initialForm(): void {
+        this.resetPwdForm = this.fb.group({
+            mobilePhone: ['', mobilePhoneValidator],
+            imageVerification: '',
+            phoneVerification: '',
+            passwordInfo: this.fb.group({
+                password: ['', passwordValidator],
+                confirmPassword: ['', passwordValidator]
+            }, { validator: passwordMatchValidator }),
+        });
+    }
 
-  get phoneVerification() {
-    return this.resetPwdForm.get('phoneVerification');
-  }
+    ngOnDestroy() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  get imageVerification() {
-    return this.resetPwdForm.get('imageVerification');
-  }
+    get mobilePhone() {
+        return this.resetPwdForm.get('mobilePhone');
+    }
 
-  get password() {
-    return this.resetPwdForm.get('passwordInfo.password');
-  }
+    get phoneVerification() {
+        return this.resetPwdForm.get('phoneVerification');
+    }
 
-  get confirmPassword() {
-    return this.resetPwdForm.get('passwordInfo.confirmPassword');
-  }
+    get imageVerification() {
+        return this.resetPwdForm.get('imageVerification');
+    }
+
+    get password() {
+        return this.resetPwdForm.get('passwordInfo.password');
+    }
+
+    get confirmPassword() {
+        return this.resetPwdForm.get('passwordInfo.confirmPassword');
+    }
 }

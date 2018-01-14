@@ -222,7 +222,8 @@ export class MapperService {
             password: form.passwordInfo.password,
             code: form.phoneVerification,
             real_name: form.realName,
-            captcha_code: form.imageVerification
+            captcha_code: form.imageVerification,
+            userType: Number(form.userType)
         };
     }
 

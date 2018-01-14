@@ -17,6 +17,11 @@ export interface LoginOptions {
     rand_captcha_key?: string;
 }
 
+export enum RegisterUserType {
+    personalUser,
+    companyUser
+}
+
 export interface RegisterOptions {
     username: string;
     password: string;
@@ -25,6 +30,7 @@ export interface RegisterOptions {
     rand_captcha_key?: string;
     real_name?: string;
     company_id?: number;
+    userType?: number; // custom field , used to distinct user
 }
 
 export interface SearchCompanyOptions {

@@ -2,13 +2,13 @@ import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode } from '../../actions/action/login-action';
-import { LoginOptions, RegisterOptions } from '../../interfaces/request-interface';
+import { RegisterUserType } from '../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';
 import { getPhoneVerCode, getRegister, getResetPassword, getResetPhoneVerCode, selectPhoneVerCodeCaptcha, selectRandomCode, selectResetPhoneVerCodeCaptcha, selectSelectedCompany, selectUserInfo } from '../../reducers/index-reducer';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { ENV } from '@app/env';
-import { pickBy, random } from 'lodash';
+import { random } from 'lodash';
 import 'rxjs/add/observable/range';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/map';
@@ -25,10 +25,6 @@ import { ProcessorService } from '../api/processor-service';
 @Injectable()
 export class LoginService {
 
-    subscriptions: Subscription[] = [];
-
-    updateVerImage$$: Subscription;
-
     constructor(
         public store: Store<fromRoot.AppState>,
         public process: ProcessorService,
@@ -36,7 +32,6 @@ export class LoginService {
         public mapper: MapperService,
         public userInfo: UserService
     ) {
-        this.handleError();
     }
 
     /**
@@ -51,15 +46,13 @@ export class LoginService {
         this.store.dispatch(new ShowSpecificInnerSlideAction(index));
     }
 
-    updateVerificationImageUrl() {
-        if (this.updateVerImage$$) this.updateVerImage$$.unsubscribe();
-
-        this.updateVerImage$$ = Observable.range(1, 5)
-            .map(_ => random(1, 26).toString(36))
-            .reduce((acc, cur) => acc + cur)
+    updateVerificationImageUrl(source: Observable<boolean>): Subscription {
+        return source.filter(value => value)
+            .mergeMapTo(Observable.range(1, 5)
+                .map(_ => random(1, 26).toString(36))
+                .reduce((acc, cur) => acc + cur)
+            )
             .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
-
-        this.subscriptions.push(this.updateVerImage$$);
     }
 
     /*=============================================No Side effect===================================================*/
@@ -114,23 +107,11 @@ export class LoginService {
      * The form data model is first mapped to the interface data model, then the logic between the data is processed.
      * The data that contains the complete request information is then sent to data services.
      * */
-    login(source: LoginFormModel) {
-        const option: LoginOptions = this.mapper.loginFormMap(source);
-
-        let login$$;
-
-        if (option.captcha_code) {
-            const source$ = Observable.zip(
-                this.store.select(selectRandomCode).map(code => ({ random_key: code })),
-                Observable.of(option)
-            ).map(values => values.reduce((acc, cur) => Object.assign(acc, cur)));
-
-            login$$ = this.process.loginProcessor(source$ as Observable<LoginOptions>);
-        } else {
-            login$$ = this.process.loginProcessor(Observable.of(pickBy(option, value => !!value)))
-        }
-
-        this.subscriptions.push(login$$);
+    login(form: Observable<LoginFormModel>): Subscription {
+        return this.process.loginProcessor(
+            form.map(form => this.mapper.loginFormMap(form))
+                .withLatestFrom(this.store.select(selectRandomCode), ({ username, password, captcha_code }, random_key) => !!captcha_code ? { username, password, captcha_code, random_key } : { username, password })
+        );
     }
 
     /**
@@ -138,130 +119,89 @@ export class LoginService {
      * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，getPhoneVerCode处理注册
      * 时的手机验证码，getResetPhoneVerCode处理重置密码时的手机验证码。
      * */
-    getPhoneVerCode(source: SignUpFormModel) {
-
-        const { username, captcha_code } = this.mapper.signUpFormMap(source);
-
-        const phoneVerCode$ = this.store.select(selectPhoneVerCodeCaptcha)
-            .switchMap((needImageVerCode: boolean) => {
-                if (needImageVerCode) {
-                    return this.store.select(selectRandomCode)
-                        .map(value => ({ username, captcha_code, random_key: value }))
-                }
-                return Observable.of({ username });
-            });
-
-        const phoneVer$$ = this.process.phoneVerificationProcessor(phoneVerCode$);
-
-        this.subscriptions.push(phoneVer$$);
-    }
-
-    getResetPwdPhoneVerCode(source: ResetPwdFormModel) {
-        const { username, captcha_code } = this.mapper.resetPwdForm(source);
-
-        const phoneVerCode$ = this.store.select(selectResetPhoneVerCodeCaptcha)
-            .switchMap((needImageVerCode: boolean) => {
-                if (needImageVerCode) {
-                    return this.store.select(selectRandomCode)
-                        .map(value => ({ username, captcha_code, random_key: value }))
-                }
-                return Observable.of({ username });
-            });
-
-        const phoneVer$$ = this.process.resetPhoneVerificationProcessor(phoneVerCode$);
-
-        this.subscriptions.push(phoneVer$$);
-    }
-
-    signUp(source: SignUpFormModel, userType: string): void {
-
-        const { username, password, code } = this.mapper.signUpFormMap(source);
-
-        const baseOption$ = Observable.of({ username, password, code });
-
-        let randomKey$: Observable<object> = Observable.of({});
-
-        if (source.imageVerification) {
-            randomKey$ = this.store.select(selectRandomCode).map(rand_captcha_key => ({ rand_captcha_key }));
-        }
-
-        let companyUserOption$: Observable<any> = Observable.of({});
-
-        if (userType === 'REGISTER_COMPANY_USER') {
-            companyUserOption$ = this.store.select(selectSelectedCompany)
-                .map(company => ({ company_id: company.id, real_name: source.realName }));
-        }
-
-        const register$ = baseOption$.withLatestFrom(randomKey$, companyUserOption$)
-            .map(data => data.reduce((acc, cur) => Object.assign(acc, cur)) as RegisterOptions);
-
-        const register$$ = this.process.registerProcessor(register$);
-
-        this.subscriptions.push(register$$);
-
-    }
-
-    resetPwd(source: ResetPwdFormModel): void {
-        const { username, password, code } = this.mapper.resetPwdForm(source);
-
-        const resetPwd$$ = this.process.resetPwdProcessor(Observable.of({ username, password, code }));
-
-        this.subscriptions.push(resetPwd$$);
-    }
-
-    /*=========================================error handle========================================================*/
-
-    private handleError() {
-        const login$$ = this.handleLoginError();
-
-        const signUpPhoneVerCode$$ = this.handleSignPhoneVerCodeError();
-
-        const resetPhoneVerCode$$ = this.handleResetPhoneVerCodeError();
-
-        const register$$ = this.handleRegisterError();
-
-        const resetPassword$$ = this.handleResetPassWordInfoError();
-
-        this.subscriptions = this.subscriptions.concat([login$$, signUpPhoneVerCode$$, resetPhoneVerCode$$, register$$, resetPassword$$]);
-    }
-
-    private handleLoginError(): Subscription {
-        return this.errorService.handleErrorInSpecific(
-            this.getLoginInfo().do((userInfo: LoginResponse) => userInfo.captcha && this.updateVerificationImageUrl()),
-            'LOGIN_FAIL_TIP'
+    getPhoneVerCode(form: Observable<SignUpFormModel>): Subscription {
+        return this.process.phoneVerificationProcessor(
+            form.map(form => this.mapper.signUpFormMap(form))
+                .withLatestFrom(
+                this.store.select(selectPhoneVerCodeCaptcha),
+                this.store.select(selectRandomCode),
+                ({ username, captcha_code }, needImageVerCode, random_key) => needImageVerCode ? { username, captcha_code, random_key } : { username }
+                )
         );
     }
 
-    private handleSignPhoneVerCodeError(): Subscription {
-        return this.errorService
-            .handleErrorInSpecific(
-            this.getSignUpPhoneVer().do((data: PhoneVerCodeResponse) => data.captcha && this.updateVerificationImageUrl()),
-            'PHONE_VERIFICATION_FAIL'
-            );
-    }
-
-    private handleResetPhoneVerCodeError(): Subscription {
-        return this.errorService.handleErrorInSpecific(
-            this.getResetPwdPhoneVer().do((captcha: PhoneVerCodeResponse) => captcha && this.updateVerificationImageUrl()),
-            'PHONE_VERIFICATION_FAIL'
+    getResetPwdPhoneVerCode(form: Observable<ResetPwdFormModel>): Subscription {
+        return this.process.phoneVerificationProcessor(
+            form.map(form => this.mapper.resetPwdForm(form))
+                .withLatestFrom(
+                this.store.select(selectResetPhoneVerCodeCaptcha),
+                this.store.select(selectRandomCode),
+                ({ username, captcha_code }, needImageVerCode, random_key) => needImageVerCode ? { username, captcha_code, random_key } : { username }
+                )
         );
     }
 
-    private handleRegisterError(): Subscription {
+    signUp(form: Observable<SignUpFormModel>): Subscription {
+        return this.process.registerProcessor(
+            form.map(form => this.mapper.signUpFormMap(form))
+                .withLatestFrom(
+                this.store.select(selectRandomCode),
+                this.store.select(selectSelectedCompany),
+                ({ username, password, code, real_name, captcha_code, userType }, rand_captcha_key, company) => {
+                    const option = { username, password, code };
+
+                    (userType === RegisterUserType.companyUser) && Object.assign(option, { real_name, company_id: company.id })
+
+                    !!captcha_code && Object.assign(option, { captcha_code, rand_captcha_key })
+
+                    return option;
+                })
+        );
+    }
+
+    resetPwd(form: Observable<ResetPwdFormModel>): Subscription {
+        return this.process.resetPwdProcessor(
+            form.map(form => this.mapper.resetPwdForm(form))
+                .withLatestFrom(this.store.select(selectRandomCode),
+                ({ username, password, code, captcha_code }, rand_captcha_key) => !!captcha_code ? { username, password, code, captcha_code, rand_captcha_key } : { username, password, code }
+                )
+        );
+    }
+
+    /*======================================================error handle========================================================*/
+
+    handleError(): Subscription[] {
+        return [
+            this.handleLoginError(),
+
+            this.handleSignPhoneVerCodeError(),
+
+            this.handleResetPhoneVerCodeError(),
+
+            this.handleRegisterError(),
+
+            this.handleResetPassWordInfoError()
+        ]
+    }
+
+    handleLoginError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.getLoginInfo(), 'LOGIN_FAIL_TIP');
+    }
+
+    handleSignPhoneVerCodeError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.getSignUpPhoneVer(), 'PHONE_VERIFICATION_FAIL');
+    }
+
+    handleResetPhoneVerCodeError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.getResetPwdPhoneVer(), 'PHONE_VERIFICATION_FAIL');
+    }
+
+    handleRegisterError(): Subscription {
         return this.errorService.handleErrorInSpecific(this.getRegisterInfo(), 'REGISTER_FAIL_TIP');
     }
 
-    private handleResetPassWordInfoError(): Subscription {
+    handleResetPassWordInfoError(): Subscription {
         return this.errorService.handleErrorInSpecific(this.getResetPasswordInfo(), 'RESET_PASSWORD_FAIL_TIP');
     }
 
-    /*=============================================refuse cleaning====================================================*/
-
-    /**
-     * @description
-     * This method used for cancel all the subscription when component dismissed.
-     * */
-    unSubscribe() {
-        this.subscriptions.forEach(unSub => unSub.unsubscribe());
-    }
 }

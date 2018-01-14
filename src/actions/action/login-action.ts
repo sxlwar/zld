@@ -1,11 +1,11 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import {
-  LoginOptions, PhoneVerificationCodeOptions, RegisterOptions,
-  ResetPasswordOptions
+    LoginOptions, PhoneVerificationCodeOptions, RegisterOptions,
+    ResetPasswordOptions
 } from '../../interfaces/request-interface';
 import {
-  RegisterResponse, LoginResponse, ResetPasswordResponse,
-  PhoneVerCodeResponse
+    RegisterResponse, LoginResponse, ResetPasswordResponse,
+    PhoneVerCodeResponse
 } from '../../interfaces/response-interface';
 
 /*====================================================SLIDES ACTIONS===============================================*/
@@ -15,17 +15,15 @@ export const SHOW_SPECIFIC_SLIDE = 'SHOW_SPECIFIC_SLIDE';
 export const SHOW_SPECIFIC_INNER_SLIDE = 'SHOW_SPECIFIC_INNER_SLIDE';
 
 export class ShowSpecificSlideAction implements Action {
-  readonly type = SHOW_SPECIFIC_SLIDE;
+    readonly type = SHOW_SPECIFIC_SLIDE;
 
-  constructor(public payload: number) {
-  }
+    constructor(public payload: number) { }
 }
 
 export class ShowSpecificInnerSlideAction implements Action {
-  readonly type = SHOW_SPECIFIC_INNER_SLIDE;
+    readonly type = SHOW_SPECIFIC_INNER_SLIDE;
 
-  constructor(public payload: number) {
-  }
+    constructor(public payload: number) { }
 }
 
 /*====================================================Login actions===============================================*/
@@ -33,28 +31,26 @@ export class ShowSpecificInnerSlideAction implements Action {
 export const LOGIN = 'LOGIN';
 
 export class LoginAction implements Action {
-  readonly type = LOGIN;
+    readonly type = LOGIN;
 
-  constructor(public payload: LoginOptions) {
-  }
+    constructor(public payload: LoginOptions) { }
 }
 
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export class LoginFailAction implements Action {
-  readonly type = LOGIN_FAIL;
+    readonly type = LOGIN_FAIL;
 
-  constructor(public payload: { captcha: boolean }) {
-  }
+    constructor(public payload: { captcha: boolean }) {
+    }
 }
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 export class LoginSuccessAction implements Action {
-  readonly type = LOGIN_SUCCESS;
+    readonly type = LOGIN_SUCCESS;
 
-  constructor(public payload: LoginResponse) {
-  }
+    constructor(public payload: LoginResponse) { }
 }
 
 /*===================================Image verification code actions===============================================*/
@@ -62,19 +58,18 @@ export class LoginSuccessAction implements Action {
 export const UPDATE_VERIFICATION_IMAGE = 'UPDATE_VERIFICATION_IMAGE';
 
 export class UpdateVerificationImageAction implements Action {
-  readonly type = UPDATE_VERIFICATION_IMAGE;
+    readonly type = UPDATE_VERIFICATION_IMAGE;
 
-  constructor(public payload: string) {
-  };
+    constructor(public payload: string) { };
 }
 
 export const UPDATE_RANDOM_CODE = 'UPDATE_RANDOM_CODE';
 
 export class UpdateRandomCode implements Action {
-  readonly type = UPDATE_RANDOM_CODE;
+    readonly type = UPDATE_RANDOM_CODE;
 
-  constructor(public payload: string) {
-  };
+    constructor(public payload: string) {
+    };
 }
 
 /*=========================================Register phone verification actions===============================================*/
@@ -82,28 +77,25 @@ export class UpdateRandomCode implements Action {
 export const GET_PHONE_VERIFICATION_CODE = 'GET_PHONE_VERIFICATION_CODE';
 
 export class RegisterPhoneVerCodeAction {
-  readonly type = GET_PHONE_VERIFICATION_CODE;
+    readonly type = GET_PHONE_VERIFICATION_CODE;
 
-  constructor(public payload: PhoneVerificationCodeOptions) {
-  }
+    constructor(public payload: PhoneVerificationCodeOptions) { }
 }
 
 export const PHONE_VERIFICATION_CODE_FAIL = 'PHONE_VERIFICATION_CODE_FAIL';
 
 export class RegisterPhoneVerCodeFailAction {
-  readonly type = PHONE_VERIFICATION_CODE_FAIL;
+    readonly type = PHONE_VERIFICATION_CODE_FAIL;
 
-  constructor(public payload: PhoneVerCodeResponse) {
-  }
+    constructor(public payload: PhoneVerCodeResponse) { }
 }
 
 export const PHONE_VERIFICATION_CODE_SUCCESS = 'PHONE_VERIFICATION_CODE_SUCCESS';
 
 export class RegisterPhoneVerCodeSuccessAction {
-  readonly type = PHONE_VERIFICATION_CODE_SUCCESS;
+    readonly type = PHONE_VERIFICATION_CODE_SUCCESS;
 
-  constructor(public payload: PhoneVerCodeResponse) {
-  }
+    constructor(public payload: PhoneVerCodeResponse) { }
 }
 
 /*===============================================register actions==================================================*/
@@ -111,28 +103,25 @@ export class RegisterPhoneVerCodeSuccessAction {
 export const REGISTER = 'REGISTER';
 
 export class RegisterAction {
-  readonly type = REGISTER;
+    readonly type = REGISTER;
 
-  constructor(public payload: RegisterOptions) {
-  };
+    constructor(public payload: RegisterOptions) { };
 }
 
 export const REGISTER_FAIL = 'REGISTER_FAIL';
 
 export class RegisterFailAction {
-  readonly type = REGISTER_FAIL;
+    readonly type = REGISTER_FAIL;
 
-  constructor(public payload: RegisterResponse) {
-  }
+    constructor(public payload: RegisterResponse) { }
 }
 
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 
 export class RegisterSuccessAction {
-  readonly type = REGISTER_SUCCESS;
+    readonly type = REGISTER_SUCCESS;
 
-  constructor(public payload: RegisterResponse) {
-  };
+    constructor(public payload: RegisterResponse) { };
 }
 
 /*=============================================Reset password=======================================================*/
@@ -140,25 +129,25 @@ export class RegisterSuccessAction {
 export const RESET_PASSWORD = 'RESET_PASSWORD';
 
 export class ResetPasswordAction {
-  readonly type = RESET_PASSWORD;
+    readonly type = RESET_PASSWORD;
 
-  constructor(public payload: ResetPasswordOptions) {}
+    constructor(public payload: ResetPasswordOptions) { }
 }
 
 export const RESET_PASSWORD_FAIL = 'RESET_PASSWORD_FAIL';
 
 export class ResetPasswordFailAction {
-  readonly type = RESET_PASSWORD_FAIL;
+    readonly type = RESET_PASSWORD_FAIL;
 
-  constructor(public payload: ResetPasswordResponse) {}
+    constructor(public payload: ResetPasswordResponse) { }
 }
 
 export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 
 export class ResetPasswordSuccessAction {
-  readonly type = RESET_PASSWORD_SUCCESS;
+    readonly type = RESET_PASSWORD_SUCCESS;
 
-  constructor(public payload: ResetPasswordResponse) {}
+    constructor(public payload: ResetPasswordResponse) { }
 }
 
 /*=============================================Reset password phone verification code=======================================================*/
@@ -166,28 +155,25 @@ export class ResetPasswordSuccessAction {
 export const RESET_PHONE_VERIFICATION_CODE = 'RESET_PHONE_VERIFICATION_CODE';
 
 export class ResetPhoneVerCodeAction {
-  readonly type = RESET_PHONE_VERIFICATION_CODE;
+    readonly type = RESET_PHONE_VERIFICATION_CODE;
 
-  constructor(public payload: PhoneVerificationCodeOptions) {
-  }
+    constructor(public payload: PhoneVerificationCodeOptions) { }
 }
 
 export const RESET_PHONE_VERIFICATION_CODE_FAIL = 'RESET_PHONE_VERIFICATION_CODE_FAIL';
 
 export class ResetPhoneVerCodeFailAction {
-  readonly type = RESET_PHONE_VERIFICATION_CODE_FAIL;
+    readonly type = RESET_PHONE_VERIFICATION_CODE_FAIL;
 
-  constructor(public payload: PhoneVerCodeResponse) {
-  }
+    constructor(public payload: PhoneVerCodeResponse) { }
 }
 
 export const RESET_PHONE_VERIFICATION_CODE_SUCCESS = 'RESET_PHONE_VERIFICATION_CODE_SUCCESS';
 
 export class ResetPhoneVerCodeSuccessAction {
-  readonly type = RESET_PHONE_VERIFICATION_CODE_SUCCESS;
+    readonly type = RESET_PHONE_VERIFICATION_CODE_SUCCESS;
 
-  constructor(public payload: PhoneVerCodeResponse) {
-  }
+    constructor(public payload: PhoneVerCodeResponse) { }
 }
 
 /* ==============================================Clean data=============================================== */
@@ -195,28 +181,28 @@ export class ResetPhoneVerCodeSuccessAction {
 export const RESET_SID = 'RESET_SID';
 
 export class ResetSidAction implements Action {
-  readonly type = RESET_SID;
+    readonly type = RESET_SID;
 
-  constructor() { }
+    constructor() { }
 }
 
 export type Actions = ShowSpecificSlideAction
-  | ShowSpecificInnerSlideAction
-  | LoginAction
-  | LoginFailAction
-  | LoginSuccessAction
-  | UpdateVerificationImageAction
-  | UpdateRandomCode
-  | RegisterPhoneVerCodeAction
-  | RegisterPhoneVerCodeFailAction
-  | RegisterPhoneVerCodeSuccessAction
-  | RegisterAction
-  | RegisterFailAction
-  | RegisterSuccessAction
-  | ResetPasswordAction
-  | ResetPasswordFailAction
-  | ResetPasswordSuccessAction
-  | ResetPhoneVerCodeAction
-  | ResetPhoneVerCodeFailAction
-  | ResetPhoneVerCodeSuccessAction
-  | ResetSidAction;
+    | ShowSpecificInnerSlideAction
+    | LoginAction
+    | LoginFailAction
+    | LoginSuccessAction
+    | UpdateVerificationImageAction
+    | UpdateRandomCode
+    | RegisterPhoneVerCodeAction
+    | RegisterPhoneVerCodeFailAction
+    | RegisterPhoneVerCodeSuccessAction
+    | RegisterAction
+    | RegisterFailAction
+    | RegisterSuccessAction
+    | ResetPasswordAction
+    | ResetPasswordFailAction
+    | ResetPasswordSuccessAction
+    | ResetPhoneVerCodeAction
+    | ResetPhoneVerCodeFailAction
+    | ResetPhoneVerCodeSuccessAction
+    | ResetSidAction;
