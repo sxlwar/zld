@@ -238,11 +238,9 @@ export const selectAttendancesToModify = createSelector(getAttendance, attendanc
 //attendance instant list
 const getAttendanceRecord = (state: AppState) => state.attendanceRecord;
 export const selectAttendanceRecordResponse = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceResponse);
-export const selectAttendanceRecordCount = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordCount);
 export const selectAttendanceRecordInstant = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordInstants);
 export const selectAttendanceRecordPage = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordPage);
 export const selectAttendanceRecordLimit = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordLimit);
-export const selectAttendanceRecordMoreData = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordMoreData);
 export const selectAttendanceRecordMaxDate = createSelector(getAttendanceRecord, attendanceRecord.getAttendanceRecordMaxDate);
 export const selectLocationAttendanceOptions = createSelector(getAttendanceRecord, attendanceRecord.getLocationAttendanceRecordOptions);
 

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { RequestOption } from 'interfaces/request-interface';
 import { workerContractList, WorkerContract } from './../../services/api/command';
 import { WorkerService } from './../../services/business/worker-service';
@@ -29,6 +30,8 @@ export class CalendarComponent implements OnInit {
 
     heads = dayNames;
 
+    subscriptions: Subscription[] = [];
+
     constructor(
         public timeService: TimeService,
         public contract: WorkerService,
@@ -37,7 +40,20 @@ export class CalendarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.initialModel();
+
+        this.launch();
+    }
+
+    initialModel(): void {
         this.data = this.getCalendar().take(1);
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.instant.getAttendanceInstantList(this.getOption()),
+            this.instant.handleError(),
+        ];
     }
 
     getCalendar(): Observable<Date[][]> {
@@ -81,8 +97,7 @@ export class CalendarComponent implements OnInit {
 
     getPredicateData(): Observable<DatePeriod> {
 
-        return this.instant.getAttendanceRecord(this.getOption())
-            .skip(1)
+        return this.instant.getAttendanceRecord()
             .switchMap(records => Observable.from(records)
                 .map(record => record.day)
                 .distinctUntilChanged()

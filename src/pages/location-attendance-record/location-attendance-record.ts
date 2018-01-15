@@ -67,21 +67,17 @@ export class LocationAttendanceRecordPage {
     initialModel() {
         this.maxDate = this.record.getMaxDate().map(date => this.timeService.getDate(date, true));
 
-        this.haveMoreData = this.record.getMoreDataFlag().startWith(true);
+        this.haveMoreData = this.record.getHaveMoreData();
 
         this.workers = this.worker.getSelectedWorkersContainsWorkerId();
 
         this.names = this.workers.map(workers => workers.map(item => item.name).join(','));
 
-        this.records = this.getRecords();
-    }
-
-    /**
-     * TODO: 非常恶心的接口设计，需要通过考勤机的类型来筛选数据，接口里没有支持通过考勤机类型字段请求数据
-     * ，只支持一个考勤机ID字段，也就是说只能先用类型查考勤机, 问题是鬼TMD知道查回来的考勤机的ID应该哪个才是对的。
-     */
-    getRecords(): Observable<RecordItem[]> {
-        return this.record.getAttendanceRecordResponse()
+        /**
+         * TODO: 非常恶心的接口设计，需要通过考勤机的类型来筛选数据，接口里没有支持通过考勤机类型字段请求数据
+         * ，只支持一个考勤机ID字段，也就是说只能先用类型查考勤机, 问题是鬼TMD知道查回来的考勤机的ID应该哪个才是对的。
+         */
+        this.records = this.record.getAttendanceRecordResponse()
             .map(res => res.attendance_instants
                 .filter(item => item.attendance_machine__type === AttendanceMachineType.gpsMachine)
                 .map((item => ({ name: item.user__employee__realname, time: item.time, type: item.type })))
@@ -91,9 +87,11 @@ export class LocationAttendanceRecordPage {
 
     launch() {
         this.subscriptions = [
-            this.updateSelectedWorkers(),
-            this.getAttendanceInstance(),
-            this.getDays()
+            this.workers.subscribe(workers => this.record.updateLocationAttendanceRecordUserIds(workers.map(item => item.id))),
+            this.record.getAttendanceInstantList(this.record.getOptions()),
+            this.getDays(),
+            this.record.handleError(),
+            this.worker.handleError(),
         ];
     }
 
@@ -104,15 +102,7 @@ export class LocationAttendanceRecordPage {
         });
     }
 
-    getAttendanceInstance(): Subscription {
-        return this.record.getAttendanceInstantList(this.record.getOptions());
-    }
-
     /* =======================================================Condition update================================================================== */
-
-    updateSelectedWorkers(): Subscription {
-        return this.workers.subscribe(workers => this.record.updateLocationAttendanceRecordUserIds(workers.map(item => item.id)));
-    }
 
     updateStartDate(date: string): void {
         this.updateMaxEndDate(date);
@@ -156,6 +146,8 @@ export class LocationAttendanceRecordPage {
 
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe);
+
+        this.pageSubscription && this.pageSubscription.unsubscribe();
     }
 
 }

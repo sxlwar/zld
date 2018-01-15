@@ -50,7 +50,7 @@
                     <ion-icon name="call"></ion-icon>
                     {{'UNBIND' | translate}}
                 </button>
-                <button ion-button color="danger" (click)="deleteCard(item)">
+                <button ion-button color="danger" (click)="delete$.next(item)">
                     <ion-icon name="trash"></ion-icon>
                     {{'DELETE_BUTTON' | translate}}
                 </button>

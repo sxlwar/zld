@@ -1,4 +1,3 @@
-import { RequestOption } from './../../interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnDestroy } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';

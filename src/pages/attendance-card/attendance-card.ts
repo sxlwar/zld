@@ -1,3 +1,5 @@
+import { RequestOption } from '../../interfaces/request-interface';
+import { Subject } from 'rxjs/Subject';
 import { AddAttendanceCardComponent } from './../../components/add-attendance-card/add-attendance-card';
 import { ConditionOption } from './../../interfaces/order-interface';
 import { PermissionService } from './../../services/config/permission-service';
@@ -32,6 +34,10 @@ export class AttendanceCardPage {
     byCardNumber: ConditionOption;
 
     byBindingState: ConditionOption;
+
+    delete$: Subject<AttendanceCard> = new Subject();
+
+    unbind$: Subject<RequestOption> = new Subject();
 
     constructor(
         public navCtrl: NavController,
@@ -70,15 +76,12 @@ export class AttendanceCardPage {
     /* ===============================================Launch functions======================================== */
 
     launch() {
-        this.subscriptions = this.attendanceCard.handleError();
-
-        this.getAttendanceCardList();
-    }
-
-    getAttendanceCardList() {
-        const subscription = this.attendanceCard.getAttendanceCardList();
-
-        this.subscriptions.push(subscription);
+        this.subscriptions = [
+            this.attendanceCard.getAttendanceCardList(),
+            this.attendanceCard.deleteAttendanceCard(this.delete$.map(card => [card.id])),
+            this.attendanceCard.updateAttendanceCard(this.unbind$),
+            ...this.attendanceCard.handleError(),
+        ];
     }
 
     /* ===============================================Operate functions======================================== */
@@ -92,13 +95,7 @@ export class AttendanceCardPage {
     }
 
     unbindCard(card: AttendanceCard) {
-        const { ic_card_num } = card;
-
-        this.attendanceCard.updateAttendanceCard(Observable.of({ ic_card_num }));
-    }
-
-    deleteCard(card: AttendanceCard) {
-        this.attendanceCard.deleteAttendanceCard(Observable.of([card.id]));
+        this.unbind$.next({ ic_card_num: card.ic_card_num });
     }
 
     /* ===============================================Condition related functions======================================== */

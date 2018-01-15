@@ -32,7 +32,7 @@ export class AttendanceMachineRecordPage {
 
     id: number;
 
-    resultSubscription: Subscription;
+    subscriptions: Subscription[] = [];
 
     constructor(
         public navCtrl: NavController,
@@ -43,45 +43,43 @@ export class AttendanceMachineRecordPage {
         public modalCtrl: ModalController
     ) {
         this.id = this.navParams.get('id');
+
+        this.instant.resetPage();
     }
 
     ionViewDidLoad() {
-        this.initialDate();
+        this.initialData();
 
-        this.machineName = this.machine.getMachineName(this.id);
-
-        this.getAttendanceInstant();
-
-        this.haveMoreData = this.instant.getMoreDataFlag();
+        this.launch();
     }
 
-    initialDate() {
+    initialData(): void {
         this.date = this.time.getDate(new Date(), true);
 
         this.maxDate = this.instant.getMaxDate().map(date => this.time.getDate(date, true));
+
+        this.machineName = this.machine.getMachineName(this.id);
+
+        this.haveMoreData = this.instant.getHaveMoreData();
+
+        this.records = this.instant.getAttendanceRecord()
+            .scan((acc, cur) => acc.concat(cur))
+            .map(result => uniqBy(result, 'id'));
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.instant.getAttendanceInstantList(this.getOption()),
+            this.instant.handleError(),
+        ];
     }
 
     getOption(): Observable<RequestOption> {
         return Observable.of({ id: this.id, start_day: this.date, end_day: this.date });
     }
 
-    getAttendanceInstant() {
-        this.instant.resetPage();
-
-        this.instant.toggleMoreData(true);
-
-        this.records = this.instant.getAttendanceRecord(this.getOption())
-            .skip(1)
-            .scan((acc, cur) => acc.concat(cur))
-            .map(result => uniqBy(result, 'id'));
-    }
-
     getNextPage(infiniteScroll: InfiniteScroll) {
         this.instant.increasePage();
-
-        this.resultSubscription && this.resultSubscription.unsubscribe();
-
-        this.resultSubscription = this.instant.getAttendanceInstantList(this.getOption());
 
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
@@ -98,7 +96,7 @@ export class AttendanceMachineRecordPage {
     }
 
     ionViewWillUnload() {
-        this.resultSubscription && this.resultSubscription.unsubscribe();
+        this.subscriptions.forEach(item => item.unsubscribe());
 
         this.pageSubscription && this.pageSubscription.unsubscribe();
     }

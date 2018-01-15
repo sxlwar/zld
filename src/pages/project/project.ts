@@ -1,4 +1,3 @@
-import { RequestOption } from 'interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';

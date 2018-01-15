@@ -46,14 +46,6 @@ export class ResetRecordPageAction implements Action {
     constructor() { }
 }
 
-export const TOGGLE_MORE_DATA_FLAG = 'TOGGLE_MORE_DATA_FLAG';
-
-export class ToggleMoreDataFlagAction implements Action {
-    readonly type = TOGGLE_MORE_DATA_FLAG;
-
-    constructor(public payload: boolean) { }
-}
-
 export const GET_ATTENDANCE_RECORD_MAX_DATE = 'GET_ATTENDANCE_RECORD_MAX_DATE';
 
 export class GetAttendanceRecordMaxDateAction implements Action {
@@ -96,5 +88,4 @@ export type Actions = GetAttendanceRecordAction
     | ResetRecordPageAction
     | SetLocationAttendanceRecordEndDateAction
     | SetLocationAttendanceRecordStartDateAction
-    | SetLocationAttendanceRecordUsersAction
-    | ToggleMoreDataFlagAction;
+    | SetLocationAttendanceRecordUsersAction;

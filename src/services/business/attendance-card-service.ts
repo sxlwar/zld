@@ -2,7 +2,7 @@ import { WorkerService } from './worker-service';
 import { orderBy } from 'lodash';
 import { ConditionOption, BindingStateFlag, OrderFlag } from './../../interfaces/order-interface';
 import { UpdateOrderStateAction, UpdateBindingStateAction } from './../../actions/action/attendance-card-action';
-import { MapperService, AddAttendanceCardFormModel } from './../api/mapper-service';
+import { AddAttendanceCardFormModel } from './../api/mapper-service';
 import { RequestOption, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceCardListResponse, AttendanceCard } from './../../interfaces/response-interface';
@@ -28,6 +28,8 @@ export class AttendanceCardService {
     ) {
     }
 
+    /* =============================================================Data acquisition================================================================ */
+
     getCardListResponse(): Observable<AttendanceCardListResponse> {
         return this.store.select(selectAttendanceCardResponse);
     }
@@ -51,48 +53,7 @@ export class AttendanceCardService {
                 return result;
             });
     }
-
-    getAttendanceCardList(): Subscription {
-        const sid = this.userInfo.getSid().map(sid => ({ sid }));
-
-        return this.processor.attendanceCardListProcessor(sid);
-    }
-
-    addAttendanceCard(form: AddAttendanceCardFormModel): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const option = this.processor.addAttendanceCardForm(form)
-
-        const options = sid.zip(
-            Observable.of(option),
-            (sid, option) => (Object.assign(option, { sid }))
-        )
-
-        return this.processor.attendanceCardAddProcessor(options);
-    }
-
-    deleteAttendanceCard(ids: Observable<number[]>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const option = sid.zip(
-            ids,
-            (sid, attendance_card_id) => ({ sid, attendance_card_id }) // 这奇葩的命名，明明数组，用个单数，反人类的API。
-        );
-
-        return this.processor.attendanceCardDeleteProcessor(option);
-    }
-
-    updateAttendanceCard(option: Observable<RequestOption>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const options = sid.zip(
-            option,
-            (sid, option) => ({ sid, ...option })
-        ) as Observable<AttendanceCardUpdateOptions>;
-
-        return this.processor.attendanceCardUpdateProcessor(options);
-    }
-
+    
     getBindingStateOptions(): Observable<ConditionOption[]> {
         return this.store.select(selectAttendanceCardBindingOptions);
     }
@@ -100,6 +61,42 @@ export class AttendanceCardService {
     getOrderOptions(): Observable<ConditionOption[]> {
         return this.store.select(selectAttendanceCardOrderOptions);
     }
+
+    /* ===================================================================API request============================================================= */
+
+    getAttendanceCardList(): Subscription {
+        return this.processor.attendanceCardListProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+    }
+
+    addAttendanceCard(form: Observable<AddAttendanceCardFormModel>): Subscription {
+        return this.processor.attendanceCardAddProcessor(
+            form.map(form => this.processor.addAttendanceCardForm(form))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
+        );
+    }
+
+    deleteAttendanceCard(ids: Observable<number[]>): Subscription {
+        return this.processor.attendanceCardDeleteProcessor(
+            ids.withLatestFrom(
+                this.userInfo.getSid(),
+                (attendance_card_id, sid) => ({ attendance_card_id, sid })
+            )
+        );
+    }
+
+    updateAttendanceCard(option: Observable<RequestOption>): Subscription {
+        return this.processor.attendanceCardUpdateProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            ) as Observable<AttendanceCardUpdateOptions>
+        );
+    }
+
+    /* ============================================================Local state change methods================================================== */
 
     updateOrderConditionState(option: ConditionOption): void {
         this.store.dispatch(new UpdateOrderStateAction(option));
@@ -109,7 +106,7 @@ export class AttendanceCardService {
         this.store.dispatch(new UpdateBindingStateAction(option));
     }
 
-    /* ===================================================Error handle================================================== */
+    /* =============================================================Error handle================================================================ */
 
     handleError(): Subscription[] {
         return [this.handleAddError(), this.handleDeleteError(), this.handleQueryError(), this.handleUpdateError()];

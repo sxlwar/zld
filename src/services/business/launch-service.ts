@@ -1,5 +1,5 @@
 import { ResetWorkerContractEditResponseAction } from './../../actions/action/worker-action';
-import { MapperService, WorkerContractFormModel, AttendanceModifyFormModel, LeaveFormModel, OvertimeFormModel, PieceAuditFormModel, WorkerContractModifyFormModel, WorkerContractEditFormModel } from './../api/mapper-service';
+import { WorkerContractFormModel, AttendanceModifyFormModel, LeaveFormModel, OvertimeFormModel, PieceAuditFormModel, WorkerContractModifyFormModel, WorkerContractEditFormModel } from './../api/mapper-service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';

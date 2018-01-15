@@ -1,5 +1,4 @@
 import { applyAttendanceModifyPage } from './../pages';
-//region
 import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
@@ -7,10 +6,8 @@ import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-i
 import { Observable } from 'rxjs/Observable';
 import { AttendanceService } from '../../services/business/attendance-service';
 import { AttendanceRecordService } from '../../services/business/attendance-record-service';
-import { RequestOption } from '../../interfaces/request-interface';
 import { uniqBy } from 'lodash';
 import { Subscription } from 'rxjs/Subscription';
-//endregion
 
 @IonicPage()
 @Component({
@@ -27,7 +24,7 @@ export class AttendanceRecordPage {
 
     records: Observable<AttendanceInstant[]>;
 
-    haveMoreData = true;
+    haveMoreData: Observable<boolean>;
 
     pageSubscription: Subscription;
 
@@ -35,7 +32,10 @@ export class AttendanceRecordPage {
 
     actionSheet$$: Subscription;
 
-    constructor(public navCtrl: NavController,
+    subscriptions: Subscription[] = [];
+
+    constructor(
+        public navCtrl: NavController,
         public navParams: NavParams,
         public attendance: AttendanceService,
         public attendanceRecord: AttendanceRecordService,
@@ -57,31 +57,25 @@ export class AttendanceRecordPage {
     }
 
     launch(): void {
-
+        this.subscriptions = [
+            this.attendanceRecord.getAttendanceInstantList(Observable.of({ start_day: this.time, end_day: this.time, user_id: [this.attendanceResult.contract__worker_id] })),
+            this.attendanceRecord.handleError(),
+        ];
     }
 
     initialModel(): void {
         this.time = this.attendanceResult.day;
 
+        this.haveMoreData = this.attendanceRecord.getHaveMoreData();
+
         this.records = this.attendanceRecord
-            .getAttendanceRecord(this.getRecordOption())
-            .do(value => this.haveMoreData = !!value.length)
+            .getAttendanceRecord()
             .scan((acc, cur) => acc.concat(cur))
             .map(result => uniqBy(result, 'id'));
     }
 
-    getRecordOption(): Observable<RequestOption> {
-        const option = { start_day: this.time, end_day: this.time, user_id: [this.attendanceResult.contract__worker_id] };
-
-        return Observable.of(option);
-    }
-
     getNextPage(infiniteScroll) {
         this.attendanceRecord.increasePage();
-
-        this.recordSubscription && this.recordSubscription.unsubscribe();
-
-        this.recordSubscription = this.attendanceRecord.getAttendanceInstantList(this.getRecordOption());
 
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
@@ -99,13 +93,13 @@ export class AttendanceRecordPage {
     }
 
     ionViewWillUnload() {
-        this.attendanceRecord.unSubscribe();
-
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
         this.recordSubscription && this.recordSubscription.unsubscribe();
 
         this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 
     ionViewWillLeave() {

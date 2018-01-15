@@ -1,3 +1,5 @@
+import { RequestOption } from '../../interfaces/request-interface';
+import { AddAttendanceCardFormModel } from './../../services/api/mapper-service';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
@@ -43,6 +45,10 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
     isUpdate: boolean;
 
+    add$: Subject<AddAttendanceCardFormModel> = new Subject();
+
+    bind$: Subject<RequestOption> = new Subject();
+
     constructor(
         public viewCtrl: ViewController,
         public worker: WorkerService,
@@ -77,7 +83,10 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
         this.subscriptions = [
             this.clearSelectedWorkWhenSwitchClose(),
             this.getWorkerContractList(),
-            this.worker.handleError()
+            this.card.addAttendanceCard(this.add$),
+            this.card.updateAttendanceCard(this.bind$),
+            this.worker.handleError(),
+            ...this.card.handleError(),
         ];
     }
 
@@ -205,7 +214,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
         const { userId, name } = this.boundWorker;
 
-        this.card.updateAttendanceCard(Observable.of({ ic_card_num: cardNumber, user_id: userId, userName: name }));
+        this.bind$.next({ ic_card_num: cardNumber, user_id: userId, userName: name });
     }
 
     /**
@@ -217,7 +226,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
         const option = bind ? { cardNumber, userId: this.boundWorker.userId, userName: this.boundWorker.name } : { cardNumber };
 
-        this.card.addAttendanceCard(option);
+        this.add$.next(option);
     }
 
     dismiss() {
