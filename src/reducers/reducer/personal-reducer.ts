@@ -155,7 +155,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
         case actions.DELETE_WORK_EXPERIENCE:
             return { ...state, workExperienceDeleteOptions: action.payload };
-            
+
         case actions.WORK_EXPERIENCE_DELETE_FAIL:
             return { ...state, workExperienceDeleteResponse: action.payload };
 

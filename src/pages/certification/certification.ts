@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs/Subject';
+import { tabsPage } from './../pages';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
@@ -9,77 +11,83 @@ import 'rxjs/add/operator/filter';
 
 @IonicPage()
 @Component({
-  selector: 'page-certification',
-  templateUrl: 'certification.html',
+    selector: 'page-certification',
+    templateUrl: 'certification.html',
 })
 export class CertificationPage {
-  frontTip = 'CER_ID_CARD_BACK_TIP';
 
-  backTip = 'CER_ID_CARD_FRONT_TIP';
+    certificateForm: FormGroup;
 
-  certificateForm: FormGroup;
+    realName$: Observable<string>;
 
-  realName$: Observable<string>;
+    certificate$: Subject<boolean> = new Subject();
 
-  certificate$$: Subscription;
+    subscriptions: Subscription[] = [];
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public certificateService: CertificateService,
-    public fb: FormBuilder
-  ) {
-    this.initForm();
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public certificateService: CertificateService,
+        public fb: FormBuilder
+    ) {
+        this.initForm();
+    }
 
-  /*============================================Init model======================================================*/
+    /*============================================Init model======================================================*/
 
-  initForm() {
-    this.certificateForm = this.fb.group({
-      realName: ['', realNameValidator],
-      personalId: ['', personalIdValidator],
-      personalIdPhoto: this.fb.group({
-        front: ['', Validators.required],
-        back: ['', Validators.required]
-      })
-    });
-  }
+    ionViewDidLoad() {
+        this.initialModel();
 
-  ionViewDidLoad() {
-    this.realName$ = this.certificateService.realName;
-    this.certificate$$ = this.certificateService.certificateResult
-      .filter(res => !!res)
-      .subscribe(_ => this.navCtrl.push('TabsPage').then(() => { }));
-  }
+        this.launch();
+    }
 
-  /*============================================UI state changed=================================================*/
+    initialModel(): void {
+        this.realName$ = this.certificateService.getRealName();
+    }
 
-  certificate() {
-    this.certificateService.certificate(this.certificateForm.value);
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.certificateService.getCertificateResult().filter(value => !!value).subscribe(_ => this.navCtrl.push(tabsPage).then(() => { })),
+            this.certificateService.monitorUploadResult(),
+            ...this.certificateService.certificate(this.certificate$.map(_ => this.certificateForm.value)),
+            this.certificateService.handleError(),
+        ];
+    }
 
-  getImage(url = '', type: string) {
-    const config = {};
+    initForm() {
+        this.certificateForm = this.fb.group({
+            realName: ['', realNameValidator],
+            personalId: ['', personalIdValidator],
+            personalIdPhoto: this.fb.group({
+                front: ['', Validators.required],
+                back: ['', Validators.required]
+            })
+        });
+    }
 
-    config[type] = url;
+    /*============================================UI state changed=================================================*/
 
-    this.certificateForm.get('personalIdPhoto').patchValue(config);
-  }
+    getImage(url = '', type: string) {
+        const config = {};
 
-  /*============================================Refuse clean======================================================*/
+        config[type] = url;
 
-  ionViewWillUnload() {
-    this.certificate$$.unsubscribe();
-    this.certificateService.unSubscribe();
-  }
+        this.certificateForm.get('personalIdPhoto').patchValue(config);
+    }
 
-  /*====================================Short cut method for template==============================================*/
+    /*============================================Refuse clean======================================================*/
 
-  get realName() {
-    return this.certificateForm.get('realName')
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  get personalId() {
-    return this.certificateForm.get('personalId');
-  }
+    /*====================================Short cut method for template==============================================*/
+
+    get realName() {
+        return this.certificateForm.get('realName')
+    }
+
+    get personalId() {
+        return this.certificateForm.get('personalId');
+    }
 }

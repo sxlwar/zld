@@ -13,94 +13,94 @@ import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } 
 
 @IonicPage()
 @Component({
-  selector: 'page-attendance-machine-record',
-  templateUrl: 'attendance-machine-record.html',
+    selector: 'page-attendance-machine-record',
+    templateUrl: 'attendance-machine-record.html',
 })
 export class AttendanceMachineRecordPage {
 
-  records: Observable<AttendanceInstant[]>;
+    records: Observable<AttendanceInstant[]>;
 
-  pageSubscription: Subscription;
+    pageSubscription: Subscription;
 
-  haveMoreData: Observable<boolean>;
+    haveMoreData: Observable<boolean>;
 
-  date: string;
+    date: string;
 
-  maxDate: Observable<string>;
+    maxDate: Observable<string>;
 
-  machineName: Observable<string>;
+    machineName: Observable<string>;
 
-  id: number;
+    id: number;
 
-  resultSubscription: Subscription;
+    resultSubscription: Subscription;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public time: TimeService,
-    public instant: AttendanceRecordService,
-    public machine: AttendanceMachineService,
-    public modalCtrl: ModalController
-  ) {
-    this.id = this.navParams.get('id');
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public time: TimeService,
+        public instant: AttendanceRecordService,
+        public machine: AttendanceMachineService,
+        public modalCtrl: ModalController
+    ) {
+        this.id = this.navParams.get('id');
+    }
 
-  ionViewDidLoad() {
-    this.initialDate();
+    ionViewDidLoad() {
+        this.initialDate();
 
-    this.machineName = this.machine.getMachineName(this.id);
+        this.machineName = this.machine.getMachineName(this.id);
 
-    this.getAttendanceInstant();
+        this.getAttendanceInstant();
 
-    this.haveMoreData = this.instant.getMoreDataFlag();
-  }
+        this.haveMoreData = this.instant.getMoreDataFlag();
+    }
 
-  initialDate() {
-    this.date = this.time.getDate(new Date(), true);
+    initialDate() {
+        this.date = this.time.getDate(new Date(), true);
 
-    this.maxDate = this.instant.getMaxDate().map(date => this.time.getDate(date, true));
-  }
+        this.maxDate = this.instant.getMaxDate().map(date => this.time.getDate(date, true));
+    }
 
-  getOption(): Observable<RequestOption> {
-    return Observable.of({ id: this.id, start_day: this.date, end_day: this.date });
-  }
+    getOption(): Observable<RequestOption> {
+        return Observable.of({ id: this.id, start_day: this.date, end_day: this.date });
+    }
 
-  getAttendanceInstant() {
-    this.instant.resetPage();
+    getAttendanceInstant() {
+        this.instant.resetPage();
 
-    this.instant.toggleMoreData(true);
+        this.instant.toggleMoreData(true);
 
-    this.records = this.instant.getAttendanceRecord(this.getOption())
-      .skip(1)
-      .scan((acc, cur) => acc.concat(cur))
-      .map(result => uniqBy(result, 'id'));
-  }
+        this.records = this.instant.getAttendanceRecord(this.getOption())
+            .skip(1)
+            .scan((acc, cur) => acc.concat(cur))
+            .map(result => uniqBy(result, 'id'));
+    }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
-    this.instant.increasePage();
+    getNextPage(infiniteScroll: InfiniteScroll) {
+        this.instant.increasePage();
 
-    this.resultSubscription && this.resultSubscription.unsubscribe();
+        this.resultSubscription && this.resultSubscription.unsubscribe();
 
-    this.resultSubscription = this.instant.getAttendanceInstantList(this.getOption());
+        this.resultSubscription = this.instant.getAttendanceInstantList(this.getOption());
 
-    this.pageSubscription && this.pageSubscription.unsubscribe();
+        this.pageSubscription && this.pageSubscription.unsubscribe();
 
-    this.pageSubscription = this.instant
-      .getAttendanceRecordResponse()
-      .subscribe(value => infiniteScroll.complete());
-  }
+        this.pageSubscription = this.instant
+            .getAttendanceRecordResponse()
+            .subscribe(value => infiniteScroll.complete());
+    }
 
-  showCapture(instant: AttendanceInstant) {
-    const { similarity, screen_image, capture_image } = instant;
+    showCapture(instant: AttendanceInstant) {
+        const { similarity, screen_image, capture_image } = instant;
 
-    this.modalCtrl.create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image })
-      .present();
-  }
+        this.modalCtrl.create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image })
+            .present();
+    }
 
-  ionViewWillUnload() {
-    this.resultSubscription && this.resultSubscription.unsubscribe();
+    ionViewWillUnload() {
+        this.resultSubscription && this.resultSubscription.unsubscribe();
 
-    this.pageSubscription && this.pageSubscription.unsubscribe();
-  }
+        this.pageSubscription && this.pageSubscription.unsubscribe();
+    }
 
 }

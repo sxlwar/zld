@@ -81,7 +81,7 @@ export class LaunchEffect extends Command {
         .ofType(UPLOAD_WORKER_CONTRACT_ATTACH)
         .mergeMap((action: UploadWorkerContractAttachAction) => this.http
             .uploadAttach(this.getUploadWorkerContractAttach(action.payload))
-            .map(res => res.responseCode === 200 ? new UploadWorkerContractAttachFailAction(JSON.parse(res.response)) : new UploadWorkerContractAttachSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200 ? new UploadWorkerContractAttachFailAction(JSON.parse(res.response)) : new UploadWorkerContractAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 
@@ -90,7 +90,7 @@ export class LaunchEffect extends Command {
         .ofType(UPLOAD_ATTENDANCE_MODIFY_ATTACH)
         .mergeMap((action: UploadAttendanceModifyAttachAction) => this.http
             .uploadAttach(this.getUploadAttendanceModifyAttach(action.payload))
-            .map(res => res.responseCode === 200 ? new UploadAttendanceModifyAttachFailAction(JSON.parse(res.response)) : new UploadAttendanceModifyAttachSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200 ? new UploadAttendanceModifyAttachFailAction(JSON.parse(res.response)) : new UploadAttendanceModifyAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 
@@ -99,7 +99,7 @@ export class LaunchEffect extends Command {
         .ofType(UPLOAD_LEAVE_ATTACH)
         .mergeMap((action: UploadLeaveAttachAction) => this.http
             .uploadAttach(this.getUploadLeaveAttach(action.payload))
-            .map(res => res.responseCode === 200 ? new UploadLeaveAttachFailAction(JSON.parse(res.response)) : new UploadLeaveAttachSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200 ? new UploadLeaveAttachFailAction(JSON.parse(res.response)) : new UploadLeaveAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 
@@ -108,7 +108,7 @@ export class LaunchEffect extends Command {
         .ofType(UPLOAD_OVERTIME_ATTACH)
         .mergeMap((action: UploadOvertimeAttachAction) => this.http
             .uploadAttach(this.getUploadOvertimeAttach(action.payload))
-            .map(res => res.responseCode === 200 ? new UploadOvertimeAttachFailAction(JSON.parse(res.response)) : new UploadOvertimeAttachSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200 ? new UploadOvertimeAttachFailAction(JSON.parse(res.response)) : new UploadOvertimeAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 
@@ -117,7 +117,7 @@ export class LaunchEffect extends Command {
         .ofType(UPLOAD_PIECE_AUDIT_ATTACH)
         .mergeMap((action: UploadPieceAuditAttachAction) => this.http
             .uploadAttach(this.getUploadPieceAuditAttach(action.payload))
-            .map(res => res.responseCode === 200 ? new UploadPieceAuditAttachFailAction(JSON.parse(res.response)) : new UploadPieceAuditAttachSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200 ? new UploadPieceAuditAttachFailAction(JSON.parse(res.response)) : new UploadPieceAuditAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 
@@ -126,7 +126,7 @@ export class LaunchEffect extends Command {
         .ofType(UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH)
         .mergeMap((action: UploadWorkerContractModifyAttachAction) => this.http
             .uploadAttach(this.getUploadWorkerContractModifyAttach(action.payload))
-            .map(res => res.responseCode === 200 ? new UploadWorkerContractModifyAttachFailAction(JSON.parse(res.response)) : new UploadWorkerContractModifyAttachSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200 ? new UploadWorkerContractModifyAttachFailAction(JSON.parse(res.response)) : new UploadWorkerContractModifyAttachSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 

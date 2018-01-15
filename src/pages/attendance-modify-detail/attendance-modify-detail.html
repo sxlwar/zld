@@ -1,45 +1,45 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'ATTENDANCE_MODIFY_DETAIL' | translate}}</ion-title>
-    <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
-      <button ion-button small clear (click)="audit()">
-        {{'AUDIT' | translate}}
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'ATTENDANCE_MODIFY_DETAIL' | translate}}</ion-title>
+        <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
+            <button ion-button small clear (click)="audit()">
+                {{'AUDIT' | translate}}
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-list *ngIf="attendance | async; let data">
+    <ion-list *ngIf="attendance | async; let data">
 
-    <ion-item>
-      <ion-label>{{'TEAM_NAME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.result__contract__team__name"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'TEAM_NAME' | translate}}</ion-label>
+            <ion-input disabled [value]="data.result__contract__team__name"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'MODIFY_DATE' | translate}}</ion-label>
-      <ion-input disabled [value]="data.result__day"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'MODIFY_DATE' | translate}}</ion-label>
+            <ion-input disabled [value]="data.result__day"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'START_TIME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.on_duty"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'START_TIME' | translate}}</ion-label>
+            <ion-input disabled [value]="data.on_duty"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'END_TIME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.off_duty"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'END_TIME' | translate}}</ion-label>
+            <ion-input disabled [value]="data.off_duty"></ion-input>
+        </ion-item>
 
-  </ion-list>
+    </ion-list>
 
-  <work-flow-attach [workFlow]="workFlow | async"></work-flow-attach>
+    <work-flow-attach [workFlow]="workFlow | async"></work-flow-attach>
 
-  <work-flow-time-line [workFlow]="workFlow | async"></work-flow-time-line>
+    <work-flow-time-line [workFlow]="workFlow | async"></work-flow-time-line>
 
 </ion-content>

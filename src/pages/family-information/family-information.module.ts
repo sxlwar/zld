@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { FamilyInformationPage } from './family-information';
 
 @NgModule({
-  declarations: [
-    FamilyInformationPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(FamilyInformationPage),
-    SharedModule,
-    TranslateModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        FamilyInformationPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(FamilyInformationPage),
+        SharedModule,
+        TranslateModule,
+        ComponentsModule,
+    ],
 })
-export class FamilyInformationPageModule {}
+export class FamilyInformationPageModule { }

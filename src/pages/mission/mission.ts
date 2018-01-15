@@ -10,63 +10,63 @@ import * as Icons from '../../services/business/icon-service';
 import * as pages from '../../pages/pages';
 
 const icons = [
-  Icons.attendanceConfirm,
-  Icons.leave,
-  Icons.overtime,
-  Icons.pieceAudit,
-  Icons.modifyAttendance,
-  Icons.signWorkerContract,
-  Icons.workContractModify,
-  Icons.iStarted,
-  Icons.iCompleted
+    Icons.attendanceConfirm,
+    Icons.leave,
+    Icons.overtime,
+    Icons.pieceAudit,
+    Icons.modifyAttendance,
+    Icons.signWorkerContract,
+    Icons.workContractModify,
+    Icons.iStarted,
+    Icons.iCompleted
 ];
 
 @IonicPage()
 @Component({
-  selector: 'page-mission',
-  templateUrl: 'mission.html',
+    selector: 'page-mission',
+    templateUrl: 'mission.html',
 })
 export class MissionPage {
 
-  icons: Observable<IconState[]>;
+    icons: Observable<IconState[]>;
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public iconService: IconService,
-    public statistics: StatisticsService,
-    public workFlow: WorkFlowService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public iconService: IconService,
+        public statistics: StatisticsService,
+        public workFlow: WorkFlowService
+    ) {
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel() {
-    this.icons = this.iconService.getIcons(pages.MissionRoot, icons);
-  }
+    initialModel() {
+        this.icons = this.iconService.getIcons(pages.MissionRoot, icons);
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
-      this.workFlow.getWorkFlowStatistic(),
-      this.workFlow.handleStatisticsError()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
+            this.workFlow.getWorkFlowStatistic(),
+            this.workFlow.handleStatisticsError()
+        ];
+    }
 
-  goTo(item) {
-    this.navCtrl.push(item.page, item).then(() => { });
-  }
+    goTo(item) {
+        this.navCtrl.push(item.page, item).then(() => { });
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

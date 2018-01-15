@@ -1,49 +1,49 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'OVERTIME_DETAIL' | translate}}</ion-title>
-    <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
-      <button ion-button small clear (click)="audit()">
-        {{'AUDIT' | translate}}
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'OVERTIME_DETAIL' | translate}}</ion-title>
+        <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
+            <button ion-button small clear (click)="audit()">
+                {{'AUDIT' | translate}}
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-list *ngIf="overtime | async; let data">
+    <ion-list *ngIf="overtime | async; let data">
 
-    <ion-item>
-      <ion-label>{{'APPLY_PEOPLE' | translate}}</ion-label>
-      <ion-input disabled [value]="data.contracts | names"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'APPLY_PEOPLE' | translate}}</ion-label>
+            <ion-input disabled [value]="data.contracts | names"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
-      <ion-input disabled [value]="data.reason"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
+            <ion-input disabled [value]="data.reason"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
-      <ion-input disabled [value]="data.type | overtimePay"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
+            <ion-input disabled [value]="data.type | overtimePay"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'START_TIME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.day + ' ' + data.start"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'START_TIME' | translate}}</ion-label>
+            <ion-input disabled [value]="data.day + ' ' + data.start"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'END_TIME' | translate}}</ion-label>
-      <ion-input disabled [value]="data.day + ' ' + data.finish"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'END_TIME' | translate}}</ion-label>
+            <ion-input disabled [value]="data.day + ' ' + data.finish"></ion-input>
+        </ion-item>
 
-  </ion-list>
+    </ion-list>
 
-  <work-flow-attach [workFlow]="workFlow | async"></work-flow-attach>
+    <work-flow-attach [workFlow]="workFlow | async"></work-flow-attach>
 
-  <work-flow-time-line [workFlow]="workFlow | async"></work-flow-time-line>
+    <work-flow-time-line [workFlow]="workFlow | async"></work-flow-time-line>
 </ion-content>

@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { ApplyLeavePage } from './apply-leave';
 
 @NgModule({
-  declarations: [
-    ApplyLeavePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ApplyLeavePage),
-    TranslateModule,
-    ComponentsModule,
-    SharedModule,
-  ],
+    declarations: [
+        ApplyLeavePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ApplyLeavePage),
+        TranslateModule,
+        ComponentsModule,
+        SharedModule,
+    ],
 })
-export class ApplyLeavePageModule {}
+export class ApplyLeavePageModule { }

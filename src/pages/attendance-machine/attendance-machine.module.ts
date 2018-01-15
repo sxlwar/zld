@@ -4,12 +4,12 @@ import { IonicPageModule } from 'ionic-angular';
 import { AttendanceMachinePage } from './attendance-machine';
 
 @NgModule({
-  declarations: [
-    AttendanceMachinePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(AttendanceMachinePage),
-    TranslateModule,
-  ],
+    declarations: [
+        AttendanceMachinePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(AttendanceMachinePage),
+        TranslateModule,
+    ],
 })
-export class AttendanceMachinePageModule {}
+export class AttendanceMachinePageModule { }

@@ -11,95 +11,95 @@ import { ProjectBillService } from '../../services/business/project-bill-service
 import { initial } from 'lodash';
 
 export interface PayBillListItem {
-  attendance: number;
-  overtime: number;
-  piece: number;
-  name: string;
+    attendance: number;
+    overtime: number;
+    piece: number;
+    name: string;
 }
 
 @IonicPage()
 @Component({
-  selector: 'page-project-bill-detail',
-  templateUrl: 'project-bill-detail.html',
+    selector: 'page-project-bill-detail',
+    templateUrl: 'project-bill-detail.html',
 })
 export class ProjectBillDetailPage {
-  @ViewChild('projectBillDetail') projectBillDetail: ElementRef;
-  subscriptions: Subscription[] = [];
-  overviewTotal: number;
-  list: Observable<PayBillListItem[]>;
+    @ViewChild('projectBillDetail') projectBillDetail: ElementRef;
+    subscriptions: Subscription[] = [];
+    overviewTotal: number;
+    list: Observable<PayBillListItem[]>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public projectBill: ProjectBillService,
-    public chartService: ChartService,
-    public payBill: PayBillService,
-    public translate: TranslateService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public projectBill: ProjectBillService,
+        public chartService: ChartService,
+        public payBill: PayBillService,
+        public translate: TranslateService
+    ) {
+    }
 
-  ionViewDidLoad() {
-    const bills = this.projectBill.getProjectPayBills()
-      .filter(value => !!value.length)
-      .mergeMap(bills => Observable.from(bills).first());
+    ionViewDidLoad() {
+        const bills = this.projectBill.getProjectPayBills()
+            .filter(value => !!value.length)
+            .mergeMap(bills => Observable.from(bills).first());
 
-    this.getPayBillList(bills);
+        this.getPayBillList(bills);
 
-    this.launch(bills);
-  }
+        this.launch(bills);
+    }
 
-  launch(bills: Observable<ProjectPayBill>): void {
-    this.subscriptions = [
-      this.projectBill.getProjectBillList(Observable.of(this.navParams.get('billId'))),
-      this.getProjectBillChart(bills),
-      this.projectBill.handleError()
-    ];
-  }
+    launch(bills: Observable<ProjectPayBill>): void {
+        this.subscriptions = [
+            this.projectBill.getProjectBillList(Observable.of(this.navParams.get('billId'))),
+            this.getProjectBillChart(bills),
+            this.projectBill.handleError()
+        ];
+    }
 
-  getProjectBillChart(bill: Observable<ProjectPayBill>): Subscription {
-    const labels = this.translate.get(['TURN_OUT_FOR_WORK', 'OVERTIME', 'WORK_PIECE'])
-      .map(res => ([res.TURN_OUT_FOR_WORK, res.OVERTIME, res.WORK_PIECE]));
+    getProjectBillChart(bill: Observable<ProjectPayBill>): Subscription {
+        const labels = this.translate.get(['TURN_OUT_FOR_WORK', 'OVERTIME', 'WORK_PIECE'])
+            .map(res => ([res.TURN_OUT_FOR_WORK, res.OVERTIME, res.WORK_PIECE]));
 
-    return bill.withLatestFrom(labels)
-      .map(([bill, labels]) => {
-        const data = [this.projectBill.countAttendanceAmount(bill), this.projectBill.countOvertimeAmount(bill), this.projectBill.countPieceAmount(bill)];
+        return bill.withLatestFrom(labels)
+            .map(([bill, labels]) => {
+                const data = [this.projectBill.countAttendanceAmount(bill), this.projectBill.countOvertimeAmount(bill), this.projectBill.countPieceAmount(bill)];
 
-        this.overviewTotal = this.projectBill.countAmount(bill);
+                this.overviewTotal = this.projectBill.countAmount(bill);
 
-        return this.chartService.getPieChartData({ labels, data });
-      })
-      .subscribe(data => this.chartService.getChart(this.projectBillDetail.nativeElement, ChartType.doughnut, data));
-  }
+                return this.chartService.getPieChartData({ labels, data });
+            })
+            .subscribe(data => this.chartService.getChart(this.projectBillDetail.nativeElement, ChartType.doughnut, data));
+    }
 
-  getPayBillList(bill: Observable<ProjectPayBill>): void {
-    this.list = bill.mergeMap(({ project_id, month }) => this.payBill.getPayBills(Observable.of({ project_id, month: initial(month.split('-')).join('-') })))
-      .filter(value => !!value.length)
-      .mergeMap(bills => {
-        return Observable.from(bills)
-          .map(bill => {
-            const name = bill.contract__worker__employee__realname;
+    getPayBillList(bill: Observable<ProjectPayBill>): void {
+        this.list = bill.mergeMap(({ project_id, month }) => this.payBill.getPayBills(Observable.of({ project_id, month: initial(month.split('-')).join('-') })))
+            .filter(value => !!value.length)
+            .mergeMap(bills => {
+                return Observable.from(bills)
+                    .map(bill => {
+                        const name = bill.contract__worker__employee__realname;
 
-            if (bill.pay_type === 'time_pay') {
-              const attendance = this.payBill.countAttendanceTotalAmount(bill);
+                        if (bill.pay_type === 'time_pay') {
+                            const attendance = this.payBill.countAttendanceTotalAmount(bill);
 
-              const overtime = this.payBill.countOvertimeTotalAmount(bill);
+                            const overtime = this.payBill.countOvertimeTotalAmount(bill);
 
-              const total = attendance + overtime;
+                            const total = attendance + overtime;
 
-              return { attendance, overtime, total, name, piece: 0 }
-            } else {
-              const piece = this.payBill.countPieceTotalAmount(bill);
+                            return { attendance, overtime, total, name, piece: 0 }
+                        } else {
+                            const piece = this.payBill.countPieceTotalAmount(bill);
 
-              const total = piece;
+                            const total = piece;
 
-              return { piece, total, name, attendance: 0, overtime: 0 };
-            }
-          })
-          .reduce(putInArray, []);
-      });
-  }
+                            return { piece, total, name, attendance: 0, overtime: 0 };
+                        }
+                    })
+                    .reduce(putInArray, []);
+            });
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

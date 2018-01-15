@@ -8,14 +8,14 @@ import { Component, Input } from '@angular/core';
  * Components.
  */
 @Component({
-  selector: 'education',
-  templateUrl: 'education.html'
+    selector: 'education',
+    templateUrl: 'education.html'
 })
 export class EducationComponent {
 
-  @Input() education: Education[] = [];
+    @Input() education: Education[] = [];
 
-  constructor() {
-  }
+    constructor() {
+    }
 
 }

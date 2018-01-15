@@ -6,35 +6,33 @@
 -->
 <ion-header>
 
-  <ion-navbar color="primary">
-    <ion-title>{{'PROJECT' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar color="primary">
+        <ion-title>{{'PROJECT' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
 
-  <div padding *ngIf="name | async" class="pane">
-    <button ion-button icon-left clear color="light"
-            *ngIf="haveMultipleProject | async"
-            (click)="switchProject($event)">
-      <ion-icon name="swap"></ion-icon>
-      {{'PROJECT_SWITCH_PROJECT' | translate}}
-    </button>
-    <p>{{name | async}}</p>
-    <p>{{address | async}}</p>
-    <div>
-      <div class="pane-info">
-        <h6>{{remainDays | async | positiveInteger}}</h6>
-        <h4 *ngIf="!(isExpired | async)">{{'PROJECT_REMAIN_DAYS' | translate}}</h4>
-        <h4 *ngIf="isExpired | async">{{'PROJECT_OVERDUE_DAYS' | translate}}</h4>
-      </div>
-      <div class="pane-info">
-        <h6>{{workerCount | async}}</h6>
-        <h4>{{'PROJECT_WORKER_COUNT' | translate}}</h4>
-      </div>
+    <div padding *ngIf="name | async" class="pane">
+        <button ion-button icon-left clear color="light" *ngIf="haveMultipleProject | async" (click)="switchProject($event)">
+            <ion-icon name="swap"></ion-icon>
+            {{'PROJECT_SWITCH_PROJECT' | translate}}
+        </button>
+        <p>{{name | async}}</p>
+        <p>{{address | async}}</p>
+        <div>
+            <div class="pane-info">
+                <h6>{{remainDays | async | positiveInteger}}</h6>
+                <h4 *ngIf="!(isExpired | async)">{{'PROJECT_REMAIN_DAYS' | translate}}</h4>
+                <h4 *ngIf="isExpired | async">{{'PROJECT_OVERDUE_DAYS' | translate}}</h4>
+            </div>
+            <div class="pane-info">
+                <h6>{{workerCount | async}}</h6>
+                <h4>{{'PROJECT_WORKER_COUNT' | translate}}</h4>
+            </div>
+        </div>
     </div>
-  </div>
 
     <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
 </ion-content>

@@ -15,105 +15,105 @@ import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 @IonicPage()
 @Component({
-  selector: 'page-apply-attendance-modify',
-  templateUrl: 'apply-attendance-modify.html',
+    selector: 'page-apply-attendance-modify',
+    templateUrl: 'apply-attendance-modify.html',
 })
 export class ApplyAttendanceModifyPage {
 
-  form: FormGroup;
+    form: FormGroup;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  attachList: string[] = [];
+    attachList: string[] = [];
 
-  modify$: Subject<AttendanceModifyFormModel> = new Subject();
+    modify$: Subject<AttendanceModifyFormModel> = new Subject();
 
-  attendances: Observable<AttendanceResult[]>;
+    attendances: Observable<AttendanceResult[]>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public attendanceService: AttendanceService,
-    public launchService: LaunchService,
-    public fb: FormBuilder,
-    public permission: PermissionService,
-    public modalCtrl: ModalController,
-    public config: ConfigService
-  ) {
-    this.initialForm();
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public attendanceService: AttendanceService,
+        public launchService: LaunchService,
+        public fb: FormBuilder,
+        public permission: PermissionService,
+        public modalCtrl: ModalController,
+        public config: ConfigService
+    ) {
+        this.initialForm();
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
+        this.launch();
 
-    this.config.hideTabBar();
-  }
+        this.config.hideTabBar();
+    }
 
-  initialModel(): void {
-    this.attendances = this.attendanceService.getAttendancesToModify();
-  }
+    initialModel(): void {
+        this.attendances = this.attendanceService.getAttendancesToModify();
+    }
 
-  launch(): void {
-    this.subscriptions = [
-      this.launchService.createAttendanceModify(this.modify$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
-      this.attendances.subscribe(attendances => this.form.patchValue({ attendanceIds: attendances.map(item => item.id) })),
-      this.launchService.getSuccessResponseOfAttendanceModify().subscribe(_ => this.attendanceService.resetAttendancesToModify()),
-      this.launchService.uploadAttendanceModifyAttach(),
-      this.launchService.handlerAttendanceModifyError()
-    ];
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.launchService.createAttendanceModify(this.modify$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
+            this.attendances.subscribe(attendances => this.form.patchValue({ attendanceIds: attendances.map(item => item.id) })),
+            this.launchService.getSuccessResponseOfAttendanceModify().subscribe(_ => this.attendanceService.resetAttendancesToModify()),
+            this.launchService.uploadAttendanceModifyAttach(),
+            this.launchService.handlerAttendanceModifyError()
+        ];
+    }
 
-  initialForm() {
-    this.form = this.fb.group({
-      reason: '',
-      attendanceIds: ['', Validators.required],
-      onDutyTime: '',
-      offDutyTime: ''
-    });
-  }
+    initialForm() {
+        this.form = this.fb.group({
+            reason: '',
+            attendanceIds: ['', Validators.required],
+            onDutyTime: '',
+            offDutyTime: ''
+        });
+    }
 
-  resetOffDuty(): void {
-    this.form.patchValue({ offDutyTime: '' });
-  }
+    resetOffDuty(): void {
+        this.form.patchValue({ offDutyTime: '' });
+    }
 
-  searchAttendance(): void {
-    this.modalCtrl.create(RevisableAttendanceListComponent).present();
-  }
+    searchAttendance(): void {
+        this.modalCtrl.create(RevisableAttendanceListComponent).present();
+    }
 
-  removeAttendance(attendance: AttendanceResult): void {
-    this.attendanceService.removeAttendanceFromReadyToModify(attendance.id);
-  }
-  
-  getAttach(attach: string[]): void {
-    this.attachList = attach;
-  }
+    removeAttendance(attendance: AttendanceResult): void {
+        this.attendanceService.removeAttendanceFromReadyToModify(attendance.id);
+    }
 
-  ionViewWillUnload() {
-    this.launchService.resetResponse(LaunchResponse.attendanceModify);
-    
-    this.subscriptions.forEach(item => item.unsubscribe());
+    getAttach(attach: string[]): void {
+        this.attachList = attach;
+    }
 
-    this.attendanceService.resetAttendancesToModify();
+    ionViewWillUnload() {
+        this.launchService.resetResponse(LaunchResponse.attendanceModify);
 
-    this.config.showTabBar();
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
 
-  get reason() {
-    return this.form.get('reason');
-  }
+        this.attendanceService.resetAttendancesToModify();
 
-  get attendanceIds() {
-    return this.form.get('attendanceIds');
-  }
+        this.config.showTabBar();
+    }
 
-  get onDutyTime() {
-    return this.form.get('onDutyTime');
-  }
+    get reason() {
+        return this.form.get('reason');
+    }
 
-  get offDutyTime() {
-    return this.form.get('offDutyTime');
-  }
+    get attendanceIds() {
+        return this.form.get('attendanceIds');
+    }
+
+    get onDutyTime() {
+        return this.form.get('onDutyTime');
+    }
+
+    get offDutyTime() {
+        return this.form.get('offDutyTime');
+    }
 
 }

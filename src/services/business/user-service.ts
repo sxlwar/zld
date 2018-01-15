@@ -44,7 +44,7 @@ export class UserService {
     getAuthPass(): Observable<boolean> {
         return this.getUserInfo().map(data => data.auth_pass);
     }
-    
+
     resetSid(): void {
         this.store.dispatch(new ResetSidAction());
     }

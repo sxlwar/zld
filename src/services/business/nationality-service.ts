@@ -18,18 +18,18 @@ export class NationalityService {
     }
 
     getNationalities(): Observable<string[]> {
-       return this.store.select(selectNationalityResponse)
-        .filter(value => !!value)
-        .mergeMap(res => Observable.from(res.nationalityChoices)
-            .map(item => item[1])
-            .reduce(putInArray,[])
-        ); 
+        return this.store.select(selectNationalityResponse)
+            .filter(value => !!value)
+            .mergeMap(res => Observable.from(res.nationalityChoices)
+                .map(item => item[1])
+                .reduce(putInArray, [])
+            );
     }
 
     getNationality(): void {
         this.processor.nationalityProcessor();
     }
-    
+
     handleError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectNationalityResponse), 'API_ERROR');
     }

@@ -12,28 +12,28 @@ import { TeamListResponse } from '../../interfaces/response-interface';
 export const GET_TEAM_LIST = 'GET_TEAM_LIST';
 
 export class GetTeamListAction implements Action {
-  readonly type = GET_TEAM_LIST;
+    readonly type = GET_TEAM_LIST;
 
-  constructor(public payload: TeamListOptions) {
-  }
+    constructor(public payload: TeamListOptions) {
+    }
 }
 
 export const TEAM_LIST_FAIL = 'TEAM_LIST_FAIL';
 
 export class TeamListFailAction implements Action {
-  readonly type = TEAM_LIST_FAIL;
+    readonly type = TEAM_LIST_FAIL;
 
-  constructor(public payload: TeamListResponse) {
-  }
+    constructor(public payload: TeamListResponse) {
+    }
 }
 
 export const TEAM_LIST_SUCCESS = 'TEAM_LIST_SUCCESS';
 
 export class TeamListSuccessAction implements Action {
-  readonly type = TEAM_LIST_SUCCESS;
+    readonly type = TEAM_LIST_SUCCESS;
 
-  constructor(public payload: TeamListResponse) {
-  }
+    constructor(public payload: TeamListResponse) {
+    }
 }
 
 /* ======================================Team select actions============================================ */
@@ -41,17 +41,17 @@ export class TeamListSuccessAction implements Action {
 export const SET_SELECT_TEAMS = 'SET_SELECT_TEAMS';
 
 export class SetSelectTeamsAction implements Action {
-  readonly type = SET_SELECT_TEAMS;
+    readonly type = SET_SELECT_TEAMS;
 
-  constructor(public payload: number[]) { }
+    constructor(public payload: number[]) { }
 }
 
 export const GET_SELECT_TEAMS = 'GET_SELECT_TEAMS';
 
 export class GetSelectTeamsAction implements Action {
-  readonly type = GET_SELECT_TEAMS;
+    readonly type = GET_SELECT_TEAMS;
 
-  constructor() { }
+    constructor() { }
 }
 
 /* ======================================Team add actions============================================ */
@@ -59,25 +59,25 @@ export class GetSelectTeamsAction implements Action {
 export const ADD_TEAM = 'ADD_TEAM';
 
 export class AddTeamAction implements Action {
-  readonly type = ADD_TEAM;
+    readonly type = ADD_TEAM;
 
-  constructor(public payload: TeamAddOptions) { }
+    constructor(public payload: TeamAddOptions) { }
 }
 
 export const ADD_TEAM_FAIL = 'ADD_TEAM_FAIL';
 
 export class AddTeamFailAction implements Action {
-  readonly type = ADD_TEAM_FAIL;
+    readonly type = ADD_TEAM_FAIL;
 
-  constructor(public payload: TeamAddResponse) { }
+    constructor(public payload: TeamAddResponse) { }
 }
 
 export const ADD_TEAM_SUCCESS = 'ADD_TEAM_SUCCESS';
 
 export class AddTeamSuccessAction implements Action {
-  readonly type = ADD_TEAM_SUCCESS;
+    readonly type = ADD_TEAM_SUCCESS;
 
-  constructor(public payload: TeamAddResponse) { }
+    constructor(public payload: TeamAddResponse) { }
 }
 
 /* ======================================Team delete actions============================================ */
@@ -85,25 +85,25 @@ export class AddTeamSuccessAction implements Action {
 export const DELETE_TEAM = 'DELETE_TEAM';
 
 export class DeleteTeamAction implements Action {
-  readonly type = DELETE_TEAM;
+    readonly type = DELETE_TEAM;
 
-  constructor(public payload: TeamDeleteOptions) { }
+    constructor(public payload: TeamDeleteOptions) { }
 }
 
 export const DELETE_TEAM_FAIL = 'DELETE_TEAM_FAIL';
 
 export class DeleteTeamFailAction implements Action {
-  readonly type = DELETE_TEAM_FAIL;
+    readonly type = DELETE_TEAM_FAIL;
 
-  constructor(public payload: TeamDeleteResponse) { }
+    constructor(public payload: TeamDeleteResponse) { }
 }
 
 export const DELETE_TEAM_SUCCESS = 'DELETE_TEAM_SUCCESS';
 
 export class DeleteTeamSuccessAction implements Action {
-  readonly type = DELETE_TEAM_SUCCESS;
+    readonly type = DELETE_TEAM_SUCCESS;
 
-  constructor(public payload: TeamDeleteResponse) { }
+    constructor(public payload: TeamDeleteResponse) { }
 }
 
 /* ======================================Team update actions============================================ */
@@ -111,25 +111,25 @@ export class DeleteTeamSuccessAction implements Action {
 export const UPDATE_TEAM = 'UPDATE_TEAM';
 
 export class UpdateTeamAction implements Action {
-  readonly type = UPDATE_TEAM;
+    readonly type = UPDATE_TEAM;
 
-  constructor(public payload: TeamUpdateOptions) { }
+    constructor(public payload: TeamUpdateOptions) { }
 }
 
 export const UPDATE_TEAM_FAIL = 'UPDATE_TEAM_FAIL';
 
 export class UpdateTeamFailAction implements Action {
-  readonly type = UPDATE_TEAM_FAIL;
+    readonly type = UPDATE_TEAM_FAIL;
 
-  constructor(public payload: TeamUpdateResponse) { }
+    constructor(public payload: TeamUpdateResponse) { }
 }
 
 export const UPDATE_TEAM_SUCCESS = 'UPDATE_TEAM_SUCCESS';
 
 export class UpdateTeamSuccessAction implements Action {
-  readonly type = UPDATE_TEAM_SUCCESS;
+    readonly type = UPDATE_TEAM_SUCCESS;
 
-  constructor(public payload: TeamUpdateResponse) { }
+    constructor(public payload: TeamUpdateResponse) { }
 }
 
 /**
@@ -138,24 +138,24 @@ export class UpdateTeamSuccessAction implements Action {
 export const UPDATE_TEAM_AT_LOCAL = 'UPDATE_TEAM_AT_LOCAL';
 
 export class UpdateTeamAtLocalAction implements Action {
-  readonly type = UPDATE_TEAM_AT_LOCAL;
+    readonly type = UPDATE_TEAM_AT_LOCAL;
 
-  constructor(public payload: Employer[]) {}
+    constructor(public payload: Employer[]) { }
 }
 
 export type Actions = GetTeamListAction
-  | AddTeamAction
-  | AddTeamFailAction
-  | AddTeamSuccessAction
-  | DeleteTeamAction
-  | DeleteTeamFailAction
-  | DeleteTeamSuccessAction
-  | GetSelectTeamsAction
-  | SetSelectTeamsAction
-  | TeamListFailAction
-  | TeamListSuccessAction
-  | UpdateTeamAction
-  | UpdateTeamAtLocalAction
-  | UpdateTeamFailAction
-  | UpdateTeamSuccessAction;
+    | AddTeamAction
+    | AddTeamFailAction
+    | AddTeamSuccessAction
+    | DeleteTeamAction
+    | DeleteTeamFailAction
+    | DeleteTeamSuccessAction
+    | GetSelectTeamsAction
+    | SetSelectTeamsAction
+    | TeamListFailAction
+    | TeamListSuccessAction
+    | UpdateTeamAction
+    | UpdateTeamAtLocalAction
+    | UpdateTeamFailAction
+    | UpdateTeamSuccessAction;
 

@@ -7,15 +7,15 @@ import { IonicPageModule } from 'ionic-angular';
 import { PersonalInformationPage } from './personal-information';
 
 @NgModule({
-  declarations: [
-    PersonalInformationPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(PersonalInformationPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-    MultiPickerModule, // Use to create address select at this time, but it can do more than this;
-  ],
+    declarations: [
+        PersonalInformationPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(PersonalInformationPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+        MultiPickerModule, // Use to create address select at this time, but it can do more than this;
+    ],
 })
-export class PersonalInformationPageModule {}
+export class PersonalInformationPageModule { }

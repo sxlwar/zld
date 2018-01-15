@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { SearchWorkerPage } from './search-worker';
 
 @NgModule({
-  declarations: [
-    SearchWorkerPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(SearchWorkerPage),
-    TranslateModule,
-    ComponentsModule,
-    SharedModule,
-  ],
+    declarations: [
+        SearchWorkerPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(SearchWorkerPage),
+        TranslateModule,
+        ComponentsModule,
+        SharedModule,
+    ],
 })
-export class SearchWorkerPageModule {}
+export class SearchWorkerPageModule { }

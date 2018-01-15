@@ -1,59 +1,59 @@
 import { Component, Input, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'accordion-list',
-  templateUrl: 'accordion-list.html'
+    selector: 'accordion-list',
+    templateUrl: 'accordion-list.html'
 })
 export class AccordionListComponent {
-  @Input() headerColor: string = '#00c1DE';
+    @Input() headerColor: string = '#00c1DE';
 
-  @Input() textColor: string = '#FFF';
+    @Input() textColor: string = '#FFF';
 
-  @Input() contentColor: string = '#F9F9F9';
+    @Input() contentColor: string = '#F9F9F9';
 
-  @Input() title: string;
+    @Input() title: string;
 
-  @Input() hasMargin: boolean = true;
+    @Input() hasMargin: boolean = true;
 
-  @ViewChild('accordionContent') elementView: ElementRef;
+    @ViewChild('accordionContent') elementView: ElementRef;
 
-  @Output() create: EventEmitter<null> = new EventEmitter();
+    @Output() create: EventEmitter<null> = new EventEmitter();
 
-  @Output() trash: EventEmitter<null> = new EventEmitter();
+    @Output() trash: EventEmitter<null> = new EventEmitter();
 
-  expanded: boolean = false;
+    expanded: boolean = false;
 
-  viewHeight: number;
+    viewHeight: number;
 
-  constructor(
-    public renderer: Renderer2
-  ) {
-  }
+    constructor(
+        public renderer: Renderer2
+    ) {
+    }
 
-  ngAfterViewInit() {
-    this.viewHeight = this.elementView.nativeElement.offsetHeight;
-    
-    this.renderer.setStyle(this.elementView.nativeElement, 'height', 0 + 'px');
-  }
+    ngAfterViewInit() {
+        this.viewHeight = this.elementView.nativeElement.offsetHeight;
 
-  toggleAccordion() {
-    this.expanded = !this.expanded;
+        this.renderer.setStyle(this.elementView.nativeElement, 'height', 0 + 'px');
+    }
 
-    const newHeight = this.expanded ? '100%' : '0px';
-    
-    this.renderer.setStyle(this.elementView.nativeElement, 'height', newHeight);
-  }
+    toggleAccordion() {
+        this.expanded = !this.expanded;
 
-  createClicked($event: Event) {
-    $event.stopPropagation();
+        const newHeight = this.expanded ? '100%' : '0px';
 
-    this.create.next();
-  }
+        this.renderer.setStyle(this.elementView.nativeElement, 'height', newHeight);
+    }
 
-  trashClicked($event: Event) {
-    $event.stopPropagation();
+    createClicked($event: Event) {
+        $event.stopPropagation();
 
-    this.trash.next();
-  }
+        this.create.next();
+    }
+
+    trashClicked($event: Event) {
+        $event.stopPropagation();
+
+        this.trash.next();
+    }
 
 }

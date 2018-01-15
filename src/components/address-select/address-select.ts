@@ -5,38 +5,38 @@ import { Subject } from 'rxjs/Subject';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
-  selector: 'address-select',
-  templateUrl: 'address-select.html'
+    selector: 'address-select',
+    templateUrl: 'address-select.html'
 })
 export class AddressSelectComponent {
-  @Input() addressDetail: string;
-  
-  @Input() disabled = false;
-  
-  @Input() selectedArea: string;
-  
-  @Output() addressChange: Subject<string> = new EventEmitter();
+    @Input() addressDetail: string;
 
-  address: Observable<AddressColumn<Column>[]>;
+    @Input() disabled = false;
 
-  constructor(
-    public addressService: AddressService,
-    public tip: TipService
-  ) {
-    this.address = this.addressService.address;
-  }
+    @Input() selectedArea: string;
 
-  modifyAddress() {
-    const alert = this.tip.modifyAddressDetail();
+    @Output() addressChange: Subject<string> = new EventEmitter();
 
-    alert.present();
+    address: Observable<AddressColumn<Column>[]>;
 
-    alert.onDidDismiss(data => {
-      if(data.detail) {
-        this.addressChange.next(data.detail);
-        this.addressDetail = data.detail;
-      }
-    });
-  }
+    constructor(
+        public addressService: AddressService,
+        public tip: TipService
+    ) {
+        this.address = this.addressService.address;
+    }
+
+    modifyAddress() {
+        const alert = this.tip.modifyAddressDetail();
+
+        alert.present();
+
+        alert.onDidDismiss(data => {
+            if (data.detail) {
+                this.addressChange.next(data.detail);
+                this.addressDetail = data.detail;
+            }
+        });
+    }
 
 }

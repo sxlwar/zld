@@ -5,15 +5,15 @@ import { IonicPageModule } from 'ionic-angular';
 import { VersionPage } from './version';
 
 @NgModule({
-  declarations: [
-    VersionPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(VersionPage),
-    TranslateModule,
-  ],
-  providers: [
-    AppVersion
-  ]
+    declarations: [
+        VersionPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(VersionPage),
+        TranslateModule,
+    ],
+    providers: [
+        AppVersion
+    ]
 })
-export class VersionPageModule {}
+export class VersionPageModule { }

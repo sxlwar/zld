@@ -11,67 +11,67 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-overtime-detail',
-  templateUrl: 'overtime-detail.html',
+    selector: 'page-overtime-detail',
+    templateUrl: 'overtime-detail.html',
 })
 export class OvertimeDetailPage {
 
-  id: number;
+    id: number;
 
-  workFlow: Observable<WorkFlow>;
+    workFlow: Observable<WorkFlow>;
 
-  overtime: Observable<Overtime>;
+    overtime: Observable<Overtime>;
 
-  subscriptions: Subscription[] = [];
-  
-  isAuditButtonVisibility: Observable<boolean>;
+    subscriptions: Subscription[] = [];
 
-  audit$$: Subscription;
+    isAuditButtonVisibility: Observable<boolean>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlowService: WorkFlowService,
-    public overtimeService: OvertimeService,
-    public permission: PermissionService
-  ) {
-    this.id = navParams.get('id');
-  }
+    audit$$: Subscription;
 
-  ionViewDidLoad() {
-    this.initialModel();
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlowService: WorkFlowService,
+        public overtimeService: OvertimeService,
+        public permission: PermissionService
+    ) {
+        this.id = navParams.get('id');
+    }
 
-    this.launch();
-  }
+    ionViewDidLoad() {
+        this.initialModel();
 
-  initialModel() {
-    this.workFlow = this.workFlowService.getWorkFlow(this.id);
+        this.launch();
+    }
 
-    this.overtime = this.overtimeService.getOvertimeRecords().map(res => res[0]);
+    initialModel() {
+        this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
-      this.navParams.get('status'),
-      this.permission.getOperatePermission(overtime.icon, MissionRoot)
-    );
-  }
+        this.overtime = this.overtimeService.getOvertimeRecords().map(res => res[0]);
 
-  launch() {
-    this.subscriptions = [
-      this.overtimeService.getOvertimeRecordList(this.overtimeService.getRecordOptions(this.id, this.navParams.get('status'))),
-      this.overtimeService.handleError(),
-    ];
-  }
+        this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+            this.navParams.get('status'),
+            this.permission.getOperatePermission(overtime.icon, MissionRoot)
+        );
+    }
 
-  audit() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    launch() {
+        this.subscriptions = [
+            this.overtimeService.getOvertimeRecordList(this.overtimeService.getRecordOptions(this.id, this.navParams.get('status'))),
+            this.overtimeService.handleError(),
+        ];
+    }
 
-    this.audit$$ = this.workFlowService.auditTask(this.id);
-  }
+    audit() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-  ionViewWillUnload() {
-    this.audit$$ && this.audit$$.unsubscribe();
+        this.audit$$ = this.workFlowService.auditTask(this.id);
+    }
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.audit$$ && this.audit$$.unsubscribe();
+
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

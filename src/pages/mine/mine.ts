@@ -18,139 +18,139 @@ import * as icon from '../../services/business/icon-service';
 import * as pages from '../../pages/pages';
 
 const icons = [
-  icon.myAttendance,
-  icon.salary,
-  icon.bankCard,
-  icon.certificate,
-  icon.workerContract,
-  icon.personalInfo,
-  icon.familyInfo,
-  icon.workInfo,
-  icon.educationInfo
+    icon.myAttendance,
+    icon.salary,
+    icon.bankCard,
+    icon.certificate,
+    icon.workerContract,
+    icon.personalInfo,
+    icon.familyInfo,
+    icon.workInfo,
+    icon.educationInfo
 ];
 
 interface Setting {
-  icon: string;
-  name: string;
-  page: string;
+    icon: string;
+    name: string;
+    page: string;
 }
 
 const setting: Setting[] = [
-  { icon: 'settings', name: 'ACCOUNT_CONFIG', page: pages.settingPage },
-  { icon: 'call', name: 'CONTACT_US', page: pages.contactPage },
-  { icon: 'document', name: 'VERSION_INTRODUCTION', page: pages.versionPage },
+    { icon: 'settings', name: 'ACCOUNT_CONFIG', page: pages.settingPage },
+    { icon: 'call', name: 'CONTACT_US', page: pages.contactPage },
+    { icon: 'document', name: 'VERSION_INTRODUCTION', page: pages.versionPage },
 ];
 
 @IonicPage()
 @Component({
-  selector: 'page-mine',
-  templateUrl: 'mine.html',
+    selector: 'page-mine',
+    templateUrl: 'mine.html',
 })
 export class MinePage {
 
-  icons: Observable<IconState[]>;
+    icons: Observable<IconState[]>;
 
-  settings = setting;
+    settings = setting;
 
-  character: Observable<string>;
+    character: Observable<string>;
 
-  name: Observable<string>;
+    name: Observable<string>;
 
-  projectName: Observable<string>;
+    projectName: Observable<string>;
 
-  account: Observable<string>;
+    account: Observable<string>;
 
-  team: Observable<string>;
+    team: Observable<string>;
 
-  workType: Observable<string>;
+    workType: Observable<string>;
 
-  faceImage: Observable<string>;
+    faceImage: Observable<string>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  QRLoginOptions: Subscription[];
+    QRLoginOptions: Subscription[];
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public userInfo: UserService,
-    public workTypeService: CraftService,
-    public projectService: ProjectService,
-    public teamService: TeamService,
-    public iconService: IconService,
-    public logoutService: LogoutService,
-    public configService: ConfigService,
-    public app: App,
-    public scan: QRLoginService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public userInfo: UserService,
+        public workTypeService: CraftService,
+        public projectService: ProjectService,
+        public teamService: TeamService,
+        public iconService: IconService,
+        public logoutService: LogoutService,
+        public configService: ConfigService,
+        public app: App,
+        public scan: QRLoginService
+    ) {
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.monitor();
-  }
+        this.monitor();
+    }
 
-  initialModel() {
-    this.icons = this.iconService.getIcons(MineRoot, icons);
+    initialModel() {
+        this.icons = this.iconService.getIcons(MineRoot, icons);
 
-    this.name = this.userInfo.getRealName();
+        this.name = this.userInfo.getRealName();
 
-    this.character = this.userInfo.getUserCharacter();
+        this.character = this.userInfo.getUserCharacter();
 
-    this.account = this.userInfo.getAccount();
+        this.account = this.userInfo.getAccount();
 
-    this.faceImage = this.userInfo.getFaceImage();
+        this.faceImage = this.userInfo.getFaceImage();
 
-    this.projectName = this.projectService.getProjectName();
+        this.projectName = this.projectService.getProjectName();
 
-    //TODO: 在获取自己的工种和班组时都要去拿自己的合同，如果store中没有当前用户的合同，这个地方会发出两次请求去查合同。
-    this.workType = this.workTypeService.getOwnWorkType()
-      .filter(value => !!value.length)
-      .mergeMap(types => Observable.from(types).first().map(workType => workType.name));
+        //TODO: 在获取自己的工种和班组时都要去拿自己的合同，如果store中没有当前用户的合同，这个地方会发出两次请求去查合同。
+        this.workType = this.workTypeService.getOwnWorkType()
+            .filter(value => !!value.length)
+            .mergeMap(types => Observable.from(types).first().map(workType => workType.name));
 
-    this.team = this.teamService.getOwnTeam().map(team => team && team.name || '');
-  }
+        this.team = this.teamService.getOwnTeam().map(team => team && team.name || '');
+    }
 
-  monitor() {
-    this.subscriptions = [
-      this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout())
-    ]
-  }
+    monitor() {
+        this.subscriptions = [
+            this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout())
+        ]
+    }
 
-  goTo(item: IconState | Setting) {
-    this.navCtrl.push(item.page, item).then(() => { });
-  }
+    goTo(item: IconState | Setting) {
+        this.navCtrl.push(item.page, item).then(() => { });
+    }
 
-  showPersonalInformation(): void {
-    this.navCtrl.push(personalInformationPage, personalInfo).then(() => { });
-  }
+    showPersonalInformation(): void {
+        this.navCtrl.push(personalInformationPage, personalInfo).then(() => { });
+    }
 
-  ionViewWillLeave() {
-    this.scan.resetQRCode();
-  }
+    ionViewWillLeave() {
+        this.scan.resetQRCode();
+    }
 
-  logout(): void {
-    this.logoutService.logout();
-  }
+    logout(): void {
+        this.logoutService.logout();
+    }
 
-  resetValuesAfterLogout(): void {
-    this.app.getRootNav().setRoot(welcomePage);
+    resetValuesAfterLogout(): void {
+        this.app.getRootNav().setRoot(welcomePage);
 
-    this.userInfo.resetSid();
+        this.userInfo.resetSid();
 
-    this.logoutService.resetResponse();
-  }
+        this.logoutService.resetResponse();
+    }
 
-  scanToLogin(): void {
-    this.QRLoginOptions && this.QRLoginOptions.forEach(item => item.unsubscribe());
+    scanToLogin(): void {
+        this.QRLoginOptions && this.QRLoginOptions.forEach(item => item.unsubscribe());
 
-    this.QRLoginOptions = this.scan.scanToLogin();
-  }
+        this.QRLoginOptions = this.scan.scanToLogin();
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
 
-    this.QRLoginOptions && this.QRLoginOptions.forEach(item => item.unsubscribe());
-  }
+        this.QRLoginOptions && this.QRLoginOptions.forEach(item => item.unsubscribe());
+    }
 }

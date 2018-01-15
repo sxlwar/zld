@@ -10,55 +10,55 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 
 @IonicPage()
 @Component({
-  selector: 'page-work-piece',
-  templateUrl: 'work-piece.html',
+    selector: 'page-work-piece',
+    templateUrl: 'work-piece.html',
 })
 export class WorkPiecePage {
-  pieces: Observable<WorkPiece[]>
+    pieces: Observable<WorkPiece[]>
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public piece: WorkPieceService,
-    public project: ProjectService,
-    public modal: ModalController
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public piece: WorkPieceService,
+        public project: ProjectService,
+        public modal: ModalController
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.launch();
+    ionViewDidLoad() {
+        this.launch();
 
-    this.pieces = this.piece.getWorkPieces();
-  }
+        this.pieces = this.piece.getWorkPieces();
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.piece.getWorkPieceList(this.getOption()),
-      this.piece.handleError()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.piece.getWorkPieceList(this.getOption()),
+            this.piece.handleError()
+        ];
+    }
 
-  getOption(): Observable<RequestOption> {
-    return this.project.getProjectId().zip(
-      this.piece.getCompleteOption(),
-      this.piece.getHistoryOption(),
-      (project_id, statue, history) => ({ project_id, ...statue, ...history })
-    );
-  }
+    getOption(): Observable<RequestOption> {
+        return this.project.getProjectId().zip(
+            this.piece.getCompleteOption(),
+            this.piece.getHistoryOption(),
+            (project_id, statue, history) => ({ project_id, ...statue, ...history })
+        );
+    }
 
-  showStatistics(source: WorkPiece): void {
-    this.modal.create(WorkPieceAxisComponent, { id: source.id }).present();
-  }
+    showStatistics(source: WorkPiece): void {
+        this.modal.create(WorkPieceAxisComponent, { id: source.id }).present();
+    }
 
-  ionViewWillUnload(){
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

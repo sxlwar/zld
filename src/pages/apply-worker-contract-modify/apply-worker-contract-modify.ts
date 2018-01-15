@@ -78,7 +78,7 @@ export class ApplyWorkerContractModifyPage {
     getAttach(attach: string[]): void {
         this.attachList = attach;
     }
-    
+
     /**
      * @description None parameters passed to the component here, so multi select would be used.
      * These values will eventually be passed to the service in turn in the pipeline.
@@ -89,7 +89,7 @@ export class ApplyWorkerContractModifyPage {
 
     ionViewWillUnload() {
         this.launchService.resetResponse(LaunchResponse.workerContractModify);
-        
+
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.config.showTabBar();

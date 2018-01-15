@@ -15,7 +15,7 @@ export const messageIcon = [
 })
 export class MessageIconPipe implements PipeTransform {
     transform(value: number): string {
-        return messageIcon[value -1]; // 记得减1,后台用的python序号是从1开始的。
+        return messageIcon[value - 1]; // 记得减1,后台用的python序号是从1开始的。
     }
 }
 
@@ -23,7 +23,7 @@ export class MessageIconPipe implements PipeTransform {
     name: 'messageSplit'
 })
 export class MessageSplitPipe implements PipeTransform {
-    transform(value : string): string[] {
+    transform(value: string): string[] {
         return value.split('\n');
     }
 }

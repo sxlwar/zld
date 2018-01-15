@@ -1,8 +1,8 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'PIECE_AUDIT_APPLY' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'PIECE_AUDIT_APPLY' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
@@ -10,66 +10,66 @@
 <ion-content padding>
 
 
-  <ion-list [formGroup]="form">
+    <ion-list [formGroup]="form">
 
-    <ion-item>
-      <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
-      <ion-input type="text" [value]="names | async" disabled></ion-input>
-      <ion-icon name="man" item-end (click)="openWorkerSelect()"></ion-icon>
-    </ion-item>
+        <ion-item>
+            <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
+            <ion-input type="text" [value]="names | async" disabled></ion-input>
+            <ion-icon name="man" item-end (click)="openWorkerSelect()"></ion-icon>
+        </ion-item>
 
-    <ion-item>
-      <ion-label>{{'PIECE_NAME' | translate}}</ion-label>
-      <ion-select [(ngModel)]="piece" formControlName="piecePayId" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-        <ion-option *ngFor="let item of pieces | async" [value]="item.id" [selected]="item.id === piece">{{item.name}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <div *ngIf="piecePayId.invalid && (piecePayId.dirty || piecePayId.touched)" class="form-error red-color">
-      <span *ngIf="piecePayId.errors.required">{{'WORK_PIECE_REQUIRED_ERROR' | translate}}</span>
-    </div>
+        <ion-item>
+            <ion-label>{{'PIECE_NAME' | translate}}</ion-label>
+            <ion-select [(ngModel)]="piece" formControlName="piecePayId" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
+                <ion-option *ngFor="let item of pieces | async" [value]="item.id" [selected]="item.id === piece">{{item.name}}</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="piecePayId.invalid && (piecePayId.dirty || piecePayId.touched)" class="form-error red-color">
+            <span *ngIf="piecePayId.errors.required">{{'WORK_PIECE_REQUIRED_ERROR' | translate}}</span>
+        </div>
 
-    <ion-item>
-      <ion-label>{{'COMPLETE_COUNT' | translate}}</ion-label>
-      <ion-input type="number" formControlName="num" required></ion-input>
-    </ion-item>
-    <div *ngIf="num.invalid && (num.dirty || num.touched)" class="form-error red-color">
-      <span *ngIf="num.errors.required">{{'COMPLETE_COUNT_REQUIRED_ERROR' | translate}}</span>
-    </div>
+        <ion-item>
+            <ion-label>{{'COMPLETE_COUNT' | translate}}</ion-label>
+            <ion-input type="number" formControlName="num" required></ion-input>
+        </ion-item>
+        <div *ngIf="num.invalid && (num.dirty || num.touched)" class="form-error red-color">
+            <span *ngIf="num.errors.required">{{'COMPLETE_COUNT_REQUIRED_ERROR' | translate}}</span>
+        </div>
 
-    <ion-item>
-      <ion-label>{{'PAY_PERCENT' | translate}}</ion-label>
-      <ion-input type="number" formControlName="qualityPercent" required></ion-input>
-    </ion-item>
-    <div *ngIf="qualityPercent.invalid && (qualityPercent.dirty || qualityPercent.touched)" class="form-error red-color">
-      <span *ngIf="qualityPercent.errors.required">{{'PAY_PERCENT_REQUIRED_ERROR' | translate}}</span>
-      <span *ngIf="!qualityPercent.errors.required && (qualityPercent.errors.max || qualityPercent.errors.min)">
-        {{'PAY_PERCENT_INVALID_ERROR' | translate}}
-      </span>
-    </div>
+        <ion-item>
+            <ion-label>{{'PAY_PERCENT' | translate}}</ion-label>
+            <ion-input type="number" formControlName="qualityPercent" required></ion-input>
+        </ion-item>
+        <div *ngIf="qualityPercent.invalid && (qualityPercent.dirty || qualityPercent.touched)" class="form-error red-color">
+            <span *ngIf="qualityPercent.errors.required">{{'PAY_PERCENT_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="!qualityPercent.errors.required && (qualityPercent.errors.max || qualityPercent.errors.min)">
+                {{'PAY_PERCENT_INVALID_ERROR' | translate}}
+            </span>
+        </div>
 
-    <ion-item>
-      <ion-label>{{'COMPLETE_DATE' | translate}}</ion-label>
-      <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-        formControlName="finishDate" required></ion-datetime>
-    </ion-item>
-    <div *ngIf="finishDate.invalid && (finishDate.dirty || finishDate.touched)" class="form-error red-color">
-      <span *ngIf="finishDate.errors.required">{{'COMPLETE_DATE_REQUIRED_ERROR' | translate}}</span>
-    </div>
+        <ion-item>
+            <ion-label>{{'COMPLETE_DATE' | translate}}</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+                formControlName="finishDate" required></ion-datetime>
+        </ion-item>
+        <div *ngIf="finishDate.invalid && (finishDate.dirty || finishDate.touched)" class="form-error red-color">
+            <span *ngIf="finishDate.errors.required">{{'COMPLETE_DATE_REQUIRED_ERROR' | translate}}</span>
+        </div>
 
-    <ion-item>
-      <ion-label>{{'QUALITY_DESCRIPTION' | translate}}</ion-label>
-      <ion-textarea autoSize formControlName="comment" required></ion-textarea>
-    </ion-item>
-    <div *ngIf="comment.invalid && (comment.dirty || comment.touched)" class="form-error red-color">
-      <span *ngIf="comment.errors.required">{{'QUALITY_DESCRIPTION_REQUIRED_ERROR' | translate}}</span>
-    </div>
+        <ion-item>
+            <ion-label>{{'QUALITY_DESCRIPTION' | translate}}</ion-label>
+            <ion-textarea autoSize formControlName="comment" required></ion-textarea>
+        </ion-item>
+        <div *ngIf="comment.invalid && (comment.dirty || comment.touched)" class="form-error red-color">
+            <span *ngIf="comment.errors.required">{{'QUALITY_DESCRIPTION_REQUIRED_ERROR' | translate}}</span>
+        </div>
 
-  </ion-list>
+    </ion-list>
 
-  <attach-list (file)="getAttach($event)"></attach-list>
+    <attach-list (file)="getAttach($event)"></attach-list>
 
 </ion-content>
 
 <ion-footer>
-  <button ion-button block no-margin color="primary" [disabled]="form.invalid" (click)="apply$.next(true)">{{'CONFIRM_BUTTON' | translate}}</button>
+    <button ion-button block no-margin color="primary" [disabled]="form.invalid" (click)="apply$.next(true)">{{'CONFIRM_BUTTON' | translate}}</button>
 </ion-footer>

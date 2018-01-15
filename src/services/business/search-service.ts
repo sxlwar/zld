@@ -93,7 +93,7 @@ export class SearchService {
     }
 
     toggleSelectedWorker(source: Observable<SearchItem>): Subscription {
-       return source.subscribe(worker => worker.selected ? this.store.dispatch(new AddSelectedWorkerAction(worker.id)): this.store.dispatch(new RemoveSelectedWorkerAction(worker.id)));
+        return source.subscribe(worker => worker.selected ? this.store.dispatch(new AddSelectedWorkerAction(worker.id)) : this.store.dispatch(new RemoveSelectedWorkerAction(worker.id)));
     }
 
     /* =====================================================Error handle ========================================== */

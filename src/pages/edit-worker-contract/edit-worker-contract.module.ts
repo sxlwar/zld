@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { EditWorkerContractPage } from './edit-worker-contract';
 
 @NgModule({
-  declarations: [
-    EditWorkerContractPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(EditWorkerContractPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        EditWorkerContractPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(EditWorkerContractPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class EditWorkerContractPageModule {}
+export class EditWorkerContractPageModule { }

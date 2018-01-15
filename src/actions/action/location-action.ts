@@ -126,15 +126,15 @@ export const UPDATE_PLAY_WORKERS = 'UPDATE_PLAY_WORKERS';
 export class UpdatePlayWorkersAction implements Action {
     readonly type = UPDATE_PLAY_WORKERS;
 
-    constructor(public payload: number[]) {}
+    constructor(public payload: number[]) { }
 }
 
-export const UPDATE_TRAJECTORY = 'UPDATE_TRAJECTORY'; 
+export const UPDATE_TRAJECTORY = 'UPDATE_TRAJECTORY';
 
 export class UpdateTrajectoryAction implements Action {
     readonly type = UPDATE_TRAJECTORY;
 
-    constructor(public payload: Trajectory[]) {}
+    constructor(public payload: Trajectory[]) { }
 }
 
 export const UPDATE_PLAY_STATE = 'UPDATE_PLAY_STATE';
@@ -142,7 +142,7 @@ export const UPDATE_PLAY_STATE = 'UPDATE_PLAY_STATE';
 export class UpdatePlayStateAction implements Action {
     readonly type = UPDATE_PLAY_STATE;
 
-    constructor(public payload: number) {}
+    constructor(public payload: number) { }
 }
 
 export const UPDATE_RATE_STATE = 'UPDATE_RATE_STATE';
@@ -150,7 +150,7 @@ export const UPDATE_RATE_STATE = 'UPDATE_RATE_STATE';
 export class UpdateRateStateAction implements Action {
     readonly type = UPDATE_RATE_STATE;
 
-    constructor(public payload: number) {}
+    constructor(public payload: number) { }
 }
 
 export type Actions = GetHistoryLocationListAction

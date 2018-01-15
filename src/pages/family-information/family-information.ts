@@ -11,64 +11,64 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 
 @IonicPage()
 @Component({
-  selector: 'page-family-information',
-  templateUrl: 'family-information.html',
+    selector: 'page-family-information',
+    templateUrl: 'family-information.html',
 })
 export class FamilyInformationPage {
 
-  family: Observable<Family>;
+    family: Observable<Family>;
 
-  updateFamily: Subject<Family> = new Subject();
+    updateFamily: Subject<Family> = new Subject();
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  disabled = true;
+    disabled = true;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public personal: PersonalService,
-    public modalCtrl: ModalController,
-    public addressService: AddressService,
-    public mapper: MapperService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public personal: PersonalService,
+        public modalCtrl: ModalController,
+        public addressService: AddressService,
+        public mapper: MapperService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialData();
+    ionViewDidLoad() {
+        this.initialData();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialData() {
-    this.family = this.personal.getOwnFamily()
-      .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' '))).map(res => res.join(' '))
-        .zip(Observable.of(res), (addressArea, res) => ({ ...res, addressArea }))
-      );
-  }
+    initialData() {
+        this.family = this.personal.getOwnFamily()
+            .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' '))).map(res => res.join(' '))
+                .zip(Observable.of(res), (addressArea, res) => ({ ...res, addressArea }))
+            );
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.personal.getHomeInfoList(),
-      this.personal.updateHomeInfo(this.getOption())
-    ]
-  }
+    launch() {
+        this.subscriptions = [
+            this.personal.getHomeInfoList(),
+            this.personal.updateHomeInfo(this.getOption())
+        ]
+    }
 
-  getOption(): Observable<HomeInfoUpdateOptions> {
-    return this.updateFamily
-      .filter(value => !!value)
-      .mergeMap(item =>
-        this.addressService.getAddressName(
-          Observable.of(item.addressArea.split(' '))
-        )
-          .map(res => this.mapper.transformFamilyOptions({ ...item, addressArea: res.join(' ') }))
-      );
-  }
+    getOption(): Observable<HomeInfoUpdateOptions> {
+        return this.updateFamily
+            .filter(value => !!value)
+            .mergeMap(item =>
+                this.addressService.getAddressName(
+                    Observable.of(item.addressArea.split(' '))
+                )
+                    .map(res => this.mapper.transformFamilyOptions({ ...item, addressArea: res.join(' ') }))
+            );
+    }
 
 }

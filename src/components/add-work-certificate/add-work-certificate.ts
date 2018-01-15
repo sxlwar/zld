@@ -9,137 +9,137 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'add-work-certificate',
-  templateUrl: 'add-work-certificate.html'
+    selector: 'add-work-certificate',
+    templateUrl: 'add-work-certificate.html'
 })
 export class AddWorkCertificateComponent {
 
-  buttonText = 'ADD_BUTTON';
+    buttonText = 'ADD_BUTTON';
 
-  title = 'ADD_CERTIFICATE';
+    title = 'ADD_CERTIFICATE';
 
-  certificateForm: FormGroup;
+    certificateForm: FormGroup;
 
-  today: string;
+    today: string;
 
-  expireDate: string;
+    expireDate: string;
 
-  expireEndDate: string;
+    expireEndDate: string;
 
-  degrees = degrees;
+    degrees = degrees;
 
-  workTypes: Observable<WorkType[]>;
+    workTypes: Observable<WorkType[]>;
 
-  frontTip = 'CERTIFICATE_FRONT_TIP';
+    frontTip = 'CERTIFICATE_FRONT_TIP';
 
-  backTip = 'CERTIFICATE_BACK_TIP';
+    backTip = 'CERTIFICATE_BACK_TIP';
 
-  constructor(
-    public fb: FormBuilder,
-    public navParams: NavParams,
-    public viewCtrl: ViewController,
-    public mapper: MapperService,
-    public workType: CraftService,
-    public timeService: TimeService
-  ) {
-    this.initialData();
+    constructor(
+        public fb: FormBuilder,
+        public navParams: NavParams,
+        public viewCtrl: ViewController,
+        public mapper: MapperService,
+        public workType: CraftService,
+        public timeService: TimeService
+    ) {
+        this.initialData();
 
-    this.initialForm();
-  }
+        this.initialForm();
+    }
 
-  initialData() {
-    this.today = this.timeService.getDate(new Date(), true);
+    initialData() {
+        this.today = this.timeService.getDate(new Date(), true);
 
-    this.workTypes = this.workType.getWorkTypeList();
-  }
+        this.workTypes = this.workType.getWorkTypeList();
+    }
 
-  initialForm() {
-    this.certificateForm = this.fb.group({
-      workTypeId: '',
-      certificateNumber: '',
-      firstGetDate: '',
-      availableStartDate: '',
-      availableEndDate: '',
-      education: '',
-      mechanism: '',
-      imageFace: '',
-      imageBack: ''
-    });
+    initialForm() {
+        this.certificateForm = this.fb.group({
+            workTypeId: '',
+            certificateNumber: '',
+            firstGetDate: '',
+            availableStartDate: '',
+            availableEndDate: '',
+            education: '',
+            mechanism: '',
+            imageFace: '',
+            imageBack: ''
+        });
 
-    const form: Certificate = this.navParams.get('form');
+        const form: Certificate = this.navParams.get('form');
 
-    if (form) this.updateForm(form);
-  }
+        if (form) this.updateForm(form);
+    }
 
-  updateForm(data: Certificate): void {
-    this.buttonText = 'UPDATE_BUTTON';
+    updateForm(data: Certificate): void {
+        this.buttonText = 'UPDATE_BUTTON';
 
-    this.title = 'UPDATE_CERTIFICATE';
+        this.title = 'UPDATE_CERTIFICATE';
 
-    this.certificateForm.patchValue({
-      workTypeId: data.worktype_id,
-      certificateNumber: data.num,
-      firstGetDate: data.firstget_date,
-      availableStartDate: data.usestart_date,
-      availableEndDate: data.usefinish_date,
-      education: data.education,
-      mechanism: data.mechanism
-    });
-  }
+        this.certificateForm.patchValue({
+            workTypeId: data.worktype_id,
+            certificateNumber: data.num,
+            firstGetDate: data.firstget_date,
+            availableStartDate: data.usestart_date,
+            availableEndDate: data.usefinish_date,
+            education: data.education,
+            mechanism: data.mechanism
+        });
+    }
 
-  updateExpireDate(date: string) {
-    this.expireDate = date;
+    updateExpireDate(date: string) {
+        this.expireDate = date;
 
-    this.certificateForm.patchValue({ availableEndDate: '', availableStartDate: '' });
-  }
+        this.certificateForm.patchValue({ availableEndDate: '', availableStartDate: '' });
+    }
 
-  updateExpireEndDate(date: string): void {
-    this.expireEndDate = date;
+    updateExpireEndDate(date: string): void {
+        this.expireEndDate = date;
 
-    this.certificateForm.patchValue({ availableEndDate: '' });
-  }
+        this.certificateForm.patchValue({ availableEndDate: '' });
+    }
 
-  execution() {
-    this.viewCtrl.dismiss(this.mapper.transformAddCertificate(this.certificateForm.value));
-  }
+    execution() {
+        this.viewCtrl.dismiss(this.mapper.transformAddCertificate(this.certificateForm.value));
+    }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
+    dismiss() {
+        this.viewCtrl.dismiss();
+    }
 
-  getImageFace(url = ''): void {
-    this.certificateForm.patchValue({ imageFace: url });
-  }
+    getImageFace(url = ''): void {
+        this.certificateForm.patchValue({ imageFace: url });
+    }
 
-  getImageBack(url = ''): void {
-    this.certificateForm.patchValue({ imageBack: url });
-  }
+    getImageBack(url = ''): void {
+        this.certificateForm.patchValue({ imageBack: url });
+    }
 
-  get workTypeId() {
-    return this.certificateForm.get('workTypeId');
-  }
+    get workTypeId() {
+        return this.certificateForm.get('workTypeId');
+    }
 
-  get certificateNumber() {
-    return this.certificateForm.get('certificateNumber');
-  }
+    get certificateNumber() {
+        return this.certificateForm.get('certificateNumber');
+    }
 
-  get firstGetDate() {
-    return this.certificateForm.get('firstGetDate');
-  }
+    get firstGetDate() {
+        return this.certificateForm.get('firstGetDate');
+    }
 
-  get availableStartDate() {
-    return this.certificateForm.get('availableStartDate');
-  }
+    get availableStartDate() {
+        return this.certificateForm.get('availableStartDate');
+    }
 
-  get availableEndDate() {
-    return this.certificateForm.get('availableEndDate');
-  }
+    get availableEndDate() {
+        return this.certificateForm.get('availableEndDate');
+    }
 
-  get education() {
-    return this.certificateForm.get('education');
-  }
+    get education() {
+        return this.certificateForm.get('education');
+    }
 
-  get mechanism() {
-    return this.certificateForm.get('mechanism');
-  }
+    get mechanism() {
+        return this.certificateForm.get('mechanism');
+    }
 }

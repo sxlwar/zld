@@ -23,7 +23,6 @@ export class AttendanceCardService {
         public project: ProjectService,
         public userInfo: UserService,
         public error: ErrorService,
-        public mapper: MapperService,
         public worker: WorkerService,
         public processor: ProcessorService
     ) {
@@ -62,7 +61,7 @@ export class AttendanceCardService {
     addAttendanceCard(form: AddAttendanceCardFormModel): Subscription {
         const sid = this.userInfo.getSid();
 
-        const option = this.mapper.addAttendanceCardForm(form)
+        const option = this.processor.addAttendanceCardForm(form)
 
         const options = sid.zip(
             Observable.of(option),

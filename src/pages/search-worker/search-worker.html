@@ -1,35 +1,31 @@
 <ion-header>
 
-  <ion-navbar>
+    <ion-navbar>
 
-    <ion-buttons start>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="dismiss()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
 
-    <ion-title>{{'SEARCH_WORKERS' | translate}}</ion-title>
-    
-  </ion-navbar>
+        <ion-title>{{'SEARCH_WORKERS' | translate}}</ion-title>
+
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-item>
-    <ion-label>{{'SET_QUERY_CONDITION' | translate}}</ion-label>
-    
-    <ion-select [(ngModel)]="selectedCondition" (ngModelChange)="setQueryCondition($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-      [okText]="'CONFIRM_BUTTON' | translate">
-      <ion-option *ngFor="let item of searchConditions;" [value]="item.value" [selected]="selectedCondition === item.value">{{item.text | translate}}</ion-option>
-    </ion-select>
-  </ion-item>
+    <ion-item>
+        <ion-label>{{'SET_QUERY_CONDITION' | translate}}</ion-label>
 
-  <fuzzy-search [selectType]="selectType"
-                [type]="searchType"
-                [placeholder]="'INPUT_QUERY_CONTENT' | translate"
-                [items]="workers | async"
-                (select)="select.next($event)"
-                (search)="search.next($event)"></fuzzy-search>
+        <ion-select [(ngModel)]="selectedCondition" (ngModelChange)="setQueryCondition($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+            [okText]="'CONFIRM_BUTTON' | translate">
+            <ion-option *ngFor="let item of searchConditions;" [value]="item.value" [selected]="selectedCondition === item.value">{{item.text | translate}}</ion-option>
+        </ion-select>
+    </ion-item>
+
+    <fuzzy-search [selectType]="selectType" [type]="searchType" [placeholder]="'INPUT_QUERY_CONTENT' | translate" [items]="workers | async"
+        (select)="select.next($event)" (search)="search.next($event)"></fuzzy-search>
 </ion-content>

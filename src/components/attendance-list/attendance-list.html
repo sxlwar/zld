@@ -1,51 +1,51 @@
 <ion-list>
-  <ion-list-header>
-    <ion-label>
-      <span id="count">{{'ATTENDANCE_TOTAL' | translate}}: {{total}}</span>
+    <ion-list-header>
+        <ion-label>
+            <span id="count">{{'ATTENDANCE_TOTAL' | translate}}: {{total}}</span>
 
-      <ion-buttons *ngIf="operate" end>
-        <button ion-button small clear (click)="operateAttendance()">
-          {{'MODIFY_ATTENDANCE' | translate}}
-        </button>
-      </ion-buttons>
+            <ion-buttons *ngIf="operate" end>
+                <button ion-button small clear (click)="operateAttendance()">
+                    {{'MODIFY_ATTENDANCE' | translate}}
+                </button>
+            </ion-buttons>
 
-    </ion-label>
+        </ion-label>
 
-    <ion-checkbox *ngIf="operate" [(ngModel)]="allSelected" (ngModelChange)="toggleAllSelected($event)"></ion-checkbox>
+        <ion-checkbox *ngIf="operate" [(ngModel)]="allSelected" (ngModelChange)="toggleAllSelected($event)"></ion-checkbox>
 
-  </ion-list-header>
+    </ion-list-header>
 
 
-  <ion-item *ngFor="let item of list" detail-push>
+    <ion-item *ngFor="let item of list" detail-push>
 
-    <ion-label>
+        <ion-label>
 
-      <ion-grid (click)="showDetail.next(item)">
+            <ion-grid (click)="showDetail.next(item)">
 
-        <ion-row>
-          <ion-col>{{item.contract__worker__employee__realname}}</ion-col>
-        </ion-row>
+                <ion-row>
+                    <ion-col>{{item.contract__worker__employee__realname}}</ion-col>
+                </ion-row>
 
-        <ion-row>
-          <ion-col>
-            <span class="total-time">{{'TOTAL_TIME' | translate}}: {{item.total_area_hour}}</span>
-            <span>{{'VALID_TIME' | translate}}: {{item.availability_work_hour}}</span>
-          </ion-col>
-        </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <span class="total-time">{{'TOTAL_TIME' | translate}}: {{item.total_area_hour}}</span>
+                        <span>{{'VALID_TIME' | translate}}: {{item.availability_work_hour}}</span>
+                    </ion-col>
+                </ion-row>
 
-      </ion-grid>
+            </ion-grid>
 
-      <h6>{{item.day}}</h6>
+            <h6>{{item.day}}</h6>
 
-    </ion-label>
+        </ion-label>
 
-    <ion-checkbox *ngIf="operate" [(ngModel)]="item.selected" (ngModelChange)="checkAllSelectedFlag($event)" [disabled]="item.confirm !== 0"></ion-checkbox>
-  </ion-item>
+        <ion-checkbox *ngIf="operate" [(ngModel)]="item.selected" (ngModelChange)="checkAllSelectedFlag($event)" [disabled]="item.confirm !== 0"></ion-checkbox>
+    </ion-item>
 
 </ion-list>
 
 <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">
-  <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+    <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
 </ion-infinite-scroll>
 
 <ion-item *ngIf="!haveMoreData" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>

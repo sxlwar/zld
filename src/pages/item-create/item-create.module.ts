@@ -5,15 +5,15 @@ import { IonicPageModule } from 'ionic-angular';
 import { ItemCreatePage } from './item-create';
 
 @NgModule({
-  declarations: [
-    ItemCreatePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ItemCreatePage),
-    TranslateModule.forChild()
-  ],
-  exports: [
-    ItemCreatePage
-  ]
+    declarations: [
+        ItemCreatePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ItemCreatePage),
+        TranslateModule.forChild()
+    ],
+    exports: [
+        ItemCreatePage
+    ]
 })
 export class ItemCreatePageModule { }

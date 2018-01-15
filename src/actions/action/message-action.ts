@@ -189,7 +189,7 @@ export type Actions = GetMessageListAction
     | MessageListFailAction
     | MessageListSuccessAction
     | ResetMessagePageAction
-    | SetMessageReadTypeAtLocalAction 
+    | SetMessageReadTypeAtLocalAction
     | UnreadMessageCountFailAction
     | UnreadMessageCountSuccessAction
     | UpdateUnreadSelectedTypeAction

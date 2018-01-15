@@ -37,7 +37,7 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     selectedWorkers: Observable<number[]>;
 
     selectedWorker: WorkerItem;
-    
+
     single = false;
 
     constructor(
@@ -112,9 +112,9 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     updateSelectedWorkers(): void {
         const subscription = this.workerSubject.take(1).subscribe(workers => {
-            if(!this.single) {
+            if (!this.single) {
                 this.worker.updateSelectedWorkers(workers.filter(item => item.selected).map(item => item.id));
-            }else {
+            } else {
                 this.worker.updateSelectedWorkers([this.selectedWorker.id]);
             }
 

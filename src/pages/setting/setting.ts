@@ -5,24 +5,24 @@ import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-setting',
-  templateUrl: 'setting.html',
+    selector: 'page-setting',
+    templateUrl: 'setting.html',
 })
 export class SettingPage {
 
-  account: Observable<string>;
+    account: Observable<string>;
 
-  reset: Observable<null>;
+    reset: Observable<null>;
 
-  constructor(
-    public userInfo: UserService
-  ) {
-  }
+    constructor(
+        public userInfo: UserService
+    ) {
+    }
 
-  ionViewDidLoad() {
-    this.account = this.userInfo.getAccount()
+    ionViewDidLoad() {
+        this.account = this.userInfo.getAccount()
 
-    this.reset = Observable.empty();
-  }
+        this.reset = Observable.empty();
+    }
 
 }

@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { TrajectoryPage } from './trajectory';
 
 @NgModule({
-  declarations: [
-    TrajectoryPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(TrajectoryPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        TrajectoryPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(TrajectoryPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class TrajectoryPageModule {}
+export class TrajectoryPageModule { }

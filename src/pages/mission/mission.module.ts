@@ -5,16 +5,16 @@ import { ComponentsModule } from '../../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    MissionPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(MissionPage),
-    ComponentsModule,
-    TranslateModule
-  ],
-  exports: [
-    MissionPage,
-  ]
+    declarations: [
+        MissionPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(MissionPage),
+        ComponentsModule,
+        TranslateModule
+    ],
+    exports: [
+        MissionPage,
+    ]
 })
 export class MissionPageModule { }

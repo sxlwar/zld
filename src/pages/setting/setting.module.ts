@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { SettingPage } from './setting';
 
 @NgModule({
-  declarations: [
-    SettingPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(SettingPage),
-    SharedModule,
-    TranslateModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        SettingPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(SettingPage),
+        SharedModule,
+        TranslateModule,
+        ComponentsModule,
+    ],
 })
-export class SettingPageModule {}
+export class SettingPageModule { }

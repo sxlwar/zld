@@ -1,8 +1,8 @@
 <div *ngIf="!!content">
-  <h2>{{'WORKER_CONTRACT_EXPIRE_TIP' | translate}}</h2>
-  <ion-item *ngFor="let item of content.worker">
-    <h5>{{item[1]}}</h5>
-    <h6>{{item[3]}}</h6>
-    <p>{{content.finish_day}}</p>
-  </ion-item>
+    <h2>{{'WORKER_CONTRACT_EXPIRE_TIP' | translate}}</h2>
+    <ion-item *ngFor="let item of content.worker">
+        <h5>{{item[1]}}</h5>
+        <h6>{{item[3]}}</h6>
+        <p>{{content.finish_day}}</p>
+    </ion-item>
 </div>

@@ -7,8 +7,8 @@ const warningValue = 20;
 })
 export class BatteryPipe implements PipeTransform {
     transform(value: number): string {
-        if(value > warningValue)return `linear-gradient(to right, #32db64 ${value}%,white ${value}%)`;
-        return `linear-gradient(to right, #f53d3d ${value}%,white ${value}%)`; 
+        if (value > warningValue) return `linear-gradient(to right, #32db64 ${value}%,white ${value}%)`;
+        return `linear-gradient(to right, #f53d3d ${value}%,white ${value}%)`;
     }
 }
 
@@ -16,10 +16,10 @@ export class BatteryPipe implements PipeTransform {
     name: 'percentBattery'
 })
 export class PercentBatteryPipe implements PipeTransform {
-   transform(value: number): string {
-        if(!value) return '0';
+    transform(value: number): string {
+        if (!value) return '0';
         return value + '%'
-   }
+    }
 }
 
 @Pipe({

@@ -1,14 +1,14 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'PERSONAL_ATTENDANCE' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'PERSONAL_ATTENDANCE' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item-divider>{{date | date: 'yyyy-MM'}}</ion-item-divider>
-  <calendar [isMonth]='isMonth' (dayClicked)='goToDetailPage($event)'></calendar>
-  <attendance-time-chart [yearMonth]='yearMonth'></attendance-time-chart>
+    <ion-item-divider>{{date | date: 'yyyy-MM'}}</ion-item-divider>
+    <calendar [isMonth]='isMonth' (dayClicked)='goToDetailPage($event)'></calendar>
+    <attendance-time-chart [yearMonth]='yearMonth'></attendance-time-chart>
 </ion-content>

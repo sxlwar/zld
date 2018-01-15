@@ -12,37 +12,37 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class CraftService {
 
-  constructor(
-    public store: Store<AppState>,
-    public processor: ProcessorService,
-    public errorService: ErrorService,
-    public workerService: WorkerService
-  ) {
-    processor.workTypeListProcessor();
-  }
+    constructor(
+        public store: Store<AppState>,
+        public processor: ProcessorService,
+        public errorService: ErrorService,
+        public workerService: WorkerService
+    ) {
+        processor.workTypeListProcessor();
+    }
 
-  getWorkTypeList(): Observable<WorkType[]> {
-    return this.store.select(selectWorkTypeList);
-  }
+    getWorkTypeList(): Observable<WorkType[]> {
+        return this.store.select(selectWorkTypeList);
+    }
 
-  getOwnWorkType(): Observable<WorkType[]> {
-    return this.workerService.getOwnContract()
-      .filter(value => !!value)
-      .pluck('worktype_id')
-      .mergeMap(id => this.getWorkTypeList()
-        .map(data => data.filter(workType => workType.id === id))
-      );
-  }
+    getOwnWorkType(): Observable<WorkType[]> {
+        return this.workerService.getOwnContract()
+            .filter(value => !!value)
+            .pluck('worktype_id')
+            .mergeMap(id => this.getWorkTypeList()
+                .map(data => data.filter(workType => workType.id === id))
+            );
+    }
 
-  updateSelectedTypes(ids: number[]): void {
-    this.store.dispatch(new UpdateSelectedWorkTypesAction(ids));
-  }
+    updateSelectedTypes(ids: number[]): void {
+        this.store.dispatch(new UpdateSelectedWorkTypesAction(ids));
+    }
 
-  getSelectedTypes(): Observable<number[]> {
-    return this.store.select(selectSelectedWorkTypes);
-  }
+    getSelectedTypes(): Observable<number[]> {
+        return this.store.select(selectSelectedWorkTypes);
+    }
 
-  handleError(): Subscription {
-    return this.errorService.handleErrorInSpecific(this.store.select(selectWorkTypeResponse), 'API_ERROR');
-  }
+    handleError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.store.select(selectWorkTypeResponse), 'API_ERROR');
+    }
 }

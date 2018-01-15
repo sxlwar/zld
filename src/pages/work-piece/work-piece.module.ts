@@ -5,13 +5,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { WorkPiecePage } from './work-piece';
 
 @NgModule({
-  declarations: [
-    WorkPiecePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(WorkPiecePage),
-    TranslateModule,
-    SharedModule,
-  ],
+    declarations: [
+        WorkPiecePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(WorkPiecePage),
+        TranslateModule,
+        SharedModule,
+    ],
 })
-export class WorkPiecePageModule {}
+export class WorkPiecePageModule { }

@@ -21,7 +21,7 @@ export class AutoSize implements OnInit {
         textArea.style.overflow = 'hidden';
 
         textArea.style.height = 'auto';
-        
+
         textArea.style.height = textArea.scrollHeight + 'px';
     }
 }

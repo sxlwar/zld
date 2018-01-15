@@ -8,14 +8,14 @@ import { Component, Input } from '@angular/core';
  * Components.
  */
 @Component({
-  selector: 'personal-id',
-  templateUrl: 'personal-id.html'
+    selector: 'personal-id',
+    templateUrl: 'personal-id.html'
 })
 export class PersonalIdComponent {
 
-  @Input() PersonalId: PersonalId;
+    @Input() PersonalId: PersonalId;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
 }

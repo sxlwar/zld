@@ -5,13 +5,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { OrganizationPage } from './organization';
 
 @NgModule({
-  declarations: [
-    OrganizationPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(OrganizationPage),
-    TranslateModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        OrganizationPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(OrganizationPage),
+        TranslateModule,
+        ComponentsModule,
+    ],
 })
-export class OrganizationPageModule {}
+export class OrganizationPageModule { }

@@ -18,16 +18,16 @@ export const initialState: State = {
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
         case actions.COMPANY_USER_LIST_FAIL:
-        case actions.COMPANY_USER_LIST_SUCCESS: 
-            
+        case actions.COMPANY_USER_LIST_SUCCESS:
+
             return Object.assign({}, state, { companyUserResponse: action.payload, selectedForemen: [], selectedQualityClerks: [] });
-        
-        case actions.SET_SELECTED_FOREMAN: 
+
+        case actions.SET_SELECTED_FOREMAN:
 
             return Object.assign({}, state, { selectedForemen: action.payload });
-        
 
-        case actions.SET_SELECT_QUALITY_CLERK: 
+
+        case actions.SET_SELECT_QUALITY_CLERK:
 
             return Object.assign({}, state, { selectedQualityClerks: action.payload });
 

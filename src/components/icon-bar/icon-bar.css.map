@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,QAAS;EACP,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,MAAM;EACnB,eAAe,EAAE,MAAM;EACvB,cAAc,EAAE,MAAM;EACtB,iBAAS;IACP,SAAS,EAAE,IAAI;EAEjB,UAAE;IACA,WAAW,EAAE,MAAM;EAErB,gBAAQ;IACN,UAAU,EAAE,MAAM",
-"sources": ["icon-bar.scss"],
-"names": [],
-"file": "icon-bar.css"
-}

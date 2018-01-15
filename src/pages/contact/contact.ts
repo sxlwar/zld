@@ -3,13 +3,13 @@ import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-contact',
-  templateUrl: 'contact.html',
+    selector: 'page-contact',
+    templateUrl: 'contact.html',
 })
 export class ContactPage {
-  tel = '0571-58977777';
+    tel = '0571-58977777';
 
-  constructor() {
-  }
+    constructor() {
+    }
 
 }

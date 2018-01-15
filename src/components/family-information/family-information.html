@@ -1,66 +1,66 @@
 <div *ngIf="family">
 
 
-  <ion-item-group>
+    <ion-item-group>
 
-    <ion-item-divider>{{'MARRIAGE' | translate}}</ion-item-divider>
+        <ion-item-divider>{{'MARRIAGE' | translate}}</ion-item-divider>
 
-    <ion-item>
-      <ion-label fixed>{{'MARRIAGE' | translate}}</ion-label>
+        <ion-item>
+            <ion-label fixed>{{'MARRIAGE' | translate}}</ion-label>
 
-      <ion-select *ngIf="!disabled" [(ngModel)]="family.marriage" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-        <ion-option value="1" [selected]="family.marriage === 1">{{'MARRIED' | translate}}</ion-option>
-        <ion-option value="0" [selected]="family.marriage === 0">{{'CELIBATE' | translate}}</ion-option>
-      </ion-select>
+            <ion-select *ngIf="!disabled" [(ngModel)]="family.marriage" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
+                <ion-option value="1" [selected]="family.marriage === 1">{{'MARRIED' | translate}}</ion-option>
+                <ion-option value="0" [selected]="family.marriage === 0">{{'CELIBATE' | translate}}</ion-option>
+            </ion-select>
 
-      <ion-input *ngIf="disabled" [value]="(family.marriage ? 'MARRIED' : 'CELIBATE') | translate" disabled></ion-input>
-    </ion-item>
+            <ion-input *ngIf="disabled" [value]="(family.marriage ? 'MARRIED' : 'CELIBATE') | translate" disabled></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'CHILDREN_COUNT' | translate}}</ion-label>
-      <ion-input type="number" [(ngModel)]="family.children" [disabled]="disabled" [value]="family.children"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'CHILDREN_COUNT' | translate}}</ion-label>
+            <ion-input type="number" [(ngModel)]="family.children" [disabled]="disabled" [value]="family.children"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'MARRY_DAY' | translate}}</ion-label>
-      <ion-datetime [(ngModel)]="family.marryDay" displayFormat="YYYY-MM-DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-        [disabled]="disabled"></ion-datetime>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'MARRY_DAY' | translate}}</ion-label>
+            <ion-datetime [(ngModel)]="family.marryDay" displayFormat="YYYY-MM-DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+                [disabled]="disabled"></ion-datetime>
+        </ion-item>
 
-  </ion-item-group>
+    </ion-item-group>
 
-  <ion-item-group>
+    <ion-item-group>
 
-    <ion-item-divider>{{'EMERGENCY_CONTACT' | translate}}</ion-item-divider>
+        <ion-item-divider>{{'EMERGENCY_CONTACT' | translate}}</ion-item-divider>
 
-    <ion-item>
-      <ion-label fixed>{{'NAME' | translate}}</ion-label>
-      <ion-input type="text" [(ngModel)]="family.emergencyName" [disabled]="disabled" [value]="family.emergencyName"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'NAME' | translate}}</ion-label>
+            <ion-input type="text" [(ngModel)]="family.emergencyName" [disabled]="disabled" [value]="family.emergencyName"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
-      <ion-input type="number" [(ngModel)]="family.emergencyPhone" [disabled]="disabled" [value]="family.emergencyPhone"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
+            <ion-input type="number" [(ngModel)]="family.emergencyPhone" [disabled]="disabled" [value]="family.emergencyPhone"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'RELATIONSHIP' | translate}}</ion-label>
+        <ion-item>
+            <ion-label fixed>{{'RELATIONSHIP' | translate}}</ion-label>
 
-      <ion-select *ngIf="!disabled" [(ngModel)]="family.emergencyRelation" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-        <ion-option *ngFor="let item of relationShip" [value]="item" [selected]="item ===family.emergencyRelation">{{item}}</ion-option>
-      </ion-select>
+            <ion-select *ngIf="!disabled" [(ngModel)]="family.emergencyRelation" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
+                <ion-option *ngFor="let item of relationShip" [value]="item" [selected]="item ===family.emergencyRelation">{{item}}</ion-option>
+            </ion-select>
 
-      <ion-input *ngIf="disabled" [value]="family.emergencyRelation" disabled></ion-input>
-    </ion-item>
+            <ion-input *ngIf="disabled" [value]="family.emergencyRelation" disabled></ion-input>
+        </ion-item>
 
-  </ion-item-group>
+    </ion-item-group>
 
-  <address-select [addressDetail]="family.addressDetail" [selectedArea]="family.addressArea" [disabled]="disabled" (addressChange)="updateAddress($event)"></address-select>
+    <address-select [addressDetail]="family.addressDetail" [selectedArea]="family.addressArea" [disabled]="disabled" (addressChange)="updateAddress($event)"></address-select>
 
 
 
-  <button ion-button block *ngIf="!disabled" (click)="updateHomeInfo.next(family)">
-    {{'UPDATE_BUTTON' | translate}}
-  </button>
+    <button ion-button block *ngIf="!disabled" (click)="updateHomeInfo.next(family)">
+        {{'UPDATE_BUTTON' | translate}}
+    </button>
 
 </div>

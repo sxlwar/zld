@@ -5,13 +5,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { PersonalPage } from './personal';
 
 @NgModule({
-  declarations: [
-    PersonalPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(PersonalPage),
-    TranslateModule,
-    ComponentsModule
-  ],
+    declarations: [
+        PersonalPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(PersonalPage),
+        TranslateModule,
+        ComponentsModule
+    ],
 })
-export class PersonalPageModule {}
+export class PersonalPageModule { }

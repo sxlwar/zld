@@ -23,7 +23,7 @@ export enum ChartType {
     pie = 'pie',
     doughnut = 'doughnut',
     bar = 'bar',
-    horizontalBar = 'horizontalBar' 
+    horizontalBar = 'horizontalBar'
 }
 
 const COLORS = [

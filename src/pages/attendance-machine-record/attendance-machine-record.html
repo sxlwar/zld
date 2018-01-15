@@ -1,53 +1,53 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'ATTENDANCE_MACHINE_RECORD' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'ATTENDANCE_MACHINE_RECORD' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label>{{'SET_QUERY_DATE' | translate}}</ion-label>
-    <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-    min="2017-01-01" [max]="maxDate | async" [(ngModel)]="date" (ngModelChange)="getAttendanceInstant()"></ion-datetime>
-  </ion-item>
-  <ion-list>
-    <ion-list-header text-center>{{machineName | async}}</ion-list-header>
+    <ion-item>
+        <ion-label>{{'SET_QUERY_DATE' | translate}}</ion-label>
+        <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01" [max]="maxDate | async" [(ngModel)]="date" (ngModelChange)="getAttendanceInstant()"></ion-datetime>
+    </ion-item>
+    <ion-list>
+        <ion-list-header text-center>{{machineName | async}}</ion-list-header>
 
-    <ion-item-divider>
-        <ion-label>
-          <ion-grid>
-            <ion-row text-center>
-              <ion-col>{{'NAME' | translate}}</ion-col>
-              <ion-col>{{'ATTENDANCE_RECORD_TYPE' | translate}}</ion-col>
-              <ion-col>{{'TIME' | translate}}</ion-col>
-              <ion-col>{{'CAPTURE_PICTURE' | translate}}</ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-label>
-      </ion-item-divider>
-    
-      <ion-item *ngFor="let record of (records | async)">
-        <ion-label>
-          <ion-grid>
-            <ion-row text-center>
-              <ion-col>{{record.user__employee__realname}}</ion-col>
-              <ion-col>{{record.type | inOut | translate}}</ion-col>
-              <ion-col>{{record.time}}</ion-col>
-              <ion-col (click)="showCapture(record)">
-                <ion-icon name="images"></ion-icon>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-label>
-      </ion-item>
+        <ion-item-divider>
+            <ion-label>
+                <ion-grid>
+                    <ion-row text-center>
+                        <ion-col>{{'NAME' | translate}}</ion-col>
+                        <ion-col>{{'ATTENDANCE_RECORD_TYPE' | translate}}</ion-col>
+                        <ion-col>{{'TIME' | translate}}</ion-col>
+                        <ion-col>{{'CAPTURE_PICTURE' | translate}}</ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-label>
+        </ion-item-divider>
 
-    <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-    <ion-item *ngIf="!(haveMoreData | async)" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+        <ion-item *ngFor="let record of (records | async)">
+            <ion-label>
+                <ion-grid>
+                    <ion-row text-center>
+                        <ion-col>{{record.user__employee__realname}}</ion-col>
+                        <ion-col>{{record.type | inOut | translate}}</ion-col>
+                        <ion-col>{{record.time}}</ion-col>
+                        <ion-col (click)="showCapture(record)">
+                            <ion-icon name="images"></ion-icon>
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
+            </ion-label>
+        </ion-item>
 
-  </ion-list>
+        <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
+            <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+        <ion-item *ngIf="!(haveMoreData | async)" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+
+    </ion-list>
 </ion-content>

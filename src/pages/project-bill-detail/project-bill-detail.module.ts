@@ -4,12 +4,12 @@ import { IonicPageModule } from 'ionic-angular';
 import { ProjectBillDetailPage } from './project-bill-detail';
 
 @NgModule({
-  declarations: [
-    ProjectBillDetailPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ProjectBillDetailPage),
-    TranslateModule,
-  ],
+    declarations: [
+        ProjectBillDetailPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ProjectBillDetailPage),
+        TranslateModule,
+    ],
 })
-export class ProjectBillDetailPageModule {}
+export class ProjectBillDetailPageModule { }

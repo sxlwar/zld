@@ -4,12 +4,12 @@ import { IonicPageModule } from 'ionic-angular';
 import { TeamMembersPage } from './team-members';
 
 @NgModule({
-  declarations: [
-    TeamMembersPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(TeamMembersPage),
-    TranslateModule,
-  ],
+    declarations: [
+        TeamMembersPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(TeamMembersPage),
+        TranslateModule,
+    ],
 })
-export class TeamMembersPageModule {}
+export class TeamMembersPageModule { }

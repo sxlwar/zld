@@ -9,125 +9,125 @@ import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angul
 
 @IonicPage()
 @Component({
-  selector: 'page-message',
-  templateUrl: 'message.html',
+    selector: 'page-message',
+    templateUrl: 'message.html',
 })
 export class MessagePage {
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  messageType = 'unread';
+    messageType = 'unread';
 
-  unreadMessages: Observable<Message[]>;
+    unreadMessages: Observable<Message[]>;
 
-  readMessages: Observable<Message[]>;
+    readMessages: Observable<Message[]>;
 
-  haveMoreUnreadMessage: Observable<boolean>;
+    haveMoreUnreadMessage: Observable<boolean>;
 
-  haveMoreReadMessage: Observable<boolean>;
+    haveMoreReadMessage: Observable<boolean>;
 
-  unread$$: Subscription;
+    unread$$: Subscription;
 
-  read$$: Subscription;
+    read$$: Subscription;
 
-  launchReadQuery$$: Subscription;
+    launchReadQuery$$: Subscription;
 
-  selectedUnreadTimeOrder: Observable<number>;
+    selectedUnreadTimeOrder: Observable<number>;
 
-  selectedReadTimeOrder: Observable<number>;
+    selectedReadTimeOrder: Observable<number>;
 
-  selectedUnreadType: Observable<number>;
+    selectedUnreadType: Observable<number>;
 
-  selectedReadType: Observable<number>;
+    selectedReadType: Observable<number>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public message: MessageService
-  ) {
-  }
-
-  ionViewDidLoad() {
-    this.sendRequest();
-
-    this.initialModel();
-  }
-
-  sendRequest(): void {
-    this.subscriptions = [
-      this.message.getMessageListByReadState(MessageReadTag.unread)
-    ];
-  }
-
-  launchReadStateListQuery() {
-    if (!this.launchReadQuery$$) {
-      this.launchReadQuery$$ = this.message.getMessageListByReadState(MessageReadTag.read);
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public message: MessageService
+    ) {
     }
-  }
 
-  initialModel(): void {
-    this.unreadMessages = this.message.getUnreadMessages();
+    ionViewDidLoad() {
+        this.sendRequest();
 
-    this.readMessages = this.message.getReadMessages();
+        this.initialModel();
+    }
 
-    this.haveMoreUnreadMessage = this.message.haveMoreUnreadMessage();
+    sendRequest(): void {
+        this.subscriptions = [
+            this.message.getMessageListByReadState(MessageReadTag.unread)
+        ];
+    }
 
-    this.haveMoreReadMessage = this.message.haveMoreReadMessage();
+    launchReadStateListQuery() {
+        if (!this.launchReadQuery$$) {
+            this.launchReadQuery$$ = this.message.getMessageListByReadState(MessageReadTag.read);
+        }
+    }
 
-    this.selectedUnreadTimeOrder = this.message.getUnreadTimeOrder();
+    initialModel(): void {
+        this.unreadMessages = this.message.getUnreadMessages();
 
-    this.selectedReadTimeOrder = this.message.getReadTimeOrder();
+        this.readMessages = this.message.getReadMessages();
 
-    this.selectedUnreadType = this.message.getUnreadSelectedType();
+        this.haveMoreUnreadMessage = this.message.haveMoreUnreadMessage();
 
-    this.selectedReadType = this.message.getReadSelectedType();
-  }
+        this.haveMoreReadMessage = this.message.haveMoreReadMessage();
 
-  getNextPageOfUnread(infiniteScroll: InfiniteScroll): void {
-    this.message.increaseUnreadPage();
+        this.selectedUnreadTimeOrder = this.message.getUnreadTimeOrder();
 
-    this.unread$$ && this.unread$$.unsubscribe();
+        this.selectedReadTimeOrder = this.message.getReadTimeOrder();
 
-    this.unread$$ = this.message.getMessageListComplete().subscribe(_ => infiniteScroll.complete());
-  }
+        this.selectedUnreadType = this.message.getUnreadSelectedType();
 
-  getNextPageOfRead(infiniteScroll: InfiniteScroll): void {
-    this.message.increaseReadPage();
+        this.selectedReadType = this.message.getReadSelectedType();
+    }
 
-    this.read$$ && this.read$$.unsubscribe();
+    getNextPageOfUnread(infiniteScroll: InfiniteScroll): void {
+        this.message.increaseUnreadPage();
 
-    this.read$$ = this.message.getMessageListComplete().subscribe(_ => infiniteScroll.complete());
-  }
+        this.unread$$ && this.unread$$.unsubscribe();
 
-  goToContentPage(message: Message): void {
-    this.navCtrl.push(messageContentPage, { message }).then(() => { });
-  }
+        this.unread$$ = this.message.getMessageListComplete().subscribe(_ => infiniteScroll.complete());
+    }
 
-  updateUnreadTimeOrder(order: string): void {
+    getNextPageOfRead(infiniteScroll: InfiniteScroll): void {
+        this.message.increaseReadPage();
 
-    this.message.updateUnreadTimeOrder(Number(order));
-  }
+        this.read$$ && this.read$$.unsubscribe();
 
-  updateReadTimeOrder(order: string): void {
-    this.message.updateReadTimeOrder(Number(order));
-  }
+        this.read$$ = this.message.getMessageListComplete().subscribe(_ => infiniteScroll.complete());
+    }
 
-  updateUnreadType(type: number): void {
-    this.message.updateUnreadSelectedType(type);
-  }
+    goToContentPage(message: Message): void {
+        this.navCtrl.push(messageContentPage, { message }).then(() => { });
+    }
 
-  updateReadType(type: number): void {
-    this.message.updateReadSelectedType(type);
-  }
+    updateUnreadTimeOrder(order: string): void {
 
-  ionViewWillUnload() {
-    this.unread$$ && this.unread$$.unsubscribe();
+        this.message.updateUnreadTimeOrder(Number(order));
+    }
 
-    this.read$$ && this.read$$.unsubscribe();
+    updateReadTimeOrder(order: string): void {
+        this.message.updateReadTimeOrder(Number(order));
+    }
 
-    this.launchReadQuery$$ && this.launchReadQuery$$.unsubscribe();
+    updateUnreadType(type: number): void {
+        this.message.updateUnreadSelectedType(type);
+    }
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    updateReadType(type: number): void {
+        this.message.updateReadSelectedType(type);
+    }
+
+    ionViewWillUnload() {
+        this.unread$$ && this.unread$$.unsubscribe();
+
+        this.read$$ && this.read$$.unsubscribe();
+
+        this.launchReadQuery$$ && this.launchReadQuery$$.unsubscribe();
+
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

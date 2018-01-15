@@ -5,16 +5,16 @@ import { ComponentsModule } from '../../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    MinePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(MinePage),
-    ComponentsModule,
-    TranslateModule,
-  ],
-  exports: [
-   MinePage, 
-  ]
+    declarations: [
+        MinePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(MinePage),
+        ComponentsModule,
+        TranslateModule,
+    ],
+    exports: [
+        MinePage,
+    ]
 })
 export class MinePageModule { }

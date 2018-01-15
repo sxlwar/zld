@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { BankcardPage } from './bankcard';
 
 @NgModule({
-  declarations: [
-    BankcardPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(BankcardPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        BankcardPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(BankcardPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class BankcardPageModule {}
+export class BankcardPageModule { }

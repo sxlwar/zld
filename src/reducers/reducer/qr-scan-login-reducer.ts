@@ -22,7 +22,7 @@ export function reducer(state = initialState, action: actions.Actions) {
 
         case actions.RESET_QR_SID:
             return { ...state, QRCode: '' };
-            
+
         default:
             return state;
     }

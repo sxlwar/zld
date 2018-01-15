@@ -95,7 +95,7 @@ export const CREATE_OVERTIME_SUCCESS = 'CREATE_OVERTIME_SUCCESS';
 export class CreateOvertimeSuccessAction implements Action {
     readonly type = CREATE_OVERTIME_SUCCESS;
 
-    constructor(public payload:CreateOvertimeResponse) { }
+    constructor(public payload: CreateOvertimeResponse) { }
 }
 
 export const CREATE_PIECE_AUDIT = 'CREATE_PIECE_AUDIT';
@@ -111,7 +111,7 @@ export const CREATE_PIECE_AUDIT_FAIL = 'CREATE_PIECE_AUDIT_FAIL';
 export class CreatePieceAuditFailAction implements Action {
     readonly type = CREATE_PIECE_AUDIT_FAIL;
 
-    constructor(public payload: CreatePieceAuditResponse ) { }
+    constructor(public payload: CreatePieceAuditResponse) { }
 }
 
 export const CREATE_PIECE_AUDIT_SUCCESS = 'CREATE_PIECE_AUDIT_SUCCESS';
@@ -207,7 +207,7 @@ export const UPLOAD_LEAVE_ATTACH_FAIL = 'UPLOAD_LEAVE_ATTACH_FAIL';
 
 export class UploadLeaveAttachFailAction implements Action {
     readonly type = UPLOAD_LEAVE_ATTACH_FAIL;
-    
+
     constructor(public payload: UploadLeaveAttachResponse) { }
 }
 
@@ -215,7 +215,7 @@ export const UPLOAD_LEAVE_ATTACH_SUCCESS = 'UPLOAD_LEAVE_ATTACH_SUCCESS';
 
 export class UploadLeaveAttachSuccessAction implements Action {
     readonly type = UPLOAD_LEAVE_ATTACH_SUCCESS;
-    
+
     constructor(public payload: UploadLeaveAttachResponse) { }
 }
 
@@ -231,7 +231,7 @@ export const UPLOAD_OVERTIME_ATTACH_FAIL = 'UPLOAD_OVERTIME_ATTACH_FAIL';
 
 export class UploadOvertimeAttachFailAction implements Action {
     readonly type = UPLOAD_OVERTIME_ATTACH_FAIL;
-    
+
     constructor(public payload: UploadOvertimeAttachResponse) { }
 }
 
@@ -239,7 +239,7 @@ export const UPLOAD_OVERTIME_ATTACH_SUCCESS = 'UPLOAD_OVERTIME_ATTACH_SUCCESS';
 
 export class UploadOvertimeAttachSuccessAction implements Action {
     readonly type = UPLOAD_OVERTIME_ATTACH_SUCCESS;
-    
+
     constructor(public payload: UploadOvertimeAttachResponse) { }
 }
 
@@ -255,7 +255,7 @@ export const UPLOAD_PIECE_AUDIT_ATTACH_FAIL = 'UPLOAD_PIECE_AUDIT_ATTACH_FAIL';
 
 export class UploadPieceAuditAttachFailAction implements Action {
     readonly type = UPLOAD_PIECE_AUDIT_ATTACH_FAIL;
-    
+
     constructor(public payload: UploadPieceAuditAttachResponse) { }
 }
 
@@ -263,7 +263,7 @@ export const UPLOAD_PIECE_AUDIT_ATTACH_SUCCESS = 'UPLOAD_PIECE_AUDIT_ATTACH_SUCC
 
 export class UploadPieceAuditAttachSuccessAction implements Action {
     readonly type = UPLOAD_PIECE_AUDIT_ATTACH_SUCCESS;
-    
+
     constructor(public payload: UploadPieceAuditAttachResponse) { }
 }
 
@@ -279,7 +279,7 @@ export const UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_FAIL = 'UPLOAD_WORKER_CONTRACT
 
 export class UploadWorkerContractModifyAttachFailAction implements Action {
     readonly type = UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_FAIL;
-    
+
     constructor(public payload: UploadWorkerContractModifyAttachResponse) { }
 }
 
@@ -287,7 +287,7 @@ export const UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_SUCCESS = 'UPLOAD_WORKER_CONTR
 
 export class UploadWorkerContractModifyAttachSuccessAction implements Action {
     readonly type = UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH_SUCCESS;
-    
+
     constructor(public payload: UploadWorkerContractModifyAttachResponse) { }
 }
 

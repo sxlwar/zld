@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 /**
  * Generated class for the ImageVerificationComponent component.
@@ -7,14 +7,14 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
  * Components.
  */
 @Component({
-  selector: 'image-verification',
-  templateUrl: 'image-verification.html'
+    selector: 'image-verification',
+    templateUrl: 'image-verification.html'
 })
 export class ImageVerificationComponent {
 
-  @Input() src: string;
-  @Output() update = new EventEmitter();
+    @Input() src: string;
+    @Output() update = new EventEmitter();
 
-  constructor() {
-  }
+    constructor() {
+    }
 }

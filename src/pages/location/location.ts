@@ -12,129 +12,129 @@ declare var AMap: any;
 
 @IonicPage()
 @Component({
-  selector: 'page-location',
-  templateUrl: 'location.html',
+    selector: 'page-location',
+    templateUrl: 'location.html',
 })
 export class LocationPage {
 
-  map: Map;
+    map: Map;
 
-  subscriptions: Subscription[];
+    subscriptions: Subscription[];
 
-  markersSubject: Subject<Marker[]> = new Subject();
+    markersSubject: Subject<Marker[]> = new Subject();
 
-  clusterer: MarkerClusterer;
+    clusterer: MarkerClusterer;
 
-  markers: Marker[] = [];
+    markers: Marker[] = [];
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public location: LocationService,
-    public modalCtrl: ModalController,
-    public config: ConfigService,
-    public mapService: AmapService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public location: LocationService,
+        public modalCtrl: ModalController,
+        public config: ConfigService,
+        public mapService: AmapService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    const result = opt || view;
+        const result = opt || view;
 
-    return result;
-  }
+        return result;
+    }
 
-  ionViewDidLoad() {
-    this.map = new AMap.Map('locationMap');
+    ionViewDidLoad() {
+        this.map = new AMap.Map('locationMap');
 
-    this.config.hideTabBar();
+        this.config.hideTabBar();
 
-    this.launch();
+        this.launch();
 
-    this.addOverlays();
+        this.addOverlays();
 
-    this.clearOverlays();
+        this.clearOverlays();
 
-    this.mapService.addControl(this.map);
-  }
+        this.mapService.addControl(this.map);
+    }
 
-  ionViewWillUnload() {
-    this.config.showTabBar();
+    ionViewWillUnload() {
+        this.config.showTabBar();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  launch() {
-    this.subscriptions = this.location.handleError();
+    launch() {
+        this.subscriptions = this.location.handleError();
 
-    const subscription = this.mapService.monitorHistoryLocationResponse();
+        const subscription = this.mapService.monitorHistoryLocationResponse();
 
-    this.subscriptions.push(subscription);
+        this.subscriptions.push(subscription);
 
-    this.getLocationList();
+        this.getLocationList();
 
-    this.getProjectAreaList();
-  }
+        this.getProjectAreaList();
+    }
 
-  addOverlays() {
-    this.getMarkers();
+    addOverlays() {
+        this.getMarkers();
 
-    this.getProjectArea();
-  }
+        this.getProjectArea();
+    }
 
-  clearOverlays() {
-    const subscription = this.location.updateCondition()
-      .subscribe(_ => {
-        this.map.remove(this.markers);
-        this.clusterer && this.clusterer.clearMarkers();
-      });
+    clearOverlays() {
+        const subscription = this.location.updateCondition()
+            .subscribe(_ => {
+                this.map.remove(this.markers);
+                this.clusterer && this.clusterer.clearMarkers();
+            });
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getMarkers() {
-    const markers = this.mapService.addMarkersOnMap(this.map)
+    getMarkers() {
+        const markers = this.mapService.addMarkersOnMap(this.map)
 
-    const subscription = markers.subscribe(markers => {
-      this.markers = markers;
-      this.getClusterer(markers);
-    });
+        const subscription = markers.subscribe(markers => {
+            this.markers = markers;
+            this.getClusterer(markers);
+        });
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getClusterer(markers) {
-    const subscription = this.mapService.markerClusterer(this.map, markers).subscribe(clusterer => this.clusterer = clusterer);
+    getClusterer(markers) {
+        const subscription = this.mapService.markerClusterer(this.map, markers).subscribe(clusterer => this.clusterer = clusterer);
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getProjectArea() {
-    const subscriptions = this.mapService.generateArea(this.map);
+    getProjectArea() {
+        const subscriptions = this.mapService.generateArea(this.map);
 
-    this.subscriptions = [...this.subscriptions, ...subscriptions];
-  }
+        this.subscriptions = [...this.subscriptions, ...subscriptions];
+    }
 
-  /* ====================================================================Request operate================================================== */
+    /* ====================================================================Request operate================================================== */
 
-  getLocationList(): void {
-    this.location.updateCondition().next(true);
+    getLocationList(): void {
+        this.location.updateCondition().next(true);
 
-    const subscription = this.location.getHistoryLocationList(
-      this.location.updateCondition().startWith(true).mergeMapTo(this.location.getAvailableOptions().take(1))
-    );
+        const subscription = this.location.getHistoryLocationList(
+            this.location.updateCondition().startWith(true).mergeMapTo(this.location.getAvailableOptions().take(1))
+        );
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getProjectAreaList(): void {
-    const subscription = this.location.getProjectAreaList();
+    getProjectAreaList(): void {
+        const subscription = this.location.getProjectAreaList();
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  setCondition() {
-    this.modalCtrl.create(HistoryLocationComponent).present();
-  }
+    setCondition() {
+        this.modalCtrl.create(HistoryLocationComponent).present();
+    }
 }

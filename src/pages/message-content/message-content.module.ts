@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { MessageContentPage } from './message-content';
 
 @NgModule({
-  declarations: [
-    MessageContentPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(MessageContentPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        MessageContentPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(MessageContentPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class MessageContentPageModule {}
+export class MessageContentPageModule { }

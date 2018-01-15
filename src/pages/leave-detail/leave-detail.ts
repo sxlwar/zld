@@ -11,67 +11,67 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-leave-detail',
-  templateUrl: 'leave-detail.html',
+    selector: 'page-leave-detail',
+    templateUrl: 'leave-detail.html',
 })
 export class LeaveDetailPage {
 
-  id: number;
+    id: number;
 
-  workFlow: Observable<WorkFlow>;
+    workFlow: Observable<WorkFlow>;
 
-  leave: Observable<Leave>;
+    leave: Observable<Leave>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  isAuditButtonVisibility: Observable<boolean>;
+    isAuditButtonVisibility: Observable<boolean>;
 
-  audit$$: Subscription;
+    audit$$: Subscription;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlowService: WorkFlowService,
-    public leaveService: LeaveService,
-    public permission: PermissionService
-  ) {
-    this.id = navParams.get('id');
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlowService: WorkFlowService,
+        public leaveService: LeaveService,
+        public permission: PermissionService
+    ) {
+        this.id = navParams.get('id');
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel() {
-    this.workFlow = this.workFlowService.getWorkFlow(this.id);
+    initialModel() {
+        this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.leave = this.leaveService.getLeaveRecordLists().map(res => res[0]);
+        this.leave = this.leaveService.getLeaveRecordLists().map(res => res[0]);
 
-    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
-      this.navParams.get('status'),
-      this.permission.getOperatePermission(leave.icon, MissionRoot)
-    );
-  }
+        this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+            this.navParams.get('status'),
+            this.permission.getOperatePermission(leave.icon, MissionRoot)
+        );
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.leaveService.getLeaveRecord(this.leaveService.getRecordOptions(this.id, this.navParams.get('status'))),
-      this.leaveService.handleError()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.leaveService.getLeaveRecord(this.leaveService.getRecordOptions(this.id, this.navParams.get('status'))),
+            this.leaveService.handleError()
+        ];
+    }
 
-  audit() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    audit() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-    this.audit$$ = this.workFlowService.auditTask(this.id);
-  }
+        this.audit$$ = this.workFlowService.auditTask(this.id);
+    }
 
-  ionViewWillUnload() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    ionViewWillUnload() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

@@ -12,95 +12,95 @@ import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angul
 
 @IonicPage()
 @Component({
-  selector: 'page-i-started',
-  templateUrl: 'i-started.html',
+    selector: 'page-i-started',
+    templateUrl: 'i-started.html',
 })
 export class IStartedPage {
 
-  total: Observable<number>;
+    total: Observable<number>;
 
-  list: Observable<MissionListItem[]>;
+    list: Observable<MissionListItem[]>;
 
-  operate: Observable<boolean>;
+    operate: Observable<boolean>;
 
-  haveMoreData: Observable<boolean>;
+    haveMoreData: Observable<boolean>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  page$$: Subscription;
+    page$$: Subscription;
 
-  screeningConditions: ScreeningCondition[] = screeningConditions;
+    screeningConditions: ScreeningCondition[] = screeningConditions;
 
-  screening: string;
+    screening: string;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlow: WorkFlowService,
-    public permission: PermissionService,
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlow: WorkFlowService,
+        public permission: PermissionService,
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel(): void {
-    this.total = this.workFlow.getCount();
+    initialModel(): void {
+        this.total = this.workFlow.getCount();
 
-    this.list = this.workFlow.getList().combineLatest(this.workFlow.getScreeningCondition(), (list, condition) => list.filter(item => !condition || item.processId === condition));
+        this.list = this.workFlow.getList().combineLatest(this.workFlow.getScreeningCondition(), (list, condition) => list.filter(item => !condition || item.processId === condition));
 
-    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getIStartedPage());
+        this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getIStartedPage());
 
-    this.operate = this.permission.getOperatePermission(iStarted.icon, MissionRoot);
-  }
+        this.operate = this.permission.getOperatePermission(iStarted.icon, MissionRoot);
+    }
 
-  launch(): void {
-    this.subscriptions = [
-      this.workFlow.getSpecificWorkFlowList(
-        Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.launch)),
-        this.workFlow.getIStartedPage()
-      ),
-      this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
-      this.workFlow.handleWorkFlowError()
-    ];
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.workFlow.getSpecificWorkFlowList(
+                Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.launch)),
+                this.workFlow.getIStartedPage()
+            ),
+            this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
+            this.workFlow.handleWorkFlowError()
+        ];
+    }
 
-  audit(target: AuditTarget): void {
-    const { comment, ids, approve } = target;
+    audit(target: AuditTarget): void {
+        const { comment, ids, approve } = target;
 
-    this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
-  }
+        this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
+    }
 
-  getNextPage(infiniteScroll: InfiniteScroll): void {
-    this.page$$ && this.page$$.unsubscribe();
+    getNextPage(infiniteScroll: InfiniteScroll): void {
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.iStartedPage);
-  }
+        this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.iStartedPage);
+    }
 
-  goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(processIdToPage[target.processId], { id: target.id, status: target.status }).then(() => { });
-  }
+    goToNextPage(target: MissionListItem): void {
+        this.navCtrl.push(processIdToPage[target.processId], { id: target.id, status: target.status }).then(() => { });
+    }
 
-  setScreeningCondition(processId: string): void {
-    this.workFlow.setScreeningCondition(processId);
-  }
+    setScreeningCondition(processId: string): void {
+        this.workFlow.setScreeningCondition(processId);
+    }
 
-  ionViewWillUnload() {
-    this.workFlow.resetWorkFlowResponse();
+    ionViewWillUnload() {
+        this.workFlow.resetWorkFlowResponse();
 
-    this.workFlow.resetPage(WorkFlowPageType.iStartedPage);
+        this.workFlow.resetPage(WorkFlowPageType.iStartedPage);
 
-    this.page$$ && this.page$$.unsubscribe();
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

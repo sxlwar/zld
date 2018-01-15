@@ -18,7 +18,7 @@ export class PayProcessService {
         public process: ProcessorService,
         public userInfo: UserService,
         public error: ErrorService
-    ){
+    ) {
         this.handleError();
     }
 
@@ -35,7 +35,7 @@ export class PayProcessService {
     getPayProcessList(): void {
         const sid = this.userInfo.getSid();
 
-        const option = sid.map(sid => ({sid}));
+        const option = sid.map(sid => ({ sid }));
 
         const subscription = this.process.payProcessProcessor(option);
 

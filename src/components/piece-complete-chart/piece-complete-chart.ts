@@ -10,38 +10,38 @@ import { Component, Input, ViewChild, ElementRef, OnInit, OnDestroy } from '@ang
  * Components.
  */
 @Component({
-  selector: 'piece-complete-chart',
-  templateUrl: 'piece-complete-chart.html'
+    selector: 'piece-complete-chart',
+    templateUrl: 'piece-complete-chart.html'
 })
 export class PieceCompleteChartComponent implements OnInit, OnDestroy {
 
-  @Input() complete: number;
+    @Input() complete: number;
 
-  @Input() total: number;
+    @Input() total: number;
 
-  @ViewChild('pieceChart') pieceChart: ElementRef;
+    @ViewChild('pieceChart') pieceChart: ElementRef;
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  constructor(
-    public chart: ChartService,
-    public translate: TranslateService
-  ) {
-  }
+    constructor(
+        public chart: ChartService,
+        public translate: TranslateService
+    ) {
+    }
 
-  ngOnInit() {
-    this.subscription = this.translate.get(['UNCOMPLETED_COUNT', 'COMPLETE_COUNT'])
-      .map(res => {
-        const labels = [res.UNCOMPLETED_COUNT, res.COMPLETE_COUNT];
+    ngOnInit() {
+        this.subscription = this.translate.get(['UNCOMPLETED_COUNT', 'COMPLETE_COUNT'])
+            .map(res => {
+                const labels = [res.UNCOMPLETED_COUNT, res.COMPLETE_COUNT];
 
-        const data = [this.total - this.complete, this.complete];
+                const data = [this.total - this.complete, this.complete];
 
-        return this.chart.getPieChartData({ labels, data });
-      })
-      .subscribe(data => this.chart.getChart(this.pieceChart.nativeElement, ChartType.pie, data));
-  }
+                return this.chart.getPieChartData({ labels, data });
+            })
+            .subscribe(data => this.chart.getChart(this.pieceChart.nativeElement, ChartType.pie, data));
+    }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
 }

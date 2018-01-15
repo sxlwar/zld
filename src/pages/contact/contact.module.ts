@@ -4,12 +4,12 @@ import { IonicPageModule } from 'ionic-angular';
 import { ContactPage } from './contact';
 
 @NgModule({
-  declarations: [
-    ContactPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ContactPage),
-    TranslateModule,
-  ],
+    declarations: [
+        ContactPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ContactPage),
+        TranslateModule,
+    ],
 })
-export class ContactPageModule {}
+export class ContactPageModule { }

@@ -58,7 +58,7 @@ export class AddLocationCardComponent {
         this.initialMode();
 
         this.launch();
-        
+
         //We need to put this step in the final stage, 
         //because we may need to notify the processing program to perform corresponding actions when checking parameters, 
         //so we must ensure that all the processors are initialized.

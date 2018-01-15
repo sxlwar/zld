@@ -4,7 +4,7 @@ import { PipeTransform, Pipe } from '@angular/core';
     name: 'everyMonth'
 })
 export class EveryMonthPipe implements PipeTransform {
-   transform(value: number): string {
-       return '每月' + value + '号';
-   } 
+    transform(value: number): string {
+        return '每月' + value + '号';
+    }
 }

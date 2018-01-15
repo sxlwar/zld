@@ -1,43 +1,43 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'ORGANIZATION' | translate}}</ion-title>
+    <ion-navbar>
+        <ion-title>{{'ORGANIZATION' | translate}}</ion-title>
 
-    <ion-buttons end>
-      <button ion-button icon-only *ngIf="canOperate | async" (click)="addTeam()">
-        <ion-icon name="add"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="canOperate | async" (click)="addTeam()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list>
-    <ion-item (click)="goToPersonalInfoPage('projectManagerId')" detail-push>
-      {{'PROJECT_MANAGER' | translate}}：{{(project | async)?.projectManager}}
-    </ion-item>
-    <ion-item (click)="goToPersonalInfoPage('labourManagerId')" detail-push>
-      {{'LABOUR_MANAGER' | translate}}：{{(project | async)?.labourManager}}
-    </ion-item>
-  </ion-list>
+    <ion-list>
+        <ion-item (click)="goToPersonalInfoPage('projectManagerId')" detail-push>
+            {{'PROJECT_MANAGER' | translate}}：{{(project | async)?.projectManager}}
+        </ion-item>
+        <ion-item (click)="goToPersonalInfoPage('labourManagerId')" detail-push>
+            {{'LABOUR_MANAGER' | translate}}：{{(project | async)?.labourManager}}
+        </ion-item>
+    </ion-list>
 
-  <ion-item-group *ngFor="let item of teams | async">
+    <ion-item-group *ngFor="let item of teams | async">
 
-    <ion-item-divider color="light">
-      {{item.name}}
-      <ion-icon name='create' item-end (click)="updateTeam(item)" *ngIf="canOperate | async"></ion-icon>
-      <ion-icon name='trash' item-end (click)="deleteTeam(item)" *ngIf="canOperate | async"></ion-icon>
-    </ion-item-divider>
+        <ion-item-divider color="light">
+            {{item.name}}
+            <ion-icon name='create' item-end (click)="updateTeam(item)" *ngIf="canOperate | async"></ion-icon>
+            <ion-icon name='trash' item-end (click)="deleteTeam(item)" *ngIf="canOperate | async"></ion-icon>
+        </ion-item-divider>
 
 
-    <ion-item (click)="goToPersonalInfoPage(item)" detail-push>
-      {{'QUALITY_CLERK' | translate}}：{{item.qualityClerk}}
-    </ion-item>
-    <ion-item (click)="goToNextPage(item)" detail-push>
-      {{'FOREMAN' | translate}}：{{item.foreman}}
-    </ion-item>
+        <ion-item (click)="goToPersonalInfoPage(item)" detail-push>
+            {{'QUALITY_CLERK' | translate}}：{{item.qualityClerk}}
+        </ion-item>
+        <ion-item (click)="goToNextPage(item)" detail-push>
+            {{'FOREMAN' | translate}}：{{item.foreman}}
+        </ion-item>
 
-  </ion-item-group>
+    </ion-item-group>
 </ion-content>

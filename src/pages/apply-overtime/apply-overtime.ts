@@ -90,12 +90,12 @@ export class ApplyOvertimePage {
     }
 
     resetEndTime(time: string): void {
-        this.form.patchValue({endTime: ''});
+        this.form.patchValue({ endTime: '' });
     }
 
     ionViewWillUnload() {
         this.launchService.resetResponse(LaunchResponse.overtime);
-        
+
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.config.showTabBar();

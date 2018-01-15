@@ -15,161 +15,161 @@ import { AttendanceState } from '../../interfaces/attendance-interface';
 
 @IonicPage()
 @Component({
-  selector: 'page-attendance',
-  templateUrl: 'attendance.html',
+    selector: 'page-attendance',
+    templateUrl: 'attendance.html',
 })
 export class AttendancePage {
-  startDate: string;
+    startDate: string;
 
-  endDate: string;
+    endDate: string;
 
-  today: string;
+    today: string;
 
-  teams: Observable<Team[]>;
+    teams: Observable<Team[]>;
 
-  attendances: Observable<AttendanceResult[]>;
+    attendances: Observable<AttendanceResult[]>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  operatePermission: Observable<boolean>;
+    operatePermission: Observable<boolean>;
 
-  actionSheet$$: Subscription;
+    actionSheet$$: Subscription;
 
-  page$$: Subscription;
+    page$$: Subscription;
 
-  selectedAttendanceState: number;
+    selectedAttendanceState: number;
 
-  haveMoreData: Observable<boolean>;
+    haveMoreData: Observable<boolean>;
 
-  count: Observable<number>;
+    count: Observable<number>;
 
-  orderType: string;
+    orderType: string;
 
-  sortType: number;
+    sortType: number;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public attendance: AttendanceService,
-    public timeService: TimeService,
-    public teamService: TeamService,
-    public permission: PermissionService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public attendance: AttendanceService,
+        public timeService: TimeService,
+        public teamService: TeamService,
+        public permission: PermissionService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.attendance.getAttendances(this.getAttendanceOption()),
-      this.getDate(),
-      this.attendance.getSelectedAttendanceState().subscribe(state => this.selectedAttendanceState = state),
-      this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
-      this.attendance.getOrderType().subscribe(type => this.orderType = type),
-      this.attendance.getSortType().subscribe(type => this.sortType = type),
-      this.attendance.handleAttendanceError()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.attendance.getAttendances(this.getAttendanceOption()),
+            this.getDate(),
+            this.attendance.getSelectedAttendanceState().subscribe(state => this.selectedAttendanceState = state),
+            this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
+            this.attendance.getOrderType().subscribe(type => this.orderType = type),
+            this.attendance.getSortType().subscribe(type => this.sortType = type),
+            this.attendance.handleAttendanceError()
+        ];
+    }
 
-  initialModel() {
+    initialModel() {
 
-    this.today = this.timeService.getDate(new Date(), true);
+        this.today = this.timeService.getDate(new Date(), true);
 
-    this.attendances = this.attendance.getWrappedAttendanceResultList();
+        this.attendances = this.attendance.getWrappedAttendanceResultList();
 
-    this.teams = this.teamService.getOwnTeams().withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 })));
+        this.teams = this.teamService.getOwnTeams().withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 })));
 
-    this.haveMoreData = this.attendance.getAttendanceResultMoreData();
+        this.haveMoreData = this.attendance.getAttendanceResultMoreData();
 
-    this.operatePermission = this.permission.getOperatePermission(attendanceIcon.icon, ProjectRoot);
+        this.operatePermission = this.permission.getOperatePermission(attendanceIcon.icon, ProjectRoot);
 
-    this.count = this.attendance.getWrappedAttendanceCount();
-  }
+        this.count = this.attendance.getWrappedAttendanceCount();
+    }
 
-  getDate(): Subscription {
-    return this.attendance.getSelectedDate()
-      .subscribe(data => {
-        this.startDate = this.timeService.getDate(data.start, true);
-        this.endDate = this.timeService.getDate(data.end, true);
-      });
-  }
+    getDate(): Subscription {
+        return this.attendance.getSelectedDate()
+            .subscribe(data => {
+                this.startDate = this.timeService.getDate(data.start, true);
+                this.endDate = this.timeService.getDate(data.end, true);
+            });
+    }
 
-  getAttendanceOption(): Observable<RequestOption> {
-    return this.teamService.getSelectedTeams()
-      .combineLatest(
-      this.attendance.getSelectedDate().map(data => ({ start_day: this.timeService.getDate(data.start, true), end_day: this.timeService.getDate(data.end, true) })),
-      this.attendance.getSelectedAttendanceState().map(state => attendanceList.noMagicNumber.get(AttendanceState[state]).value),
-      (ids, date, queryType) => ({ ...date, team_id: ids, ...queryType })
-      );
-  }
+    getAttendanceOption(): Observable<RequestOption> {
+        return this.teamService.getSelectedTeams()
+            .combineLatest(
+            this.attendance.getSelectedDate().map(data => ({ start_day: this.timeService.getDate(data.start, true), end_day: this.timeService.getDate(data.end, true) })),
+            this.attendance.getSelectedAttendanceState().map(state => attendanceList.noMagicNumber.get(AttendanceState[state]).value),
+            (ids, date, queryType) => ({ ...date, team_id: ids, ...queryType })
+            );
+    }
 
-  /* ========================================================Attendance operation========================================================= */
+    /* ========================================================Attendance operation========================================================= */
 
-  setDate(type: string) {
-    const data = type === 'start' ? this.startDate : this.endDate;
+    setDate(type: string) {
+        const data = type === 'start' ? this.startDate : this.endDate;
 
-    this.attendance.setDate(type, data);
+        this.attendance.setDate(type, data);
 
-    this.attendance.resetAttendance();
-  }
+        this.attendance.resetAttendance();
+    }
 
-  updateSelectedAttendanceState(state: string): void {
-    this.attendance.setSelectedAttendanceState(Number(state));
+    updateSelectedAttendanceState(state: string): void {
+        this.attendance.setSelectedAttendanceState(Number(state));
 
-    this.attendance.resetAttendance();
-  }
+        this.attendance.resetAttendance();
+    }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
-    this.attendance.increasePage();
+    getNextPage(infiniteScroll: InfiniteScroll) {
+        this.attendance.increasePage();
 
-    this.page$$ && this.page$$.unsubscribe();
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.attendance.getAttendanceResultResponse().subscribe(_ => infiniteScroll.complete());
-  }
+        this.page$$ = this.attendance.getAttendanceResultResponse().subscribe(_ => infiniteScroll.complete());
+    }
 
-  sortAttendanceBy(target: number) {
-    this.attendance.switchSortType(target);
-  }
+    sortAttendanceBy(target: number) {
+        this.attendance.switchSortType(target);
+    }
 
-  switchOrderType(order: string): void {
-    this.attendance.switchOrderType(order);
-  }
+    switchOrderType(order: string): void {
+        this.attendance.switchOrderType(order);
+    }
 
-  /* ========================================================Team operation========================================================= */
+    /* ========================================================Team operation========================================================= */
 
-  setTeam(teams) {
-    const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
+    setTeam(teams) {
+        const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
 
-    this.teamService.setSelectTeams(teamIds);
-  }
+        this.teamService.setSelectTeams(teamIds);
+    }
 
-  showActionSheet(attendances: AttendanceResult[]) {
-    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+    showActionSheet(attendances: AttendanceResult[]) {
+        this.actionSheet$$ && this.actionSheet$$.unsubscribe();
 
-    const applyFn = () => this.navCtrl.push(applyAttendanceModifyPage);
+        const applyFn = () => this.navCtrl.push(applyAttendanceModifyPage);
 
-    this.actionSheet$$ = this.attendance.showActionSheet(attendances, applyFn);
-  }
+        this.actionSheet$$ = this.attendance.showActionSheet(attendances, applyFn);
+    }
 
-  goToDetailPage(attendance: AttendanceResult) {
-    this.navCtrl.push(attendanceRecordPage, { attendance, rootName: ProjectRoot, iconName: attendanceIcon.icon }).then(() => { });
-  }
+    goToDetailPage(attendance: AttendanceResult) {
+        this.navCtrl.push(attendanceRecordPage, { attendance, rootName: ProjectRoot, iconName: attendanceIcon.icon }).then(() => { });
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item && item.unsubscribe());
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item && item.unsubscribe());
 
-    this.attendance.resetAttendance();
+        this.attendance.resetAttendance();
 
-    this.actionSheet$$ && this.actionSheet$$.unsubscribe();
-  }
+        this.actionSheet$$ && this.actionSheet$$.unsubscribe();
+    }
 }

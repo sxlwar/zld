@@ -6,34 +6,33 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'take-photo',
-  templateUrl: 'take-photo.html',
+    selector: 'take-photo',
+    templateUrl: 'take-photo.html',
 })
 export class TakePhotoComponent implements OnDestroy {
 
-  @Input() placeholder: string;
+    @Input() placeholder: string;
 
-  @Output() fileUrl: Subject<string> = new EventEmitter();
+    @Output() fileUrl: Subject<string> = new EventEmitter();
 
-  subscription: Subscription;
+    subscription: Subscription;
 
-  constructor(
-    public photo: TakePhotoService,
-    public translate: TranslateService
-  ) {
-  }
+    constructor(
+        public photo: TakePhotoService,
+        public translate: TranslateService
+    ) {
+    }
 
-  showActionSheet() {
+    showActionSheet() {
+        this.subscription && this.subscription.unsubscribe();
 
-    this.subscription && this.subscription.unsubscribe();
+        this.subscription = this.translate.get(['TAKE_PHOTO', 'PICK_PHOTO', 'CANCEL_BUTTON']).subscribe(res => this.photo.showActionSheet(this.fileUrl, res));
+    }
 
-    const text$ = this.translate.get(['TAKE_PHOTO', 'PICK_PHOTO', 'CANCEL_BUTTON']);
+    ngOnDestroy() {
+        this.subscription && this.subscription.unsubscribe();
 
-    this.subscription = text$.subscribe(res => this.photo.showActionSheet(this.fileUrl, res));
-  }
-
-  ngOnDestroy() {
-    this.subscription && this.subscription.unsubscribe();
-  }
+        this.photo.subscription && this.photo.subscription.unsubscribe();
+    }
 
 }

@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { IStartedPage } from './i-started';
 
 @NgModule({
-  declarations: [
-    IStartedPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(IStartedPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        IStartedPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(IStartedPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class IStartedPageModule {}
+export class IStartedPageModule { }

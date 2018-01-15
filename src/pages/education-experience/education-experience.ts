@@ -8,67 +8,67 @@ import { Education } from 'interfaces/response-interface';
 
 @IonicPage()
 @Component({
-  selector: 'page-education-experience',
-  templateUrl: 'education-experience.html',
+    selector: 'page-education-experience',
+    templateUrl: 'education-experience.html',
 })
 export class EducationExperiencePage {
 
-  subscriptions: Subscription[];
+    subscriptions: Subscription[];
 
-  educations: Observable<Education[]>;
+    educations: Observable<Education[]>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public personal: PersonalService,
-    public modalCtrl: ModalController
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public personal: PersonalService,
+        public modalCtrl: ModalController
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad(): void {
-    this.initialModel();
+    ionViewDidLoad(): void {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel(): void {
-    this.educations = this.personal.getOwnEducation();
-  }
+    initialModel(): void {
+        this.educations = this.personal.getOwnEducation();
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.personal.getEducationList()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.personal.getEducationList()
+        ];
+    }
 
-  addEducation(): void {
-    const modal = this.modalCtrl.create(AddEducationComponent);
+    addEducation(): void {
+        const modal = this.modalCtrl.create(AddEducationComponent);
 
-    modal.present();
+        modal.present();
 
-    modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.addEducation(Observable.of(data))));
-  }
+        modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.addEducation(Observable.of(data))));
+    }
 
-  updateEducation(target: Education): void {
-    const modal = this.modalCtrl.create(AddEducationComponent, { form: target });
+    updateEducation(target: Education): void {
+        const modal = this.modalCtrl.create(AddEducationComponent, { form: target });
 
-    modal.present();
+        modal.present();
 
-    modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.updateEducation(Observable.of({...data, id: target.id}))));
-  }
+        modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.updateEducation(Observable.of({ ...data, id: target.id }))));
+    }
 
-  deleteEducation(target: Education): void {
-    this.personal.deleteEducation(Observable.of(target.id));
-  }
+    deleteEducation(target: Education): void {
+        this.personal.deleteEducation(Observable.of(target.id));
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

@@ -6,16 +6,16 @@ import { EffectsModule } from '@ngrx/effects';
 import { EFFECTS } from '../../effects/effect-import';
 
 @NgModule({
-  declarations: [
-    TabsPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(TabsPage),
-    TranslateModule.forChild(),
-    EffectsModule.forRoot(EFFECTS),
-  ],
-  exports: [
-    TabsPage
-  ]
+    declarations: [
+        TabsPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(TabsPage),
+        TranslateModule.forChild(),
+        EffectsModule.forRoot(EFFECTS),
+    ],
+    exports: [
+        TabsPage
+    ]
 })
 export class TabsPageModule { }

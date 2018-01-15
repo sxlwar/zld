@@ -8,19 +8,19 @@ import { Actions } from '@ngrx/effects';
 //endregion
 
 @NgModule({
-  declarations: [
-    AttendanceRecordPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(AttendanceRecordPage),
-    TranslateModule,
-    SharedModule,
-  ],
-  exports: [
-    AttendanceRecordPage
-  ],
-  providers: [
-    Actions
-  ]
+    declarations: [
+        AttendanceRecordPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(AttendanceRecordPage),
+        TranslateModule,
+        SharedModule,
+    ],
+    exports: [
+        AttendanceRecordPage
+    ],
+    providers: [
+        Actions
+    ]
 })
-export class AttendanceRecordPageModule {}
+export class AttendanceRecordPageModule { }

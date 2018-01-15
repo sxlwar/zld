@@ -1,6 +1,6 @@
 <ion-list *ngIf="workFlow">
-  <ion-list-header *ngIf="workFlow.files?.length">{{'ATTACH' | translate}}</ion-list-header>
-  <ion-item *ngFor="let item of workFlow.files ">
-    <img [src]="imagePrefix + item.url">
-  </ion-item>
+    <ion-list-header *ngIf="workFlow.files?.length">{{'ATTACH' | translate}}</ion-list-header>
+    <ion-item *ngFor="let item of workFlow.files ">
+        <img [src]="imagePrefix + item.url">
+    </ion-item>
 </ion-list>

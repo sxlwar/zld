@@ -1,80 +1,79 @@
 <ion-header>
     <ion-toolbar>
-  
-      <ion-buttons start>
-        <button ion-button icon-only (click)="dismiss()">
-          <ion-icon name="close"></ion-icon>
-        </button>
-      </ion-buttons>
-  
-      <ion-title>{{title | translate}}</ion-title>
+
+        <ion-buttons start>
+            <button ion-button icon-only (click)="dismiss()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-title>{{title | translate}}</ion-title>
     </ion-toolbar>
-  </ion-header>
-  
-  
-  <ion-content padding>
-  
+</ion-header>
+
+
+<ion-content padding>
+
     <ion-list [formGroup]="workExperienceForm">
-  
-      <ion-item>
-        <ion-label>{{'START_TIME' | translate}}</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-          [max]="today" formControlName="startDate" (ngModelChange)="updateEndDate($event)" required></ion-datetime>
-      </ion-item>
-      <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="form-error red-color">
-        <span *ngIf="startDate.errors.required">{{'START_DATE_REQUIRED_ERROR' | translate}}</span>
-      </div>
-  
-      <ion-item>
-        <ion-label>{{'END_TIME' | translate}}</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-          [min]="minEndDate" [max]="today" formControlName="endDate" required></ion-datetime>
-      </ion-item>
-      <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="form-error red-color">
-        <span *ngIf="endDate.errors.required">{{'END_DATE_REQUIRED_ERROR' | translate}}</span>
-      </div>
-  
-      <ion-item>
-        <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
-        <ion-input type="text" formControlName="company" required></ion-input>
-      </ion-item>
-      <div *ngIf="company.invalid && (company.dirty || company.touched)" class="form-error red-color">
-        <span *ngIf="company.errors.required">{{'COMPANY_REQUIRED_ERROR' | translate}}</span>
-        <span *ngIf="!company.errors.required && company.errors.mustBeChineseFormat">
-          {{workExperienceForm.getError('mustBeChineseFormat', 'company') | translate}}
-        </span>
-        <span *ngIf="!company.errors.required && company.errors.maxlength">
-          {{'MORE_THAN_TEN_CHINESE_CHARACTERS' | translate}}
-        </span>
-      </div>
-  
-      <ion-item>
-        <ion-label fixed>{{'PROJECT' | translate}}</ion-label>
-        <ion-input type="text" formControlName="project" required></ion-input> 
-  
-      </ion-item>
-      <div *ngIf="project.invalid && (project.dirty || project.touched)" class="form-error red-color">
-        <span *ngIf="project.errors.required">{{'PROJECT_REQUIRED_ERROR' | translate}}</span>
-        <span *ngIf="!project.errors.required && project.errors.mustBeChineseFormat">
-            {{workExperienceForm.getError('mustBeChineseFormat', 'project') | translate}}
-          </span>
-          <span *ngIf="!project.errors.required && project.errors.maxlength">
-            {{'MORE_THAN_TEN_CHINESE_CHARACTERS' | translate}}
-          </span>
-      </div>
-  
-      <ion-item>
-        <ion-label fixed>{{'JOB' | translate}}</ion-label>
-        <ion-textarea type="text" formControlName="job" required></ion-textarea>
-      </ion-item>
-      <div *ngIf="job.invalid && (job.dirty || job.touched)" class="form-error red-color">
-        <span *ngIf="job.errors.required">{{'JOB_REQUIRED_ERROR' | translate}}</span>
-      </div>
-  
+
+        <ion-item>
+            <ion-label>{{'START_TIME' | translate}}</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+                [max]="today" formControlName="startDate" (ngModelChange)="updateEndDate($event)" required></ion-datetime>
+        </ion-item>
+        <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="form-error red-color">
+            <span *ngIf="startDate.errors.required">{{'START_DATE_REQUIRED_ERROR' | translate}}</span>
+        </div>
+
+        <ion-item>
+            <ion-label>{{'END_TIME' | translate}}</ion-label>
+            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
+                [min]="minEndDate" [max]="today" formControlName="endDate" required></ion-datetime>
+        </ion-item>
+        <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="form-error red-color">
+            <span *ngIf="endDate.errors.required">{{'END_DATE_REQUIRED_ERROR' | translate}}</span>
+        </div>
+
+        <ion-item>
+            <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
+            <ion-input type="text" formControlName="company" required></ion-input>
+        </ion-item>
+        <div *ngIf="company.invalid && (company.dirty || company.touched)" class="form-error red-color">
+            <span *ngIf="company.errors.required">{{'COMPANY_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="!company.errors.required && company.errors.mustBeChineseFormat">
+                {{workExperienceForm.getError('mustBeChineseFormat', 'company') | translate}}
+            </span>
+            <span *ngIf="!company.errors.required && company.errors.maxlength">
+                {{'MORE_THAN_TEN_CHINESE_CHARACTERS' | translate}}
+            </span>
+        </div>
+
+        <ion-item>
+            <ion-label fixed>{{'PROJECT' | translate}}</ion-label>
+            <ion-input type="text" formControlName="project" required></ion-input>
+
+        </ion-item>
+        <div *ngIf="project.invalid && (project.dirty || project.touched)" class="form-error red-color">
+            <span *ngIf="project.errors.required">{{'PROJECT_REQUIRED_ERROR' | translate}}</span>
+            <span *ngIf="!project.errors.required && project.errors.mustBeChineseFormat">
+                {{workExperienceForm.getError('mustBeChineseFormat', 'project') | translate}}
+            </span>
+            <span *ngIf="!project.errors.required && project.errors.maxlength">
+                {{'MORE_THAN_TEN_CHINESE_CHARACTERS' | translate}}
+            </span>
+        </div>
+
+        <ion-item>
+            <ion-label fixed>{{'JOB' | translate}}</ion-label>
+            <ion-textarea type="text" formControlName="job" required></ion-textarea>
+        </ion-item>
+        <div *ngIf="job.invalid && (job.dirty || job.touched)" class="form-error red-color">
+            <span *ngIf="job.errors.required">{{'JOB_REQUIRED_ERROR' | translate}}</span>
+        </div>
+
     </ion-list>
-  
-  </ion-content>
-  <ion-footer>
+
+</ion-content>
+<ion-footer>
     <button ion-button block (click)="execution()" [disabled]="workExperienceForm.invalid" color="primary" style="margin-bottom: 0;">{{buttonText | translate}}</button>
-  </ion-footer>
-  
+</ion-footer>

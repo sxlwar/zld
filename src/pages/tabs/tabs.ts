@@ -10,68 +10,68 @@ import { MessageRoot, ProjectRoot, MissionRoot, MineRoot } from '../pages';
 
 @IonicPage()
 @Component({
-  selector: 'page-tabs',
-  templateUrl: 'tabs.html'
+    selector: 'page-tabs',
+    templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  MessageRoot: any = MessageRoot;
+    MessageRoot: any = MessageRoot;
 
-  ProjectRoot: any = ProjectRoot;
+    ProjectRoot: any = ProjectRoot;
 
-  MissionRoot: any = MissionRoot;
+    MissionRoot: any = MissionRoot;
 
-  MineRoot: any = MineRoot;
+    MineRoot: any = MineRoot;
 
-  messageTitle: Observable<string>;
+    messageTitle: Observable<string>;
 
-  projectTitle: Observable<string>;
+    projectTitle: Observable<string>;
 
-  missionTitle: Observable<string>;
+    missionTitle: Observable<string>;
 
-  mineTitle: Observable<string>;
+    mineTitle: Observable<string>;
 
-  messageBadge: Observable<number | string>;
+    messageBadge: Observable<number | string>;
 
-  subscriptions: Subscription[];
+    subscriptions: Subscription[];
 
-  constructor(
-    public translateService: TranslateService,
-    public message: MessageService,
-    public nationality: NationalityService,
-    public workType: CraftService
-  ) {
-    this.initialTitle();
-  }
+    constructor(
+        public translateService: TranslateService,
+        public message: MessageService,
+        public nationality: NationalityService,
+        public workType: CraftService
+    ) {
+        this.initialTitle();
+    }
 
-  ionViewDidLoad() {
-    this.getUnreadMessage();
+    ionViewDidLoad() {
+        this.getUnreadMessage();
 
-    this.initialModel();
-  }
+        this.initialModel();
+    }
 
-  getUnreadMessage() {
-    this.subscriptions = [
-      this.nationality.handleError(),
-      this.workType.handleError(),
-      this.message.getUnreadMessageCount(),
-    ];
-  }
+    getUnreadMessage() {
+        this.subscriptions = [
+            this.nationality.handleError(),
+            this.workType.handleError(),
+            this.message.getUnreadMessageCount(),
+        ];
+    }
 
-  initialModel() {
-    this.messageBadge = this.message.getUnreadCount();
-  }
+    initialModel() {
+        this.messageBadge = this.message.getUnreadCount();
+    }
 
-  initialTitle() {
-    this.messageTitle = this.translateService.get('MESSAGE');
+    initialTitle() {
+        this.messageTitle = this.translateService.get('MESSAGE');
 
-    this.projectTitle = this.translateService.get('PROJECT');
+        this.projectTitle = this.translateService.get('PROJECT');
 
-    this.missionTitle = this.translateService.get('MISSION');
+        this.missionTitle = this.translateService.get('MISSION');
 
-    this.mineTitle = this.translateService.get('MINE');
-  }
+        this.mineTitle = this.translateService.get('MINE');
+    }
 
-  ionViewWillUnload(){
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

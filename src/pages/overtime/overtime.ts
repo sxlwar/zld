@@ -12,92 +12,92 @@ import { PermissionService } from '../../services/config/permission-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-overtime',
-  templateUrl: 'overtime.html',
+    selector: 'page-overtime',
+    templateUrl: 'overtime.html',
 })
 export class OvertimePage {
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  total: Observable<number>;
+    total: Observable<number>;
 
-  list: Observable<MissionListItem[]>;
+    list: Observable<MissionListItem[]>;
 
-  operate: Observable<boolean>;
+    operate: Observable<boolean>;
 
-  haveMoreData: Observable<boolean>;
+    haveMoreData: Observable<boolean>;
 
-  page$$: Subscription;
+    page$$: Subscription;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlow: WorkFlowService,
-    public permission: PermissionService,
-    public statistic: StatisticsService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlow: WorkFlowService,
+        public permission: PermissionService,
+        public statistic: StatisticsService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel(): void {
-    this.total = this.workFlow.getCount();
+    initialModel(): void {
+        this.total = this.workFlow.getCount();
 
-    this.list = this.workFlow.getList();
+        this.list = this.workFlow.getList();
 
-    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getOvertimePage());
+        this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getOvertimePage());
 
-    this.operate = this.permission.getOperatePermission(overtime.icon, MissionRoot)
-  }
+        this.operate = this.permission.getOperatePermission(overtime.icon, MissionRoot)
+    }
 
-  launch(): void {
-    this.subscriptions = [
-      this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.overtime, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
-        this.workFlow.getOvertimePage()
-      ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.overtime, this.workFlow.getTaskUpdateSuccessCount()),
-      this.workFlow.handleWorkFlowError()
-    ];
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.workFlow.getSpecificWorkFlowList(
+                Observable.of({ process_id: ProcessIdOptions.overtime, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
+                this.workFlow.getOvertimePage()
+            ),
+            this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.overtime, this.workFlow.getTaskUpdateSuccessCount()),
+            this.workFlow.handleWorkFlowError()
+        ];
+    }
 
-  audit(target: AuditTarget): void {
-    const { comment, ids, approve } = target;
+    audit(target: AuditTarget): void {
+        const { comment, ids, approve } = target;
 
-    this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
-  }
+        this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
+    }
 
-  applyOvertime(): void {
-    this.navCtrl.push(applyOvertimePage).then(() => {});
-  }
+    applyOvertime(): void {
+        this.navCtrl.push(applyOvertimePage).then(() => { });
+    }
 
-  getNextPage(infiniteScroll: InfiniteScroll): void {
-    this.page$$ && this.page$$.unsubscribe();
+    getNextPage(infiniteScroll: InfiniteScroll): void {
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.overtimePage);
-  }
+        this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.overtimePage);
+    }
 
-  goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(overtimeDetailPage, { id: target.id, status: target.status }).then(() => { });
-  }
+    goToNextPage(target: MissionListItem): void {
+        this.navCtrl.push(overtimeDetailPage, { id: target.id, status: target.status }).then(() => { });
+    }
 
-  ionViewWillUnload() {
-    this.workFlow.resetWorkFlowResponse();
+    ionViewWillUnload() {
+        this.workFlow.resetWorkFlowResponse();
 
-    this.workFlow.resetPage(WorkFlowPageType.overtimePage);
+        this.workFlow.resetPage(WorkFlowPageType.overtimePage);
 
-    this.page$$ && this.page$$.unsubscribe();
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

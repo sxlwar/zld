@@ -21,7 +21,7 @@ export declare class Map {
     addControl(obj: Object): void;  //参数可以是插件列表中的任何插件对象，如：ToolBar、OverView、Scale等。
     setZoomAndCenter(zoomLevel: number, center: LngLat): void;
     getContainer(): HTMLElement;
-    destroy():void;
+    destroy(): void;
 }
 
 export declare class Size {
@@ -148,7 +148,7 @@ export interface PolylineOptions {
 export declare class Polyline extends Overlays {
     constructor(options: PolylineOptions)
     getPath(): LngLat[];
-    setPath(path: LngLat[]):void;
+    setPath(path: LngLat[]): void;
     setMap(map: Map): void;
     show(): void;
     hide(): void;

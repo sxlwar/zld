@@ -5,13 +5,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { WorkerContractPage } from './worker-contract';
 
 @NgModule({
-  declarations: [
-    WorkerContractPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(WorkerContractPage),
-    TranslateModule,
-    SharedModule,
-  ],
+    declarations: [
+        WorkerContractPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(WorkerContractPage),
+        TranslateModule,
+        SharedModule,
+    ],
 })
-export class WorkerContractPageModule {}
+export class WorkerContractPageModule { }

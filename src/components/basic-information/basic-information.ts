@@ -2,18 +2,18 @@ import { BasicInformation, PersonalId } from './../../interfaces/response-interf
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
-  selector: 'basic-information',
-  templateUrl: 'basic-information.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'basic-information',
+    templateUrl: 'basic-information.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BasicInformationComponent {
-  
-  @Input() basic: BasicInformation; 
 
-  @Input() personalId: PersonalId;
+    @Input() basic: BasicInformation;
 
-  constructor() {
-    
-  }
+    @Input() personalId: PersonalId;
+
+    constructor() {
+
+    }
 
 }

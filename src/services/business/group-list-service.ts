@@ -12,16 +12,16 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GroupListService {
     constructor(
-       public userInfo: UserService,
-       public store: Store<AppState>,
-       public process: ProcessorService,
-       public error: ErrorService
+        public userInfo: UserService,
+        public store: Store<AppState>,
+        public process: ProcessorService,
+        public error: ErrorService
     ) { }
 
     getGroupListResponse(): Observable<GroupsListResponse> {
         return this.store.select(getGroupListResponse);
     }
-    
+
     attemptLogin(): Subscription {
         return this.process.groupListProcessor(
             this.userInfo.getAuthPass()

@@ -14,100 +14,100 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 
 @IonicPage()
 @Component({
-  selector: 'page-attendance-card',
-  templateUrl: 'attendance-card.html',
+    selector: 'page-attendance-card',
+    templateUrl: 'attendance-card.html',
 })
 export class AttendanceCardPage {
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  cards: Observable<AttendanceCard[]>;
+    cards: Observable<AttendanceCard[]>;
 
-  canOperate: Observable<boolean>;
+    canOperate: Observable<boolean>;
 
-  orderOptions: Observable<ConditionOption[]>;
+    orderOptions: Observable<ConditionOption[]>;
 
-  bindingStateOptions: Observable<ConditionOption[]>;
+    bindingStateOptions: Observable<ConditionOption[]>;
 
-  byCardNumber: ConditionOption;
+    byCardNumber: ConditionOption;
 
-  byBindingState: ConditionOption;
+    byBindingState: ConditionOption;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public attendanceCard: AttendanceCardService,
-    public modalCtrl: ModalController,
-    public project: ProjectService,
-    public permission: PermissionService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public attendanceCard: AttendanceCardService,
+        public modalCtrl: ModalController,
+        public project: ProjectService,
+        public permission: PermissionService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    const result = opt || view;
+        const result = opt || view;
 
-    result && this.launch();
+        result && this.launch();
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.cards = this.attendanceCard.getCardsByConditions();
+    ionViewDidLoad() {
+        this.cards = this.attendanceCard.getCardsByConditions();
 
-    this.canOperate = this.permission.getOperatePermission(attendanceCard.icon, ProjectRoot);
+        this.canOperate = this.permission.getOperatePermission(attendanceCard.icon, ProjectRoot);
 
-    this.orderOptions = this.attendanceCard.getOrderOptions();
+        this.orderOptions = this.attendanceCard.getOrderOptions();
 
-    this.bindingStateOptions = this.attendanceCard.getBindingStateOptions();
-  }
+        this.bindingStateOptions = this.attendanceCard.getBindingStateOptions();
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  /* ===============================================Launch functions======================================== */
-  
-  launch() {
-    this.subscriptions = this.attendanceCard.handleError();
+    /* ===============================================Launch functions======================================== */
 
-    this.getAttendanceCardList();
-  }
+    launch() {
+        this.subscriptions = this.attendanceCard.handleError();
 
-  getAttendanceCardList() {
-    const subscription = this.attendanceCard.getAttendanceCardList();
+        this.getAttendanceCardList();
+    }
 
-    this.subscriptions.push(subscription);
-  }
+    getAttendanceCardList() {
+        const subscription = this.attendanceCard.getAttendanceCardList();
 
-  /* ===============================================Operate functions======================================== */
+        this.subscriptions.push(subscription);
+    }
 
-  addCard() {
-    this.modalCtrl.create(AddAttendanceCardComponent).present();
-  }
+    /* ===============================================Operate functions======================================== */
 
-  bindCard(card: AttendanceCard) {
-    this.modalCtrl.create(AddAttendanceCardComponent, { cardNumber: card.ic_card_num }).present();
-  }
+    addCard() {
+        this.modalCtrl.create(AddAttendanceCardComponent).present();
+    }
 
-  unbindCard(card: AttendanceCard) {
-    const { ic_card_num } = card;
+    bindCard(card: AttendanceCard) {
+        this.modalCtrl.create(AddAttendanceCardComponent, { cardNumber: card.ic_card_num }).present();
+    }
 
-    this.attendanceCard.updateAttendanceCard(Observable.of({ ic_card_num }));
-  }
+    unbindCard(card: AttendanceCard) {
+        const { ic_card_num } = card;
 
-  deleteCard(card: AttendanceCard) {
-    this.attendanceCard.deleteAttendanceCard(Observable.of([card.id]));
-  }
+        this.attendanceCard.updateAttendanceCard(Observable.of({ ic_card_num }));
+    }
 
-  /* ===============================================Condition related functions======================================== */
-  
-  setBindCondition() {
-    this.attendanceCard.updateBindConditionState(this.byBindingState);
-  }
+    deleteCard(card: AttendanceCard) {
+        this.attendanceCard.deleteAttendanceCard(Observable.of([card.id]));
+    }
 
-  setOrderCondition() {
-    this.attendanceCard.updateOrderConditionState(this.byCardNumber);
-  }
+    /* ===============================================Condition related functions======================================== */
+
+    setBindCondition() {
+        this.attendanceCard.updateBindConditionState(this.byBindingState);
+    }
+
+    setOrderCondition() {
+        this.attendanceCard.updateOrderConditionState(this.byCardNumber);
+    }
 }

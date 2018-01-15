@@ -1,13 +1,10 @@
-
-
-
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'positiveInteger'
+    name: 'positiveInteger'
 })
-export class PositiveIntegerPipe implements PipeTransform{
-  transform(value: number): number {
-    return Math.abs(value);
-  }
+export class PositiveIntegerPipe implements PipeTransform {
+    transform(value: number): number {
+        return Math.abs(value);
+    }
 }

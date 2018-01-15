@@ -1,12 +1,12 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'RESET_PASSWORD' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'RESET_PASSWORD' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <reset-password [account]="account | async" [reset]= "reset" [errorColor]="'red'" [buttonColor]="'primary'" ></reset-password>
+    <reset-password [account]="account | async" [reset]="reset" [errorColor]="'red'" [buttonColor]="'primary'"></reset-password>
 </ion-content>

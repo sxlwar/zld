@@ -12,92 +12,92 @@ import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angul
 
 @IonicPage()
 @Component({
-  selector: 'page-attendance-modify',
-  templateUrl: 'attendance-modify.html',
+    selector: 'page-attendance-modify',
+    templateUrl: 'attendance-modify.html',
 })
 export class AttendanceModifyPage {
 
-  total: Observable<number>;
+    total: Observable<number>;
 
-  list: Observable<MissionListItem[]>;
+    list: Observable<MissionListItem[]>;
 
-  operate: Observable<boolean>;
+    operate: Observable<boolean>;
 
-  haveMoreData: Observable<boolean>;
+    haveMoreData: Observable<boolean>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  page$$: Subscription;
+    page$$: Subscription;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlow: WorkFlowService,
-    public permission: PermissionService,
-    public statistic: StatisticsService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlow: WorkFlowService,
+        public permission: PermissionService,
+        public statistic: StatisticsService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel(): void {
-    this.total = this.workFlow.getCount();
+    initialModel(): void {
+        this.total = this.workFlow.getCount();
 
-    this.list = this.workFlow.getList();
+        this.list = this.workFlow.getList();
 
-    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getAttendanceModifyPage());
+        this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getAttendanceModifyPage());
 
-    this.operate = this.permission.getOperatePermission(modifyAttendance.icon, MissionRoot)
-  }
+        this.operate = this.permission.getOperatePermission(modifyAttendance.icon, MissionRoot)
+    }
 
-  launch(): void {
-    this.subscriptions = [
-      this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.attendanceModify, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
-        this.workFlow.getPieceAuditPage()
-      ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount()),
-      this.workFlow.handleWorkFlowError()
-    ];
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.workFlow.getSpecificWorkFlowList(
+                Observable.of({ process_id: ProcessIdOptions.attendanceModify, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
+                this.workFlow.getPieceAuditPage()
+            ),
+            this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount()),
+            this.workFlow.handleWorkFlowError()
+        ];
+    }
 
-  audit(target: AuditTarget): void {
-    const { comment, ids, approve } = target;
+    audit(target: AuditTarget): void {
+        const { comment, ids, approve } = target;
 
-    this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
-  }
+        this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
+    }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
-    this.page$$ && this.page$$.unsubscribe();
+    getNextPage(infiniteScroll: InfiniteScroll) {
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.attendanceModifyPage);
-  }
+        this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.attendanceModifyPage);
+    }
 
-  goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(attendanceModifyDetailPage, { id: target.id, status: target.status }).then(() => { });
-  }
+    goToNextPage(target: MissionListItem): void {
+        this.navCtrl.push(attendanceModifyDetailPage, { id: target.id, status: target.status }).then(() => { });
+    }
 
-  applyAttendanceModify(): void {
-    this.navCtrl.push(applyAttendanceModifyPage);
-  }
+    applyAttendanceModify(): void {
+        this.navCtrl.push(applyAttendanceModifyPage);
+    }
 
-  ionViewWillUnload() {
-    this.workFlow.resetWorkFlowResponse();
+    ionViewWillUnload() {
+        this.workFlow.resetWorkFlowResponse();
 
-    this.workFlow.resetPage(WorkFlowPageType.attendanceModifyPage);
+        this.workFlow.resetPage(WorkFlowPageType.attendanceModifyPage);
 
-    this.page$$ && this.page$$.unsubscribe();
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

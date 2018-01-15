@@ -59,17 +59,17 @@ export const UPDATE_SPECIFIC_WORK_FLOW_STATISTIC = 'UPDATE_SPECIFIC_WORK_FLOW_ST
 export class UpdateSpecificWorkFlowStatisticAtLocalAction implements Action {
     readonly type = UPDATE_SPECIFIC_WORK_FLOW_STATISTIC;
 
-    constructor(public payload: {processId: string, count: number}) { }
+    constructor(public payload: { processId: string, count: number }) { }
 }
 
 /* ===============================================Data condition======================================================== */
 
-export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM  = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM';
+export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM';
 
 export class ShowSpecificAttendanceStatisticsByTeam implements Action {
     readonly type = SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM;
 
-    constructor(public payload: string[]) {}
+    constructor(public payload: string[]) { }
 }
 
 export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE';
@@ -77,7 +77,7 @@ export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE = 'SHOW_SPECIFIC_ATTEND
 export class ShowSpecificAttendanceStatisticsByDate implements Action {
     readonly type = SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_DATE;
 
-    constructor(public payload: string[]) {}
+    constructor(public payload: string[]) { }
 }
 
 

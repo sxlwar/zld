@@ -6,7 +6,7 @@ export interface LocationBasicOptions {
     userIds: number[];
 }
 
-export interface LocationOptions extends LocationBasicOptions{
+export interface LocationOptions extends LocationBasicOptions {
     isTimeSlot: boolean;
     devIds: number[];
     time: string;
@@ -14,7 +14,7 @@ export interface LocationOptions extends LocationBasicOptions{
     workTypeIds: number[];
 }
 
-export interface TrajectoryOptions extends LocationBasicOptions{
+export interface TrajectoryOptions extends LocationBasicOptions {
 }
 
 export interface Trajectory {
@@ -29,25 +29,25 @@ export interface PlayOptions {
     indexes: number[];
     trajectories: Trajectory[];
     playState: number;
-    rateState: number; 
+    rateState: number;
 }
 
 export interface PlayUnit {
-  path: LngLat[];
-  moveMarker: SimpleMarker;
-  rate: number;
-  passedPolyline: Polyline;
+    path: LngLat[];
+    moveMarker: SimpleMarker;
+    rate: number;
+    passedPolyline: Polyline;
 }
 
 export enum PlayState {
-  stop,
-  play,
-  pause,
-  resume
+    stop,
+    play,
+    pause,
+    resume
 }
 
 export interface TrajectoryInfo {
-  time: string; //year month day + start time + end time;
-  name: string; // names split with comma;
+    time: string; //year month day + start time + end time;
+    name: string; // names split with comma;
 }
 

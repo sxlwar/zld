@@ -1,44 +1,44 @@
 <ion-list>
-  <ion-item>
-    <ion-label>{{'BY_CREATE_TIME' | translate}}</ion-label>
-    <ion-select [(ngModel)]="selectedTimeOrder" (ngModelChange)="timeOrder.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-      [okText]="'CONFIRM_BUTTON' | translate">
-      <ion-option value="1" [selected]="selectedTimeOrder === 1">{{'HIGH_TO_LOW' | translate}}</ion-option>
-      <ion-option value="2" [selected]="selectedTimeOrder === 2">{{'LOW_TO_HIGH' | translate}}</ion-option>
-    </ion-select>
-  </ion-item>
+    <ion-item>
+        <ion-label>{{'BY_CREATE_TIME' | translate}}</ion-label>
+        <ion-select [(ngModel)]="selectedTimeOrder" (ngModelChange)="timeOrder.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+            [okText]="'CONFIRM_BUTTON' | translate">
+            <ion-option value="1" [selected]="selectedTimeOrder === 1">{{'HIGH_TO_LOW' | translate}}</ion-option>
+            <ion-option value="2" [selected]="selectedTimeOrder === 2">{{'LOW_TO_HIGH' | translate}}</ion-option>
+        </ion-select>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>{{'BY_MESSAGE_TYPE' | translate}}</ion-label>
-    <ion-select [(ngModel)]="selectedType" (ngModelChange)="displayType.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-      [okText]="'CONFIRM_BUTTON' | translate">
-      <ion-option *ngFor="let item of messageTypes;" [value]="item.value" [selected]="selectedType === item.value">{{item.text | translate}}</ion-option>
-    </ion-select>
-  </ion-item>
+    <ion-item>
+        <ion-label>{{'BY_MESSAGE_TYPE' | translate}}</ion-label>
+        <ion-select [(ngModel)]="selectedType" (ngModelChange)="displayType.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+            [okText]="'CONFIRM_BUTTON' | translate">
+            <ion-option *ngFor="let item of messageTypes;" [value]="item.value" [selected]="selectedType === item.value">{{item.text | translate}}</ion-option>
+        </ion-select>
+    </ion-item>
 </ion-list>
 
 <ion-list>
-  <ion-item-sliding *ngFor="let item of messages" (click)="showContent.next(item)" detail-push>
+    <ion-item-sliding *ngFor="let item of messages" (click)="showContent.next(item)" detail-push>
 
-    <ion-item>
-      <ion-icon [name]="item.msg_type | messageIcon" item-start></ion-icon>
-      <h3>{{item.title}}</h3>
-      <h4>{{item.create_time}}</h4>
-    </ion-item>
+        <ion-item>
+            <ion-icon [name]="item.msg_type | messageIcon" item-start></ion-icon>
+            <h3>{{item.title}}</h3>
+            <h4>{{item.create_time}}</h4>
+        </ion-item>
 
-    <ion-item-options side="right">
-      <button ion-button color="danger" (click)="deleteMessage(item, $event)">
-        <ion-icon name="trash"></ion-icon>
-        {{'DELETE_BUTTON' | translate}}
-      </button>
-    </ion-item-options>
+        <ion-item-options side="right">
+            <button ion-button color="danger" (click)="deleteMessage(item, $event)">
+                <ion-icon name="trash"></ion-icon>
+                {{'DELETE_BUTTON' | translate}}
+            </button>
+        </ion-item-options>
 
-  </ion-item-sliding>
-  
-  <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
+    </ion-item-sliding>
 
-  <ion-item *ngIf="!haveMoreData" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+    <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">
+        <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    <ion-item *ngIf="!haveMoreData" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
 
 </ion-list>

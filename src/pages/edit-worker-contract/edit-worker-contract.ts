@@ -10,204 +10,204 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
 
 @IonicPage()
 @Component({
-  selector: 'page-edit-worker-contract',
-  templateUrl: 'edit-worker-contract.html',
+    selector: 'page-edit-worker-contract',
+    templateUrl: 'edit-worker-contract.html',
 })
 export class EditWorkerContractPage {
 
-  form: FormGroup;
+    form: FormGroup;
 
-  timePayContract: FormGroup;
+    timePayContract: FormGroup;
 
-  piecePayContracts: FormGroup[] = [];
+    piecePayContracts: FormGroup[] = [];
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  contract: WorkerContract;
+    contract: WorkerContract;
 
-  formInvalid: boolean;
+    formInvalid: boolean;
 
-  isPieceWiseAttendance = false;
+    isPieceWiseAttendance = false;
 
-  attendanceTimeSettingText = 'PIECE_WISE_SETTING';
+    attendanceTimeSettingText = 'PIECE_WISE_SETTING';
 
-  contract$: Subject<WorkerContractEditFormModel> = new Subject();
+    contract$: Subject<WorkerContractEditFormModel> = new Subject();
 
-  attachList: string[] = [];
+    attachList: string[] = [];
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public fb: FormBuilder,
-    public config: ConfigService,
-    public launchService: LaunchService,
-    public viewCtrl: ViewController
-  ) {
-    this.contract = <WorkerContract>this.navParams.get('contract');
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public fb: FormBuilder,
+        public config: ConfigService,
+        public launchService: LaunchService,
+        public viewCtrl: ViewController
+    ) {
+        this.contract = <WorkerContract>this.navParams.get('contract');
 
-    this.initialForm();
-  }
-
-  ionViewDidLoad() {
-    this.config.hideTabBar();
-
-    this.launch();
-  }
-
-  launch() {
-    this.subscriptions = [
-      this.launchService.editWorkerContract(this.contract$.map(_ => this.contract.type === ContractTypeOfResponse.timer ? { ...this.form.value, ...this.timePayContract.value, attach: this.attachList } : { ...this.form.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList })),
-      this.launchService.uploadWorkerContractEditAttach(),
-      this.launchService.getSuccessResponseOfWorkerContractEdit().subscribe(_ => this.resetForm()),
-      this.launchService.handelWorkerContractEditError(),
-    ];
-  }
-
-  initialForm(): void {
-    this.form = this.fb.group({
-      contractId: this.contract.id,
-      type: this.contract.type,
-      payDay: ['', [Validators.max(31), Validators.min(1)]],
-      endDay: this.contract.finish_day,
-      morningOnDuty: this.contract.morning_time_on_duty,
-      morningOffDuty: this.contract.morning_time_off_duty,
-      comment: this.contract.additional_content,
-      afternoonOnDuty: this.contract.afternoon_time_on_duty,
-      afternoonOffDuty: this.contract.afternoon_time_off_duty
-    });
-
-    if (this.contract.type === ContractTypeOfResponse.timer) {
-      const timePay = this.contract.work_time_pay[0];
-
-      this.timePayContract = this.fb.group({
-        hourlyWage: timePay.pay_mount,
-        overtimeHourlyWage: timePay.overtime_pay_mount,
-        content: timePay.content,
-        id: timePay.id, 
-      });
-    } else {
-      this.piecePayContracts = this.contract.work_piece_pay.map(item => this.fb.group({
-        name: item.name,
-        location: item.location,
-        pieceWage: item.pay_mount,
-        num: item.num,
-        standard: item.standard,
-        id: item.id
-      }));
+        this.initialForm();
     }
 
-  }
+    ionViewDidLoad() {
+        this.config.hideTabBar();
 
-  createPieceForm(): FormGroup {
-    return this.fb.group({
-      name: '',
-      location: '',
-      pieceWage: '',
-      num: '',
-      standard: '',
-    });
-  }
-
-  resetMorningOffDuty(): void {
-    this.form.patchValue({ morningOffDuty: '' });
-  }
-
-  resetAfternoonOffDuty(): void {
-    this.form.patchValue({ afternoonOffDuty: '' });
-  }
-
-  addPiece(): void {
-    this.piecePayContracts.push(this.createPieceForm());
-  }
-
-  deletePieceForm(index: number): void {
-    this.piecePayContracts.splice(index, 1);
-  }
-
-  isInvalid(): boolean {
-    if (this.form.invalid) {
-      return true;
-    } else {
-      return this.contract.type === ContractTypeOfResponse.timer ? this.timePayContract.invalid : this.piecePayContracts.some(form => form.invalid);
+        this.launch();
     }
-  }
 
-  ngAfterContentChecked(): void {
-    this.formInvalid = this.isInvalid();
-  }
+    launch() {
+        this.subscriptions = [
+            this.launchService.editWorkerContract(this.contract$.map(_ => this.contract.type === ContractTypeOfResponse.timer ? { ...this.form.value, ...this.timePayContract.value, attach: this.attachList } : { ...this.form.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList })),
+            this.launchService.uploadWorkerContractEditAttach(),
+            this.launchService.getSuccessResponseOfWorkerContractEdit().subscribe(_ => this.resetForm()),
+            this.launchService.handelWorkerContractEditError(),
+        ];
+    }
 
-  toggleAttendanceTime(): void {
-    this.isPieceWiseAttendance = !this.isPieceWiseAttendance;
+    initialForm(): void {
+        this.form = this.fb.group({
+            contractId: this.contract.id,
+            type: this.contract.type,
+            payDay: ['', [Validators.max(31), Validators.min(1)]],
+            endDay: this.contract.finish_day,
+            morningOnDuty: this.contract.morning_time_on_duty,
+            morningOffDuty: this.contract.morning_time_off_duty,
+            comment: this.contract.additional_content,
+            afternoonOnDuty: this.contract.afternoon_time_on_duty,
+            afternoonOffDuty: this.contract.afternoon_time_off_duty
+        });
 
-    !this.isPieceWiseAttendance && this.form.patchValue({ afternoonOnDuty: '', afternoonOffDuty: '' });
+        if (this.contract.type === ContractTypeOfResponse.timer) {
+            const timePay = this.contract.work_time_pay[0];
 
-    this.attendanceTimeSettingText = this.isPieceWiseAttendance ? 'CANCEL_PIECE_WISE' : 'PIECE_WISE_SETTING';
-  }
+            this.timePayContract = this.fb.group({
+                hourlyWage: timePay.pay_mount,
+                overtimeHourlyWage: timePay.overtime_pay_mount,
+                content: timePay.content,
+                id: timePay.id,
+            });
+        } else {
+            this.piecePayContracts = this.contract.work_piece_pay.map(item => this.fb.group({
+                name: item.name,
+                location: item.location,
+                pieceWage: item.pay_mount,
+                num: item.num,
+                standard: item.standard,
+                id: item.id
+            }));
+        }
 
-  getAttach(attach: string[]): void {
-    this.attachList = attach;
-  }
+    }
 
-  resetForm(): void {
-    this.form.reset();
-    this.timePayContract.reset();
-    this.piecePayContracts.forEach(item => item.reset());
-  }
+    createPieceForm(): FormGroup {
+        return this.fb.group({
+            name: '',
+            location: '',
+            pieceWage: '',
+            num: '',
+            standard: '',
+        });
+    }
 
-  dismiss(): void {
-    this.viewCtrl.dismiss();
-  }
+    resetMorningOffDuty(): void {
+        this.form.patchValue({ morningOffDuty: '' });
+    }
 
-  ionViewWillUnload(): void {
-    this.config.showTabBar();
+    resetAfternoonOffDuty(): void {
+        this.form.patchValue({ afternoonOffDuty: '' });
+    }
 
-    this.launchService.resetWorkerContractEditResponse();
+    addPiece(): void {
+        this.piecePayContracts.push(this.createPieceForm());
+    }
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    deletePieceForm(index: number): void {
+        this.piecePayContracts.splice(index, 1);
+    }
 
-  get type() {
-    return this.form.get('type');
-  }
+    isInvalid(): boolean {
+        if (this.form.invalid) {
+            return true;
+        } else {
+            return this.contract.type === ContractTypeOfResponse.timer ? this.timePayContract.invalid : this.piecePayContracts.some(form => form.invalid);
+        }
+    }
 
-  get endDay() {
-    return this.form.get('endDay');
-  }
+    ngAfterContentChecked(): void {
+        this.formInvalid = this.isInvalid();
+    }
 
-  get morningOnDuty() {
-    return this.form.get('morningOnDuty');
-  }
+    toggleAttendanceTime(): void {
+        this.isPieceWiseAttendance = !this.isPieceWiseAttendance;
 
-  get morningOffDuty() {
-    return this.form.get('morningOffDuty');
-  }
+        !this.isPieceWiseAttendance && this.form.patchValue({ afternoonOnDuty: '', afternoonOffDuty: '' });
 
-  get afternoonOnDuty() {
-    return this.form.get('afternoonOnDuty');
-  }
+        this.attendanceTimeSettingText = this.isPieceWiseAttendance ? 'CANCEL_PIECE_WISE' : 'PIECE_WISE_SETTING';
+    }
 
-  get afternoonOffDuty() {
-    return this.form.get('afternoonOffDuty');
-  }
+    getAttach(attach: string[]): void {
+        this.attachList = attach;
+    }
 
-  get payDay() {
-    return this.form.get('payDay');
-  }
+    resetForm(): void {
+        this.form.reset();
+        this.timePayContract.reset();
+        this.piecePayContracts.forEach(item => item.reset());
+    }
 
-  get comment() {
-    return this.form.get('comment');
-  }
+    dismiss(): void {
+        this.viewCtrl.dismiss();
+    }
 
-  get hourlyWage() {
-    return this.timePayContract.get('hourlyWage');
-  }
+    ionViewWillUnload(): void {
+        this.config.showTabBar();
 
-  get overtimeHourlyWage() {
-    return this.timePayContract.get('overtimeHourlyWage');
-  }
+        this.launchService.resetWorkerContractEditResponse();
 
-  get content() {
-    return this.timePayContract.get('content');
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
+
+    get type() {
+        return this.form.get('type');
+    }
+
+    get endDay() {
+        return this.form.get('endDay');
+    }
+
+    get morningOnDuty() {
+        return this.form.get('morningOnDuty');
+    }
+
+    get morningOffDuty() {
+        return this.form.get('morningOffDuty');
+    }
+
+    get afternoonOnDuty() {
+        return this.form.get('afternoonOnDuty');
+    }
+
+    get afternoonOffDuty() {
+        return this.form.get('afternoonOffDuty');
+    }
+
+    get payDay() {
+        return this.form.get('payDay');
+    }
+
+    get comment() {
+        return this.form.get('comment');
+    }
+
+    get hourlyWage() {
+        return this.timePayContract.get('hourlyWage');
+    }
+
+    get overtimeHourlyWage() {
+        return this.timePayContract.get('overtimeHourlyWage');
+    }
+
+    get content() {
+        return this.timePayContract.get('content');
+    }
 
 }

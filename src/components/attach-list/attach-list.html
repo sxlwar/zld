@@ -1,13 +1,13 @@
 <ion-item-divider>
-  {{'ATTACH' | translate}}
-  <ion-icon name="add" color="primary" (click)="addAttach()" float-right></ion-icon>
+    {{'ATTACH' | translate}}
+    <ion-icon name="add" color="primary" (click)="addAttach()" float-right></ion-icon>
 </ion-item-divider>
 
 <div *ngFor="let item of attach; index as index;">
 
-  <div class="attach-container">
-    <ion-icon name="close" color="primary" (click)="deleteAttach($event,index)"></ion-icon>
-    <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
-  </div>
+    <div class="attach-container">
+        <ion-icon name="close" color="primary" (click)="deleteAttach($event,index)"></ion-icon>
+        <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
+    </div>
 
 </div>

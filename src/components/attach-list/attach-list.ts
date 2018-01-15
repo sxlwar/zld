@@ -1,34 +1,34 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'attach-list',
-  templateUrl: 'attach-list.html'
+    selector: 'attach-list',
+    templateUrl: 'attach-list.html'
 })
 export class AttachListComponent {
-  
-  attach: string[] = [''];
 
-  @Output() file: EventEmitter<string[]> = new EventEmitter();
+    attach: string[] = [''];
 
-  constructor() {
-  }
+    @Output() file: EventEmitter<string[]> = new EventEmitter();
 
-  addAttach(): void {
-    this.attach.push('');
-  }
+    constructor() {
+    }
 
-  deleteAttach($event: Event, index: number): void {
-    $event.stopPropagation();
+    addAttach(): void {
+        this.attach.push('');
+    }
 
-    this.attach.splice(index, 1);
+    deleteAttach($event: Event, index: number): void {
+        $event.stopPropagation();
 
-    this.file.next(this.attach.filter(item => !!item));
-  }
+        this.attach.splice(index, 1);
 
-  getAttach(url: string, index: number): void {
-    this.attach[index] = url;
+        this.file.next(this.attach.filter(item => !!item));
+    }
 
-    this.file.next(this.attach.filter(item => !!item));
-  }
+    getAttach(url: string, index: number): void {
+        this.attach[index] = url;
+
+        this.file.next(this.attach.filter(item => !!item));
+    }
 
 }

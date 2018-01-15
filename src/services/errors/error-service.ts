@@ -10,65 +10,65 @@ import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 
 export interface ErrorInfo {
-  title: string;
-  msg: ErrorMessage;
-  buttons: string[];
+    title: string;
+    msg: ErrorMessage;
+    buttons: string[];
 }
 
 @Injectable()
 export class ErrorService {
-  constructor(public store: Store<AppState>,
-    public alertCtrl: AlertController,
-    public toastCtrl: ToastController,
-    public translate: TranslateService) {
-  }
+    constructor(public store: Store<AppState>,
+        public alertCtrl: AlertController,
+        public toastCtrl: ToastController,
+        public translate: TranslateService) {
+    }
 
-  /**
-   * @description
-   * Handle errors from server.
-   * */
-  private handleResponseError(obs: Observable<ErrorInfo>): Subscription {
-    return obs
-      .filter(info => info.msg && !!info.msg.errorMessage)
-      .map(info => this.alertCtrl.create({
-        title: info.title,
-        subTitle: info.msg.errorMessage,
-        buttons: info.buttons
-      }))
-      .subscribe(alert => alert.present().then(() => {
-      }));
-  }
+    /**
+     * @description
+     * Handle errors from server.
+     * */
+    private handleResponseError(obs: Observable<ErrorInfo>): Subscription {
+        return obs
+            .filter(info => info.msg && !!info.msg.errorMessage)
+            .map(info => this.alertCtrl.create({
+                title: info.title,
+                subTitle: info.msg.errorMessage,
+                buttons: info.buttons
+            }))
+            .subscribe(alert => alert.present().then(() => {
+            }));
+    }
 
-  /**
-   * @description
-   * Handle errors from UI.
-   * */
-  handleUIError(msgKey: string) {
-    this.translate.get(msgKey).subscribe(message => {
-      const toast = this.toastCtrl.create({
-        message,
-        duration: 3000,
-        position: 'top'
-      });
-      toast.present().then(() => { });
-    });
-  }
+    /**
+     * @description
+     * Handle errors from UI.
+     * */
+    handleUIError(msgKey: string) {
+        this.translate.get(msgKey).subscribe(message => {
+            const toast = this.toastCtrl.create({
+                message,
+                duration: 3000,
+                position: 'top'
+            });
+            toast.present().then(() => { });
+        });
+    }
 
-  /**
-   * @description
-   * Used to handle the errors on the specified stream. The stream should be  a request stream.
-   * */
-  handleErrorInSpecific(obs: Observable<ErrorResponse>, title = ''): Subscription {
+    /**
+     * @description
+     * Used to handle the errors on the specified stream. The stream should be  a request stream.
+     * */
+    handleErrorInSpecific(obs: Observable<ErrorResponse>, title = ''): Subscription {
 
-    const button = 'CONFIRM_BUTTON';
+        const button = 'CONFIRM_BUTTON';
 
-    const lang$ = this.translate.get([title, button])
-      .map(lang => ({ title: lang[title], buttons: [lang[button]] }));
+        const lang$ = this.translate.get([title, button])
+            .map(lang => ({ title: lang[title], buttons: [lang[button]] }));
 
-    const error$: Observable<ErrorInfo> = obs.withLatestFrom(lang$)
-      .map(res => Object.assign({ msg: res[0] }, res[1]) as ErrorInfo);
+        const error$: Observable<ErrorInfo> = obs.withLatestFrom(lang$)
+            .map(res => Object.assign({ msg: res[0] }, res[1]) as ErrorInfo);
 
-    return this.handleResponseError(error$);
+        return this.handleResponseError(error$);
 
-  }
+    }
 }

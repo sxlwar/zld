@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { AttendanceModifyDetailPage } from './attendance-modify-detail';
 
 @NgModule({
-  declarations: [
-    AttendanceModifyDetailPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(AttendanceModifyDetailPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        AttendanceModifyDetailPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(AttendanceModifyDetailPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class AttendanceModifyDetailPageModule {}
+export class AttendanceModifyDetailPageModule { }

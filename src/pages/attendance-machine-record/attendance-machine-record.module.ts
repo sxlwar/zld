@@ -5,13 +5,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { AttendanceMachineRecordPage } from './attendance-machine-record';
 
 @NgModule({
-  declarations: [
-    AttendanceMachineRecordPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(AttendanceMachineRecordPage),
-    TranslateModule,
-    SharedModule,
-  ],
+    declarations: [
+        AttendanceMachineRecordPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(AttendanceMachineRecordPage),
+        TranslateModule,
+        SharedModule,
+    ],
 })
-export class AttendanceMachineRecordPageModule {}
+export class AttendanceMachineRecordPageModule { }

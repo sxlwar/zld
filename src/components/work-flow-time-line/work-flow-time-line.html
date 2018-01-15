@@ -1,62 +1,61 @@
-
-  <timeline endIcon="call" *ngIf="workFlow">
+<timeline endIcon="call" *ngIf="workFlow">
 
     <timeline-item>
 
-      <timeline-time [time]="workFlow.create_time"></timeline-time>
+        <timeline-time [time]="workFlow.create_time"></timeline-time>
 
-      <ion-icon name="calendar" class="time-line-icon"></ion-icon>
+        <ion-icon name="calendar" class="time-line-icon"></ion-icon>
 
-      <ion-card>
-        <ion-card-content>
+        <ion-card>
+            <ion-card-content>
 
-          <ion-item>
-            <ion-label fixed>{{'STATUS' | translate}}</ion-label>
-            <ion-input disabled [value]="'CREATE' | translate"></ion-input>
-            <ion-icon name="create" color="forbidden" item-start></ion-icon>
-          </ion-item>
+                <ion-item>
+                    <ion-label fixed>{{'STATUS' | translate}}</ion-label>
+                    <ion-input disabled [value]="'CREATE' | translate"></ion-input>
+                    <ion-icon name="create" color="forbidden" item-start></ion-icon>
+                </ion-item>
 
-          <ion-item>
-            <ion-label fixed>{{'REQUESTER' | translate}}</ion-label>
-            <ion-input disabled [value]="workFlow.requester__employee__realname"></ion-input>
-            <ion-icon name="person" color="primary" item-start></ion-icon>
-          </ion-item>
+                <ion-item>
+                    <ion-label fixed>{{'REQUESTER' | translate}}</ion-label>
+                    <ion-input disabled [value]="workFlow.requester__employee__realname"></ion-input>
+                    <ion-icon name="person" color="primary" item-start></ion-icon>
+                </ion-item>
 
-        </ion-card-content>
-      </ion-card>
+            </ion-card-content>
+        </ion-card>
     </timeline-item>
 
     <timeline-item *ngFor="let item of workFlow.task">
 
-      <timeline-time [time]="item.modify_time"></timeline-time>
+        <timeline-time [time]="item.modify_time"></timeline-time>
 
-      <ion-icon name="calendar" class="time-line-icon"></ion-icon>
+        <ion-icon name="calendar" class="time-line-icon"></ion-icon>
 
-      <ion-card>
+        <ion-card>
 
-        <ion-card-content>
+            <ion-card-content>
 
-          <ion-item>
-            <ion-label fixed>{{'STATUS' | translate}}</ion-label>
-            <ion-input disabled [value]="item.status"></ion-input>
-            <ion-icon [name]="item.status | taskStatus" [color]="item.status | taskStatusColor" item-start></ion-icon>
-          </ion-item>
+                <ion-item>
+                    <ion-label fixed>{{'STATUS' | translate}}</ion-label>
+                    <ion-input disabled [value]="item.status"></ion-input>
+                    <ion-icon [name]="item.status | taskStatus" [color]="item.status | taskStatusColor" item-start></ion-icon>
+                </ion-item>
 
-          <ion-item>
-            <ion-label fixed>{{'AUDITOR' | translate}}</ion-label>
-            <ion-input disabled [value]="item.user__employee__realname"></ion-input>
-            <ion-icon name="person" color="primary" item-start></ion-icon>
-          </ion-item>
+                <ion-item>
+                    <ion-label fixed>{{'AUDITOR' | translate}}</ion-label>
+                    <ion-input disabled [value]="item.user__employee__realname"></ion-input>
+                    <ion-icon name="person" color="primary" item-start></ion-icon>
+                </ion-item>
 
-          <ion-item>
-            {{'COMMENT' | translate}}
-          </ion-item>
-          <ion-textarea disabled [value]="item.comment"></ion-textarea>
+                <ion-item>
+                    {{'COMMENT' | translate}}
+                </ion-item>
+                <ion-textarea disabled [value]="item.comment"></ion-textarea>
 
-        </ion-card-content>
+            </ion-card-content>
 
-      </ion-card>
+        </ion-card>
 
     </timeline-item>
 
-  </timeline>
+</timeline>

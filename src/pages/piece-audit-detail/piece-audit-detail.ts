@@ -11,76 +11,76 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-piece-audit-detail',
-  templateUrl: 'piece-audit-detail.html',
+    selector: 'page-piece-audit-detail',
+    templateUrl: 'piece-audit-detail.html',
 })
 export class PieceAuditDetailPage {
 
-  id: number;
+    id: number;
 
-  workFlow: Observable<WorkFlow>;
+    workFlow: Observable<WorkFlow>;
 
-  pieceFlow: Observable<WorkPieceFinish>;
+    pieceFlow: Observable<WorkPieceFinish>;
 
-  piece: Observable<WorkPiece>;
+    piece: Observable<WorkPiece>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  audit$$: Subscription;
+    audit$$: Subscription;
 
-  isAuditButtonVisibility: Observable<boolean>;
+    isAuditButtonVisibility: Observable<boolean>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlowService: WorkFlowService,
-    public workPiece: WorkPieceService,
-    public permission: PermissionService
-  ) {
-    this.id = navParams.get('id');
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlowService: WorkFlowService,
+        public workPiece: WorkPieceService,
+        public permission: PermissionService
+    ) {
+        this.id = navParams.get('id');
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel() {
-    this.workFlow = this.workFlowService.getWorkFlow(this.id);
+    initialModel() {
+        this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.pieceFlow = this.workPiece.getWorkPieceFinish().map(res => res[0]);
+        this.pieceFlow = this.workPiece.getWorkPieceFinish().map(res => res[0]);
 
-    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
-      this.navParams.get('status'),
-      this.permission.getOperatePermission(pieceAudit.icon, MissionRoot)
-    );
+        this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+            this.navParams.get('status'),
+            this.permission.getOperatePermission(pieceAudit.icon, MissionRoot)
+        );
 
-    this.piece = this.pieceFlow.withLatestFrom(
-      this.workPiece.getWorkPieces(),
-      (pieceFinish, pieces) => pieces.find(item => item.id === pieceFinish.workpieces_id)
-    )
-      .filter(value => !!value)
-      .share();
-  }
+        this.piece = this.pieceFlow.withLatestFrom(
+            this.workPiece.getWorkPieces(),
+            (pieceFinish, pieces) => pieces.find(item => item.id === pieceFinish.workpieces_id)
+        )
+            .filter(value => !!value)
+            .share();
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.workPiece.getWorkPieceList(this.workPiece.getRecordOptions(this.id, this.navParams.get('status'))),
-      this.workPiece.handleError()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.workPiece.getWorkPieceList(this.workPiece.getRecordOptions(this.id, this.navParams.get('status'))),
+            this.workPiece.handleError()
+        ];
+    }
 
-  audit() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    audit() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-    this.audit$$ = this.workFlowService.auditTask(this.id);
-  }
+        this.audit$$ = this.workFlowService.auditTask(this.id);
+    }
 
-  ionViewWillUnload() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    ionViewWillUnload() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

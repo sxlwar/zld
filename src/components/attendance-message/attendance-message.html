@@ -1,13 +1,13 @@
 <h2>
-  {{'UNCONFIRMED_ATTENDANCE_TIP' | translate}}
+    {{'UNCONFIRMED_ATTENDANCE_TIP' | translate}}
 </h2>
 
 <ion-list *ngIf="!!content">
-  <ion-list-header>{{content?.team_name}}</ion-list-header>
+    <ion-list-header>{{content?.team_name}}</ion-list-header>
 
-  <ion-item *ngFor="let item of content?.confirm_status">
-    <ion-label fixed>{{item[0]}}</ion-label>
-    <ion-input disabled [value]="item[1]"></ion-input>
-  </ion-item>
+    <ion-item *ngFor="let item of content?.confirm_status">
+        <ion-label fixed>{{item[0]}}</ion-label>
+        <ion-input disabled [value]="item[1]"></ion-input>
+    </ion-item>
 
 </ion-list>

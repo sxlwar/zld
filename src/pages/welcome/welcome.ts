@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {IonicPage, NavController} from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController } from 'ionic-angular';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -7,22 +7,22 @@ import {IonicPage, NavController} from 'ionic-angular';
 */
 @IonicPage()
 @Component({
-  selector: 'page-welcome',
-  templateUrl: 'welcome.html'
+    selector: 'page-welcome',
+    templateUrl: 'welcome.html'
 })
 export class WelcomePage {
 
-  buttons = ['SIGNUP', 'LOGIN'];
+    buttons = ['SIGNUP', 'LOGIN'];
 
-  constructor(public navCtrl: NavController) {
-  }
+    constructor(public navCtrl: NavController) {
+    }
 
-  goToLogin(index){
-    this.navCtrl.push('LoginPage', {index}).then(() => {});
-  }
+    goToLogin(index) {
+        this.navCtrl.push('LoginPage', { index }).then(() => { });
+    }
 
-  replayTutorial() {
-    this.navCtrl.setRoot('TutorialPage').then(() => {
-    });
-  }
+    replayTutorial() {
+        this.navCtrl.setRoot('TutorialPage').then(() => {
+        });
+    }
 }

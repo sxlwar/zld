@@ -7,17 +7,17 @@ import { SearchCompanyEffect } from '../../effects/search-company-effect';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    SearchCompanyPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(SearchCompanyPage),
-    ComponentsModule,
-    EffectsModule.forRoot([SearchCompanyEffect]),
-    TranslateModule
-  ],
-  exports: [
-    SearchCompanyPage,
-  ]
+    declarations: [
+        SearchCompanyPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(SearchCompanyPage),
+        ComponentsModule,
+        EffectsModule.forRoot([SearchCompanyEffect]),
+        TranslateModule
+    ],
+    exports: [
+        SearchCompanyPage,
+    ]
 })
 export class SearchCompanyPageModule { }

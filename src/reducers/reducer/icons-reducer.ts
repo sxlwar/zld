@@ -2,69 +2,69 @@ import * as actions from '../../actions/action/icons-action';
 import { PermissionResult } from '../../interfaces/permission-interface';
 
 export interface IconState {
-  text: string;
-  icon: string;
-  color: string;
-  permission: PermissionResult;
-  page: string;
-  badge?: number;
+    text: string;
+    icon: string;
+    color: string;
+    permission: PermissionResult;
+    page: string;
+    badge?: number;
 }
 
 export interface State {
-  [name: string]: IconState[]
+    [name: string]: IconState[]
 }
 
 export const initialState: State = {};
 
 export function reducer(state = initialState, action: actions.Actions): State {
-  switch (action.type) {
-    case actions.ADD_ICONS_BAR:
-      return { ...state, ...action.payload };
+    switch (action.type) {
+        case actions.ADD_ICONS_BAR:
+            return { ...state, ...action.payload };
 
-    case actions.ADD_BADGE_FOR_ROOT_MODULE: {
-      const { count, rootName, iconName } = action.payload;
+        case actions.ADD_BADGE_FOR_ROOT_MODULE: {
+            const { count, rootName, iconName } = action.payload;
 
-      const index = state[rootName].findIndex(icon => icon.icon === iconName);
+            const index = state[rootName].findIndex(icon => icon.icon === iconName);
 
-      const { view, opt } = state[rootName][index].permission;
-      
-      if (opt || view) {
-        state[rootName][index] = Object.assign({}, state[rootName][index], { badge: count });
-      }
+            const { view, opt } = state[rootName][index].permission;
 
-      return state;
+            if (opt || view) {
+                state[rootName][index] = Object.assign({}, state[rootName][index], { badge: count });
+            }
+
+            return state;
+        }
+
+        default:
+            return state;
     }
-
-    default:
-      return state;
-  }
 }
 
 
 export function getIconReducer(state: State, path: string | string[]): IconState {
 
-  let result = null;
+    let result = null;
 
-  if (Array.isArray(path)) {
-    const [root, name] = path;
+    if (Array.isArray(path)) {
+        const [root, name] = path;
 
-    result = state[root].find(icon => icon.icon === name);
-  }
-
-  if (typeof path === 'string') {
-
-    for (let prop in state) {
-      if (!state.hasOwnProperty(prop)) continue;
-
-      const target = state[prop];
-
-      result = target.find(icon => icon.icon === path);
-
-      if (result) break;
+        result = state[root].find(icon => icon.icon === name);
     }
-  }
 
-  return result;
+    if (typeof path === 'string') {
+
+        for (let prop in state) {
+            if (!state.hasOwnProperty(prop)) continue;
+
+            const target = state[prop];
+
+            result = target.find(icon => icon.icon === path);
+
+            if (result) break;
+        }
+    }
+
+    return result;
 }
 
 

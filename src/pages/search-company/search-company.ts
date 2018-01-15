@@ -14,65 +14,65 @@ import { SearchService } from '../../services/business/search-service';
 
 @IonicPage()
 @Component({
-  selector: 'page-search-company',
-  templateUrl: 'search-company.html',
+    selector: 'page-search-company',
+    templateUrl: 'search-company.html',
 })
 export class SearchCompanyPage {
-  
-  selectType = 'radio';
 
-  companies$: Observable<Company[]>;
+    selectType = 'radio';
 
-  loading$: Observable<boolean>;
+    companies$: Observable<Company[]>;
 
-  searchQuery$: Observable<string>;
+    loading$: Observable<boolean>;
 
-  searchTarget: Subject<SearchCompanyOptions> = new Subject();
+    searchQuery$: Observable<string>;
 
-  subscriptions: Subscription[] = [];
+    searchTarget: Subject<SearchCompanyOptions> = new Subject();
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public viewCtrl: ViewController,
-    public search: SearchService
-  ) {
-  }
+    subscriptions: Subscription[] = [];
 
-  ionViewDidLoad() {
-    this.initialModel();
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public viewCtrl: ViewController,
+        public search: SearchService
+    ) {
+    }
 
-    this.launch();
-  }
+    ionViewDidLoad() {
+        this.initialModel();
 
-  initialModel() {
-    this.searchQuery$ = this.search.getSearchTargetOfCompany();
+        this.launch();
+    }
 
-    this.companies$ = this.search.getSearchResultOfCompany();
-    
-    this.loading$ = this.search.getLoadingState();
-  }
+    initialModel() {
+        this.searchQuery$ = this.search.getSearchTargetOfCompany();
 
-  launch(): void {
-    this.subscriptions = [
-      this.search.searchCompany(this.searchTarget),
-      this.search.handleCompanyError() 
-    ];
-  }
+        this.companies$ = this.search.getSearchResultOfCompany();
 
-  dismiss() {
-    this.viewCtrl.dismiss().then(() => { });
-  }
+        this.loading$ = this.search.getLoadingState();
+    }
 
-  getSearch(name: string) {
-    !!name && this.searchTarget.next({ name });
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.search.searchCompany(this.searchTarget),
+            this.search.handleCompanyError()
+        ];
+    }
 
-  selectCompany(id) {
-    this.search.setSelectedCompany(Number(id));
-  }
+    dismiss() {
+        this.viewCtrl.dismiss().then(() => { });
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    getSearch(name: string) {
+        !!name && this.searchTarget.next({ name });
+    }
+
+    selectCompany(id) {
+        this.search.setSelectedCompany(Number(id));
+    }
+
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

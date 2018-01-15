@@ -1,23 +1,23 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'VERSION_INTRODUCTION' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'VERSION_INTRODUCTION' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-item>
-    <ion-label>{{'CURRENT_VERSION' | translate}}</ion-label>
-    <ion-input disabled [value]="version | async" ></ion-input>
-  </ion-item>
+    <ion-item>
+        <ion-label>{{'CURRENT_VERSION' | translate}}</ion-label>
+        <ion-input disabled [value]="version | async"></ion-input>
+    </ion-item>
 
-  <ion-item-group *ngFor="let item of versions | async">
-    <ion-item-divider>{{item.number}}</ion-item-divider>
-    <div>
-      <p *ngFor="let intro of item.intro">{{intro}}</p>
-    </div>
-  </ion-item-group>
+    <ion-item-group *ngFor="let item of versions | async">
+        <ion-item-divider>{{item.number}}</ion-item-divider>
+        <div>
+            <p *ngFor="let intro of item.intro">{{intro}}</p>
+        </div>
+    </ion-item-group>
 
 </ion-content>

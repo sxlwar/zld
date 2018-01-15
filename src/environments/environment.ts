@@ -1,9 +1,9 @@
 export const ENV = {
-  get IS_PROD () {
-    return true
-  },
+    get IS_PROD() {
+        return true
+    },
 
-  get DOMAIN () {
-    return 'builder.zlddata.com'
-  }
+    get DOMAIN() {
+        return 'builder.zlddata.com'
+    }
 };

@@ -1,7 +1,7 @@
 export enum OrderFlag {
     noneOrder,
     highToLow,
-    lowToHigh 
+    lowToHigh
 }
 
 export enum BindingStateFlag {

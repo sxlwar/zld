@@ -49,7 +49,7 @@ export class EmployerService {
     getSpecificRoles(role: string): Observable<Employer[]> {
         return this.getCompanyUsers()
             .mergeMap(employers => Observable.from(employers)
-                .filter(employer => employer.user__groups__name === role) 
+                .filter(employer => employer.user__groups__name === role)
                 .reduce((acc, cur) => {
                     acc.push(cur);
                     return acc;
@@ -69,9 +69,9 @@ export class EmployerService {
     }
 
     setSelectedEmployer(id: number[], type: string): void {
-        if(type === TL) this.store.dispatch(new SetSelectedForemanAction(id)); 
+        if (type === TL) this.store.dispatch(new SetSelectedForemanAction(id));
 
-        if(type === QW) this.store.dispatch(new SetSelectedQualityClerkAction(id));
+        if (type === QW) this.store.dispatch(new SetSelectedQualityClerkAction(id));
     }
 
     /* ==========================================Error handle and refuse clean============================================= */

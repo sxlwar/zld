@@ -1,13 +1,11 @@
-
-
 <ion-list *ngFor="let item of certification">
     <ion-item-divider>{{item.workType}}</ion-item-divider>
-    
+
     <ion-item>
         <ion-label fixed>{{'AVAILABILITY_EXPIRE' | translate}}</ion-label>
         <ion-input disabled [value]="item.expire"></ion-input>
     </ion-item>
-    
+
     <ion-item>
         <ion-label fixed>{{'ISSUING_AGENCY' | translate}}</ion-label>
         <ion-input disabled [value]="item.mechanism"></ion-input>

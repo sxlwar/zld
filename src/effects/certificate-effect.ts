@@ -1,3 +1,5 @@
+import { UPLOAD_PERSONAL_ID_IMAGE, UploadPersonalIdImageAction, UploadPersonalIdImageSuccessAction, UploadPersonalIdImageFailAction } from './../actions/action/certificate-action';
+import { HttpService } from './../services/api/http-service';
 import { Actions, Effect } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from '../interfaces/response-interface';
@@ -23,9 +25,21 @@ export class CertificateEffect extends Command {
             .catch(error => Observable.of(error))
         );
 
+
+    @Effect()
+    uploadPersonalIdImage$: Observable<ResponseAction> = this.actions$
+        .ofType(UPLOAD_PERSONAL_ID_IMAGE)
+        .mergeMap((action: UploadPersonalIdImageAction) => this.http
+            .upload(Observable.of(this.uploadPersonalIdImage(action.payload)))
+            .map(res => res.responseCode !== 200 ? new UploadPersonalIdImageFailAction(JSON.parse(res.response)) : new UploadPersonalIdImageSuccessAction(JSON.parse(res.response)))
+            .catch(error => Observable.of(error))
+        )
+
     constructor(
         public actions$: Actions,
-        public ws: WebsocketService) {
+        public ws: WebsocketService,
+        public http: HttpService
+    ) {
         super();
     }
 }

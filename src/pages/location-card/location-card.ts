@@ -15,159 +15,159 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 
 @IonicPage()
 @Component({
-  selector: 'page-location-card',
-  templateUrl: 'location-card.html',
+    selector: 'page-location-card',
+    templateUrl: 'location-card.html',
 })
 export class LocationCardPage {
 
-  subscriptions: Subscription[];
+    subscriptions: Subscription[];
 
-  canOperate: Observable<boolean>;
+    canOperate: Observable<boolean>;
 
-  cards: Observable<LocationCard[]>
+    cards: Observable<LocationCard[]>
 
-  orderOptions: Observable<ConditionOption[]>;
+    orderOptions: Observable<ConditionOption[]>;
 
-  bindingStateOptions: Observable<ConditionOption[]>;
+    bindingStateOptions: Observable<ConditionOption[]>;
 
-  deviceStateOptions: Observable<ConditionOption[]>;
+    deviceStateOptions: Observable<ConditionOption[]>;
 
-  teamStateOptions: Observable<ConditionOption[]>;
+    teamStateOptions: Observable<ConditionOption[]>;
 
-  bindingStateOption: ConditionOption;
+    bindingStateOption: ConditionOption;
 
-  orderOption: ConditionOption;
+    orderOption: ConditionOption;
 
-  deviceStateOption: ConditionOption;
+    deviceStateOption: ConditionOption;
 
-  selectedTeam: ConditionOption;
+    selectedTeam: ConditionOption;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public teamService: TeamService,
-    public locationCard: LocationCardService,
-    public permission: PermissionService,
-    public translate: TranslateService,
-    public project: ProjectService,
-    public modalCtrl: ModalController
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public teamService: TeamService,
+        public locationCard: LocationCardService,
+        public permission: PermissionService,
+        public translate: TranslateService,
+        public project: ProjectService,
+        public modalCtrl: ModalController
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    const result = opt || view;
+        const result = opt || view;
 
-    result && this.launch();
+        result && this.launch();
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
+    ionViewDidLoad() {
 
-    this.canOperate = this.permission.getOperatePermission(locationCard.icon, ProjectRoot);
+        this.canOperate = this.permission.getOperatePermission(locationCard.icon, ProjectRoot);
 
-    this.cards = this.locationCard.getLocationCardsByCondition();
+        this.cards = this.locationCard.getLocationCardsByCondition();
 
-    this.bindingStateOptions = this.locationCard.getBindingStateOptions();
+        this.bindingStateOptions = this.locationCard.getBindingStateOptions();
 
-    this.orderOptions = this.locationCard.getOrderOptions();
+        this.orderOptions = this.locationCard.getOrderOptions();
 
-    this.deviceStateOptions = this.locationCard.getDeviceStateOptions();
+        this.deviceStateOptions = this.locationCard.getDeviceStateOptions();
 
-    this.teamStateOptions = this.locationCard.getTeamStateOptions();
-  }
+        this.teamStateOptions = this.locationCard.getTeamStateOptions();
+    }
 
-  ionViewWillUnload() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  /* =============================================================Launch functions============================================ */
+    /* =============================================================Launch functions============================================ */
 
-  launch() {
-    this.subscriptions = this.locationCard.handleError(); // Must be initial error handle first.
+    launch() {
+        this.subscriptions = this.locationCard.handleError(); // Must be initial error handle first.
 
-    this.getLocationCardList();
+        this.getLocationCardList();
 
-    const subscription = this.locationCard.getTeamStateOptions().subscribe(options => !options.length && this.updateTeamStateOptions());
+        const subscription = this.locationCard.getTeamStateOptions().subscribe(options => !options.length && this.updateTeamStateOptions());
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getLocationCardList(): void {
-    const option = this.getOptions()
-      .distinctUntilChanged()
-      .map(team_id => team_id ? { team_id } : {})
+    getLocationCardList(): void {
+        const option = this.getOptions()
+            .distinctUntilChanged()
+            .map(team_id => team_id ? { team_id } : {})
 
-    const subscription = this.locationCard.getLocationCardList(option);
+        const subscription = this.locationCard.getLocationCardList(option);
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  /**
-   * @description  Update the list of available teams, a request is send first if the teamList api haven't been requested;
-   */
-  updateTeamStateOptions(): void {
-    const teams = this.teamService.getTeamStateOptions().map(source => source.map(item => ({ condition: item.id, text: item.name, selected: false })));
+    /**
+     * @description  Update the list of available teams, a request is send first if the teamList api haven't been requested;
+     */
+    updateTeamStateOptions(): void {
+        const teams = this.teamService.getTeamStateOptions().map(source => source.map(item => ({ condition: item.id, text: item.name, selected: false })));
 
-    const subscription = teams.subscribe(result => !result.length && this.teamService.getTeamList(this.project.getProjectId().map(project_id => ({ project_id }))));
+        const subscription = teams.subscribe(result => !result.length && this.teamService.getTeamList(this.project.getProjectId().map(project_id => ({ project_id }))));
 
-    this.subscriptions.push(subscription);
+        this.subscriptions.push(subscription);
 
-    const option$$ = teams
-      .withLatestFrom(this.translate.get('ALL').map(text => ({ condition: null, selected: true, text })))
-      .map(([options, head]) => [head].concat(options))
-      .subscribe(option => this.locationCard.updateTeamStateOptions(option))
+        const option$$ = teams
+            .withLatestFrom(this.translate.get('ALL').map(text => ({ condition: null, selected: true, text })))
+            .map(([options, head]) => [head].concat(options))
+            .subscribe(option => this.locationCard.updateTeamStateOptions(option))
 
-    this.subscriptions.push(option$$);
-  }
+        this.subscriptions.push(option$$);
+    }
 
-  /**
-   * @description Get the option for teamList api. Only need one field named 'team_id' if user select to show list of the specific team.
-   */
-  getOptions(): Observable<number> {
-    return this.locationCard.getSelectedTeam()
-      .map(team => team && team.condition || null);
-  }
+    /**
+     * @description Get the option for teamList api. Only need one field named 'team_id' if user select to show list of the specific team.
+     */
+    getOptions(): Observable<number> {
+        return this.locationCard.getSelectedTeam()
+            .map(team => team && team.condition || null);
+    }
 
-  /* ===============================================Operate functions===================================================== */
+    /* ===============================================Operate functions===================================================== */
 
-  addCard(): void {
-    this.modalCtrl.create(AddLocationCardComponent).present();
-  }
+    addCard(): void {
+        this.modalCtrl.create(AddLocationCardComponent).present();
+    }
 
-  bindCard(card: LocationCard): void {
-    const cardNumber = card.dev_id;
+    bindCard(card: LocationCard): void {
+        const cardNumber = card.dev_id;
 
-    this.modalCtrl.create(AddLocationCardComponent, { cardNumber, id: card.id }).present();
-  }
+        this.modalCtrl.create(AddLocationCardComponent, { cardNumber, id: card.id }).present();
+    }
 
-  unbindCard(card: LocationCard): void {
-    const { dev_id } = card;
+    unbindCard(card: LocationCard): void {
+        const { dev_id } = card;
 
-    this.locationCard.updateLocationCard(Observable.of({ dev_id })); //v1还传了location_card_id这个字段，但两个都解绑成功了。。。。。。。。。。。。。。
-  }
+        this.locationCard.updateLocationCard(Observable.of({ dev_id })); //v1还传了location_card_id这个字段，但两个都解绑成功了。。。。。。。。。。。。。。
+    }
 
-  deleteCard(card: LocationCard): void {
-    this.locationCard.deleteLocationCard(Observable.of({ location_card_id: card.id }));
-  }
+    deleteCard(card: LocationCard): void {
+        this.locationCard.deleteLocationCard(Observable.of({ location_card_id: card.id }));
+    }
 
-  /* ===============================================Condition related functions===================================================== */
+    /* ===============================================Condition related functions===================================================== */
 
-  setBindCondition(): void {
-    this.locationCard.updateBindingState(this.bindingStateOption);
-  }
+    setBindCondition(): void {
+        this.locationCard.updateBindingState(this.bindingStateOption);
+    }
 
-  setOrderCondition(): void {
-    this.locationCard.updateOrderState(this.orderOption);
-  }
+    setOrderCondition(): void {
+        this.locationCard.updateOrderState(this.orderOption);
+    }
 
-  setDeviceCondition(): void {
-    this.locationCard.updateDeviceState(this.deviceStateOption);
-  }
+    setDeviceCondition(): void {
+        this.locationCard.updateDeviceState(this.deviceStateOption);
+    }
 
-  setSelectedTeam(): void {
-    this.locationCard.updateSelectedTeam(this.selectedTeam);
-  }
+    setSelectedTeam(): void {
+        this.locationCard.updateSelectedTeam(this.selectedTeam);
+    }
 }

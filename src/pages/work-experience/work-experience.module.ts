@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { WorkExperiencePage } from './work-experience';
 
 @NgModule({
-  declarations: [
-    WorkExperiencePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(WorkExperiencePage),
-    TranslateModule,
-    ComponentsModule,
-    SharedModule,
-  ],
+    declarations: [
+        WorkExperiencePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(WorkExperiencePage),
+        TranslateModule,
+        ComponentsModule,
+        SharedModule,
+    ],
 })
-export class WorkExperiencePageModule {}
+export class WorkExperiencePageModule { }

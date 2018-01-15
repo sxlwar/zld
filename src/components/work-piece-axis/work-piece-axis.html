@@ -1,53 +1,53 @@
 <ion-header>
 
-  <ion-navbar>
+    <ion-navbar>
 
-    <ion-buttons start>
-      <button ion-button icon-only (click)="dismiss()">
-        <ion-icon name='close'></ion-icon>
-      </button>
-    </ion-buttons>
+        <ion-buttons start>
+            <button ion-button icon-only (click)="dismiss()">
+                <ion-icon name='close'></ion-icon>
+            </button>
+        </ion-buttons>
 
-    <ion-title text-center>{{(piece | async).name}}</ion-title>
+        <ion-title text-center>{{(piece | async).name}}</ion-title>
 
-  </ion-navbar>
+    </ion-navbar>
 
 </ion-header>
 
 <ion-content>
 
-  <timeline endIcon="call">
+    <timeline endIcon="call">
 
-    <timeline-item *ngFor="let item of pieces | async">
+        <timeline-item *ngFor="let item of pieces | async">
 
-      <timeline-time [time]="item.finish_date"></timeline-time>
+            <timeline-time [time]="item.finish_date"></timeline-time>
 
-      <ion-icon name="calendar" class="time-line-icon"></ion-icon>
+            <ion-icon name="calendar" class="time-line-icon"></ion-icon>
 
-      <ion-card>
-        
-        <ion-card-header text-center>{{'COMPLETE_PERCENT' | translate}}：{{item.num/(piece | async)?.num | percent: '1.1-2'}}</ion-card-header>
+            <ion-card>
 
-        <ion-card-content>
+                <ion-card-header text-center>{{'COMPLETE_PERCENT' | translate}}：{{item.num/(piece | async)?.num | percent: '1.1-2'}}</ion-card-header>
 
-          <piece-complete-chart [complete]="item.num" [total]="(piece | async)?.num"></piece-complete-chart>
-          <ion-card-title>{{'QUALITY_DESCRIPTION' | translate}}</ion-card-title>
+                <ion-card-content>
 
-          <p>{{item.comment}}</p>
+                    <piece-complete-chart [complete]="item.num" [total]="(piece | async)?.num"></piece-complete-chart>
+                    <ion-card-title>{{'QUALITY_DESCRIPTION' | translate}}</ion-card-title>
 
-          <ion-grid>
-            <ion-row text-center>
-              <ion-col>{{'COMPLETE_COUNT' | translate}} {{item.num}}</ion-col>
-              <ion-col>{{'PAY_PERCENT' | translate}} {{item.quality_percent | percent}}</ion-col>
-            </ion-row>
-          </ion-grid>
+                    <p>{{item.comment}}</p>
 
-        </ion-card-content>
+                    <ion-grid>
+                        <ion-row text-center>
+                            <ion-col>{{'COMPLETE_COUNT' | translate}} {{item.num}}</ion-col>
+                            <ion-col>{{'PAY_PERCENT' | translate}} {{item.quality_percent | percent}}</ion-col>
+                        </ion-row>
+                    </ion-grid>
 
-      </ion-card>
+                </ion-card-content>
 
-    </timeline-item>
+            </ion-card>
 
-  </timeline>
+        </timeline-item>
+
+    </timeline>
 
 </ion-content>

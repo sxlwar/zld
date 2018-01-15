@@ -4,7 +4,7 @@ import { EmployerService } from './employer-service';
 import { selectAddTeamResponse, selectUpdateTeamResponse, selectDeleteTeamResponse } from './../../reducers/index-reducer';
 import { TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse } from './../../interfaces/response-interface';
 import { TeamAddOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
-import { AddTeamFormModel, MapperService } from './../api/mapper-service';
+import { AddTeamFormModel } from './../api/mapper-service';
 import { Injectable } from '@angular/core';
 import { AppState, selectTeamResponse, selectSelectedTeams } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -33,164 +33,163 @@ import { SetSelectTeamsAction } from '../../actions/action/team-action';
 
 @Injectable()
 export class TeamService {
-  subscriptions: Subscription[] = [];
-  team$$: Subscription;
+    subscriptions: Subscription[] = [];
+    team$$: Subscription;
 
-  characterHasTeam = [TL, CW, QW, SW];
+    characterHasTeam = [TL, CW, QW, SW];
 
-  constructor(public store: Store<AppState>,
-    public error: ErrorService,
-    public process: ProcessorService,
-    public userInfo: UserService,
-    public project: ProjectService,
-    public workerService: WorkerService,
-    public mapper: MapperService,
-    public employer: EmployerService
-  ) {
-    this.handleError();
-  }
+    constructor(public store: Store<AppState>,
+        public error: ErrorService,
+        public process: ProcessorService,
+        public userInfo: UserService,
+        public project: ProjectService,
+        public workerService: WorkerService,
+        public employer: EmployerService
+    ) {
+        this.handleError();
+    }
 
-  getTeams(): Observable<Team[]> {
-    return this.store.select(selectTeamResponse).map(res => res.teams);
-  }
+    getTeams(): Observable<Team[]> {
+        return this.store.select(selectTeamResponse).map(res => res.teams);
+    }
 
-  getTeamList(option: Observable<RequestOption> = Observable.empty()): void {
-    const option$ = this.userInfo.getSid()
-      .map(sid => ({ sid }))
-      .combineLatest(option.defaultIfEmpty({}), (sid, option) => Object.assign(sid, option));
+    getTeamList(option: Observable<RequestOption> = Observable.empty()): void {
+        const option$ = this.userInfo.getSid()
+            .map(sid => ({ sid }))
+            .combineLatest(option.defaultIfEmpty({}), (sid, option) => Object.assign(sid, option));
 
-    const teamList$$ = this.process.teamListProcessor(option$);
+        const teamList$$ = this.process.teamListProcessor(option$);
 
-    this.subscriptions.push(teamList$$);
-  }
+        this.subscriptions.push(teamList$$);
+    }
 
-  getOwnTeam(): Observable<Team> {
-    const character$ = this.userInfo.getUserCharacter()
-      .map(char => this.characterHasTeam.indexOf(char) !== -1);
+    getOwnTeam(): Observable<Team> {
+        const character$ = this.userInfo.getUserCharacter()
+            .map(char => this.characterHasTeam.indexOf(char) !== -1);
 
-    const teamId$ = this.workerService.getOwnContract()
-      .filter(value => !!value)
-      .map(contract => contract.team_id);
+        const teamId$ = this.workerService.getOwnContract()
+            .filter(value => !!value)
+            .map(contract => contract.team_id);
 
-    const team$ = this.getTeams()
-      .zip(teamId$, (teams, id) => teams.find(team => team.id === id))
-      .mergeMap(team => {
-        if (!!team) return Observable.of(team);
+        const team$ = this.getTeams()
+            .zip(teamId$, (teams, id) => teams.find(team => team.id === id))
+            .mergeMap(team => {
+                if (!!team) return Observable.of(team);
 
-        const option = this.project.getCurrentProject().map(project => ({ project_id: project.id }));
+                const option = this.project.getCurrentProject().map(project => ({ project_id: project.id }));
 
-        this.getTeamList(option);
+                this.getTeamList(option);
 
-        return this.getTeams()
-          .mergeMap(teams => !teams.length ? Observable.of(null) : Observable.from(teams).first());
-      });
+                return this.getTeams()
+                    .mergeMap(teams => !teams.length ? Observable.of(null) : Observable.from(teams).first());
+            });
 
-    return character$.mergeMap(isTeamCharacter => isTeamCharacter ? team$ : Observable.of(null));
-  }
+        return character$.mergeMap(isTeamCharacter => isTeamCharacter ? team$ : Observable.of(null));
+    }
 
-  getOwnTeams(): Observable<Team[]> {
-    return this.getTeams().mergeMap(teams => {
-      if (teams.length) return Observable.of(teams);
+    getOwnTeams(): Observable<Team[]> {
+        return this.getTeams().mergeMap(teams => {
+            if (teams.length) return Observable.of(teams);
 
-      const option = this.project.getCurrentProject().map(project => ({ project_id: project.id }));
+            const option = this.project.getCurrentProject().map(project => ({ project_id: project.id }));
 
-      this.getTeamList(option);
+            this.getTeamList(option);
 
-      return this.getTeams();
-    })
-  }
+            return this.getTeams();
+        })
+    }
 
-  getSelectedTeams(): Observable<number[]> {
-    return this.store.select(selectSelectedTeams)
-  }
+    getSelectedTeams(): Observable<number[]> {
+        return this.store.select(selectSelectedTeams)
+    }
 
-  setSelectTeams(ids: Observable<number>): void {
-    ids.reduce((acc, cur) => {
-      acc.push(cur);
-      return acc;
-    }, [])
-      .subscribe(ids => this.store.dispatch(new SetSelectTeamsAction(ids)));
-  }
+    setSelectTeams(ids: Observable<number>): void {
+        ids.reduce((acc, cur) => {
+            acc.push(cur);
+            return acc;
+        }, [])
+            .subscribe(ids => this.store.dispatch(new SetSelectTeamsAction(ids)));
+    }
 
-  /* ============================================Team operations======================================== */
+    /* ============================================Team operations======================================== */
 
-  addTeam(form: AddTeamFormModel): void {
-    const projectId = this.project.getProjectId();
+    addTeam(form: AddTeamFormModel): void {
+        const projectId = this.project.getProjectId();
 
-    const source: TeamAddOptions = this.mapper.addTeamForm(form);
+        const source: TeamAddOptions = this.process.addTeamForm(form);
 
-    const sid = this.userInfo.getSid();
+        const sid = this.userInfo.getSid();
 
-    const option = projectId.zip(
-      sid,
-      Observable.of(source),
-      (project_id, sid, data) => Object.assign(data, { sid, project_id })
-    );
+        const option = projectId.zip(
+            sid,
+            Observable.of(source),
+            (project_id, sid, data) => Object.assign(data, { sid, project_id })
+        );
 
-    const subscription = this.process.teamAddProcessor(option);
+        const subscription = this.process.teamAddProcessor(option);
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getAddTeamResponse(): Observable<TeamAddResponse> {
-    return this.store.select(selectAddTeamResponse);
-  }
+    getAddTeamResponse(): Observable<TeamAddResponse> {
+        return this.store.select(selectAddTeamResponse);
+    }
 
-  deleteTeam(teamId: number): void {
-    const sid = this.userInfo.getSid();
+    deleteTeam(teamId: number): void {
+        const sid = this.userInfo.getSid();
 
-    const option = sid.zip(Observable.of(teamId), (sid, team_id) => ({ sid, team_id }));
+        const option = sid.zip(Observable.of(teamId), (sid, team_id) => ({ sid, team_id }));
 
-    const subscription = this.process.teamDeleteProcessor(option)
+        const subscription = this.process.teamDeleteProcessor(option)
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getDeleteTeamResponse(): Observable<TeamDeleteResponse> {
-    return this.store.select(selectDeleteTeamResponse);
-  }
+    getDeleteTeamResponse(): Observable<TeamDeleteResponse> {
+        return this.store.select(selectDeleteTeamResponse);
+    }
 
-  updateTeam(form: AddTeamFormModel, id: number): void {
-    const projectId = this.project.getProjectId();
+    updateTeam(form: AddTeamFormModel, id: number): void {
+        const projectId = this.project.getProjectId();
 
-    const source: TeamUpdateOptions = this.mapper.updateTeamForm(form, id);
+        const source: TeamUpdateOptions = this.process.updateTeamForm(form, id);
 
-    const sid = this.userInfo.getSid();
+        const sid = this.userInfo.getSid();
 
-    const option = projectId.zip(
-      sid,
-      Observable.of(source),
-      (project_id, sid, data) => Object.assign(data, { sid, project_id })
-    );
+        const option = projectId.zip(
+            sid,
+            Observable.of(source),
+            (project_id, sid, data) => Object.assign(data, { sid, project_id })
+        );
 
-    const subscription = this.process.teamUpdateProcessor(option);
+        const subscription = this.process.teamUpdateProcessor(option);
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getUpdateTeamResponse(): Observable<TeamUpdateResponse> {
-    return this.store.select(selectUpdateTeamResponse);
-  }
+    getUpdateTeamResponse(): Observable<TeamUpdateResponse> {
+        return this.store.select(selectUpdateTeamResponse);
+    }
 
-  updateTeamListAtLocal(): void {
-    const subscription = this.employer.getCompanyUsers().subscribe(users => this.store.dispatch(new UpdateTeamAtLocalAction(users)));
+    updateTeamListAtLocal(): void {
+        const subscription = this.employer.getCompanyUsers().subscribe(users => this.store.dispatch(new UpdateTeamAtLocalAction(users)));
 
-    this.subscriptions.push(subscription);
-  }
+        this.subscriptions.push(subscription);
+    }
 
-  getTeamStateOptions(): Observable<{ id: number; name: string }[]> {
-    return this.getTeams().map(teams => teams.map(({ id, name }) => ({ id, name })));
-  }
+    getTeamStateOptions(): Observable<{ id: number; name: string }[]> {
+        return this.getTeams().map(teams => teams.map(({ id, name }) => ({ id, name })));
+    }
 
-  /* ============================================Error handle and refuse clean======================================== */
+    /* ============================================Error handle and refuse clean======================================== */
 
-  private handleError() {
-    const error$ = this.store.select(selectTeamResponse);
+    private handleError() {
+        const error$ = this.store.select(selectTeamResponse);
 
-    this.team$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
-  }
+        this.team$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
+    }
 
-  unSubscribe() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    unSubscribe() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

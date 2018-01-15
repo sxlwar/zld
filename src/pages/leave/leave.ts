@@ -13,93 +13,93 @@ import { MissionListItem } from '../../interfaces/mission-interface';
 
 @IonicPage()
 @Component({
-  selector: 'page-leave',
-  templateUrl: 'leave.html',
+    selector: 'page-leave',
+    templateUrl: 'leave.html',
 })
 export class LeavePage {
 
-  total: Observable<number>;
+    total: Observable<number>;
 
-  list: Observable<MissionListItem[]>;
+    list: Observable<MissionListItem[]>;
 
-  operate: Observable<boolean>;
+    operate: Observable<boolean>;
 
-  haveMoreData: Observable<boolean>;
+    haveMoreData: Observable<boolean>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  page$$: Subscription;
+    page$$: Subscription;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlow: WorkFlowService,
-    public permission: PermissionService,
-    public statistic: StatisticsService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlow: WorkFlowService,
+        public permission: PermissionService,
+        public statistic: StatisticsService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel(): void {
-    this.total = this.workFlow.getCount();
+    initialModel(): void {
+        this.total = this.workFlow.getCount();
 
-    this.list = this.workFlow.getList();
+        this.list = this.workFlow.getList();
 
-    this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getLeavePage());
+        this.haveMoreData = this.workFlow.haveMoreData(this.workFlow.getLeavePage());
 
-    this.operate = this.permission.getOperatePermission(leave.icon, MissionRoot)
-  }
+        this.operate = this.permission.getOperatePermission(leave.icon, MissionRoot)
+    }
 
-  launch(): void {
-    this.subscriptions = [
-      this.workFlow.getSpecificWorkFlowList(
-        Observable.of({ process_id: ProcessIdOptions.leave, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
-        this.workFlow.getLeavePage()
-      ),
-      this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.leave, this.workFlow.getTaskUpdateSuccessCount()),
-      this.workFlow.handleWorkFlowError()
-    ];
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.workFlow.getSpecificWorkFlowList(
+                Observable.of({ process_id: ProcessIdOptions.leave, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
+                this.workFlow.getLeavePage()
+            ),
+            this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.leave, this.workFlow.getTaskUpdateSuccessCount()),
+            this.workFlow.handleWorkFlowError()
+        ];
+    }
 
-  audit(target: AuditTarget): void {
-    const { comment, ids, approve } = target;
+    audit(target: AuditTarget): void {
+        const { comment, ids, approve } = target;
 
-    this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
-  }
+        this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
+    }
 
-  getNextPage(infiniteScroll: InfiniteScroll) {
-    this.page$$ && this.page$$.unsubscribe();
+    getNextPage(infiniteScroll: InfiniteScroll) {
+        this.page$$ && this.page$$.unsubscribe();
 
-    this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.leavePage);
-  }
+        this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.leavePage);
+    }
 
-  goToNextPage(target: MissionListItem): void {
-    this.navCtrl.push(leaveDetailPage, { id: target.id, status: target.status }).then(() => {});
-  }
+    goToNextPage(target: MissionListItem): void {
+        this.navCtrl.push(leaveDetailPage, { id: target.id, status: target.status }).then(() => { });
+    }
 
-  applyLeave(): void {
-    this.navCtrl.push(applyLeavePage).then(() => { });
-  }
+    applyLeave(): void {
+        this.navCtrl.push(applyLeavePage).then(() => { });
+    }
 
-  ionViewWillUnload() {
-    this.workFlow.resetWorkFlowResponse();
+    ionViewWillUnload() {
+        this.workFlow.resetWorkFlowResponse();
 
-    this.workFlow.resetPage(WorkFlowPageType.leavePage);
-    
-    this.page$$ && this.page$$.unsubscribe();
-    
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.workFlow.resetPage(WorkFlowPageType.leavePage);
+
+        this.page$$ && this.page$$.unsubscribe();
+
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

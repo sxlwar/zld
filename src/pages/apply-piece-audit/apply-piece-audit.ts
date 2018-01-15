@@ -95,7 +95,7 @@ export class ApplyPieceAuditPage {
 
     ionViewWillUnload() {
         this.launchService.resetResponse(LaunchResponse.pieceAudit);
-        
+
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.config.showTabBar();

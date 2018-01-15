@@ -1,4 +1,3 @@
-import { MapperService } from './../api/mapper-service';
 import { omit } from 'lodash';
 import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/personal-action';
 import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkExperienceUpdateOptions } from './../../interfaces/request-interface';
@@ -24,8 +23,7 @@ export class PersonalService {
         public userInfo: UserService,
         public process: ProcessorService,
         public error: ErrorService,
-        public craft: CraftService,
-        public mapper: MapperService
+        public craft: CraftService
     ) {
         this.handleError();
     }
@@ -140,7 +138,7 @@ export class PersonalService {
     getOwnFamily(): Observable<Family> {
         return this.store.select(selectHomeInfoListResponse)
             .filter(value => !!value)
-            .map(res => this.mapper.transformFamily(res.home_info[0]));
+            .map(res => this.process.transformFamily(res.home_info[0]));
     }
 
     getOwnEducation(): Observable<Education[]> {

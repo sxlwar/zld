@@ -3,17 +3,17 @@ import { IonicModule } from 'ionic-angular/module';
 import { PIPES, DIRECTIVES } from './app.import';
 
 @NgModule({
- declarations: [
-    PIPES,
-    DIRECTIVES,
- ],
- imports: [
-     IonicModule,
- ],
- exports: [
-    PIPES,
-    DIRECTIVES,
- ],
+    declarations: [
+        PIPES,
+        DIRECTIVES,
+    ],
+    imports: [
+        IonicModule,
+    ],
+    exports: [
+        PIPES,
+        DIRECTIVES,
+    ],
 })
 
-export class SharedModule {};
+export class SharedModule { };

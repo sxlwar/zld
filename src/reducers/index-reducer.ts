@@ -37,89 +37,89 @@ import * as searchWorker from './reducer/search-worker-reducer';
 import * as deleteImages from './reducer/delete-images-reducer';
 
 export interface AppState {
-  QRLogin: QRLogin.State;
-  attendance: attendance.State;
-  attendanceCard: attendanceCard.State;
-  attendanceRecord: attendanceRecord.State;
-  bankCard: bankCard.State;
-  certificate: response.CertificateResponse;
-  config: config.State;
-  deleteImages: deleteImages.State;
-  employer: employer.State;
-  group: group.State;
-  icons: icons.State;
-  launch: launch.State;
-  leave: leave.State;
-  location: location.State;
-  locationCard: locationCard.State;
-  loginPage: login.State;
-  logout: logout.State;
-  machine: machine.State;
-  message: message.State;
-  nationality: nationality.State;
-  overtime: overtime.State;
-  payBill: payBill.State;
-  personal: personal.State;
-  phoneVerCode: response.PhoneVerCodeResponse;
-  piece: piece.State;
-  project: project.State;
-  register: response.RegisterResponse;
-  resetPassword: response.ResetPasswordResponse;
-  resetPhoneVerCode: response.PhoneVerCodeResponse;
-  searchCompany: search.State;
-  searchWorker: searchWorker.State;
-  statistics: statistics.State;
-  team: team.State;
-  tutorialPage: tutorial.State;
-  uploadState: upload.State;
-  userInfo: response.LoginResponse;
-  workCertificate: workCertificate.State;
-  workFlow: workFlow.State;
-  workType: workType.State;
-  worker: worker.State;
+    QRLogin: QRLogin.State;
+    attendance: attendance.State;
+    attendanceCard: attendanceCard.State;
+    attendanceRecord: attendanceRecord.State;
+    bankCard: bankCard.State;
+    certificate: certificate.State;
+    config: config.State;
+    deleteImages: deleteImages.State;
+    employer: employer.State;
+    group: group.State;
+    icons: icons.State;
+    launch: launch.State;
+    leave: leave.State;
+    location: location.State;
+    locationCard: locationCard.State;
+    loginPage: login.State;
+    logout: logout.State;
+    machine: machine.State;
+    message: message.State;
+    nationality: nationality.State;
+    overtime: overtime.State;
+    payBill: payBill.State;
+    personal: personal.State;
+    phoneVerCode: response.PhoneVerCodeResponse;
+    piece: piece.State;
+    project: project.State;
+    register: response.RegisterResponse;
+    resetPassword: response.ResetPasswordResponse;
+    resetPhoneVerCode: response.PhoneVerCodeResponse;
+    searchCompany: search.State;
+    searchWorker: searchWorker.State;
+    statistics: statistics.State;
+    team: team.State;
+    tutorialPage: tutorial.State;
+    uploadState: upload.State;
+    userInfo: response.LoginResponse;
+    workCertificate: workCertificate.State;
+    workFlow: workFlow.State;
+    workType: workType.State;
+    worker: worker.State;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  QRLogin: QRLogin.reducer,
-  attendance: attendance.reducer,
-  attendanceCard: attendanceCard.reducer,
-  attendanceRecord: attendanceRecord.reducer,
-  bankCard: bankCard.reducer,
-  certificate: certificate.reducer,
-  config: config.reducer,
-  deleteImages: deleteImages.reducer,
-  employer: employer.reducer,
-  group: group.reducer,
-  icons: icons.reducer,
-  launch: launch.reducer,
-  leave: leave.reducer,
-  location: location.reducer,
-  locationCard: locationCard.reducer,
-  loginPage: login.reducer,
-  logout: logout.reducer,
-  machine: machine.reducer,
-  message: message.reducer,
-  nationality: nationality.reducer,
-  overtime: overtime.reducer,
-  payBill: payBill.reducer,
-  personal: personal.reducer,
-  phoneVerCode: login.registerPhoneVerReducer,
-  piece: piece.reducer,
-  project: project.reducer,
-  register: login.registerReducer,
-  resetPassword: login.resetPasswordReducer,
-  resetPhoneVerCode: login.resetPwdPhoneVerReducer,
-  searchCompany: search.reducer,
-  searchWorker: searchWorker.reducer,
-  statistics: statistics.reducer,
-  team: team.reducer,
-  tutorialPage: tutorial.reducer,
-  uploadState: upload.reducer,
-  userInfo: login.userInfoReducer,
-  workCertificate: workCertificate.reducer,
-  workFlow: workFlow.reducer,
-  workType: workType.reducer,
-  worker: worker.reducer,
+    QRLogin: QRLogin.reducer,
+    attendance: attendance.reducer,
+    attendanceCard: attendanceCard.reducer,
+    attendanceRecord: attendanceRecord.reducer,
+    bankCard: bankCard.reducer,
+    certificate: certificate.reducer,
+    config: config.reducer,
+    deleteImages: deleteImages.reducer,
+    employer: employer.reducer,
+    group: group.reducer,
+    icons: icons.reducer,
+    launch: launch.reducer,
+    leave: leave.reducer,
+    location: location.reducer,
+    locationCard: locationCard.reducer,
+    loginPage: login.reducer,
+    logout: logout.reducer,
+    machine: machine.reducer,
+    message: message.reducer,
+    nationality: nationality.reducer,
+    overtime: overtime.reducer,
+    payBill: payBill.reducer,
+    personal: personal.reducer,
+    phoneVerCode: login.registerPhoneVerReducer,
+    piece: piece.reducer,
+    project: project.reducer,
+    register: login.registerReducer,
+    resetPassword: login.resetPasswordReducer,
+    resetPhoneVerCode: login.resetPwdPhoneVerReducer,
+    searchCompany: search.reducer,
+    searchWorker: searchWorker.reducer,
+    statistics: statistics.reducer,
+    team: team.reducer,
+    tutorialPage: tutorial.reducer,
+    uploadState: upload.reducer,
+    userInfo: login.userInfoReducer,
+    workCertificate: workCertificate.reducer,
+    workFlow: workFlow.reducer,
+    workType: workType.reducer,
+    worker: worker.reducer,
 };
 
 //config
@@ -182,7 +182,8 @@ export const selectResetPasswordId = createSelector(getResetPassword, login.getR
 
 //certificate
 export const getCertificate = (state: AppState) => state.certificate;
-export const selectCertificateResult = createSelector(getCertificate, certificate.getAuthPass);
+export const selectCertificateResponse = createSelector(getCertificate, certificate.getCertificateResponse);
+export const selectPersonalIdImageResponse = createSelector(getCertificate, certificate.getUploadResponse);
 
 //project list
 const getProject = (state: AppState) => state.project;

@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { ApplyOvertimePage } from './apply-overtime';
 
 @NgModule({
-  declarations: [
-    ApplyOvertimePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ApplyOvertimePage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        ApplyOvertimePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ApplyOvertimePage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class ApplyOvertimePageModule {}
+export class ApplyOvertimePageModule { }

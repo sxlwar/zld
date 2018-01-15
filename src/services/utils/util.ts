@@ -4,24 +4,24 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class Base {
-  constructor() { }
+    constructor() { }
 
 }
 
 export interface ReduceFn<T> {
-  (acc: T[], cur: T): T[]
+    (acc: T[], cur: T): T[]
 }
 
 export function putInArray<T>(acc: T[], cur: T): T[] {
-  acc.push(cur);
-  return acc;
+    acc.push(cur);
+    return acc;
 }
 
 
 export function projectRequestOptions(option1: RequestOption, option2: RequestOption, ...options: RequestOption[]): RequestOption {
-  if (options) return { ...option1, ...option2, ...options.reduce((acc, cur) => ({ ...acc, ...cur })) }
+    if (options) return { ...option1, ...option2, ...options.reduce((acc, cur) => ({ ...acc, ...cur })) }
 
-  return { ...option1, ...option2 };
+    return { ...option1, ...option2 };
 }
 
 /**
@@ -36,11 +36,11 @@ export function projectRequestOptions(option1: RequestOption, option2: RequestOp
  * @returns object Object that values shouldn't be modified, and the conditional key had been renamed.
  */
 export function rename(originObj: object, nameMapObj: { [key: string]: string }, reverse = false): object {
-  const initial = reverse ? omit(originObj, values(nameMapObj)) : omit(originObj, Object.keys(nameMapObj));
+    const initial = reverse ? omit(originObj, values(nameMapObj)) : omit(originObj, Object.keys(nameMapObj));
 
-  return reduce(nameMapObj, (result: Object, value: string, key: string) => {
-    if (!reverse && has(originObj, key)) result[value] = originObj[key];
-    if (reverse && has(originObj, value)) result[key] = originObj[value];
-    return result;
-  }, initial);
+    return reduce(nameMapObj, (result: Object, value: string, key: string) => {
+        if (!reverse && has(originObj, key)) result[value] = originObj[key];
+        if (reverse && has(originObj, value)) result[key] = originObj[value];
+        return result;
+    }, initial);
 };

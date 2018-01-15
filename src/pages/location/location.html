@@ -1,18 +1,18 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'WORKER_LOCATION' | translate}}</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="setCondition()">
-        <ion-icon name="settings"></ion-icon>
-      </button>
+    <ion-navbar>
+        <ion-title>{{'WORKER_LOCATION' | translate}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="setCondition()">
+                <ion-icon name="settings"></ion-icon>
+            </button>
 
-    </ion-buttons>
-  </ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content class="no-scroll">
-  <div #locationMap id="locationMap" class="map"></div>
+    <div #locationMap id="locationMap" class="map"></div>
 </ion-content>

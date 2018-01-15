@@ -1,35 +1,35 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'timeline',
-  templateUrl: 'timeline.html'
+    selector: 'timeline',
+    templateUrl: 'timeline.html'
 })
 export class TimelineComponent {
-  @Input('endIcon') endIcon = "ionic";
-  constructor() {
+    @Input('endIcon') endIcon = "ionic";
+    constructor() {
 
-  }
+    }
 
 }
 
 @Component({
-  selector: 'timeline-item',
-  template: '<ng-content></ng-content>'
+    selector: 'timeline-item',
+    template: '<ng-content></ng-content>'
 })
 export class TimelineItemComponent {
-  constructor() {
+    constructor() {
 
-  }
+    }
 }
 
 
 @Component({
-  selector: 'timeline-time',
-  template: '<span>{{time}}</span>'
+    selector: 'timeline-time',
+    template: '<span>{{time}}</span>'
 })
 export class TimelineTimeComponent {
-  @Input('time') time = '';
-  constructor() {
+    @Input('time') time = '';
+    constructor() {
 
-  }
+    }
 }

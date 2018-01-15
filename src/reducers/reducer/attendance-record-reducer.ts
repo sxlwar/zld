@@ -61,7 +61,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.SET_LOCATION_ATTENDANCE_END_DATE: {
             return { ...state, locationAttendanceOptions: { ...state.locationAttendanceOptions, endDate: action.payload } };
         }
-        
+
         case actions.SET_LOCATION_ATTENDANCE_START_DATE: {
             return { ...state, locationAttendanceOptions: { ...state.locationAttendanceOptions, startDate: action.payload } };
         }

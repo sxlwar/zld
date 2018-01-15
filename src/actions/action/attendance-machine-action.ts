@@ -29,4 +29,3 @@ export class AttendanceMachineListSuccessAction implements Action {
 export type Actions = GetAttendanceMachineListAction
     | AttendanceMachineListFailAction
     | AttendanceMachineListSuccessAction;
-    

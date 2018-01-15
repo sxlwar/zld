@@ -4,30 +4,30 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { relationShip } from '../../interfaces/request-interface';
 
 @Component({
-  selector: 'family-information',
-  templateUrl: 'family-information.html'
+    selector: 'family-information',
+    templateUrl: 'family-information.html'
 })
 export class FamilyInformationComponent {
 
-  @Input() family: Family;
+    @Input() family: Family;
 
-  @Input() disabled = true;
+    @Input() disabled = true;
 
-  @Output() updateHomeInfo: EventEmitter<Family> = new EventEmitter();
-  
-  marriage: number;
+    @Output() updateHomeInfo: EventEmitter<Family> = new EventEmitter();
 
-  relationShip = relationShip;
+    marriage: number;
 
-  constructor() {
-  }
+    relationShip = relationShip;
 
-  updateAddress(address:string): void {
-    if(addressAreaFormat.test(address)) {
-      this.family.addressArea = address;
-    }else {
-      this.family.addressDetail = address;
+    constructor() {
     }
-  }
+
+    updateAddress(address: string): void {
+        if (addressAreaFormat.test(address)) {
+            this.family.addressArea = address;
+        } else {
+            this.family.addressDetail = address;
+        }
+    }
 
 }

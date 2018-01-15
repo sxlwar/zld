@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { LeaveDetailPage } from './leave-detail';
 
 @NgModule({
-  declarations: [
-    LeaveDetailPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(LeaveDetailPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        LeaveDetailPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(LeaveDetailPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class LeaveDetailPageModule {}
+export class LeaveDetailPageModule { }

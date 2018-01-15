@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { LocationCardPage } from './location-card';
 
 @NgModule({
-  declarations: [
-    LocationCardPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(LocationCardPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        LocationCardPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(LocationCardPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class LocationCardPageModule {}
+export class LocationCardPageModule { }

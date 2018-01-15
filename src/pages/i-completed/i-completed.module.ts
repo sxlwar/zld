@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { ICompletedPage } from './i-completed';
 
 @NgModule({
-  declarations: [
-    ICompletedPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ICompletedPage),
-    ComponentsModule,
-    TranslateModule,
-    SharedModule,
-  ],
+    declarations: [
+        ICompletedPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ICompletedPage),
+        ComponentsModule,
+        TranslateModule,
+        SharedModule,
+    ],
 })
-export class ICompletedPageModule {}
+export class ICompletedPageModule { }

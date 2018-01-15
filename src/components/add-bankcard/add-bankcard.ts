@@ -10,85 +10,85 @@ import { ViewController } from 'ionic-angular';
 import { Component, OnDestroy } from '@angular/core';
 
 @Component({
-  selector: 'add-bankcard',
-  templateUrl: 'add-bankcard.html'
+    selector: 'add-bankcard',
+    templateUrl: 'add-bankcard.html'
 })
 export class AddBankcardComponent implements OnDestroy {
-  
-  personalId: Observable<PersonalId>;
 
-  bankcardForm: FormGroup;
+    personalId: Observable<PersonalId>;
 
-  subscriptions: Subscription[] = [];
+    bankcardForm: FormGroup;
 
-  cardInfoSubscription: Subscription;
+    subscriptions: Subscription[] = [];
 
-  constructor(
-    public viewCtrl: ViewController,
-    public fb: FormBuilder,
-    public bankcard: BankcardService,
-    public personal: PersonalService,
-    public mapper: MapperService
-  ) {
-    this.initialModel();
+    cardInfoSubscription: Subscription;
 
-    this.getData();
-  }
+    constructor(
+        public viewCtrl: ViewController,
+        public fb: FormBuilder,
+        public bankcard: BankcardService,
+        public personal: PersonalService,
+        public mapper: MapperService
+    ) {
+        this.initialModel();
 
-  initialModel() {
-    this.initialForm();
-
-    this.subscriptions = [
-      this.bankcard.getBankInfo().subscribe(res => this.bankcardForm.patchValue({ cardType: res.bank_name + res.brand })),
-      this.personal.getPersonalIdResponse().subscribe(value => !value && this.personal.getPersonalIdList())
-    ];
-  }
-
-  getData() {
-    this.personalId = this.personal.getPersonalId();
-  }
-
-  initialForm() {
-    this.bankcardForm = this.fb.group({
-      cardNumber: ['', bankcardNumberValidator],
-      phoneNumber: ['', mobilePhoneValidator],
-      cardType: ['', creditCardValidator],
-      isMaster: false
-    });
-  }
-
-  getCardType(): void {
-    const cardNumber = this.bankcardForm.get('cardNumber') as FormControl;
-
-    if (!bankcardNumberValidator(cardNumber)) {
-      this.cardInfoSubscription && this.cardInfoSubscription.unsubscribe();
-
-      this.cardInfoSubscription = this.bankcard.getBankInformation(Observable.of(cardNumber.value));
+        this.getData();
     }
-  }
 
-  execution() {
-    this.viewCtrl.dismiss(this.mapper.transformAddBankcard(this.bankcardForm.value));
-  }
+    initialModel() {
+        this.initialForm();
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
+        this.subscriptions = [
+            this.bankcard.getBankInfo().subscribe(res => this.bankcardForm.patchValue({ cardType: res.bank_name + res.brand })),
+            this.personal.getPersonalIdResponse().subscribe(value => !value && this.personal.getPersonalIdList())
+        ];
+    }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    getData() {
+        this.personalId = this.personal.getPersonalId();
+    }
 
-  get cardNumber() {
-    return this.bankcardForm.get('cardNumber');
-  }
+    initialForm() {
+        this.bankcardForm = this.fb.group({
+            cardNumber: ['', bankcardNumberValidator],
+            phoneNumber: ['', mobilePhoneValidator],
+            cardType: ['', creditCardValidator],
+            isMaster: false
+        });
+    }
 
-  get phoneNumber() {
-    return this.bankcardForm.get('phoneNumber');
-  }
+    getCardType(): void {
+        const cardNumber = this.bankcardForm.get('cardNumber') as FormControl;
 
-  get cardTye() {
-    return this.bankcardForm.get('cardType');
-  }
+        if (!bankcardNumberValidator(cardNumber)) {
+            this.cardInfoSubscription && this.cardInfoSubscription.unsubscribe();
+
+            this.cardInfoSubscription = this.bankcard.getBankInformation(Observable.of(cardNumber.value));
+        }
+    }
+
+    execution() {
+        this.viewCtrl.dismiss(this.mapper.transformAddBankcard(this.bankcardForm.value));
+    }
+
+    dismiss() {
+        this.viewCtrl.dismiss();
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
+
+    get cardNumber() {
+        return this.bankcardForm.get('cardNumber');
+    }
+
+    get phoneNumber() {
+        return this.bankcardForm.get('phoneNumber');
+    }
+
+    get cardTye() {
+        return this.bankcardForm.get('cardType');
+    }
 
 }

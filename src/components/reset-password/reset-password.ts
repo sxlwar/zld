@@ -62,7 +62,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
             this.loginService.handleResetPhoneVerCodeError(),
         ];
 
-        if(this.reset) {
+        if (this.reset) {
             this.subscriptions.push(this.reset.subscribe(_ => this.resetPwdForm.reset()))
         }
     }

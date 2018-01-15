@@ -10,73 +10,73 @@ import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angu
 
 @IonicPage()
 @Component({
-  selector: 'page-bankcard',
-  templateUrl: 'bankcard.html',
+    selector: 'page-bankcard',
+    templateUrl: 'bankcard.html',
 })
 export class BankcardPage {
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  bankcards: Observable<Bankcard[]>;
+    bankcards: Observable<Bankcard[]>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public bankcard: BankcardService,
-    public tip: TipService,
-    public translate: TranslateService
-  ) {
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public modalCtrl: ModalController,
+        public bankcard: BankcardService,
+        public tip: TipService,
+        public translate: TranslateService
+    ) {
+    }
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    return opt || view;
-  }
+        return opt || view;
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.sendRequest();
-  }
+        this.sendRequest();
+    }
 
-  ionViewWillUnload() {
-    this.bankcard.resetBankcardAddResponse();
+    ionViewWillUnload() {
+        this.bankcard.resetBankcardAddResponse();
 
-    this.bankcard.resetBankcardDeleteResponse();
+        this.bankcard.resetBankcardDeleteResponse();
 
-    this.bankcard.resetBankcardInformation();
+        this.bankcard.resetBankcardInformation();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
-  initialModel(): void {
-    this.bankcards = this.bankcard.getBankCards();
-  }
+    initialModel(): void {
+        this.bankcards = this.bankcard.getBankCards();
+    }
 
-  sendRequest(): void {
-    this.subscriptions = [
-      ...this.bankcard.handleError(),
-      this.bankcard.getBankCardList()
-    ];
-  }
+    sendRequest(): void {
+        this.subscriptions = [
+            ...this.bankcard.handleError(),
+            this.bankcard.getBankCardList()
+        ];
+    }
 
-  addCard(): void {
-    const modal = this.modalCtrl.create(AddBankcardComponent);
+    addCard(): void {
+        const modal = this.modalCtrl.create(AddBankcardComponent);
 
-    modal.present();
+        modal.present();
 
-    modal.onDidDismiss(data => data && this.bankcard.addBankCard(Observable.of(data)));
-  }
+        modal.onDidDismiss(data => data && this.bankcard.addBankCard(Observable.of(data)));
+    }
 
-  //TODO:确认删除后的步骤没有验证，需要确保在本地删除此卡；
-  deleteCard(card: Bankcard): void {
-    const confirmFn = () =>  this.bankcard.deleteBankCard(Observable.of(card.id));
+    //TODO:确认删除后的步骤没有验证，需要确保在本地删除此卡；
+    deleteCard(card: Bankcard): void {
+        const confirmFn = () => this.bankcard.deleteBankCard(Observable.of(card.id));
 
-    const message = this.translate.get(['OPERATE_CONFIRM', 'DELETE_BANK_CARD_TIP', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
-      .map(res => ({ title: res.OPERATE_CONFIRM, message: res.DELETE_BANK_CARD_TIP, cancelText: res.CANCEL_BUTTON, confirmText: res.CONFIRM_BUTTON }));
+        const message = this.translate.get(['OPERATE_CONFIRM', 'DELETE_BANK_CARD_TIP', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
+            .map(res => ({ title: res.OPERATE_CONFIRM, message: res.DELETE_BANK_CARD_TIP, cancelText: res.CANCEL_BUTTON, confirmText: res.CONFIRM_BUTTON }));
 
-    this.tip.showConfirmProp(message, confirmFn);
-  }
+        this.tip.showConfirmProp(message, confirmFn);
+    }
 }

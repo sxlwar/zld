@@ -1,90 +1,91 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'WORKER_CONTRACT_DETAIL' | translate}}</ion-title>
+    <ion-navbar>
+        <ion-title>{{'WORKER_CONTRACT_DETAIL' | translate}}</ion-title>
 
-    <ion-buttons end>
-      <button ion-button icon-only  (click)="editContract()">
-        <ion-icon name="create"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="editContract()">
+                <ion-icon name="create"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-list *ngIf="contract">
+    <ion-list *ngIf="contract">
 
-    <!------------------------------------Common section------------------------------------>
+        <!------------------------------------Common section------------------------------------>
 
-    <ion-item>
-      <ion-label fixed>{{'PARTY_A' | translate}}</ion-label>
-      <ion-input disabled [value]="contract.partyA"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'PARTY_A' | translate}}</ion-label>
+            <ion-input disabled [value]="contract.partyA"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'PARTY_B' | translate}}</ion-label>
-      <ion-input disabled [value]="contract.partyB"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'PARTY_B' | translate}}</ion-label>
+            <ion-input disabled [value]="contract.partyB"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'CONTRACT_EXPIRE' | translate}}</ion-label>
-      <ion-input disabled [value]="contract.expire"></ion-input>
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'CONTRACT_EXPIRE' | translate}}</ion-label>
+            <ion-input disabled [value]="contract.expire"></ion-input>
+        </ion-item>
 
-    <ion-item>
-      <ion-label fixed>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
-      <ion-input disabled [value]="contract.payType | uppercase | translate"></ion-input> <!-- For simplicity, the values of this field are coupled to the keys of the i18n. -->
-    </ion-item>
+        <ion-item>
+            <ion-label fixed>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
+            <ion-input disabled [value]="contract.payType | uppercase | translate"></ion-input>
+            <!-- For simplicity, the values of this field are coupled to the keys of the i18n. -->
+        </ion-item>
 
-    <!------------------------------------Timer contract section------------------------------------>
+        <!------------------------------------Timer contract section------------------------------------>
 
-    <div *ngIf="isTimerContract">
-      <ion-item>
-        <ion-label fixed>{{'ATTENDANCE_TIME_INTERVAL' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.attendanceTimeInterval"></ion-input>
-      </ion-item>
+        <div *ngIf="isTimerContract">
+            <ion-item>
+                <ion-label fixed>{{'ATTENDANCE_TIME_INTERVAL' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.attendanceTimeInterval"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.unitPrice | priceUnit:'timer' | async"></ion-input>
-      </ion-item>
+            <ion-item>
+                <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.unitPrice | priceUnit:'timer' | async"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{'OVERTIME_UNIT_PRICE' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.overTimeUnitPrice | priceUnit:'timer' | async"></ion-input>
-      </ion-item>
+            <ion-item>
+                <ion-label fixed>{{'OVERTIME_UNIT_PRICE' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.overTimeUnitPrice | priceUnit:'timer' | async"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.payday | everyMonth"></ion-input>
-      </ion-item>
-    </div>
+            <ion-item>
+                <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.payday | everyMonth"></ion-input>
+            </ion-item>
+        </div>
 
-    <!------------------------------------Piecer contract section------------------------------------>
+        <!------------------------------------Piecer contract section------------------------------------>
 
-    <div *ngIf="!isTimerContract">
-      <ion-item>
-        <ion-label fixed>{{'PIECE_NAME' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.pieceName"></ion-input>
-      </ion-item>
+        <div *ngIf="!isTimerContract">
+            <ion-item>
+                <ion-label fixed>{{'PIECE_NAME' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.pieceName"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{'PIECE_LOCATION' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.pieceLocation"></ion-input>
-      </ion-item>
+            <ion-item>
+                <ion-label fixed>{{'PIECE_LOCATION' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.pieceLocation"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{'PIECE_COUNT' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.pieceCount"></ion-input>
-      </ion-item>
+            <ion-item>
+                <ion-label fixed>{{'PIECE_COUNT' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.pieceCount"></ion-input>
+            </ion-item>
 
-      <ion-item>
-        <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
-        <ion-input disabled [value]="contract.unitPirce | priceUnit:'piecer' | async"></ion-input>
-      </ion-item>
-    </div>
+            <ion-item>
+                <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
+                <ion-input disabled [value]="contract.unitPirce | priceUnit:'piecer' | async"></ion-input>
+            </ion-item>
+        </div>
 
-  </ion-list>
+    </ion-list>
 </ion-content>

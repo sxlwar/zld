@@ -183,9 +183,9 @@ export class LocationCardService {
     getTeamStateOptions(): Observable<ConditionOption[]> {
         return this.store.select(selectLocationCardTeamStateOptions);
     }
-    
-    updateTeamStateOptions(source: ConditionOption[]): void{
-       this.store.dispatch(new UpdateTeamStateAction(source));
+
+    updateTeamStateOptions(source: ConditionOption[]): void {
+        this.store.dispatch(new UpdateTeamStateAction(source));
     }
 
     getSelectedTeam(): Observable<ConditionOption> {

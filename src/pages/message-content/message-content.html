@@ -1,49 +1,49 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'MESSAGE_DETAIL' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'MESSAGE_DETAIL' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-card>
-    <ion-card-header text-center>{{msg.title}}</ion-card-header>
+    <ion-card>
+        <ion-card-header text-center>{{msg.title}}</ion-card-header>
 
-    <ion-card-content>
-      <div [ngSwitch]="msg.msg_type">
+        <ion-card-content>
+            <div [ngSwitch]="msg.msg_type">
 
-        <div *ngSwitchCase="'1'">
-          <salary-message [content]="content | async"></salary-message>
-        </div>
+                <div *ngSwitchCase="'1'">
+                    <salary-message [content]="content | async"></salary-message>
+                </div>
 
-        <div *ngSwitchCase="'2'">
-          <primary-contract-message [content]="content | async | messageParse | messageSplit"></primary-contract-message>
-        </div>
+                <div *ngSwitchCase="'2'">
+                    <primary-contract-message [content]="content | async | messageParse | messageSplit"></primary-contract-message>
+                </div>
 
-        <div *ngSwitchCase="'3'">
-          <subcontract-message [content]="content | async | messageParse | messageSplit"></subcontract-message>
-        </div>
+                <div *ngSwitchCase="'3'">
+                    <subcontract-message [content]="content | async | messageParse | messageSplit"></subcontract-message>
+                </div>
 
-        <div *ngSwitchCase="'4'">
-          <worker-contract-message [content]="content | async | messageParse"></worker-contract-message>
-        </div>
+                <div *ngSwitchCase="'4'">
+                    <worker-contract-message [content]="content | async | messageParse"></worker-contract-message>
+                </div>
 
-        <div *ngSwitchCase="'5'">
-          <salary-card-message [content]="content | async"></salary-card-message>
-        </div>
+                <div *ngSwitchCase="'5'">
+                    <salary-card-message [content]="content | async"></salary-card-message>
+                </div>
 
-        <div *ngSwitchCase="'7'">
-          <work-flow-message [content]="content | async | messageParse" [time]="msg.modify_time"></work-flow-message>
-        </div>
+                <div *ngSwitchCase="'7'">
+                    <work-flow-message [content]="content | async | messageParse" [time]="msg.modify_time"></work-flow-message>
+                </div>
 
-        <div *ngSwitchCase="'8'">
-          <attendance-message [content]="content | async | messageParse"></attendance-message>
-        </div>
+                <div *ngSwitchCase="'8'">
+                    <attendance-message [content]="content | async | messageParse"></attendance-message>
+                </div>
 
-      </div>
-    </ion-card-content>
-  </ion-card>
+            </div>
+        </ion-card-content>
+    </ion-card>
 </ion-content>

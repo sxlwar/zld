@@ -3,25 +3,25 @@ import 'rxjs/add/operator/scan'
 import { SearchItem } from '../../interfaces/search-interface';
 
 @Component({
-  selector: 'fuzzy-search',
-  templateUrl: 'fuzzy-search.html'
+    selector: 'fuzzy-search',
+    templateUrl: 'fuzzy-search.html'
 })
 export class FuzzySearchComponent {
 
-  @Input() selectType: string;
+    @Input() selectType: string;
 
-  @Input() items: SearchItem[];
+    @Input() items: SearchItem[];
 
-  @Input() type = 'text';
+    @Input() type = 'text';
 
-  @Input() placeholder = '';
+    @Input() placeholder = '';
 
-  @Output() confirm = new EventEmitter();
+    @Output() confirm = new EventEmitter();
 
-  @Output() search: EventEmitter<string> = new EventEmitter();
+    @Output() search: EventEmitter<string> = new EventEmitter();
 
-  @Output() select: EventEmitter<SearchItem> = new EventEmitter();
+    @Output() select: EventEmitter<SearchItem> = new EventEmitter();
 
-  constructor() {
-  }
+    constructor() {
+    }
 }

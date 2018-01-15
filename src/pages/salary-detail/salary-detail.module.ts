@@ -4,12 +4,12 @@ import { IonicPageModule } from 'ionic-angular';
 import { SalaryDetailPage } from './salary-detail';
 
 @NgModule({
-  declarations: [
-    SalaryDetailPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(SalaryDetailPage),
-    TranslateModule,
-  ],
+    declarations: [
+        SalaryDetailPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(SalaryDetailPage),
+        TranslateModule,
+    ],
 })
-export class SalaryDetailPageModule {}
+export class SalaryDetailPageModule { }

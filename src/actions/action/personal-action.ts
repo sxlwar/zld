@@ -266,7 +266,7 @@ export class GetWorkExperienceListAction implements Action {
 
 export const WORK_EXPERIENCE_LIST_FAIL = 'WORK_EXPERIENCE_LIST_FAIL';
 
-export class WorkExperienceListFailAction implements Action  {
+export class WorkExperienceListFailAction implements Action {
     readonly type = WORK_EXPERIENCE_LIST_FAIL;
 
     constructor(public payload: WorkExperienceListResponse) { }
@@ -280,7 +280,7 @@ export class WorkExperienceListSuccessAction implements Action {
     constructor(public payload: WorkExperienceListResponse) { }
 }
 
-export const ADD_WORK_EXPERIENCE  = 'ADD_WORK_EXPERIENCE';
+export const ADD_WORK_EXPERIENCE = 'ADD_WORK_EXPERIENCE';
 
 export class AddWorkExperienceAction implements Action {
     readonly type = ADD_WORK_EXPERIENCE;
@@ -332,7 +332,7 @@ export const UPDATE_WORK_EXPERIENCE = 'UPDATE_WORK_EXPERIENCE';
 
 export class UpdateWorkExperienceAction implements Action {
     readonly type = UPDATE_WORK_EXPERIENCE;
-    
+
     constructor(public payload: WorkExperienceUpdateOptions) { }
 }
 
@@ -362,7 +362,7 @@ export class GetPlatformWorkExperienceListAction implements Action {
 
 export const PLATFORM_WORK_EXPERIENCE_LIST_FAIL = 'PLATFORM_WORK_EXPERIENCE_LIST_FAIL';
 
-export class PlatformWorkExperienceListFailAction implements Action  {
+export class PlatformWorkExperienceListFailAction implements Action {
     readonly type = PLATFORM_WORK_EXPERIENCE_LIST_FAIL;
 
     constructor(public payload: PlatformWorkExperienceResponse) { }

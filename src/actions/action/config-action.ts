@@ -1,11 +1,11 @@
-import {Action} from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 export const SET_PLATFORM_DIRECTION = 'SET_PLATFORM_DIRECTION';
 
 export class SetPlatformDirectionAction implements Action {
-  readonly type = SET_PLATFORM_DIRECTION;
+    readonly type = SET_PLATFORM_DIRECTION;
 
-  constructor(public payload: string) { }
+    constructor(public payload: string) { }
 }
 
-export type Actions =  SetPlatformDirectionAction;
+export type Actions = SetPlatformDirectionAction;

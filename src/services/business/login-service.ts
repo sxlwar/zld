@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ErrorService } from '../errors/error-service';
 import { LoginResponse, PhoneVerCodeResponse, RegisterResponse, ResetPasswordResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
-import { LoginFormModel, MapperService, ResetPwdFormModel, SignUpFormModel } from '../api/mapper-service';
+import { LoginFormModel, ResetPwdFormModel, SignUpFormModel } from '../api/mapper-service';
 import { ProcessorService } from '../api/processor-service';
 
 @Injectable()
@@ -29,38 +29,12 @@ export class LoginService {
         public store: Store<fromRoot.AppState>,
         public process: ProcessorService,
         public errorService: ErrorService,
-        public mapper: MapperService,
         public userInfo: UserService
     ) {
     }
 
-    /**
-     * @description
-     * These methods are used for change the state of the UI, which has no side effects.
-     * */
-    changeSlidesActive(index: number) {
-        this.store.dispatch(new ShowSpecificSlideAction(index));
-    }
+    /* =========================================================Data acquisition========================================================================= */
 
-    changeInnerSlidesActive(index: number) {
-        this.store.dispatch(new ShowSpecificInnerSlideAction(index));
-    }
-
-    updateVerificationImageUrl(source: Observable<boolean>): Subscription {
-        return source.filter(value => value)
-            .mergeMapTo(Observable.range(1, 5)
-                .map(_ => random(1, 26).toString(36))
-                .reduce((acc, cur) => acc + cur)
-            )
-            .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
-    }
-
-    /*=============================================No Side effect===================================================*/
-
-    /**
-     * @description
-     * These methods used for generate an observable to the component and. They are not affected by side effects.
-     * */
     getActiveIndexOfSlides() {
         return this.store.select(fromRoot.selectActiveIndexOfSlides);
     }
@@ -76,8 +50,6 @@ export class LoginService {
     getSelectedCompany() {
         return this.store.select(selectSelectedCompany);
     }
-
-    /*==============================================Side effect===================================================*/
 
     getLoginInfo(): Observable<LoginResponse> {
         return this.store.select(selectUserInfo);
@@ -99,7 +71,7 @@ export class LoginService {
         return this.store.select(getResetPassword);
     }
 
-    /*==============================================Request handle===================================================*/
+    /* ===================================================================API Request======================================================================== */
 
     /**
      * @description
@@ -109,8 +81,11 @@ export class LoginService {
      * */
     login(form: Observable<LoginFormModel>): Subscription {
         return this.process.loginProcessor(
-            form.map(form => this.mapper.loginFormMap(form))
-                .withLatestFrom(this.store.select(selectRandomCode), ({ username, password, captcha_code }, random_key) => !!captcha_code ? { username, password, captcha_code, random_key } : { username, password })
+            form.map(form => this.process.loginFormMap(form))
+                .withLatestFrom(
+                this.store.select(selectRandomCode),
+                ({ username, password, captcha_code }, random_key) => !!captcha_code ? { username, password, captcha_code, random_key } : { username, password }
+                )
         );
     }
 
@@ -121,7 +96,7 @@ export class LoginService {
      * */
     getPhoneVerCode(form: Observable<SignUpFormModel>): Subscription {
         return this.process.phoneVerificationProcessor(
-            form.map(form => this.mapper.signUpFormMap(form))
+            form.map(form => this.process.signUpFormMap(form))
                 .withLatestFrom(
                 this.store.select(selectPhoneVerCodeCaptcha),
                 this.store.select(selectRandomCode),
@@ -132,7 +107,7 @@ export class LoginService {
 
     getResetPwdPhoneVerCode(form: Observable<ResetPwdFormModel>): Subscription {
         return this.process.phoneVerificationProcessor(
-            form.map(form => this.mapper.resetPwdForm(form))
+            form.map(form => this.process.resetPwdForm(form))
                 .withLatestFrom(
                 this.store.select(selectResetPhoneVerCodeCaptcha),
                 this.store.select(selectRandomCode),
@@ -143,7 +118,7 @@ export class LoginService {
 
     signUp(form: Observable<SignUpFormModel>): Subscription {
         return this.process.registerProcessor(
-            form.map(form => this.mapper.signUpFormMap(form))
+            form.map(form => this.process.signUpFormMap(form))
                 .withLatestFrom(
                 this.store.select(selectRandomCode),
                 this.store.select(selectSelectedCompany),
@@ -161,14 +136,33 @@ export class LoginService {
 
     resetPwd(form: Observable<ResetPwdFormModel>): Subscription {
         return this.process.resetPwdProcessor(
-            form.map(form => this.mapper.resetPwdForm(form))
+            form.map(form => this.process.resetPwdForm(form))
                 .withLatestFrom(this.store.select(selectRandomCode),
                 ({ username, password, code, captcha_code }, rand_captcha_key) => !!captcha_code ? { username, password, code, captcha_code, rand_captcha_key } : { username, password, code }
                 )
         );
     }
 
-    /*======================================================error handle========================================================*/
+    /* ==================================================================Local state change=========================================================== */
+
+    changeSlidesActive(index: number) {
+        this.store.dispatch(new ShowSpecificSlideAction(index));
+    }
+
+    changeInnerSlidesActive(index: number) {
+        this.store.dispatch(new ShowSpecificInnerSlideAction(index));
+    }
+
+    updateVerificationImageUrl(source: Observable<boolean>): Subscription {
+        return source.filter(value => value)
+            .mergeMapTo(Observable.range(1, 5)
+                .map(_ => random(1, 26).toString(36))
+                .reduce((acc, cur) => acc + cur)
+            )
+            .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
+    }
+
+    /* =================================================================Error handle================================================================== */
 
     handleError(): Subscription[] {
         return [

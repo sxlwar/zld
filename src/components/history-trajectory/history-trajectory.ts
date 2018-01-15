@@ -64,7 +64,7 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.initialModel();
-        
+
         this.launch();
     }
 

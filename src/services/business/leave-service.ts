@@ -18,7 +18,7 @@ export class LeaveService extends RecordOptionService {
         public userInfo: UserService,
         public error: ErrorService,
         public processor: ProcessorService
-    ) { 
+    ) {
         super();
     }
 

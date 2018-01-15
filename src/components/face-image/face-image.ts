@@ -8,32 +8,32 @@ import { Component, OnInit } from '@angular/core';
  * Components.
  */
 @Component({
-  selector: 'face-image',
-  templateUrl: 'face-image.html'
+    selector: 'face-image',
+    templateUrl: 'face-image.html'
 })
 export class FaceImageComponent implements OnInit {
-  similarity: number;
+    similarity: number;
 
-  screen: string;
+    screen: string;
 
-  capture: string;
+    capture: string;
 
-  constructor(
-    public navParams: NavParams,
-    public viewCtrl: ViewController
-  ) {
+    constructor(
+        public navParams: NavParams,
+        public viewCtrl: ViewController
+    ) {
 
-  }
+    }
 
-  ngOnInit() {
-    this.similarity = this.navParams.get('similarity') * 100;
+    ngOnInit() {
+        this.similarity = this.navParams.get('similarity') * 100;
 
-    this.screen = this.navParams.get('screen');
+        this.screen = this.navParams.get('screen');
 
-    this.capture = this.navParams.get('capture');
-  }
+        this.capture = this.navParams.get('capture');
+    }
 
-  dismiss() {
-    this.viewCtrl.dismiss();
-  }
+    dismiss() {
+        this.viewCtrl.dismiss();
+    }
 }

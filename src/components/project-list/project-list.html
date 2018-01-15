@@ -1,6 +1,5 @@
 <!-- Generated template for the ProjectListComponent component -->
 <ion-list>
-  <ion-list-header>可选工程</ion-list-header>
-  <ion-item *ngFor="let project of (projects | async)"
-          (click)="close(project)">{{project.name}}</ion-item>
+    <ion-list-header>可选工程</ion-list-header>
+    <ion-item *ngFor="let project of (projects | async)" (click)="close(project)">{{project.name}}</ion-item>
 </ion-list>

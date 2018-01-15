@@ -18,7 +18,6 @@ export class LaunchService {
         public processor: ProcessorService,
         public error: ErrorService,
         public userInfo: UserService,
-        public mapper: MapperService
     ) {
 
     }
@@ -71,49 +70,49 @@ export class LaunchService {
 
     createWorkerContract(form: Observable<WorkerContractFormModel>): Subscription {
         return this.processor.createWorkerContractProcessor(
-            form.map(form => this.mapper.transformWorkerContractForm(form))
+            form.map(form => this.processor.transformWorkerContractForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (form, sid) => ({ ...form, sid }))
         );
     }
 
     createAttendanceModify(form: Observable<AttendanceModifyFormModel>): Subscription {
         return this.processor.createAttendanceModifyProcessor(
-            form.map(form => this.mapper.transformAttendanceModifyForm(form))
+            form.map(form => this.processor.transformAttendanceModifyForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (form, sid) => ({ ...form, sid }))
         );
     }
 
     createLeave(form: Observable<LeaveFormModel>): Subscription {
         return this.processor.createLeaveProcessor(
-            form.map(form => this.mapper.transformLeaveForm(form))
+            form.map(form => this.processor.transformLeaveForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
         );
     }
 
     createOvertime(form: Observable<OvertimeFormModel>): Subscription {
         return this.processor.createOvertimeProcessor(
-            form.map(form => this.mapper.transformOvertimeForm(form))
+            form.map(form => this.processor.transformOvertimeForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
         );
     }
 
     createPieceAudit(form: Observable<PieceAuditFormModel>): Subscription {
         return this.processor.createPieceAuditProcessor(
-            form.map(form => this.mapper.transformPieceAuditForm(form))
+            form.map(form => this.processor.transformPieceAuditForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
         );
     }
 
     createWorkerContractModify(form: Observable<WorkerContractModifyFormModel>): Subscription {
         return this.processor.createWorkerContractModifyProcessor(
-            form.map(form => this.mapper.transformWorkerContractModifyForm(form))
+            form.map(form => this.processor.transformWorkerContractModifyForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
         );
     }
 
     editWorkerContract(form: Observable<WorkerContractEditFormModel>): Subscription {
         return this.processor.workerContractEditProcessor(
-            form.map(form => this.mapper.transformWorkerContractEditForm(form))
+            form.map(form => this.processor.transformWorkerContractEditForm(form))
                 .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
         );
     }

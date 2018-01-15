@@ -4,39 +4,39 @@ import { WorkTypeListResponse } from '../../interfaces/response-interface';
 export const GET_WORK_TYPE_LIST = 'GET_WORK_TYPE_LIST';
 
 export class GetWorkTypeListAction implements Action {
-  readonly type = GET_WORK_TYPE_LIST;
+    readonly type = GET_WORK_TYPE_LIST;
 
-  constructor() {
-  }
+    constructor() {
+    }
 }
 
 export const WORK_TYPE_FAIL_ACTION = 'WORK_TYPE_FAIL_ACTION';
 
 export class WorkTypeListFailAction implements Action {
-  readonly type = WORK_TYPE_FAIL_ACTION;
+    readonly type = WORK_TYPE_FAIL_ACTION;
 
-  constructor(public payload: WorkTypeListResponse) {
-  }
+    constructor(public payload: WorkTypeListResponse) {
+    }
 }
 
 export const WORK_TYPE_SUCCESS_ACTION = 'WORK_TYPE_SUCCESS_ACTION';
 
 export class WorkTypeListSuccessAction implements Action {
-  readonly type = WORK_TYPE_SUCCESS_ACTION;
+    readonly type = WORK_TYPE_SUCCESS_ACTION;
 
-  constructor(public payload: WorkTypeListResponse) {
-  }
+    constructor(public payload: WorkTypeListResponse) {
+    }
 }
 
 export const UPDATE_SELECTED_WORK_TYPE = 'UPDATE_SELECTED_WORK_TYPE';
 
 export class UpdateSelectedWorkTypesAction implements Action {
-  readonly type = UPDATE_SELECTED_WORK_TYPE;
+    readonly type = UPDATE_SELECTED_WORK_TYPE;
 
-  constructor(public payload: number[]) { }
+    constructor(public payload: number[]) { }
 }
 
 export type Actions = GetWorkTypeListAction
-  | WorkTypeListFailAction
-  | WorkTypeListSuccessAction
-  | UpdateSelectedWorkTypesAction;
+    | WorkTypeListFailAction
+    | WorkTypeListSuccessAction
+    | UpdateSelectedWorkTypesAction;

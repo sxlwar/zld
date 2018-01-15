@@ -4,12 +4,12 @@ import { ProjectBillPage } from './project-bill';
 import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
-  declarations: [
-    ProjectBillPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ProjectBillPage),
-    TranslateModule,
-  ],
+    declarations: [
+        ProjectBillPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ProjectBillPage),
+        TranslateModule,
+    ],
 })
-export class ProjectBillPageModule {}
+export class ProjectBillPageModule { }

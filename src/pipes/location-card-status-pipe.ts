@@ -4,7 +4,7 @@ import { PipeTransform, Pipe } from '@angular/core';
 })
 export class LocationCardStatusPipe implements PipeTransform {
     transform(value: number): string {
-        if(value === 0) return 'OFFLINE';
+        if (value === 0) return 'OFFLINE';
         return 'ONLINE';
     }
 }

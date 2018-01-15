@@ -1,37 +1,37 @@
 <ion-list *ngIf="basic">
 
-  <ion-item>
-    <ion-avatar item-start>
-      <img [src]="basic.headImg">
-    </ion-avatar>
-    <h2 style="margin-top: 0;">{{'NAME' | translate}} {{basic.name}}</h2>
-    <h3 style="margin-top: 0;">{{'MOBILE_PHONE' | translate}} {{basic.phone}}</h3>
-  </ion-item>
+    <ion-item>
+        <ion-avatar item-start>
+            <img [src]="basic.headImg">
+        </ion-avatar>
+        <h2 style="margin-top: 0;">{{'NAME' | translate}} {{basic.name}}</h2>
+        <h3 style="margin-top: 0;">{{'MOBILE_PHONE' | translate}} {{basic.phone}}</h3>
+    </ion-item>
 
-  <ion-item *ngIf="basic.company">
-    <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
-    <ion-input disabled [value]="basic.company"></ion-input>
-  </ion-item>
+    <ion-item *ngIf="basic.company">
+        <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
+        <ion-input disabled [value]="basic.company"></ion-input>
+    </ion-item>
 
-  <ion-item>
-    <ion-label fixed>{{'CHARACTER' | translate}}</ion-label>
-    <ion-input disabled [value]="basic.role"></ion-input>
-  </ion-item>
+    <ion-item>
+        <ion-label fixed>{{'CHARACTER' | translate}}</ion-label>
+        <ion-input disabled [value]="basic.role"></ion-input>
+    </ion-item>
 
-  <!-- 以下3个ngIf不能删，后台数据结构不稳定，返回的字段里可能压根就没有身份信息的字段 -->
-  <ion-item *ngIf="personalId">
-    <ion-label fixed>{{'PERSONAL_ID' | translate}}</ion-label>
-    <ion-input disabled [value]="personalId.num"></ion-input>
-  </ion-item>
+    <!-- 以下3个ngIf不能删，后台数据结构不稳定，返回的字段里可能压根就没有身份信息的字段 -->
+    <ion-item *ngIf="personalId">
+        <ion-label fixed>{{'PERSONAL_ID' | translate}}</ion-label>
+        <ion-input disabled [value]="personalId.num"></ion-input>
+    </ion-item>
 
-  <ion-item *ngIf="personalId">
-    <ion-label fixed>{{'SEX' | translate}}</ion-label>
-    <ion-input disabled [value]="personalId.sex | sex | translate"></ion-input>
-  </ion-item>
+    <ion-item *ngIf="personalId">
+        <ion-label fixed>{{'SEX' | translate}}</ion-label>
+        <ion-input disabled [value]="personalId.sex | sex | translate"></ion-input>
+    </ion-item>
 
-  <ion-item *ngIf="personalId">
-    <ion-label fixed>{{'BIRTHDAY' | translate}}</ion-label>
-    <ion-input disabled [value]="personalId.birth_date"></ion-input>
-  </ion-item>
+    <ion-item *ngIf="personalId">
+        <ion-label fixed>{{'BIRTHDAY' | translate}}</ion-label>
+        <ion-input disabled [value]="personalId.birth_date"></ion-input>
+    </ion-item>
 
 </ion-list>

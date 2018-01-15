@@ -171,8 +171,8 @@ export class SignWorkerContractPage {
 
         this.attendanceTimeSettingText = this.isPieceWiseAttendance ? 'CANCEL_PIECE_WISE' : 'PIECE_WISE_SETTING';
     }
-    
-    getAttach(attach: string[]):void {
+
+    getAttach(attach: string[]): void {
         this.attachList = attach;
     }
 
@@ -186,7 +186,7 @@ export class SignWorkerContractPage {
         this.config.showTabBar();
 
         this.launchService.resetResponse(LaunchResponse.workerContract);
-        
+
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 

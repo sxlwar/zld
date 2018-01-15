@@ -22,7 +22,6 @@ import { Command } from './api/command'
 import { HttpService } from './api/http-service';
 import { MapperService } from './api/mapper-service';
 import { ProcessorService } from './api/processor-service';
-import { UploadService } from './api/upload-service';
 import { WebsocketService } from './api/websocket-service';
 import { AttendanceService } from './business/attendance-service';
 import { AttendanceRecordService } from './business/attendance-record-service';
@@ -55,7 +54,6 @@ export const API_SERVICES = [
     HttpService,
     MapperService,
     ProcessorService,
-    UploadService,
     WebsocketService,
 ]
 

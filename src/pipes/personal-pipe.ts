@@ -6,6 +6,6 @@ import { PipeTransform, Pipe } from '@angular/core';
 })
 export class DegreePipe implements PipeTransform {
     transform(value: number): string {
-        return degrees[value -1];
+        return degrees[value - 1];
     }
 }

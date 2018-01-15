@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { ApplyPieceAuditPage } from './apply-piece-audit';
 
 @NgModule({
-  declarations: [
-    ApplyPieceAuditPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(ApplyPieceAuditPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        ApplyPieceAuditPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(ApplyPieceAuditPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class ApplyPieceAuditPageModule {}
+export class ApplyPieceAuditPageModule { }

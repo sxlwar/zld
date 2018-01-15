@@ -7,16 +7,16 @@ import { TranslateModule } from '@ngx-translate/core';
 //endregion
 
 @NgModule({
-  declarations: [
-    PersonalAttendancePage,
-  ],
-  imports: [
-    IonicPageModule.forChild(PersonalAttendancePage),
-    ComponentsModule,
-    TranslateModule,
-  ],
-  exports: [
-    PersonalAttendancePage,
-  ]
+    declarations: [
+        PersonalAttendancePage,
+    ],
+    imports: [
+        IonicPageModule.forChild(PersonalAttendancePage),
+        ComponentsModule,
+        TranslateModule,
+    ],
+    exports: [
+        PersonalAttendancePage,
+    ]
 })
 export class PersonalAttendancePageModule { }

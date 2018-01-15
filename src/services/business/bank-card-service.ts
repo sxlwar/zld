@@ -72,11 +72,11 @@ export class BankcardService {
     resetBankcardDeleteResponse(): void {
         this.store.dispatch(new ResetDeleteBankcardResponseAction);
     }
-    
+
     resetBankcardInformation(): void {
         this.store.dispatch(new ResetBankcardInfoAction);
     }
-    
+
     handleError(): Subscription[] {
         return [
             this.error.handleErrorInSpecific(this.store.select(selectBankcardList).filter(value => !!value), 'API_ERROR'),

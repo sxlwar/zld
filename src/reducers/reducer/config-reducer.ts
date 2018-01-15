@@ -1,22 +1,22 @@
 import * as config from '../../actions/action/config-action'
 
 export interface State {
-  defaultDirection: string;
+    defaultDirection: string;
 }
 
 export const initialState: State = {
-  defaultDirection: 'ltr',
+    defaultDirection: 'ltr',
 };
 
 export function reducer(state = initialState, action: config.Actions) {
-  switch (action.type) {
+    switch (action.type) {
 
-    case config.SET_PLATFORM_DIRECTION:
-      return Object.assign({}, state, {defaultDirection: action.payload});
+        case config.SET_PLATFORM_DIRECTION:
+            return Object.assign({}, state, { defaultDirection: action.payload });
 
-    default:
-      return state;
-  }
+        default:
+            return state;
+    }
 }
 
 export const getPlatFormDirection = (state: State) => state.defaultDirection;

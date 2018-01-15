@@ -5,13 +5,13 @@ import { IonicPageModule } from 'ionic-angular';
 import { AttendanceConfirmPage } from './attendance-confirm';
 
 @NgModule({
-  declarations: [
-    AttendanceConfirmPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(AttendanceConfirmPage),
-    TranslateModule,
-    SharedModule,
-  ],
+    declarations: [
+        AttendanceConfirmPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(AttendanceConfirmPage),
+        TranslateModule,
+        SharedModule,
+    ],
 })
-export class AttendanceConfirmPageModule {}
+export class AttendanceConfirmPageModule { }

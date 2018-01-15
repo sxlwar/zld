@@ -1,23 +1,24 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'MY_APPLY' | translate}}</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'MY_APPLY' | translate}}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-item>
-    <ion-label>{{'SCREENING' | translate}}</ion-label>
-    <ion-select [(ngModel)]="screening" (ngModelChange)="setScreeningCondition($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-      [okText]="'CONFIRM_BUTTON' | translate">
-      <ion-option *ngFor="let item of screeningConditions" [value]="item.processId" [selected]="item.processId === screening">{{item.text | translate}}</ion-option>
-    </ion-select>
-  </ion-item>
+    <ion-item>
+        <ion-label>{{'SCREENING' | translate}}</ion-label>
+        <ion-select [(ngModel)]="screening" (ngModelChange)="setScreeningCondition($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+            [okText]="'CONFIRM_BUTTON' | translate">
+            <ion-option *ngFor="let item of screeningConditions" [value]="item.processId" [selected]="item.processId === screening">{{item.text | translate}}</ion-option>
+        </ion-select>
+    </ion-item>
 
-  <mission-list [list]="list | async" [total]="total | async" [operate]="operate | async" [haveMoreData]="haveMoreData | async" (auditApply)="audit($event)"
-    (getNextPage)="getNextPage($event)" (showDetail)="goToNextPage($event)" [countText]="'I_STARTED_COUNT'" [showIcon]="true"></mission-list>
+    <mission-list [list]="list | async" [total]="total | async" [operate]="operate | async" [haveMoreData]="haveMoreData | async"
+        (auditApply)="audit($event)" (getNextPage)="getNextPage($event)" (showDetail)="goToNextPage($event)" [countText]="'I_STARTED_COUNT'"
+        [showIcon]="true"></mission-list>
 
 </ion-content>

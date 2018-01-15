@@ -9,32 +9,32 @@ import { putInArray } from '../../services/utils/util';
 
 @IonicPage()
 @Component({
-  selector: 'page-version',
-  templateUrl: 'version.html',
+    selector: 'page-version',
+    templateUrl: 'version.html',
 })
 export class VersionPage {
-  version: Promise<string>;
+    version: Promise<string>;
 
-  versions: Observable<Version[]>;
+    versions: Observable<Version[]>;
 
-  constructor(
-    public appVersion: AppVersion,
-    public httpService: HttpService
-  ) {
-  }
+    constructor(
+        public appVersion: AppVersion,
+        public httpService: HttpService
+    ) {
+    }
 
-  ionViewDidLoad() {
-    this.version = this.appVersion.getVersionNumber();
+    ionViewDidLoad() {
+        this.version = this.appVersion.getVersionNumber();
 
-    //TODO:此处绕过了store，需要重构
-    this.versions = Observable.fromPromise(this.version)
-      .mergeMap(version => this.httpService.getServerVersion(version)
-        .mergeMap(response => Observable.from(response).map(item => {
-          item.intro = item.text.split('\r\n');
+        //TODO:此处绕过了store，需要重构
+        this.versions = Observable.fromPromise(this.version)
+            .mergeMap(version => this.httpService.getServerVersion(version)
+                .mergeMap(response => Observable.from(response).map(item => {
+                    item.intro = item.text.split('\r\n');
 
-          return item;
-        }).reduce(putInArray,[]))
-    );
-  }
+                    return item;
+                }).reduce(putInArray, []))
+            );
+    }
 
 }

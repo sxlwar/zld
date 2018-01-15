@@ -1,6 +1,9 @@
+import { selectPersonalIdImageResponse } from './../../reducers/index-reducer';
+import { getCertificateResponse } from './../../reducers/reducer/certificate-reducer';
+import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState, getCertificate, selectCertificateResult, selectRealName, selectSid, selectUploadResult } from '../../reducers/index-reducer';
+import { AppState, selectUploadResult, selectCertificateResponse } from '../../reducers/index-reducer';
 import { Observable } from 'rxjs/Observable';
 import { CertificateFormModel } from '../api/mapper-service';
 import { ProcessorService } from '../api/processor-service';
@@ -14,97 +17,91 @@ import { ErrorService } from '../errors/error-service';
 
 @Injectable()
 export class CertificateService {
-  subscriptions: Subscription[] = [];
 
-  constructor(
-    private store: Store<AppState>,
-    private process: ProcessorService,
-    private errorService: ErrorService
-  ) {
-    this.handleError();
-  }
+    constructor(
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private userInfo: UserService,
+        private errorService: ErrorService
+    ) {
+    }
 
-  /*===============================================No side Effect===================================================*/
-  /**
-   * @method certificateResult realname
-   * @description Give the components information that they want to know.
-   * */
-  get certificateResult(): Observable<boolean> {
-    this.monitorUploadResult();
+    /*=========================================================Data acquisition========================================================*/
 
-    return this.store.select(selectCertificateResult);
-  }
+    getCertificateResult(): Observable<boolean> {
+        return this.store.select(selectCertificateResponse).filter(value => !!value).map(res => res.auth_pass);
+    }
 
-  get realName(): Observable<string> {
-    return this.store.select(selectRealName);
-  }
+    getRealName(): Observable<string> {
+        return this.userInfo.getRealName();
+    }
 
-  /*===============================================Side Effect===================================================*/
+    getSuccessOfUploadPersonalImageResponse(): Observable<boolean> {
+        return this.store.select(selectPersonalIdImageResponse)
+            .filter(value => !!value)
+            .map(res => !!res); //FIXME: 这个地方有问题,响应的状态没有处理
+    }
 
-  /**
-   * @description
-   * Handle the certification event from UI. The form's data is converted into two parts,
-   * part of which is used to upload the image, and the other part is used when the authentication interface is called
-   * */
-  certificate(source: CertificateFormModel): void {
+    /*=========================================================API request===================================================*/
 
-    const sid$ = this.store.select(selectSid);
+    /**
+     * @description
+     * Handle the certification event from UI. The form's data is converted into two parts,
+     * part of which is used to upload the image, and the other part is used when the authentication interface is called
+     * */
+    certificate(form: Observable<CertificateFormModel>): Subscription[] {
+        const source = form.map(form => this.process.certificateForm(form));
 
-    const { realname, num, imageface, imageback } = this.process.certificateForm(source);
+        return [this.uploadPersonalIdImage(source), this.userCertificate(source)];
+    }
 
-    const upload$ = Observable.of(
-      { type: 'imageback', file: imageface },
-      { type: 'imageface', file: imageback }
-    ).withLatestFrom(
-      sid$,
-      (option, sid) => Object.assign(option, { sid })
-      ) as Observable<UploadOptions>;
+    private uploadPersonalIdImage(source: Observable<CertificateOptions>): Subscription {
+        return this.process.uploadPersonalIdImagesProcessor(
+            source.mergeMap(
+                ({ imageface, imageback }) => Observable.of({ type: 'imageback', file: imageface }, { type: 'imageface', file: imageback }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
+        );
+    }
 
-    const option$ = Observable.zip(
-      sid$,
-      Observable.of({ realname, num }),
-      (sid, other) => (Object.assign({ sid }, other))
-    ) as Observable<CertificateOptions>;
+    private userCertificate(source: Observable<CertificateOptions>): Subscription {
+        return this.process.certificateProcessor(
+            this.getSuccessOfUploadPersonalImageResponse()
+                .mergeMapTo(
+                source.map(({ realname, num }) => ({ realname, num }))
+                    .withLatestFrom(
+                    this.userInfo.getSid(),
+                    (option, sid) => ({ ...option, sid })
+                    )
+                )
+        );
+    }
 
-    const certificate$$ = this.process.certificateProcessor(option$, upload$);
+    /* =======================================================Error handle====================================================*/
 
-    this.subscriptions.push(certificate$$);
-  }
+    handleError() {
+        return this.errorService.handleErrorInSpecific(this.store.select(selectCertificateResponse), 'CER_CERTIFICATE_FAIL');
+    }
 
-  /*=============================================error handle====================================================*/
+    /**
+     * @description
+     * Monitor the result of upload images and handle error when upload fail.
+     * */
+    monitorUploadResult(): Subscription {
+        const errorMessage = this.store.select(selectUploadResult)
+            .mergeMap(data => Observable
+                .from(data)
+                .filter(data => data.code !== 1000)
+                .map(data => data.msg)
+                .distinctUntilChanged()
+                .reduce((acc, cur) => {
+                    acc.errorMessage += cur;
+                    return acc;
+                }, { errorMessage: '' })
+            );
 
-  private handleError() {
-    const certificateSubscription = this.errorService
-      .handleErrorInSpecific(this.store.select(getCertificate), 'CER_CERTIFICATE_FAIL');
-
-    this.subscriptions.push(certificateSubscription);
-  }
-
-  /**
-   * @description
-   * Monitor the result of upload images and handle error when upload fail.
-   * */
-  private monitorUploadResult(): void {
-    const errorMessage = this.store.select(selectUploadResult)
-      .mergeMap(data => Observable
-        .from(data)
-        .filter(data => data.code !== 1000)
-        .map(data => data.msg)
-        .distinctUntilChanged()
-        .reduce((acc, cur) => {
-          acc.errorMessage += cur;
-          return acc;
-        }, { errorMessage: '' })
-      );
-
-    const uploadSubscription = this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');
-
-    this.subscriptions.push(uploadSubscription);
-  }
-
-  /*=============================================refuse cleaning====================================================*/
-
-  unSubscribe() {
-    this.subscriptions.forEach(unSub => unSub.unsubscribe());
-  }
+        return this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');
+    }
 }

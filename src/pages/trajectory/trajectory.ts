@@ -14,174 +14,174 @@ declare var AMap: any;
 
 @IonicPage()
 @Component({
-  selector: 'page-trajectory',
-  templateUrl: 'trajectory.html',
+    selector: 'page-trajectory',
+    templateUrl: 'trajectory.html',
 })
 export class TrajectoryPage {
-  
-  subscriptions: Subscription[] = [];
-  
-  playStateSubject: Subject<number> = new Subject();
-  
-  rateSubject: Subject<number> = new Subject();
-  
-  playSubject: BehaviorSubject<PlayUnit[]> = new BehaviorSubject(null);
 
-  map: Map;
+    subscriptions: Subscription[] = [];
 
-  rateButtonColor: Observable<number>;
+    playStateSubject: Subject<number> = new Subject();
 
-  playButtonColor: Observable<number>;
+    rateSubject: Subject<number> = new Subject();
 
-  haveTrajectory: Observable<boolean>;
+    playSubject: BehaviorSubject<PlayUnit[]> = new BehaviorSubject(null);
 
-  trajectoryInfo: Observable<TrajectoryInfo>;
+    map: Map;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public modalCtrl: ModalController,
-    public location: LocationService,
-    public mapService: AmapService,
-    public config: ConfigService,
-    public popover: PopoverController
-  ) {
-  }
+    rateButtonColor: Observable<number>;
 
-  ionViewCanEnter() {
-    const { view, opt } = this.navParams.get('permission');
+    playButtonColor: Observable<number>;
 
-    const canEnter = opt || view;
+    haveTrajectory: Observable<boolean>;
 
-    return canEnter;
-  }
+    trajectoryInfo: Observable<TrajectoryInfo>;
 
-  ionViewDidLoad() {
-    this.config.hideTabBar();
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public modalCtrl: ModalController,
+        public location: LocationService,
+        public mapService: AmapService,
+        public config: ConfigService,
+        public popover: PopoverController
+    ) {
+    }
 
-    this.initialMap();
+    ionViewCanEnter() {
+        const { view, opt } = this.navParams.get('permission');
 
-    this.launch();
-  }
+        const canEnter = opt || view;
 
-  initialMap(): void {
-    this.map = new AMap.Map('trajectory');
+        return canEnter;
+    }
 
-    this.mapService.addControl(this.map);
+    ionViewDidLoad() {
+        this.config.hideTabBar();
 
-    this.trajectoryInfo = this.location.getTrajectoryInformation();
+        this.initialMap();
 
-    this.playButtonColor = this.location.getPlayState();
+        this.launch();
+    }
 
-    this.rateButtonColor = this.location.getPlayRate();
+    initialMap(): void {
+        this.map = new AMap.Map('trajectory');
 
-    this.haveTrajectory = this.location.getHistoryLocationResponse()
-      .map(response => !!response.data_loc_list.filter(item => item.loc_list.length).length);
-  }
+        this.mapService.addControl(this.map);
 
-  launch(): void {
-    this.subscriptions = [
-      this.mapService.monitorHistoryLocationResponse(),
-      ...this.sendRequest(),
-      ...this.addOverlays(),
-      ...this.monitorPlay()
-    ];
-  }
+        this.trajectoryInfo = this.location.getTrajectoryInformation();
 
-  /* ===============================================Server request=========================================== */
+        this.playButtonColor = this.location.getPlayState();
 
-  /**
-   * @description Get project area list and history location list;
-   */
-  sendRequest(): Subscription[] {
-    return [
-      this.location.getProjectAreaList(),
-      this.getLocationList()
-    ];
-  }
+        this.rateButtonColor = this.location.getPlayRate();
 
-  getLocationList(): Subscription {
-    this.location.updateCondition().next(true);
+        this.haveTrajectory = this.location.getHistoryLocationResponse()
+            .map(response => !!response.data_loc_list.filter(item => item.loc_list.length).length);
+    }
 
-    return this.location.getHistoryLocationList(
-      this.location.updateCondition().startWith(true).mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
-    );
-  }
+    launch(): void {
+        this.subscriptions = [
+            this.mapService.monitorHistoryLocationResponse(),
+            ...this.sendRequest(),
+            ...this.addOverlays(),
+            ...this.monitorPlay()
+        ];
+    }
 
-  /**
-   * @description Add overlays on current map. Include project areas and trajectories that used selected.
-   */
-  addOverlays(): Subscription[] {
-    return [
-      ...this.mapService.generateArea(this.map),
-      this.mapService.updateTrajectory(this.map),
-      this.location.toggleTrajectoryDisplayState()
-    ];
-  }
+    /* ===============================================Server request=========================================== */
 
-  /* ============================================Play related============================================= */
+    /**
+     * @description Get project area list and history location list;
+     */
+    sendRequest(): Subscription[] {
+        return [
+            this.location.getProjectAreaList(),
+            this.getLocationList()
+        ];
+    }
 
-  monitorPlay(): Subscription[] {
-    return [
-      this.mapService.getPlayUnits(this.map).subscribe(this.playSubject),
-      this.play(),
-      this.stop(),
-      this.pause(),
-      this.resume(),
-      this.location.updatePlayState(this.playStateSubject),
-      this.location.updateRateState(this.rateSubject)
-    ];
-  }
+    getLocationList(): Subscription {
+        this.location.updateCondition().next(true);
 
-  play(): Subscription {
-    return this.getPlayState(PlayState.play).subscribe(item => this.mapService.startPlay(item));
-  }
+        return this.location.getHistoryLocationList(
+            this.location.updateCondition().startWith(true).mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
+        );
+    }
 
-  stop(): Subscription {
-    return this.getPlayState(PlayState.stop).subscribe(item => this.mapService.stopPlay(item));
-  }
+    /**
+     * @description Add overlays on current map. Include project areas and trajectories that used selected.
+     */
+    addOverlays(): Subscription[] {
+        return [
+            ...this.mapService.generateArea(this.map),
+            this.mapService.updateTrajectory(this.map),
+            this.location.toggleTrajectoryDisplayState()
+        ];
+    }
 
-  pause(): Subscription {
-    return this.getPlayState(PlayState.pause).subscribe(item => item.moveMarker.pauseMove())
-  }
+    /* ============================================Play related============================================= */
 
-  resume(): Subscription {
-    return this.getPlayState(PlayState.resume).subscribe(item => item.moveMarker.resumeMove());
-  }
+    monitorPlay(): Subscription[] {
+        return [
+            this.mapService.getPlayUnits(this.map).subscribe(this.playSubject),
+            this.play(),
+            this.stop(),
+            this.pause(),
+            this.resume(),
+            this.location.updatePlayState(this.playStateSubject),
+            this.location.updateRateState(this.rateSubject)
+        ];
+    }
 
-  /**
-   * @param state Play state need to handle.
-   * @description Get the stream that you need to listen to for each play control button. 
-   * With the help of behavior subject, although each flow is different, the elements propagating in the flow are the same,
-   * but are transmitted to different listeners based on different playback states.
-   */
-  getPlayState(state: number): Observable<PlayUnit> {
-    return this.location.getPlayState()
-      .filter(item => item === state)
-      .mergeMapTo(this.playSubject.filter(item => !!item)
-        .mergeMap(units => Observable.from(units))
-      );
-  }
+    play(): Subscription {
+        return this.getPlayState(PlayState.play).subscribe(item => this.mapService.startPlay(item));
+    }
 
-  /* ===============================================Config related========================================== */
+    stop(): Subscription {
+        return this.getPlayState(PlayState.stop).subscribe(item => this.mapService.stopPlay(item));
+    }
 
-  setCondition() {
-    this.modalCtrl.create(HistoryTrajectoryComponent, { map: this.map }).present();
-  }
+    pause(): Subscription {
+        return this.getPlayState(PlayState.pause).subscribe(item => item.moveMarker.pauseMove())
+    }
 
-  selectWorker(ev) {
-    this.popover.create(HistoryTrajectoryWorkersComponent).present({ ev });
-  }
+    resume(): Subscription {
+        return this.getPlayState(PlayState.resume).subscribe(item => item.moveMarker.resumeMove());
+    }
 
-  /* ===============================================Refuse clean============================================== */
+    /**
+     * @param state Play state need to handle.
+     * @description Get the stream that you need to listen to for each play control button. 
+     * With the help of behavior subject, although each flow is different, the elements propagating in the flow are the same,
+     * but are transmitted to different listeners based on different playback states.
+     */
+    getPlayState(state: number): Observable<PlayUnit> {
+        return this.location.getPlayState()
+            .filter(item => item === state)
+            .mergeMapTo(this.playSubject.filter(item => !!item)
+                .mergeMap(units => Observable.from(units))
+            );
+    }
 
-  ionViewWillUnload() {
-    this.config.showTabBar();
+    /* ===============================================Config related========================================== */
 
-    this.location.updatePlayState(Observable.of(PlayState.stop));
+    setCondition() {
+        this.modalCtrl.create(HistoryTrajectoryComponent, { map: this.map }).present();
+    }
 
-    this.map.destroy();
+    selectWorker(ev) {
+        this.popover.create(HistoryTrajectoryWorkersComponent).present({ ev });
+    }
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+    /* ===============================================Refuse clean============================================== */
+
+    ionViewWillUnload() {
+        this.config.showTabBar();
+
+        this.location.updatePlayState(Observable.of(PlayState.stop));
+
+        this.map.destroy();
+
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

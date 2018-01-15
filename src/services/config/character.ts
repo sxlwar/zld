@@ -14,29 +14,29 @@ const pendingAccount = "待审核职员帐号";
 const rejectedAccount = "拒绝职员帐号";
 
 export const CHARACTER = {
-  1: platformMaintenance,
-  2: enterpriseMaintenance,
-  3: managementManager,
-  4: projectManager,
-  5: labourManager,
-  6: teamLeader,
-  7: constructionWorker,
-  8: qualityWorker,
-  9: signedWorker,
-  10: unsignedWorker,
-  11: pendingAccount,
-  12: rejectedAccount
+    1: platformMaintenance,
+    2: enterpriseMaintenance,
+    3: managementManager,
+    4: projectManager,
+    5: labourManager,
+    6: teamLeader,
+    7: constructionWorker,
+    8: qualityWorker,
+    9: signedWorker,
+    10: unsignedWorker,
+    11: pendingAccount,
+    12: rejectedAccount
 };
 
-export {platformMaintenance as PME}
-export {enterpriseMaintenance as EME}
-export {managementManager as MM}
-export {projectManager as PM}
-export {labourManager as LM}
-export {teamLeader as TL}
-export {constructionWorker as CW}
-export {qualityWorker as QW}
-export {signedWorker as SW}
-export {unsignedWorker as UW}
-export {pendingAccount as PA}
-export {rejectedAccount as RA}
+export { platformMaintenance as PME }
+export { enterpriseMaintenance as EME }
+export { managementManager as MM }
+export { projectManager as PM }
+export { labourManager as LM }
+export { teamLeader as TL }
+export { constructionWorker as CW }
+export { qualityWorker as QW }
+export { signedWorker as SW }
+export { unsignedWorker as UW }
+export { pendingAccount as PA }
+export { rejectedAccount as RA }

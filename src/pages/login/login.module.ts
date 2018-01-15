@@ -8,19 +8,19 @@ import { LoginEffect } from '../../effects/login-effect';
 import { ComponentsModule } from '../../components/components.module';
 
 @NgModule({
-  declarations: [
-    LoginPage,
-  ],
-  imports: [
-    ReactiveFormsModule,
-    IonicPageModule.forChild(LoginPage),
-    TranslateModule.forChild(),
-    EffectsModule.forRoot([LoginEffect]),
-    ComponentsModule,
-  ],
-  exports: [
-    LoginPage,
-  ]
+    declarations: [
+        LoginPage,
+    ],
+    imports: [
+        ReactiveFormsModule,
+        IonicPageModule.forChild(LoginPage),
+        TranslateModule.forChild(),
+        EffectsModule.forRoot([LoginEffect]),
+        ComponentsModule,
+    ],
+    exports: [
+        LoginPage,
+    ]
 })
 
 export class LoginPageModule {

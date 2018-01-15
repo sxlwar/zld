@@ -1,4 +1,3 @@
-import { MapperService } from './../api/mapper-service';
 import { Certificate } from './../../interfaces/response-interface';
 import { CertificateAddOptions, CertificateUpdateOptions, UploadCertificateImageOptions } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
@@ -17,8 +16,7 @@ export class WorkCertificateService {
         public store: Store<AppState>,
         public error: ErrorService,
         public processor: ProcessorService,
-        public userInfo: UserService,
-        public mapper: MapperService
+        public userInfo: UserService
     ) { }
 
     /* ==================================================Request methods========================================= */
@@ -46,7 +44,7 @@ export class WorkCertificateService {
     updateCertificateImage(): Subscription {
         return this.processor.certificateImageUploadProcessor(
             this.getImagesNeedToUploadAfterAddSuccess()
-            .merge(this.getImagesNeedToUploadAfterUpdateSuccess())
+                .merge(this.getImagesNeedToUploadAfterUpdateSuccess())
         );
     }
 

@@ -102,14 +102,14 @@ export class StatisticsService {
 
     updateWorkFlowStatisticAtLocal(processId: string, count: Observable<number>): Subscription {
         return count.subscribe(count => {
-            this.store.dispatch(new UpdateSpecificWorkFlowStatisticAtLocalAction({processId, count}));
+            this.store.dispatch(new UpdateSpecificWorkFlowStatisticAtLocalAction({ processId, count }));
         })
     }
 
     getAttendanceItemOf(key: string): Observable<AttendanceStatisticDayItem[]> {
         const source = this.store.select(selectAttendanceStatisticList);
 
-        const list: Observable<AttendanceStatisticDayItem[]> = this.getAttendanceByDay(source, key).map(data => data.map(item => Object.assign(item, {teams: [],teamIds:[]})));
+        const list: Observable<AttendanceStatisticDayItem[]> = this.getAttendanceByDay(source, key).map(data => data.map(item => Object.assign(item, { teams: [], teamIds: [] })));
 
         const teamWithDates: Observable<AttendanceStatisticTeamItem[]> = source.map(data => {
             let result: AttendanceStatistics[] = data.filter(item => !isEmpty(item.confirm_status));
@@ -132,7 +132,7 @@ export class StatisticsService {
             .map(([result, teamInfo]) => {
                 result.forEach(res => {
                     teamInfo.forEach(item => {
-                        if(item.dates.indexOf(res.date) !== -1) {
+                        if (item.dates.indexOf(res.date) !== -1) {
                             res.teams.push(item.teamName)
                             res.teamIds.push(item.teamId);
                         }

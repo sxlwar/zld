@@ -1,36 +1,36 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>{{'WORK_EXPERIENCE' | translate}}</ion-title>
-    <ion-buttons end>
-        <button ion-button icon-only (click)="addWorkExperience()">
-          <ion-icon name="add"></ion-icon>
-        </button>
-      </ion-buttons>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>{{'WORK_EXPERIENCE' | translate}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="addWorkExperience()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
 
-  <ion-segment [(ngModel)]="type">
-    <ion-segment-button value="platform">
-      {{'PLATFORM_WORK_EXPERIENCE' | translate}}
-    </ion-segment-button>
-    <ion-segment-button value="custom">
-      {{'CUSTOM_WORK_EXPERIENCE' | translate}}
-    </ion-segment-button>
-  </ion-segment>
+    <ion-segment [(ngModel)]="type">
+        <ion-segment-button value="platform">
+            {{'PLATFORM_WORK_EXPERIENCE' | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="custom">
+            {{'CUSTOM_WORK_EXPERIENCE' | translate}}
+        </ion-segment-button>
+    </ion-segment>
 
 
-  <div [ngSwitch]="type">
-    <div *ngSwitchCase="'platform'">
-      <platform-work-experience [experience]="platformWorkExperience | async" ></platform-work-experience>
+    <div [ngSwitch]="type">
+        <div *ngSwitchCase="'platform'">
+            <platform-work-experience [experience]="platformWorkExperience | async"></platform-work-experience>
+        </div>
+        <div *ngSwitchCase="'custom'">
+            <work-experience [experience]="customWorkExperience | async" (updateExperience)="updateWorkExperience($event)" (deleteExperience)="deleteWorkExperience($event)"></work-experience>
+        </div>
     </div>
-    <div *ngSwitchCase="'custom'">
-      <work-experience [experience]="customWorkExperience | async" (updateExperience)="updateWorkExperience($event)" (deleteExperience)="deleteWorkExperience($event)" ></work-experience>
-    </div>
-  </div>
 
 </ion-content>

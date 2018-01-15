@@ -35,7 +35,7 @@ export const INCREASE_OVERTIME_RECORD_PAGE = 'INCREASE_OVERTIME_RECORD_PAGE';
 export class IncreaseOvertimeRecordPage implements Action {
     readonly type = INCREASE_OVERTIME_RECORD_PAGE;
 
-    constructor(){}
+    constructor() { }
 }
 
 export const RESET_OVERTIME_RECORD_PAGE = 'RESET_OVERTIME_RECORD_PAGE';
@@ -43,7 +43,7 @@ export const RESET_OVERTIME_RECORD_PAGE = 'RESET_OVERTIME_RECORD_PAGE';
 export class ResetOvertimeRecordPage implements Action {
     readonly type = RESET_OVERTIME_RECORD_PAGE;
 
-    constructor(){}
+    constructor() { }
 }
 
 export type Actions = GetWorkOvertimeRecordAction

@@ -11,67 +11,67 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-  selector: 'page-attendance-modify-detail',
-  templateUrl: 'attendance-modify-detail.html',
+    selector: 'page-attendance-modify-detail',
+    templateUrl: 'attendance-modify-detail.html',
 })
 export class AttendanceModifyDetailPage {
 
-  id: number;
+    id: number;
 
-  workFlow: Observable<WorkFlow>;
+    workFlow: Observable<WorkFlow>;
 
-  attendance: Observable<AttendanceModify>;
+    attendance: Observable<AttendanceModify>;
 
-  subscriptions: Subscription[] = [];
+    subscriptions: Subscription[] = [];
 
-  audit$$: Subscription;
+    audit$$: Subscription;
 
-  isAuditButtonVisibility: Observable<boolean>;
+    isAuditButtonVisibility: Observable<boolean>;
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public workFlowService: WorkFlowService,
-    public attendanceService: AttendanceService,
-    public permission: PermissionService
-  ) {
-    this.id = navParams.get('id');
-  }
+    constructor(
+        public navCtrl: NavController,
+        public navParams: NavParams,
+        public workFlowService: WorkFlowService,
+        public attendanceService: AttendanceService,
+        public permission: PermissionService
+    ) {
+        this.id = navParams.get('id');
+    }
 
-  ionViewDidLoad() {
-    this.initialModel();
+    ionViewDidLoad() {
+        this.initialModel();
 
-    this.launch();
-  }
+        this.launch();
+    }
 
-  initialModel() {
-    this.workFlow = this.workFlowService.getWorkFlow(this.id);
+    initialModel() {
+        this.workFlow = this.workFlowService.getWorkFlow(this.id);
 
-    this.attendance = this.attendanceService.getAttendanceModifyRecordLists().map(res => res[0]);
+        this.attendance = this.attendanceService.getAttendanceModifyRecordLists().map(res => res[0]);
 
-    this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
-      this.navParams.get('status'),
-      this.permission.getOperatePermission(modifyAttendance.icon, MissionRoot)
-    );
-  }
+        this.isAuditButtonVisibility = this.workFlowService.isAuditButtonVisibility(
+            this.navParams.get('status'),
+            this.permission.getOperatePermission(modifyAttendance.icon, MissionRoot)
+        );
+    }
 
-  launch() {
-    this.subscriptions = [
-      this.attendanceService.getAttendanceModifyRecord(this.attendanceService.getRecordOptions(this.id, this.navParams.get('status'))),
-      this.attendanceService.handleAttendanceModifyError()
-    ];
-  }
+    launch() {
+        this.subscriptions = [
+            this.attendanceService.getAttendanceModifyRecord(this.attendanceService.getRecordOptions(this.id, this.navParams.get('status'))),
+            this.attendanceService.handleAttendanceModifyError()
+        ];
+    }
 
-  audit() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    audit() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-    this.audit$$ = this.workFlowService.auditTask(this.id);
-  }
+        this.audit$$ = this.workFlowService.auditTask(this.id);
+    }
 
-  ionViewWillUnload() {
-    this.audit$$ && this.audit$$.unsubscribe();
+    ionViewWillUnload() {
+        this.audit$$ && this.audit$$.unsubscribe();
 
-    this.subscriptions.forEach(item => item.unsubscribe());
-  }
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 
 }

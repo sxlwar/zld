@@ -1,60 +1,60 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>
-      {{ operateType | translate}}
-    </ion-title>
-    <ion-buttons start>
-      <button ion-button (click)="dismiss()">
-        <span ion-text color="primary">{{'CANCEL_BUTTON' | translate}}</span>
-        <ion-icon name="close"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-title>
+            {{ operateType | translate}}
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span ion-text color="primary">{{'CANCEL_BUTTON' | translate}}</span>
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-item-divider text-center>
-    {{projectName | async}}
-  </ion-item-divider>
+    <ion-item-divider text-center>
+        {{projectName | async}}
+    </ion-item-divider>
 
-  <form action="" [formGroup]="addTeamForm" padding>
-    <ion-list>
-      <ion-item>
-        <ion-label fixed>{{'TEAM_NAME' | translate}}</ion-label>
-        <ion-input type="text" formControlName="teamName" required></ion-input>
-      </ion-item>
-      <div *ngIf="teamName.invalid && (teamName.dirty || teamName.touched)" class="form-error red-color">
-        <span *ngIf="teamName.errors.required">{{'TEAM_NAME_REQUIRED_ERROR' | translate}}</span>
-        <span *ngIf="!teamName.errors.required && teamName.errors.teamNameFormat">
-          {{addTeamForm.getError('teamNameFormat', 'teamName') | translate}}
-        </span>
-      </div>
+    <form action="" [formGroup]="addTeamForm" padding>
+        <ion-list>
+            <ion-item>
+                <ion-label fixed>{{'TEAM_NAME' | translate}}</ion-label>
+                <ion-input type="text" formControlName="teamName" required></ion-input>
+            </ion-item>
+            <div *ngIf="teamName.invalid && (teamName.dirty || teamName.touched)" class="form-error red-color">
+                <span *ngIf="teamName.errors.required">{{'TEAM_NAME_REQUIRED_ERROR' | translate}}</span>
+                <span *ngIf="!teamName.errors.required && teamName.errors.teamNameFormat">
+                    {{addTeamForm.getError('teamNameFormat', 'teamName') | translate}}
+                </span>
+            </div>
 
-      <ion-item>
-        <ion-label>{{'FOREMAN' | translate}}</ion-label>
-        <ion-select formControlName="foreman" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
-          required>
-          <ion-option *ngFor="let foreman of foremen | async" [value]="foreman">{{foreman.name}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <div *ngIf="foreman.invalid && (foreman.dirty || foreman.touched)" class="form-error red-color">
-        <span *ngIf="foreman.errors.required">{{'FOREMAN_REQUIRED_ERROR' | translate}}</span>
-      </div>
+            <ion-item>
+                <ion-label>{{'FOREMAN' | translate}}</ion-label>
+                <ion-select formControlName="foreman" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+                    required>
+                    <ion-option *ngFor="let foreman of foremen | async" [value]="foreman">{{foreman.name}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <div *ngIf="foreman.invalid && (foreman.dirty || foreman.touched)" class="form-error red-color">
+                <span *ngIf="foreman.errors.required">{{'FOREMAN_REQUIRED_ERROR' | translate}}</span>
+            </div>
 
-      <ion-item>
-        <ion-label>{{'QUALITY_CLERK' | translate}}</ion-label>
-        <ion-select formControlName="qualityClerk" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
-          required>
-          <ion-option *ngFor="let clerk of qualityClerks | async" [value]="clerk">{{clerk.name}}</ion-option>
-        </ion-select>
-      </ion-item>
-      <div *ngIf="qualityClerk.invalid && (qualityClerk.dirty || qualityClerk.touched)" class="form-error red-color">
-        <span *ngIf="qualityClerk.errors.required">{{'QUALITY_CLERK_REQUIRED_ERROR' | translate}}</span>
-      </div>
+            <ion-item>
+                <ion-label>{{'QUALITY_CLERK' | translate}}</ion-label>
+                <ion-select formControlName="qualityClerk" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+                    required>
+                    <ion-option *ngFor="let clerk of qualityClerks | async" [value]="clerk">{{clerk.name}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <div *ngIf="qualityClerk.invalid && (qualityClerk.dirty || qualityClerk.touched)" class="form-error red-color">
+                <span *ngIf="qualityClerk.errors.required">{{'QUALITY_CLERK_REQUIRED_ERROR' | translate}}</span>
+            </div>
 
-    </ion-list>
+        </ion-list>
 
-    <button ion-button block (click)="confirmOperate()" [disabled]="addTeamForm.invalid" color="primary">{{operateType | translate}}</button>
-  </form>
+        <button ion-button block (click)="confirmOperate()" [disabled]="addTeamForm.invalid" color="primary">{{operateType | translate}}</button>
+    </form>
 </ion-content>

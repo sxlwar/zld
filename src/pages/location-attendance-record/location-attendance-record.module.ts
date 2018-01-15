@@ -6,14 +6,14 @@ import { IonicPageModule } from 'ionic-angular';
 import { LocationAttendanceRecordPage } from './location-attendance-record';
 
 @NgModule({
-  declarations: [
-    LocationAttendanceRecordPage,
-  ],
-  imports: [
-    IonicPageModule.forChild(LocationAttendanceRecordPage),
-    TranslateModule,
-    SharedModule,
-    ComponentsModule,
-  ],
+    declarations: [
+        LocationAttendanceRecordPage,
+    ],
+    imports: [
+        IonicPageModule.forChild(LocationAttendanceRecordPage),
+        TranslateModule,
+        SharedModule,
+        ComponentsModule,
+    ],
 })
-export class LocationAttendanceRecordPageModule {}
+export class LocationAttendanceRecordPageModule { }
