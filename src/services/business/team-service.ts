@@ -1,4 +1,3 @@
-//region
 import { UpdateTeamAtLocalAction } from './../../actions/action/team-action';
 import { EmployerService } from './employer-service';
 import { selectAddTeamResponse, selectUpdateTeamResponse, selectDeleteTeamResponse } from './../../reducers/index-reducer';
@@ -16,20 +15,9 @@ import { Team } from '../../interfaces/response-interface';
 import { UserService } from './user-service';
 import { RequestOption } from '../../interfaces/request-interface';
 import { WorkerService } from './worker-service';
-import 'rxjs/add/observable/empty';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/zip';
-import 'rxjs/add/operator/combineLatest';
-import 'rxjs/add/operator/first';
-import 'rxjs/add/operator/defaultIfEmpty';
-import 'rxjs/add/observable/of';
 import { CW, QW, SW, TL } from '../config/character';
 import { ProjectService } from './project-service';
 import { SetSelectTeamsAction } from '../../actions/action/team-action';
-//endregion
-
 
 @Injectable()
 export class TeamService {
@@ -38,7 +26,8 @@ export class TeamService {
 
     characterHasTeam = [TL, CW, QW, SW];
 
-    constructor(public store: Store<AppState>,
+    constructor(
+        public store: Store<AppState>,
         public error: ErrorService,
         public process: ProcessorService,
         public userInfo: UserService,

@@ -22,13 +22,13 @@ import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailList
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, ProjectListOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState, selectSid } from '../../reducers/index-reducer';
+import { AppState } from '../../reducers/index-reducer';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from '../errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -110,13 +110,10 @@ export class ProcessorService extends MapperService {
         return option$.subscribe(option => this.store.dispatch(new CertificateAction(option)));
     }
 
-    projectListProcessor(): Subscription {
-        const viewPermission$ = this.permission.apiPermissionValidate(this.command.projectList).map(result => result.view);
-
-        const sid$ = this.store.select(selectSid);
-
-        return viewPermission$.zip(sid$, (passed, sid) => passed ? { sid, prime_contract_status: '完成' } : null)
-            .filter(res => !!res)
+    projectListProcessor(options$: Observable<ProjectListOptions>): Subscription {
+        return this.permission.apiPermissionValidate(this.command.projectList)
+            .filter(result => result.view)
+            .mergeMapTo(options$)
             .subscribe(option => this.store.dispatch(new GetProjectListAction(option)));
     }
 

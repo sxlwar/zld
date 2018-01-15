@@ -62,7 +62,12 @@ export class OrganizationPage {
     }
 
     ionViewDidLoad() {
+        this.initialModel();
 
+        this.launch();
+    }
+
+    initialModel(): void {
         this.canOperate = this.permission.getOperatePermission(organization.icon, ProjectRoot);
 
         this.teams = this.team.getOwnTeams()
@@ -78,7 +83,14 @@ export class OrganizationPage {
                 labourManager: project.sub_contract__labour_manager__employee__realname,
                 projectManagerId: project.manager_id,
                 labourManagerId: project.sub_contract__labour_manager_id
-            }))
+            }));
+
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.projectService.handleError(),
+        ];
     }
 
     addTeam(): void {
@@ -120,9 +132,7 @@ export class OrganizationPage {
 
     goToPersonalInfoPage(data: string | TeamItem): void {
         if (typeof data === 'string') {
-            this.navSubscription = this.project.subscribe(project => {
-                this.navCtrl.push(personalPage, { userId: project[data] }).then(_ => { });
-            });
+            this.navSubscription = this.project.subscribe(project => this.navCtrl.push(personalPage, { userId: project[data] }).then(_ => { }));
         } else {
             this.navCtrl.push(personalPage, { userId: data.qualityClerkId });
         }

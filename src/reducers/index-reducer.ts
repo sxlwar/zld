@@ -3,7 +3,6 @@ import * as config from './reducer/config-reducer';
 import * as tutorial from './reducer/tutorial-reducer';
 import * as login from './reducer/login-reducer';
 import * as search from './reducer/search-company-reducer';
-import * as upload from './reducer/upload-reducer';
 import * as certificate from './reducer/certificate-reducer';
 import * as response from '../interfaces/response-interface';
 import * as icons from './reducer/icons-reducer';
@@ -71,7 +70,6 @@ export interface AppState {
     statistics: statistics.State;
     team: team.State;
     tutorialPage: tutorial.State;
-    uploadState: upload.State;
     userInfo: response.LoginResponse;
     workCertificate: workCertificate.State;
     workFlow: workFlow.State;
@@ -114,7 +112,6 @@ export const reducers: ActionReducerMap<AppState> = {
     statistics: statistics.reducer,
     team: team.reducer,
     tutorialPage: tutorial.reducer,
-    uploadState: upload.reducer,
     userInfo: login.userInfoReducer,
     workCertificate: workCertificate.reducer,
     workFlow: workFlow.reducer,
@@ -184,12 +181,12 @@ export const selectResetPasswordId = createSelector(getResetPassword, login.getR
 export const getCertificate = (state: AppState) => state.certificate;
 export const selectCertificateResponse = createSelector(getCertificate, certificate.getCertificateResponse);
 export const selectPersonalIdImageResponse = createSelector(getCertificate, certificate.getUploadResponse);
+export const selectPersonalIdImageUpdateState = createSelector(getCertificate, certificate.getUpdateState);
 
 //project list
 const getProject = (state: AppState) => state.project;
 export const selectSelectedProject = createSelector(getProject, project.getSelectedProject);
-export const selectProjects = createSelector(getProject, project.getProjects);
-export const selectErrorMessage = createSelector(getProject, project.getErrorMessage);
+export const selectProjectListResponse = createSelector(getProject, project.getProjectResponse);
 
 //worker contract list
 const getWorkerContracts = (state: AppState) => state.worker;
@@ -462,16 +459,6 @@ export const selectSearchWorkerCondition = createSelector(getSearchWorker, searc
 // delete images
 const getDeleteImages = (state: AppState) => state.deleteImages;
 export const selectDeleteImagesResponse = createSelector(getDeleteImages, deleteImages.getDeleteImagesResponse);
-
-/*>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>Server response selector end>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>*/
-
-/*================================================HTTP===========================================================*/
-
-//upload
-const getUploadState = (state: AppState) => state.uploadState;
-export const selectUploadingState = createSelector(getUploadState, upload.getUploadingState);
-export const selectUploadedState = createSelector(getUploadState, upload.getUploadedState);
-export const selectUploadResult = createSelector(getUploadState, upload.getUploadResult);
 
 /*================================================Icons with permission===========================================*/
 

@@ -66,7 +66,22 @@ export class ProjectPage {
     }
 
     ionViewDidLoad() {
+        this.initialModel();
+    }
 
+    ionViewWillEnter() {
+        this.launch();
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.workerService.getWorkerContractsOfCurrentProject(),
+            this.workerService.handleError(),
+            this.projectService.handleError(),
+        ];
+    }
+
+    initialModel(): void {
         this.icons = this.iconService.getIcons(ProjectRoot, icons);
 
         this.currentProject = this.projectService.getCurrentProject();
@@ -84,30 +99,10 @@ export class ProjectPage {
         this.haveMultipleProject = this.projects.map(value => value.length > 1);
 
         this.workerCount = this.workerService.getWorkerCount();
-
     }
-
-    ionViewWillEnter() {
-        this.launch();
-    }
-
-    launch(): void {
-        this.subscriptions = [
-            this.workerService.getWorkerContracts(this.getOption()),
-            this.workerService.handleError(),
-        ];
-    }
-
-    getOption(): Observable<RequestOption> {
-        return this.workerService.getCompleteStatusOption()
-            .zip(
-            this.currentProject.map(project => ({ project_id: project.id })),
-            (status, id) => ({ ...status, ...id, limit: 1 })
-            );
-    }
-
+    
     switchProject($event) {
-        this.popoverCtrl.create(ProjectListComponent, { option: this.getOption() }).present({ ev: $event }).then(() => { });
+        this.popoverCtrl.create(ProjectListComponent).present({ ev: $event }).then(() => { });
     }
 
     goTo(item) {
@@ -119,6 +114,5 @@ export class ProjectPage {
     }
 
     ionViewWillUnload() {
-        this.projectService.unSubscribe();
     }
 }

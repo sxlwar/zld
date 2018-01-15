@@ -1,9 +1,7 @@
 import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
 import { Loading, LoadingController, ToastController, AlertController } from 'ionic-angular';
-import { AppState, selectUploadingState } from '../reducers/index-reducer';
 import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
 
 export interface ConfirmProp {
     title?: string;
@@ -15,15 +13,12 @@ export interface ConfirmProp {
 @Injectable()
 export class TipService {
     loading: Loading;
-    loading$$: Subscription;
 
     constructor(
         private toastCtrl: ToastController,
         private loadingCtrl: LoadingController,
-        private store: Store<AppState>,
         private alertCtrl: AlertController
     ) {
-        this.loadingSpy();
     }
 
     showServerResponseSuccess(message: string): void {
@@ -34,15 +29,15 @@ export class TipService {
         this.toastCtrl.create({ message, duration, position, }).present().then(() => { });
     }
 
-    loadingSpy() {
-        this.loading$$ = this.store.select(selectUploadingState)
+    loadingSpy(state: Observable<boolean>): Subscription {
+        return state
             .subscribe(isLoading => {
                 if (isLoading) {
                     this.presentLoading();
                 } else {
                     this.dismissLoading();
                 }
-            })
+            });
     }
 
     presentLoading() {
@@ -52,13 +47,11 @@ export class TipService {
             content: '图片上传中,请稍侯'
         });
 
-        this.loading.present().then(() => {
-        })
+        this.loading.present().then(() => { });
     }
 
     dismissLoading() {
-        if (this.loading) this.loading.dismiss().then(() => {
-        });
+        this.loading && this.loading.dismiss().then(() => { });
     }
 
     showConfirmProp(source: Observable<ConfirmProp>, confirmFn, cancelFn = () => { }): Subscription {

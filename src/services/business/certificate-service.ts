@@ -1,16 +1,16 @@
-import { selectPersonalIdImageResponse } from './../../reducers/index-reducer';
-import { getCertificateResponse } from './../../reducers/reducer/certificate-reducer';
+import { TipService } from './../tip-service';
+import { selectPersonalIdImageResponse, selectPersonalIdImageUpdateState } from './../../reducers/index-reducer';
 import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState, selectUploadResult, selectCertificateResponse } from '../../reducers/index-reducer';
+import { AppState, selectCertificateResponse } from '../../reducers/index-reducer';
 import { Observable } from 'rxjs/Observable';
 import { CertificateFormModel } from '../api/mapper-service';
 import { ProcessorService } from '../api/processor-service';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/zip';
 import 'rxjs/add/operator/zip';
-import { CertificateOptions, UploadOptions } from '../../interfaces/request-interface';
+import { CertificateOptions } from '../../interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/withLatestFrom';
 import { ErrorService } from '../errors/error-service';
@@ -22,7 +22,8 @@ export class CertificateService {
         private store: Store<AppState>,
         private process: ProcessorService,
         private userInfo: UserService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private tip: TipService
     ) {
     }
 
@@ -81,8 +82,12 @@ export class CertificateService {
 
     /* =======================================================Error handle====================================================*/
 
-    handleError() {
+    handleError(): Subscription {
         return this.errorService.handleErrorInSpecific(this.store.select(selectCertificateResponse), 'CER_CERTIFICATE_FAIL');
+    }
+
+    handleUpdateError(): Subscription {
+        return this.errorService.handleErrorInSpecific(this.store.select(selectPersonalIdImageResponse), 'UPLOAD_FAIL_TIP');
     }
 
     /**
@@ -90,18 +95,20 @@ export class CertificateService {
      * Monitor the result of upload images and handle error when upload fail.
      * */
     monitorUploadResult(): Subscription {
-        const errorMessage = this.store.select(selectUploadResult)
-            .mergeMap(data => Observable
-                .from(data)
-                .filter(data => data.code !== 1000)
-                .map(data => data.msg)
-                .distinctUntilChanged()
-                .reduce((acc, cur) => {
-                    acc.errorMessage += cur;
-                    return acc;
-                }, { errorMessage: '' })
-            );
-
-        return this.errorService.handleErrorInSpecific(errorMessage, 'UPLOAD_FAIL_TIP');
+        // const errorMessage = this.store.select(selectPersonalIdImageResponse)
+        //     .mergeMap(data => Observable
+        //         .from(data)
+        //         .filter(data => data.code !== 1000)
+        //         .map(data => data.msg)
+        //         .distinctUntilChanged()
+        //         .reduce((acc, cur) => {
+        //             acc.errorMessage += cur;
+        //             return acc;
+        //         }, { errorMessage: '' })
+        //     );
+        
+        return this.tip.loadingSpy(this.store.select(selectPersonalIdImageUpdateState));
     }
+
+    
 }

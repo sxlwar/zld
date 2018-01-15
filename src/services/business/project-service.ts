@@ -1,7 +1,8 @@
+import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Project } from '../../interfaces/response-interface';
-import { AppState, selectErrorMessage, selectProjects, selectSelectedProject, } from '../../reducers/index-reducer';
+import { AppState, selectSelectedProject, selectProjectListResponse, } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
@@ -12,39 +13,35 @@ import { SelectProjectAction } from '../../actions/action/project-action';
 @Injectable()
 export class ProjectService {
 
-    subscriptions: Subscription[] = [];
-
-    project$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public processor: ProcessorService,
         public error: ErrorService,
+        public userInfo: UserService,
         public timeService: TimeService
     ) {
-        this.handleError();
     }
 
     /*====================================The main methods provided by the service===================================*/
 
     getCurrentProject(): Observable<Project> {
-        const currentProject = this.store.select(selectSelectedProject);
-
-        const subscription = currentProject.subscribe(value => !value && this.getProjectList());
-
-        this.subscriptions.push(subscription);
-
-        return currentProject.filter(value => !!value);
+        return this.store.select(selectSelectedProject)
+            .do(value => !value && this.getProjectList())
+            .filter(value => !!value);
     }
 
-    getProjectList() {
-        const subscription = this.processor.projectListProcessor();
-
-        this.subscriptions.push(subscription);
+    private getProjectList(): Subscription {
+        return this.processor.projectListProcessor(
+            this.userInfo.getSid()
+                .withLatestFrom(
+                Observable.of({ prime_contract_status: '完成' }),
+                (sid, state) => ({ sid, ...state })
+                )
+        );
     }
 
     getUserAllProject(): Observable<Project[]> {
-        return this.store.select(selectProjects);
+        return this.store.select(selectProjectListResponse).filter(value => !!value).map(res => res.projects);
     }
 
     getProjectName(): Observable<string> {
@@ -77,14 +74,9 @@ export class ProjectService {
 
     /*================================================error handle===============================================*/
 
-    private handleError() {
-        const error$ = this.store.select(selectErrorMessage)
-            .filter(msg => !!msg).map(errorMessage => ({ errorMessage }));
-
-        this.project$$ = this.error.handleErrorInSpecific(error$, 'API_ERROR');
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectProjectListResponse), 'API_ERROR');
     }
-
-    /*============================================service private methods==========================================*/
 
     private cutDownDays(date: string): number {
         if (!date) return NaN;
@@ -93,9 +85,4 @@ export class ProjectService {
         return this.timeService.countDownDays(now, end);
     }
 
-    /*============================================refuse clean====================================================*/
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
-    }
 }

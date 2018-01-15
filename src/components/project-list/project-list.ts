@@ -1,3 +1,4 @@
+import { RequestOption } from './../../interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnDestroy } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
@@ -26,12 +27,9 @@ export class ProjectListComponent implements OnDestroy {
     }
 
     close(project) {
-
         this.projectService.switchProject(project.id);
 
-        const option = this.navParam.get('option');
-
-        this.subscription = this.workerService.getWorkerContracts(option);
+        this.subscription = this.workerService.getWorkerContractsOfCurrentProject();
 
         this.viewCtrl.dismiss().then(() => { });
     }

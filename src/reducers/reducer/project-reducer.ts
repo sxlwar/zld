@@ -1,40 +1,33 @@
+import { ProjectListResponse } from './../../interfaces/response-interface';
 import { Project } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/project-action';
 
 export interface State {
-    count: number;
-    projects: Project[];
+    response: ProjectListResponse;
     selectedProject: Project;
-    information?: string;
-    errorMessage?: string;
 }
 
 export const initialState: State = {
-    count: NaN,
-    projects: [],
+    response: null,
     selectedProject: null
 };
-
-// export const initialState: ProjectListResponse = {count: NaN, projects: []};
 
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
         case actions.PROJECT_LIST_FAIL:
-            return { ...state, ...action.payload };
+            return { ...state, response: action.payload };
 
         case actions.PROJECT_LIST_SUCCESS:
-            const projects = action.payload.projects;
+            const { projects } = action.payload;
 
             if (state.selectedProject && projects.some(project => project.id === state.selectedProject.id)) {
-                return { ...action.payload, selectedProject: state.selectedProject };
+                return { ...state, selectedProject: state.selectedProject };
+            } else {
+                return { selectedProject: projects[0], response: action.payload };
             }
 
-            return { ...action.payload, selectedProject: projects[0] };
-
         case actions.SELECT_PROJECT:
-            const target = state.projects.find(project => project.id === action.payload);
-
-            return Object.assign({}, state, { selectedProject: target });
+            return { ...state, selectedProject: state.response.projects.find(project => project.id === action.payload) }
 
         case actions.GET_PROJECT_LIST:
         case actions.GET_CURRENT_PROJECTS:
@@ -45,6 +38,4 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
 export const getSelectedProject = (state: State) => state.selectedProject;
 
-export const getProjects = (state: State) => state.projects;
-
-export const getErrorMessage = (state: State) => state.errorMessage;
+export const getProjectResponse = (state: State) => state.response;

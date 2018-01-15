@@ -50,6 +50,7 @@ export class CertificationPage {
             this.certificateService.getCertificateResult().filter(value => !!value).subscribe(_ => this.navCtrl.push(tabsPage).then(() => { })),
             this.certificateService.monitorUploadResult(),
             ...this.certificateService.certificate(this.certificate$.map(_ => this.certificateForm.value)),
+            this.certificateService.handleUpdateError(),
             this.certificateService.handleError(),
         ];
     }

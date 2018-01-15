@@ -1,3 +1,4 @@
+import { ProjectService } from './project-service';
 import { WorkerContractOptions } from './../../interfaces/request-interface';
 import { UserService } from './user-service';
 import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers } from './../../reducers/index-reducer';
@@ -33,7 +34,8 @@ export class WorkerService {
         public error: ErrorService,
         public processor: ProcessorService,
         public command: Command,
-        public userInfo: UserService
+        public userInfo: UserService,
+        public project: ProjectService
     ) {
         this.handleError();
     }
@@ -48,6 +50,16 @@ export class WorkerService {
                 this.store.select(selectWorkerLimit),
                 this.store.select(selectWorkerPage).distinctUntilChanged(),
                 (options, sid, limit, page) => ({ sid, limit, page, ...options }) as WorkerContractOptions // use option parameters first;
+                )
+        );
+    }
+
+    getWorkerContractsOfCurrentProject(): Subscription {
+        return this.getWorkerContracts(
+            this.project.getCurrentProject().map(project => project.id)
+                .withLatestFrom(
+                this.getCompleteStatusOption(),
+                (project_id, status) => ({ ...status, project_id, limit: 1, page: 1 })
                 )
         );
     }

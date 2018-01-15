@@ -80,6 +80,7 @@ export class WorkerContractPage {
         this.subscriptions = [
             this.optimizeContract(contract),
             contract.subscribe(contract => this.source = contract),
+            this.project.handleError(),
         ];
     }
 
@@ -107,7 +108,6 @@ export class WorkerContractPage {
                 } else {
                     this.contract = this.getPiecerContract(contract, project);
                 }
-
             });
     }
 
