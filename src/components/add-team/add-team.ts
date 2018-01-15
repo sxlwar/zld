@@ -1,3 +1,6 @@
+import { AddTeamFormModel } from './../../services/api/mapper-service';
+import { Subject } from 'rxjs/Subject';
+import { putInArray } from '../../services/utils/util';
 //region
 import { Subscription } from 'rxjs/Subscription';
 import { TeamService } from './../../services/business/team-service';
@@ -6,7 +9,7 @@ import { ViewController, NavParams } from 'ionic-angular';
 import { Employer } from './../../interfaces/response-interface';
 import { ProjectService } from './../../services/business/project-service';
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EmployerService } from '../../services/business/employer-service';
 import { TL, QW } from '../../services/config/character';
 import { teamNameValidator } from '../../validators/validators';
@@ -22,7 +25,7 @@ interface Person {
     selector: 'add-team',
     templateUrl: 'add-team.html'
 })
-export class AddTeamComponent implements OnInit {
+export class AddTeamComponent implements OnInit, OnDestroy {
     operateType = 'ADD_TEAM';
 
     projectName: Observable<string>;
@@ -37,6 +40,10 @@ export class AddTeamComponent implements OnInit {
 
     isUpdate = false;
 
+    addTeam$: Subject<AddTeamFormModel> = new Subject();
+
+    updateTeam$: Subject<AddTeamFormModel> = new Subject();
+
     constructor(
         public project: ProjectService,
         public employer: EmployerService,
@@ -45,16 +52,16 @@ export class AddTeamComponent implements OnInit {
         public team: TeamService,
         public navParams: NavParams
     ) {
-        const subscription = employer.getCompanyUserList();
-
-        this.subscriptions.push(subscription);
+        this.initialForm();
     }
 
     ngOnInit() {
-        this.checkType();
+        this.initialModel();
 
-        this.createForm();
+        this.launch();
+    }
 
+    initialModel(): void {
         this.projectName = this.project.getProjectName();
 
         this.foremen = this.getSpecificCharacters(this.employer.getSpecificRoles(TL));
@@ -62,14 +69,29 @@ export class AddTeamComponent implements OnInit {
         this.qualityClerks = this.getSpecificCharacters(this.employer.getSpecificRoles(QW));
     }
 
-    checkType() {
+    launch(): void {
+        const updateNotify = this.updateTeam$.zip(this.team.getUpdateTeamResponse().skip(1), (_1, _2) => true);
+
+        const addNotify = this.addTeam$.zip(this.team.getAddTeamResponse().skip(1), (_1, _2) => true);
+
+        this.subscriptions = [
+            this.employer.getCompanyUserList(),
+            this.team.addTeam(this.addTeam$),
+            this.team.updateTeam(this.updateTeam$, this.navParams.get('team').id),
+            this.team.updateTeamListAtLocal(updateNotify),
+            updateNotify.merge(addNotify).subscribe(_ => this.dismiss()),
+            this.employer.handleError(),
+            this.team.handleAddTeamError(),
+            this.team.handleUpdateTeamError(),
+        ];
+    }
+
+    initialForm(): void {
         if (this.navParams.get('update')) {
             this.isUpdate = true;
             this.operateType = 'UPDATE_TEAM';
         };
-    }
 
-    createForm() {
         const name = this.isUpdate ? this.navParams.get('team').name : '';
 
         this.addTeamForm = this.fb.group({
@@ -83,41 +105,16 @@ export class AddTeamComponent implements OnInit {
         return source
             .mergeMap(list => Observable.from(list)
                 .map(({ user_id, realname }) => ({ id: user_id, name: realname }))
-                .reduce((acc, cur) => {
-                    acc.push(cur);
-                    return acc;
-                }, []))
+                .reduce(putInArray, [])
+            );
     }
 
     confirmOperate() {
         if (this.isUpdate) {
-            this.updateTeam();
+            this.updateTeam$.next(this.addTeamForm.value);
         } else {
-            this.addTeam();
+            this.addTeam$.next(this.addTeamForm.value);
         }
-    }
-
-    updateTeam() {
-        this.team.updateTeam(this.addTeamForm.value, this.navParams.get('team').id);
-
-        const subscription = this.team.getUpdateTeamResponse()
-            .skip(1)
-            .subscribe(_ => {
-                this.team.updateTeamListAtLocal();
-                this.dismiss();
-            });
-
-        this.subscriptions.push(subscription);
-    }
-
-    addTeam() {
-        this.team.addTeam(this.addTeamForm.value);
-
-        const subscription = this.team.getAddTeamResponse()
-            .skip(1)
-            .subscribe(_ => this.dismiss());
-
-        this.subscriptions.push(subscription);
     }
 
     dismiss() {
@@ -136,5 +133,9 @@ export class AddTeamComponent implements OnInit {
 
     get qualityClerk() {
         return this.addTeamForm.get('qualityClerk');
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

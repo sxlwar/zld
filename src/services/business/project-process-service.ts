@@ -1,3 +1,4 @@
+import { putInArray } from '../utils/util';
 import { Observable } from 'rxjs/Observable';
 import { ProjectPayProcess, PayProcessStatus } from './../../interfaces/response-interface';
 import { ProjectService } from './project-service';
@@ -12,9 +13,6 @@ import { SelectProjectPayProcessStatus } from '../../actions/action/pay-bill-act
 
 @Injectable()
 export class ProjectProcessService {
-    subscriptions: Subscription[] = [];
-    projectProcess$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public userInfo: UserService,
@@ -22,7 +20,6 @@ export class ProjectProcessService {
         public project: ProjectService,
         public process: ProcessorService
     ) {
-        this.handleError();
     }
 
     getProjectPayProcess(): Observable<ProjectPayProcess[]> {
@@ -34,23 +31,18 @@ export class ProjectProcessService {
             .combineLatest(this.store.select(selectProjectProcessSelectedStatus))
             .mergeMap(([processes, status]) => Observable.from(processes)
                 .filter(process => process.status === PayProcessStatus[status])
-                .reduce((acc, cur) => {
-                    acc.push(cur);
-                    return acc;
-                }, [])
+                .reduce(putInArray, [])
             );
     }
 
-    getProcessList(): void {
-        const sid = this.userInfo.getSid();
-
-        const projectId = this.project.getProjectId();
-
-        const option = sid.zip(projectId, (sid, project_id) => ({ sid, project_id }));
-
-        const subscription = this.process.projectPayProcessProcessor(option);
-
-        this.subscriptions.push(subscription);
+    getProcessList(): Subscription {
+        return this.process.projectPayProcessProcessor(
+            this.project.getProjectId()
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (project_id, sid) => ({ sid, project_id })
+                )
+        );
     }
 
     getSelectedStatus(): Observable<string> {
@@ -61,13 +53,7 @@ export class ProjectProcessService {
         this.store.dispatch(new SelectProjectPayProcessStatus(status));
     }
 
-    private handleError() {
-        const error = this.store.select(selectProjectProcessResponse);
-
-        this.projectProcess$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectProjectProcessResponse), 'API_ERROR');
     }
 }

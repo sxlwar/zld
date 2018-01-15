@@ -35,8 +35,7 @@ export class ErrorService {
                 subTitle: info.msg.errorMessage,
                 buttons: info.buttons
             }))
-            .subscribe(alert => alert.present().then(() => {
-            }));
+            .subscribe(alert => alert.present().then(() => { }));
     }
 
     /**
@@ -59,7 +58,6 @@ export class ErrorService {
      * Used to handle the errors on the specified stream. The stream should be  a request stream.
      * */
     handleErrorInSpecific(obs: Observable<ErrorResponse>, title = ''): Subscription {
-
         const button = 'CONFIRM_BUTTON';
 
         const lang$ = this.translate.get([title, button])
@@ -69,6 +67,5 @@ export class ErrorService {
             .map(res => Object.assign({ msg: res[0] }, res[1]) as ErrorInfo);
 
         return this.handleResponseError(error$);
-
     }
 }

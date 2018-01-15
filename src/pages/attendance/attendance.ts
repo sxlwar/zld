@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { RequestOption } from '../../interfaces/request-interface';
 import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
@@ -47,6 +48,8 @@ export class AttendancePage {
 
     sortType: number;
 
+    setTeam$: Subject<Team[]> = new Subject();
+
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
@@ -77,6 +80,8 @@ export class AttendancePage {
             this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
             this.attendance.getOrderType().subscribe(type => this.orderType = type),
             this.attendance.getSortType().subscribe(type => this.sortType = type),
+            this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
+            this.teamService.handleError(),
             this.attendance.handleAttendanceError()
         ];
     }
@@ -146,12 +151,6 @@ export class AttendancePage {
     }
 
     /* ========================================================Team operation========================================================= */
-
-    setTeam(teams) {
-        const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
-
-        this.teamService.setSelectTeams(teamIds);
-    }
 
     showActionSheet(attendances: AttendanceResult[]) {
         this.actionSheet$$ && this.actionSheet$$.unsubscribe();

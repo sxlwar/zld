@@ -88,7 +88,7 @@ export class MinePage {
     ionViewDidLoad() {
         this.initialModel();
 
-        this.monitor();
+        this.launch();
     }
 
     initialModel() {
@@ -112,13 +112,13 @@ export class MinePage {
         this.team = this.teamService.getOwnTeam().map(team => team && team.name || '');
     }
 
-    monitor() {
+    launch(): void {
         this.subscriptions = [
             this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout())
-        ]
+        ];
     }
 
-    goTo(item: IconState | Setting) {
+    goTo(item: IconState | Setting): void {
         this.navCtrl.push(item.page, item).then(() => { });
     }
 

@@ -65,7 +65,10 @@ export class LocationCardPage {
     }
 
     ionViewDidLoad() {
+        this.initialModel();
+    }
 
+    initialModel(): void {
         this.canOperate = this.permission.getOperatePermission(locationCard.icon, ProjectRoot);
 
         this.cards = this.locationCard.getLocationCardsByCondition();
@@ -79,48 +82,34 @@ export class LocationCardPage {
         this.teamStateOptions = this.locationCard.getTeamStateOptions();
     }
 
-    ionViewWillUnload() {
-        this.subscriptions.forEach(item => item.unsubscribe());
-    }
-
     /* =============================================================Launch functions============================================ */
 
     launch() {
-        this.subscriptions = this.locationCard.handleError(); // Must be initial error handle first.
-
-        this.getLocationCardList();
-
-        const subscription = this.locationCard.getTeamStateOptions().subscribe(options => !options.length && this.updateTeamStateOptions());
-
-        this.subscriptions.push(subscription);
+        this.subscriptions = [
+            ...this.locationCard.handleError(),
+            this.locationCard.getTeamStateOptions().filter(value => !value.length).mergeMapTo(this.updateTeamStateOptions()).subscribe(option => this.locationCard.updateTeamStateOptions(option)),
+            this.teamService.getTeamList(this.teamService.getTeamStateOptions().filter(value => !value.length).mergeMapTo(this.project.getProjectId().map(project_id => ({ project_id })))),
+            this.getLocationCardList(),
+            this.teamService.handleError(),
+        ];
     }
 
-    getLocationCardList(): void {
-        const option = this.getOptions()
-            .distinctUntilChanged()
-            .map(team_id => team_id ? { team_id } : {})
-
-        const subscription = this.locationCard.getLocationCardList(option);
-
-        this.subscriptions.push(subscription);
+    getLocationCardList(): Subscription {
+        return this.locationCard.getLocationCardList(
+            this.getOptions().distinctUntilChanged().map(team_id => team_id ? { team_id } : {})
+        );
     }
 
     /**
      * @description  Update the list of available teams, a request is send first if the teamList api haven't been requested;
      */
-    updateTeamStateOptions(): void {
-        const teams = this.teamService.getTeamStateOptions().map(source => source.map(item => ({ condition: item.id, text: item.name, selected: false })));
-
-        const subscription = teams.subscribe(result => !result.length && this.teamService.getTeamList(this.project.getProjectId().map(project_id => ({ project_id }))));
-
-        this.subscriptions.push(subscription);
-
-        const option$$ = teams
-            .withLatestFrom(this.translate.get('ALL').map(text => ({ condition: null, selected: true, text })))
-            .map(([options, head]) => [head].concat(options))
-            .subscribe(option => this.locationCard.updateTeamStateOptions(option))
-
-        this.subscriptions.push(option$$);
+    updateTeamStateOptions(): Observable<ConditionOption[]> {
+        return this.teamService.getTeamStateOptions()
+            .map(source => source.map(item => ({ condition: item.id, text: item.name, selected: false })))
+            .withLatestFrom(
+            this.translate.get('ALL').map(text => ({ condition: null, selected: true, text })),
+            (options, head) => [head].concat(options)
+            );
     }
 
     /**
@@ -169,5 +158,9 @@ export class LocationCardPage {
 
     setSelectedTeam(): void {
         this.locationCard.updateSelectedTeam(this.selectedTeam);
+    }
+
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

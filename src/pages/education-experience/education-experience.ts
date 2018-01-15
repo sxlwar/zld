@@ -43,7 +43,8 @@ export class EducationExperiencePage {
 
     launch() {
         this.subscriptions = [
-            this.personal.getEducationList()
+            this.personal.getEducationList(),
+            this.personal.handleError(),
         ];
     }
 

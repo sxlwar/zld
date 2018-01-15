@@ -1,5 +1,6 @@
+import { Subscription } from 'rxjs/Subscription';
+import { putInArray } from '../../services/utils/util';
 import { TimeService } from './../../services/utils/time-service';
-import { PayProcess } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { PayProcessService } from './../../services/business/pay-process-service';
 import { Component } from '@angular/core';
@@ -17,7 +18,9 @@ export interface PayProcessListItem {
     templateUrl: 'salary.html',
 })
 export class SalaryPage {
-    list: Observable<PayProcessListItem[]>
+    list: Observable<PayProcessListItem[]>;
+
+    subscriptions: Subscription[] = [];
 
     constructor(
         public navCtrl: NavController,
@@ -35,13 +38,24 @@ export class SalaryPage {
     }
 
     ionViewDidLoad() {
-        const process = this.payProcess.getPayProcesses();
+        this.initialModel();
 
-        this.getPayProcessList(process);
+        this.launch();
     }
 
-    getPayProcessList(source: Observable<PayProcess[]>): void {
-        this.list = source.mergeMap(processes => Observable.from(processes)
+    initialModel(): void {
+        this.list = this.getPayProcessList();
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.payProcess.getPayProcessList(),
+            this.payProcess.handleError(),
+        ];
+    }
+
+    getPayProcessList(): Observable<PayProcessListItem[]> {
+        return this.payProcess.getPayProcesses().mergeMap(processes => Observable.from(processes)
             .map(process => {
                 const { amount, project_pay__project_bill__project__name, project_pay__project_bill__month } = process;
 
@@ -51,10 +65,7 @@ export class SalaryPage {
 
                 return { amount, yearMonth, project }
             })
-            .reduce((acc, cur) => {
-                acc.push(cur);
-                return acc;
-            }, [])
+            .reduce(putInArray, [])
         )
     }
 
@@ -63,6 +74,6 @@ export class SalaryPage {
     }
 
     ionViewWillUnload() {
-        this.payProcess.unSubscribe();
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

@@ -70,7 +70,7 @@ export class WorkPieceService extends RecordOptionService {
         return Observable.of({ history_view: true });
     }
 
-    /* ====================================Error handle=======================================  */
+    /* ==========================================Error handle======================================================  */
 
     handleError() {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkPieceResponse), 'APP_ERROR');

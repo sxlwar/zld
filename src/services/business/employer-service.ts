@@ -1,4 +1,4 @@
-//region
+import { putInArray } from '../utils/util';
 import { Employer } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
@@ -11,14 +11,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
 import { SetSelectedQualityClerkAction, SetSelectedForemanAction } from '../../actions/action/employer-action';
 import { QW, TL } from '../../services/config/character';
-//endregion
 
 @Injectable()
 export class EmployerService {
-    subscriptions: Subscription[] = [];
-
-    companyUserList$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public userInfo: UserService,
@@ -26,63 +21,53 @@ export class EmployerService {
         public process: ProcessorService,
         public error: ErrorService
     ) {
-        this.handleError();
     }
+
+    /* ==============================================================Data acquisition===================================================== */
 
     getCompanyUsers(): Observable<Employer[]> {
         return this.store.select(selectCompanyUsers);
     }
 
-    getCompanyUserList(): Subscription {
-        const sid = this.userInfo.getSid();
+    // unused
+    getSelectedForemen(): Observable<number[]> {
+        return this.store.select(selectSelectedForemen);
+    }
 
-        const companyId = this.project.getProjectPrimeCompanyId().map(id => ([id]));
-
-        const option = sid.zip(
-            companyId,
-            (sid, company_id) => ({ sid, company_id })
-        );
-
-        return this.process.companyUserListProcessor(option);
+    // unused
+    getSelectedQualityClerks(): Observable<number[]> {
+        return this.store.select(selectSelectedQualityClerks);
     }
 
     getSpecificRoles(role: string): Observable<Employer[]> {
         return this.getCompanyUsers()
             .mergeMap(employers => Observable.from(employers)
                 .filter(employer => employer.user__groups__name === role)
-                .reduce((acc, cur) => {
-                    acc.push(cur);
-                    return acc;
-                }, [])
+                .reduce(putInArray, [])
             );
     }
+    
+    /* ==============================================================API request=========================================================== */
 
-    /**
-     * @description 以下三个方法暂时没有用到，功能已经写好了。
-     */
-    getSelectedForemen(): Observable<number[]> {
-        return this.store.select(selectSelectedForemen);
+    getCompanyUserList(): Subscription {
+        return this.process.companyUserListProcessor(
+            this.project.getProjectPrimeCompanyId().map(id => ([id]))
+                .withLatestFrom(this.userInfo.getSid(), (company_id, sid) => ({ company_id, sid }))
+        );
     }
 
-    getSelectedQualityClerks(): Observable<number[]> {
-        return this.store.select(selectSelectedQualityClerks);
-    }
+    /* ==============================================================Local state change=========================================================== */
 
+    // unused
     setSelectedEmployer(id: number[], type: string): void {
         if (type === TL) this.store.dispatch(new SetSelectedForemanAction(id));
 
         if (type === QW) this.store.dispatch(new SetSelectedQualityClerkAction(id));
     }
 
-    /* ==========================================Error handle and refuse clean============================================= */
+    /* ==============================================================Error handle===================================================== */
 
-    handleError() {
-        const error = this.store.select(selectCompanyUserResponse);
-
-        this.companyUserList$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectCompanyUserResponse), 'API_ERROR');
     }
 }

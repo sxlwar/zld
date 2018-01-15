@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { MapperService } from './../../services/api/mapper-service';
 import { PlatformExperience, CustomWorkExperience } from './../../interfaces/personal-interface';
 import { Observable } from 'rxjs/Observable';
@@ -19,6 +20,8 @@ export class WorkExperiencePage {
 
     customWorkExperience: Observable<CustomWorkExperience[]>;
 
+    subscriptions: Subscription[] = [];
+
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
@@ -37,19 +40,23 @@ export class WorkExperiencePage {
     ionViewDidLoad() {
         this.initialModel();
 
-        this.sendRequest();
+        this.launch();
     }
 
-    initialModel() {
+    initialModel(): void {
         this.platformWorkExperience = this.personal.getOwnPlatformExperience().map(result => result.map(item => this.mapper.transformPlatformWorkExperience(item)));
 
         this.customWorkExperience = this.personal.getOwnWorkExperience().map(result => result.map(item => this.mapper.transformWorkExperience(item)));
     }
 
-    sendRequest() {
-        this.personal.getWorkExperienceList();
+    launch(): void {
+        this.subscriptions = [
+            this.personal.getWorkExperienceList(),
 
-        this.personal.getPlatformWorkExperienceList();
+            this.personal.getPlatformWorkExperienceList(),
+
+            this.personal.handleError(),
+        ];
     }
 
     updateWorkExperience(target: CustomWorkExperience): void {
@@ -70,5 +77,9 @@ export class WorkExperiencePage {
         modal.present();
 
         modal.onDidDismiss((data) => this.personal.addWorkExperience(Observable.of(data)));
+    }
+
+    ionViewWillUnload(){
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

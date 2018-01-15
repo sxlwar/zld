@@ -56,7 +56,8 @@ export class FamilyInformationPage {
     launch() {
         this.subscriptions = [
             this.personal.getHomeInfoList(),
-            this.personal.updateHomeInfo(this.getOption())
+            this.personal.updateHomeInfo(this.getOption()),
+            this.personal.handleError(),
         ]
     }
 

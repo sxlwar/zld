@@ -1,4 +1,3 @@
-//region
 import { Injectable } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
@@ -10,13 +9,9 @@ import { Observable } from 'rxjs/Observable';
 import { PayBill, PayBillTime, PayBillAmount } from '../../interfaces/response-interface';
 import { RequestOption, PayBillListOptions } from '../../interfaces/request-interface';
 import { UserService } from '../business/user-service';
-//endregion
 
 @Injectable()
 export class PayBillService {
-    subscriptions: Subscription[] = [];
-    payBill$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public error: ErrorService,
@@ -24,22 +19,19 @@ export class PayBillService {
         public project: ProjectService,
         public userInfo: UserService
     ) {
-        this.handleError();
     }
 
-    getPayBills(option: Observable<RequestOption>): Observable<PayBill[]> {
-        this.getPayBillList(option);
-
+    getPayBills(): Observable<PayBill[]> {
         return this.store.select(selectPayBillList);
     }
 
-    getPayBillOfMonth(option: Observable<RequestOption>): Observable<PayBill> {
-        return this.getPayBills(option)
+    getPayBillOfMonth(): Observable<PayBill> {
+        return this.getPayBills()
             .mergeMap(res => Observable.from(res).take(1));
     }
 
-    getAttendanceTimeStatistics(option: Observable<RequestOption>): Observable<number[]> {
-        const source = this.getPayBillOfMonth(option);
+    getAttendanceTimeStatistics(): Observable<number[]> {
+        const source = this.getPayBillOfMonth();
 
         const attendanceTimeTotal = source.map(payBill => this.countAttendanceTotalTime(payBill));
 
@@ -50,18 +42,18 @@ export class PayBillService {
         return attendanceTimeTotal.zip(overtimeTotal, overOvertimeTotal);
     }
 
-    private getPayBillList(option: Observable<RequestOption>): void {
-        const sid = this.userInfo.getSid();
+    getPayBillList(option: Observable<RequestOption>): Subscription {
+        return this.processor.payBillListProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            ) as Observable<PayBillListOptions>
+        );
 
-        const params = sid.zip(option, (sid, option) => ({ sid, ...option })) as Observable<PayBillListOptions>;
-
-        const subscription = this.processor.payBillListProcessor(params);
-
-        this.subscriptions.push(subscription);
     }
 
     /**
-     * 以下6个函数用来解决后台字段语义模糊不清的问题。 
+     * 以下函数用来解决后台字段语义模糊不清的问题。 
      */
     countAttendanceTotalTime(payBill: PayBill): number {
         return payBill[PayBillTime.prefix + PayBillTime.systemAtt] + payBill[PayBillTime.prefix + PayBillTime.manualAtt];
@@ -103,15 +95,9 @@ export class PayBillService {
         return bill.amount || 0;
     }
 
-    /* =================================================Error handle and refuse clean=================================================================================== */
+    /* ============================================================Error handle========================================================================= */
 
-    private handleError() {
-        const error = this.store.select(selectPayBillListResponse);
-
-        this.payBill$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectPayBillListResponse), 'API_ERROR');
     }
 }

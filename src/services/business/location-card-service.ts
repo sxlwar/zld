@@ -45,13 +45,13 @@ export class LocationCardService {
     /* ==============================================API request operate================================================ */
 
     getLocationCardList(option: Observable<RequestOption>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const projectId = this.project.getProjectId();
-
-        const options = sid.combineLatest(projectId, option, (sid, project_id, option) => ({ sid, project_id, ...option }));
-
-        return this.processor.locationCardListProcessor(options);
+        return this.processor.locationCardListProcessor(
+            option.combineLatest(
+                this.project.getProjectId(),
+                this.userInfo.getSid(),
+                (option, project_id, sid) => ({ sid, project_id, ...option })
+            )
+        );
     }
 
     addLocationCard(option: Observable<RequestOption>): Subscription {

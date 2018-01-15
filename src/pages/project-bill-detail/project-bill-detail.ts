@@ -43,16 +43,22 @@ export class ProjectBillDetailPage {
             .filter(value => !!value.length)
             .mergeMap(bills => Observable.from(bills).first());
 
-        this.getPayBillList(bills);
+        this.initialModel();
 
         this.launch(bills);
+    }
+
+    initialModel(): void {
+        this.list = this.getPayBillList();
     }
 
     launch(bills: Observable<ProjectPayBill>): void {
         this.subscriptions = [
             this.projectBill.getProjectBillList(Observable.of(this.navParams.get('billId'))),
             this.getProjectBillChart(bills),
-            this.projectBill.handleError()
+            this.payBill.getPayBillList(bills.map(({ project_id, month }) => ({ project_id, month: initial(month.split('-')).join('-') }))),
+            this.projectBill.handleError(),
+            this.payBill.handleError(),
         ];
     }
 
@@ -71,8 +77,8 @@ export class ProjectBillDetailPage {
             .subscribe(data => this.chartService.getChart(this.projectBillDetail.nativeElement, ChartType.doughnut, data));
     }
 
-    getPayBillList(bill: Observable<ProjectPayBill>): void {
-        this.list = bill.mergeMap(({ project_id, month }) => this.payBill.getPayBills(Observable.of({ project_id, month: initial(month.split('-')).join('-') })))
+    getPayBillList(): Observable<PayBillListItem[]> {
+        return this.payBill.getPayBills()
             .filter(value => !!value.length)
             .mergeMap(bills => {
                 return Observable.from(bills)

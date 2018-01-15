@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { RequestOption } from 'interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Team, AttendanceResult } from './../../interfaces/response-interface';
@@ -33,6 +34,8 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
 
     count: Observable<number>;
 
+    setTeam$: Subject<Team[]> = new Subject();
+
     constructor(
         public viewCtrl: ViewController,
         public attendance: AttendanceService,
@@ -52,6 +55,8 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
             this.attendance.getAttendances(this.getAttendanceOption()),
             this.getDate(),
             this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
+            this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
+            this.teamService.handleError(),
             this.attendance.handleAttendanceError()
         ];
     }
@@ -116,12 +121,6 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
 
     switchOrderType(order: string): void {
         this.attendance.switchOrderType(order);
-    }
-
-    setTeam(teams): void {
-        const teamIds: Observable<number> = Observable.from(teams).map((team: Team) => team.id);
-
-        this.teamService.setSelectTeams(teamIds);
     }
 
     audit(attendances: AttendanceResult[]): void {

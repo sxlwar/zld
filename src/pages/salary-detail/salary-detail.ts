@@ -1,7 +1,6 @@
 import { ChartService, ChartType } from './../../services/utils/chart-service';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
-import { PayBill } from './../../interfaces/response-interface';
 import { PayBillService } from './../../services/business/pay-bill-service';
 import { Observable } from 'rxjs/Observable';
 import { Component, ViewChild, ElementRef } from '@angular/core';
@@ -24,9 +23,13 @@ export interface Salary {
 })
 export class SalaryDetailPage {
     @ViewChild('salaryDetail') salaryDetail: ElementRef;
+
     yearMonth: string;
+
     totalAmount: number;
-    payBillChart$$: Subscription;
+
+    subscriptions: Subscription[] = [];
+
     salary: Observable<Salary>
 
     constructor(
@@ -40,17 +43,25 @@ export class SalaryDetailPage {
     }
 
     ionViewDidLoad() {
-        const option = { month: this.yearMonth };
+        this.initialModel();
 
-        const bill = this.payBill.getPayBillOfMonth(Observable.of(option));
-
-        this.salary = this.getSalary(bill);
-
-        this.getPayBillChart();
+        this.launch();
     }
 
-    getSalary(bill: Observable<PayBill>): Observable<Salary> {
-        return bill.map(bill => {
+    initialModel(): void {
+        this.salary = this.getSalary();
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.getPayBillChart(),
+            this.payBill.getPayBillList(Observable.of({ month: this.yearMonth })),
+            this.payBill.handleError(),
+        ];
+    }
+
+    getSalary(): Observable<Salary> {
+        return this.payBill.getPayBillOfMonth().map(bill => {
             const systemAttendanceAmount = this.payBill.countSystemAttendanceAmount(bill);
 
             const manualAttendanceAmount = this.payBill.countManualAttendanceAmount(bill);
@@ -69,8 +80,8 @@ export class SalaryDetailPage {
         });
     }
 
-    getPayBillChart(): void {
-        this.payBillChart$$ = this.salary
+    getPayBillChart(): Subscription {
+        return this.salary
             .withLatestFrom(
             this.translate.get(['SYSTEM_ATTENDANCE_SALARY', 'MANUAL_ATTENDANCE_SALARY', 'SYSTEM_OVERTIME_SALARY', 'MANUAL_OVERTIME_SALARY', 'WORK_PIECE_SALARY'])
                 .map(res => [res.SYSTEM_ATTENDANCE_SALARY, res.MANUAL_ATTENDANCE_SALARY, res.SYSTEM_OVERTIME_SALARY, res.MANUAL_OVERTIME_SALARY, res.WORK_PIECE_SALARY])
@@ -88,7 +99,7 @@ export class SalaryDetailPage {
     }
 
     ionViewWillUnload() {
-        this.payBillChart$$.unsubscribe();
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 
 }

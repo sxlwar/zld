@@ -1,3 +1,4 @@
+import { putInArray } from '../../services/utils/util';
 //region
 import { ProjectService } from './../../services/business/project-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -24,11 +25,17 @@ export interface ProcessList {
 })
 export class ProjectBillPage {
     @ViewChild('overview') overview: ElementRef;
+
     subscriptions: Subscription[] = [];
+
     selectedStatus = '';
+
     overviewTotal: number;
+
     projectName: Observable<string>;
+
     list: Observable<ProcessList[]>;
+
     subTotal: Observable<number>;
 
     constructor(
@@ -40,7 +47,6 @@ export class ProjectBillPage {
         public translate: TranslateService,
         public project: ProjectService
     ) {
-        processService.getProcessList();
     }
 
     ionViewCanEnter() {
@@ -50,35 +56,38 @@ export class ProjectBillPage {
     }
 
     ionViewDidLoad() {
-        this.getSelectedStatus();
+        this.initialModel();
 
-        this.getOverviewChart(this.processService.getProjectPayProcess());
+        this.launch();
+    }
 
+    initialModel(): void {
         this.projectName = this.project.getProjectName();
 
-        this.getListOfSelectedStatus();
+        this.list = this.getListOfSelectedStatus();
 
-        this.getSubTotal();
+        this.subTotal = this.list.map(item => item.reduce((acc, cur) => acc + cur.amount, 0));
     }
 
-    getSelectedStatus(): void {
-        const subscription = this.processService.getSelectedStatus().subscribe(value => this.selectedStatus = value);
-
-        this.subscriptions.push(subscription);
+    launch(): void {
+        this.subscriptions = [
+            this.processService.getProcessList(),
+            this.processService.getSelectedStatus().subscribe(value => this.selectedStatus = value),
+            this.getOverviewChart(this.processService.getProjectPayProcess()),
+            this.processService.handleError(),
+        ];
     }
 
-    getListOfSelectedStatus(): void {
-        this.list = this.processService.getListOfSelectedStatus()
+    getListOfSelectedStatus(): Observable<ProcessList[]> {
+        return this.processService.getListOfSelectedStatus()
             .mergeMap(processes => Observable.from(processes)
                 .map(item => ({ yearMonth: this.timeService.getDateInfo(new Date(item.project_bill__month)).dateWithoutDay, amount: item.amount, billId: item.project_bill_id }))
-                .reduce((acc, cur) => {
-                    acc.push(cur);
-                    return acc;
-                }, []));
+                .reduce(putInArray, [])
+            );
     }
 
-    getOverviewChart(source: Observable<ProjectPayProcess[]>): void {
-        const subscription = source.withLatestFrom(this.translate.get('TOTAL_AMOUNT'))
+    getOverviewChart(source: Observable<ProjectPayProcess[]>): Subscription {
+        return source.withLatestFrom(this.translate.get('TOTAL_AMOUNT'))
             .map(([processes, legend]) => {
                 const labels = processes.map(item => this.timeService.getMonthFromStringDate(item.project_bill__month));
 
@@ -89,12 +98,6 @@ export class ProjectBillPage {
                 return this.chartService.getBarChartData({ labels, data }, legend, data.length);
             })
             .subscribe(data => this.chartService.getChart(this.overview.nativeElement, ChartType.horizontalBar, data));
-
-        this.subscriptions.push(subscription);
-    }
-
-    getSubTotal(): void {
-        this.subTotal = this.list.map(item => item.reduce((acc, cur) => acc + cur.amount, 0));
     }
 
     segmentChanged(): void {

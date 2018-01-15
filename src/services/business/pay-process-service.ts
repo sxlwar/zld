@@ -10,45 +10,23 @@ import { PayProcess } from 'interfaces/response-interface';
 
 @Injectable()
 export class PayProcessService {
-    subscriptions: Subscription[] = [];
-    payProcess$$: Subscription;
-
     constructor(
         public store: Store<AppState>,
         public process: ProcessorService,
         public userInfo: UserService,
         public error: ErrorService
     ) {
-        this.handleError();
     }
 
     getPayProcesses(): Observable<PayProcess[]> {
-        const result = this.store.select(selectPayProcessList);
-
-        const subscription = result.subscribe(value => !value.length && this.getPayProcessList());
-
-        this.subscriptions.push(subscription);
-
-        return result;
+        return this.store.select(selectPayProcessList);
     }
 
-    getPayProcessList(): void {
-        const sid = this.userInfo.getSid();
-
-        const option = sid.map(sid => ({ sid }));
-
-        const subscription = this.process.payProcessProcessor(option);
-
-        this.subscriptions.push(subscription);
+    getPayProcessList(): Subscription {
+        return this.process.payProcessProcessor(this.userInfo.getSid().map(sid => ({ sid })));
     }
 
-    handleError() {
-        const error = this.store.select(selectPayProcessResponse);
-
-        this.payProcess$$ = this.error.handleErrorInSpecific(error, 'APP_ERROR');
-    }
-
-    unSubscribe() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectPayProcessResponse), 'APP_ERROR');
     }
 }

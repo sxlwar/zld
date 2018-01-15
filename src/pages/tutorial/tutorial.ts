@@ -13,14 +13,19 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class TutorialPage implements OnInit {
     slides: Observable<object[]>;
+
     showSkip: Observable<boolean>;
+
     dir: Observable<string>;
+
     slides$$: Subscription;
 
-    constructor(public navCtrl: NavController,
+    constructor(
+        public navCtrl: NavController,
         public menu: MenuController,
         private tutorial: TutorialService,
-        public store: Store<fromRoot.AppState>) {
+        public store: Store<fromRoot.AppState>
+    ) {
     }
 
     ngOnInit() {
@@ -67,6 +72,7 @@ export class TutorialPage implements OnInit {
     ionViewWillLeave() {
         // enable the root left menu when leaving the tutorial page
         this.menu.enable(true);
+        
         this.slides$$.unsubscribe();
     }
 

@@ -64,7 +64,9 @@ export class PersonalInformationPage {
 
             this.personal.updateWorkerDetailWorkTypeAtLocal(),
 
-            this.monitor()
+            this.monitor(),
+
+            this.personal.handleError(),
         ];
     }
 

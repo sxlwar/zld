@@ -26,7 +26,7 @@
 
         <ion-item>
             <ion-label>{{'TEAM' | translate}}</ion-label>
-            <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="setTeam($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+            <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="setTeam$.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
                 [okText]="'CONFIRM_BUTTON' | translate">
                 <ion-option *ngFor="let team of (teams | async)" [value]="team" [selected]="team.selected">{{team.name}}</ion-option>
             </ion-select>

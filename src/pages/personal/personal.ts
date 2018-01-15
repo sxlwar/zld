@@ -63,6 +63,7 @@ export class PersonalPage {
 
         this.subscriptions = [
             this.personal.getBasicInfoList(option),
+            this.personal.handleError(),
         ];
     }
 

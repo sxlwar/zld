@@ -40,7 +40,8 @@ export class AddBankcardComponent implements OnDestroy {
 
         this.subscriptions = [
             this.bankcard.getBankInfo().subscribe(res => this.bankcardForm.patchValue({ cardType: res.bank_name + res.brand })),
-            this.personal.getPersonalIdResponse().subscribe(value => !value && this.personal.getPersonalIdList())
+            this.personal.getPersonalIdResponse().subscribe(value => !value && this.personal.getPersonalIdList()),
+            this.personal.handleError(),
         ];
     }
 

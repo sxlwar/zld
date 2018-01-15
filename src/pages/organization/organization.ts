@@ -1,4 +1,4 @@
-//region
+import { Subject } from 'rxjs/Subject';
 import { TipService, ConfirmProp } from './../../services/tip-service';
 import { Subscription } from 'rxjs/Subscription';
 import { TranslateService } from '@ngx-translate/core';
@@ -10,10 +10,8 @@ import { Observable } from 'rxjs/Observable';
 import { TeamService } from './../../services/business/team-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
-import { EmployerService } from '../../services/business/employer-service';
 import { AddTeamComponent } from '../../components/add-team/add-team';
 import { putInArray } from '../../services/utils/util';
-//endregion
 
 export interface ProjectSimple {
     id: number;
@@ -47,11 +45,12 @@ export class OrganizationPage {
 
     navSubscription: Subscription;
 
+    deleteTeam$: Subject<number> = new Subject();
+
     constructor(
         public navCtrl: NavController,
         public navParams: NavParams,
         public team: TeamService,
-        public employer: EmployerService,
         public projectService: ProjectService,
         public permission: PermissionService,
         public modalCtrl: ModalController,
@@ -89,20 +88,19 @@ export class OrganizationPage {
 
     launch(): void {
         this.subscriptions = [
+            this.team.deleteTeam(this.deleteTeam$),
             this.projectService.handleError(),
+            this.team.handelDeleteTeamError(),
+            this.team.handleError(),
         ];
     }
 
     addTeam(): void {
-        const addTeamModal = this.modalCtrl.create(AddTeamComponent);
-
-        addTeamModal.present();
+        this.modalCtrl.create(AddTeamComponent).present();
     }
 
     updateTeam(team: TeamItem): void {
-        const addTeamModal = this.modalCtrl.create(AddTeamComponent, { update: true, team });
-
-        addTeamModal.present();
+        this.modalCtrl.create(AddTeamComponent, { update: true, team }).present();
     }
 
     deleteTeam(team: TeamItem): void {
@@ -115,7 +113,7 @@ export class OrganizationPage {
                 confirmText: res.CONFIRM_BUTTON
             }));
 
-        const confirmFn = () => this.team.deleteTeam(team.id);
+        const confirmFn = () => this.deleteTeam$.next(team.id);
 
         const subscription = this.tip.showConfirmProp(texts, confirmFn);
 

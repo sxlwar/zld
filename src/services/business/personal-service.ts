@@ -16,7 +16,6 @@ import { rename } from '../../services/utils/util';
 
 @Injectable()
 export class PersonalService {
-    basicInformation$$: Subscription;
 
     constructor(
         public store: Store<AppState>,
@@ -25,7 +24,6 @@ export class PersonalService {
         public error: ErrorService,
         public craft: CraftService
     ) {
-        this.handleError();
     }
 
     /* ================================================================Request methods====================================================== */
@@ -166,9 +164,7 @@ export class PersonalService {
             .subscribe(types => this.store.dispatch(new UpdateLocalWorkerDetailWorkTypesAction(types)));
     }
 
-    handleError() {
-        const error = this.store.select(selectBasicInfoListResponse);
-
-        this.basicInformation$$ = this.error.handleErrorInSpecific(error, 'API_ERROR');
+    handleError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectBasicInfoListResponse), 'API_ERROR');
     }
 }
