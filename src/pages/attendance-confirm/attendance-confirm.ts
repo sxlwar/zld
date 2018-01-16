@@ -1,3 +1,4 @@
+import { attendanceConfirmDetailPage } from './../pages';
 import { AttendanceService } from './../../services/business/attendance-service';
 import { orderBy } from 'lodash';
 import { AttendanceConfirmStatisticByTeam, AttendanceConfirmStatisticByDay, AttendanceStatisticDayItem } from './../../services/business/statistics-service';
@@ -117,9 +118,9 @@ export class AttendanceConfirmPage {
         }
     }
 
-    goToNextPage(statistic) {
-        //TODO:把数据传给考勤表page完事。
+    goToNextPage(statistic: AttendanceStatisticDayItem): void {
         console.log(statistic);
+        this.navCtrl.push(attendanceConfirmDetailPage, { statistic }).then(() => { });
     }
 
     unSubscribe() {

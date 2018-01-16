@@ -30,7 +30,7 @@ export class SalaryDetailPage {
 
     subscriptions: Subscription[] = [];
 
-    salary: Observable<Salary>
+    salary: Observable<Salary>;
 
     constructor(
         public navCtrl: NavController,

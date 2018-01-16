@@ -194,7 +194,7 @@ export interface AttendanceResultListOptions {
     confirm?: string;
     user_id?: string;
     self?: number;
-    team_id?: number[];
+    team_id?: number[]; // 幸亏看了一下，单复数都不区分的垃圾接口
     page?: number;
     limit?: number;
 }

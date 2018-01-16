@@ -1,3 +1,4 @@
+import { AttendanceService } from './../../services/business/attendance-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
 import { StatisticsService } from './../../services/business/statistics-service';
@@ -39,7 +40,8 @@ export class MissionPage {
         public navParams: NavParams,
         public iconService: IconService,
         public statistics: StatisticsService,
-        public workFlow: WorkFlowService
+        public workFlow: WorkFlowService,
+        public attendance: AttendanceService
     ) {
     }
 
@@ -55,9 +57,11 @@ export class MissionPage {
 
     launch() {
         this.subscriptions = [
+            this.attendance.getAttendanceStatisticsByTeam(), 
             this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
             this.workFlow.getWorkFlowStatistic(),
-            this.workFlow.handleStatisticsError()
+            this.workFlow.handleStatisticsError(),
+            this.attendance.handleStatisticsError(),
         ];
     }
 

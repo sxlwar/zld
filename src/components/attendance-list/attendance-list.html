@@ -5,7 +5,7 @@
 
             <ion-buttons *ngIf="operate" end>
                 <button ion-button small clear (click)="operateAttendance()">
-                    {{'MODIFY_ATTENDANCE' | translate}}
+                    {{ operateButtonText | translate}}
                 </button>
             </ion-buttons>
 

@@ -1,14 +1,24 @@
 page-attendance-record {
-  ion-list-header {
-      text-align: center;
-      font-size: 18px;
-  }
-  ion-col {
-      text-align: center;
-  }
-
-  .complete {
-      text-align: center;
-      color: #00c1de;
-  }
+    ion-list-header {
+        text-align: center;
+        font-size: 18px;
+    }
+    ion-col {
+        padding: 0!important;
+    }
+    .complete {
+        text-align: center;
+        color: #00c1de;
+    }
+    ion-grid ion-row:nth-child(2) {
+        font-size: 12px;
+    }
+    ion-grid ion-row:nth-child(1) {
+        margin-bottom: 5px;
+    }
+    h6 {
+        position: absolute;
+        top: 11px;
+        right: 32px;
+    }
 }

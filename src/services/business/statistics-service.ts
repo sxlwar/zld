@@ -117,13 +117,7 @@ export class StatisticsService {
             return result.map(item => {
                 const status = filter(toPairs(item.confirm_status), ([date, value]) => value[key]);
 
-                const dates = status.map(([date, value]) => date);
-
-                const teamName = item.team_name;
-
-                const teamId = item.team_id;
-
-                return { teamName, dates, teamId };
+                return { teamName: item.team_name, dates: status.map(([date, value]) => date), teamId: item.team_id };
             });
         });
 

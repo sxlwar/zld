@@ -22,7 +22,6 @@ import { SetAttendanceEndDateAction, SetAttendanceStartDateAction, IncreaseAtten
 import { UserService } from '..//business/user-service';
 import { TranslateService } from '@ngx-translate/core';
 import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
-import { putInArray } from '../utils/util';
 
 @Injectable()
 export class AttendanceService extends RecordOptionService {
@@ -132,19 +131,23 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getAttendanceStatisticsByTeam(): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const teamIds = this.teamService.getOwnTeams()
-            .filter(teams => !!teams.length)
-            .map(teams => teams.map(team => team.id));
-
-        const option = sid.zip(teamIds, (sid, team_ids) => ({ sid, team_ids }));
-
-        return this.processor.attendanceResultTeamStatListProcessor(option);
+        return this.processor.attendanceResultTeamStatListProcessor(
+            this.teamService.getOwnTeams()
+                .filter(teams => !!teams.length)
+                .map(teams => teams.map(team => team.id))
+                .withLatestFrom(this.userInfo.getSid(), (team_ids, sid) => ({ team_ids, sid }))
+        );
     }
 
     getAttendanceModifyRecord(option: Observable<RequestOption>): Subscription {
         return this.processor.attendanceModifyRecordListProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })) as Observable<AttendanceModifyRecordListOptions>);
+    }
+
+    confirmAttendance(attendance: Observable<AttendanceResult[]>): Subscription {
+        return this.processor.attendanceResultConfirmProcessor(
+            attendance.map(attendances => attendances.map(item => item.id))
+                .withLatestFrom(this.userInfo.getSid(), (attendance_result_id, sid) => ({ attendance_result_id, sid }))
+        );
     }
 
     /* =========================================================Local state operation================================================= */
@@ -195,6 +198,7 @@ export class AttendanceService extends RecordOptionService {
     removeAttendanceFromReadyToModify(id: number): void {
         this.store.dispatch(new RemoveAttendanceFromReadyToModify(id));
     }
+
     /* =========================================================Attendance modify operation================================================= */
 
     showActionSheet(attendances: AttendanceResult[], applyModifyFn): Subscription {
@@ -208,7 +212,7 @@ export class AttendanceService extends RecordOptionService {
                 {
                     text: buttonText.ATTENDANCE_CONFIRM,
                     handler: () => {
-                        const subscription = this.processor.attendanceResultConfirmProcessor(this.userInfo.getSid().zip(Observable.from(attendances).map(item => item.id).reduce(putInArray, []), (sid, attendance_result_id) => ({ sid, attendance_result_id })));
+                        const subscription = this.confirmAttendance(Observable.of(attendances));
 
                         actionSheet.dismiss(subscription);
 
@@ -252,5 +256,9 @@ export class AttendanceService extends RecordOptionService {
 
     handleAttendanceModifyError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyRecordListResponse), 'API_ERROR');
+    }
+
+    handleAttendanceConfirmError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceResultConfirmResponse), 'API_ERROR');
     }
 }

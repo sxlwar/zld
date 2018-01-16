@@ -75,7 +75,7 @@ export const locationAttendanceRecordPage = 'LocationAttendanceRecordPage';
 
 export const attendanceConfirmPage = 'AttendanceConfirmPage';
 
-export const payrollAuditPage = 'PayrollAuditPage';
+export const attendanceConfirmDetailPage = 'AttendanceConfirmDetailPage';
 
 export const overtimePage = 'OvertimePage';
 
@@ -180,6 +180,7 @@ export const PAGES: Page[] = [
     { title: 'LOCATION_ATTENDANCE', component: locationAttendanceRecordPage, inMenu: true },
 
     { title: 'ATTENDANCE_CONFIRM', component: attendanceConfirmPage, inMenu: true },
+    { title: '', component: attendanceConfirmDetailPage, inMenu: false },
     { title: 'LEAVE_APPLY', component: leavePage, inMenu: true },
     { title: '', component: leaveDetailPage, inMenu: false },
     { title: 'OVERTIME_APPLY', component: overtimePage, inMenu: true },

@@ -17,6 +17,8 @@ export class AttendanceListComponent {
 
     @Input() haveMoreData = true;
 
+    @Input() operateButtonText = 'MODIFY_ATTENDANCE';
+    
     @Output() showDetail: EventEmitter<AttendanceResult> = new EventEmitter();
 
     @Output() getNextPage: EventEmitter<InfiniteScroll> = new EventEmitter();

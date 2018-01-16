@@ -82,7 +82,9 @@ export class AttendancePage {
             this.attendance.getSortType().subscribe(type => this.sortType = type),
             this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
             this.teamService.handleError(),
-            this.attendance.handleAttendanceError()
+            this.attendance.handleAttendanceError(),
+            this.attendance.handleAttendanceModifyError(),
+            this.attendance.handleAttendanceConfirmError(),
         ];
     }
 
