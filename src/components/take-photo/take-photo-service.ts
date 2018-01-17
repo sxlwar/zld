@@ -26,12 +26,10 @@ export class TakePhotoService {
             quality: 100,
             destinationType: this.camera.DestinationType.FILE_URI,
             encodingType: this.camera.EncodingType.JPEG,
-            targetWidth: 600,
-            targetHeight: 500,
             sourceType
         };
 
-        return Observable.fromPromise(this.camera.getPicture(options)).catch(error => Observable.of(console.log(error)));
+        return Observable.fromPromise(this.camera.getPicture(options));
     }
 
     showActionSheet(subject: Subject<string>, buttonText: { [key: string]: string }) {

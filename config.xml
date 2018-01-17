@@ -90,6 +90,8 @@
     <allow-navigation href="http://169.254.198.86:8100" />
     <allow-navigation href="http://192.168.2.94:3100" />
     <allow-navigation href="http://10.132.18.189:8103" />
+    <allow-navigation href="http://169.254.6.88:8100" />
+    <allow-navigation href="http://192.168.1.2:8100" />
     <engine name="android" spec="^6.2.3" />
     <plugin name="com.synconset.imagepicker" spec="~2.1.8">
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="建筑人将访问您的相册，是否继续" />
@@ -99,13 +101,13 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
         <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
     </plugin>
+    <plugin name="cordova-plugin-device" spec="^1.1.4" />
     <plugin name="cordova-plugin-file" spec="^4.3.3" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.6.3" />
+    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-qrscanner" spec="^2.5.0" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.2" />
     <plugin name="cordova-plugin-whitelist" spec="^1.3.1" />
     <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
-    <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
-    <plugin name="cordova-plugin-device" spec="^1.1.4" />
 </widget>

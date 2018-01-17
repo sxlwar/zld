@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { TakePhotoService } from './take-photo-service';
 import 'rxjs/add/operator/partition';
-import { Subject } from 'rxjs/Subject';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -9,11 +8,11 @@ import { Subscription } from 'rxjs/Subscription';
     selector: 'take-photo',
     templateUrl: 'take-photo.html',
 })
-export class TakePhotoComponent implements OnDestroy {
+export class TakePhotoComponent implements OnDestroy, OnDestroy {
 
     @Input() placeholder: string;
 
-    @Output() fileUrl: Subject<string> = new EventEmitter();
+    @Output() fileUrl: EventEmitter<string> = new EventEmitter();
 
     subscription: Subscription;
 
@@ -31,8 +30,6 @@ export class TakePhotoComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.subscription && this.subscription.unsubscribe();
-
-        this.photo.subscription && this.photo.subscription.unsubscribe();
     }
 
 }

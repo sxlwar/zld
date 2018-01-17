@@ -1,13 +1,24 @@
-<ion-item-divider>
-    {{'ATTACH' | translate}}
-    <ion-icon name="add" color="primary" (click)="addAttach()" float-right></ion-icon>
-</ion-item-divider>
+<ion-list>
 
-<div *ngFor="let item of attach; index as index;">
+    <ion-list-header>
+        {{'ATTACH' | translate}}
+        <button item-end ion-button icon-only clear (click)="addAttach()">
+            <ion-icon color="primary" name="add-circle"></ion-icon>
+        </button>
+    </ion-list-header>
 
-    <div class="attach-container">
-        <ion-icon name="close" color="primary" (click)="deleteAttach($event,index)"></ion-icon>
-        <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
-    </div>
+    <ion-item-sliding *ngFor="let item of attach; let index = index;">
+        <ion-item>
+            <ion-icon name="attach" color="primary">
+                <span>{{item.title |translate}}{{index + 1}}</span>
+            </ion-icon>
+            <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
+        </ion-item>
+        <ion-item-options icon-start (ionSwipe)="deleteAttach(attach, index)">
+            <button color="danger" ion-button expandable (click)="deleteAttach(attach, index)">
+                <ion-icon name="trash"></ion-icon>
+            </button>
+        </ion-item-options>
+    </ion-item-sliding>
 
-</div>
+</ion-list>

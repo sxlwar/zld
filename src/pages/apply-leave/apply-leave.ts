@@ -93,7 +93,7 @@ export class ApplyLeavePage {
     }
 
     getAttach(attach: string[]): void {
-        this.attachList = attach;
+        this.attachList = attach.filter(attach => !!attach);
     }
 
     updateExpireDate(start: string): void {
