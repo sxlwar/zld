@@ -23,21 +23,34 @@
         </ion-item>
     </ion-list>
 
-    <ion-item-group *ngFor="let item of teams | async">
 
-        <ion-item-divider color="light">
-            {{item.name}}
-            <ion-icon [hidden]="!item.id" name='create' item-end (click)="updateTeam(item)" *ngIf="canOperate | async"></ion-icon>
-            <ion-icon [hidden]="!item.id" name='trash' item-end (click)="deleteTeam(item)" *ngIf="canOperate | async"></ion-icon>
-        </ion-item-divider>
+    <ion-list *ngFor="let team of teams | async">
+        <ion-list-header>
+            <ion-item-sliding #slidingItem>
+                <ion-item #item>
+                    {{team.name}}
+                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" *ngIf="canOperate | async" item-start></ion-icon>
+                </ion-item>
 
+                <ion-item-options side="right">
+                    <button ion-button color="primary" [disabled]="!team.id" (click)="updateTeam(team)" *ngIf="canOperate | async">
+                        <ion-icon name="create"></ion-icon>
+                        {{'UPDATE_BUTTON' | translate}}
+                    </button>
+                    <button ion-button color="danger" [disabled]="!team.id" (click)="deleteTeam(team)" *ngIf="canOperate | async">
+                        <ion-icon name="trash"></ion-icon>
+                        {{'DELETE_BUTTON' | translate}}
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
 
-        <ion-item (click)="goToPersonalInfoPage(item)" detail-push>
-            {{'QUALITY_CLERK' | translate}}：{{item.qualityClerk}}
+        </ion-list-header>
+
+        <ion-item (click)="goToPersonalInfoPage(team)" detail-push>
+            {{'QUALITY_CLERK' | translate}}：{{team.qualityClerk}}
         </ion-item>
-        <ion-item (click)="goToNextPage(item)" detail-push>
-            {{'FOREMAN' | translate}}：{{item.foreman}}
+        <ion-item (click)="goToNextPage(team)" detail-push>
+            {{'FOREMAN' | translate}}：{{team.foreman}}
         </ion-item>
-
-    </ion-item-group>
+    </ion-list>
 </ion-content>

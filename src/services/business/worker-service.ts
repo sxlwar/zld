@@ -134,6 +134,17 @@ export class WorkerService {
         }
     }
 
+    haveMoreDataOfSpecificPayTypeContract(type: number): Observable<boolean> {
+        const page = type === ContractType.timer ? this.store.select(selectManageTimerPage) : this.store.select(selectManagePiecerPage);
+
+        return this.getWorkersCountByPayType(type)
+            .combineLatest(
+                this.store.select(selectWorkerLimit),
+                page,
+                (count, limit, page) => limit * page < count
+            );
+    }
+
     /**
      * @description Request option methods: getUnexpiredOption  getCompleteStatusOption getContractTypeOption
      */
@@ -240,8 +251,10 @@ export class WorkerService {
 
     /*===============================================================Locale state update=========================================================*/
 
-    setWorkersCountDistinctByPayType(count: Observable<number>, type: number): Subscription {
-        return count.subscribe(amount => {
+    setWorkersCountDistinctByPayType(count: Observable<number>, type: Observable<number>): Subscription {
+        return count
+            .combineLatest(type)
+            .subscribe(([amount, type]) => {
             if (type === ContractType.timer) {
                 this.store.dispatch(new UpdateManagementTimerCountAction(amount));
             } else {

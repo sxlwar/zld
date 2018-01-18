@@ -9,7 +9,7 @@ import { ProjectService } from './../../services/business/project-service';
 import { Observable } from 'rxjs/Observable';
 import { TeamService } from './../../services/business/team-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController, ItemSliding, Item } from 'ionic-angular';
 import { AddTeamComponent } from '../../components/add-team/add-team';
 import { putInArray } from '../../services/utils/util';
 
@@ -46,6 +46,8 @@ export class OrganizationPage {
     navSubscription: Subscription;
 
     deleteTeam$: Subject<number> = new Subject();
+
+    activeItemSliding: ItemSliding = null;
 
     constructor(
         public navCtrl: NavController,
@@ -133,6 +135,35 @@ export class OrganizationPage {
             this.navSubscription = this.project.subscribe(project => this.navCtrl.push(personalPage, { userId: project[data] }).then(_ => { }));
         } else {
             this.navCtrl.push(personalPage, { userId: data.qualityClerkId });
+        }
+    }
+
+    openOption(itemSlide: ItemSliding, item: Item, event) {
+        event.stopPropagation();
+
+        this.activeItemSliding && this.closeOption();
+
+        this.activeItemSliding = itemSlide;
+
+        const swipeAmount = 110;
+
+        itemSlide.startSliding(swipeAmount);
+
+        itemSlide.moveSliding(swipeAmount);
+
+        itemSlide.setElementClass('active-slide', true);
+
+        itemSlide.setElementClass('active-options-right', true);
+
+        item.setElementStyle('transition', null);
+
+        item.setElementStyle('transform', 'translate3d(-' + swipeAmount + 'px, 0px, 0px)');
+    }
+
+    closeOption() {
+        if (this.activeItemSliding) {
+            this.activeItemSliding.close();
+            this.activeItemSliding = null;
         }
     }
 

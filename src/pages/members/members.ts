@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { workerContractPage } from './../pages';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkerContract } from './../../interfaces/response-interface';
@@ -5,12 +6,13 @@ import { ContractType, RequestOption } from './../../interfaces/request-interfac
 import { Observable } from 'rxjs/Observable';
 import { WorkerService } from './../../services/business/worker-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
 
 export interface WorkerItem {
     name: string;
     contractId: number;
     workType: string;
+    workTypeId: number;
 }
 
 @IonicPage()
@@ -30,15 +32,15 @@ export class MembersPage {
 
     piecersCount: Observable<number>;
 
-    haveMoreTimer = true;
+    haveMoreTimer: Observable<boolean>;
 
-    haveMorePiecer = true;
+    haveMorePiecer: Observable<boolean>;
 
-    timers$$: Subscription;
-
-    piecers$$: Subscription;
+    page$$: Subscription;
 
     subscriptions: Subscription[] = [];
+
+    type$: Subject<number> = new Subject();
 
     constructor(
         public navCtrl: NavController,
@@ -46,6 +48,7 @@ export class MembersPage {
         public worker: WorkerService
     ) {
         this.worker.resetPage(ContractType[this.type]);
+
         this.worker.resetWorkContracts();
     }
 
@@ -69,25 +72,23 @@ export class MembersPage {
         this.timersCount = this.worker.getWorkersCountByPayType(ContractType.timer);
 
         this.piecersCount = this.worker.getWorkersCountByPayType(ContractType.piecer);
+
+        this.haveMoreTimer = this.worker.haveMoreDataOfSpecificPayTypeContract(ContractType.timer);
+
+        this.haveMorePiecer = this.worker.haveMoreDataOfSpecificPayTypeContract(ContractType.piecer);
     }
 
     launch(): void {
         this.subscriptions = [
             this.worker.getWorkerContracts(this.getOption()),
-            this.setWorkersCountDistinctByPayType(),
+            this.worker.setWorkersCountDistinctByPayType(this.worker.getWorkerCount(), this.type$.startWith(ContractType.timer)),
             this.worker.handleError()
         ];
     }
 
-    setWorkersCountDistinctByPayType(): Subscription {
-        const source = this.worker.getWorkerContractResponse().map(res => res.count);
-
-        return this.worker.setWorkersCountDistinctByPayType(source, ContractType[this.type]);
-    }
-
     getOption(): Observable<RequestOption> {
         return this.worker.getUnexpiredOption()
-            .zip(
+            .combineLatest(
             this.worker.getContractTypeOption(this.type),
             this.worker.getCompleteStatusOption(),
             this.worker.getManagementPage(ContractType[this.type]),
@@ -95,42 +96,20 @@ export class MembersPage {
             );
     }
 
-    getNextPage(infiniteScroll) {
-
+    getNextPage(infiniteScroll: InfiniteScroll) {
         this.worker.incrementPage(ContractType[this.type]);
 
-        const isTimers = this.type === ContractType[1];
+        this.page$$ && this.page$$.unsubscribe();
 
-        if (isTimers) {
-            this.timers$$ && this.timers$$.unsubscribe();
-        } else {
-            this.piecers$$ && this.piecers$$.unsubscribe();
-        }
-
-        const subscription = this.worker.getWorkerContractResponse().subscribe(res => {
-            const haveMoreData = !!res.worker_contract.length;
-
-            if (isTimers) {
-                this.haveMoreTimer = haveMoreData;
-            } else {
-                this.haveMorePiecer = haveMoreData;
-            }
-
-            infiniteScroll.complete();
-        });
-
-        if (isTimers) {
-            this.timers$$ = subscription;
-        } else {
-            this.piecers$$ = subscription;
-        }
+        this.page$$ = this.worker.getWorkerContractResponse().subscribe(_ => infiniteScroll.complete());
     }
 
     transformData(item: WorkerContract): WorkerItem {
         return {
             name: item.worker__employee__realname,
             workType: item.worktype__name,
-            contractId: item.id
+            contractId: item.id,
+            workTypeId: item.worktype_id
         }
     }
 
@@ -141,9 +120,7 @@ export class MembersPage {
     }
 
     ionViewWillUnload() {
-        this.timers$$ && this.timers$$.unsubscribe();
-
-        this.piecers$$ && this.piecers$$.unsubscribe();
+        this.page$$ && this.page$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());
     }
