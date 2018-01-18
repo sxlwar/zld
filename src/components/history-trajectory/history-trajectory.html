@@ -60,7 +60,7 @@
     <ion-infinite-scroll (ionInfinite)="getNextPage($event)" [enabled]="enableScroll | async">
         <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-    <ion-item *ngIf="!(enableScroll | async)" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+    <ion-item *ngIf="!(enableScroll | async)" text-center class="complete">{{'NO_MORE_DATA' | translate}}</ion-item>
 
 </ion-content>
 

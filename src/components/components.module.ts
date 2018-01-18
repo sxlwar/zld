@@ -20,7 +20,6 @@ import { FamilyInformationComponent } from './family-information/family-informat
 import { WorkExperienceComponent } from './work-experience/work-experience';
 import { PlatformWorkExperienceComponent } from './platform-work-experience/platform-work-experience';
 import { CertificationComponent } from './certification/certification';
-import { PersonalIdComponent } from './personal-id/personal-id';
 import { EducationComponent } from './education/education';
 import { FaceImageComponent } from './face-image/face-image';
 import { WorkPieceAxisComponent } from './work-piece-axis/work-piece-axis';
@@ -82,7 +81,6 @@ import { AttachListComponent } from './attach-list/attach-list';
         HistoryTrajectoryWorkersComponent,
         IconBarComponent,
         ImageVerificationComponent,
-        PersonalIdComponent,
         PieceCompleteChartComponent,
         PlatformWorkExperienceComponent,
         ProjectListComponent,
@@ -144,7 +142,6 @@ import { AttachListComponent } from './attach-list/attach-list';
         HistoryTrajectoryWorkersComponent,
         IconBarComponent,
         ImageVerificationComponent,
-        PersonalIdComponent,
         PieceCompleteChartComponent,
         PlatformWorkExperienceComponent,
         ProjectListComponent,

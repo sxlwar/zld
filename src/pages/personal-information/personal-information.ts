@@ -5,7 +5,7 @@ import { WorkTypeSelectComponent } from './../../components/work-type-select/wor
 import { Subscription } from 'rxjs/Subscription';
 import { CraftService } from './../../services/business/craft-service';
 import { Observable } from 'rxjs/Observable';
-import { PersonalId, WorkerDetail } from './../../interfaces/response-interface';
+import { PersonalId, WorkerDetail, WorkType } from './../../interfaces/response-interface';
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
@@ -24,7 +24,7 @@ export class PersonalInformationPage {
 
     workerDetail: WorkerDetail;
 
-    workTypes: Observable<string[]>;
+    workTypes: Observable<WorkType[]>;
 
     selectedArea: Observable<string>;
 

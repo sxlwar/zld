@@ -47,11 +47,12 @@
     <ion-item-group>
         <ion-item-divider>
             {{'WORK_TYPE' | translate}}
-            <ion-icon name="list" item-end (click)="modifyWorkType()"></ion-icon>
+            <ion-icon name="list" color="primary" item-end (click)="modifyWorkType()"></ion-icon>
         </ion-item-divider>
 
         <ion-item *ngFor="let item of workTypes | async">
-            <ion-label>{{item}}</ion-label>
+            <ion-label>{{item.name}}</ion-label>
+            <ion-icon [name]="item.id | workType" item-start></ion-icon>
         </ion-item>
 
         <ion-item *ngIf="!(workTypes | async)?.length">

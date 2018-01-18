@@ -55,7 +55,7 @@
                 {{'NAME' | translate}}
                 <span>{{workers | async}}</span>
             </ion-label>
-            <ion-icon name="search" item-end (click)="searchWorker($event)"></ion-icon>
+            <ion-icon name="search" color="primary" item-end (click)="searchWorker($event)"></ion-icon>
         </ion-item>
         <div *ngIf="workerIds.invalid && (workerIds.dirty || workerIds.touched)" class="form-error red-color">
             <span *ngIf="workerIds.errors.required">{{'WORKERS_REQUIRED_ERROR' | translate}}</span>
@@ -93,7 +93,7 @@
 
         <ion-item-divider>
             {{'SALARY_PAY_TYPE' | translate}}
-            <ion-icon *ngIf="formType.value === '2'" name="add" item-end (click)="addPiece()"></ion-icon>
+            <ion-icon *ngIf="formType.value === '2'" name="add" color="primary" item-end (click)="addPiece()"></ion-icon>
         </ion-item-divider>
 
         <!--FIXME:使用日期组件，只选择日期的时候这个地方搞不清楚是哪的问题，payDay的值无法正确设置-->

@@ -1,9 +1,3 @@
-<!--
-  Generated template for the ProjectPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
     <ion-navbar color="primary">
@@ -14,25 +8,36 @@
 
 <ion-content padding>
 
-    <div padding *ngIf="name | async" class="pane">
+    <ion-card padding *ngIf="name | async" class="pane">
         <button ion-button icon-left clear color="light" *ngIf="haveMultipleProject | async" (click)="switchProject($event)">
             <ion-icon name="swap"></ion-icon>
             {{'PROJECT_SWITCH_PROJECT' | translate}}
         </button>
-        <p>{{name | async}}</p>
-        <p>{{address | async}}</p>
-        <div>
-            <div class="pane-info">
+
+        <ion-row>
+            <ion-col>
+                <h2>{{name | async}}</h2>
+            </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col>
+                <h3>{{address | async}}</h3>
+            </ion-col>
+        </ion-row>
+
+        <ion-row>
+            <ion-col>
                 <h6>{{remainDays | async | positiveInteger}}</h6>
                 <h4 *ngIf="!(isExpired | async)">{{'PROJECT_REMAIN_DAYS' | translate}}</h4>
                 <h4 *ngIf="isExpired | async">{{'PROJECT_OVERDUE_DAYS' | translate}}</h4>
-            </div>
-            <div class="pane-info">
+            </ion-col>
+            <ion-col>
                 <h6>{{workerCount | async}}</h6>
                 <h4>{{'PROJECT_WORKER_COUNT' | translate}}</h4>
-            </div>
-        </div>
-    </div>
+            </ion-col>
+        </ion-row>
+    </ion-card>
 
     <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
 </ion-content>

@@ -55,7 +55,8 @@
                     </ion-col>
                 </ion-row>
                 <ion-row text-wrap>
-                    {{'TEAM' | translate}}： {{statistic.teams | join }}
+                    <ion-col col-2>{{'TEAM' | translate}}</ion-col>
+                    <ion-col col-auto style="font-size: 12px;">{{statistic.teams | join }}</ion-col>
                 </ion-row>
             </ion-grid>
         </ion-item>

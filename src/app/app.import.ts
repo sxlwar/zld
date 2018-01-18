@@ -1,6 +1,6 @@
 import { NamesPipe, TaskStatusPipe, TaskStatusColorPipe, OvertimePayPipe } from './../pipes/work-flow-pipe';
 import { MessageIconPipe, MessageSplitPipe, MessageParsePipe } from './../pipes/message-pipe';
-import { DegreePipe } from './../pipes/personal-pipe';
+import { DegreePipe, WorkTypePipe } from './../pipes/personal-pipe';
 import { LocationCardStatusPipe } from './../pipes/location-card-status-pipe';
 import { InOutPipe } from './../pipes/inOut-pipe';
 import { EveryMonthPipe } from './../pipes/every-month-pipe';
@@ -36,6 +36,7 @@ export const PIPES = [
     TaskStatusColorPipe,
     OvertimePayPipe,
     WorkerContractTypePipe,
+    WorkTypePipe,
 ];
 
 export const DIRECTIVES = directives;

@@ -16,38 +16,38 @@
     <ion-list>
         <ion-list-header text-center>{{machineName | async}}</ion-list-header>
 
-        <ion-item-divider>
-            <ion-label>
-                <ion-grid>
-                    <ion-row text-center>
-                        <ion-col>{{'NAME' | translate}}</ion-col>
-                        <ion-col>{{'ATTENDANCE_RECORD_TYPE' | translate}}</ion-col>
-                        <ion-col>{{'TIME' | translate}}</ion-col>
-                        <ion-col>{{'CAPTURE_PICTURE' | translate}}</ion-col>
-                    </ion-row>
-                </ion-grid>
-            </ion-label>
-        </ion-item-divider>
-
         <ion-item *ngFor="let record of (records | async)">
             <ion-label>
+
                 <ion-grid>
-                    <ion-row text-center>
-                        <ion-col>{{record.user__employee__realname}}</ion-col>
-                        <ion-col>{{record.type | inOut | translate}}</ion-col>
-                        <ion-col>{{record.time}}</ion-col>
-                        <ion-col (click)="showCapture(record)">
-                            <ion-icon name="images"></ion-icon>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-icon name="md-log-in" color="secondary" *ngIf="record.type === 1"></ion-icon>
+                            <ion-icon name="md-log-out" color="primary" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
+                            <span>{{record.time}}</span>
                         </ion-col>
                     </ion-row>
+
+                    <ion-row>
+                        <ion-col>
+                            <ion-icon name="man"></ion-icon>
+                            <span>{{record.user__employee__realname}}</span>
+                        </ion-col>
+                    </ion-row>
+
                 </ion-grid>
+
+                <h6>{{record.type | inOut | translate}}</h6>
             </ion-label>
+
+            <ion-icon name="images" (click)="showCapture(record)" item-end></ion-icon>
         </ion-item>
 
         <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
             <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
         </ion-infinite-scroll>
-        <ion-item *ngIf="!(haveMoreData | async)" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+        <ion-item *ngIf="!(haveMoreData | async)" text-center class="complete">{{'NO_MORE_DATA' | translate}}</ion-item>
 
     </ion-list>
 </ion-content>

@@ -55,7 +55,7 @@ export class LoginPage {
 
     @ViewChild('innerSlider') innerSlider: Slides;
 
-    subject: Subject<null> = new Subject();
+    reset$: Subject<null> = new Subject();
 
     updateImage$: Subject<boolean> = new Subject();
 
@@ -115,12 +115,14 @@ export class LoginPage {
 
     launch(): void {
         this.subscriptions = [
-            ...this.loginService.handleError(),
             this.loginService.updateVerificationImageUrl(this.updateImage$),
             this.loginService.login(this.login$.map(_ => this.loginForm.value)),
             this.loginService.signUp(this.signUp$.map(_ => this.signUpForm.value)),
             this.loginService.getPhoneVerCode(this.phoneVerCode$.map(_ => this.signUpForm.value)),
             this.loginInfo$.subscribe(userInfo => userInfo.sid && this.goToNextPage(userInfo.auth_pass)),
+            this.loginService.handleLoginError(),
+            this.loginService.handleRegisterError(),
+            this.loginService.handleSignPhoneVerCodeError(),
         ];
     }
 

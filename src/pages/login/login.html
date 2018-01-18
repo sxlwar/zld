@@ -84,7 +84,7 @@
                         <ion-label fixed>{{'PHONE_VERIFICATION' | translate}}</ion-label>
                         <ion-input type="number" formControlName="phoneVerification" required></ion-input>
                     </ion-item>
-                    <cut-down (request)="phoneVerCode.next(true)" [hidden]="signUpForm.get('mobilePhone').invalid || signUpForm.get('imageVerification').invalid">
+                    <cut-down (request)="phoneVerCode$.next(true)" [hidden]="signUpForm.get('mobilePhone').invalid || signUpForm.get('imageVerification').invalid">
                     </cut-down>
                 </div>
                 <div *ngIf="phoneVerificationSignUp.invalid && (phoneVerificationSignUp.dirty || phoneVerificationSignUp.touched)" class="form-error">
@@ -202,8 +202,8 @@
                 <!--========================================reset password start===================================================-->
                 <ion-slide class="swiper-no-swiping">
                     <div style="padding: 20% 32px 32px 32px">
-                        <reset-password [reset]="subject"></reset-password>
-                        <button ion-button clear (click)="changeInnerSlidesActive(0); subject.next(null);" color="light" class="goback-button">
+                        <reset-password [reset]="reset$"></reset-password>
+                        <button ion-button clear (click)="changeInnerSlidesActive(0); reset$.next(null);" color="light" class="goback-button">
                             <ion-icon name="arrow-back"></ion-icon>
                             {{'NEED_TO_LOGIN' | translate}}
                         </button>

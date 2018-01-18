@@ -27,8 +27,8 @@
 
         <ion-item-divider color="light">
             {{item.name}}
-            <ion-icon name='create' item-end (click)="updateTeam(item)" *ngIf="canOperate | async"></ion-icon>
-            <ion-icon name='trash' item-end (click)="deleteTeam(item)" *ngIf="canOperate | async"></ion-icon>
+            <ion-icon [hidden]="!item.id" name='create' item-end (click)="updateTeam(item)" *ngIf="canOperate | async"></ion-icon>
+            <ion-icon [hidden]="!item.id" name='trash' item-end (click)="deleteTeam(item)" *ngIf="canOperate | async"></ion-icon>
         </ion-item-divider>
 
 

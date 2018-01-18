@@ -13,109 +13,115 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 .transparent-header {
-  // This is just to make the header transparent and button/icon with white color
-  .toolbar-content,
-  .back-button {
-    color: white;
-  }
-  .toolbar-background,
-  ion-navbar,
-  ion-header {
-    background: transparent !important;
-    background-color: transparent !important;
-  }
-  .header-md::after,
-  .toolbar-background-ios {
-    background-image: none;
-    border-bottom: 0;
-  }
-  .header-ios .toolbar-background-ios,
-  .footer-ios .toolbar-background-ios {
-    border: 0;
-  } // ---
+    // This is just to make the header transparent and button/icon with white color
+    .toolbar-content,
+    .back-button {
+        color: white;
+    }
+    .toolbar-background,
+    ion-navbar,
+    ion-header {
+        background: transparent !important;
+        background-color: transparent !important;
+    }
+    .header-md::after,
+    .toolbar-background-ios {
+        background-image: none;
+        border-bottom: 0;
+    }
+    .header-ios .toolbar-background-ios,
+    .footer-ios .toolbar-background-ios {
+        border: 0;
+    } // ---
 }
 
 .back-button-text {
-  display: none;
+    display: none;
 }
 
 .form-error {
-  padding: 0 16px;
-  font-size: 12px;
-  text-align: left;
+    padding: 0 16px;
+    font-size: 12px;
+    text-align: left;
 }
 
 .scroll-content {
-  padding-bottom: 0!important;
+    padding-bottom: 0!important;
 }
 
 .amap-logo {
-  right: 0 !important;
-  left: auto !important;
-  display: none !important;
+    right: 0 !important;
+    left: auto !important;
+    display: none !important;
 }
 
 .amap-copyright {
-  left: auto !important;
-  visibility: hidden;
+    left: auto !important;
+    visibility: hidden;
 }
 
 .no-scroll {
-  .scroll-content {
-    overflow: hidden;
-  }
+    .scroll-content {
+        overflow: hidden;
+    }
 }
 
 .red-color {
-  color: red;
+    color: red;
 }
 
 .locationIcon {
-  white-space: nowrap;
-  -webkit-transform: scale(.8);
-  -moz-transform: scale(.8);
-  -ms-transform: scale(.8);
-  -o-transform: scale(.8);
-  transform: scale(.8);
+    white-space: nowrap;
+    -webkit-transform: scale(.8);
+    -moz-transform: scale(.8);
+    -ms-transform: scale(.8);
+    -o-transform: scale(.8);
+    transform: scale(.8);
 }
 
 ion-modal.inset-modal {
-  // transparent black background overlay
-  background-color: rgba(0, 0, 0, .5) !important;
-  transition: opacity .25s ease-in-out;
-  padding: 20vh 10vw;
+    // transparent black background overlay
+    background-color: rgba(0, 0, 0, .5) !important;
+    transition: opacity .25s ease-in-out;
+    padding: 20vh 10vw;
 }
 
 
 /* ion-mutil-picker style*/
 
 ion-multi-picker {
-  padding: 0!important;
-  font-size: 14px;
+    padding: 0!important;
+    font-size: 14px;
 }
 
 .multi-picker-text {
-  white-space: pre-wrap;
+    white-space: pre-wrap;
 }
 
 .picker-opt {
-  font-size: 14px !important;
+    font-size: 14px !important;
 }
 
 .picker-columns {
-  padding: 0 5px;
+    padding: 0 5px;
 }
 
 .picker-col {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 .attach-container {
-  position: relative;
-  ion-icon {
-    position: absolute;
-    top: 0;
-    right: 15px;
-    font-size: 24px;
-  }
+    position: relative;
+    ion-icon {
+        position: absolute;
+        top: 0;
+        right: 15px;
+        font-size: 24px;
+    }
+}
+
+.complete {
+    text-align: center;
+    color: #808080;
+    font-size: 12px;
 }

@@ -12,6 +12,7 @@ export interface WorkerItem {
     name: string;
     workType: string;
     id: number;
+    workTypeId: number;
 }
 
 @IonicPage()
@@ -78,7 +79,7 @@ export class TeamMembersPage {
     getWorkerList(source: Observable<WorkerContractListResponse>): Observable<WorkerItem[]> {
         return source.map(res => res.worker_contract)
             .mergeMap(result => Observable.from(result)
-                .map(item => ({ name: item.worker__employee__realname, workType: item.worktype__name, id: item.worker_id }))
+                .map(item => ({ name: item.worker__employee__realname, workType: item.worktype__name, id: item.worker_id, workTypeId: item.worktype_id }))
                 .reduce(putInArray, [])
             )
             .scan((acc, cur) => acc.concat(cur), []);

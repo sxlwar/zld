@@ -1,3 +1,4 @@
+import { SharedModule } from './../../app/shared.modules';
 import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
@@ -10,6 +11,7 @@ import { TeamMembersPage } from './team-members';
     imports: [
         IonicPageModule.forChild(TeamMembersPage),
         TranslateModule,
+        SharedModule,
     ],
 })
 export class TeamMembersPageModule { }

@@ -3,7 +3,7 @@ import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/p
 import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkExperienceUpdateOptions } from './../../interfaces/request-interface';
 import { CraftService } from './craft-service';
 import { Family } from './../../interfaces/personal-interface';
-import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience, PersonalIdListResponse } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience, PersonalIdListResponse, WorkType } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
@@ -124,9 +124,9 @@ export class PersonalService {
             .map(res => res.workers[0]);
     }
 
-    getOwnWorkTypes(): Observable<string[]> {
+    getOwnWorkTypes(): Observable<WorkType[]> {
         return this.getWorkerDetail().map(item => item.workType__id)
-            .combineLatest(this.craft.getWorkTypeList(), (ids, types) => types.filter(type => ids.indexOf(type.id) !== -1).map(item => item.name));
+            .combineLatest(this.craft.getWorkTypeList(), (ids, types) => types.filter(type => ids.indexOf(type.id) !== -1));
     }
 
     getWorkerDetailUpdateSuccessResult(): Observable<boolean> {

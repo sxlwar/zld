@@ -284,7 +284,6 @@
   "TIME_PAY_UNIT": "元/小时",
   "PIECE_PAY_UNIT": "元/件",
 
-  "ATTENDANCE_MACHINE_AREA": "所处地区",
   "ATTENDANCE_MACHINE_TYPE": "机器类型",
   "ATTENDANCE_MACHINE_RECORD": "考勤机记录",
   "SET_QUERY_DATE": "设置查询日期",

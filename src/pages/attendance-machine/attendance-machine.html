@@ -10,22 +10,30 @@
 <ion-content padding>
     <ion-list>
 
-        <ion-list-header>
-            <ion-grid>
-                <ion-row>
-                    <ion-col col-4>{{'ATTENDANCE_MACHINE_NAME' | translate}}</ion-col>
-                    <ion-col col-4>{{'ATTENDANCE_MACHINE_TYPE' | translate}}</ion-col>
-                    <ion-col col-4>{{'ATTENDANCE_MACHINE_AREA' | translate}}</ion-col>
-                </ion-row>
-            </ion-grid>
-        </ion-list-header>
-
         <ion-item detail-push *ngFor="let item of machines | async" (click)="goToNextPage(item)">
-            <ion-row text-wrap>
-                <ion-col col-4>{{item.name | translate}}</ion-col>
-                <ion-col col-4>{{item.type | translate}}</ion-col>
-                <ion-col col-4>{{item.project_area__name | translate}}</ion-col>
-            </ion-row>
+            <ion-label>
+
+                <ion-grid>
+
+                    <ion-row>
+                        <ion-col>{{item.name | translate}}</ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col col-4>{{'ATTENDANCE_MACHINE_TYPE' | translate}}</ion-col>
+                        <ion-col col-auto>{{item.type | translate}}</ion-col>
+                    </ion-row>
+
+                    <ion-row>
+                        <ion-col col-4>{{'LOCATION' | translate}}</ion-col>
+                        <ion-col col-auto>{{item.project_area__name | translate}}</ion-col>
+                    </ion-row>
+
+                </ion-grid>
+
+            </ion-label>
+
         </ion-item>
+
     </ion-list>
 </ion-content>

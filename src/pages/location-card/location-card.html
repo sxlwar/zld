@@ -64,7 +64,7 @@
                     </ion-row>
                     <ion-row *ngIf="item.user__employee__realname">
                         <ion-col>{{item.user__employee__realname}}</ion-col>
-                        <ion-col>{{'LATEST_REPORT' | translate}} {{item.time}}</ion-col>
+                        <ion-col class="report">{{'LATEST_REPORT' | translate}} {{item.time}}</ion-col>
                     </ion-row>
                 </ion-grid>
             </ion-item>

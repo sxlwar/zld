@@ -1,3 +1,4 @@
+import { Company } from './../../interfaces/response-interface';
 import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -35,19 +36,19 @@ export class LoginService {
 
     /* =========================================================Data acquisition========================================================================= */
 
-    getActiveIndexOfSlides() {
+    getActiveIndexOfSlides():Observable<number> {
         return this.store.select(fromRoot.selectActiveIndexOfSlides);
     }
 
-    getActiveIndexOfInnerSlides() {
+    getActiveIndexOfInnerSlides(): Observable<number> {
         return this.store.select(fromRoot.selectActiveIndexOfInnerSlides).distinctUntilChanged();
     }
 
-    getVerificationImageUrl() {
+    getVerificationImageUrl(): Observable<string> {
         return this.store.select(selectRandomCode).map(randomCode => `http://${ENV.DOMAIN}/check_captcha/${randomCode}`);
     }
 
-    getSelectedCompany() {
+    getSelectedCompany(): Observable<Company> {
         return this.store.select(selectSelectedCompany);
     }
 
@@ -106,7 +107,7 @@ export class LoginService {
     }
 
     getResetPwdPhoneVerCode(form: Observable<ResetPwdFormModel>): Subscription {
-        return this.process.phoneVerificationProcessor(
+        return this.process.resetPhoneVerificationProcessor(
             form.map(form => this.process.resetPwdForm(form))
                 .withLatestFrom(
                 this.store.select(selectResetPhoneVerCodeCaptcha),
@@ -145,11 +146,11 @@ export class LoginService {
 
     /* ==================================================================Local state change=========================================================== */
 
-    changeSlidesActive(index: number) {
+    changeSlidesActive(index: number): void {
         this.store.dispatch(new ShowSpecificSlideAction(index));
     }
 
-    changeInnerSlidesActive(index: number) {
+    changeInnerSlidesActive(index: number): void {
         this.store.dispatch(new ShowSpecificInnerSlideAction(index));
     }
 
@@ -163,20 +164,6 @@ export class LoginService {
     }
 
     /* =================================================================Error handle================================================================== */
-
-    handleError(): Subscription[] {
-        return [
-            this.handleLoginError(),
-
-            this.handleSignPhoneVerCodeError(),
-
-            this.handleResetPhoneVerCodeError(),
-
-            this.handleRegisterError(),
-
-            this.handleResetPassWordInfoError()
-        ]
-    }
 
     handleLoginError(): Subscription {
         return this.errorService.handleErrorInSpecific(this.getLoginInfo(), 'LOGIN_FAIL_TIP');

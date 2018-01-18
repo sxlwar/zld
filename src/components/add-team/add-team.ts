@@ -77,13 +77,14 @@ export class AddTeamComponent implements OnInit, OnDestroy {
         this.subscriptions = [
             this.employer.getCompanyUserList(),
             this.team.addTeam(this.addTeam$),
-            this.team.updateTeam(this.updateTeam$, this.navParams.get('team').id),
             this.team.updateTeamListAtLocal(updateNotify),
             updateNotify.merge(addNotify).subscribe(_ => this.dismiss()),
             this.employer.handleError(),
             this.team.handleAddTeamError(),
             this.team.handleUpdateTeamError(),
         ];
+
+        this.isUpdate && this.subscriptions.push(this.team.updateTeam(this.updateTeam$, this.navParams.get('team').id));
     }
 
     initialForm(): void {

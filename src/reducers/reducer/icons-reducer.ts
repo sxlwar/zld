@@ -24,7 +24,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.ADD_BADGE_FOR_ROOT_MODULE: {
             const { count, rootName, iconName } = action.payload;
 
-            const index = state[rootName].findIndex(icon => icon.icon === iconName);
+            const index = state[rootName].findIndex(icon => icon.icon === iconName); //TODO: 这个地方有BUG，可能会引起报错
 
             const { view, opt } = state[rootName][index].permission;
 

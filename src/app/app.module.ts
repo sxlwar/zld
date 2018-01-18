@@ -70,6 +70,8 @@ export function HttpLoaderFactory(http: Http) {
             monthShortNames,
             dayNames,
             dayShortNames,
+            iconMode: 'ios',
+            mode: 'ios',
         }),
         IonicStorageModule.forRoot(),
         StoreModule.forRoot(reducers),

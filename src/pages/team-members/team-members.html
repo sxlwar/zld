@@ -10,8 +10,8 @@
 <ion-content padding>
 
     <ion-item (click)="goToNextPage()" detail-push>
-        <h3>{{team.foreman}}</h3>
-        <p>{{'FOREMAN' | translate}}</p>
+        <ion-label fixed>{{team.foreman}}</ion-label>
+        <ion-input disabled [value]="'FOREMAN' | translate"></ion-input>
     </ion-item>
 
     <ion-list>
@@ -22,8 +22,9 @@
 
         <!-- TODO: 给所有的工种定制图标，另外最好实现统计接口，用来绘制本班组工种人数统计图表 -->
         <ion-item *ngFor="let item of list | async" (click)="goToNextPage(item)" detail-push>
-            <h3>{{item.name}}</h3>
-            <p>{{item.workType}}</p>
+            <ion-icon [name]="item.workTypeId | workType" item-start></ion-icon>
+            <ion-label fixed>{{item.name}}</ion-label>
+            <ion-input disabled [value]="item.workType"></ion-input>
         </ion-item>
 
         <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">

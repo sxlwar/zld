@@ -126,7 +126,7 @@ export interface TeamListResponse {
 
 //teamAdd
 export interface TeamAddResponse {
-    information: string;
+    information: string;   //成功的返回居然是空的，添加对象成功返回对象的标识，基本常识。
     errorMessage?: string;
 }
 
@@ -521,7 +521,7 @@ export interface ProjectPayProcess {
 
 //projectPayProcessList 工程工资发放单
 export interface ProjectPayProcessListResponse {
-    project_pay_process: ProjectPayProcess[]
+    project_pay_process: ProjectPayProcess[];
     count: number;
     errorMessage?: string;
 }

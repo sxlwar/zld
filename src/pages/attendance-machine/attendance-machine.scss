@@ -1,3 +1,11 @@
 page-attendance-machine {
-
+    ion-grid {
+        ion-row:nth-child(2),
+        ion-row:nth-child(3) {
+            font-size: 12px;
+        }
+    }
+    ion-label {
+        margin-bottom: 0!important;
+    }
 }

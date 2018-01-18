@@ -39,6 +39,6 @@
         <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <ion-item *ngIf="!haveMoreData" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+    <ion-item *ngIf="!haveMoreData" text-center class="complete">{{'NO_MORE_DATA' | translate}}</ion-item>
 
 </ion-list>

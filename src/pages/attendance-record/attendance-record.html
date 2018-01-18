@@ -25,8 +25,8 @@
 
                     <ion-row>
                         <ion-col>
-                            <ion-icon name="leaf" color="secondary" *ngIf="record.type === 1"></ion-icon>
-                            <ion-icon name="boat" color="primary" *ngIf="record.type === 2"></ion-icon>
+                            <ion-icon name="md-log-in" color="secondary" *ngIf="record.type === 1"></ion-icon>
+                            <ion-icon name="md-log-out" color="primary" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
                             <span>{{record.time}}</span>
                         </ion-col>
                     </ion-row>
@@ -48,6 +48,6 @@
         <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async; let morData;">
             <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
         </ion-infinite-scroll>
-        <ion-item *ngIf="!moreData" class="complete">{{'NO_MORE_DATA' | translate}}</ion-item>
+        <ion-item *ngIf="!moreData" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
     </ion-list>
 </ion-content>

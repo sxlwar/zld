@@ -13,13 +13,13 @@
 
         <ion-list-header>
             {{'ATTENDANCE_RECORD' | translate}}
-            <ion-icon name="search" (click)="searchAttendance()" item-end></ion-icon>
+            <ion-icon name="search" color="primary" (click)="searchAttendance()" item-end></ion-icon>
         </ion-list-header>
 
         <ion-item *ngFor="let item of attendances | async">
             <ion-label fixed>{{item.contract__worker__employee__realname}}</ion-label>
             <ion-input disabled [value]="item.day"></ion-input>
-            <ion-icon name="trash" (click)="removeAttendance(item)" item-end></ion-icon>
+            <ion-icon name="trash" color="danger" (click)="removeAttendance(item)" item-end></ion-icon>
         </ion-item>
 
         <ion-item>
