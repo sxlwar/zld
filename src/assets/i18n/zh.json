@@ -177,6 +177,7 @@
   "CAN_NOT_READ": "不识别",
   "IN": "进",
   "OUT": "出",
+  "ATTENDANCE_RECORD_TOTAL": "考勤记录总数",
 
   "PERSONAL_ATTENDANCE": "我的考勤",
   "TURN_OUT_FOR_WORK": "出勤",

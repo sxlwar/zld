@@ -16,10 +16,7 @@ export interface State {
 export const initialState: State = {
     page: 1,
     limit: 20,
-    response: {
-        count: 0,
-        attendance_instants: []
-    },
+    response: null,
     maxDate: new Date(),
     locationAttendanceOptions: {
         startDate: '',
@@ -30,7 +27,7 @@ export const initialState: State = {
 
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
-        case actions.ATTENDANCE_RECORD_FAIL: 
+        case actions.ATTENDANCE_RECORD_FAIL:
         case actions.ATTENDANCE_RECORD_SUCCESS:
             return { ...state, response: action.payload };
 
@@ -39,7 +36,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
         case actions.RESET_RECORD_PAGE:
             return { ...state, page: 1 };
-
+        
         case actions.SET_LOCATION_ATTENDANCE_END_DATE: {
             return { ...state, locationAttendanceOptions: { ...state.locationAttendanceOptions, endDate: action.payload } };
         }
@@ -59,8 +56,6 @@ export function reducer(state = initialState, action: actions.Actions): State {
 }
 
 export const getAttendanceResponse = (state: State) => state.response;
-
-export const getAttendanceRecordInstants = (state: State) => state.response.attendance_instants;
 
 export const getAttendanceRecordPage = (state: State) => state.page;
 

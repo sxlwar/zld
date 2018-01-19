@@ -1,7 +1,10 @@
+import { TimeService } from './../../services/utils/time-service';
 import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
 import { AttendanceResultConfirmResponse, AttendanceModifyRecordListResponse, AttendanceResult } from './../../interfaces/response-interface';
 import { AttendanceResultListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-action';
+
+const timeService = new TimeService();
 
 export interface DatePeriod {
     start: Date;
@@ -26,8 +29,8 @@ export const initialState: State = {
     limit: 20,
     page: 1,
     datePeriod: {
-        start: new Date(),
-        end: new Date()
+        start: timeService.getYesterday(),
+        end: timeService.getYesterday()
     },
     response: null,
     sortType: 0,

@@ -1,7 +1,8 @@
+import { FaceImageComponent } from './../../components/face-image/face-image';
 import { applyAttendanceModifyPage } from './../pages';
 import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
 import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { AttendanceService } from '../../services/business/attendance-service';
@@ -17,8 +18,6 @@ import { Subscription } from 'rxjs/Subscription';
 export class AttendanceRecordPage {
 
     attendanceResult: AttendanceResult;
-
-    time: string;
 
     operatePermission: Observable<boolean>;
 
@@ -39,7 +38,8 @@ export class AttendanceRecordPage {
         public navParams: NavParams,
         public attendance: AttendanceService,
         public attendanceRecord: AttendanceRecordService,
-        public permission: PermissionService
+        public permission: PermissionService,
+        public modalCtrl: ModalController
     ) {
         this.attendanceResult = this.navParams.get('attendance');
     }
@@ -58,14 +58,12 @@ export class AttendanceRecordPage {
 
     launch(): void {
         this.subscriptions = [
-            this.attendanceRecord.getAttendanceInstantList(Observable.of({ start_day: this.time, end_day: this.time, user_id: [this.attendanceResult.contract__worker_id] })),
+            this.attendanceRecord.getAttendanceInstantList(Observable.of({ start_day: this.attendanceResult.day, end_day: this.attendanceResult.day, user_id: [this.attendanceResult.contract__worker_id] })),
             this.attendanceRecord.handleError(),
         ];
     }
 
     initialModel(): void {
-        this.time = this.attendanceResult.day;
-
         this.haveMoreData = this.attendanceRecord.getHaveMoreData();
 
         this.records = this.attendanceRecord
@@ -74,22 +72,25 @@ export class AttendanceRecordPage {
             .map(result => uniqBy(result, 'id'));
     }
 
-    getNextPage(infiniteScroll) {
-        this.attendanceRecord.increasePage();
-
+    getNextPage(infiniteScroll: InfiniteScroll): void {
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
-        this.pageSubscription = this.attendanceRecord
-            .getAttendanceRecordResponse()
-            .subscribe(value => infiniteScroll.complete());
+        this.pageSubscription = this.attendanceRecord.getNextPage(infiniteScroll);
     }
 
-    showActionSheet() {
+    showActionSheet(): void {
         this.actionSheet$$ && this.actionSheet$$.unsubscribe();
 
         const applyFn = () => this.navCtrl.push(applyAttendanceModifyPage);
 
         this.actionSheet$$ = this.attendance.showActionSheet([this.attendanceResult], applyFn);
+    }
+
+
+    showCapture(instant: AttendanceInstant): void {
+        const { similarity, screen_image, capture_image } = instant;
+
+        this.modalCtrl.create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image }).present();
     }
 
     ionViewWillUnload() {

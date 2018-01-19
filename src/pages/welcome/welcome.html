@@ -7,6 +7,6 @@
     <div padding>
         <button ion-button block *ngFor="let button of buttons; index as index" (click)="goToLogin(index)" [ngClass]="{'login': index}">{{button | translate}}
         </button>
-        <button ion-button block clear (click)="replayTutorial()">{{'WELCOME_REVIEW_TUTORIAL' | translate}}</button>
     </div>
+    <ion-icon name="refresh" color="primary" (click)="replayTutorial()"></ion-icon>
 </ion-content>

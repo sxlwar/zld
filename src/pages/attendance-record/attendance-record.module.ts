@@ -1,11 +1,9 @@
-//region
 import { SharedModule } from './../../app/shared.modules';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { AttendanceRecordPage } from './attendance-record';
 import { TranslateModule } from '@ngx-translate/core';
 import { Actions } from '@ngrx/effects';
-//endregion
 
 @NgModule({
     declarations: [

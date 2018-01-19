@@ -1,22 +1,25 @@
 <ion-header>
 
     <ion-navbar>
-        <ion-title>{{'ATTENDANCE_MACHINE_RECORD' | translate}}</ion-title>
+        <ion-title>{{machineName | async}}</ion-title>
     </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
     <ion-item>
         <ion-label>{{'SET_QUERY_DATE' | translate}}</ion-label>
         <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-            min="2017-01-01" [max]="maxDate | async" [(ngModel)]="date" (ngModelChange)="getAttendanceInstant()"></ion-datetime>
+            min="2017-01-01" [max]="maxDate | async" [(ngModel)]="date" (ngModelChange)="date$.next($event)"></ion-datetime>
     </ion-item>
+    
     <ion-list>
-        <ion-list-header text-center>{{machineName | async}}</ion-list-header>
 
-        <ion-item *ngFor="let record of (records | async)">
+        <ion-list-header text-left>{{'ATTENDANCE_RECORD_TOTAL' | translate}}: {{count | async}}</ion-list-header>
+
+        <ion-item *ngFor="let record of records | async">
             <ion-label>
 
                 <ion-grid>
@@ -24,7 +27,7 @@
                     <ion-row>
                         <ion-col>
                             <ion-icon name="md-log-in" color="secondary" *ngIf="record.type === 1"></ion-icon>
-                            <ion-icon name="md-log-out" color="primary" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
+                            <ion-icon name="md-log-out" color="danger" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
                             <span>{{record.time}}</span>
                         </ion-col>
                     </ion-row>
@@ -41,7 +44,7 @@
                 <h6>{{record.type | inOut | translate}}</h6>
             </ion-label>
 
-            <ion-icon name="images" (click)="showCapture(record)" item-end></ion-icon>
+            <ion-icon name="images" color="primary" (click)="showCapture(record)" item-end></ion-icon>
         </ion-item>
 
         <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">

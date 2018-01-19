@@ -90,7 +90,7 @@ export class AttendancePage {
 
     initialModel() {
 
-        this.today = this.timeService.getDate(new Date(), true);
+        this.today = this.timeService.getDate(this.timeService.getYesterday(), true);
 
         this.attendances = this.attendance.getWrappedAttendanceResultList();
 

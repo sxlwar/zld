@@ -74,6 +74,7 @@ export class ProjectPage {
 
     launch(): void {
         this.subscriptions = [
+            this.iconService.addRootModuleIcons(ProjectRoot, icons),
             this.workerService.getWorkerContractsOfCurrentProject(),
             this.workerService.handleError(),
             this.projectService.handleError(),
@@ -81,7 +82,7 @@ export class ProjectPage {
     }
 
     initialModel(): void {
-        this.icons = this.iconService.getIcons(ProjectRoot, icons);
+        this.icons = this.iconService.selectIcons(ProjectRoot);
 
         this.currentProject = this.projectService.getCurrentProject();
 

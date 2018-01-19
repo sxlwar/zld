@@ -408,14 +408,15 @@ export class IconService {
     ) {
     }
 
-    getIcons(name: string, icons: IconItem[]): Observable<IconState[]> {
-        return this.addPermissionToIcons(icons)
-            .do(icons => this.addIcons(name, icons))
-            .switchMapTo(this.selectIcons(name));
+    addRootModuleIcons(name: string, icons: IconItem[]): Subscription {
+        return this.selectIcons(name)
+            .filter(value => !value)
+            .mergeMapTo(this.addPermissionToIcons(icons))
+            .subscribe(icons => this.addIcons(name, icons));
     }
 
     selectIcons(rootName: string): Observable<IconState[]> {
-        return this.store.select(createSelector(getIconsState, this.select(rootName)))
+        return this.store.select(createSelector(getIconsState, this.select(rootName)));
     }
 
     getIcon(rootName: string, iconName: string): Observable<IconState> {

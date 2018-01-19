@@ -291,6 +291,12 @@ export interface AmendAttendanceResult {
     result_id: number;
 }
 
+export enum AttendanceState {
+    UNCONFIRMED,
+    CONFIRMED,
+    AUDITING
+}
+
 export interface AttendanceResult {
     attend_amend: AmendAttendanceResult[];
     availability_work_hour: number;

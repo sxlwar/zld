@@ -25,7 +25,7 @@
 
 
     <ion-list *ngFor="let team of teams | async">
-        <ion-list-header>
+        <ion-list-header (click)="goToNextPage(team)">
             <ion-item-sliding #slidingItem>
                 <ion-item #item>
                     {{team.name}}

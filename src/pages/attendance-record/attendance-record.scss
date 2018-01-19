@@ -2,6 +2,11 @@ page-attendance-record {
     ion-list-header {
         text-align: center;
         font-size: 18px;
+        .name {
+            font-size: 16px;
+            display: inline-block;
+            margin-right: 1em;
+        }
     }
     ion-col {
         padding: 0!important;
@@ -15,6 +20,6 @@ page-attendance-record {
     h6 {
         position: absolute;
         top: 11px;
-        right: 32px;
+        right: 50px;
     }
 }

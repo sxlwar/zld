@@ -12,10 +12,13 @@ import { PriceUnitPipe } from './../pipes/price-unit-pipe';
 import { BatteryPipe, PercentBatteryPipe, IsLowPowerPipe } from './../pipes/battery-pipe';
 import { directives } from '../directives/directives-import';
 import { WorkerContractTypePipe } from './../pipes/worker-contract-pipe';
+import { AttendanceStatePipe, AttendanceStateIconPipe } from './../pipes/attendance-pipe';
 
 
 
 export const PIPES = [
+    AttendanceStatePipe,
+    AttendanceStateIconPipe,
     BadgePipe,
     EveryMonthPipe,
     InOutPipe,

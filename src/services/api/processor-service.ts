@@ -131,7 +131,7 @@ export class ProcessorService extends MapperService {
     teamListProcessor(option$: Observable<TeamListOptions>): Subscription {
         return this.permission.comprehensiveValidate(this.command.teamList)
             .filter(res => res.permission.opt || res.permission.view)
-            .zip(option$, (result, option) => ({ ...result.option, ...option }))
+            .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
             .subscribe(option => this.store.dispatch(new GetTeamListAction(option)));
     }
 
@@ -152,7 +152,7 @@ export class ProcessorService extends MapperService {
     payBillListProcessor(option$: Observable<PayBillListOptions>): Subscription {
         return this.permission.comprehensiveValidate(this.command.payBillList)
             .filter(res => res.permission.view)
-            .zip(option$, (result, option) => ({ ...result.option, ...option }))
+            .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
             .subscribe(option => this.store.dispatch(new GetPayBillListAction(option)));
     }
 
@@ -201,7 +201,7 @@ export class ProcessorService extends MapperService {
     payProcessProcessor(option$: Observable<PayProcessListOptions>): Subscription {
         return this.permission.comprehensiveValidate(this.command.payProcessList)
             .filter(result => result.permission.view)
-            .zip(option$, (result, option) => ({ ...result.option, ...option }))
+            .combineLatest(option$, (result, option) => ({ ...result.option, ...option }))
             .subscribe(option => this.store.dispatch(new GetPayProcessListAction(option)));
     }
 

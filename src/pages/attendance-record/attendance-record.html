@@ -16,7 +16,14 @@
 
 <ion-content padding>
     <ion-list>
-        <ion-list-header>{{time}}</ion-list-header>
+        <ion-list-header>
+            <ion-icon name="man" item-start></ion-icon>
+            <ion-label text-left>
+                <span class="name">{{attendanceResult.contract__worker__employee__realname}}</span>
+                <span>{{attendanceResult.day}}</span>
+            </ion-label>
+            <ion-icon [name]="attendanceResult.confirm | attendanceStateIcon" item-end></ion-icon>
+        </ion-list-header>
 
         <ion-item *ngFor="let record of (records | async)">
             <ion-label>
@@ -26,7 +33,7 @@
                     <ion-row>
                         <ion-col>
                             <ion-icon name="md-log-in" color="secondary" *ngIf="record.type === 1"></ion-icon>
-                            <ion-icon name="md-log-out" color="primary" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
+                            <ion-icon name="md-log-out" color="danger" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
                             <span>{{record.time}}</span>
                         </ion-col>
                     </ion-row>
@@ -42,6 +49,8 @@
 
                 <h6>{{record.type | inOut | translate}}</h6>
             </ion-label>
+
+            <ion-icon name="images" color="primary" (click)="showCapture(record)" item-end></ion-icon>
         </ion-item>
 
 

@@ -52,12 +52,13 @@ export class MissionPage {
     }
 
     initialModel() {
-        this.icons = this.iconService.getIcons(pages.MissionRoot, icons);
+        this.icons = this.iconService.selectIcons(pages.MissionRoot);
     }
 
     launch() {
         this.subscriptions = [
             this.attendance.getAttendanceStatisticsByTeam(), 
+            this.iconService.addRootModuleIcons(pages.MissionRoot, icons),
             this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
             this.workFlow.getWorkFlowStatistic(),
             this.workFlow.handleStatisticsError(),

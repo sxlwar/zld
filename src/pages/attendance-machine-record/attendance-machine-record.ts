@@ -1,7 +1,7 @@
+import { Subject } from 'rxjs/Subject';
 import { FaceImageComponent } from './../../components/face-image/face-image';
 import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
 import { uniqBy } from 'lodash';
-import { RequestOption } from './../../interfaces/request-interface';
 import { TimeService } from './../../services/utils/time-service';
 import { AttendanceRecordService } from './../../services/business/attendance-record-service';
 import { Subscription } from 'rxjs/Subscription';
@@ -26,6 +26,8 @@ export class AttendanceMachineRecordPage {
 
     date: string;
 
+    date$: Subject<string> = new Subject();
+
     maxDate: Observable<string>;
 
     machineName: Observable<string>;
@@ -33,6 +35,8 @@ export class AttendanceMachineRecordPage {
     id: number;
 
     subscriptions: Subscription[] = [];
+
+    count: Observable<number>;
 
     constructor(
         public navCtrl: NavController,
@@ -62,37 +66,35 @@ export class AttendanceMachineRecordPage {
 
         this.haveMoreData = this.instant.getHaveMoreData();
 
-        this.records = this.instant.getAttendanceRecord()
-            .scan((acc, cur) => acc.concat(cur))
-            .map(result => uniqBy(result, 'id'));
+        this.records = this.date$.startWith(this.date)
+            .switchMapTo(
+            this.instant.getAttendanceRecord()
+                .scan((acc, cur) => acc.concat(cur))
+                .map(result => uniqBy(result, 'id').filter(item => item.day === this.date))
+            );
+
+        this.count = this.instant.getRecordCount();
     }
 
     launch(): void {
         this.subscriptions = [
-            this.instant.getAttendanceInstantList(this.getOption()),
+            this.date$.subscribe(_ => this.instant.resetPage()),
+            this.instant.getAttendanceInstantList(this.date$.startWith(this.date).withLatestFrom(Observable.of(this.id), (date, id) => ({ id, start_day: date, end_day: date }))),
             this.instant.handleError(),
         ];
     }
 
-    getOption(): Observable<RequestOption> {
-        return Observable.of({ id: this.id, start_day: this.date, end_day: this.date });
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll) {
-        this.instant.increasePage();
-
+    getNextPage(infiniteScroll: InfiniteScroll): void {
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
-        this.pageSubscription = this.instant
-            .getAttendanceRecordResponse()
-            .subscribe(value => infiniteScroll.complete());
+        this.pageSubscription = this.instant.getNextPage(infiniteScroll);
     }
 
-    showCapture(instant: AttendanceInstant) {
+
+    showCapture(instant: AttendanceInstant): void {
         const { similarity, screen_image, capture_image } = instant;
 
-        this.modalCtrl.create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image })
-            .present();
+        this.modalCtrl.create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image }).present();
     }
 
     ionViewWillUnload() {

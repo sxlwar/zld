@@ -1,12 +1,6 @@
 import { NavParams, ViewController } from 'ionic-angular';
 import { Component, OnInit } from '@angular/core';
 
-/**
- * Generated class for the FaceImageComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
     selector: 'face-image',
     templateUrl: 'face-image.html'

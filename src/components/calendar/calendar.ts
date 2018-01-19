@@ -1,3 +1,4 @@
+import { putInArray } from '../../services/utils/util';
 import { Subscription } from 'rxjs/Subscription';
 import { RequestOption } from 'interfaces/request-interface';
 import { workerContractList, WorkerContract } from './../../services/api/command';
@@ -101,18 +102,16 @@ export class CalendarComponent implements OnInit {
             .switchMap(records => Observable.from(records)
                 .map(record => record.day)
                 .distinctUntilChanged()
-                .reduce((acc, cur) => {
-                    acc.push(cur);
-                    return acc;
-                }, []))
-            .combineLatest(this.getContractDate())
-            .map(result => {
-                const [records, dates] = result;
+                .reduce(putInArray, [])
+                .combineLatest(this.getContractDate())
+                .map(result => {
+                    const [records, dates] = result;
 
-                const { start, end } = dates;
+                    const { start, end } = dates;
 
-                return { start, end, records }
-            })
+                    return { start, end, records }
+                })
+            );
     }
 
     getContractDate(): Observable<DatePeriod> {
@@ -130,12 +129,10 @@ export class CalendarComponent implements OnInit {
     }
 
     private getOption(): Observable<RequestOption> {
-        const result = {
+        return Observable.of({
             start_day: this.timeService.getDate(this.timeService.getFirstDateOfMonth(new Date()), true),
             end_day: this.timeService.getDate(this.timeService.getYesterday(), true)
-        }
-
-        return Observable.of(result);
+        });
     }
 
     private repairCalendar(ary: Date[], idx: number, list): Date[] {

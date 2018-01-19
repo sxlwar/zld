@@ -110,13 +110,11 @@ export class MembersPage {
             workType: item.worktype__name,
             contractId: item.id,
             workTypeId: item.worktype_id
-        }
+       };
     }
 
     goToNextPage(item: WorkerItem): void {
-        const { contractId } = item;
-
-        this.navCtrl.push(workerContractPage, { contractId }).then(_ => { });
+        this.navCtrl.push(workerContractPage, { contractId: item.contractId }).then(_ => { });
     }
 
     ionViewWillUnload() {

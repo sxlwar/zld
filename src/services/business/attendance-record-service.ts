@@ -1,8 +1,9 @@
+import { InfiniteScroll } from 'ionic-angular';
 import { selectLocationAttendanceOptions } from './../../reducers/index-reducer';
 import { selectAttendanceRecordMaxDate } from './../../reducers/index-reducer';
 import { SetLocationAttendanceRecordStartDateAction, SetLocationAttendanceRecordEndDateAction, SetLocationAttendanceRecordUsersAction } from './../../actions/action/attendance-record-action';
 import { Injectable } from '@angular/core';
-import { AppState, selectAttendanceRecordInstant, selectAttendanceRecordPage, selectAttendanceRecordLimit, selectAttendanceRecordResponse } from '../../reducers/index-reducer';
+import { AppState, selectAttendanceRecordPage, selectAttendanceRecordLimit, selectAttendanceRecordResponse } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { ProcessorService } from '..//api/processor-service';
 import { ErrorService } from '..//errors/error-service';
@@ -27,11 +28,11 @@ export class AttendanceRecordService {
     /* ===========================================================Data acquisition================================================== */
 
     getAttendanceRecord(): Observable<AttendanceInstant[]> {
-        return this.store.select(selectAttendanceRecordInstant).filter(value => !!value.length);
+        return this.getAttendanceRecordResponse().map(res => res.attendance_instants);
     }
 
     getAttendanceRecordResponse(): Observable<AttendanceInstantListResponse> {
-        return this.store.select(selectAttendanceRecordResponse);
+        return this.store.select(selectAttendanceRecordResponse).filter(value => !!value);
     }
 
     getOptions(): Observable<RequestOption> {
@@ -54,6 +55,20 @@ export class AttendanceRecordService {
             );
     }
 
+    getRecordCount(): Observable<number> {
+        return this.getAttendanceRecordResponse().map(res => res.count);
+    }
+
+    getAttendanceRecordPage(): Observable<number> {
+        return this.store.select(selectAttendanceRecordPage);
+    }
+
+    getNextPage(infiniteScroll: InfiniteScroll): Subscription {
+        this.increasePage();
+
+        return this.getAttendanceRecordResponse().subscribe(_ => infiniteScroll.complete());
+    }
+
     /* ===========================================================API request ======================================================== */
 
     getAttendanceInstantList(option: Observable<RequestOption>): Subscription {
@@ -62,8 +77,9 @@ export class AttendanceRecordService {
                 this.userInfo.getSid(),
                 this.store.select(selectAttendanceRecordPage),
                 this.store.select(selectAttendanceRecordLimit),
-                (option, sid, page, limit) => ({ sid, page, limit, ...option })
-            ) as Observable<AttendanceInstantListOptions>
+                (option, sid, page, limit) => ({ sid, page, limit, ...option } as AttendanceInstantListOptions)
+            )
+                .distinctUntilChanged((pre, cur) => cur.page === 1 && pre.start_day === cur.start_day)
         );
     }
 

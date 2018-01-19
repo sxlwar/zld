@@ -1,40 +1,45 @@
 page-project {
-
-  icon-navbar div {
-    height: 44px;
-  }
-
-  .pane {
-    text-align: center;
-    background: #00c1de;
-    color: #ffffff;
-    margin: -16px -16px 0 -16px;
-    width: auto;
-    button {
-      position: absolute;
-      top: -10px;
-      left: -10px;
-      font-size: 12px;
+    ion-card {
+        min-height: 150px;
+        ion-row:nth-child(4) {
+            padding-top: 20px;
+        }
     }
-  }
-  .pane-info {
-    display: inline-block;
-    width: 10em;
-    color: #ffffff;
-    position: relative;
-  }
-
-  .pane-icon {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  icon-bar {
-    margin: 10px 0;
-    background: rgba(230, 230, 230, 0.1);
-  }
+    icon-navbar div {
+        height: 44px;
+    }
+    .pane {
+        text-align: center;
+        background: #00c1de;
+        color: #ffffff;
+        margin: -16px -16px 0 -16px;
+        width: auto;
+        button {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 12px;
+        }
+    }
+    .pane-info {
+        display: inline-block;
+        width: 10em;
+        color: #ffffff;
+        position: relative;
+    }
+    .pane-icon {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    icon-bar {
+        margin: 10px 0;
+        background: rgba(230, 230, 230, 0.1);
+    }
+    .header-ios .toolbar-background-ios {
+        border: none;
+    }
 }

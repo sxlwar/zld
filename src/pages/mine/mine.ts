@@ -92,7 +92,7 @@ export class MinePage {
     }
 
     initialModel() {
-        this.icons = this.iconService.getIcons(MineRoot, icons);
+        this.icons = this.iconService.selectIcons(MineRoot);
 
         this.name = this.userInfo.getRealName();
 
@@ -114,6 +114,7 @@ export class MinePage {
 
     launch(): void {
         this.subscriptions = [
+            this.iconService.addRootModuleIcons(MineRoot, icons),
             this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout())
         ];
     }
