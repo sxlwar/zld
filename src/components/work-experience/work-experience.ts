@@ -1,12 +1,14 @@
+import { ItemSliding, Item } from 'ionic-angular';
 import { CustomWorkExperience } from './../../interfaces/personal-interface';
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { LayoutService } from '../../services/utils/layout-service';
 
 @Component({
     selector: 'work-experience',
     templateUrl: 'work-experience.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WorkExperienceComponent {
+export class WorkExperienceComponent implements OnDestroy {
 
     @Input() experience: CustomWorkExperience[];
 
@@ -14,7 +16,16 @@ export class WorkExperienceComponent {
 
     @Output() deleteExperience: EventEmitter<CustomWorkExperience> = new EventEmitter();
 
-    constructor() {
+    constructor(
+        private layout: LayoutService
+    ) {
     }
 
+    openOption(itemSlide: ItemSliding, item: Item, event) {
+        this.layout.openOption(itemSlide, item, event);
+    }
+
+    ngOnDestroy() {
+        this.layout.activeItemSliding = null;
+    }
 }

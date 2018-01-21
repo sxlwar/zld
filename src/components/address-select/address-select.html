@@ -1,7 +1,7 @@
-<ion-item-group>
-    <ion-item-divider>
+<ion-list>
+    <ion-list-header>
         {{'CURRENT_ADDRESS' | translate}}
-    </ion-item-divider>
+    </ion-list-header>
 
     <ion-item>
         <ion-label>{{'AREA' | translate}}</ion-label>
@@ -16,4 +16,4 @@
         <ion-input [(ngModel)]="addressDetail" [value]="addressDetail" disabled></ion-input>
         <ion-icon name="create" color="primary" item-end (click)="modifyAddress()" *ngIf="!disabled"></ion-icon>
     </ion-item>
-</ion-item-group>
+</ion-list>

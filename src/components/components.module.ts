@@ -54,6 +54,7 @@ import { WorkFlowAttachComponent } from './work-flow-attach/work-flow-attach';
 import { AttendanceListComponent } from './attendance-list/attendance-list';
 import { RevisableAttendanceListComponent } from './revisable-attendance-list/revisable-attendance-list';
 import { AttachListComponent } from './attach-list/attach-list';
+import { UpdateFamilyInformationComponent } from './update-family-information/update-family-information';
 
 @NgModule({
     declarations: [
@@ -108,6 +109,7 @@ import { AttachListComponent } from './attach-list/attach-list';
         AttendanceListComponent,
         RevisableAttendanceListComponent,
         AttachListComponent,
+    UpdateFamilyInformationComponent,
     ],
     imports: [
         CommonModule,
@@ -169,6 +171,7 @@ import { AttachListComponent } from './attach-list/attach-list';
         AttendanceListComponent,
         RevisableAttendanceListComponent,
         AttachListComponent,
+    UpdateFamilyInformationComponent,
     ]
 })
 export class ComponentsModule {

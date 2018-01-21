@@ -1,9 +1,10 @@
+import { LayoutService } from './../../services/utils/layout-service';
 import { AddEducationComponent } from './../../components/add-education/add-education';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, ItemSliding, Item } from 'ionic-angular';
 import { Education } from 'interfaces/response-interface';
 
 @IonicPage()
@@ -21,7 +22,8 @@ export class EducationExperiencePage {
         public navCtrl: NavController,
         public navParams: NavParams,
         public personal: PersonalService,
-        public modalCtrl: ModalController
+        public modalCtrl: ModalController,
+        public layout: LayoutService
     ) {
     }
 
@@ -68,8 +70,14 @@ export class EducationExperiencePage {
         this.personal.deleteEducation(Observable.of(target.id));
     }
 
+    openOption(itemSlide: ItemSliding, item: Item, event) {
+        this.layout.openOption(itemSlide, item, event);
+    }
+    
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
+
+        this.layout.activeItemSliding = null;
     }
 
 }

@@ -13,12 +13,11 @@
 
 <ion-content>
 
-    <ion-item-divider text-center>
-        {{projectName | async}}
-    </ion-item-divider>
-
     <form action="" [formGroup]="addTeamForm" padding>
         <ion-list>
+
+            <ion-list-header>{{projectName | async}}</ion-list-header>
+            
             <ion-item>
                 <ion-label fixed>{{'TEAM_NAME' | translate}}</ion-label>
                 <ion-input type="text" formControlName="teamName" required></ion-input>

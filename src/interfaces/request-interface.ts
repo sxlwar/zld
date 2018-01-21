@@ -303,6 +303,25 @@ export interface RequestAggregationOptions {
     sid: string;
 }
 
+export enum RealTimeStatisticType {
+    workType = 'worktype',
+    team = 'team'
+}
+
+export interface RealTimeStatisticsOptions {
+    sid: string;
+    project_id: number;
+    statistics_type: string;
+}
+
+export interface WorkTypeRealTimeStatisticsOptions extends RealTimeStatisticsOptions{
+   team_id?: number; 
+}
+
+export interface TeamMembersRealTimeStatisticsOptions extends RealTimeStatisticsOptions{
+   worktype_id?: number; 
+}
+
 /*=================================================Company user model==================================================*/
 
 export interface CompanyUserListOptions {

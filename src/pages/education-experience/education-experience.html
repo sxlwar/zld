@@ -20,22 +20,45 @@
 
 <ion-content padding>
 
-    <accordion-list *ngFor="let item of educations | async" [title]="item.start_date + ' - ' + item.finish_date" (create)="updateEducation(item)"
-        (trash)="deleteEducation(item)">
+    <ion-list *ngFor="let edu of educations | async">
+        <ion-list-header>
+
+            <ion-item-sliding #slidingItem>
+
+                <ion-item #item>
+                    {{edu.start_date}}—{{edu.finish_date}}
+                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" item-start></ion-icon>
+                </ion-item>
+
+                <ion-item-options side="right">
+                    <button ion-button color="primary" (click)="updateEducation(edu)">
+                        <ion-icon name="create"></ion-icon>
+                        {{'UPDATE_BUTTON' | translate}}
+                    </button>
+                    <button ion-button color="danger" (click)="deleteEducation(edu)">
+                        <ion-icon name="trash"></ion-icon>
+                        {{'DELETE_BUTTON' | translate}}
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+
+        </ion-list-header>
+
         <ion-item>
             <ion-label fixed>{{'SCHOOL' | translate}}</ion-label>
-            <ion-input disabled [value]="item.school__name"></ion-input>
+            <ion-input disabled [value]="edu.school__name"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'DEGREE' | translate}}</ion-label>
-            <ion-input disabled [value]="item.degree | degree"></ion-input>
+            <ion-input disabled [value]="edu.degree | degree"></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'MAJOR' | translate}}</ion-label>
-            <ion-input disabled [value]="item.major"></ion-input>
+            <ion-input disabled [value]="edu.major"></ion-input>
         </ion-item>
 
-    </accordion-list>
+    </ion-list>
+
 </ion-content>

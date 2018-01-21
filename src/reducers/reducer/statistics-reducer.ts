@@ -1,4 +1,4 @@
-import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, AttendanceStatistics, WorkFlowAggregation } from './../../interfaces/response-interface';
+import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, AttendanceStatistics, WorkFlowAggregation, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/statistics-action';
 
 export interface AttendanceConditions {
@@ -10,6 +10,8 @@ export interface State {
     attendanceConditions: AttendanceConditions;
     attendanceResultTeamStatResponse: AttendanceResultTeamStatListResponse;
     requestAggregationResponse: RequestAggregationResponse;
+    workTypeRealTimeStatisticsResponse: WorkTypeRealTimeStatisticsResponse;
+    teamMemberRealTimeStatisticsResponse: TeamMembersRealTimeStatisticsResponse;
 }
 
 export const initialState: State = {
@@ -17,7 +19,9 @@ export const initialState: State = {
     attendanceResultTeamStatResponse: {
         attend_result_team_stat_list: []
     },
-    requestAggregationResponse: null
+    requestAggregationResponse: null,
+    workTypeRealTimeStatisticsResponse: null,
+    teamMemberRealTimeStatisticsResponse: null
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -67,6 +71,16 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.UPDATE_SPECIFIC_WORK_FLOW_STATISTIC:
             return { ...state, requestAggregationResponse: { request_aggregation: updateWorkFlowAggregation(state.requestAggregationResponse.request_aggregation, action.payload) } };
 
+        case actions.WORK_TYPE_REAL_TIME_STATISTICS_FAIL:
+        case actions.WORK_TYPE_REAL_TIME_STATISTICS_SUCCESS:
+            return { ...state, workTypeRealTimeStatisticsResponse: action.payload };
+       
+        case actions.TEAM_MEMBERS_REAL_TIME_STATISTICS_FAIL:
+        case actions.TEAM_MEMBERS_REAL_TIME_STATISTICS_SUCCESS:
+            return { ...state, teamMemberRealTimeStatisticsResponse: action.payload };
+
+        case actions.GET_WORK_TYPE_REAL_TIME_STATISTICS:
+        case actions.GET_TEAM_MEMBERS_REAL_TIME_STATISTICS:
         case actions.GET_ATTENDANCE_RESULT_TEAM_STAT:
         case actions.GET_WORK_FLOW_STATISTICS:
         default:
@@ -127,3 +141,7 @@ export const getAttendanceStatisticList = (state: State) => state.attendanceCond
 export const getAttendanceSelectedTeams = (state: State) => state.attendanceConditions.selectedDates;
 
 export const getAttendanceSelectedDates = (state: State) => state.attendanceConditions.selectedDates;
+
+export const getWorkTypeStatistics = (state: State) => state.workTypeRealTimeStatisticsResponse;
+
+export const getTeamMembersStatistics = (state: State) => state.teamMemberRealTimeStatisticsResponse;

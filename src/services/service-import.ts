@@ -48,6 +48,7 @@ import { EmployerService } from './business/employer-service';
 import { LocationService } from './business/location-service';
 import { MessageService } from './business/message-service';
 import { RecordOptionService } from './business/record-option-service';
+import { LayoutService } from './utils/layout-service';
 
 export const API_SERVICES = [
     Command,
@@ -56,7 +57,6 @@ export const API_SERVICES = [
     ProcessorService,
     WebsocketService,
 ]
-
 
 export const BUSINESS_SERVICES = [
     AddressService,
@@ -71,6 +71,7 @@ export const BUSINESS_SERVICES = [
     EmployerService,
     GroupListService,
     IconService,
+    LayoutService,
     LaunchService,
     LeaveService,
     LocationService,

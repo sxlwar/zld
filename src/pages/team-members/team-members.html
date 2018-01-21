@@ -20,7 +20,6 @@
             {{'WORKER_AMOUNT' | translate}}：{{workerCount | async}}
         </ion-list-header>
 
-        <!-- TODO: 给所有的工种定制图标，另外最好实现统计接口，用来绘制本班组工种人数统计图表 -->
         <ion-item *ngFor="let item of list | async" (click)="goToNextPage(item)" detail-push>
             <ion-icon [name]="item.workTypeId | workType" item-start></ion-icon>
             <ion-label fixed>{{item.name}}</ion-label>

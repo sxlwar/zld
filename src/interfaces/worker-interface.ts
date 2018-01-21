@@ -9,5 +9,6 @@ export interface DistinguishableWorkerItem {
     name: string;
     teamName: string;
     workType: string;
+    workTypeId: number;
     selected: boolean;
 }

@@ -1,3 +1,4 @@
+import { UpdateFamilyInformationComponent } from './../components/update-family-information/update-family-information';
 import { Device } from '@ionic-native/device';
 import { Network } from '@ionic-native/network';
 import { RevisableAttendanceListComponent } from './../components/revisable-attendance-list/revisable-attendance-list';
@@ -101,6 +102,7 @@ export function HttpLoaderFactory(http: Http) {
         AddWorkCertificateComponent,
         WorkFlowAuditComponent,
         RevisableAttendanceListComponent,
+        UpdateFamilyInformationComponent,
     ],
     providers: [
         Camera,

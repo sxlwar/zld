@@ -3,13 +3,13 @@ import { UpdateLocalWorkerDetailWorkTypesAction } from './../../actions/action/p
 import { RequestOption, homeAddressNameMapBetweenResponseAndRequest, HomeInfoUpdateOptions, EducationUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkExperienceUpdateOptions } from './../../interfaces/request-interface';
 import { CraftService } from './craft-service';
 import { Family } from './../../interfaces/personal-interface';
-import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience, PersonalIdListResponse, WorkType } from './../../interfaces/response-interface';
+import { BasicInfoListResponse, PersonalId, WorkerDetail, Education, WorkExperience, PlatformWorkExperience, PersonalIdListResponse, WorkType, HomeInfoUpdateResponse } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse, selectEducationListResponse, selectWorkExperienceListResponse, selectPlatformWorkExperienceResponse } from './../../reducers/index-reducer';
+import { AppState, selectBasicInfoListResponse, selectPersonalIdResponse, selectWorkerDetailResponse, selectWorkerDetailUpdateResponse, selectSelectedWorkTypes, selectHomeInfoListResponse, selectEducationListResponse, selectWorkExperienceListResponse, selectPlatformWorkExperienceResponse, selectHomeInfoUpdateResponse } from './../../reducers/index-reducer';
 import { Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { rename } from '../../services/utils/util';
@@ -155,6 +155,10 @@ export class PersonalService {
         return this.store.select(selectPlatformWorkExperienceResponse)
             .filter(value => !!value)
             .map(res => res.exp_platform);
+    }
+
+    getHomeInfoUpdateSuccessResponse(): Observable<HomeInfoUpdateResponse> {
+        return this.store.select(selectHomeInfoUpdateResponse).filter(value => !!value && !value.errorMessage);
     }
 
     /* =======================================================Update worker detail================================================================== */

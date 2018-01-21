@@ -36,7 +36,27 @@ const COLORS = [
     'rgba(153,51,51,.8)',
     'rgba(250,250,210,.8)',
     'rgba(0,255,255,.8)',
-    'rgba(102,102,153,.8)',
+    'rgba(2,102,153,.8)',
+    'rgba(127,255,0,.8)',
+    'rgba(255,255,0,.8)',
+    'rgba(255,0,0,.8)',
+    'rgba(105,105,105,.8)',
+    'rgba(7,130,180,.8)',
+    'rgba(0,128,0,.8)',
+    'rgba(255,182,193,.8)',
+    'rgba(216,191,216,.8)',
+    'rgba(186,85,211,.8)',
+    'rgba(112,128,144,.8)',
+    'rgba(0,128,128,.8)',
+    'rgba(210,180,140,.8)',
+    'rgba(178,34,34,.8)',
+    'rgba(47,79,79,.8)',
+    'rgba(0,0,128,.8)',
+    'rgba(70,0,130,.8)',
+    'rgba(255,0,255,.8)',
+    'rgba(0,100,0,.8)',
+    'rgba(128,0,0,.8)',
+    'rgba(0,0,0,.8)',
 ]
 
 @Injectable()
@@ -68,8 +88,10 @@ export class ChartService {
         }
     }
 
-    getBarChartData(sourceData: ChartSourceData, legendLabel: string, maxCount = 7): ChartData {
-        const backgroundColor = COLORS.slice(0, sourceData.data.length);
+    getBarChartData(sourceData: ChartSourceData, legendLabel: string, maxCount = 7, colorPercent = 1): ChartData {
+        let backgroundColor = COLORS.slice(0, sourceData.data.length);
+
+        if (colorPercent !== 1) backgroundColor = this.generateHoverColor(backgroundColor, colorPercent);
 
         const hoverBackgroundColor = this.generateHoverColor(backgroundColor);
 
@@ -88,9 +110,9 @@ export class ChartService {
         }
     }
 
-    generateHoverColor(colors: string[]): string[] {
-        const reg = /\.\d{1}/;
+    generateHoverColor(colors: string[], opacity = 1): string[] {
+        const reg = /0?\.\d{1}/;
 
-        return colors.map(color => color.replace(reg, '1'));
+        return colors.map(color => color.replace(reg, String(opacity)));
     }
 }

@@ -9,8 +9,8 @@
 
 <ion-content padding>
 
-    <ion-item-group *ngIf="!!personalId">
-        <ion-item-divider>{{'BASIC_INFO' | translate}}</ion-item-divider>
+    <ion-list *ngIf="!!personalId">
+        <ion-list-header>{{'BASIC_INFO' | translate}}</ion-list-header>
 
         <ion-item>
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
@@ -42,13 +42,13 @@
             <ion-input disabled [value]="personalId.addr"></ion-input>
         </ion-item>
 
-    </ion-item-group>
+    </ion-list>
 
-    <ion-item-group>
-        <ion-item-divider>
+    <ion-list>
+        <ion-list-header>
             {{'WORK_TYPE' | translate}}
-            <ion-icon name="list" color="primary" item-end (click)="modifyWorkType()"></ion-icon>
-        </ion-item-divider>
+            <ion-icon name="list" color="primary" item-end (click)="modifyWorkType()" item-end></ion-icon>
+        </ion-list-header>
 
         <ion-item *ngFor="let item of workTypes | async">
             <ion-label>{{item.name}}</ion-label>
@@ -58,7 +58,7 @@
         <ion-item *ngIf="!(workTypes | async)?.length">
             <ion-label text-center>{{'NO_WORK_TYPE' | translate}}</ion-label>
         </ion-item>
-    </ion-item-group>
+    </ion-list>
 
     <address-select [selectedArea]="selectedArea | async" [addressDetail]="workerDetail?.curraddr__detail" (addressChange)="addressSubject.next($event)"></address-select>
 

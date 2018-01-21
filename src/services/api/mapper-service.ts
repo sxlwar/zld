@@ -298,7 +298,7 @@ export class MapperService {
 
         const school = source.school__name;
 
-        const expire = source.start_date + '-' + source.finish_date;
+        const expire = source.start_date + '—' + source.finish_date;
 
         return { expire, school, education, major }
     }
@@ -336,7 +336,7 @@ export class MapperService {
 
     transformWorkExperience(source: WorkExperience): CustomWorkExperience {
         return {
-            expire: source.start + '--' + source.finish,
+            expire: source.start + '—' + source.finish,
             project: source.project_name,
             company: source.company_name,
             job: source.job,
@@ -346,7 +346,7 @@ export class MapperService {
 
     transformPlatformWorkExperience(source: PlatformWorkExperience): PlatformExperience {
         return {
-            expire: source.start_day + '--' + source.finish_day,
+            expire: source.start_day + '—' + source.finish_day,
             workType: source.worktype__name,
             project: source.team__project__name,
             team: source.team__name

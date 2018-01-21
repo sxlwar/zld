@@ -53,6 +53,8 @@ export const teamMembersPage = 'TeamMembersPage';
 
 export const membersPage = 'MembersPage';
 
+export const memberStatisticsPage = 'MemberStatisticsPage';
+
 export const editWorkerContractPage = 'EditWorkerContractPage';
 
 export const attendanceMachinePage = 'AttendanceMachinePage';
@@ -169,6 +171,7 @@ export const PAGES: Page[] = [
     { title: '', component: teamMembersPage, inMenu: false },
     { title: '', component: personalPage, inMenu: false },
     { title: 'WORKER_MANAGER', component: membersPage, inMenu: true },
+    { title: '', component: memberStatisticsPage, inMenu: false},
     { title: '', component: editWorkerContractPage, inMenu: false },
     { title: 'ATTENDANCE_MACHINE', component: attendanceMachinePage, inMenu: true },
     { title: '', component: attendanceMachineRecordPage, inMenu: false },

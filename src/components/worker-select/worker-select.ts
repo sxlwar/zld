@@ -1,3 +1,4 @@
+import { DistinguishableWorkerItem } from './../../interfaces/worker-interface';
 import { Subject } from 'rxjs/Subject';
 import { RequestOption } from 'interfaces/request-interface';
 import { ViewController, InfiniteScroll, NavParams } from 'ionic-angular';
@@ -10,21 +11,13 @@ import { WorkerService } from './../../services/business/worker-service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-interface WorkerItem {
-    id: number;
-    name: string;
-    teamName: string;
-    workType: string;
-    selected: boolean;
-}
-
 @Component({
     selector: 'worker-select',
     templateUrl: 'worker-select.html'
 })
 export class WorkerSelectComponent implements OnInit, OnDestroy {
 
-    workerSubject: Subject<WorkerItem[]> = new BehaviorSubject([])
+    workerSubject: Subject<DistinguishableWorkerItem[]> = new BehaviorSubject([])
 
     subscriptions: Subscription[] = [];
 
@@ -36,7 +29,7 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     selectedWorkers: Observable<number[]>;
 
-    selectedWorker: WorkerItem;
+    selectedWorker:  DistinguishableWorkerItem;
 
     single = false;
 
@@ -48,6 +41,7 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
         public navParams: NavParams
     ) {
         this.single = !!this.navParams.get('single');
+        
         worker.resetPage();
     }
 
@@ -90,7 +84,6 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     }
 
     getOption(): Observable<RequestOption> {
-
         return this.worker.getCompleteStatusOption()
             .zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }))
             .map(option => {

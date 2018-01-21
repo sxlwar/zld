@@ -1,5 +1,5 @@
-import { AttendanceResultTeamStatListResponse, RequestAggregationResponse } from './../../interfaces/response-interface';
-import { AttendanceResultTeamStatListOptions, RequestAggregationOptions } from './../../interfaces/request-interface';
+import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
+import { AttendanceResultTeamStatListOptions, RequestAggregationOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 /* ===============================================Attendance by team================================================ */
@@ -62,6 +62,56 @@ export class UpdateSpecificWorkFlowStatisticAtLocalAction implements Action {
     constructor(public payload: { processId: string, count: number }) { }
 }
 
+/* ===============================================Real time statistic======================================================== */
+
+export const GET_WORK_TYPE_REAL_TIME_STATISTICS = 'GET_WORK_TYPE_REAL_TIME_STATISTICS';
+
+export class GetWorkTypeRealTimeStatisticsAction implements Action {
+    readonly type = GET_WORK_TYPE_REAL_TIME_STATISTICS;
+
+    constructor(public payload: WorkTypeRealTimeStatisticsOptions) { }
+}
+
+export const WORK_TYPE_REAL_TIME_STATISTICS_FAIL = 'WORK_TYPE_REAL_TIME_STATISTICS_FAIL';
+
+export class WorkTypeRealTimeStatisticsFailAction implements Action {
+    readonly type = WORK_TYPE_REAL_TIME_STATISTICS_FAIL;
+
+    constructor(public payload: WorkTypeRealTimeStatisticsResponse) { }
+}
+
+export const WORK_TYPE_REAL_TIME_STATISTICS_SUCCESS = 'WORK_TYPE_REAL_TIME_STATISTICS_SUCCESS';
+
+export class WorkTypeRealTimeStatisticsSuccessAction implements Action {
+    readonly type = WORK_TYPE_REAL_TIME_STATISTICS_SUCCESS;
+
+    constructor(public payload: WorkTypeRealTimeStatisticsResponse) { }
+}
+
+export const GET_TEAM_MEMBERS_REAL_TIME_STATISTICS = 'GET_TEAM_MEMBERS_REAL_TIME_STATISTICS';
+
+export class GetTeamMembersRealTimeStatisticsAction implements Action {
+    readonly type = GET_TEAM_MEMBERS_REAL_TIME_STATISTICS;
+
+    constructor(public payload: TeamMembersRealTimeStatisticsOptions) { }
+}
+
+export const TEAM_MEMBERS_REAL_TIME_STATISTICS_FAIL = 'TEAM_MEMBERS_REAL_TIME_STATISTICS_FAIL';
+
+export class TeamMembersRealTimeStatisticsFailAction implements Action {
+    readonly type = TEAM_MEMBERS_REAL_TIME_STATISTICS_FAIL;
+
+    constructor(public payload: TeamMembersRealTimeStatisticsResponse) { }
+}
+
+export const TEAM_MEMBERS_REAL_TIME_STATISTICS_SUCCESS = 'TEAM_MEMBERS_REAL_TIME_STATISTICS_SUCCESS';
+
+export class TeamMembersRealTimeStatisticsSuccessAction implements Action {
+    readonly type = TEAM_MEMBERS_REAL_TIME_STATISTICS_SUCCESS;
+
+    constructor(public payload: TeamMembersRealTimeStatisticsResponse) { }
+}
+
 /* ===============================================Data condition======================================================== */
 
 export const SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM = 'SHOW_SPECIFIC_ATTENDANCE_STATISTICS_BY_TEAM';
@@ -84,9 +134,15 @@ export class ShowSpecificAttendanceStatisticsByDate implements Action {
 export type Actions = GetAttendanceResultTeamStatListAction
     | AttendanceResultTeamStatFailAction
     | AttendanceResultTeamStatSuccessAction
+    | GetTeamMembersRealTimeStatisticsAction
     | GetWorkFlowStatisticsAction
+    | GetWorkTypeRealTimeStatisticsAction
+    | ShowSpecificAttendanceStatisticsByDate
+    | ShowSpecificAttendanceStatisticsByTeam
+    | TeamMembersRealTimeStatisticsFailAction
+    | TeamMembersRealTimeStatisticsSuccessAction
+    | UpdateSpecificWorkFlowStatisticAtLocalAction
     | WorkFlowStatisticsFailAction
     | WorkFlowStatisticsSuccessAction
-    | ShowSpecificAttendanceStatisticsByTeam
-    | ShowSpecificAttendanceStatisticsByDate
-    | UpdateSpecificWorkFlowStatisticAtLocalAction;
+    | WorkTypeRealTimeStatisticsFailAction
+    | WorkTypeRealTimeStatisticsSuccessAction;

@@ -7,4 +7,9 @@ add-location-card {
         margin-top: -64px;
         min-height: 65vh;
     }
+    ion-label span {
+        font-size: 12px;
+        float: right;
+        margin-top: .5em;
+    }
 }

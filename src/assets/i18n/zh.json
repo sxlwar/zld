@@ -235,6 +235,11 @@
 
   "TEAM_MEMBER": "班组成员",
   "WORKER_AMOUNT": "工人数量",
+  "MEMBER_STATISTICS": "成员统计",
+  "REQUIREMENT": "需求量",
+  "ACTUAL_COUNT": "实际量",
+  "WORK_TYPE_COUNT_STATISTICS": "工种人数统计", 
+  "TEAM_MEMBERS_STATISTICS": "班组人数统计", 
 
   "BASIC_INFORMATION": "基本信息",
   "CERTIFICATION": "技能证书",
@@ -356,6 +361,7 @@
   "NO_WORK_TYPE": "尚未添加过工种",
   "SELECT_WORK_TYPE": "选择工种",
   "SELECT_ADDRESS": "请选择地区",
+  "UPDATE_FAMILY_INFORMATION": "更新家庭信息",
 
   "SCHOOL": "学校",
   "DEGREE": "学历",

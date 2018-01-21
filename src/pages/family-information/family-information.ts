@@ -1,6 +1,5 @@
-import { HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { UpdateFamilyInformationComponent } from './../../components/update-family-information/update-family-information';
 import { MapperService } from './../../services/api/mapper-service';
-import { Subject } from 'rxjs/Subject';
 import { AddressService } from './../../services/utils/address-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Family } from './../../interfaces/personal-interface';
@@ -18,11 +17,7 @@ export class FamilyInformationPage {
 
     family: Observable<Family>;
 
-    updateFamily: Subject<Family> = new Subject();
-
     subscriptions: Subscription[] = [];
-
-    disabled = true;
 
     constructor(
         public navCtrl: NavController,
@@ -56,20 +51,17 @@ export class FamilyInformationPage {
     launch() {
         this.subscriptions = [
             this.personal.getHomeInfoList(),
-            this.personal.updateHomeInfo(this.getOption()),
             this.personal.handleError(),
-        ]
+        ];
     }
 
-    getOption(): Observable<HomeInfoUpdateOptions> {
-        return this.updateFamily
-            .filter(value => !!value)
-            .mergeMap(item =>
-                this.addressService.getAddressName(
-                    Observable.of(item.addressArea.split(' '))
-                )
-                    .map(res => this.mapper.transformFamilyOptions({ ...item, addressArea: res.join(' ') }))
-            );
+    updateHomeInfo(): void {
+        this.subscriptions.push(
+            this.family.take(1).subscribe(family => this.modalCtrl.create(UpdateFamilyInformationComponent, { family }).present())
+        );
     }
 
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
+    }
 }

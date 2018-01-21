@@ -715,6 +715,28 @@ export interface RequestAggregationResponse {
     errorMessage?: string;
 }
 
+// RealTimePeopleNum 这个接口设计的纯属就是一堆屎，同一个接口，返回不同的数据类型。强制折分成两个接口以保持数据类型的统一。
+export interface WorkTypeRealTimeStatistics {
+    worktype_id__count: number;
+    worktype_id: number;
+}
+
+export interface TeamMembersStatistics {
+    team_id: number;
+    team_id__count: number; // 班组ID的数量？垃圾命名
+    team__name: string;
+}
+
+export interface RealTimeStatisticsResponse<T> {
+    total: T[]; // 恶心的命名，这个字段的要表达的意思是需求量，后台的命名一惯是含糊不清。
+    actual: T[];
+    errorMessage?: string;
+}
+
+export interface WorkTypeRealTimeStatisticsResponse extends RealTimeStatisticsResponse<WorkTypeRealTimeStatistics> { }
+
+export interface TeamMembersRealTimeStatisticsResponse extends RealTimeStatisticsResponse<TeamMembersStatistics> { }
+
 /*=================================================Company user model==================================================*/
 
 export interface Employer {

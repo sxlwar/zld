@@ -15,7 +15,7 @@ export interface ChartSourceData {
     selector: 'attendance-time-chart',
     templateUrl: 'attendance-time-chart.html'
 })
-export class AttendanceTimeChartComponent implements OnInit , OnDestroy{
+export class AttendanceTimeChartComponent implements OnInit, OnDestroy {
 
     @Input() yearMonth: string;
 
@@ -55,7 +55,8 @@ export class AttendanceTimeChartComponent implements OnInit , OnDestroy{
     }
 
     getPieChart(sourceData: Observable<number[]>): Subscription {
-        return this.getChartData(sourceData).map(source => this.chartService.getPieChartData(source))
+        return this.getChartData(sourceData)
+            .map(source => this.chartService.getPieChartData(source))
             .subscribe(data => this.chart = this.chartService.getChart(this.pieCanvas.nativeElement, ChartType.pie, data));
     }
 

@@ -13,6 +13,8 @@ import { Component } from '@angular/core';
 interface Worker {
     userId: number;
     name: string;
+    teamName: string;
+    workTypeId: number;
 }
 
 @Component({
@@ -153,7 +155,7 @@ export class AddLocationCardComponent {
      */
     getWorkers(): Observable<Worker[]> {
         return this.worker.getAllWorkerContracts()
-            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id })))
+            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id, workTypeId: item.worktype_id, teamName: item.team__name })))
             .combineLatest(this.locationCard.getLocationCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)))
             .map(([workers, boundIds]) => workers.filter(item => boundIds.indexOf(item.userId) === -1));
     }

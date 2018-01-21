@@ -2,6 +2,12 @@
 
     <ion-navbar>
         <ion-title>{{'WORKER_MANAGEMENT' | translate}}</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only *ngIf="haveStatisticsPermission | async" (click)="goToStatisticsPage()">
+                <ion-icon name="stats" color="primary"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 
 </ion-header>

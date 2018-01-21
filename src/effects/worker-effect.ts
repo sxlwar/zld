@@ -1,3 +1,5 @@
+import { RealTimeStatisticsResponse } from './../interfaces/response-interface';
+import { GET_WORK_TYPE_REAL_TIME_STATISTICS, GetWorkTypeRealTimeStatisticsAction, WorkTypeRealTimeStatisticsFailAction, WorkTypeRealTimeStatisticsSuccessAction, GET_TEAM_MEMBERS_REAL_TIME_STATISTICS, GetTeamMembersRealTimeStatisticsAction, TeamMembersRealTimeStatisticsFailAction, TeamMembersRealTimeStatisticsSuccessAction } from './../actions/action/statistics-action';
 import { TipService } from './../services/tip-service';
 import { EDIT_WORKER_CONTRACT, EditWorkerContractAction, EditWorkerContractFailAction, EditWorkerContractSuccessAction } from './../actions/action/worker-action';
 import { Injectable } from '@angular/core';
@@ -5,7 +7,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { WebsocketService } from '../services/api/websocket-service';
 import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
-import { ResponseAction } from '../interfaces/response-interface';
+import { ResponseAction, TeamMembersRealTimeStatisticsResponse, WorkTypeRealTimeStatisticsResponse } from '../interfaces/response-interface';
 import { GET_WORKER_CONTRACTS, GetWorkerContractsAction, WorkerContractListFailAction, WorkerContractListSuccessAction } from '../actions/action/worker-action';
 
 @Injectable()
@@ -31,11 +33,39 @@ export class WorkerEffect extends Command {
             .catch(error => Observable.of(error))
         );
 
+    @Effect()
+    workTypeRealTimeStatistics$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_WORK_TYPE_REAL_TIME_STATISTICS)
+        .switchMap((action: GetWorkTypeRealTimeStatisticsAction) => this.ws
+            .send(this.getRealTimeStatistics(action.payload))
+            .takeUntil(this.actions$.ofType(GET_WORK_TYPE_REAL_TIME_STATISTICS))
+            .filter(msg => this.predicateStatisticsType(<WorkTypeRealTimeStatisticsResponse>msg.data, 'worktype_id'))
+            .map(msg => msg.isError ? new WorkTypeRealTimeStatisticsFailAction(msg.data) : new WorkTypeRealTimeStatisticsSuccessAction(msg.data))
+            .catch(error => Observable.of(error))
+        );
+
+    @Effect()
+    teamMembersRealTimeStatistics$: Observable<ResponseAction> = this.actions$
+        .ofType(GET_TEAM_MEMBERS_REAL_TIME_STATISTICS)
+        .switchMap((action: GetTeamMembersRealTimeStatisticsAction) => this.ws
+            .send(this.getRealTimeStatistics(action.payload))
+            .takeUntil(this.actions$.ofType(GET_TEAM_MEMBERS_REAL_TIME_STATISTICS))
+            .filter(msg => this.predicateStatisticsType(<TeamMembersRealTimeStatisticsResponse>msg.data, 'team_id'))
+            .map(msg => msg.isError ? new TeamMembersRealTimeStatisticsFailAction(msg.data) : new TeamMembersRealTimeStatisticsSuccessAction(msg.data))
+            .catch(error => Observable.of(error))
+        );
+
     constructor(
         public ws: WebsocketService,
         private tip: TipService,
         private actions$: Actions
     ) {
         super();
+    }
+
+    private predicateStatisticsType<T>(res: RealTimeStatisticsResponse<T>, key: string): boolean {
+        const { actual, total } = res;
+
+        return actual.some(item => item[key]) || total.some(item => item[key]);
     }
 }

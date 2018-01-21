@@ -49,8 +49,10 @@
         <ion-list-header>{{'SELECT_WORKERS_BELOW' | translate}}</ion-list-header>
 
         <ion-item *ngFor="let item of workers | async">
-            <ion-label>{{item.name}}
-                <span>{{item.teamName}} {{item.workType}}</span>
+            <ion-label>
+                <ion-icon [name]="item.workTypeId | workType"></ion-icon>
+                {{item.name}}
+                <span>{{item.teamName}}</span>
             </ion-label>
             <ion-checkbox [(ngModel)]="item.selected" [checked]="item.selected" (ngModelChange)="updateSelectedWorker(item)"></ion-checkbox>
         </ion-item>
@@ -65,5 +67,5 @@
 </ion-content>
 
 <ion-footer>
-    <button ion-button block (click)="execution()" [disabled]="trajectoryForm.invalid" color="primary" style="margin-bottom: 0;">{{'CONFIRM_BUTTON' | translate}}</button>
+    <button ion-button block (click)="execution()" [disabled]="trajectoryForm.invalid" color="primary" no-margin>{{'CONFIRM_BUTTON' | translate}}</button>
 </ion-footer>

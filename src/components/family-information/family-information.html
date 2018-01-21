@@ -1,9 +1,9 @@
 <div *ngIf="family">
 
 
-    <ion-item-group>
+    <ion-list>
 
-        <ion-item-divider>{{'MARRIAGE' | translate}}</ion-item-divider>
+        <ion-list-header text-left>{{'MARRIAGE' | translate}}</ion-list-header>
 
         <ion-item>
             <ion-label fixed>{{'MARRIAGE' | translate}}</ion-label>
@@ -27,11 +27,11 @@
                 [disabled]="disabled"></ion-datetime>
         </ion-item>
 
-    </ion-item-group>
+    </ion-list>
 
-    <ion-item-group>
+    <ion-list>
 
-        <ion-item-divider>{{'EMERGENCY_CONTACT' | translate}}</ion-item-divider>
+        <ion-list-header text-left>{{'EMERGENCY_CONTACT' | translate}}</ion-list-header>
 
         <ion-item>
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
@@ -53,11 +53,9 @@
             <ion-input *ngIf="disabled" [value]="family.emergencyRelation" disabled></ion-input>
         </ion-item>
 
-    </ion-item-group>
+    </ion-list>
 
     <address-select [addressDetail]="family.addressDetail" [selectedArea]="family.addressArea" [disabled]="disabled" (addressChange)="updateAddress($event)"></address-select>
-
-
 
     <button ion-button block *ngIf="!disabled" (click)="updateHomeInfo.next(family)">
         {{'UPDATE_BUTTON' | translate}}

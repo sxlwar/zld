@@ -1,0 +1,30 @@
+<ion-header>
+
+    <ion-navbar>
+        <ion-title>{{'MEMBER_STATISTICS' | translate}}</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding-vertical>
+
+    <ion-card margin-vertical>
+        <ion-card-header text-center>
+            {{'WORK_TYPE_COUNT_STATISTICS' | translate}}
+        </ion-card-header>
+        <ion-card-content no-padding>
+            <canvas #workType height="400"></canvas>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-header text-center>
+            {{'TEAM_MEMBERS_STATISTICS' | translate}}
+        </ion-card-header>
+        <ion-card-content no-padding>
+            <canvas #teamMembers></canvas>
+        </ion-card-content>
+    </ion-card>
+
+</ion-content>

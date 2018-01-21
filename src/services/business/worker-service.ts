@@ -1,9 +1,9 @@
 import { ProjectService } from './project-service';
-import { WorkerContractOptions } from './../../interfaces/request-interface';
+import { WorkerContractOptions, RealTimeStatisticType } from './../../interfaces/request-interface';
 import { UserService } from './user-service';
-import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers } from './../../reducers/index-reducer';
+import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers, selectWorkTypeRealTimeStatisticsResponse, selectTeamMembersRealTimeStatisticsResponse } from './../../reducers/index-reducer';
 import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction, UpdateSelectedWorkersAction, ResetSelectedWorkersAction } from './../../actions/action/worker-action';
-import { WorkerContractListResponse } from './../../interfaces/response-interface';
+import { WorkerContractListResponse, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
 import { Command } from './../api/command';
 import { WorkerContract as contract } from './../api/command';
 import { Injectable } from '@angular/core';
@@ -64,6 +64,27 @@ export class WorkerService {
         );
     }
 
+    getWorkTypeRealTimeStatistics(option: Observable<RequestOption> = Observable.empty()): Subscription {
+        return this.processor.workTypeRealTimeStatisticsProcessor(
+            option.defaultIfEmpty({})
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                this.project.getProjectId(),
+                (option, sid, project_id) => ({ ...option, sid, project_id, statistics_type: RealTimeStatisticType.workType })
+                )
+        );
+    }
+
+    getTeamMembersRealTimeStatistics(option: Observable<RequestOption> = Observable.empty()): Subscription {
+        return this.processor.teamMembersRealTimeStatisticsProcessor(
+            option.defaultIfEmpty({})
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                this.project.getProjectId(),
+                (option, sid, project_id) => ({ ...option, sid, project_id, statistics_type: RealTimeStatisticType.team })
+                )
+        );
+    }
     /*=============================================================Data acquisition===========================================================*/
 
     getWorkerCount(): Observable<number> {
@@ -139,9 +160,9 @@ export class WorkerService {
 
         return this.getWorkersCountByPayType(type)
             .combineLatest(
-                this.store.select(selectWorkerLimit),
-                page,
-                (count, limit, page) => limit * page < count
+            this.store.select(selectWorkerLimit),
+            page,
+            (count, limit, page) => limit * page < count
             );
     }
 
@@ -187,7 +208,7 @@ export class WorkerService {
      */
     getWorkerItems(options: Observable<number[]>): Observable<DistinguishableWorkerItem[]> {
         return this.getWorkerContractResponse()
-            .map(res => res.worker_contract.map(item => ({ id: item.worker_id, name: item.worker__employee__realname, teamName: item.team__name, workType: item.worktype__name, selected: false })))
+            .map(res => res.worker_contract.map(item => ({ id: item.worker_id, name: item.worker__employee__realname, teamName: item.team__name, workType: item.worktype__name, workTypeId: item.worktype_id, selected: false })))
             .scan((acc, cur) => acc.concat(cur))
             .combineLatest(options)
             .map(([workers, selectedUserIds]) => {
@@ -249,18 +270,26 @@ export class WorkerService {
         return this.getSelectedWorkersContainsSpecificId('id');
     }
 
+    getWorkTypeRealTimeStatisticsResponse(): Observable<WorkTypeRealTimeStatisticsResponse> {
+        return this.store.select(selectWorkTypeRealTimeStatisticsResponse).filter(value => !!value && !value.errorMessage);
+    }
+
+    getTeamMembersStatisticsResponse(): Observable<TeamMembersRealTimeStatisticsResponse> {
+        return this.store.select(selectTeamMembersRealTimeStatisticsResponse).filter(value => !!value && !value.errorMessage);
+    }
+
     /*===============================================================Locale state update=========================================================*/
 
     setWorkersCountDistinctByPayType(count: Observable<number>, type: Observable<number>): Subscription {
         return count
             .combineLatest(type)
             .subscribe(([amount, type]) => {
-            if (type === ContractType.timer) {
-                this.store.dispatch(new UpdateManagementTimerCountAction(amount));
-            } else {
-                this.store.dispatch(new UpdateManagementTimerCountAction(amount));
-            }
-        })
+                if (type === ContractType.timer) {
+                    this.store.dispatch(new UpdateManagementTimerCountAction(amount));
+                } else {
+                    this.store.dispatch(new UpdateManagementTimerCountAction(amount));
+                }
+            })
     }
 
     /**
@@ -302,5 +331,13 @@ export class WorkerService {
 
     handleError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractResponse), 'API_ERROR');
+    }
+
+    handlerWorkTypeRealTimeStatisticsError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectWorkTypeRealTimeStatisticsResponse), 'API_ERROR');
+    }
+
+    handlerTeamMembersRealTimeStatisticsError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectTeamMembersRealTimeStatisticsResponse), 'API_ERROR');
     }
 }

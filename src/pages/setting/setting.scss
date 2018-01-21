@@ -1,18 +1,19 @@
 page-setting {
-  .custom-container {
-    position: relative;
-    ion-icon,
-    cut-down {
-      color: white;
-      position: absolute;
-      right: 5%;
-      top: 50%;
-      transform: translateY(-50%);
-      button {
-        background-color: #00c1de;
-      }
+    .custom-container {
+        position: relative;
+        ion-icon,
+        cut-down {
+            color: white;
+            position: absolute;
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            button {
+                background-color: #00c1de;
+            }
+        }
     }
-  }
-
-
+    #cut-down {
+        color: #00c1de;
+    }
 }

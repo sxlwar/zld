@@ -1,5 +1,7 @@
+import { Command } from './../../services/api/command';
+import { PermissionService } from './../../services/config/permission-service';
 import { Subject } from 'rxjs/Subject';
-import { workerContractPage } from './../pages';
+import { workerContractPage, memberStatisticsPage } from './../pages';
 import { Subscription } from 'rxjs/Subscription';
 import { WorkerContract } from './../../interfaces/response-interface';
 import { ContractType, RequestOption } from './../../interfaces/request-interface';
@@ -42,10 +44,14 @@ export class MembersPage {
 
     type$: Subject<number> = new Subject();
 
+    haveStatisticsPermission: Observable<boolean>;
+
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public worker: WorkerService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private worker: WorkerService,
+        private permission: PermissionService,
+        private command: Command
     ) {
         this.worker.resetPage(ContractType[this.type]);
 
@@ -76,6 +82,8 @@ export class MembersPage {
         this.haveMoreTimer = this.worker.haveMoreDataOfSpecificPayTypeContract(ContractType.timer);
 
         this.haveMorePiecer = this.worker.haveMoreDataOfSpecificPayTypeContract(ContractType.piecer);
+
+        this.haveStatisticsPermission = this.permission.apiPermissionValidate(this.command.realTimeStatistics).map(res => res.view);
     }
 
     launch(): void {
@@ -110,11 +118,15 @@ export class MembersPage {
             workType: item.worktype__name,
             contractId: item.id,
             workTypeId: item.worktype_id
-       };
+        };
     }
 
     goToNextPage(item: WorkerItem): void {
         this.navCtrl.push(workerContractPage, { contractId: item.contractId }).then(_ => { });
+    }
+
+    goToStatisticsPage(): void {
+       this.navCtrl.push(memberStatisticsPage).then(_ => { });
     }
 
     ionViewWillUnload() {

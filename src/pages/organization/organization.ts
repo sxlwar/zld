@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ModalController, AlertController, ItemSliding, Item } from 'ionic-angular';
 import { AddTeamComponent } from '../../components/add-team/add-team';
 import { putInArray } from '../../services/utils/util';
+import { LayoutService } from '../../services/utils/layout-service';
 
 export interface ProjectSimple {
     id: number;
@@ -58,7 +59,8 @@ export class OrganizationPage {
         public modalCtrl: ModalController,
         public alertCtrl: AlertController,
         public translate: TranslateService,
-        public tip: TipService
+        public tip: TipService,
+        public layout: LayoutService
     ) {
     }
 
@@ -139,36 +141,13 @@ export class OrganizationPage {
     }
 
     openOption(itemSlide: ItemSliding, item: Item, event) {
-        event.stopPropagation();
-
-        this.activeItemSliding && this.closeOption();
-
-        this.activeItemSliding = itemSlide;
-
-        const swipeAmount = 110;
-
-        itemSlide.startSliding(swipeAmount);
-
-        itemSlide.moveSliding(swipeAmount);
-
-        itemSlide.setElementClass('active-slide', true);
-
-        itemSlide.setElementClass('active-options-right', true);
-
-        item.setElementStyle('transition', null);
-
-        item.setElementStyle('transform', 'translate3d(-' + swipeAmount + 'px, 0px, 0px)');
-    }
-
-    closeOption() {
-        if (this.activeItemSliding) {
-            this.activeItemSliding.close();
-            this.activeItemSliding = null;
-        }
+        this.layout.openOption(itemSlide, item, event);
     }
 
     ionViewDidLeave() {
         this.navSubscription && this.navSubscription.unsubscribe();
+
+        this.layout.activeItemSliding = null;
     }
 
 }

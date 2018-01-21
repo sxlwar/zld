@@ -15,6 +15,8 @@ import { cardNumberValidator } from '../../validators/validators';
 export interface Worker {
     name: string;
     userId: number;
+    teamName: string;
+    workTypeId: number;
 }
 
 @Component({
@@ -163,7 +165,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
      */
     getWorkers(): Observable<Worker[]> {
         return this.worker.getAllWorkerContracts()
-            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id })))
+            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id, teamName:item.team__name, workTypeId: item.worktype_id })))
             .combineLatest(this.card.getCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)))
             .map(([workers, boundIds]) => workers.filter(item => boundIds.indexOf(item.userId) === -1));
     }

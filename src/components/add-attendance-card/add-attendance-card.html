@@ -44,7 +44,11 @@
         <ion-list-header [ngClass]="{'red-color': !boundWorker}">{{'SELECT_WORKERS_BELOW' | translate}}</ion-list-header>
 
         <ion-item *ngFor="let item of workers | async">
-            <ion-label>{{item.name}}</ion-label>
+            <ion-label>
+                <ion-icon [name]="item.workTypeId | workType"></ion-icon>
+                {{item.name}}
+                <span>{{item.teamName}}</span>
+            </ion-label>
             <ion-radio [value]="item"></ion-radio>
         </ion-item>
 
@@ -56,5 +60,5 @@
 
 </ion-content>
 <ion-footer>
-    <button ion-button block (click)="execution()" [disabled]="addAttendanceCardForm.invalid" color="primary" style="margin-bottom: 0;">{{text | translate}}</button>
+    <button ion-button block (click)="execution()" [disabled]="addAttendanceCardForm.invalid" color="primary" no-margin>{{text | translate}}</button>
 </ion-footer>

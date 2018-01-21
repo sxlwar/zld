@@ -282,6 +282,8 @@ export const selectAttendanceStatisticsResponse = createSelector(getStatistics, 
 export const selectAttendanceStatistics = createSelector(getStatistics, statistics.getAttendanceStats);
 export const selectAttendanceStatisticList = createSelector(getStatistics, statistics.getAttendanceStatisticList);
 export const selectWorkFlowStatisticsResponse = createSelector(getStatistics, statistics.getWorkFlowStatResponse);
+export const selectWorkTypeRealTimeStatisticsResponse = createSelector(getStatistics, statistics.getWorkTypeStatistics);
+export const selectTeamMembersRealTimeStatisticsResponse = createSelector(getStatistics, statistics.getTeamMembersStatistics);
 
 //company user list
 const getEmployer = (state: AppState) => state.employer;
