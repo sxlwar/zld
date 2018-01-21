@@ -90,7 +90,7 @@ export class MembersPage {
         this.subscriptions = [
             this.worker.getWorkerContracts(this.getOption()),
             this.worker.setWorkersCountDistinctByPayType(this.worker.getWorkerCount(), this.type$.startWith(ContractType.timer)),
-            this.worker.handleError()
+            this.worker.handleError(),
         ];
     }
 

@@ -110,6 +110,27 @@ export class ChartService {
         }
     }
 
+    getShortLabelOptions(): any {
+        return {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback(value: string, index: number, values): string {
+                            return value.length > 4 ? value.slice(0, 4) + '...' : value;
+                        }
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    title(tooltipItems, data): string {
+                        return data.labels[tooltipItems[0].index];
+                    }
+                }
+            }
+        };
+    }
+
     generateHoverColor(colors: string[], opacity = 1): string[] {
         const reg = /0?\.\d{1}/;
 

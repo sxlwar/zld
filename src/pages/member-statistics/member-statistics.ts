@@ -59,14 +59,10 @@ export class MemberStatisticsPage {
 
     getWorkTypeStatistics(element: ElementRef): Subscription {
         return this.workerService.getWorkTypeRealTimeStatisticsResponse()
-            .map(res => this.fixAcutalData(res, 'worktype_id', 'worktype_id__count'))
-            .zip(
-            this.craft.getWorkTypeList(),
-            (result, workTypes) => this.addWorkTypeName(result, workTypes)
-            )
+            .withLatestFrom(this.craft.getWorkTypeList(), (res, workTypes) => this.addWorkTypeName(this.fixAcutalData(res, 'worktype_id', 'worktype_id__count'), workTypes))
             .zip(this.translate.get('REQUIREMENT'), this.translate.get('ACTUAL_COUNT'))
             .map(([data, tip1, tip2]) => this.getBarChartData('workTypeName', this.getWorkTypeCount, data, tip1, tip2))
-            .subscribe(data => this.chart.getChart(element.nativeElement, ChartType.horizontalBar, data));
+            .subscribe(data => this.chart.getChart(element.nativeElement, ChartType.horizontalBar, data, this.chart.getShortLabelOptions()));
     }
 
     getTeamMembersStatistics(element: ElementRef): Subscription {
@@ -74,7 +70,7 @@ export class MemberStatisticsPage {
             .map(res => this.fixAcutalData(res, 'team_id', 'team_id__count'))
             .zip(this.translate.get('REQUIREMENT'), this.translate.get('ACTUAL_COUNT'))
             .map(([data, tip1, tip2]) => this.getBarChartData('team__name', this.getTeamMembersCount, data, tip1, tip2))
-            .subscribe(data => this.chart.getChart(element.nativeElement, ChartType.horizontalBar, data));
+            .subscribe(data => this.chart.getChart(element.nativeElement, ChartType.horizontalBar, data, this.chart.getShortLabelOptions()));
     }
 
     private fixAcutalData<T>(data: RealTimeStatisticsResponse<T>, comparison: string, addition: string): RealTimeStatisticsResponse<T> {
@@ -104,7 +100,7 @@ export class MemberStatisticsPage {
     }
 
     private getBarChartData<T>(labelKey: string, dataFn: (x: any) => number, data: RealTimeStatisticsResponse<T>, requirementTip: string, actualTip: string): ChartData {
-        const labels = data.total.map(item => item[labelKey]);
+        const labels: string[] = data.total.map(item => item[labelKey]);
 
         const requirement = this.chart.getBarChartData({ labels, data: data.total.map(dataFn) }, requirementTip, data.total.length);
 
@@ -119,5 +115,9 @@ export class MemberStatisticsPage {
 
     private getTeamMembersCount(data: TeamMembersStatistics): number {
         return data.team_id__count;
+    }
+
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }
