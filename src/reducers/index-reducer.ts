@@ -34,9 +34,11 @@ import * as leave from './reducer/leave-reducer';
 import * as launch from './reducer/launch-reducer';
 import * as searchWorker from './reducer/search-worker-reducer';
 import * as deleteImages from './reducer/delete-images-reducer';
+import * as accountChange from './reducer/account-change-reducer';
 
 export interface AppState {
     QRLogin: QRLogin.State;
+    accountChange: accountChange.State;
     attendance: attendance.State;
     attendanceCard: attendanceCard.State;
     attendanceRecord: attendanceRecord.State;
@@ -79,6 +81,7 @@ export interface AppState {
 
 export const reducers: ActionReducerMap<AppState> = {
     QRLogin: QRLogin.reducer,
+    accountChange: accountChange.reducer,
     attendance: attendance.reducer,
     attendanceCard: attendanceCard.reducer,
     attendanceRecord: attendanceRecord.reducer,
@@ -458,6 +461,16 @@ export const selectSearchWorkerCondition = createSelector(getSearchWorker, searc
 // delete images
 const getDeleteImages = (state: AppState) => state.deleteImages;
 export const selectDeleteImagesResponse = createSelector(getDeleteImages, deleteImages.getDeleteImagesResponse);
+
+// account change
+const getAccountChange = (state: AppState) => state.accountChange;
+export const selectCheckPhoneResponse = createSelector(getAccountChange, accountChange.getCheckPhoneResponse);
+export const selectCheckPhoneVerifyResponse = createSelector(getAccountChange, accountChange.getChangePhoneVerifyResponse);
+export const selectChangePhoneResponse = createSelector(getAccountChange, accountChange.getChangePhoneResponse);
+export const selectChangePhoneVerifyResponse = createSelector(getAccountChange, accountChange.getChangePhoneVerifyResponse);
+export const selectAccountChangeCheckRandomCode = createSelector(getAccountChange, accountChange.getCheckRandomCode);
+export const selectAccountChangeChangeRandomCode = createSelector(getAccountChange, accountChange.getChangeRandomCode);
+export const selectChangePhoneOptions = createSelector(getAccountChange, accountChange.getChangePhoneOptions);
 
 /*================================================Icons with permission===========================================*/
 

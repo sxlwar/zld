@@ -23,12 +23,14 @@ import { WorkPieceEffect } from './work-piece-effect';
 import { WorkerEffect } from './worker-effect';
 import { BankCardEffect } from './bank-card-effect';
 import { QRLoginEffect } from './qr-scan-login-effect';
+import { AccountChangeEffect } from './account-change-effect';
 
 /**
  * @description These are all needed after the user enters the APP,
  *  and the effects before entering the APP are only referenced when they are used.
  */
 export const EFFECTS = [
+    AccountChangeEffect,
     AttendanceCardEffect,
     AttendanceEffect,
     AttendanceMachineEffect,

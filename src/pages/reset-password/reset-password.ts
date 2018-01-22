@@ -5,10 +5,10 @@ import { IonicPage } from 'ionic-angular';
 
 @IonicPage()
 @Component({
-    selector: 'page-setting',
-    templateUrl: 'setting.html',
+    selector: 'page-reset-password',
+    templateUrl: 'reset-password.html',
 })
-export class SettingPage {
+export class ResetPasswordPage {
 
     account: Observable<string>;
 

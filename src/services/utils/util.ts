@@ -1,4 +1,5 @@
-import { omit, has, reduce, values } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { omit, has, reduce, values, random } from 'lodash';
 import { RequestOption } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 
@@ -44,3 +45,10 @@ export function rename(originObj: object, nameMapObj: { [key: string]: string },
         return result;
     }, initial);
 };
+
+
+export function createRandomCode(): Observable<string> {
+    return Observable.range(1, 5)
+        .map(_ => random(1, 26).toString(36))
+        .reduce((acc, cur) => acc + cur)
+}

@@ -1,4 +1,4 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, UploadPersonalIdImageOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, UploadPersonalIdImageOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions, CheckPhoneOptions, CheckPhoneVerifyCodeOptions, ChangePhoneVerifyCodeOptions, ChangePhoneOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
@@ -48,6 +48,30 @@ const resetPassword: ApiUnit = {
 const updatePersonalIdImage: ApiUnit = {
     operates: new Map([
         [Operate.updates, ['employee.consumer.PersonalIdUpdate']]
+    ])
+};
+
+const changePhone: ApiUnit = {
+    operates: new Map([
+        [Operate.updates, ['employee.consumer.ChangePhone']]
+    ])
+};
+
+const checkPhone: ApiUnit = {
+    operates: new Map([
+        [Operate.querying, ['employee.consumer.CheckPhone']]
+    ])
+};
+
+const changePhoneVerify: ApiUnit = {
+    operates: new Map([
+        [Operate.updates, ['employee.consumer.ChangePhoneVerifyCode']]
+    ])
+};
+
+const checkPhoneVerify: ApiUnit = {
+    operates: new Map([
+        [Operate.querying, ['employee.consumer.CheckPhoneVerifyCode']]
     ])
 };
 
@@ -1038,6 +1062,30 @@ export class Command {
         return { ...option, command };
     }
 
+    getCheckPhone(option: CheckPhoneOptions): WsRequest {
+        const path = checkPhone.operates.get(Operate.querying)[0];
+
+        return this.getFullParameter(path, option);
+    }
+
+    getCheckPhoneVerify(option: CheckPhoneVerifyCodeOptions): WsRequest {
+        const path = checkPhoneVerify.operates.get(Operate.querying)[0];
+
+        return this.getFullParameter(path, option);
+    }
+
+    getChangePhone(option: ChangePhoneOptions ): WsRequest {
+        const path = changePhone.operates.get(Operate.updates)[0];
+
+        return this.getFullParameter(path, option);
+    }
+
+    getChangePhoneVerify(option: ChangePhoneVerifyCodeOptions ): WsRequest {
+        const path = changePhoneVerify.operates.get(Operate.updates)[0];
+
+        return this.getFullParameter(path, option);
+    }
+
     /**
      * @description Project API: getProjectList;
      */
@@ -2006,5 +2054,21 @@ export class Command {
 
     get realTimeStatistics() {
         return realTimeStatistics;
+    }
+
+    get checkPhone() {
+        return checkPhone;
+    }
+
+    get checkPhoneVerify() {
+        return checkPhoneVerify;
+    }
+
+    get changePhone() {
+        return changePhone;
+    }
+
+    get changePhoneVerify() {
+        return changePhoneVerify;
     }
 }

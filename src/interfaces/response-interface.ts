@@ -102,6 +102,28 @@ export interface SearchWorkerResponse {
     errorMessage?: string;
 }
 
+// check phone
+export interface CheckPhoneResponse {
+    information?: string;
+    errorMessage?: string;
+}
+
+// change phone
+export interface ChangePhoneResponse {
+    information?: string;
+    errorMessage?: string;
+}
+
+// check phone verify code
+export interface CheckPhoneVerifyCodeResponse {
+    captcha: boolean;
+}
+
+// change phone verify code
+export interface ChangePhoneVerifyCodeResponse {
+    captcha: boolean;
+}
+
 /*=================================================Team model======================================================*/
 
 export interface Team {

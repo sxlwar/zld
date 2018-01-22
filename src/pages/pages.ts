@@ -139,13 +139,15 @@ export const workExperiencePage = 'WorkExperiencePage';
 
 export const bankcardPage = 'BankcardPage';
 
-export const settingPage = 'SettingPage';
+export const resetPasswordPage = 'ResetPasswordPage';
 
 export const contactPage = 'ContactPage';
 
 export const versionPage = 'VersionPage';
 
 export const workCertificatePage = 'WorkCertificatePage';
+
+export const accountChangePage = 'AccountChangePage';
 
 export const PAGES: Page[] = [
     { title: '', component: tutorialPage, inMenu: false },
@@ -171,7 +173,7 @@ export const PAGES: Page[] = [
     { title: '', component: teamMembersPage, inMenu: false },
     { title: '', component: personalPage, inMenu: false },
     { title: 'WORKER_MANAGER', component: membersPage, inMenu: true },
-    { title: '', component: memberStatisticsPage, inMenu: false},
+    { title: '', component: memberStatisticsPage, inMenu: false },
     { title: '', component: editWorkerContractPage, inMenu: false },
     { title: 'ATTENDANCE_MACHINE', component: attendanceMachinePage, inMenu: true },
     { title: '', component: attendanceMachineRecordPage, inMenu: false },
@@ -212,7 +214,8 @@ export const PAGES: Page[] = [
     { title: 'FAMILY_INFO', component: familyInformationPage, inMenu: true },
     { title: 'EDUCATION_EXPERIENCE', component: educationExperiencePage, inMenu: true },
     { title: 'WORK_EXPERIENCE', component: workExperiencePage, inMenu: true },
-    { title: '', component: settingPage, inMenu: false },
+    { title: '', component: resetPasswordPage, inMenu: false },
     { title: '', component: contactPage, inMenu: false },
     { title: '', component: versionPage, inMenu: false },
+    { title: '', component: accountChangePage, inMenu: false },
 ];

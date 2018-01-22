@@ -531,5 +531,9 @@
   
   "OFF_LINE": "无法访问网络，请检查网络状态",
   "LOW_VERSION_ANDROID": "当前系统版本过低，请升级至6.0.0或以上版本",
-  "LOW_VERSION_IOS": "当前系统版本过低，请升级至10.0.0或以上版本"
+  "LOW_VERSION_IOS": "当前系统版本过低，请升级至10.0.0或以上版本",
+
+  "CHANGE_ACCOUNT": "更换手机号",
+  "ORIGIN_ACCOUNT": "原手机号",
+  "NEW_ACCOUNT": "新手机号"
 }

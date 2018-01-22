@@ -93,6 +93,31 @@ export interface SearchWorkerOptions {
     cer_status?: number;
 }
 
+export interface CheckPhoneOptions {
+    sid: string;
+    username: string;
+    code: string;
+}
+
+export interface ChangePhoneOptions {
+    sid: string;
+    username: string;
+    code: string;
+    new_username: string;
+    new_code: string;
+}
+
+export interface AccountChangeOptions {
+    sid: string;
+    username: string;
+    rand_captcha_key?: string;
+    captcha_code?: string;
+}
+
+export interface CheckPhoneVerifyCodeOptions extends AccountChangeOptions { }
+
+export interface ChangePhoneVerifyCodeOptions extends AccountChangeOptions { }
+
 /*=================================================Team model======================================================*/
 
 export interface TeamListOptions {
@@ -314,12 +339,12 @@ export interface RealTimeStatisticsOptions {
     statistics_type: string;
 }
 
-export interface WorkTypeRealTimeStatisticsOptions extends RealTimeStatisticsOptions{
-   team_id?: number; 
+export interface WorkTypeRealTimeStatisticsOptions extends RealTimeStatisticsOptions {
+    team_id?: number;
 }
 
-export interface TeamMembersRealTimeStatisticsOptions extends RealTimeStatisticsOptions{
-   worktype_id?: number; 
+export interface TeamMembersRealTimeStatisticsOptions extends RealTimeStatisticsOptions {
+    worktype_id?: number;
 }
 
 /*=================================================Company user model==================================================*/

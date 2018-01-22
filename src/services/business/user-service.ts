@@ -1,4 +1,4 @@
-import { ResetSidAction } from './../../actions/action/login-action';
+import { ResetSidAction, UpdateAccountAction } from './../../actions/action/login-action';
 import { Injectable } from '@angular/core';
 import { AppState, selectLoginForm, selectUserInfo } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
@@ -47,5 +47,9 @@ export class UserService {
 
     resetSid(): void {
         this.store.dispatch(new ResetSidAction());
+    }
+
+    updateAccount(account: string): void {
+        this.store.dispatch(new UpdateAccountAction(account));
     }
 }

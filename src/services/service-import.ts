@@ -1,3 +1,4 @@
+import { AccountChangeService } from './business/account-change-service';
 import { GroupListService } from './business/group-list-service';
 import { SearchService } from './business/search-service';
 import { LaunchService } from './business/launch-service';
@@ -59,6 +60,7 @@ export const API_SERVICES = [
 ]
 
 export const BUSINESS_SERVICES = [
+    AccountChangeService,
     AddressService,
     AmapService,
     AttendanceCardService,

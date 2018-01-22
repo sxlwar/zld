@@ -63,7 +63,7 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         ];
 
         if (this.reset) {
-            this.subscriptions.push(this.reset.subscribe(_ => this.resetPwdForm.reset()))
+            this.subscriptions.push(this.reset.subscribe(_ => this.resetPwdForm.reset()));
         }
     }
 

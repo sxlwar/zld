@@ -1,3 +1,4 @@
+import { CheckPhoneNumberAction, ChangePhoneNumberAction, CheckPhoneVerifyAction, ChangePhoneVerifyAction } from './../../actions/action/account-change-action';
 import { UploadPersonalIdImageAction } from './../../actions/action/certificate-action';
 import { SearchCompanyAction } from './../../actions/action/search-company-action';
 import { EditWorkerContractAction } from './../../actions/action/worker-action';
@@ -22,7 +23,7 @@ import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailList
 import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
 import { GetCompanyUserListAction } from './../../actions/action/employer-action';
 import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, ProjectListOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions } from './../../interfaces/request-interface';
+import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, ProjectListOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions, CheckPhoneOptions, CheckPhoneVerifyCodeOptions, ChangePhoneVerifyCodeOptions, ChangePhoneOptions } from './../../interfaces/request-interface';
 import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction, GetWorkTypeRealTimeStatisticsAction, GetTeamMembersRealTimeStatisticsAction } from './../../actions/action/statistics-action';
 import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
 import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
@@ -93,9 +94,7 @@ export class ProcessorService extends MapperService {
     }
 
     resetPwdProcessor(option: Observable<ResetPasswordOptions>): Subscription {
-        return option.subscribe(option => {
-            this.store.dispatch(new ResetPasswordAction(option));
-        })
+        return option.subscribe(option => this.store.dispatch(new ResetPasswordAction(option)));
     }
 
     searchCompanyProcessor(option: Observable<SearchCompanyOptions>): Subscription {
@@ -634,7 +633,7 @@ export class ProcessorService extends MapperService {
     }
 
     uploadOvertimeAttachProcessor(option: Observable<UploadOvertimeAttachOptions>): Subscription {
-        return option.subscribe(option => this.store.dispatch(new UploadOvertimeAttachAction(option)))
+        return option.subscribe(option => this.store.dispatch(new UploadOvertimeAttachAction(option)));
     }
 
     uploadPieceAuditAttachProcessor(option: Observable<UploadPieceAuditAttachOptions>): Subscription {
@@ -665,6 +664,22 @@ export class ProcessorService extends MapperService {
         return this.permission.apiPermissionValidate(this.command.attendanceResultTeamStatList)
             .filter(value => value.view)
             .mapTo(true);
+    }
+
+    changePhoneProcessor(option: Observable<ChangePhoneOptions>): Subscription {
+        return option.subscribe(option => this.store.dispatch(new ChangePhoneNumberAction(option)));
+    }
+
+    changePhoneVerifyProcessor(option: Observable<ChangePhoneVerifyCodeOptions>): Subscription {
+        return option.subscribe(option => this.store.dispatch(new ChangePhoneVerifyAction(option)));
+    }
+
+    checkPhoneProcessor(option: Observable<CheckPhoneOptions>): Subscription {
+        return option.subscribe(option => this.store.dispatch(new CheckPhoneNumberAction(option)));
+    }
+
+    checkPhoneVerifyProcessor(option: Observable<CheckPhoneVerifyCodeOptions>): Subscription {
+        return option.subscribe(option => this.store.dispatch(new CheckPhoneVerifyAction(option)))
     }
 
 }

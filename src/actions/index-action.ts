@@ -31,8 +31,10 @@ import { Actions as leave } from './action/leave-action';
 import { Actions as launch } from './action/launch-action';
 import { Actions as searchWorker } from './action/search-worker-action';
 import { Actions as deleteImages } from './action/delete-images-action';
+import { Actions as accountChange } from './action/account-change-action';
 
 export type Actions = config
+    | accountChange
     | attendance
     | attendanceRecord
     | attendanceCard

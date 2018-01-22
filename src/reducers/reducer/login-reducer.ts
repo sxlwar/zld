@@ -1,5 +1,4 @@
 import * as actions from '../../actions/action/login-action';
-import { LOGIN, SHOW_SPECIFIC_INNER_SLIDE, SHOW_SPECIFIC_SLIDE, UPDATE_RANDOM_CODE } from '../../actions/action/login-action';
 import { LoginOptions } from '../../interfaces/request-interface';
 import { ENV } from '@app/env';
 import { RegisterResponse, LoginResponse, ResetPasswordResponse, PhoneVerCodeResponse } from '../../interfaces/response-interface';
@@ -17,7 +16,7 @@ export interface State {
 export const initialSate: State = {
     activeIndexOfSlides: 0,
     activeIndexOfInnerSlides: 0,
-    loginForm: {  //FIXME These data have security hidden dangers and should not be preserved.
+    loginForm: { 
         username: '',
         password: '',
         captcha_code: '',
@@ -29,20 +28,23 @@ export const initialSate: State = {
 
 export function reducer(state = initialSate, action: actions.Actions): State {
     switch (action.type) {
-        case SHOW_SPECIFIC_SLIDE:
+        case actions.SHOW_SPECIFIC_SLIDE:
             return Object.assign({}, state, { activeIndexOfSlides: action.payload });
 
-        case SHOW_SPECIFIC_INNER_SLIDE:
+        case actions.SHOW_SPECIFIC_INNER_SLIDE:
             return Object.assign({}, state, { activeIndexOfInnerSlides: action.payload });
 
-        case LOGIN:
-            return Object.assign({}, state, { loginForm: action.payload });
+        case actions.LOGIN:
+            return Object.assign({}, state, { loginForm: { ...action.payload, password: '***********' } });
 
-        case UPDATE_RANDOM_CODE:
+        case actions.UPDATE_RANDOM_CODE:
             return Object.assign({}, state, {
                 randomCode: action.payload,
                 loginVerificationImage: `http://${ENV.DOMAIN}/check_captcha/${action.payload}`
             });
+
+        case actions.UPDATE_ACCOUNT:
+            return { ...state, loginForm: { ...state.loginForm, username: action.payload } };
 
         default:
             return state;

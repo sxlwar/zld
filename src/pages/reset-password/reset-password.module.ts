@@ -3,17 +3,17 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from './../../app/shared.modules';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { SettingPage } from './setting';
+import { ResetPasswordPage } from './reset-password';
 
 @NgModule({
     declarations: [
-        SettingPage,
+        ResetPasswordPage,
     ],
     imports: [
-        IonicPageModule.forChild(SettingPage),
+        IonicPageModule.forChild(ResetPasswordPage),
         SharedModule,
         TranslateModule,
         ComponentsModule,
     ],
 })
-export class SettingPageModule { }
+export class ResetPasswordPageModule { }

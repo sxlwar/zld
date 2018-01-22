@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType, ContractTypeOfResponse } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions, CreateAttendanceModifyOptions, CreateLeaveOptions, CreatePieceAuditOptions, CreateOvertimeOptions, CreateWorkerContractModifyOptions, WorkerContractEditOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions, CreateAttendanceModifyOptions, CreateLeaveOptions, CreatePieceAuditOptions, CreateOvertimeOptions, CreateWorkerContractModifyOptions, WorkerContractEditOptions, ChangePhoneOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -201,6 +201,15 @@ export interface PieceTypeEditFormModel extends PieceTypeFormModel {
 
 export interface PieceTypeWorkerContractEditFormModel extends WorkerContractEditFormModel {
     pieces: PieceTypeEditFormModel[];
+}
+
+export interface ChangeAccountFormModel {
+    oldMobilePhone: string;
+    newMobilePhone: string;
+    oldPhoneVerification: string;
+    newPhoneVerification: string;
+    oldImageVerification: string;
+    newImageVerification: string;
 }
 
 @Injectable()
@@ -547,6 +556,16 @@ export class MapperService {
 
     transformWorkerContractEditForm(source: WorkerContractEditFormModel): WorkerContractEditOptions {
         return source.type === ContractTypeOfResponse.timer ? this.transformTimeTypeWorkerContractEditForm(source as TimeTypeWorkerContractEditFormModel) : this.transformPieceTypeWorkerContractEditForm(source as PieceTypeWorkerContractEditFormModel);
+    }
+
+    transformChangeAccountForm(source: ChangeAccountFormModel): ChangePhoneOptions {
+        return {
+            sid: '',
+            username: source.oldMobilePhone,
+            new_username: source.newMobilePhone,
+            code: source.oldPhoneVerification,
+            new_code: source.newPhoneVerification,
+        };
     }
 
 }

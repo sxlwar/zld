@@ -2,14 +2,13 @@ import { Company } from './../../interfaces/response-interface';
 import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCode } from '../../actions/action/login-action';
+import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCodeAction } from '../../actions/action/login-action';
 import { RegisterUserType } from '../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';
 import { getPhoneVerCode, getRegister, getResetPassword, getResetPhoneVerCode, selectPhoneVerCodeCaptcha, selectRandomCode, selectResetPhoneVerCodeCaptcha, selectSelectedCompany, selectUserInfo } from '../../reducers/index-reducer';
 import 'rxjs/add/operator/distinctUntilChanged';
 import { ENV } from '@app/env';
-import { random } from 'lodash';
 import 'rxjs/add/observable/range';
 import 'rxjs/add/operator/reduce';
 import 'rxjs/add/operator/map';
@@ -22,6 +21,7 @@ import { LoginResponse, PhoneVerCodeResponse, RegisterResponse, ResetPasswordRes
 import 'rxjs/add/observable/of';
 import { LoginFormModel, ResetPwdFormModel, SignUpFormModel } from '../api/mapper-service';
 import { ProcessorService } from '../api/processor-service';
+import { createRandomCode } from '../utils/util';
 
 @Injectable()
 export class LoginService {
@@ -36,7 +36,7 @@ export class LoginService {
 
     /* =========================================================Data acquisition========================================================================= */
 
-    getActiveIndexOfSlides():Observable<number> {
+    getActiveIndexOfSlides(): Observable<number> {
         return this.store.select(fromRoot.selectActiveIndexOfSlides);
     }
 
@@ -156,11 +156,8 @@ export class LoginService {
 
     updateVerificationImageUrl(source: Observable<boolean>): Subscription {
         return source.filter(value => value)
-            .mergeMapTo(Observable.range(1, 5)
-                .map(_ => random(1, 26).toString(36))
-                .reduce((acc, cur) => acc + cur)
-            )
-            .subscribe(code => this.store.dispatch(new UpdateRandomCode(code)));
+            .mergeMapTo(createRandomCode())
+            .subscribe(code => this.store.dispatch(new UpdateRandomCodeAction(code)));
     }
 
     /* =================================================================Error handle================================================================== */

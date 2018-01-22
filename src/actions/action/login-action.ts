@@ -55,17 +55,9 @@ export class LoginSuccessAction implements Action {
 
 /*===================================Image verification code actions===============================================*/
 
-export const UPDATE_VERIFICATION_IMAGE = 'UPDATE_VERIFICATION_IMAGE';
-
-export class UpdateVerificationImageAction implements Action {
-    readonly type = UPDATE_VERIFICATION_IMAGE;
-
-    constructor(public payload: string) { };
-}
-
 export const UPDATE_RANDOM_CODE = 'UPDATE_RANDOM_CODE';
 
-export class UpdateRandomCode implements Action {
+export class UpdateRandomCodeAction implements Action {
     readonly type = UPDATE_RANDOM_CODE;
 
     constructor(public payload: string) {
@@ -176,6 +168,14 @@ export class ResetPhoneVerCodeSuccessAction {
     constructor(public payload: PhoneVerCodeResponse) { }
 }
 
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT';
+
+export class UpdateAccountAction {
+    readonly type = UPDATE_ACCOUNT;
+
+    constructor(public payload: string) { }
+}
+
 /* ==============================================Clean data=============================================== */
 
 export const RESET_SID = 'RESET_SID';
@@ -191,8 +191,8 @@ export type Actions = ShowSpecificSlideAction
     | LoginAction
     | LoginFailAction
     | LoginSuccessAction
-    | UpdateVerificationImageAction
-    | UpdateRandomCode
+    | UpdateRandomCodeAction
+    | UpdateAccountAction
     | RegisterPhoneVerCodeAction
     | RegisterPhoneVerCodeFailAction
     | RegisterPhoneVerCodeSuccessAction

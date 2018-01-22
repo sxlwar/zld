@@ -36,7 +36,8 @@ interface Setting {
 }
 
 const setting: Setting[] = [
-    { icon: 'settings', name: 'ACCOUNT_CONFIG', page: pages.settingPage },
+    { icon: 'settings', name: 'RESET_RESET_PASSWORD', page: pages.resetPasswordPage },
+    { icon: 'phone-portrait', name: 'CHANGE_ACCOUNT', page: pages.accountChangePage },
     { icon: 'call', name: 'CONTACT_US', page: pages.contactPage },
     { icon: 'document', name: 'VERSION_INTRODUCTION', page: pages.versionPage },
 ];
