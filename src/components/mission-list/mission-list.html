@@ -33,7 +33,7 @@
         </ion-label>
         <ion-checkbox *ngIf="operate" [(ngModel)]="item.selected" (ngModelChange)="checkAllSelectedFlag($event)"></ion-checkbox>
 
-        <ion-icon *ngIf="showIcon" [name]="item.icon" color="primary" item-start></ion-icon>
+        <ion-icon *ngIf="showIcon" [name]="item.icon" item-start></ion-icon>
     </ion-item>
 
     <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">

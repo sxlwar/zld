@@ -170,17 +170,14 @@ export class MyApp {
 /**
  * Fix keyboard height.
  * */
-
 let coordinateY;
-
-let viewPortHeight;
 
 let offsetY;
 
 function tapCoordinates(event) {
+    const viewPortHeight = window.innerHeight;
+    
     coordinateY = event.touches[0].clientY;
-
-    viewPortHeight = window.innerHeight;
 
     offsetY = (viewPortHeight - coordinateY);
 }
@@ -192,7 +189,7 @@ function keyboardShowHandler(event) {
 
     const bodyMoveStyle = bodyMove.style;
 
-    const compensationHeight = 60;
+    const compensationHeight = 60; 
 
     if (offsetY < keyboardHeight + compensationHeight) {
         bodyMoveStyle.bottom = (keyboardHeight - offsetY + compensationHeight) + "px";

@@ -17,7 +17,8 @@
         "serve:builder": " APP_ENV=builder ionic-app-scripts serve",
         "build:builder": " APP_ENV=builder ionic-app-scripts build --prod",
         "serve:pro": " APP_ENV=pro ionic-app-scripts serve",
-        "build:pro": " APP_ENV=pro ionic-app-scripts build --prod"
+        "build:pro": " APP_ENV=pro ionic-app-scripts build --prod",
+        "debug": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222"
     },
     "dependencies": {
         "@angular/common": "4.4.3",
@@ -85,7 +86,8 @@
     },
     "description": "An Ionic project",
     "config": {
-        "ionic_webpack": "./config/webpack.config.js"
+        "ionic_webpack": "./config/webpack.config.js",
+        "ionic_source_map": "source-map"
     },
     "cordova": {
         "plugins": {

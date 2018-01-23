@@ -9,7 +9,7 @@
 
     <ion-item-sliding *ngFor="let item of attach; let index = index;">
         <ion-item>
-            <ion-icon name="attach" color="primary">
+            <ion-icon name="attach">
                 <span>{{item.title |translate}}{{index + 1}}</span>
             </ion-icon>
             <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
