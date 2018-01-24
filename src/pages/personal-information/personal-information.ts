@@ -31,12 +31,12 @@ export class PersonalInformationPage {
     addressSubject: Subject<string> = new Subject();
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public personal: PersonalService,
-        public craft: CraftService,
-        public modalCtrl: ModalController,
-        public addressService: AddressService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private personal: PersonalService,
+        private craft: CraftService,
+        private modalCtrl: ModalController,
+        private addressService: AddressService
     ) {
     }
 
@@ -50,15 +50,15 @@ export class PersonalInformationPage {
         this.initialModel();
 
         this.launch();
-
-        this.personal.getPersonalIdList();
-
-        this.personal.getWorkerDetailList();
     }
 
     launch() {
         this.subscriptions = [
             this.personal.getPersonalId().subscribe(id => this.personalId = id),
+
+            this.personal.getPersonalIdList(),
+
+            this.personal.getWorkerDetailList(),
 
             this.personal.getWorkerDetail().subscribe(detail => this.workerDetail = detail),
 
@@ -66,7 +66,11 @@ export class PersonalInformationPage {
 
             this.monitor(),
 
-            this.personal.handleError(),
+            this.personal.handlePersonalIdError(),
+
+            this.personal.handleWorkDetailError(),
+
+            this.personal.handleUpdateWorkerDetailError(),
         ];
     }
 

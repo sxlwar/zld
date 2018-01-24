@@ -45,6 +45,11 @@
     text-align: left;
 }
 
+.form-danger {
+    @extend .form-error;
+    color: color($colors, danger);
+}
+
 .scroll-content {
     padding-bottom: 0!important;
 }
@@ -64,10 +69,6 @@
     .scroll-content {
         overflow: hidden;
     }
-}
-
-.red-color {
-    color: red;
 }
 
 .locationIcon {
@@ -124,4 +125,14 @@ ion-multi-picker {
     text-align: center;
     color: #808080;
     font-size: 12px;
+}
+
+.ion-list-sliding-header {
+    span {
+        font-size: 12px;
+        font-weight: 500;
+    }
+    ion-icon[item-start] {
+        margin-bottom: 0;
+    }
 }

@@ -229,8 +229,20 @@ export const getHomeInfoUpdateResponse = (state: State) => state.homeInfoUpdateR
 
 export const getHomeInfoUpdateOptions = (state: State) => state.homeInfoOptions;
 
-export const getEducationListResponse = (state: State) => state.educationResponse;
-
 export const getWorkExperienceResponse = (state: State) => state.workExperienceResponse;
 
+export const getWorkExperienceAddResponse = (state: State) => state.workExperienceAddResponse;
+
+export const getWorkExperienceDeleteResponse = (state: State) => state.workExperienceDeleteResponse;
+
+export const getWorkExperienceUpdateResponse = (state: State) => state.workExperienceUpdateResponse;
+
 export const getPlatformWorkExperienceResponse = (state: State) => state.platformWorkExperienceResponse;
+
+export const getEducationListResponse = (state: State) => state.educationResponse;
+
+export const getEducationUpdateResponse = (state: State) => state.educationUpdateResponse;
+
+export const getEducationDeleteResponse = (state: State) => state.educationDeleteResponse;
+
+export const getEducationAddResponse = (state: State) => state.educationAddResponse;

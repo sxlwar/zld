@@ -1,9 +1,3 @@
-<!--
-  Generated template for the EducationExperiencePage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
     <ion-navbar>
@@ -21,12 +15,12 @@
 <ion-content padding>
 
     <ion-list *ngFor="let edu of educations | async">
-        <ion-list-header>
+        <ion-list-header class="ion-list-sliding-header">
 
             <ion-item-sliding #slidingItem>
 
                 <ion-item #item>
-                    {{edu.start_date}}—{{edu.finish_date}}
+                    <span>{{edu.start_date}}—{{edu.finish_date}}</span>
                     <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" item-start></ion-icon>
                 </ion-item>
 

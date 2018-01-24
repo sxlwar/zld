@@ -107,7 +107,9 @@ export class OrganizationPage {
         this.modalCtrl.create(AddTeamComponent, { update: true, team }).present();
     }
 
-    deleteTeam(team: TeamItem): void {
+    deleteTeam(team: TeamItem, event: Event): void {
+        event.stopPropagation();
+        
         const texts: Observable<ConfirmProp> = this.translate
             .get(['DELETE_TEAM', 'DELETE_TEAM_TIP', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
             .map(res => ({

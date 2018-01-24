@@ -236,8 +236,8 @@
   "TEAM_MEMBER": "班组成员",
   "WORKER_AMOUNT": "工人数量",
   "MEMBER_STATISTICS": "成员统计",
-  "REQUIREMENT": "需求量",
-  "ACTUAL_COUNT": "实际量",
+  "SIGNED_COUNT": "签订人数",
+  "WORKING_COUNT": "到场人数",
   "WORK_TYPE_COUNT_STATISTICS": "工种人数统计", 
   "TEAM_MEMBERS_STATISTICS": "班组人数统计", 
 
@@ -535,5 +535,6 @@
 
   "CHANGE_ACCOUNT": "更换手机号",
   "ORIGIN_ACCOUNT": "原手机号",
-  "NEW_ACCOUNT": "新手机号"
+  "NEW_ACCOUNT": "新手机号",
+  "CALL_CUSTOMER_SERVICE_PHONE": "接通客服电话？"
 }

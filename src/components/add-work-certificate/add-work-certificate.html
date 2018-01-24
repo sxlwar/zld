@@ -23,7 +23,7 @@
                 <ion-option *ngFor="let item of workTypes | async" [selected]="item.id === workTypeId.value" [value]="item.id">{{item.name}}</ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="workTypeId.invalid && (workTypeId.dirty || workTypeId.touched)" class="form-error red-color">
+        <div *ngIf="workTypeId.invalid && (workTypeId.dirty || workTypeId.touched)" class="form-danger">
             <span *ngIf="workTypeId.errors.required">{{'WORK_TYPE_REQUIRE_ERROR' | translate}}</span>
         </div>
 
@@ -31,7 +31,7 @@
             <ion-label fixed>{{'CERTIFICATION_NUMBER' | translate}}</ion-label>
             <ion-input type="text" formControlName="certificateNumber" required></ion-input>
         </ion-item>
-        <div *ngIf="certificateNumber.invalid && (certificateNumber.dirty || certificateNumber.touched)" class="form-error red-color">
+        <div *ngIf="certificateNumber.invalid && (certificateNumber.dirty || certificateNumber.touched)" class="form-danger">
             <span *ngIf="certificateNumber.errors.required">{{'CERTIFICATE_NUMBER_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -40,7 +40,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [max]="today" formControlName="firstGetDate" (ngModelChange)="updateExpireDate($event)" required></ion-datetime>
         </ion-item>
-        <div *ngIf="firstGetDate.invalid && (firstGetDate.dirty || firstGetDate.touched)" class="form-error red-color">
+        <div *ngIf="firstGetDate.invalid && (firstGetDate.dirty || firstGetDate.touched)" class="form-danger">
             <span *ngIf="firstGetDate.errors.required">{{'FIRST_GET_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -50,7 +50,7 @@
                 [min]="expireDate" [max]="today" formControlName="availableStartDate" (ngModelChange)="updateExpireEndDate($event)"
                 required></ion-datetime>
         </ion-item>
-        <div *ngIf="availableStartDate.invalid && (availableStartDate.dirty || availableStartDate.touched)" class="form-error red-color">
+        <div *ngIf="availableStartDate.invalid && (availableStartDate.dirty || availableStartDate.touched)" class="form-danger">
             <span *ngIf="availableStartDate.errors.required">{{'EXPIRE_START_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -59,7 +59,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="expireEndDate" [max]="today" formControlName="availableEndDate" required></ion-datetime>
         </ion-item>
-        <div *ngIf="availableEndDate.invalid && (availableEndDate.dirty || availableEndDate.touched)" class="form-error red-color">
+        <div *ngIf="availableEndDate.invalid && (availableEndDate.dirty || availableEndDate.touched)" class="form-danger">
             <span *ngIf="availableEndDate.errors.required">{{'EXPIRE_END_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -70,7 +70,7 @@
                 <ion-option *ngFor="let item of degrees; index as idx" [value]="idx + 1" [selected]="idx===education.value">{{item}}</ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="education.invalid && (education.dirty || education.touched)" class="form-error red-color">
+        <div *ngIf="education.invalid && (education.dirty || education.touched)" class="form-danger">
             <span *ngIf="education.errors.required">{{'DEGREE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -78,7 +78,7 @@
             <ion-label fixed>{{'ISSUING_AGENCY' | translate}}</ion-label>
             <ion-input type="text" formControlName="mechanism" required></ion-input>
         </ion-item>
-        <div *ngIf="mechanism.invalid && (mechanism.dirty || mechanism.touched)" class="form-error red-color">
+        <div *ngIf="mechanism.invalid && (mechanism.dirty || mechanism.touched)" class="form-danger">
             <span *ngIf="mechanism.errors.required">{{'ISSUING_AGENCY_REQUIRED_ERROR' | translate}}</span>
         </div>
 

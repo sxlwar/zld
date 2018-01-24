@@ -33,7 +33,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="contract.finish_day" formControlName="endDay" required></ion-datetime>
         </ion-item>
-        <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-error red-color">
+        <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-danger">
             <span *ngIf="endDay.errors.required">{{'CONTRACT_END_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -47,7 +47,7 @@
             <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
             <ion-input type="number" formControlName="payDay" [(ngModel)]="contract.pay_day" required></ion-input>
         </ion-item>
-        <div *ngIf="payDay.invalid && (payDay.dirty || payDay.touched)" class="form-error red-color">
+        <div *ngIf="payDay.invalid && (payDay.dirty || payDay.touched)" class="form-danger">
             <span *ngIf="payDay.errors.required">{{'PAYDAY_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!payDay.errors.required && (payDay.errors.max || payDay.errors.min)">
                 {{'DATE_RANGE_ERROR' | translate}}
@@ -59,7 +59,7 @@
                 <ion-label fixed>{{'HOURLY_WAGE' | translate}}</ion-label>
                 <ion-input type="number" formControlName="hourlyWage" required></ion-input>
             </ion-item>
-            <div *ngIf="hourlyWage.invalid && (hourlyWage.dirty || hourlyWage.touched)" class="form-error red-color">
+            <div *ngIf="hourlyWage.invalid && (hourlyWage.dirty || hourlyWage.touched)" class="form-danger">
                 <span *ngIf="hourlyWage.errors.required">{{'HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
             </div>
 
@@ -67,7 +67,7 @@
                 <ion-label fixed>{{'OVERTIME_HOURLY_WAGE' | translate}}</ion-label>
                 <ion-input type="number" formControlName="overtimeHourlyWage" required></ion-input>
             </ion-item>
-            <div *ngIf="overtimeHourlyWage.invalid && (overtimeHourlyWage.dirty || overtimeHourlyWage.touched)" class="form-error red-color">
+            <div *ngIf="overtimeHourlyWage.invalid && (overtimeHourlyWage.dirty || overtimeHourlyWage.touched)" class="form-danger">
                 <span *ngIf="overtimeHourlyWage.errors.required">{{'OVERTIME_HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
             </div>
         </div>
@@ -87,7 +87,7 @@
                                 <ion-label fixed>{{'PIECE_NAME' | translate}}</ion-label>
                                 <ion-input [formControl]="form.get('name')" required></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)" class="form-error red-color">
+                            <div *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)" class="form-danger">
                                 <span *ngIf="form.get('name').errors.required">{{'PIECE_NAME_REQUIRED_ERROR' | translate}}</span>
                             </div>
 
@@ -95,7 +95,7 @@
                                 <ion-label fixed>{{'PIECE_LOCATION' | translate}}</ion-label>
                                 <ion-input [formControl]="form.get('location')" required></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('location').invalid && (form.get('location').dirty || form.get('location').touched)" class="form-error red-color">
+                            <div *ngIf="form.get('location').invalid && (form.get('location').dirty || form.get('location').touched)" class="form-danger">
                                 <span *ngIf="form.get('location').errors.required">{{'PIECE_LOCATION_REQUIRED_ERROR' | translate}}</span>
                             </div>
 
@@ -103,7 +103,7 @@
                                 <ion-label fixed>{{'PIECE_COUNT' | translate}}</ion-label>
                                 <ion-input type="number" [formControl]="form.get('num')" required></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('num').invalid && (form.get('num').dirty || form.get('num').touched)" class="form-error red-color">
+                            <div *ngIf="form.get('num').invalid && (form.get('num').dirty || form.get('num').touched)" class="form-danger">
                                 <span *ngIf="form.get('num').errors.required">{{'PIECE_COUNT_REQUIRED_ERROR' | translate}}</span>
                             </div>
 
@@ -111,7 +111,7 @@
                                 <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
                                 <ion-input type="number" [formControl]="form.get('pieceWage')" required></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('pieceWage').invalid && (form.get('pieceWage').dirty || form.get('pieceWage').touched)" class="form-error red-color">
+                            <div *ngIf="form.get('pieceWage').invalid && (form.get('pieceWage').dirty || form.get('pieceWage').touched)" class="form-danger">
                                 <span *ngIf="form.get('pieceWage').errors.required">{{'PIECE_PRICE_REQUIRED_ERROR' | translate}}</span>
                             </div>
 
@@ -138,7 +138,7 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 formControlName="morningOnDuty" (ngModelChange)="resetMorningOffDuty()" required></ion-datetime>
         </ion-item>
-        <div *ngIf="morningOnDuty.invalid && (morningOnDuty.dirty || morningOnDuty.touched)" class="form-error red-color">
+        <div *ngIf="morningOnDuty.invalid && (morningOnDuty.dirty || morningOnDuty.touched)" class="form-danger">
             <span *ngIf="morningOnDuty.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -147,7 +147,7 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="morningOnDuty.value" formControlName="morningOffDuty" [disabled]="!morningOnDuty.value" required></ion-datetime>
         </ion-item>
-        <div *ngIf="morningOffDuty.invalid && (morningOffDuty.dirty || morningOffDuty.touched)" class="form-error red-color">
+        <div *ngIf="morningOffDuty.invalid && (morningOffDuty.dirty || morningOffDuty.touched)" class="form-danger">
             <span *ngIf="morningOffDuty.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -160,7 +160,7 @@
                 <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                     formControlName="afternoonOnDuty" (ngModelChange)="resetAfternoonOffDuty()"></ion-datetime>
             </ion-item>
-            <div *ngIf="afternoonOnDuty.invalid && (afternoonOnDuty.dirty || afternoonOnDuty.touched)" class="form-error red-color">
+            <div *ngIf="afternoonOnDuty.invalid && (afternoonOnDuty.dirty || afternoonOnDuty.touched)" class="form-danger">
                 <span *ngIf="afternoonOnDuty.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
             </div>
 
@@ -169,7 +169,7 @@
                 <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                     [min]="afternoonOnDuty.value" formControlName="afternoonOffDuty" [disabled]="!afternoonOnDuty.value"></ion-datetime>
             </ion-item>
-            <div *ngIf="afternoonOffDuty.invalid && (afternoonOffDuty.dirty || afternoonOffDuty.touched)" class="form-error red-color">
+            <div *ngIf="afternoonOffDuty.invalid && (afternoonOffDuty.dirty || afternoonOffDuty.touched)" class="form-danger">
                 <span *ngIf="afternoonOffDuty.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
             </div>
 

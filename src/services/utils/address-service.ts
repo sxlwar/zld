@@ -68,7 +68,8 @@ export class AddressService {
             .mergeMap(([address, source]) => Observable.from(address)
                 .map(item => item.options)
                 .zip(Observable.from(source))
-                //这个地方有可能会报错，调试的时候发现后台返的数据中有时候是带‘省’字的，有时候是不带‘省’字的，比如广东省，但数据给的是广省，不带带的话就会出现 XXX is undefined这种错误
+                //这个地方有可能会报错，调试的时候发现后台返的数据中有时候是带‘省’字的，有时候是不带‘省’字的，比如广东省，但数据给的是广东，不带的话就会出现 XXX is undefined这种错误
+                //还有更恶心的，内蒙古 鄂尔多斯市 鄂尔多斯市 这种地址，从TMD哪弄来的
                 .map(([options, comparison]) => options.find(item => item[AddressTransform[from]] === comparison)[AddressTransform[to]])
                 .reduce(putInArray, [])
             );

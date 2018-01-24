@@ -24,7 +24,7 @@
                 <ion-option *ngFor="let item of pieces | async" [value]="item.id" [selected]="item.id === piece">{{item.name}}</ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="piecePayId.invalid && (piecePayId.dirty || piecePayId.touched)" class="form-error red-color">
+        <div *ngIf="piecePayId.invalid && (piecePayId.dirty || piecePayId.touched)" class="form-danger">
             <span *ngIf="piecePayId.errors.required">{{'WORK_PIECE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -32,7 +32,7 @@
             <ion-label>{{'COMPLETE_COUNT' | translate}}</ion-label>
             <ion-input type="number" formControlName="num" required></ion-input>
         </ion-item>
-        <div *ngIf="num.invalid && (num.dirty || num.touched)" class="form-error red-color">
+        <div *ngIf="num.invalid && (num.dirty || num.touched)" class="form-danger">
             <span *ngIf="num.errors.required">{{'COMPLETE_COUNT_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -40,7 +40,7 @@
             <ion-label>{{'PAY_PERCENT' | translate}}</ion-label>
             <ion-input type="number" formControlName="qualityPercent" required></ion-input>
         </ion-item>
-        <div *ngIf="qualityPercent.invalid && (qualityPercent.dirty || qualityPercent.touched)" class="form-error red-color">
+        <div *ngIf="qualityPercent.invalid && (qualityPercent.dirty || qualityPercent.touched)" class="form-danger">
             <span *ngIf="qualityPercent.errors.required">{{'PAY_PERCENT_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!qualityPercent.errors.required && (qualityPercent.errors.max || qualityPercent.errors.min)">
                 {{'PAY_PERCENT_INVALID_ERROR' | translate}}
@@ -52,7 +52,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 formControlName="finishDate" required></ion-datetime>
         </ion-item>
-        <div *ngIf="finishDate.invalid && (finishDate.dirty || finishDate.touched)" class="form-error red-color">
+        <div *ngIf="finishDate.invalid && (finishDate.dirty || finishDate.touched)" class="form-danger">
             <span *ngIf="finishDate.errors.required">{{'COMPLETE_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -60,7 +60,7 @@
             <ion-label>{{'QUALITY_DESCRIPTION' | translate}}</ion-label>
             <ion-textarea autoSize formControlName="comment" required></ion-textarea>
         </ion-item>
-        <div *ngIf="comment.invalid && (comment.dirty || comment.touched)" class="form-error red-color">
+        <div *ngIf="comment.invalid && (comment.dirty || comment.touched)" class="form-danger">
             <span *ngIf="comment.errors.required">{{'QUALITY_DESCRIPTION_REQUIRED_ERROR' | translate}}</span>
         </div>
 

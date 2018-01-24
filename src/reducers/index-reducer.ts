@@ -312,7 +312,13 @@ export const selectHomeInfoListResponse = createSelector(getPersonal, personal.g
 export const selectHomeInfoUpdateResponse = createSelector(getPersonal, personal.getHomeInfoUpdateResponse);
 export const selectHomeInfoUpdateOptions = createSelector(getPersonal, personal.getHomeInfoUpdateOptions);
 export const selectEducationListResponse = createSelector(getPersonal, personal.getEducationListResponse);
+export const selectEducationUpdateResponse = createSelector(getPersonal, personal.getEducationUpdateResponse);
+export const selectEducationDeleteResponse = createSelector(getPersonal, personal.getEducationDeleteResponse);
+export const selectEducationAddResponse = createSelector(getPersonal, personal.getEducationAddResponse);
 export const selectWorkExperienceListResponse = createSelector(getPersonal, personal.getWorkExperienceResponse);
+export const selectWorkExperienceAddResponse = createSelector(getPersonal, personal.getWorkExperienceAddResponse);
+export const selectWorkExperienceDeleteResponse = createSelector(getPersonal, personal.getWorkExperienceDeleteResponse);
+export const selectWorkExperienceUpdateResponse = createSelector(getPersonal, personal.getWorkExperienceUpdateResponse);
 export const selectPlatformWorkExperienceResponse = createSelector(getPersonal, personal.getPlatformWorkExperienceResponse);
 
 //attendance machine list 

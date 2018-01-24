@@ -22,7 +22,7 @@
                 <ion-label fixed>{{'TEAM_NAME' | translate}}</ion-label>
                 <ion-input type="text" formControlName="teamName" required></ion-input>
             </ion-item>
-            <div *ngIf="teamName.invalid && (teamName.dirty || teamName.touched)" class="form-error red-color">
+            <div *ngIf="teamName.invalid && (teamName.dirty || teamName.touched)" class="form-danger">
                 <span *ngIf="teamName.errors.required">{{'TEAM_NAME_REQUIRED_ERROR' | translate}}</span>
                 <span *ngIf="!teamName.errors.required && teamName.errors.teamNameFormat">
                     {{addTeamForm.getError('teamNameFormat', 'teamName') | translate}}
@@ -36,7 +36,7 @@
                     <ion-option *ngFor="let foreman of foremen | async" [value]="foreman">{{foreman.name}}</ion-option>
                 </ion-select>
             </ion-item>
-            <div *ngIf="foreman.invalid && (foreman.dirty || foreman.touched)" class="form-error red-color">
+            <div *ngIf="foreman.invalid && (foreman.dirty || foreman.touched)" class="form-danger">
                 <span *ngIf="foreman.errors.required">{{'FOREMAN_REQUIRED_ERROR' | translate}}</span>
             </div>
 
@@ -47,7 +47,7 @@
                     <ion-option *ngFor="let clerk of qualityClerks | async" [value]="clerk">{{clerk.name}}</ion-option>
                 </ion-select>
             </ion-item>
-            <div *ngIf="qualityClerk.invalid && (qualityClerk.dirty || qualityClerk.touched)" class="form-error red-color">
+            <div *ngIf="qualityClerk.invalid && (qualityClerk.dirty || qualityClerk.touched)" class="form-danger">
                 <span *ngIf="qualityClerk.errors.required">{{'QUALITY_CLERK_REQUIRED_ERROR' | translate}}</span>
             </div>
 

@@ -7,13 +7,13 @@ import { BankcardService } from './../../services/business/bank-card-service';
 import { mobilePhoneValidator, bankcardNumberValidator, creditCardValidator } from '../../validators/validators';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { ViewController } from 'ionic-angular';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
     selector: 'add-bankcard',
     templateUrl: 'add-bankcard.html'
 })
-export class AddBankcardComponent implements OnDestroy {
+export class AddBankcardComponent implements OnInit, OnDestroy {
 
     personalId: Observable<PersonalId>;
 
@@ -30,23 +30,29 @@ export class AddBankcardComponent implements OnDestroy {
         public personal: PersonalService,
         public mapper: MapperService
     ) {
+        this.initialForm();
+    }
+
+    ngOnInit() {
         this.initialModel();
 
-        this.getData();
+        this.launch();
     }
 
-    initialModel() {
-        this.initialForm();
+    initialModel(): void {
+        this.personalId = this.personal.getPersonalId();
+    }
 
+    launch(): void {
         this.subscriptions = [
             this.bankcard.getBankInfo().subscribe(res => this.bankcardForm.patchValue({ cardType: res.bank_name + res.brand })),
-            this.personal.getPersonalIdResponse().subscribe(value => !value && this.personal.getPersonalIdList()),
-            this.personal.handleError(),
-        ];
-    }
 
-    getData() {
-        this.personalId = this.personal.getPersonalId();
+            this.personal.getPersonalIdList(),
+
+            this.personal.handlePersonalIdError(),
+
+            this.bankcard.handleBankInfoError(),
+        ];
     }
 
     initialForm() {

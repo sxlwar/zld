@@ -60,7 +60,7 @@ export class MemberStatisticsPage {
     getWorkTypeStatistics(element: ElementRef): Subscription {
         return this.workerService.getWorkTypeRealTimeStatisticsResponse()
             .withLatestFrom(this.craft.getWorkTypeList(), (res, workTypes) => this.addWorkTypeName(this.fixAcutalData(res, 'worktype_id', 'worktype_id__count'), workTypes))
-            .zip(this.translate.get('REQUIREMENT'), this.translate.get('ACTUAL_COUNT'))
+            .zip(this.translate.get('SIGNED_COUNT'), this.translate.get('WORKING_COUNT'))
             .map(([data, tip1, tip2]) => this.getBarChartData('workTypeName', this.getWorkTypeCount, data, tip1, tip2))
             .subscribe(data => this.chart.getChart(element.nativeElement, ChartType.horizontalBar, data, this.chart.getShortLabelOptions()));
     }
@@ -68,7 +68,7 @@ export class MemberStatisticsPage {
     getTeamMembersStatistics(element: ElementRef): Subscription {
         return this.workerService.getTeamMembersStatisticsResponse()
             .map(res => this.fixAcutalData(res, 'team_id', 'team_id__count'))
-            .zip(this.translate.get('REQUIREMENT'), this.translate.get('ACTUAL_COUNT'))
+            .zip(this.translate.get('SIGNED_COUNT'), this.translate.get('WORKING_COUNT'))
             .map(([data, tip1, tip2]) => this.getBarChartData('team__name', this.getTeamMembersCount, data, tip1, tip2))
             .subscribe(data => this.chart.getChart(element.nativeElement, ChartType.horizontalBar, data, this.chart.getShortLabelOptions()));
     }

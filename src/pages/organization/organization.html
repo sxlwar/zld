@@ -37,7 +37,7 @@
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}
                     </button>
-                    <button ion-button color="danger" [disabled]="!team.id" (click)="deleteTeam(team)" *ngIf="canOperate | async">
+                    <button ion-button color="danger" [disabled]="!team.id" (click)="deleteTeam(team,$event)" *ngIf="canOperate | async">
                         <ion-icon name="trash"></ion-icon>
                         {{'DELETE_BUTTON' | translate}}
                     </button>

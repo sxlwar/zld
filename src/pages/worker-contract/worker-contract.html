@@ -51,12 +51,7 @@
                 <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
                 <ion-input disabled [value]="contract.unitPrice | priceUnit:'timer' | async"></ion-input>
             </ion-item>
-
-            <ion-item>
-                <ion-label fixed>{{'OVERTIME_UNIT_PRICE' | translate}}</ion-label>
-                <ion-input disabled [value]="contract.overTimeUnitPrice | priceUnit:'timer' | async"></ion-input>
-            </ion-item>
-
+            
             <ion-item>
                 <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
                 <ion-input disabled [value]="contract.payday | everyMonth"></ion-input>
@@ -83,7 +78,7 @@
 
             <ion-item>
                 <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
-                <ion-input disabled [value]="contract.unitPirce | priceUnit:'piecer' | async"></ion-input>
+                <ion-input disabled [value]="contract.unitPrice | priceUnit:'piecer' | async"></ion-input>
             </ion-item>
         </div>
 

@@ -255,12 +255,15 @@ export const signWorkerContract: IconItem = {
     page: pages.signWorkerContractPage
 };
 
+/**
+ * @description User both have the view and operate permission will be allowed to enter into 'work-contract' in mine module.
+ */
 export const workerContract: IconItem = {
     text: 'WORK_CONTRACT',
     icon: workContractIcon,
     color: 'contract',
     permission: {
-        view: [],
+        view: [SW, UW],
         opt: [PM, LM, TL, SW, UW]
     },
     page: pages.workerContractPage
@@ -450,17 +453,17 @@ export class IconService {
     }
 
     private addIcons(name: string, icons: IconState[]): void {
-        const target = {};
+        const result = {};
 
         if (name === MineRoot) {
-            const target = icons.find(icon => icon.text === 'WORK_CONTRACT');
+            const target = icons.find(icon => icon.icon === workContractIcon);
 
             if (!target.permission.view || !target.permission.opt) target.color = '';
         }
 
-        target[name] = icons;
+        result[name] = icons;
 
-        this.store.dispatch(new AddIconsBarAction(target));
+        this.store.dispatch(new AddIconsBarAction(result));
     }
 
     private select(name: string) {

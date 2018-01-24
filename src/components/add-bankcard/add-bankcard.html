@@ -30,9 +30,9 @@
         <form [formGroup]="bankcardForm">
             <ion-item>
                 <ion-label>{{'CARD_NUMBER' | translate}}</ion-label>
-                <ion-input type="text" formControlName="cardNumber" required (blur)="getCardType()"></ion-input>
+                <ion-input type="text" formControlName="cardNumber" required (ionBlur)="getCardType()"></ion-input>
             </ion-item>
-            <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class="form-error red-color">
+            <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class="form-danger">
                 <span *ngIf="cardNumber.errors.required">{{'BANK_CARD_ERROR' | translate}}</span>
                 <span *ngIf="!cardNumber.errors.required && cardNumber.errors.bankcardNumberFormat">
                     {{bankcardForm.getError('bankcardNumberFormat', 'cardNumber') | translate}}
@@ -48,7 +48,7 @@
                 <ion-label>{{'RESERVATION_PHONE_NUMBER' | translate}}</ion-label>
                 <ion-input type="text" formControlName="phoneNumber" required></ion-input>
             </ion-item>
-            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="form-error red-color">
+            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" class="form-danger">
                 <span *ngIf="phoneNumber.errors.required">{{'ACCOUNT_REQUIRED_ERROR' | translate}}</span>
                 <span *ngIf="!phoneNumber.errors.required && phoneNumber.errors.mobilePhoneFormat">
                     {{bankcardForm.getError('mobilePhoneFormat', 'phoneNumber') | translate}}

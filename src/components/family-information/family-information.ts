@@ -15,8 +15,6 @@ export class FamilyInformationComponent {
 
     @Output() updateHomeInfo: EventEmitter<Family> = new EventEmitter();
 
-    marriage: number;
-
     relationShip = relationShip;
 
     constructor() {

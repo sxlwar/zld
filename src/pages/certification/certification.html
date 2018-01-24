@@ -15,7 +15,7 @@
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
             <ion-input type="text" formControlName="realName" [value]="realName$ | async" required></ion-input>
         </ion-item>
-        <div *ngIf="realName.invalid && (realName.dirty || realName.touched)" class="form-error red-color">
+        <div *ngIf="realName.invalid && (realName.dirty || realName.touched)" class="form-danger">
             <span *ngIf="realName.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!realName.errors.required && realName.errors.nameFormat">
                 {{certificateForm.getError('nameFormat', 'realName') | translate}}
@@ -26,7 +26,7 @@
             <ion-label fixed>{{'PERSONAL_ID' | translate}}</ion-label>
             <ion-input formControlName="personalId" required></ion-input>
         </ion-item>
-        <div *ngIf="personalId.invalid && (personalId.dirty || personalId.touched)" class="form-error red-color">
+        <div *ngIf="personalId.invalid && (personalId.dirty || personalId.touched)" class="form-danger">
             <span *ngIf="personalId.errors.required">{{'PERSONAL_ID_EMPTY_TIP' | translate}}</span>
             <span *ngIf="!personalId.errors.required && personalId.errors.personalIdFormat">
                 {{certificateForm.getError('personalIdFormat', 'personalId') | translate}}

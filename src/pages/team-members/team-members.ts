@@ -39,6 +39,7 @@ export class TeamMembersPage {
         public worker: WorkerService
     ) {
         this.team = this.navParams.get('team');
+
         this.worker.resetPage();
     }
 
@@ -55,7 +56,7 @@ export class TeamMembersPage {
 
         this.haveMoreData = response.map(res => !!res.worker_contract.length);
 
-        this.workerCount = response.map(res => res.count);
+        this.workerCount = response.map(res => res.count).startWith(0);
     }
 
     launch(): void {
@@ -65,9 +66,15 @@ export class TeamMembersPage {
         ];
     }
 
+    /**
+     * 这就是后台坑的地方的了，参数怎么传根本不care，传null都可以拿到值，真心垃圾，一点规范也没有。
+     * 新加的班组，由于数据是从本地拿到的，后台又没有在添加成功后返回班组的id，所新加的班组时不能让数据发出去。
+     * */
     getWorkerContractList(): Subscription {
         return this.worker.getWorkerContracts(
-            Observable.of({ team_id: this.team.id })
+            Observable.of(this.team.id)
+                .filter(value => !!value)
+                .map(team_id => ({ team_id }))
                 .zip(
                 this.worker.getCompleteStatusOption(),
                 this.worker.getUnexpiredOption(),

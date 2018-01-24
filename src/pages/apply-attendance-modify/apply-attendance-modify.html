@@ -27,7 +27,7 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 formControlName="onDutyTime" (ngModelChange)="resetOffDuty()" required></ion-datetime>
         </ion-item>
-        <div *ngIf="onDutyTime.invalid && (onDutyTime.dirty || onDutyTime.touched)" class="form-error red-color">
+        <div *ngIf="onDutyTime.invalid && (onDutyTime.dirty || onDutyTime.touched)" class="form-danger">
             <span *ngIf="onDutyTime.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -36,7 +36,7 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="onDutyTime.value" formControlName="offDutyTime" [disabled]="!onDutyTime.value" required></ion-datetime>
         </ion-item>
-        <div *ngIf="offDutyTime.invalid && (offDutyTime.dirty || offDutyTime.touched)" class="form-error red-color">
+        <div *ngIf="offDutyTime.invalid && (offDutyTime.dirty || offDutyTime.touched)" class="form-danger">
             <span *ngIf="offDutyTime.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -44,7 +44,7 @@
             <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
             <ion-textarea autoSize formControlName="reason" required></ion-textarea>
         </ion-item>
-        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-error red-color">
+        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-danger">
             <span *ngIf="reason.errors.required">{{'ATTENDANCE_MODIFY_REASON_REQUIRED_ERROR' | translate}}</span>
         </div>
 

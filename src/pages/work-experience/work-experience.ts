@@ -23,11 +23,11 @@ export class WorkExperiencePage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public personal: PersonalService,
-        public modalCtrl: ModalController,
-        public mapper: MapperService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private personal: PersonalService,
+        private modalCtrl: ModalController,
+        private mapper: MapperService
     ) {
     }
 
@@ -55,7 +55,13 @@ export class WorkExperiencePage {
 
             this.personal.getPlatformWorkExperienceList(),
 
-            this.personal.handleError(),
+            this.personal.handleWorkExperienceError(),
+
+            this.personal.handlePlatformWorkExperienceError(),
+
+            this.personal.handleAddWorkExperienceError(),
+
+            this.personal.handleUpdateWorkExperienceError(),
         ];
     }
 

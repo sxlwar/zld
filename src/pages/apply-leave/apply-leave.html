@@ -17,7 +17,7 @@
                 <ion-option *ngFor="let item of leaveTypes" [value]="item | translate" [selected]="(item | translate) === vacaction">{{item | translate}}</ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="leaveType.invalid && (leaveType.dirty || leaveType.touched)" class="form-error red-color">
+        <div *ngIf="leaveType.invalid && (leaveType.dirty || leaveType.touched)" class="form-danger">
             <span *ngIf="leaveType.errors.required">{{'LEAVE_TYPE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -32,7 +32,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 formControlName="startDay" (ngModelChange)="updateExpireDate($event)" required></ion-datetime>
         </ion-item>
-        <div *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)" class="form-error red-color">
+        <div *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)" class="form-danger">
             <span *ngIf="startDay.errors.required">{{'LEAVE_START_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -41,7 +41,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="startDay.value" formControlName="endDay" required [disabled]="!startDay.value"></ion-datetime>
         </ion-item>
-        <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-error red-color">
+        <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-danger">
             <span *ngIf="endDay.errors.required">{{'LEAVE_END_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -49,7 +49,7 @@
             <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
             <ion-textarea autoSize formControlName="reason" required></ion-textarea>
         </ion-item>
-        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-error red-color">
+        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-danger">
             <span *ngIf="reason.errors.required">{{'' | translate}}</span>
         </div>
 

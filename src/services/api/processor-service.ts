@@ -318,8 +318,9 @@ export class ProcessorService extends MapperService {
 
     personalIdListProcessor(option: Observable<PersonalIdListOptions>): Subscription {
         return this.permission.comprehensiveValidate(this.command.personalIdList)
+            .do(v => console.log(v))
             .filter(value => value.permission.view)
-            .combineLatest(option, (result, option) => Object.assign({}, result.option, option))
+            .combineLatest(option, (result, option) => ({ ...result.option, ...option }))
             .subscribe(option => this.store.dispatch(new GetPersonalIdListAction(option)));
     }
 

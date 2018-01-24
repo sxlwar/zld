@@ -14,11 +14,11 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class BankcardService {
     constructor(
-        public userInfo: UserService,
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public error: ErrorService,
-        public personal: PersonalService
+        private userInfo: UserService,
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private error: ErrorService,
+        private personal: PersonalService
     ) {
     }
 
@@ -63,7 +63,7 @@ export class BankcardService {
         return this.processor.setMasterBankCardProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })));
     }
 
-    /* ====================================================Refuse clean===================================== */
+    /* ====================================================Local State update============================================================ */
 
     resetBankcardAddResponse(): void {
         this.store.dispatch(new ResetAddBankcardResponseAction);
@@ -77,13 +77,19 @@ export class BankcardService {
         this.store.dispatch(new ResetBankcardInfoAction);
     }
 
+    /* =========================================================Error handle============================================================ */
+
     handleError(): Subscription[] {
         return [
             this.error.handleErrorInSpecific(this.store.select(selectBankcardList).filter(value => !!value), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectBankInfo).filter(value => !!value), 'API_ERROR'),
             this.error.handleErrorInSpecific(this.store.select(selectBankcardAddResponse).filter(value => !!value), 'API_ERROR'),
             this.error.handleErrorInSpecific(this.store.select(selectBankcardDeleteResponse).filter(value => !!value), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectSetMasterCardResponse).filter(value => !!value), 'API_ERROR')
+            this.error.handleErrorInSpecific(this.store.select(selectSetMasterCardResponse).filter(value => !!value), 'API_ERROR'),
+            this.handleBankInfoError(),
         ];
+    }
+
+    handleBankInfoError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectBankInfo).filter(value => !!value), 'API_ERROR');
     }
 }

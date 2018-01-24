@@ -1,6 +1,6 @@
 import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, UploadPersonalIdImageOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions, CheckPhoneOptions, CheckPhoneVerifyCodeOptions, ChangePhoneVerifyCodeOptions, ChangePhoneOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
-import { CW, EME, LM, MM, PM, PME, QW, SW, TL } from '../config/character';
+import { CW, EME, LM, MM, PM, PME, QW, SW, TL, UW } from '../config/character';
 import { omitBy, omit, isEmpty } from 'lodash';
 import { ApiUnit, Operate, Iterator } from '../../interfaces/api-interface';
 import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach, uploadAttendanceModifyAttach, uploadLeaveAttach, uploadOvertimeAttach, uploadPieceAuditAttach, uploadWorkerContractModifyAttach } from './http-service';
@@ -354,7 +354,7 @@ export const basicInfoList: ApiUnit = {
         [Operate.querying, ['employee.consumer.BasicInfoList']]
     ]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
         opt: []
     }
 }
@@ -364,7 +364,7 @@ export const personalIdList: ApiUnit = {
         [Operate.querying, ['employee.consumer.PersonalIdList']]
     ]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
         opt: []
     },
     specialCharacter: new Map([
@@ -385,7 +385,7 @@ export const workerDetailList: ApiUnit = {
         [Operate.querying, ['employee.consumer.WorkerDetailList']]
     ]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],  //文档上的权限只有前6个，操
         opt: []
     },
     specialCharacter: new Map([
@@ -397,7 +397,8 @@ export const workerDetailList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
     ])
 }
 
@@ -407,7 +408,7 @@ export const workerDetailUpdate: ApiUnit = {
     ]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
     }
 }
 
@@ -693,7 +694,7 @@ export const bankInfo: ApiUnit = {
         [Operate.querying, ['employee.consumer.BankInfo']]
     ]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
         opt: []
     }
 }
@@ -703,7 +704,7 @@ export const workerBankNoList: ApiUnit = {
         [Operate.querying, ['employee.consumer.WorkerBankNoList']]
     ]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
         opt: []
     },
     specialCharacter: new Map([
@@ -715,7 +716,8 @@ export const workerBankNoList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
     ])
 }
 
@@ -725,7 +727,7 @@ export const workerBankNoAdd: ApiUnit = {
     ]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
     }
 }
 
@@ -735,7 +737,7 @@ export const workerBankNoDelete: ApiUnit = {
     ]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
     }
 }
 
@@ -745,7 +747,7 @@ export const setBankNoMaster: ApiUnit = {
     ]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
     }
 }
 

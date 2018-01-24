@@ -80,6 +80,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
+        this.loginService.resetResetPasswordResponse();
+        
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 

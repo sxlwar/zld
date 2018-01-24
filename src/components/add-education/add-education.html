@@ -21,7 +21,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [max]="today" formControlName="startDate" (ngModelChange)="updateEndDate($event)" required></ion-datetime>
         </ion-item>
-        <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="form-error red-color">
+        <div *ngIf="startDate.invalid && (startDate.dirty || startDate.touched)" class="form-danger">
             <span *ngIf="startDate.errors.required">{{'START_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -30,7 +30,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="minEndDate" [max]="today" formControlName="endDate" required></ion-datetime>
         </ion-item>
-        <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="form-error red-color">
+        <div *ngIf="endDate.invalid && (endDate.dirty || endDate.touched)" class="form-danger">
             <span *ngIf="endDate.errors.required">{{'END_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -38,7 +38,7 @@
             <ion-label fixed>{{'SCHOOL' | translate}}</ion-label>
             <ion-input type="text" formControlName="school" required></ion-input>
         </ion-item>
-        <div *ngIf="school.invalid && (school.dirty || school.touched)" class="form-error red-color">
+        <div *ngIf="school.invalid && (school.dirty || school.touched)" class="form-danger">
             <span *ngIf="school.errors.required">{{'SCHOOL_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!school.errors.required && school.errors.mustBeChineseFormat">
                 {{educationForm.getError('mustBeChineseFormat', 'school') | translate}}
@@ -55,7 +55,7 @@
             </ion-select>
 
         </ion-item>
-        <div *ngIf="degree.invalid && (degree.dirty || degree.touched)" class="form-error red-color">
+        <div *ngIf="degree.invalid && (degree.dirty || degree.touched)" class="form-danger">
             <span *ngIf="degree.errors.required">{{'DEGREE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -63,7 +63,7 @@
             <ion-label fixed>{{'MAJOR' | translate}}</ion-label>
             <ion-input type="text" formControlName="major" required></ion-input>
         </ion-item>
-        <div *ngIf="major.invalid && (major.dirty || major.touched)" class="form-error red-color">
+        <div *ngIf="major.invalid && (major.dirty || major.touched)" class="form-danger">
             <span *ngIf="major.errors.required">{{'MAJOR_REQUIRED_ERROR' | translate}}</span>
             <span *ngIf="!major.errors.required && major.errors.mustBeChineseFormat">
                 {{educationForm.getError('mustBeChineseFormat', 'major') | translate}}

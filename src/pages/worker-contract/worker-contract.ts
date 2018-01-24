@@ -16,7 +16,6 @@ interface Contract {
     payType: string;
     attendanceTimeInterval?: string;
     unitPrice?: number;
-    overTimeUnitPrice?: number;
     payday?: number;
     pieceName?: string;
     pieceLocation?: string;
@@ -131,10 +130,9 @@ export class WorkerContractPage {
             attendanceTimeInterval,
             partyA: project.sub_contract__contracting__name,
             partyB: contract.worker__employee__realname,
-            expire: contract.start_day + '~' + contract.finish_day,
+            expire: contract.start_day + '—' + contract.finish_day,
             payType: contract.type,
             unitPrice: timePaySource.pay_mount,
-            overTimeUnitPrice: timePaySource.overtime_pay_mount,
             payday: contract.pay_day
         };
     }

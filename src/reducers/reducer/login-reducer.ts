@@ -16,7 +16,7 @@ export interface State {
 export const initialSate: State = {
     activeIndexOfSlides: 0,
     activeIndexOfInnerSlides: 0,
-    loginForm: { 
+    loginForm: {
         username: '',
         password: '',
         captcha_code: '',
@@ -141,6 +141,9 @@ export function resetPasswordReducer(state = initialResetPasswordState, action: 
         case actions.RESET_PASSWORD_SUCCESS:
             return { ...action.payload, ...initialResetPasswordState };
 
+        case actions.RESET_RESET_PASSWORD_RESPONSE:
+            return { ...initialResetPasswordState };
+
         default:
             return state;
     }
@@ -158,8 +161,7 @@ export const initialPhoneVerCode: PhoneVerCodeResponse = {
 export function registerPhoneVerReducer(state = initialPhoneVerCode, action: actions.Actions) {
     switch (action.type) {
         case actions.PHONE_VERIFICATION_CODE_FAIL:
-            const captcha = action.payload.captcha || false;
-            return Object.assign({}, action.payload, { captcha });
+            return { ...action.payload, captcha: action.payload.captcha || false };
 
         case actions.PHONE_VERIFICATION_CODE_SUCCESS:
         default:
@@ -179,8 +181,7 @@ export const initialResetPhoneVerCode: PhoneVerCodeResponse = {
 export function resetPwdPhoneVerReducer(state = initialResetPhoneVerCode, action: actions.Actions) {
     switch (action.type) {
         case actions.RESET_PHONE_VERIFICATION_CODE_FAIL:
-            const captcha = action.payload.captcha || false;
-            return Object.assign({}, action.payload, { captcha });
+            return { ...action.payload, captcha: action.payload.captcha || false };
 
         case actions.RESET_PHONE_VERIFICATION_CODE_SUCCESS:
         default:

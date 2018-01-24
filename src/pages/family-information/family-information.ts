@@ -20,12 +20,12 @@ export class FamilyInformationPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public personal: PersonalService,
-        public modalCtrl: ModalController,
-        public addressService: AddressService,
-        public mapper: MapperService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private personal: PersonalService,
+        private modalCtrl: ModalController,
+        private addressService: AddressService,
+        private mapper: MapperService
     ) {
     }
 
@@ -44,14 +44,18 @@ export class FamilyInformationPage {
     initialData() {
         this.family = this.personal.getOwnFamily()
             .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' '))).map(res => res.join(' '))
-                .zip(Observable.of(res), (addressArea, res) => ({ ...res, addressArea }))
+                .zip(
+                Observable.of(res),
+                (addressArea, res) => ({ ...res, addressArea })
+                )
             );
     }
 
     launch() {
         this.subscriptions = [
             this.personal.getHomeInfoList(),
-            this.personal.handleError(),
+
+            this.personal.handleHomeInfoError(),
         ];
     }
 

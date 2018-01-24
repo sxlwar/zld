@@ -2,4 +2,8 @@ page-members {
     ion-input {
         font-size: 12px;
     }
+
+    ion-buttons[end] ion-icon {
+        transform: rotate(90deg);
+    }
 }

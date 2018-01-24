@@ -1,12 +1,12 @@
 <div *ngIf="experience">
     <ion-list *ngFor="let exp of experience">
 
-        <ion-list-header>
+        <ion-list-header class="ion-list-sliding-header">
 
             <ion-item-sliding #slidingItem>
 
                 <ion-item #item>
-                    {{exp.expire}}
+                    <span>{{exp.expire}}</span>
                     <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" item-start></ion-icon>
                 </ion-item>
 
@@ -34,7 +34,7 @@
         </ion-item>
         <ion-item>
             <ion-label fixed>{{'JOB_DUTY' | translate}}</ion-label>
-            <ion-input disabled [value]="exp.job"></ion-input>
+            <ion-textarea disabled [value]="exp.job" autoSize></ion-textarea>
         </ion-item>
 
     </ion-list>

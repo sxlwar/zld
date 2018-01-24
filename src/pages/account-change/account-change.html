@@ -22,7 +22,7 @@
                 <ion-input type="text" formControlName="oldImageVerification" [required]="needOldImage"></ion-input>
             </ion-item>
             <image-verification [src]="oldImageVerificationUrl | async" (update)="oldImageVerification$.next(true)"></image-verification>
-            <div *ngIf="oldImageVerification.invalid && (oldImageVerification.dirty || oldImageVerification.touched)" class="form-error red-color">
+            <div *ngIf="oldImageVerification.invalid && (oldImageVerification.dirty || oldImageVerification.touched)" class="form-danger">
                 <span *ngIf="oldImageVerification.errors.required">
                     {{'IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
                 </span>
@@ -36,7 +36,7 @@
             </ion-item>
             <cut-down (request)="oldPhoneVerification$.next(true)" [hidden]="oldMobilePhone.invalid || oldImageVerification.invalid"></cut-down>
         </div>
-        <div *ngIf="oldPhoneVerification.invalid && (oldPhoneVerification.dirty || oldPhoneVerification.touched)" class="form-error red-color">
+        <div *ngIf="oldPhoneVerification.invalid && (oldPhoneVerification.dirty || oldPhoneVerification.touched)" class="form-danger">
             <span *ngIf="oldPhoneVerification.errors.required">
                 {{'VERIFICATION_REQUIRED_ERROR' | translate}}
             </span>
@@ -46,7 +46,7 @@
             <ion-label fixed>{{'NEW_ACCOUNT' | translate}}</ion-label>
             <ion-input type="tel" formControlName="newMobilePhone" required></ion-input>
         </ion-item>
-        <div *ngIf="newMobilePhone.invalid && (newMobilePhone.dirty || newMobilePhone.touched)" class="form-error red-color">
+        <div *ngIf="newMobilePhone.invalid && (newMobilePhone.dirty || newMobilePhone.touched)" class="form-danger">
             <span *ngIf="newMobilePhone.errors.required">
                 {{'ACCOUNT_REQUIRED_ERROR' | translate}}
             </span>
@@ -61,7 +61,7 @@
                 <ion-input type="text" formControlName="newImageVerification" [required]="needNewImage"></ion-input>
             </ion-item>
             <image-verification [src]="newImageVerificationUrl$ | async" (update)="newImageVerification$.next(true)"></image-verification>
-            <div *ngIf="newImageVerification.invalid && (newImageVerification.dirty || newImageVerification.touched)" class="form-error red-color">
+            <div *ngIf="newImageVerification.invalid && (newImageVerification.dirty || newImageVerification.touched)" class="form-danger">
                 <span *ngIf="newImageVerification.errors.required">
                     {{'IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
                 </span>
@@ -75,7 +75,7 @@
             </ion-item>
             <cut-down (request)="newPhoneVerification$.next(true)" [hidden]="newMobilePhone.invalid || newImageVerification.invalid || oldPhoneVerification.invalid"></cut-down>
         </div>
-        <div *ngIf="newPhoneVerification.invalid && (newPhoneVerification.dirty || newPhoneVerification.touched)" class="form-error red-color">
+        <div *ngIf="newPhoneVerification.invalid && (newPhoneVerification.dirty || newPhoneVerification.touched)" class="form-danger">
             <span *ngIf="newPhoneVerification.errors.required">
                 {{'VERIFICATION_REQUIRED_ERROR' | translate}}
             </span>

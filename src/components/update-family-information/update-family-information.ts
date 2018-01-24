@@ -37,17 +37,16 @@ export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
             this.personal.updateHomeInfo(this.getOption()),
 
             this.updateFamily.zip(this.personal.getHomeInfoUpdateSuccessResponse(), (_1, _2) => true).subscribe(_ => this.dismiss()),
+
+            this.personal.handleHomeInfoError(),
         ];
     }
 
     getOption(): Observable<HomeInfoUpdateOptions> {
         return this.updateFamily
             .filter(value => !!value)
-            .mergeMap(item =>
-                this.address.getAddressName(
-                    Observable.of(item.addressArea.split(' '))
-                )
-                    .map(res => this.mapper.transformFamilyOptions({ ...item, addressArea: res.join(' ') }))
+            .mergeMap(item => this.address.getAddressName(Observable.of(item.addressArea.split(' ')))
+                .map(res => this.mapper.transformFamilyOptions({ ...item, addressArea: res.join(' ') }))
             );
     }
 

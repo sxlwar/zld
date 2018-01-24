@@ -17,7 +17,7 @@
                 <ion-option [value]="'OVERTIME' | translate" [selected]="('OVERTIME' | translate) === type">{{'OVER_OVERTIME_TIME' | translate}}</ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="payType.invalid && (payType.dirty || payType.touched)" class="form-error red-color">
+        <div *ngIf="payType.invalid && (payType.dirty || payType.touched)" class="form-danger">
             <span *ngIf="payType.errors.required">{{'PAY_TYPE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -32,7 +32,7 @@
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 formControlName="day" required></ion-datetime>
         </ion-item>
-        <div *ngIf="day.invalid && (day.dirty || day.touched)" class="form-error red-color">
+        <div *ngIf="day.invalid && (day.dirty || day.touched)" class="form-danger">
             <span *ngIf="day.errors.required">{{'OVERTIME_DATE_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -41,7 +41,7 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 formControlName="startTime" (ngModelChange)="resetEndTime($event)" required></ion-datetime>
         </ion-item>
-        <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="form-error red-color">
+        <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="form-danger">
             <span *ngIf="startTime.errors.required">{{'OVERTIME_START_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -50,7 +50,7 @@
             <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
                 [min]="startTime.value" formControlName="endTime" required [disabled]="!startTime.value"></ion-datetime>
         </ion-item>
-        <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="form-error red-color">
+        <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="form-danger">
             <span *ngIf="endTime.errors.required">{{'OVERTIME_END_TIME_REQUIRED_ERROR' | translate}}</span>
         </div>
 
@@ -58,7 +58,7 @@
             <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
             <ion-textarea autoSize formControlName="reason" required></ion-textarea>
         </ion-item>
-        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-error red-color">
+        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-danger">
             <span *ngIf="reason.errors.required">{{'OVERTIME_REASON_REQUIRED_ERROR' | translate}}</span>
         </div>
 

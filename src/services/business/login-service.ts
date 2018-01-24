@@ -2,7 +2,7 @@ import { Company } from './../../interfaces/response-interface';
 import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCodeAction } from '../../actions/action/login-action';
+import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCodeAction, ResetResetPasswordResponseAction } from '../../actions/action/login-action';
 import { RegisterUserType } from '../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
 import * as fromRoot from '../../reducers/index-reducer';
@@ -160,6 +160,10 @@ export class LoginService {
             .subscribe(code => this.store.dispatch(new UpdateRandomCodeAction(code)));
     }
 
+    resetResetPasswordResponse(): void {
+        this.store.dispatch(new ResetResetPasswordResponseAction());
+    }
+    
     /* =================================================================Error handle================================================================== */
 
     handleLoginError(): Subscription {

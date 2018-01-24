@@ -1,6 +1,6 @@
 add-location-card {
     .red-color {
-        color: red;
+        color: color($colors, danger);
     }
 
     .worker-list {

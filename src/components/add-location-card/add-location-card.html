@@ -20,7 +20,7 @@
                 <ion-label fixed>{{'CARD_NUMBER' | translate}}</ion-label>
                 <ion-input type="number" formControlName="cardNumber" required></ion-input>
             </ion-item>
-            <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class="form-error red-color">
+            <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)" class="form-danger">
                 <span *ngIf="cardNumber.errors.required">{{'CARD_NUMBER_REQUIRED_ERROR' | translate}}</span>
                 <span *ngIf="!cardNumber.errors.required && cardNumber.errors.cardNumberFormat">
                     {{addLocationCardForm.getError('cardNumberFormat', 'cardNumber') | translate}}

@@ -19,11 +19,11 @@ export class EducationExperiencePage {
     educations: Observable<Education[]>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public personal: PersonalService,
-        public modalCtrl: ModalController,
-        public layout: LayoutService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private personal: PersonalService,
+        private modalCtrl: ModalController,
+        private layout: LayoutService
     ) {
     }
 
@@ -46,7 +46,14 @@ export class EducationExperiencePage {
     launch() {
         this.subscriptions = [
             this.personal.getEducationList(),
-            this.personal.handleError(),
+
+            this.personal.handleEducationError(),
+
+            this.personal.handleAddEducationError(),
+
+            this.personal.handleDeleteEducationError(),
+
+            this.personal.handleUpdateEducationError(),
         ];
     }
 

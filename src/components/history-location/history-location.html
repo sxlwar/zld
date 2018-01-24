@@ -33,7 +33,7 @@
                     <ion-datetime pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate" min="2017-01-01"
                         [max]="today" formControlName="startTime" (ngModelChange)="updateMaxEndTime($event)"></ion-datetime>
                 </ion-item>
-                <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="form-error red-color">
+                <div *ngIf="startTime.invalid && (startTime.dirty || startTime.touched)" class="form-danger">
                     <span *ngIf="startTime.errors.required">{{'START_TIME_REQUIRED' | translate}}</span>
                 </div>
 
@@ -43,7 +43,7 @@
                         [hourValues]="availableHourValues" [minuteValues]="availableMinuteValues" formControlName="endTime" [disabled]="!startTime.value"
                         (ngModelChange)="updateEndTime($event)"></ion-datetime>
                 </ion-item>
-                <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="form-error red-color">
+                <div *ngIf="endTime.invalid && (endTime.dirty || endTime.touched)" class="form-danger">
                     <span *ngIf="endTime.errors.required">{{'END_TIME_REQUIRED' | translate}}</span>
                 </div>
             </div>
@@ -54,7 +54,7 @@
                     <ion-datetime pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate" min="2017-01-01"
                         [max]="today" formControlName="time" (ngModelChange)="updateTime($event)"></ion-datetime>
                 </ion-item>
-                <div *ngIf="time.invalid && (time.dirty || time.touched)" class="form-error red-color">
+                <div *ngIf="time.invalid && (time.dirty || time.touched)" class="form-danger">
                     <span *ngIf="time.errors.required">{{'TIME_REQUIRED' | translate}}</span>
                 </div>
             </div>

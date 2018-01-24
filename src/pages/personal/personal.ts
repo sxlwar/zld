@@ -1,16 +1,11 @@
-import { MapperService } from './../../services/api/mapper-service';
-import { AddressService } from './../../services/utils/address-service';
-//region
-import { CraftService } from './../../services/business/craft-service';
 import { Observable } from 'rxjs/Observable';
-import { BasicInfoListResponse, BasicInformation, PersonalId } from './../../interfaces/response-interface';
+import { BasicInformation, PersonalId } from './../../interfaces/response-interface';
 import { PersonalService } from './../../services/business/personal-service';
 import { UserService } from './../../services/business/user-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage,  NavParams } from 'ionic-angular';
 import { Certification, Education, Family, PlatformExperience, CustomWorkExperience } from '../../interfaces/personal-interface';
-//endregion
 
 @IonicPage()
 @Component({
@@ -41,21 +36,17 @@ export class PersonalPage {
     education: Observable<Education[]>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public userInfo: UserService,
-        public personal: PersonalService,
-        public craft: CraftService,
-        public addressService: AddressService,
-        public mapper: MapperService
+        private navParams: NavParams,
+        private userInfo: UserService,
+        private personal: PersonalService
     ) {
         this.userId = this.navParams.get('userId');
     }
 
     ionViewDidLoad() {
-        this.launch();
-
         this.initialModel();
+
+        this.launch();
     }
 
     launch() {
@@ -63,79 +54,26 @@ export class PersonalPage {
 
         this.subscriptions = [
             this.personal.getBasicInfoList(option),
-            this.personal.handleError(),
+
+            this.personal.handleBasicInfoError(),
         ];
     }
 
     initialModel() {
-        const source = this.personal.getBasicInfoResponse()
-            .filter(value => !!value);
+        this.basic = this.personal.getBasicFromBasicInfoList();
 
-        this.getBasic(source);
-        this.getHome(source);
-        this.getWorkExperience(source);
-        this.getPlatformExperience(source);
-        this.getEducation(source);
-        this.getPersonalId(source);
-        this.getCertification(source);
-    }
+        this.personalIdInfo = this.personal.getPersonalIdFromBasicInfoList();
 
-    /**
-     * 以下所有的filter不能删，后台的数据结构不稳定，防止它不给返回需要的字段。
-     */
-    getBasic(source: Observable<BasicInfoListResponse>): void {
-        this.basic = source
-            .filter(data => !!data.basic_info)
-            .map(data => data.basic_info)
-    }
+        this.certification = this.personal.getCertificationsFromBasicInfoList();
 
-    getHome(source: Observable<BasicInfoListResponse>): void {
-        this.family = source
-            .filter(value => !!value.home_info && !!value.home_info.length)
-            .mergeMap(data => Observable.from(data.home_info)
-                .first()
-                .map(res => this.mapper.transformFamily(res))
-                .zip(
-                this.addressService.getAddressCode(Observable.from(data.home_info).first().map(data => [data.homeaddr__province, data.homeaddr__city, data.homeaddr__dist])).map(res => res.join(' ')),
-                (result, addressArea) => ({ ...result, addressArea })
-                )
-            );
-    }
+        this.family = this.personal.getFamilyFromBasicInfoList();
 
-    getWorkExperience(source: Observable<BasicInfoListResponse>): void {
-        this.workExperience = source
-            .filter(value => !!value.work_expr_info)
-            .map(data => data.work_expr_info.map(item => this.mapper.transformWorkExperience(item)))
-    }
+        this.education = this.personal.getEducationsFromBasicInfoList();
 
-    getPlatformExperience(source: Observable<BasicInfoListResponse>): void {
-        this.platformExperience = source
-            .filter(value => !!value.platfrom_work_expr_info)
-            .map(data => data.platfrom_work_expr_info.map(item => this.mapper.transformPlatformWorkExperience(item)));
-    }
-
-    getPersonalId(source: Observable<BasicInfoListResponse>): void {
-        this.personalIdInfo = source
-            .filter(value => !!value.person_id_info && !!value.person_id_info.length)
-            .mergeMap(data => Observable.from(data.person_id_info)
-                .first()
-            );
-    }
-
-    getCertification(source: Observable<BasicInfoListResponse>): void {
-        this.certification = source
-            .filter(value => !!value.work_cert_info)
-            .combineLatest(
-            this.craft.getWorkTypeList(),
-            (source, type) => source.work_cert_info.map(element => this.mapper.transformCertification(element, type)))
-    }
-
-    getEducation(source: Observable<BasicInfoListResponse>): void {
-        this.education = source.map(data => data.edu_info.map(item => this.mapper.transformEducation(item)));
+        this.workExperience = this.personal.getCustomWorkExperiencesFromBasicInfoList();
     }
 
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
-
 }
