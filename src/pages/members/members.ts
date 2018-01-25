@@ -42,7 +42,7 @@ export class MembersPage {
 
     subscriptions: Subscription[] = [];
 
-    type$: Subject<number> = new Subject();
+    type$: Subject<string> = new Subject();
 
     haveStatisticsPermission: Observable<boolean>;
 
@@ -88,28 +88,30 @@ export class MembersPage {
 
     launch(): void {
         this.subscriptions = [
-            this.worker.getWorkerContracts(this.getOption()),
-            this.worker.setWorkersCountDistinctByPayType(this.worker.getWorkerCount(), this.type$.startWith(ContractType.timer)),
+            this.worker.getWorkerContracts(this.getOption(ContractType[1])),
+
+            this.worker.getWorkerContracts(this.type$.filter(value => value === ContractType[2]).take(1).mergeMap(type => this.getOption(type))),
+
+            this.worker.setWorkersCountDistinctByPayType(this.type$.startWith(ContractType[1])),
+
             this.worker.handleError(),
         ];
     }
 
-    getOption(): Observable<RequestOption> {
-        return this.worker.getUnexpiredOption()
-            .combineLatest(
-            this.worker.getContractTypeOption(this.type),
+    getOption(type: string): Observable<RequestOption> {
+        return this.worker.getManagementPage(type)
+            .withLatestFrom(
+            this.worker.getContractTypeOption(Observable.of(type)),
             this.worker.getCompleteStatusOption(),
-            this.worker.getManagementPage(ContractType[this.type]),
+            this.worker.getUnexpiredOption(),
             (option1, option2, option3, option4) => ({ ...option1, ...option2, ...option3, ...option4 })
             );
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll) {
-        this.worker.incrementPage(ContractType[this.type]);
-
+    getNextPage(infiniteScroll: InfiniteScroll): void {
         this.page$$ && this.page$$.unsubscribe();
 
-        this.page$$ = this.worker.getWorkerContractResponse().subscribe(_ => infiniteScroll.complete());
+        this.page$$ = this.worker.getNextPage(infiniteScroll, ContractType[this.type]);
     }
 
     transformData(item: WorkerContract): WorkerItem {
@@ -126,7 +128,7 @@ export class MembersPage {
     }
 
     goToStatisticsPage(): void {
-       this.navCtrl.push(memberStatisticsPage).then(_ => { });
+        this.navCtrl.push(memberStatisticsPage).then(_ => { });
     }
 
     ionViewWillUnload() {

@@ -4,7 +4,7 @@ import { PlatformExperience, CustomWorkExperience } from './../../interfaces/per
 import { Observable } from 'rxjs/Observable';
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { AddWorkExperienceComponent } from '../../components/add-work-experience/add-work-experience';
 
 @IonicPage()
@@ -23,7 +23,6 @@ export class WorkExperiencePage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        private navCtrl: NavController,
         private navParams: NavParams,
         private personal: PersonalService,
         private modalCtrl: ModalController,

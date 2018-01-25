@@ -1,12 +1,11 @@
 import { UpdateFamilyInformationComponent } from './../../components/update-family-information/update-family-information';
-import { MapperService } from './../../services/api/mapper-service';
 import { AddressService } from './../../services/utils/address-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Family } from './../../interfaces/personal-interface';
 import { Observable } from 'rxjs/Observable';
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -20,12 +19,10 @@ export class FamilyInformationPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        private navCtrl: NavController,
         private navParams: NavParams,
         private personal: PersonalService,
         private modalCtrl: ModalController,
-        private addressService: AddressService,
-        private mapper: MapperService
+        private addressService: AddressService
     ) {
     }
 

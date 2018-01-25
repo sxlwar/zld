@@ -1,3 +1,4 @@
+import { InfiniteScroll } from 'ionic-angular';
 import { AddAttendancesToModifyAction, ResetAttendancesToModifyAction, RemoveAttendanceFromReadyToModify } from './../../actions/action/attendance-action';
 import { uniqBy, orderBy } from 'lodash';
 import { TimeService } from './../utils/time-service';
@@ -148,6 +149,14 @@ export class AttendanceService extends RecordOptionService {
             attendance.map(attendances => attendances.map(item => item.id))
                 .withLatestFrom(this.userInfo.getSid(), (attendance_result_id, sid) => ({ attendance_result_id, sid }))
         );
+    }
+
+    getNextPage(infiniteScroll:InfiniteScroll): Subscription {
+        this.increasePage();
+
+        return this.getAttendanceResultResponse()
+            .skip(1)
+            .subscribe(_ => infiniteScroll.complete());
     }
 
     /* =========================================================Local state operation================================================= */

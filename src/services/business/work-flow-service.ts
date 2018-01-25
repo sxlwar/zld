@@ -126,6 +126,7 @@ export class WorkFlowService {
 
         return this.store.select(selectWorkFlowListResponse)
             .filter(value => !!value)
+            .skip(1)
             .subscribe(_ => infiniteScroll.complete());
     }
 

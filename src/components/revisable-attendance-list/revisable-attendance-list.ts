@@ -108,11 +108,9 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
     }
 
     getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.attendance.increasePage();
-
         this.page$$ && this.page$$.unsubscribe();
 
-        this.page$$ = this.attendance.getAttendanceResultResponse().subscribe(_ => infiniteScroll.complete());
+        this.page$$ = this.attendance.getNextPage(infiniteScroll);
     }
 
     sortAttendanceBy(target: number) {

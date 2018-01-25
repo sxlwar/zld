@@ -137,11 +137,9 @@ export class AttendancePage {
     }
 
     getNextPage(infiniteScroll: InfiniteScroll) {
-        this.attendance.increasePage();
-
         this.page$$ && this.page$$.unsubscribe();
 
-        this.page$$ = this.attendance.getAttendanceResultResponse().subscribe(_ => infiniteScroll.complete());
+        this.page$$ = this.attendance.getNextPage(infiniteScroll);
     }
 
     sortAttendanceBy(target: number) {

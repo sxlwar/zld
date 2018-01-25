@@ -33,7 +33,7 @@
             </ion-item>
 
             <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreTimer | async">
-                <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+                <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate" *ngIf="haveMoreTimer | async"></ion-infinite-scroll-content>
             </ion-infinite-scroll>
             <ion-item *ngIf="!(haveMoreTimer | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
 
@@ -50,7 +50,7 @@
             </ion-item>
 
             <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMorePiecer | async">
-                <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+                <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
             </ion-infinite-scroll>
             <ion-item *ngIf="!(haveMorePiecer | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
 

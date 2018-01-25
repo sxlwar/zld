@@ -69,11 +69,7 @@ export class CertificationPage {
     /*============================================UI state changed=================================================*/
 
     getImage(url = '', type: string) {
-        const config = {};
-
-        config[type] = url;
-
-        this.certificateForm.get('personalIdPhoto').patchValue(config);
+        this.certificateForm.get('personalIdPhoto').patchValue({ [type]: url });
     }
 
     /*============================================Refuse clean======================================================*/

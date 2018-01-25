@@ -66,7 +66,7 @@ export class AttendanceRecordService {
     getNextPage(infiniteScroll: InfiniteScroll): Subscription {
         this.increasePage();
 
-        return this.getAttendanceRecordResponse().subscribe(_ => infiniteScroll.complete());
+        return this.getAttendanceRecordResponse().skip(1).subscribe(_ => infiniteScroll.complete());
     }
 
     /* ===========================================================API request ======================================================== */

@@ -43,7 +43,7 @@
     </ion-item>
 
     <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="LOADING | translate"></ion-infinite-scroll-content>
+        <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
     <ion-item *ngIf="!haveMoreData" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>

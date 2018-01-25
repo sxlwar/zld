@@ -453,17 +453,13 @@ export class IconService {
     }
 
     private addIcons(name: string, icons: IconState[]): void {
-        const result = {};
-
         if (name === MineRoot) {
             const target = icons.find(icon => icon.icon === workContractIcon);
 
             if (!target.permission.view || !target.permission.opt) target.color = '';
         }
 
-        result[name] = icons;
-
-        this.store.dispatch(new AddIconsBarAction(result));
+        this.store.dispatch(new AddIconsBarAction({ [name]: icons }));
     }
 
     private select(name: string) {

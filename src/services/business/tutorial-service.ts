@@ -1,4 +1,3 @@
-//region
 import { Slides } from 'ionic-angular';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -15,7 +14,6 @@ import { zipObject } from 'lodash';
 import { Slide } from '../../interfaces/tutorial-interface';
 import { State } from '../../reducers/reducer/tutorial-reducer';
 import { Subscription } from 'rxjs/Subscription';
-//endregion
 
 @Injectable()
 export class TutorialService {
@@ -35,15 +33,11 @@ export class TutorialService {
     }
 
     getSlides(keys: string[], images: string[]): Subscription {
-        let translateResult = {};
-
-        this.translate.get(keys).subscribe(result => translateResult = result);
-
         /**
          *There is a bug of typescript when use spread operator instead of apply method. https://github.com/Microsoft/TypeScript/issues/4130
          **/
         return this.getKeyOfOverview(keys)
-            .zip(this.getValueOfOverview(translateResult, keys))
+            .zip(this.translate.get(keys).mergeMap(result => this.getValueOfOverview(result, keys)))
             .map((ary: Array<Array<string>>, index: number) => Object.assign({ image: images[index] }, zipObject.apply(zipObject, ary)))
             .reduce((acc: Slide[], obj: Slide) => acc.concat([obj]), [])
             .subscribe((value: Slide[]) => this.store.dispatch(new AddSlidesAction(value)));

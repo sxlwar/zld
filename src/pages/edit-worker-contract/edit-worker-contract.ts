@@ -150,7 +150,9 @@ export class EditWorkerContractPage {
 
     resetForm(): void {
         this.form.reset();
-        this.timePayContract.reset();
+        
+        this.timePayContract && this.timePayContract.reset();
+        
         this.piecePayContracts.forEach(item => item.reset());
     }
 

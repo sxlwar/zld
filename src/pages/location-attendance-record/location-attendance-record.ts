@@ -7,7 +7,7 @@ import { AttendanceRecordService } from './../../services/business/attendance-re
 import { Observable } from 'rxjs/Observable';
 import { TimeService } from './../../services/utils/time-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
 import { range } from 'lodash';
 
 export interface RecordItem {
@@ -128,14 +128,10 @@ export class LocationAttendanceRecordPage {
         this.record.updateLocationAttendanceRecordDate(date, 'end');
     }
 
-    getNextPage(infiniteScroll): void {
-        this.record.increasePage();
-
+    getNextPage(infiniteScroll: InfiniteScroll): void {
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
-        this.pageSubscription = this.record
-            .getAttendanceRecordResponse()
-            .subscribe(_ => infiniteScroll.complete());
+        this.pageSubscription = this.record.getNextPage(infiniteScroll);
     }
 
     openWorkerSelect() {

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import { PersonalId, WorkerDetail, WorkType } from './../../interfaces/response-interface';
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { addressAreaFormat } from '../../validators/validators';
 
 @IonicPage()
@@ -31,7 +31,6 @@ export class PersonalInformationPage {
     addressSubject: Subject<string> = new Subject();
 
     constructor(
-        private navCtrl: NavController,
         private navParams: NavParams,
         private personal: PersonalService,
         private craft: CraftService,

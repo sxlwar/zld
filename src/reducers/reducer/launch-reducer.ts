@@ -86,11 +86,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, workerContractModifyResponse: action.payload };
 
         case actions.RESET_LAUNCH_RESPONSE: {
-            const target = {};
-
-            target[action.payload] = null;
-
-            return { ...state, ...target };
+            return { ...state, [action.payload]: null };
         }
 
         default:

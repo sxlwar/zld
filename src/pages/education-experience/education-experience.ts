@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ItemSliding, Item } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController, ItemSliding, Item } from 'ionic-angular';
 import { Education } from 'interfaces/response-interface';
 
 @IonicPage()
@@ -19,7 +19,6 @@ export class EducationExperiencePage {
     educations: Observable<Education[]>;
 
     constructor(
-        private navCtrl: NavController,
         private navParams: NavParams,
         private personal: PersonalService,
         private modalCtrl: ModalController,
