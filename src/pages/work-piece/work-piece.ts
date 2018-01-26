@@ -6,7 +6,7 @@ import { WorkPiece } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { WorkPieceService } from './../../services/business/work-piece-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -19,11 +19,10 @@ export class WorkPiecePage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public piece: WorkPieceService,
-        public project: ProjectService,
-        public modal: ModalController
+        private navParams: NavParams,
+        private piece: WorkPieceService,
+        private project: ProjectService,
+        private modal: ModalController
     ) {
     }
 
@@ -34,24 +33,30 @@ export class WorkPiecePage {
     }
 
     ionViewDidLoad() {
-        this.launch();
+        this.initialModel();
 
+        this.launch();
+    }
+
+    initialModel(): void {
         this.pieces = this.piece.getWorkPieces();
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.piece.getWorkPieceList(this.getOption()),
-            this.piece.handleError()
+
+            this.piece.handleError(),
         ];
     }
 
     getOption(): Observable<RequestOption> {
-        return this.project.getProjectId().zip(
+        return this.project.getProjectId()
+            .zip(
             this.piece.getCompleteOption(),
             this.piece.getHistoryOption(),
             (project_id, statue, history) => ({ project_id, ...statue, ...history })
-        );
+            );
     }
 
     showStatistics(source: WorkPiece): void {

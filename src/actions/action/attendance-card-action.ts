@@ -131,6 +131,14 @@ export class ResetAttendanceCardPageAction implements Action {
     constructor() { }
 }
 
+export const RESET_ATTENDANCE_CARD_RESPONSE = 'RESET_ATTENDANCE_CARD_RESPONSE';
+
+export class ResetAttendanceCardOperateResponseAction implements Action {
+    readonly type = RESET_ATTENDANCE_CARD_RESPONSE;
+
+    constructor(public payload: string) { }
+}
+
 export const GET_ATTENDANCE_CARD_LIMIT = 'GET_ATTENDANCE_CARD_LIMIT';
 
 export class GetAttendanceCardLimitAction implements Action {
@@ -167,6 +175,7 @@ export type Actions = GetAttendanceCardListAction
     | GetAttendanceCardLimitAction
     | GetAttendanceCardPageAction
     | IncrementAttendanceCardPageAction
+    | ResetAttendanceCardOperateResponseAction 
     | ResetAttendanceCardPageAction
     | UpdateAttendanceCardAction
     | UpdateAttendanceCardFailAction

@@ -17,6 +17,11 @@
         </ion-list-header>
 
         <ion-item>
+            <ion-label fixed>{{'NAME' | translate}}</ion-label>
+            <ion-input disabled [value]="item.contract__worker__employee__realname"></ion-input>
+        </ion-item>
+
+        <ion-item>
             <ion-label fixed>{{'LOCATION' | translate}}</ion-label>
             <ion-input disabled [value]="item.location"></ion-input>
         </ion-item>

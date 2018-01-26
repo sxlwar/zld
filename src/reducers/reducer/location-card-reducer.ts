@@ -3,6 +3,13 @@ import { LocationCardAddOptions, LocationCardDeleteOptions, LocationCardUpdateOp
 import { LocationCardListResponse, LocationCardAddResponse, LocationCardDeleteResponse, LocationCardUpdateResponse, LocationCard } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/location-card-action';
 
+export enum LocationCardResponses {
+    cardResponse = 'cardResponse ',
+    addResponse = 'addResponse',
+    deleteResponse = 'deleteResponse',
+    updateResponse = 'updateResponse'
+}
+
 export interface State {
     limit: number;
     page: number;
@@ -22,10 +29,7 @@ export interface State {
 export const initialState: State = {
     limit: 20,
     page: 1,
-    cardResponse: {
-        count: 0,
-        location_cards: []
-    },
+    cardResponse: null,
     addResponse: null,
     updateResponse: null,
     deleteResponse: null,
@@ -52,67 +56,70 @@ export const initialState: State = {
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
         case actions.LOCATION_CARD_LIST_FAIL:
-            return Object.assign({}, state, { cardResponse: action.payload });
+            return { ...state, cardResponse: action.payload };
 
         case actions.LOCATION_CARD_LIST_SUCCESS:
-            return Object.assign({}, state, { cardResponse: action.payload });
+            return { ...state, cardResponse: action.payload };
 
         case actions.ADD_LOCATION_CARD:
-            return Object.assign({}, state, { addOptions: action.payload });
+            return { ...state, addOptions: action.payload };
 
         case actions.ADD_LOCATION_CARD_FAIL:
-            return Object.assign({}, state, { addResponse: action.payload });
+            return { ...state, addResponse: action.payload };
 
         case actions.ADD_LOCATION_CARD_SUCCESS: {
             const location_cards = addCard(state.cardResponse.location_cards, action.payload.id, state.addOptions);
 
             const cardResponse = { location_cards, count: state.cardResponse.count + 1 };
 
-            return Object.assign({}, state, { cardResponse, addResponse: action.payload });
+            return { ...state, cardResponse, addResponse: action.payload };
         }
 
         case actions.UPDATE_LOCATION_CARD:
-            return Object.assign({}, state, { updateOptions: action.payload });
+            return { ...state, updateOptions: action.payload };
 
         case actions.UPDATE_LOCATION_CARD_FAIL:
-            return Object.assign({}, state, { updateResponse: action.payload });
+            return { ...state, updateResponse: action.payload };
 
         case actions.UPDATE_LOCATION_CARD_SUCCESS: {
             const location_cards = updateCard(state.cardResponse.location_cards, state.updateOptions);
 
             const cardResponse = Object.assign({}, state.cardResponse, { location_cards });
 
-            return Object.assign({}, state, { cardResponse, updateResponse: action.payload });
+            return { ...state, cardResponse, updateResponse: action.payload };
         }
 
         case actions.DELETE_LOCATION_CARD:
-            return Object.assign({}, state, { deleteOptions: action.payload });
+            return { ...state, deleteOptions: action.payload };
 
         case actions.DELETE_LOCATION_CARD_FAIL:
-            return Object.assign({}, state, { deleteResponse: action.payload });
+            return { ...state, deleteResponse: action.payload };
 
         case actions.DELETE_LOCATION_CARD_SUCCESS: {
             const location_cards = state.cardResponse.location_cards.filter(item => item.id !== state.deleteOptions.location_card_id);
 
             const cardResponse = Object.assign({}, state.cardResponse, { location_cards });
 
-            return Object.assign({}, state, { cardResponse, deleteResponse: action.payload });
+            return { ...state, cardResponse, deleteResponse: action.payload };
         }
 
         case actions.UPDATE_ORDER_STATE:
-            return Object.assign({}, state, { orderOptions: updateConditionState(state.orderOptions, action.payload) });
+            return { ...state, orderOptions: updateConditionState(state.orderOptions, action.payload) };
 
         case actions.UPDATE_BINDING_STATE:
-            return Object.assign({}, state, { bindingStateOptions: updateConditionState(state.bindingStateOptions, action.payload) });
+            return { ...state, bindingStateOptions: updateConditionState(state.bindingStateOptions, action.payload) };
 
         case actions.UPDATE_DEVICE_STATE:
-            return Object.assign({}, state, { deviceStateOptions: updateConditionState(state.deviceStateOptions, action.payload) });
+            return { ...state, deviceStateOptions: updateConditionState(state.deviceStateOptions, action.payload) };
 
         case actions.UPDATE_TEAM_STATE:
-            return Object.assign({}, state, { teamStateOptions: action.payload });
+            return { ...state, teamStateOptions: action.payload };
 
         case actions.SET_SELECTED_TEAM:
-            return Object.assign({}, state, { teamStateOptions: updateConditionState(state.teamStateOptions, action.payload) });
+            return { ...state, teamStateOptions: updateConditionState(state.teamStateOptions, action.payload) };
+
+        case actions.RESET_LOCATION_CARD_OPERATE_RESPONSE:
+            return { ...state, [action.payload]: null };
 
         case actions.GET_LOCATION_CARD_LIST:
         default:
@@ -127,8 +134,9 @@ export function addCard(source: LocationCard[], id: number, options: LocationCar
     let newCard = { id, dev_id: options.dev_id, isLocalAdd: true, status: 0 };
 
     if (options.user_id) {
-        newCard = Object.assign(newCard, { user__employee__realname: options.userName });
+        newCard = Object.assign(newCard, { user__employee__realname: options.userName, user_id: options.user_id });
     } else {
+        // nothing to do 
     }
 
     return [...source, newCard] as LocationCard[];
@@ -153,8 +161,6 @@ export function updateConditionState(source: ConditionOption[], target: Conditio
 }
 
 export const getCardListResponse = (state: State) => state.cardResponse;
-
-export const getCards = (state: State) => state.cardResponse.location_cards;
 
 export const getCardCount = (state: State) => state.cardResponse.count;
 

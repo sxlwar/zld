@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { AddLocationCardComponent } from './../../components/add-location-card/add-location-card';
 import { TranslateService } from '@ngx-translate/core';
 import { ConditionOption } from './../../interfaces/order-interface';
@@ -11,7 +12,8 @@ import { PermissionService } from './../../services/config/permission-service';
 import { LocationCardService } from './../../services/business/location-card-service';
 import { TeamService } from './../../services/business/team-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
 
 @IonicPage()
 @Component({
@@ -42,30 +44,31 @@ export class LocationCardPage {
 
     selectedTeam: ConditionOption;
 
+    unbind$: Subject<LocationCard> = new Subject();
+
+    delete$: Subject<LocationCard> = new Subject();
+
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public teamService: TeamService,
-        public locationCard: LocationCardService,
-        public permission: PermissionService,
-        public translate: TranslateService,
-        public project: ProjectService,
-        public modalCtrl: ModalController
+        private navParams: NavParams,
+        private teamService: TeamService,
+        private locationCard: LocationCardService,
+        private permission: PermissionService,
+        private translate: TranslateService,
+        private project: ProjectService,
+        private modalCtrl: ModalController
     ) {
     }
 
     ionViewCanEnter() {
         const { view, opt } = this.navParams.get('permission');
 
-        const result = opt || view;
-
-        result && this.launch();
-
         return opt || view;
     }
 
     ionViewDidLoad() {
         this.initialModel();
+
+        this.launch();
     }
 
     initialModel(): void {
@@ -84,19 +87,34 @@ export class LocationCardPage {
 
     /* =============================================================Launch functions============================================ */
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
-            ...this.locationCard.handleError(),
             this.locationCard.getTeamStateOptions().filter(value => !value.length).mergeMapTo(this.updateTeamStateOptions()).subscribe(option => this.locationCard.updateTeamStateOptions(option)),
+
             this.teamService.getTeamList(this.teamService.getTeamStateOptions().filter(value => !value.length).mergeMapTo(this.project.getProjectId().map(project_id => ({ project_id })))),
+
             this.getLocationCardList(),
+
+            //v1还传了location_card_id这个字段，但两个都解绑成功了。。。。。。。。。。。。。。
+            this.locationCard.updateLocationCard(this.unbind$.map(card => ({ dev_id: card.dev_id }))),
+
+            this.locationCard.deleteLocationCard(this.delete$.map(card => ({ location_card_id: card.id }))),
+
             this.teamService.handleError(),
+
+            this.locationCard.handleQueryError(),
+
+            this.locationCard.handleDeleteError(),
+
+            this.locationCard.handleUpdateError(),
         ];
     }
 
     getLocationCardList(): Subscription {
         return this.locationCard.getLocationCardList(
-            this.getOptions().distinctUntilChanged().map(team_id => team_id ? { team_id } : {})
+            this.locationCard.getSelectedTeam()
+                .map(team => team && team.condition || null)
+                .distinctUntilChanged().map(team_id => team_id ? { team_id } : {})
         );
     }
 
@@ -112,14 +130,6 @@ export class LocationCardPage {
             );
     }
 
-    /**
-     * @description Get the option for teamList api. Only need one field named 'team_id' if user select to show list of the specific team.
-     */
-    getOptions(): Observable<number> {
-        return this.locationCard.getSelectedTeam()
-            .map(team => team && team.condition || null);
-    }
-
     /* ===============================================Operate functions===================================================== */
 
     addCard(): void {
@@ -127,19 +137,7 @@ export class LocationCardPage {
     }
 
     bindCard(card: LocationCard): void {
-        const cardNumber = card.dev_id;
-
-        this.modalCtrl.create(AddLocationCardComponent, { cardNumber, id: card.id }).present();
-    }
-
-    unbindCard(card: LocationCard): void {
-        const { dev_id } = card;
-
-        this.locationCard.updateLocationCard(Observable.of({ dev_id })); //v1还传了location_card_id这个字段，但两个都解绑成功了。。。。。。。。。。。。。。
-    }
-
-    deleteCard(card: LocationCard): void {
-        this.locationCard.deleteLocationCard(Observable.of({ location_card_id: card.id }));
+        this.modalCtrl.create(AddLocationCardComponent, { cardNumber: card.dev_id, id: card.id }).present();
     }
 
     /* ===============================================Condition related functions===================================================== */
@@ -161,6 +159,10 @@ export class LocationCardPage {
     }
 
     ionViewWillUnload() {
+        this.locationCard.resetOperateResponse(LocationCardResponses.deleteResponse);
+
+        this.locationCard.resetOperateResponse(LocationCardResponses.updateResponse);
+
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

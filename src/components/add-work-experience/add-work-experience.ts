@@ -1,6 +1,5 @@
 import { TimeService } from './../../services/utils/time-service';
 import { MapperService } from './../../services/api/mapper-service';
-import { mustBeChineseValidator } from '../../validators/validators';
 import { CustomWorkExperience } from './../../interfaces/personal-interface';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavParams, ViewController } from 'ionic-angular';
@@ -38,9 +37,9 @@ export class AddWorkExperienceComponent {
         this.workExperienceForm = this.fb.group({
             startDate: '',
             endDate: '',
-            company: ['', [mustBeChineseValidator, Validators.maxLength(20)]],
+            company: ['', [Validators.maxLength(20)]],
             job: '',
-            project: ['', [mustBeChineseValidator, Validators.maxLength(20)]],
+            project: ['', [Validators.maxLength(20)]],
         });
 
         const form: CustomWorkExperience = this.navParams.get('form');

@@ -46,7 +46,7 @@
                     <!--TODO: ICON-->
                     {{'BIND' | translate}}
                 </button>
-                <button ion-button color="secondary" *ngIf="item.user_id" (click)="unbindCard(item)">
+                <button ion-button color="secondary" *ngIf="item.user_id" (click)="unbind$.next(item)">
                     <ion-icon name="call"></ion-icon>
                     {{'UNBIND' | translate}}
                 </button>

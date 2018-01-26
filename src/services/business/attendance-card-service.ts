@@ -1,16 +1,14 @@
-import { WorkerService } from './worker-service';
 import { orderBy } from 'lodash';
 import { ConditionOption, BindingStateFlag, OrderFlag } from './../../interfaces/order-interface';
-import { UpdateOrderStateAction, UpdateBindingStateAction } from './../../actions/action/attendance-card-action';
+import { UpdateOrderStateAction, UpdateBindingStateAction, ResetAttendanceCardOperateResponseAction } from './../../actions/action/attendance-card-action';
 import { AddAttendanceCardFormModel } from './../api/mapper-service';
 import { RequestOption, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
-import { AttendanceCardListResponse, AttendanceCard } from './../../interfaces/response-interface';
+import { AttendanceCardListResponse, AttendanceCard, AttendanceCardAddResponse, AttendanceCardDeleteResponse, AttendanceCardUpdateResponse } from './../../interfaces/response-interface';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
-import { ProjectService } from './project-service';
-import { AppState, selectAttendanceCardResponse, selectAttendanceCardAddResponse, selectAttendanceCardDeleteResponse, selectAttendanceCardUpdateResponse, selectAttendanceCards, selectAttendanceCardBindingOptions, selectAttendanceCardOrderOptions } from './../../reducers/index-reducer';
+import { AppState, selectAttendanceCardResponse, selectAttendanceCardAddResponse, selectAttendanceCardDeleteResponse, selectAttendanceCardUpdateResponse, selectAttendanceCardBindingOptions, selectAttendanceCardOrderOptions } from './../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
@@ -19,23 +17,21 @@ import { Injectable } from '@angular/core';
 export class AttendanceCardService {
 
     constructor(
-        public store: Store<AppState>,
-        public project: ProjectService,
-        public userInfo: UserService,
-        public error: ErrorService,
-        public worker: WorkerService,
-        public processor: ProcessorService
+        private store: Store<AppState>,
+        private userInfo: UserService,
+        private error: ErrorService,
+        private processor: ProcessorService
     ) {
     }
 
     /* =============================================================Data acquisition================================================================ */
 
     getCardListResponse(): Observable<AttendanceCardListResponse> {
-        return this.store.select(selectAttendanceCardResponse);
+        return this.store.select(selectAttendanceCardResponse).filter(value => !!value);
     }
 
     getCards(): Observable<AttendanceCard[]> {
-        return this.store.select(selectAttendanceCards);
+        return this.getCardListResponse().map(res => res.attendance_cards);
     }
 
     getCardsByConditions(): Observable<AttendanceCard[]> {
@@ -53,13 +49,25 @@ export class AttendanceCardService {
                 return result;
             });
     }
-    
+
     getBindingStateOptions(): Observable<ConditionOption[]> {
         return this.store.select(selectAttendanceCardBindingOptions);
     }
 
     getOrderOptions(): Observable<ConditionOption[]> {
         return this.store.select(selectAttendanceCardOrderOptions);
+    }
+
+    getAddAttendanceCardResponse(): Observable<AttendanceCardAddResponse> {
+        return this.store.select(selectAttendanceCardAddResponse).filter(value => !!value);
+    }
+
+    getDeleteAttendanceCardResponse(): Observable<AttendanceCardDeleteResponse> {
+        return this.store.select(selectAttendanceCardDeleteResponse).filter(value => !!value);
+    }
+
+    getUpdateAttendanceCardResponse(): Observable<AttendanceCardUpdateResponse> {
+        return this.store.select(selectAttendanceCardUpdateResponse).filter(value => !!value);
     }
 
     /* ===================================================================API request============================================================= */
@@ -91,12 +99,12 @@ export class AttendanceCardService {
         return this.processor.attendanceCardUpdateProcessor(
             option.withLatestFrom(
                 this.userInfo.getSid(),
-                (option, sid) => ({ ...option, sid })
-            ) as Observable<AttendanceCardUpdateOptions>
+                (option, sid) => ({ ...option, sid }) as AttendanceCardUpdateOptions
+            )
         );
     }
 
-    /* ============================================================Local state change methods================================================== */
+    /* ============================================================Local state update================================================== */
 
     updateOrderConditionState(option: ConditionOption): void {
         this.store.dispatch(new UpdateOrderStateAction(option));
@@ -104,6 +112,10 @@ export class AttendanceCardService {
 
     updateBindConditionState(option: ConditionOption): void {
         this.store.dispatch(new UpdateBindingStateAction(option));
+    }
+
+    resetAttendanceCardOperateResponse(operate: string): void {
+        this.store.dispatch(new ResetAttendanceCardOperateResponseAction(operate));
     }
 
     /* =============================================================Error handle================================================================ */
@@ -117,20 +129,14 @@ export class AttendanceCardService {
     }
 
     handleAddError(): Subscription {
-        const error = this.store.select(selectAttendanceCardAddResponse);
-
-        return this.error.handleErrorInSpecific(error, 'API_ERROR');
+        return this.error.handleErrorInSpecific(this.getAddAttendanceCardResponse(), 'API_ERROR');
     }
 
     handleDeleteError(): Subscription {
-        const error = this.store.select(selectAttendanceCardDeleteResponse);
-
-        return this.error.handleErrorInSpecific(error, 'API_ERROR');
+        return this.error.handleErrorInSpecific(this.getDeleteAttendanceCardResponse(), 'API_ERROR');
     }
 
     handleUpdateError(): Subscription {
-        const error = this.store.select(selectAttendanceCardUpdateResponse);
-
-        return this.error.handleErrorInSpecific(error, 'API_ERROR');
+        return this.error.handleErrorInSpecific(this.getUpdateAttendanceCardResponse(), 'API_ERROR');
     }
 }

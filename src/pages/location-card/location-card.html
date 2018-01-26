@@ -72,14 +72,13 @@
             <ion-item-options side="right">
                 <button ion-button color="primary" *ngIf="!item.user_id" (click)="bindCard(item)">
                     <ion-icon name="link"></ion-icon>
-                    <!--TODO: ICON-->
                     {{'BIND' | translate}}
                 </button>
-                <button ion-button color="secondary" *ngIf="item.user_id" (click)="unbindCard(item)">
+                <button ion-button color="secondary" *ngIf="item.user_id" (click)="unbind$.next(item)">
                     <ion-icon name="call"></ion-icon>
                     {{'UNBIND' | translate}}
                 </button>
-                <button ion-button color="danger" (click)="deleteCard(item)">
+                <button ion-button color="danger" (click)="delete$.next(item)">
                     <ion-icon name="trash"></ion-icon>
                     {{'DELETE_BUTTON' | translate}}
                 </button>

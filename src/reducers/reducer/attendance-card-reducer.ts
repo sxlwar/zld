@@ -3,6 +3,13 @@ import { AttendanceCardAddOptions, AttendanceCardDeleteOptions, AttendanceCardUp
 import { AttendanceCardListResponse, AttendanceCardAddResponse, AttendanceCardDeleteResponse, AttendanceCardUpdateResponse, AttendanceCard } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-card-action';
 
+export enum AttendanceCardResponses {
+    queryResponse = 'queryResponse',
+    addResponse = 'addResponse',
+    deleteResponse = 'deleteResponse',
+    updateResponse = 'updateResponse'
+}
+
 export interface State {
     queryResponse: AttendanceCardListResponse;
     addResponse: AttendanceCardAddResponse;
@@ -18,10 +25,7 @@ export interface State {
 }
 
 export const initialState: State = {
-    queryResponse: {
-        count: 0,
-        attendance_cards: []
-    },
+    queryResponse: null,
     addResponse: null,
     deleteResponse: null,
     updateResponse: null,
@@ -45,62 +49,62 @@ export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
         case actions.ATTENDANCE_CARD_LIST_FAIL:
         case actions.ATTENDANCE_CARD_LIST_SUCCESS:
-            return Object.assign({}, state, { queryResponse: action.payload });
+            return { ...state, queryResponse: action.payload };
 
         case actions.ADD_ATTENDANCE_CARD:
-            return Object.assign({}, state, { addOptions: action.payload });
+            return { ...state, addOptions: action.payload };
 
         case actions.ADD_ATTENDANCE_CARD_FAIL:
-            return Object.assign({}, state, { addResponse: action.payload });
+            return { ...state, addResponse: action.payload };
 
         case actions.ADD_ATTENDANCE_CARD_SUCCESS: {
             const { ic_card_num, user_id, userName } = state.addOptions.attendance_card_form;
 
             const attendance_cards = [...state.queryResponse.attendance_cards, { id: action.payload.id, ic_card_num, user_id, user__employee__realname: userName }]; // user_id is an optional param, so it is may be 'undefined';
 
-            const queryResponse = Object.assign({}, state.queryResponse, { attendance_cards });
+            const queryResponse = Object.assign({}, state.queryResponse,  { attendance_cards, count: attendance_cards.length });
 
-            return Object.assign({}, state, { queryResponse });
+            return { ...state, queryResponse, addResponse: action.payload };
         }
 
         case actions.UPDATE_ATTENDANCE_CARD:
-            return Object.assign({}, state, { updateOptions: action.payload });
+            return { ...state, updateOptions: action.payload };
 
         case actions.UPDATE_ATTENDANCE_CARD_FAIL:
-            return Object.assign({}, state, { updateResponse: action.payload });
+            return { ...state, updateResponse: action.payload };
 
         case actions.UPDATE_ATTENDANCE_CARD_SUCCESS: {
             const attendance_cards = state.queryResponse.attendance_cards.map(item => item.ic_card_num === state.updateOptions.ic_card_num ? updateCard(item, state.updateOptions) : item);
 
-            return updateQueryList(state, attendance_cards);
+            return { ...updateQueryList(state, attendance_cards), updateResponse: action.payload };
         }
 
         case actions.DELETE_ATTENDANCE_CARD:
-            return Object.assign({}, state, { deleteOptions: action.payload })
+            return { ...state, deleteOptions: action.payload };
 
         case actions.DELETE_ATTENDANCE_CARD_FAIL:
-            return Object.assign({}, state, { deleteResponse: action.payload });
+            return { ...state, deleteResponse: action.payload };
 
         case actions.DELETE_ATTENDANCE_CARD_SUCCESS: {
             const attendance_cards = state.queryResponse.attendance_cards.filter(item => state.deleteOptions.attendance_card_id.indexOf(item.id) === -1);
 
-            return updateQueryList(state, attendance_cards);
+            return { ...updateQueryList(state, attendance_cards), deleteResponse: action.payload };
         }
 
-        case actions.DELETE_ATTENDANCE_CARD:
-            return Object.assign({}, state, { deleteOptions: action.payload });
-
         case actions.RESET_ATTENDANCE_CARD_PAGE:
-            return Object.assign({}, state, { page: initialState.page });
+            return { ...state, page: initialState.page };
 
         case actions.INCREMENT_ATTENDANCE_CARD_PAGE:
-            return Object.assign({}, state, { page: state.page + 1 });
+            return { ...state, page: state.page + 1 };
 
         case actions.UPDATE_ORDER_STATE:
-            return Object.assign({}, state, { orderOptions: updateConditionState(state.orderOptions, action.payload) });
+            return { ...state, orderOptions: updateConditionState(state.orderOptions, action.payload) };
 
         case actions.UPDATE_BINDING_STATE:
-            return Object.assign({}, state, { bindingStateOptions: updateConditionState(state.bindingStateOptions, action.payload) })
+            return { ...state,  bindingStateOptions: updateConditionState(state.bindingStateOptions, action.payload) };
+
+        case actions.RESET_ATTENDANCE_CARD_RESPONSE:
+            return { ...state, [action.payload]: null };
 
         case actions.GET_ATTENDANCE_CARD_LIST:
         default:
@@ -118,7 +122,7 @@ export function updateConditionState(source: ConditionOption[], target: Conditio
 
 export function updateCard(card: AttendanceCard, option: AttendanceCardUpdateOptions): AttendanceCard {
     if (option.user_id) {
-        return Object.assign({}, card, { user__employee__realname: option.userName, user_id: option.user_id });
+        return { ...card, user__employee__realname: option.userName, user_id: option.user_id };
     } else {
         return {
             ic_card_num: card.ic_card_num,
@@ -133,12 +137,10 @@ export function updateCard(card: AttendanceCard, option: AttendanceCardUpdateOpt
 export function updateQueryList(state: State, attendance_cards: AttendanceCard[]): State {
     const queryResponse = Object.assign({}, state.queryResponse, { attendance_cards });
 
-    return Object.assign({}, state, { queryResponse });
+    return { ...state, queryResponse };
 }
 
 export const getAttendanceCardListResponse = (state: State) => state.queryResponse;
-
-export const getAttendanceCards = (state: State) => state.queryResponse.attendance_cards;
 
 export const getAttendanceCardPage = (state: State) => state.page;
 

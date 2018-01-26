@@ -428,7 +428,7 @@ export interface LocationCardListOptions {
 export interface LocationCardAddOptions {
     sid: string;
     dev_id: string; //定位卡卡号？
-    user_id?: string;
+    user_id?: number;
     userName?: string;
 }
 

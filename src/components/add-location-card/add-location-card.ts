@@ -1,14 +1,16 @@
+import { RequestOption } from './../../interfaces/request-interface';
 import { ProjectService } from './../../services/business/project-service';
 import { Subscription } from 'rxjs/Subscription';
 import { cardNumberValidator } from '../../validators/validators';
 import { Subject } from 'rxjs/Subject';
-import { WorkerContractListResponse } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { LocationCardService } from './../../services/business/location-card-service';
 import { WorkerService } from './../../services/business/worker-service';
 import { NavParams, ViewController, InfiniteScroll } from 'ionic-angular';
 import { Component } from '@angular/core';
+import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
+import { AddLocationCardFormModel } from '../../services/api/mapper-service';
 
 interface Worker {
     userId: number;
@@ -27,13 +29,11 @@ export class AddLocationCardComponent {
 
     text = 'ADD_LOCATION_CARD';
 
-    response: Observable<WorkerContractListResponse>;
-
     workers: Observable<Worker[]>;
 
     haveMoreData: Observable<boolean>;
 
-    switchState = new Subject();
+    switchState: Subject<boolean> = new Subject();
 
     boundWorker: Worker;
 
@@ -45,6 +45,10 @@ export class AddLocationCardComponent {
 
     worker$$: Subscription;
 
+    bind$: Subject<RequestOption> = new Subject();
+
+    add$: Subject<AddLocationCardFormModel> = new Subject();
+
     constructor(
         public navParams: NavParams,
         public worker: WorkerService,
@@ -54,10 +58,12 @@ export class AddLocationCardComponent {
         public project: ProjectService
     ) {
         worker.resetPage();
+
+        locationCard.resetOperateResponse(LocationCardResponses.updateResponse);
     }
 
     ngOnInit() {
-        this.initialMode();
+        this.initialModel();
 
         this.launch();
 
@@ -67,27 +73,41 @@ export class AddLocationCardComponent {
         this.checkNavParams();
     }
 
-    initialMode(): void {
-        this.response = this.worker.getWorkerContractResponse();
+    initialModel(): void {
+        this.workers = this.worker.getAllWorkerContracts()
+            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id, workTypeId: item.worktype_id, teamName: item.team__name })))
+            .combineLatest(
+            this.locationCard.getLocationCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)),
+            (workers, boundIds) => workers.filter(item => boundIds.indexOf(item.userId) === -1)
+            );
 
-        this.workers = this.getWorkers();
-
-        this.haveMoreData = this.response.map(response => !!response.worker_contract.length).skip(1);
+        this.haveMoreData = this.worker.getHaveMoreData();
     }
 
     launch(): void {
         this.subscriptions = [
             this.clearSelectedWorkWhenSwitchClose(),
-            this.getWorkerContractList(),
+
+            this.worker.getWorkerContracts(this.switchState
+                .filter(isOpen => isOpen)
+                .take(1).mergeMapTo(this.getOption())),
+
+            this.locationCard.getAddLocationCardResponse()
+                .merge(this.locationCard.getUpdateLocationCardResponse())
+                .filter(res => !res.errorMessage)
+                .subscribe(_ => this.dismiss()),
+
+            this.locationCard.addLocationCard(this.add$),
+
+            this.locationCard.updateLocationCard(this.bind$), // This error handled in location-card.ts
+
             this.worker.handleError(),
+
+            this.locationCard.handleAddError(),
         ];
     }
 
-    /**
-     * @method checkNavParams
-     * @description Check whether the cardNumber param is  passed in, display binding function if passed in or addition function if not.
-     */
-    checkNavParams() {
+    checkNavParams(): void {
         const cardNumber = this.navParams.get('cardNumber');
 
         this.isUpdate = !!cardNumber;
@@ -96,52 +116,23 @@ export class AddLocationCardComponent {
             this.text = 'BIND_LOCATION_CARD';
             this.checked = true;
             this.switchState.next(true);
+        } else {
+            // nothing to do 
         }
 
         this.createForm(cardNumber);
     }
 
-    /**
-     * @method clearSelectedWorkWhenSwitchClose
-     * @description Reset boundWorker filed and selectedWorker filed when the switch closed;
-     */
     clearSelectedWorkWhenSwitchClose(): Subscription {
         return this.switchState.filter(value => !value)
             .subscribe(_ => {
                 this.boundWorker = null;
+
                 this.addLocationCardForm.patchValue({ selectedWorker: { value: '', required: false } });
             });
     }
 
-    /**
-     * @method getWorkerContractList
-     * @description In the two case, you need to get the data. 
-     * First, when user first opens the switch, the second is when the user drop-down to get the rest of the data.
-     */
-    getWorkerContractList(): Subscription {
-        const page = this.worker.getCurrentPage();
-
-        const initialOpenSwitch = this.switchState
-            .combineLatest(page)
-            .map(([state, page]) => state && page === 1)
-            .filter(isFirstOpen => isFirstOpen)
-            .distinctUntilChanged();
-
-        const getRestData = page
-            .skip(1)
-            .distinctUntilChanged()
-            .combineLatest(this.worker.getLimit(), this.response.map(item => item.count).distinctUntilChanged())
-            .filter(([page, limit, count]) => Math.ceil(count / limit) + 1 >= page);
-
-        return this.worker.getWorkerContracts(initialOpenSwitch.merge(getRestData).mergeMapTo(this.getOption()));
-    }
-
-    /**
-     * @method createForm 
-     * @param number 
-     * @description Initialize form.
-     */
-    createForm(number = '') {
+    createForm(number = ''): void {
         this.addLocationCardForm = this.fb.group({
             cardNumber: [{ value: number, disabled: this.isUpdate }, cardNumberValidator],
             bind: { value: this.checked, disabled: this.isUpdate },
@@ -149,33 +140,13 @@ export class AddLocationCardComponent {
         });
     }
 
-    /**
-     * @method getWorkers
-     * @description Get works without binding card.
-     */
-    getWorkers(): Observable<Worker[]> {
-        return this.worker.getAllWorkerContracts()
-            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id, workTypeId: item.worktype_id, teamName: item.team__name })))
-            .combineLatest(this.locationCard.getLocationCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)))
-            .map(([workers, boundIds]) => workers.filter(item => boundIds.indexOf(item.userId) === -1));
-    }
-
-    /**
-     * @method getNextPage 
-     * @param infiniteScroll - Ionic scroll instance
-     * @description Drop-down to get rest workers.
-     */
-    getNextPage(infiniteScroll: InfiniteScroll) {
+    getNextPage(infiniteScroll: InfiniteScroll): void {
         this.worker$$ && this.worker$$.unsubscribe();
 
         this.worker$$ = this.worker.getNextPage(infiniteScroll);
     }
 
-    /**
-     * @method getOption
-     * @description Worker contract list api request options;
-     */
-    getOption() {
+    getOption(): Observable<RequestOption> {
         return this.worker.getCompleteStatusOption()
             .zip(
             this.worker.getUnexpiredOption(),
@@ -185,54 +156,40 @@ export class AddLocationCardComponent {
             );
     }
 
-    /**
-     * @method execution
-     * @description Determine which action should be execute when button clicked.
-     */
-    execution() {
+    execution(): void {
         if (this.isUpdate) {
             this.bindCard();
         } else {
             this.addCard();
         }
-        this.viewCtrl.dismiss();
     }
 
-    /**
-     * @method bindCard
-     * @description Execute binding action.
-     */
-    bindCard() {
+    bindCard(): void {
         const cardNumber = this.navParams.get('cardNumber');
 
         const id = this.navParams.get('id');
 
         const { userId, name } = this.boundWorker;
 
-        const subscription = this.locationCard.updateLocationCard(Observable.of({ dev_id: cardNumber, user_id: userId, location_card_id: id, userName: name }));
-
-        this.subscriptions.push(subscription);
+        this.bind$.next({ dev_id: cardNumber, user_id: userId, location_card_id: id, userName: name });
     }
 
-    /**
-     * @method addCard
-     * @description Execute addition action.
-     */
-    addCard() {
+    addCard(): void {
         const { cardNumber, bind } = this.addLocationCardForm.value;
 
-        const option = bind ? { dev_id: cardNumber, user_id: this.boundWorker.userId, userName: this.boundWorker.name } : { dev_id: cardNumber };
-
-        const subscription = this.locationCard.addLocationCard(Observable.of(option));
-
-        this.subscriptions.push(subscription);
+        this.add$.next(
+            bind ? { cardNumber, userId: this.boundWorker.userId, userName: this.boundWorker.name }
+                : { cardNumber }
+        );
     }
 
-    dismiss() {
+    dismiss(): void {
         this.viewCtrl.dismiss();
     }
 
     ngOnDestroy() {
+        this.locationCard.resetOperateResponse(LocationCardResponses.addResponse);
+
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.worker$$ && this.worker$$.unsubscribe();

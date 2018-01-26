@@ -1,19 +1,19 @@
-import { UpdateOrderStateAction, UpdateBindingStateAction, UpdateDeviceStateAction, SetSelectedTeamAction, UpdateTeamStateAction } from './../../actions/action/location-card-action';
+import { UpdateOrderStateAction, UpdateBindingStateAction, UpdateDeviceStateAction, SetSelectedTeamAction, UpdateTeamStateAction, ResetLocationCardOperateResponseAction } from './../../actions/action/location-card-action';
 import { orderBy } from 'lodash';
 import { ConditionOption, OrderFlag, BindingStateFlag, DeviceStateFlag } from './../../interfaces/order-interface';
 import { LocationCardDeleteOptions } from './../../interfaces/request-interface';
-import { RequestOption, LocationCardAddOptions, LocationCardUpdateOptions } from '../../interfaces/request-interface';
-import { LocationCard, DeviceStatus } from './../../interfaces/response-interface';
+import { RequestOption, LocationCardUpdateOptions } from '../../interfaces/request-interface';
+import { LocationCard, DeviceStatus, LocationCardAddResponse, LocationCardUpdateResponse, LocationCardDeleteResponse, LocationCardListResponse } from './../../interfaces/response-interface';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkerService } from './worker-service';
 import { UserService } from './user-service';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { ProjectService } from './project-service';
 import { Store } from '@ngrx/store';
-import { AppState, selectLocationCardListResponse, selectLocationCardAddResponse, selectLocationCardUpdateResponse, selectLocationCardDeleteResponse, selectLocationCards, selectLocationCardCount, selectLocationCardOrderOptions, selectLocationCardBindingOptions, selectLocationCardDeviceOptions, selectLocationCardTeamStateOptions } from './../../reducers/index-reducer';
+import { AppState, selectLocationCardListResponse, selectLocationCardAddResponse, selectLocationCardUpdateResponse, selectLocationCardDeleteResponse, selectLocationCardCount, selectLocationCardOrderOptions, selectLocationCardBindingOptions, selectLocationCardDeviceOptions, selectLocationCardTeamStateOptions } from './../../reducers/index-reducer';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { AddLocationCardFormModel } from '../../services/api/mapper-service';
 
 export interface ExecFn<T> {
     (T): T
@@ -34,19 +34,18 @@ export interface PipeFn<T, U> {
 @Injectable()
 export class LocationCardService {
     constructor(
-        public store: Store<AppState>,
-        public project: ProjectService,
-        public processor: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService,
-        public worker: WorkerService
+        private store: Store<AppState>,
+        private project: ProjectService,
+        private processor: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService
     ) { }
 
     /* ==============================================API request operate================================================ */
 
     getLocationCardList(option: Observable<RequestOption>): Subscription {
         return this.processor.locationCardListProcessor(
-            option.combineLatest(
+            option.withLatestFrom(
                 this.project.getProjectId(),
                 this.userInfo.getSid(),
                 (option, project_id, sid) => ({ sid, project_id, ...option })
@@ -54,34 +53,42 @@ export class LocationCardService {
         );
     }
 
-    addLocationCard(option: Observable<RequestOption>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const options = sid.zip(option, (sid, option) => ({ sid, ...option })) as Observable<LocationCardAddOptions>;
-
-        return this.processor.locationCardAddProcessor(options);
+    addLocationCard(option: Observable<AddLocationCardFormModel>): Subscription {
+        return this.processor.locationCardAddProcessor(
+            option.map(form => this.processor.addLocationCardForm(form))
+            .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            )
+        );
     }
 
     updateLocationCard(option: Observable<RequestOption>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const options = sid.zip(option, (sid, option) => ({ sid, ...option })) as Observable<LocationCardUpdateOptions>;
-
-        return this.processor.locationCardUpdateProcessor(options);
+        return this.processor.locationCardUpdateProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ sid, ...option }) as LocationCardUpdateOptions
+            )
+        );
     }
 
     deleteLocationCard(option: Observable<RequestOption>): Subscription {
-        const sid = this.userInfo.getSid();
-
-        const options = sid.zip(option, (sid, option) => ({ sid, ...option })) as Observable<LocationCardDeleteOptions>;
-
-        return this.processor.locationCardDeleteProcessor(options);
+        return this.processor.locationCardDeleteProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ sid, ...option }) as LocationCardDeleteOptions
+            )
+        );
     }
 
     /* =====================================================Data acquisition============================================= */
 
+    getLocationCardListResponse(): Observable<LocationCardListResponse> {
+        return this.store.select(selectLocationCardListResponse).filter(value => !!value);
+    }
+
     getLocationCards(): Observable<LocationCard[]> {
-        return this.store.select(selectLocationCards);
+        return this.getLocationCardListResponse().map(res => res.location_cards);
     }
 
     getLocationCardCount(): Observable<number> {
@@ -89,7 +96,8 @@ export class LocationCardService {
     }
 
     getLocationCardsByCondition(): Observable<LocationCard[]> {
-        const condition = this.getBindingStateOptions().map(options => options.find(item => item.selected).condition)
+        const condition = this.getBindingStateOptions()
+            .map(options => options.find(item => item.selected).condition)
             .combineLatest(
             this.getOrderOptions().map(options => options.find(item => item.selected).condition),
             this.getDeviceStateOptions().map(options => options.find(item => item.selected).condition)
@@ -104,7 +112,40 @@ export class LocationCardService {
             .map(([cards, [bindingState, order, deviceState]]) => pipe(cards, curry(this.sortCards, order), curry(this.filterCardByBindingState, bindingState), curry(this.filterCardByDeviceState, deviceState)));
     }
 
-    /* ============================================================Update Condition state============================================= */
+    getOrderOptions(): Observable<ConditionOption[]> {
+        return this.store.select(selectLocationCardOrderOptions);
+    }
+
+    getBindingStateOptions(): Observable<ConditionOption[]> {
+        return this.store.select(selectLocationCardBindingOptions);
+    }
+
+    getDeviceStateOptions(): Observable<ConditionOption[]> {
+        return this.store.select(selectLocationCardDeviceOptions);
+    }
+
+    getTeamStateOptions(): Observable<ConditionOption[]> {
+        return this.store.select(selectLocationCardTeamStateOptions);
+    }
+
+    getSelectedTeam(): Observable<ConditionOption> {
+        return this.store.select(selectLocationCardTeamStateOptions)
+            .mergeMap(source => Observable.from(source).find(item => item.selected));
+    }
+
+    getAddLocationCardResponse(): Observable<LocationCardAddResponse> {
+        return this.store.select(selectLocationCardAddResponse).filter(value => !!value);
+    }
+
+    getUpdateLocationCardResponse(): Observable<LocationCardUpdateResponse> {
+        return this.store.select(selectLocationCardUpdateResponse).filter(value => !!value);
+    }
+
+    getDeleteLocationCardResponse(): Observable<LocationCardDeleteResponse> {
+        return this.store.select(selectLocationCardDeleteResponse).filter(value => !!value);
+    }
+
+    /* ============================================================Local State update============================================= */
 
     updateOrderState(option: ConditionOption): void {
         this.store.dispatch(new UpdateOrderStateAction(option));
@@ -120,6 +161,14 @@ export class LocationCardService {
 
     updateSelectedTeam(option: ConditionOption) {
         this.store.dispatch(new SetSelectedTeamAction(option));
+    }
+
+    updateTeamStateOptions(source: ConditionOption[]): void {
+        this.store.dispatch(new UpdateTeamStateAction(source));
+    }
+
+    resetOperateResponse(operate: string): void {
+        this.store.dispatch(new ResetLocationCardOperateResponseAction(operate));
     }
 
     /* =====================================================Condition functions======================================================= */
@@ -166,52 +215,21 @@ export class LocationCardService {
         }
     }
 
-    /* ==================================================Shortcut methods=================================================== */
-
-    getOrderOptions(): Observable<ConditionOption[]> {
-        return this.store.select(selectLocationCardOrderOptions)
-    }
-
-    getBindingStateOptions(): Observable<ConditionOption[]> {
-        return this.store.select(selectLocationCardBindingOptions)
-    }
-
-    getDeviceStateOptions(): Observable<ConditionOption[]> {
-        return this.store.select(selectLocationCardDeviceOptions)
-    }
-
-    getTeamStateOptions(): Observable<ConditionOption[]> {
-        return this.store.select(selectLocationCardTeamStateOptions);
-    }
-
-    updateTeamStateOptions(source: ConditionOption[]): void {
-        this.store.dispatch(new UpdateTeamStateAction(source));
-    }
-
-    getSelectedTeam(): Observable<ConditionOption> {
-        return this.store.select(selectLocationCardTeamStateOptions)
-            .mergeMap(source => Observable.from(source).find(item => item.selected));
-    }
-
     /* ==================================================Error handlers=================================================== */
 
-    handleError(): Subscription[] {
-        return [this.handleQueryError(), this.handleAddError(), this.handleUpdateError(), this.handleDeleteError()];
+    handleQueryError(): Subscription {
+        return this.error.handleErrorInSpecific(this.getLocationCardListResponse(), 'API_ERROR');
     }
 
-    private handleQueryError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLocationCardListResponse), 'API_ERROR');
+    handleAddError(): Subscription {
+        return this.error.handleErrorInSpecific(this.getAddLocationCardResponse(), 'API_ERROR');
     }
 
-    private handleAddError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLocationCardAddResponse), 'API_ERROR');
+    handleUpdateError(): Subscription {
+        return this.error.handleErrorInSpecific(this.getUpdateLocationCardResponse(), 'API_ERROR');
     }
 
-    private handleUpdateError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLocationCardUpdateResponse), 'API_ERROR');
-    }
-
-    private handleDeleteError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLocationCardDeleteResponse), 'API_ERROR');
+    handleDeleteError(): Subscription {
+        return this.error.handleErrorInSpecific(this.getDeleteLocationCardResponse(), 'API_ERROR');
     }
 }

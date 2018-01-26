@@ -1,6 +1,6 @@
 import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
 import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType, ContractTypeOfResponse } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions, CreateAttendanceModifyOptions, CreateLeaveOptions, CreatePieceAuditOptions, CreateOvertimeOptions, CreateWorkerContractModifyOptions, WorkerContractEditOptions, ChangePhoneOptions } from './../../interfaces/request-interface';
+import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions, CreateAttendanceModifyOptions, CreateLeaveOptions, CreatePieceAuditOptions, CreateOvertimeOptions, CreateWorkerContractModifyOptions, WorkerContractEditOptions, ChangePhoneOptions, LocationCardAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
 import { Education as EducationUI } from './../../interfaces/personal-interface';
 
@@ -56,6 +56,12 @@ export interface AddTeamFormModel {
 }
 
 export interface AddAttendanceCardFormModel {
+    cardNumber: string;
+    userId?: number;
+    userName?: string;
+}
+
+export interface AddLocationCardFormModel {
     cardNumber: string;
     userId?: number;
     userName?: string;
@@ -278,6 +284,15 @@ export class MapperService {
                 userName: form.userName
             }
         };
+    }
+
+    addLocationCardForm(form: AddLocationCardFormModel): LocationCardAddOptions {
+        return { 
+            sid: '',
+            dev_id: form.cardNumber,
+            user_id: form.userId,
+            userName: form.userName 
+        }
     }
 
     transformCertification(cer: Certificate, types: WorkType[]): Certification {

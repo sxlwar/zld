@@ -173,6 +173,14 @@ export class ResetLocationCardPageAction implements Action {
     constructor() { }
 }
 
+export const RESET_LOCATION_CARD_OPERATE_RESPONSE = 'RESET_LOCATION_CARD_OPERATE_RESPONSE';
+
+export class ResetLocationCardOperateResponseAction implements Action {
+    readonly type = RESET_LOCATION_CARD_OPERATE_RESPONSE;
+
+    constructor(public payload: string) { }
+}
+
 export const GET_LOCATION_CARD_LIMIT = 'GET_LOCATION_CARD_LIMIT';
 
 export class GetLocationCardLimitAction implements Action {
@@ -194,6 +202,7 @@ export type Actions = GetLocationCardListAction
     | LocationCardListFailAction
     | LocationCardListSuccessAction
     | ResetLocationCardPageAction
+    | ResetLocationCardOperateResponseAction
     | SetSelectedTeamAction
     | UpdateBindingStateAction
     | UpdateDeviceStateAction

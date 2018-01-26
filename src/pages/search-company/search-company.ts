@@ -2,7 +2,7 @@ import { SearchCompanyOptions } from './../../interfaces/request-interface';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Company } from '../../interfaces/response-interface';
 import 'rxjs/add/operator/toPromise';
@@ -32,10 +32,8 @@ export class SearchCompanyPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public viewCtrl: ViewController,
-        public search: SearchService
+        private viewCtrl: ViewController,
+        private search: SearchService
     ) {
     }
 
@@ -45,7 +43,7 @@ export class SearchCompanyPage {
         this.launch();
     }
 
-    initialModel() {
+    initialModel(): void {
         this.searchQuery$ = this.search.getSearchTargetOfCompany();
 
         this.companies$ = this.search.getSearchResultOfCompany();
@@ -56,7 +54,8 @@ export class SearchCompanyPage {
     launch(): void {
         this.subscriptions = [
             this.search.searchCompany(this.searchTarget),
-            this.search.handleCompanyError()
+
+            this.search.handleCompanyError(),
         ];
     }
 
@@ -64,11 +63,11 @@ export class SearchCompanyPage {
         this.viewCtrl.dismiss().then(() => { });
     }
 
-    getSearch(name: string) {
+    getSearch(name: string): void {
         !!name && this.searchTarget.next({ name });
     }
 
-    selectCompany(id) {
+    selectCompany(id: string): void {
         this.search.setSelectedCompany(Number(id));
     }
 

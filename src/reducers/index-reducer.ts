@@ -330,7 +330,6 @@ export const selectMachineCount = createSelector(getMachines, machine.getAttenda
 //attendance card list
 const getAttendanceCard = (state: AppState) => state.attendanceCard;
 export const selectAttendanceCardResponse = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardListResponse);
-export const selectAttendanceCards = createSelector(getAttendanceCard, attendanceCard.getAttendanceCards);
 export const selectAttendanceCardPage = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardPage);
 export const selectAttendanceCardLimit = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardLimit);
 export const selectAttendanceCardAddOptions = createSelector(getAttendanceCard, attendanceCard.getAttendanceCardAddOptions);
@@ -343,11 +342,10 @@ export const selectAttendanceCardBindingOptions = createSelector(getAttendanceCa
 
 //location card
 const getLocationCard = (state: AppState) => state.locationCard;
-export const selectLocationCardListResponse = createSelector(getLocationCard, locationCard.getCardAddResponse);
+export const selectLocationCardListResponse = createSelector(getLocationCard, locationCard.getCardListResponse);
 export const selectLocationCardAddResponse = createSelector(getLocationCard, locationCard.getCardAddResponse);
 export const selectLocationCardUpdateResponse = createSelector(getLocationCard, locationCard.getCardUpdateResponse);
 export const selectLocationCardDeleteResponse = createSelector(getLocationCard, locationCard.getCardDeleteResponse);
-export const selectLocationCards = createSelector(getLocationCard, locationCard.getCards);
 export const selectLocationCardCount = createSelector(getLocationCard, locationCard.getCardCount);
 export const selectLocationCardAddOptions = createSelector(getLocationCard, locationCard.getAddOptions);
 export const selectLocationCardUpdateOptions = createSelector(getLocationCard, locationCard.getUpdateOptions);
