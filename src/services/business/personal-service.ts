@@ -115,7 +115,8 @@ export class PersonalService {
     }
 
     /**
-     * 以下6个从BasicInfo上获取数据的方法中的filter不能删，因为后台的数据结构不稳定，防止它不给返回需要的字段。
+     * 以下7个从BasicInfo上获取数据的方法中的filter不能删，因为后台的数据结构不稳定，防止不给返回需要的字段。
+     * 貌似在权限不够时后台会把一些字段给删除，权限不够可以返null啊，由于这不稳定的数据结构导致很多不必要的BUG，总而言之后台的数据结构就是一堆屎
      */
     getBasicFromBasicInfoList(): Observable<BasicInformation> {
         return this.getBasicInfoResponse()
@@ -147,6 +148,7 @@ export class PersonalService {
 
     getEducationsFromBasicInfoList(): Observable<EducationForBusiness[]> {
         return this.getBasicInfoResponse()
+            .filter(res => !!res.edu_info && !!res.edu_info.length)
             .map(data => data.edu_info.map(item => this.process.transformEducation(item)));
     }
 
@@ -233,7 +235,7 @@ export class PersonalService {
     handleBasicInfoError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectBasicInfoListResponse), 'API_ERROR');
     }
-    
+
     handlePersonalIdError(): Subscription {
         return this.error.handleErrorInSpecific(this.getPersonalIdResponse(), 'API_ERROR');
     }
@@ -288,5 +290,5 @@ export class PersonalService {
 
     handleUpdateWorkExperienceError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkExperienceUpdateResponse), 'API_ERROR');
-    } 
+    }
 }

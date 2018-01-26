@@ -33,7 +33,7 @@
 
         <basic-information *ngSwitchCase="'basic'" [basic]="basic | async" [personalId]="personalIdInfo | async"></basic-information>
 
-        <certification *ngSwitchCase="'certification'" [certification]="certiifcation | async"></certification>
+        <certification *ngSwitchCase="'certification'" [certification]="certification | async"></certification>
 
         <div *ngSwitchCase="'workExperience'">
             <ion-segment [(ngModel)]="workType" margin-bottom>

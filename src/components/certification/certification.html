@@ -24,7 +24,7 @@
     <ion-item>
         <ion-label fixed>{{'CERTIFICATION_DETAIL' | translate}}</ion-label>
     </ion-item>
-    <img *ngIf="item.imageFace" [src]="item.imageFace">
-    <img *ngIf="item.imageBack" [src]="item.imageBack">
+    <img *ngIf="item.imageFace" [src]="prefix + item.imageFace">
+    <img *ngIf="item.imageBack" [src]="prefix + item.imageBack">
 
 </ion-list>

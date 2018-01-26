@@ -28,6 +28,7 @@ export interface TeamItem {
     qualityClerk: string;
     foreman: string;
     qualityClerkId: number;
+    foremanId: number;
 }
 
 @IonicPage()
@@ -75,7 +76,14 @@ export class OrganizationPage {
 
         this.teams = this.team.getOwnTeams()
             .mergeMap(teams => Observable.from(teams)
-                .map(team => ({ name: team.name, id: team.id, qualityClerk: team.quality_manage__employee__realname, foreman: team.leader__employee__realname, qualityClerkId: team.quality_manage_id }))
+                .map(team => ({
+                    name: team.name,
+                    id: team.id,
+                    qualityClerk: team.quality_manage__employee__realname,
+                    foreman: team.leader__employee__realname,
+                    qualityClerkId: team.quality_manage_id,
+                    foremanId: team.leader_id
+                }))
                 .reduce(putInArray, [])
             )
 
@@ -109,7 +117,7 @@ export class OrganizationPage {
 
     deleteTeam(team: TeamItem, event: Event): void {
         event.stopPropagation();
-        
+
         const texts: Observable<ConfirmProp> = this.translate
             .get(['DELETE_TEAM', 'DELETE_TEAM_TIP', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
             .map(res => ({

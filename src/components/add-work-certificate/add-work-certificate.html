@@ -57,7 +57,7 @@
         <ion-item>
             <ion-label>{{'AVAILABLE_EXPIRE_END' | translate}}</ion-label>
             <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                [min]="expireEndDate" [max]="today" formControlName="availableEndDate" required></ion-datetime>
+                [min]="expireEndDate" formControlName="availableEndDate" required></ion-datetime>
         </ion-item>
         <div *ngIf="availableEndDate.invalid && (availableEndDate.dirty || availableEndDate.touched)" class="form-danger">
             <span *ngIf="availableEndDate.errors.required">{{'EXPIRE_END_DATE_REQUIRED_ERROR' | translate}}</span>

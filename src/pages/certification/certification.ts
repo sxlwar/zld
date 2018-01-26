@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 import { tabsPage } from './../pages';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { CertificateService } from '../../services/business/certificate-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,15 +25,12 @@ export class CertificationPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public certificateService: CertificateService,
-        public fb: FormBuilder
+        private navParams: NavParams,
+        private certificateService: CertificateService,
+        private fb: FormBuilder
     ) {
         this.initForm();
     }
-
-    /*============================================Init model======================================================*/
 
     ionViewDidLoad() {
         this.initialModel();
@@ -66,19 +63,13 @@ export class CertificationPage {
         });
     }
 
-    /*============================================UI state changed=================================================*/
-
     getImage(url = '', type: string) {
         this.certificateForm.get('personalIdPhoto').patchValue({ [type]: url });
     }
 
-    /*============================================Refuse clean======================================================*/
-
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
-
-    /*====================================Short cut method for template==============================================*/
 
     get realName() {
         return this.certificateForm.get('realName')

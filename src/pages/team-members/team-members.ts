@@ -99,7 +99,7 @@ export class TeamMembersPage {
     }
 
     goToNextPage(data?: WorkerItem) {
-        const userId = data ? data.id : this.team.qualityClerkId;
+        const userId = data ? data.id : this.team.foremanId;
 
         this.navCtrl.push(personalPage, { userId }).then(_ => { });
     }

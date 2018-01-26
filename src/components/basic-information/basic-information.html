@@ -6,6 +6,7 @@
         </ion-avatar>
         <h2 style="margin-top: 0;">{{'NAME' | translate}} {{basic.name}}</h2>
         <h3 style="margin-top: 0;">{{'MOBILE_PHONE' | translate}} {{basic.phone}}</h3>
+        <ion-icon name="call" color="primary" item-end (click)="call()"></ion-icon>
     </ion-item>
 
     <ion-item *ngIf="basic.company">
