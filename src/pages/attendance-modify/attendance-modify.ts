@@ -64,10 +64,14 @@ export class AttendanceModifyPage {
         this.subscriptions = [
             this.workFlow.getSpecificWorkFlowList(
                 Observable.of({ process_id: ProcessIdOptions.attendanceModify, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
-                this.workFlow.getPieceAuditPage()
+                this.workFlow.getAttendanceModifyPage()
             ),
+
             this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.attendanceModify, this.workFlow.getTaskUpdateSuccessCount()),
-            this.workFlow.handleWorkFlowError()
+
+            this.workFlow.handleWorkFlowError(),
+
+            this.workFlow.handleUpdateError(),
         ];
     }
 
@@ -93,6 +97,8 @@ export class AttendanceModifyPage {
 
     ionViewWillUnload() {
         this.workFlow.resetWorkFlowResponse();
+
+        this.workFlow.resetTaskUpdateResponse();
 
         this.workFlow.resetPage(WorkFlowPageType.attendanceModifyPage);
 

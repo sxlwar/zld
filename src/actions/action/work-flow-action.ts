@@ -122,6 +122,14 @@ export class ResetWorkFlowResponseAction implements Action {
     constructor() { }
 }
 
+export const RESET_TASK_UPDATE_RESPONSE = 'RESET_TASK_UPDATE_RESPONSE';
+
+export class ResetTaskUpdateResponseAction implements Action {
+    readonly type = RESET_TASK_UPDATE_RESPONSE;
+
+    constructor() { }
+}
+
 export const SET_SCREENING_CONDITION = 'SET_SCREENING_CONDITION';
 
 export class SetScreeningConditionAction implements Action {
@@ -134,6 +142,7 @@ export type Actions = GetWorkFlowListAction
     | GetProjectPayBillFlowListAction
     | IncreasePageAction
     | ResetPageAction
+    | ResetTaskUpdateResponseAction
     | ResetWorkFlowResponseAction
     | SetScreeningConditionAction
     | ProjectPayBillFlowListFailAction

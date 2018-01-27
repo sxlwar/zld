@@ -57,10 +57,15 @@ export class MissionPage {
     launch() {
         this.subscriptions = [
             this.attendance.getAttendanceStatisticsByTeam(), 
+
             this.iconService.addRootModuleIcons(pages.MissionRoot, icons),
+
             this.iconService.addMissionBadge(this.statistics.getAttendanceResultStatistics('unconfirm_count')),
+
             this.workFlow.getWorkFlowStatistic(),
+
             this.workFlow.handleStatisticsError(),
+            
             this.attendance.handleStatisticsError(),
         ];
     }

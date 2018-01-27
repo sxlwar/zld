@@ -85,7 +85,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, taskUpdateResponse: action.payload, workFlowListResponse: { ...state.workFlowListResponse, request: state.workFlowListResponse.request.filter(item => item.task[item.task.length - 1].id !== state.taskUpdateOptions.id), count: state.workFlowListResponse.count - 1 } };
 
         case actions.RESET_PAGE: {
-            return { ...state, [action.payload]:1 };
+            return { ...state, [action.payload]: 1 };
         }
 
         case actions.INCREASE_PAGE: {
@@ -97,6 +97,9 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
         case actions.SET_SCREENING_CONDITION:
             return { ...state, screeningCondition: action.payload };
+
+        case actions.RESET_TASK_UPDATE_RESPONSE:
+            return { ...state, taskUpdateResponse: null, multiTaskUpdateResponse: null };
 
         case actions.GET_PROJECT_PAY_BILL_FLOW_LIST:
         default:

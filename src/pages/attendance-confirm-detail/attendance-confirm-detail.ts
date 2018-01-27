@@ -59,10 +59,14 @@ export class AttendanceConfirmDetailPage {
     launch() {
         this.subscriptions = [
             this.attendance.getAttendances(this.getAttendanceOption()),
+
             this.attendance.getSelectedAttendanceState().subscribe(state => this.selectedAttendanceState = state),
+
             this.attendance.confirmAttendance(this.confirm$),
+
             this.attendance.handleAttendanceError(),
-            this.attendance.handleAttendanceError(),
+
+            this.attendance.handleAttendanceConfirmError(),
         ];
     }
 

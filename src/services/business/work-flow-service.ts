@@ -4,11 +4,11 @@ import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-
 import { InfiniteScroll, ModalController } from 'ionic-angular';
 import { MissionListItem, AuditTarget } from './../../interfaces/mission-interface';
 import { MultiTaskUpdateOptions, WorkFlowStatus } from './../../interfaces/request-interface';
-import { IncreasePageAction, ResetPageAction, SetScreeningConditionAction } from './../../actions/action/work-flow-action';
+import { IncreasePageAction, ResetPageAction, SetScreeningConditionAction, ResetTaskUpdateResponseAction } from './../../actions/action/work-flow-action';
 import { Command } from './../api/command';
 import { RequestOption, WorkFlowListOptions } from '../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
-import { WorkFlowAggregation, WorkFlow } from './../../interfaces/response-interface';
+import { WorkFlowAggregation, WorkFlow, MultiTaskUpdateResponse } from './../../interfaces/response-interface';
 import { ProcessorService } from './../api/processor-service';
 import { UserService } from './user-service';
 import { Store } from '@ngrx/store';
@@ -105,12 +105,10 @@ export class WorkFlowService {
     }
 
     getTaskUpdateSuccessCount(): Observable<number> {
-        const multiUpdate: Observable<number> = this.store.select(selectMultiTaskUpdateResponse)
-            .filter(value => !!value)
+        const multiUpdate: Observable<number> = this.getTaskUpdateResponse()
             .mergeMapTo(this.store.select(selectMultiTaskUpdateOptions).map(res => res.id.length))
-            .do(v => console.log(v))
 
-        const singleUpdate: Observable<number> = this.store.select(selectTaskUpdateResponse).filter(value => !!value).mapTo(1).do(v => console.log(v));
+        const singleUpdate: Observable<number> = this.store.select(selectTaskUpdateResponse).filter(value => !!value).mapTo(1);
 
         return multiUpdate.merge(singleUpdate);
     }
@@ -138,14 +136,30 @@ export class WorkFlowService {
         return this.store.select(selectScreeningCondition);
     }
 
+    getTaskUpdateResponse(): Observable<MultiTaskUpdateResponse> {
+        return this.store.select(selectMultiTaskUpdateResponse).filter(value => !!value);
+    }
+
+    getTaskUpdateSuccessResponse(): Observable<boolean> {
+        return this.getTaskUpdateResponse()
+            .filter(res => !res.errorMessage)
+            .mapTo(true);
+    }
+
     /* =====================================================Request methods===================================================== */
 
     getWorkFlowStatistic(): Subscription {
-        return this.processor.workFlowStatisticsProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+        return this.processor.workFlowStatisticsProcessor(
+            this.userInfo.getSid().map(sid => ({ sid }))
+        );
     }
 
     private getWorkFlowList(option: Observable<WorkFlowListOptions>): Subscription {
-        return this.processor.workFlowListProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })));
+        return this.processor.workFlowListProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(), (option, sid) => ({ ...option, sid })
+            )
+        );
     }
 
     getSpecificWorkFlowList(option: Observable<RequestOption>, page: Observable<number>): Subscription {
@@ -153,16 +167,27 @@ export class WorkFlowService {
             option.combineLatest(
                 this.getLimit(),
                 page,
-                (option, limit, page) => ({ ...option, limit, page })) as Observable<WorkFlowListOptions>
+                (option, limit, page) => ({ ...option, limit, page }) as WorkFlowListOptions
+            )
         );
     }
 
     updateMultiTask(option: Observable<RequestOption>): Subscription {
-        return this.processor.multiTaskUpdateProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })) as Observable<MultiTaskUpdateOptions>);
+        return this.processor.multiTaskUpdateProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid }) as MultiTaskUpdateOptions)
+        );
     }
 
     getProjectPayBillFlowList(): Subscription {
-        return this.processor.projectPayBillFlowListProcessor(this.project.getProjectId().withLatestFrom(this.userInfo.getSid(), (project_id, sid) => ({ project_id, sid })));
+        return this.processor.projectPayBillFlowListProcessor(
+            this.project.getProjectId()
+                .zip(
+                this.userInfo.getSid(),
+                (project_id, sid) => ({ project_id, sid })
+                )
+        );
     }
 
     /* =====================================================Local action======================================================== */
@@ -182,6 +207,7 @@ export class WorkFlowService {
     auditTask(id: number): Subscription {
         return this.getList()
             .map(source => source.filter(item => item.id === id))
+            .take(1)
             .subscribe(list => {
                 const modal = this.modalCtrl.create(WorkFlowAuditComponent, { list });
 
@@ -193,6 +219,10 @@ export class WorkFlowService {
 
     setScreeningCondition(condition: string): void {
         this.store.dispatch(new SetScreeningConditionAction(condition));
+    }
+
+    resetTaskUpdateResponse(): void {
+        this.store.dispatch(new ResetTaskUpdateResponseAction());
     }
 
     /* =====================================================Refuse clean======================================================== */
@@ -207,5 +237,9 @@ export class WorkFlowService {
 
     handleProjectPayBillFlowError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectProjectPayBillFlowListResponse), 'API_ERROR');
+    }
+
+    handleUpdateError(): Subscription {
+        return this.error.handleErrorInSpecific(this.getTaskUpdateResponse(), 'API_ERROR');
     }
 }

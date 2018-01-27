@@ -67,8 +67,12 @@ export class LeavePage {
                 Observable.of({ process_id: ProcessIdOptions.leave, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
                 this.workFlow.getLeavePage()
             ),
+
             this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.leave, this.workFlow.getTaskUpdateSuccessCount()),
-            this.workFlow.handleWorkFlowError()
+
+            this.workFlow.handleWorkFlowError(),
+
+            this.workFlow.handleUpdateError(),
         ];
     }
 
@@ -94,6 +98,8 @@ export class LeavePage {
 
     ionViewWillUnload() {
         this.workFlow.resetWorkFlowResponse();
+
+        this.workFlow.resetTaskUpdateResponse();
 
         this.workFlow.resetPage(WorkFlowPageType.leavePage);
 

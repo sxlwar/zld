@@ -109,7 +109,9 @@ export class OrganizationPage {
         this.modalCtrl.create(AddTeamComponent).present();
     }
 
-    updateTeam(team: TeamItem): void {
+    updateTeam(team: TeamItem, event: Event): void {
+        event.stopPropagation();
+        
         this.modalCtrl.create(AddTeamComponent, { update: true, team }).present();
     }
 

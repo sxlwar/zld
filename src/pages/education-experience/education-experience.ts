@@ -1,3 +1,5 @@
+import { EducationUpdateOptions, EducationAddOptions } from './../../interfaces/request-interface';
+import { Subject } from 'rxjs/Subject';
 import { LayoutService } from './../../services/utils/layout-service';
 import { AddEducationComponent } from './../../components/add-education/add-education';
 import { Observable } from 'rxjs/Observable';
@@ -17,6 +19,12 @@ export class EducationExperiencePage {
     subscriptions: Subscription[];
 
     educations: Observable<Education[]>;
+
+    add$: Subject<EducationAddOptions> = new Subject();
+
+    update$: Subject<EducationUpdateOptions> = new Subject();
+
+    delete$: Subject<Education> = new Subject();
 
     constructor(
         private navParams: NavParams,
@@ -46,6 +54,12 @@ export class EducationExperiencePage {
         this.subscriptions = [
             this.personal.getEducationList(),
 
+            this.personal.addEducation(this.add$),
+            
+            this.personal.updateEducation(this.update$),
+
+            this.personal.deleteEducation(this.delete$.map(edu => edu.id)),
+
             this.personal.handleEducationError(),
 
             this.personal.handleAddEducationError(),
@@ -61,7 +75,7 @@ export class EducationExperiencePage {
 
         modal.present();
 
-        modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.addEducation(Observable.of(data))));
+        modal.onDidDismiss((data: EducationAddOptions) => data && this.add$.next(data)); 
     }
 
     updateEducation(target: Education): void {
@@ -69,11 +83,7 @@ export class EducationExperiencePage {
 
         modal.present();
 
-        modal.onDidDismiss(data => data && this.subscriptions.push(this.personal.updateEducation(Observable.of({ ...data, id: target.id }))));
-    }
-
-    deleteEducation(target: Education): void {
-        this.personal.deleteEducation(Observable.of(target.id));
+        modal.onDidDismiss((data: EducationAddOptions) => data && this.update$.next({ ...data, id: target.id }));
     }
 
     openOption(itemSlide: ItemSliding, item: Item, event) {

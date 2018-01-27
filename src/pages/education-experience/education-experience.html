@@ -25,11 +25,11 @@
                 </ion-item>
 
                 <ion-item-options side="right">
-                    <button ion-button color="primary" (click)="updateEducation(edu)">
+                    <button ion-button color="primary" [disabled]="!edu.id" (click)="updateEducation(edu)">
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}
                     </button>
-                    <button ion-button color="danger" (click)="deleteEducation(edu)">
+                    <button ion-button color="danger" [disabled]="!edu.id" (click)="delete$.next(edu)">
                         <ion-icon name="trash"></ion-icon>
                         {{'DELETE_BUTTON' | translate}}
                     </button>

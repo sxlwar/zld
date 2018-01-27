@@ -67,7 +67,10 @@ export class PieceAuditPage {
                 this.workFlow.getPieceAuditPage()
             ),
             this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.pieceAudit, this.workFlow.getTaskUpdateSuccessCount()),
-            this.workFlow.handleWorkFlowError()
+
+            this.workFlow.handleWorkFlowError(),
+
+            this.workFlow.handleUpdateError(),
         ];
     }
 
@@ -93,6 +96,8 @@ export class PieceAuditPage {
 
     ionViewWillUnload() {
         this.workFlow.resetWorkFlowResponse();
+
+        this.workFlow.resetTaskUpdateResponse();
 
         this.workFlow.resetPage(WorkFlowPageType.pieceAuditPage);
 

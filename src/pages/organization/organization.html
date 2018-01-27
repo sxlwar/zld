@@ -33,7 +33,7 @@
                 </ion-item>
 
                 <ion-item-options side="right">
-                    <button ion-button color="primary" [disabled]="!team.id" (click)="updateTeam(team)" *ngIf="canOperate | async">
+                    <button ion-button color="primary" [disabled]="!team.id" (click)="updateTeam(team, $event)" *ngIf="canOperate | async">
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}
                     </button>

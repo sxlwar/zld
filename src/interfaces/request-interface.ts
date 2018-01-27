@@ -581,14 +581,8 @@ export interface EducationAddOptions {
     school__name: string;
 }
 
-export interface EducationUpdateOptions {
-    sid: string;
+export interface EducationUpdateOptions extends EducationAddOptions {
     id: number;
-    degree: number;
-    major: string;
-    start_date: string;
-    finish_date: string;
-    school__name: string;
 }
 
 export interface EducationDeleteOptions {

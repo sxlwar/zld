@@ -82,10 +82,15 @@ export class ApplyLeavePage {
     launch(): void {
         this.subscriptions = [
             this.launchService.createLeave(this.apply$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
+
             this.launchService.uploadLeaveAttach(),
+
             this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractIds: !!ids.length ? ids : '' })),
+
             this.launchService.getSuccessResponseOfLeave().subscribe(_ => this.worker.resetSelectedWorkers()),
+
             this.launchService.handlerLeaveError(),
+            
             this.worker.handleError(),
         ];
     }

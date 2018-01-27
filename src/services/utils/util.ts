@@ -1,13 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { omit, has, reduce, values, random } from 'lodash';
 import { RequestOption } from './../../interfaces/request-interface';
-import { Injectable } from '@angular/core';
-
-@Injectable()
-export class Base {
-    constructor() { }
-
-}
 
 export interface ReduceFn<T> {
     (acc: T[], cur: T): T[]

@@ -44,9 +44,9 @@ export class AttendanceConfirmPage {
     }
 
     ionViewDidLoad() {
-        this.launch();
-
         this.initialModel();
+        
+        this.launch();
     }
 
     launch(): void {
@@ -56,6 +56,8 @@ export class AttendanceConfirmPage {
             this.generateTeamChart(this.getTeams()),
 
             this.generateDayChart(this.getDays()),
+
+            this.attendance.handleStatisticsError(),
         ]
     }
 
@@ -119,7 +121,6 @@ export class AttendanceConfirmPage {
     }
 
     goToNextPage(statistic: AttendanceStatisticDayItem): void {
-        console.log(statistic);
         this.navCtrl.push(attendanceConfirmDetailPage, { statistic }).then(() => { });
     }
 

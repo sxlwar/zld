@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { WorkFlow, WorkPieceFinish, WorkPiece } from './../../interfaces/response-interface';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, NavController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -31,6 +31,7 @@ export class PieceAuditDetailPage {
     isAuditButtonVisibility: Observable<boolean>;
 
     constructor(
+        private navCtrl: NavController,
         private navParams: NavParams,
         private workFlowService: WorkFlowService,
         private workPiece: WorkPieceService,
@@ -66,7 +67,10 @@ export class PieceAuditDetailPage {
     launch() {
         this.subscriptions = [
             this.workPiece.getWorkPieceList(this.workPiece.getRecordOptions(this.id, this.navParams.get('status'))),
-            this.workPiece.handleError()
+
+            this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
+            
+            this.workPiece.handleError(),
         ];
     }
 
@@ -77,6 +81,8 @@ export class PieceAuditDetailPage {
     }
 
     ionViewWillUnload() {
+        this.workFlowService.resetTaskUpdateResponse();
+        
         this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { WorkFlow, Overtime } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, NavController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -29,6 +29,7 @@ export class OvertimeDetailPage {
     audit$$: Subscription;
 
     constructor(
+        private navCtrl: NavController,
         private navParams: NavParams,
         private workFlowService: WorkFlowService,
         private overtimeService: OvertimeService,
@@ -57,6 +58,9 @@ export class OvertimeDetailPage {
     launch() {
         this.subscriptions = [
             this.overtimeService.getOvertimeRecordList(this.overtimeService.getRecordOptions(this.id, this.navParams.get('status'))),
+            
+            this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
+            
             this.overtimeService.handleError(),
         ];
     }
@@ -68,6 +72,8 @@ export class OvertimeDetailPage {
     }
 
     ionViewWillUnload() {
+        this.workFlowService.resetTaskUpdateResponse();
+        
         this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());

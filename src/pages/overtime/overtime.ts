@@ -66,8 +66,12 @@ export class OvertimePage {
                 Observable.of({ process_id: ProcessIdOptions.overtime, ...this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.pending) }),
                 this.workFlow.getOvertimePage()
             ),
+
             this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.overtime, this.workFlow.getTaskUpdateSuccessCount()),
-            this.workFlow.handleWorkFlowError()
+
+            this.workFlow.handleWorkFlowError(),
+
+            this.workFlow.handleUpdateError(),
         ];
     }
 
@@ -93,6 +97,8 @@ export class OvertimePage {
 
     ionViewWillUnload() {
         this.workFlow.resetWorkFlowResponse();
+
+        this.workFlow.resetTaskUpdateResponse();
 
         this.workFlow.resetPage(WorkFlowPageType.overtimePage);
 

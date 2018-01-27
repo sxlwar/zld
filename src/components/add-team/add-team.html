@@ -17,7 +17,7 @@
         <ion-list>
 
             <ion-list-header>{{projectName | async}}</ion-list-header>
-            
+
             <ion-item>
                 <ion-label fixed>{{'TEAM_NAME' | translate}}</ion-label>
                 <ion-input type="text" formControlName="teamName" required></ion-input>
@@ -30,17 +30,6 @@
             </div>
 
             <ion-item>
-                <ion-label>{{'FOREMAN' | translate}}</ion-label>
-                <ion-select formControlName="foreman" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
-                    required>
-                    <ion-option *ngFor="let foreman of foremen | async" [value]="foreman">{{foreman.name}}</ion-option>
-                </ion-select>
-            </ion-item>
-            <div *ngIf="foreman.invalid && (foreman.dirty || foreman.touched)" class="form-danger">
-                <span *ngIf="foreman.errors.required">{{'FOREMAN_REQUIRED_ERROR' | translate}}</span>
-            </div>
-
-            <ion-item>
                 <ion-label>{{'QUALITY_CLERK' | translate}}</ion-label>
                 <ion-select formControlName="qualityClerk" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
                     required>
@@ -49,6 +38,17 @@
             </ion-item>
             <div *ngIf="qualityClerk.invalid && (qualityClerk.dirty || qualityClerk.touched)" class="form-danger">
                 <span *ngIf="qualityClerk.errors.required">{{'QUALITY_CLERK_REQUIRED_ERROR' | translate}}</span>
+            </div>
+
+            <ion-item>
+                <ion-label>{{'FOREMAN' | translate}}</ion-label>
+                <ion-select formControlName="foreman" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate"
+                    required>
+                    <ion-option *ngFor="let foreman of foremen | async" [value]="foreman">{{foreman.name}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <div *ngIf="foreman.invalid && (foreman.dirty || foreman.touched)" class="form-danger">
+                <span *ngIf="foreman.errors.required">{{'FOREMAN_REQUIRED_ERROR' | translate}}</span>
             </div>
 
         </ion-list>

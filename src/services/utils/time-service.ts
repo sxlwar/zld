@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Base } from './util';
 
 export interface Calendar {
     week: string;
@@ -23,9 +22,8 @@ export const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
 export const dayShortNames = dayNames;
 
 @Injectable()
-export class TimeService extends Base {
+export class TimeService {
     constructor() {
-        super();
     }
 
     toTwo(s: string): string {

@@ -33,6 +33,7 @@ export class AddEducationComponent {
         private timeService: TimeService
     ) {
         this.today = this.timeService.getDate(new Date(), true);
+        
         this.initialModel();
     }
 

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Leave, WorkFlow } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams, NavController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -29,6 +29,7 @@ export class LeaveDetailPage {
     audit$$: Subscription;
 
     constructor(
+        private navCtrl: NavController,
         private navParams: NavParams,
         private workFlowService: WorkFlowService,
         private leaveService: LeaveService,
@@ -57,7 +58,10 @@ export class LeaveDetailPage {
     launch() {
         this.subscriptions = [
             this.leaveService.getLeaveRecord(this.leaveService.getRecordOptions(this.id, this.navParams.get('status'))),
-            this.leaveService.handleError()
+
+            this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
+
+            this.leaveService.handleError(),
         ];
     }
 
@@ -68,6 +72,8 @@ export class LeaveDetailPage {
     }
 
     ionViewWillUnload() {
+        this.workFlowService.resetTaskUpdateResponse();
+        
         this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());
