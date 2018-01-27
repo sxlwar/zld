@@ -4,7 +4,7 @@ import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/requ
 import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -16,10 +16,9 @@ export class PayrollAuditPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public workFlow: WorkFlowService,
-        public projectPayBill: ProjectBillService
+        private navParams: NavParams,
+        private workFlow: WorkFlowService,
+        private projectPayBill: ProjectBillService
     ) {
     }
 

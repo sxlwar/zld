@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { AttendanceInstant } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
 
 
 @IonicPage()
@@ -39,12 +39,11 @@ export class AttendanceMachineRecordPage {
     count: Observable<number>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public time: TimeService,
-        public instant: AttendanceRecordService,
-        public machine: AttendanceMachineService,
-        public modalCtrl: ModalController
+        private navParams: NavParams,
+        private time: TimeService,
+        private instant: AttendanceRecordService,
+        private machine: AttendanceMachineService,
+        private modalCtrl: ModalController
     ) {
         this.id = this.navParams.get('id');
 

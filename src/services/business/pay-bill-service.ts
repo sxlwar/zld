@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { AppState, selectPayBillListResponse, selectPayBillList } from '../../reducers/index-reducer';
 import { ErrorService } from '../errors/error-service';
 import { ProcessorService } from '../api/processor-service';
-import { ProjectService } from '../business/project-service';
 import { Observable } from 'rxjs/Observable';
 import { PayBill, PayBillTime, PayBillAmount } from '../../interfaces/response-interface';
 import { RequestOption, PayBillListOptions } from '../../interfaces/request-interface';
@@ -13,11 +12,10 @@ import { UserService } from '../business/user-service';
 @Injectable()
 export class PayBillService {
     constructor(
-        public store: Store<AppState>,
-        public error: ErrorService,
-        public processor: ProcessorService,
-        public project: ProjectService,
-        public userInfo: UserService
+        private store: Store<AppState>,
+        private error: ErrorService,
+        private processor: ProcessorService,
+        private userInfo: UserService
     ) {
     }
 

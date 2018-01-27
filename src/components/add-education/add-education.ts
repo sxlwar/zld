@@ -1,6 +1,6 @@
+import { TimeService } from './../../services/utils/time-service';
 import { degrees } from './../../interfaces/request-interface';
 import { MapperService } from './../../services/api/mapper-service';
-import { TimeService } from './../../services/utils/time-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Component } from '@angular/core';
@@ -26,13 +26,13 @@ export class AddEducationComponent {
     degrees = degrees;
 
     constructor(
-        public navParams: NavParams,
-        public fb: FormBuilder,
-        public viewCtrl: ViewController,
-        public timeService: TimeService,
-        public mapper: MapperService
+        private navParams: NavParams,
+        private fb: FormBuilder,
+        private viewCtrl: ViewController,
+        private mapper: MapperService,
+        private timeService: TimeService
     ) {
-        this.today = timeService.getDate(new Date(), true);
+        this.today = this.timeService.getDate(new Date(), true);
         this.initialModel();
     }
 

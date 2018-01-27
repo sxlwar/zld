@@ -18,10 +18,10 @@ import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/a
 export class AttendanceRecordService {
 
     constructor(
-        public store: Store<AppState>,
-        public process: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService
     ) {
     }
 

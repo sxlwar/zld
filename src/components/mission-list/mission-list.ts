@@ -30,7 +30,7 @@ export class MissionListComponent {
     allSelected = false;
 
     constructor(
-        public modalCtrl: ModalController
+        private modalCtrl: ModalController
     ) {
     }
 

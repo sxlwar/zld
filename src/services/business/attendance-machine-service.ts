@@ -13,11 +13,11 @@ import { Injectable } from '@angular/core';
 export class AttendanceMachineService {
 
     constructor(
-        public store: Store<AppState>,
-        public process: ProcessorService,
-        public userInfo: UserService,
-        public project: ProjectService,
-        public error: ErrorService
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private userInfo: UserService,
+        private project: ProjectService,
+        private error: ErrorService
     ) {
     }
 

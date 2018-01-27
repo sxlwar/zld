@@ -3,7 +3,7 @@ import { Message } from './../../interfaces/response-interface';
 import { MessageService } from './../../services/business/message-service';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -18,9 +18,8 @@ export class MessageContentPage {
     msg: Message;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public message: MessageService
+        private navParams: NavParams,
+        private message: MessageService
     ) {
         this.msg = <Message>this.navParams.get('message');
     }

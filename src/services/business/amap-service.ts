@@ -65,9 +65,9 @@ export class AmapService {
     markersSubject: Subject<HistoryLocationListResponse> = new Subject();
 
     constructor(
-        public project: ProjectService,
-        public location: LocationService,
-        public translate: TranslateService
+        private project: ProjectService,
+        private location: LocationService,
+        private translate: TranslateService
     ) {
 
     }

@@ -24,11 +24,11 @@ export class AddBankcardComponent implements OnInit, OnDestroy {
     cardInfoSubscription: Subscription;
 
     constructor(
-        public viewCtrl: ViewController,
-        public fb: FormBuilder,
-        public bankcard: BankcardService,
-        public personal: PersonalService,
-        public mapper: MapperService
+        private viewCtrl: ViewController,
+        private fb: FormBuilder,
+        private bankcard: BankcardService,
+        private personal: PersonalService,
+        private mapper: MapperService
     ) {
         this.initialForm();
     }

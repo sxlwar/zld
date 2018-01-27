@@ -16,10 +16,10 @@ export class WorkFlowAuditComponent implements OnInit {
     confirmButtonText = 'PASS';
 
     constructor(
-        public navParams: NavParams,
-        public viewCtrl: ViewController
+        private navParams: NavParams,
+        private viewCtrl: ViewController
     ) {
-        this.list = navParams.get('list');
+        this.list = this.navParams.get('list');
     }
 
     ngOnInit() {

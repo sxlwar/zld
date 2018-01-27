@@ -13,10 +13,10 @@ import { Injectable } from '@angular/core';
 export class WorkCertificateService {
 
     constructor(
-        public store: Store<AppState>,
-        public error: ErrorService,
-        public processor: ProcessorService,
-        public userInfo: UserService
+        private store: Store<AppState>,
+        private error: ErrorService,
+        private processor: ProcessorService,
+        private userInfo: UserService
     ) { }
 
     /* ==================================================Request methods========================================= */

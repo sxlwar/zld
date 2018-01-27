@@ -6,7 +6,7 @@ import { Bankcard } from './../../interfaces/response-interface';
 import { BankcardService } from './../../services/business/bank-card-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -20,12 +20,11 @@ export class BankcardPage {
     bankcards: Observable<Bankcard[]>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public modalCtrl: ModalController,
-        public bankcard: BankcardService,
-        public tip: TipService,
-        public translate: TranslateService
+        private navParams: NavParams,
+        private modalCtrl: ModalController,
+        private bankcard: BankcardService,
+        private tip: TipService,
+        private translate: TranslateService
     ) {
     }
 

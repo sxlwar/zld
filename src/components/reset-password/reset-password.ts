@@ -37,8 +37,8 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     reset$: Subject<boolean> = new Subject();
 
     constructor(
-        public fb: FormBuilder,
-        public loginService: LoginService
+        private fb: FormBuilder,
+        private loginService: LoginService
     ) {
         this.initialForm();
     }

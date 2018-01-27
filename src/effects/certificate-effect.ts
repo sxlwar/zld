@@ -36,9 +36,9 @@ export class CertificateEffect extends Command {
         )
 
     constructor(
-        public actions$: Actions,
-        public ws: WebsocketService,
-        public http: HttpService
+        private actions$: Actions,
+        private ws: WebsocketService,
+        private http: HttpService
     ) {
         super();
     }

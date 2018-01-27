@@ -13,8 +13,8 @@ export class FaceImageComponent implements OnInit {
     capture: string;
 
     constructor(
-        public navParams: NavParams,
-        public viewCtrl: ViewController
+        private navParams: NavParams,
+        private viewCtrl: ViewController
     ) {
 
     }

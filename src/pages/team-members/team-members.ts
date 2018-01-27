@@ -34,9 +34,9 @@ export class TeamMembersPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public worker: WorkerService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private worker: WorkerService
     ) {
         this.team = this.navParams.get('team');
 
@@ -62,6 +62,7 @@ export class TeamMembersPage {
     launch(): void {
         this.subscriptions = [
             this.getWorkerContractList(),
+            
             this.worker.handleError(),
         ];
     }

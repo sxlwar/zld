@@ -52,10 +52,10 @@ import { GetWorkOvertimeRecordAction } from '../../actions/action/overtime-actio
 export class ProcessorService extends MapperService {
 
     constructor(
-        public store: Store<AppState>,
-        public errorService: ErrorService,
-        public command: Command,
-        public permission: PermissionService
+        private store: Store<AppState>,
+        private errorService: ErrorService,
+        private command: Command,
+        private permission: PermissionService
     ) {
         super();
     }

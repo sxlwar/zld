@@ -28,9 +28,9 @@ export class AttendanceTimeChartComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public payBill: PayBillService,
-        public translate: TranslateService,
-        public chartService: ChartService
+        private payBill: PayBillService,
+        private translate: TranslateService,
+        private chartService: ChartService
     ) {
     }
 

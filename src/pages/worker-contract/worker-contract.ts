@@ -6,7 +6,7 @@ import { WorkerService } from './../../services/business/worker-service';
 import { WorkerContract, ContractTypeOfResponse, Project } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { chain } from 'lodash';
 
 interface Contract {
@@ -38,12 +38,11 @@ export class WorkerContractPage {
     isTimerContract: boolean;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public worker: WorkerService,
-        public project: ProjectService,
-        public time: TimeService,
-        public modalCtrl: ModalController
+        private navParams: NavParams,
+        private worker: WorkerService,
+        private project: ProjectService,
+        private time: TimeService,
+        private modalCtrl: ModalController
     ) {
     }
 

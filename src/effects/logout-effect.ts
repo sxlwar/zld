@@ -19,8 +19,8 @@ export class LogoutEffect extends Command {
         );
 
     constructor(
-        public actions$: Actions,
-        public ws: WebsocketService,
+        private actions$: Actions,
+        private ws: WebsocketService,
     ) {
         super();
     }

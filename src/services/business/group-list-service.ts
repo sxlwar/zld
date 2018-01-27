@@ -12,10 +12,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GroupListService {
     constructor(
-        public userInfo: UserService,
-        public store: Store<AppState>,
-        public process: ProcessorService,
-        public error: ErrorService
+        private userInfo: UserService,
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private error: ErrorService
     ) { }
 
     getGroupListResponse(): Observable<GroupsListResponse> {

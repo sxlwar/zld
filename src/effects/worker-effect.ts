@@ -56,7 +56,7 @@ export class WorkerEffect extends Command {
         );
 
     constructor(
-        public ws: WebsocketService,
+        private ws: WebsocketService,
         private tip: TipService,
         private actions$: Actions
     ) {

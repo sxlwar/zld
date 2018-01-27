@@ -15,10 +15,10 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class MessageService {
     constructor(
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService
     ) {
 
     }

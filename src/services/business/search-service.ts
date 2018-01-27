@@ -17,10 +17,10 @@ import { Injectable } from '@angular/core';
 export class SearchService {
 
     constructor(
-        public store: Store<AppState>,
-        public process: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService
     ) {
 
     }

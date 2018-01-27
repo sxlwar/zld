@@ -21,9 +21,9 @@ export class WorkTypeSelectComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public viewCtrl: ViewController,
-        public craft: CraftService,
-        public navParams: NavParams
+        private viewCtrl: ViewController,
+        private craft: CraftService,
+        private navParams: NavParams
     ) {
     }
 

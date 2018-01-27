@@ -15,9 +15,9 @@ export class WorkPieceAxisComponent implements OnInit {
     pieces: Observable<WorkPieceFinish[]>;
 
     constructor(
-        public navParams: NavParams,
-        public pieceService: WorkPieceService,
-        public viewCtrl: ViewController
+        private navParams: NavParams,
+        private pieceService: WorkPieceService,
+        private viewCtrl: ViewController
     ) {
     }
 

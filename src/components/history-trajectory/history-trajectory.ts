@@ -48,15 +48,15 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     enableScroll: Observable<boolean>;
 
     constructor(
-        public worker: WorkerService,
-        public viewCtrl: ViewController,
-        public timeService: TimeService,
-        public location: LocationService,
-        public fb: FormBuilder,
-        public permission: PermissionService,
-        public project: ProjectService,
-        public mapService: AmapService,
-        public navParams: NavParams
+        private worker: WorkerService,
+        private viewCtrl: ViewController,
+        private timeService: TimeService,
+        private location: LocationService,
+        private fb: FormBuilder,
+        private permission: PermissionService,
+        private project: ProjectService,
+        private mapService: AmapService,
+        private navParams: NavParams
     ) {
         this.today = this.timeService.getDate(new Date, true);
         worker.resetPage();

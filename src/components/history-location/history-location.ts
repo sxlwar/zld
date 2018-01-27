@@ -62,14 +62,14 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
     loading = false;
 
     constructor(
-        public viewCtrl: ViewController,
-        public worker: WorkerService,
-        public timeService: TimeService,
-        public teamService: TeamService,
-        public fb: FormBuilder,
-        public project: ProjectService,
-        public location: LocationService,
-        public workType: CraftService
+        private viewCtrl: ViewController,
+        private worker: WorkerService,
+        private timeService: TimeService,
+        private teamService: TeamService,
+        private fb: FormBuilder,
+        private project: ProjectService,
+        private location: LocationService,
+        private workType: CraftService
     ) {
         this.today = this.timeService.getDate(new Date, true);
         worker.resetPage();

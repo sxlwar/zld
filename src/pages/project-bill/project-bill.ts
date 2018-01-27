@@ -39,13 +39,13 @@ export class ProjectBillPage {
     subTotal: Observable<number>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public processService: ProjectProcessService,
-        public chartService: ChartService,
-        public timeService: TimeService,
-        public translate: TranslateService,
-        public project: ProjectService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private processService: ProjectProcessService,
+        private chartService: ChartService,
+        private timeService: TimeService,
+        private translate: TranslateService,
+        private project: ProjectService
     ) {
     }
 

@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import { WorkFlow, WorkPieceFinish, WorkPiece } from './../../interfaces/response-interface';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -31,11 +31,10 @@ export class PieceAuditDetailPage {
     isAuditButtonVisibility: Observable<boolean>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public workFlowService: WorkFlowService,
-        public workPiece: WorkPieceService,
-        public permission: PermissionService
+        private navParams: NavParams,
+        private workFlowService: WorkFlowService,
+        private workPiece: WorkPieceService,
+        private permission: PermissionService
     ) {
         this.id = navParams.get('id');
     }

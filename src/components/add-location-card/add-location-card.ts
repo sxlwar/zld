@@ -50,12 +50,12 @@ export class AddLocationCardComponent {
     add$: Subject<AddLocationCardFormModel> = new Subject();
 
     constructor(
-        public navParams: NavParams,
-        public worker: WorkerService,
-        public locationCard: LocationCardService,
-        public viewCtrl: ViewController,
-        public fb: FormBuilder,
-        public project: ProjectService
+        private navParams: NavParams,
+        private worker: WorkerService,
+        private locationCard: LocationCardService,
+        private viewCtrl: ViewController,
+        private fb: FormBuilder,
+        private project: ProjectService
     ) {
         worker.resetPage();
 

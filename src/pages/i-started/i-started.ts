@@ -34,10 +34,10 @@ export class IStartedPage {
     screening: string;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public workFlow: WorkFlowService,
-        public permission: PermissionService,
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private workFlow: WorkFlowService,
+        private permission: PermissionService,
     ) {
     }
 

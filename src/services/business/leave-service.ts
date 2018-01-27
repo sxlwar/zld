@@ -14,10 +14,10 @@ import { RecordOptionService } from './record-option-service';
 @Injectable()
 export class LeaveService extends RecordOptionService {
     constructor(
-        public store: Store<AppState>,
-        public userInfo: UserService,
-        public error: ErrorService,
-        public processor: ProcessorService
+        private store: Store<AppState>,
+        private userInfo: UserService,
+        private error: ErrorService,
+        private processor: ProcessorService
     ) {
         super();
     }

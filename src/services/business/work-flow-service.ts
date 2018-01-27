@@ -21,13 +21,13 @@ import { ResetWorkFlowResponseAction } from '../../actions/action/work-flow-acti
 @Injectable()
 export class WorkFlowService {
     constructor(
-        public store: Store<AppState>,
-        public userInfo: UserService,
-        public error: ErrorService,
-        public processor: ProcessorService,
-        public command: Command,
-        public modalCtrl: ModalController,
-        public project: ProjectService
+        private store: Store<AppState>,
+        private userInfo: UserService,
+        private error: ErrorService,
+        private processor: ProcessorService,
+        private command: Command,
+        private modalCtrl: ModalController,
+        private project: ProjectService
     ) {
     }
 

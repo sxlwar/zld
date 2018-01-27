@@ -21,10 +21,10 @@ export class TutorialPage implements OnInit {
     slides$$: Subscription;
 
     constructor(
-        public navCtrl: NavController,
-        public menu: MenuController,
+        private navCtrl: NavController,
+        private menu: MenuController,
         private tutorial: TutorialService,
-        public store: Store<fromRoot.AppState>
+        private store: Store<fromRoot.AppState>
     ) {
     }
 

@@ -20,8 +20,8 @@ export class HistoryTrajectoryWorkersComponent implements OnInit, OnDestroy {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public viewCtrl: ViewController,
-        public location: LocationService
+        private viewCtrl: ViewController,
+        private location: LocationService
     ) {
     }
 

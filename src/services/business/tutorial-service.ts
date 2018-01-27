@@ -18,7 +18,7 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class TutorialService {
     constructor(
-        public store: Store<State>,
+        private store: Store<State>,
         private translate: TranslateService
     ) {
 

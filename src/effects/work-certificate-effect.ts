@@ -63,9 +63,9 @@ export class WorkCertificateEffect extends Command {
         );
 
     constructor(
-        public ws: WebsocketService,
-        public actions$: Actions,
-        public tip: TipService,
+        private ws: WebsocketService,
+        private actions$: Actions,
+        private tip: TipService,
         private http: HttpService
     ) {
         super();

@@ -131,10 +131,10 @@ export class LaunchEffect extends Command {
         );
 
     constructor(
-        public ws: WebsocketService,
-        public http: HttpService,
-        public actions$: Actions,
-        public tip: TipService
+        private ws: WebsocketService,
+        private http: HttpService,
+        private actions$: Actions,
+        private tip: TipService
     ) {
         super();
     }

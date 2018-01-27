@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatisticsByDate, UpdateSpecificWorkFlowStatisticAtLocalAction } from './../../actions/action/statistics-action';
 import { Store } from '@ngrx/store';
 import { AppState, selectAttendanceStatisticList, selectAttendanceStatistics } from './../../reducers/index-reducer';
-import { WorkFlowService } from './work-flow-service';
 import { Injectable } from "@angular/core";
 import { AttendanceStatistics } from "../../interfaces/response-interface";
 import { Observable } from "rxjs/Observable";
@@ -36,8 +35,7 @@ export interface AttendanceStatisticTeamItem {
 export class StatisticsService {
 
     constructor(
-        public store: Store<AppState>,
-        public workFlow: WorkFlowService
+        private store: Store<AppState>
     ) {
     }
 

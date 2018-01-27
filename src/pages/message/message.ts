@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Message } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { InfiniteScroll, IonicPage, NavController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -41,9 +41,8 @@ export class MessagePage {
     selectedReadType: Observable<number>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public message: MessageService
+        private navCtrl: NavController,
+        private message: MessageService
     ) {
     }
 

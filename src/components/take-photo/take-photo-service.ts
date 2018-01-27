@@ -6,7 +6,6 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/add/observable/fromPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/of';
-import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
@@ -15,9 +14,8 @@ export class TakePhotoService {
     subscription: Subscription;
 
     constructor(
-        public camera: Camera,
-        public actionCtrl: ActionSheetController,
-        public translate: TranslateService
+        private camera: Camera,
+        private actionCtrl: ActionSheetController
     ) {
     }
 

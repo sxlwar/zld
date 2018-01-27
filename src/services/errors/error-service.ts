@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { AppState } from '../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { AlertController, ToastController } from 'ionic-angular';
@@ -17,10 +15,11 @@ export interface ErrorInfo {
 
 @Injectable()
 export class ErrorService {
-    constructor(public store: Store<AppState>,
-        public alertCtrl: AlertController,
-        public toastCtrl: ToastController,
-        public translate: TranslateService) {
+    constructor(
+        private alertCtrl: AlertController,
+        private toastCtrl: ToastController,
+        private translate: TranslateService
+    ) {
     }
 
     /**

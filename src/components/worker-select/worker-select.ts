@@ -34,11 +34,11 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     single = false;
 
     constructor(
-        public worker: WorkerService,
-        public permission: PermissionService,
-        public project: ProjectService,
-        public viewCtrl: ViewController,
-        public navParams: NavParams
+        private worker: WorkerService,
+        private permission: PermissionService,
+        private project: ProjectService,
+        private viewCtrl: ViewController,
+        private navParams: NavParams
     ) {
         this.single = !!this.navParams.get('single');
         

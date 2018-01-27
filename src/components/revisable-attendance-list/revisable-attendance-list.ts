@@ -37,10 +37,10 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
     setTeam$: Subject<Team[]> = new Subject();
 
     constructor(
-        public viewCtrl: ViewController,
-        public attendance: AttendanceService,
-        public timeService: TimeService,
-        public teamService: TeamService
+        private viewCtrl: ViewController,
+        private attendance: AttendanceService,
+        private timeService: TimeService,
+        private teamService: TeamService
     ) {
     }
 

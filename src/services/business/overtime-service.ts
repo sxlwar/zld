@@ -14,10 +14,10 @@ import { RecordOptionService } from './record-option-service';
 export class OvertimeService extends RecordOptionService {
 
     constructor(
-        public store: Store<AppState>,
-        public error: ErrorService,
-        public userInfo: UserService,
-        public processor: ProcessorService
+        private store: Store<AppState>,
+        private error: ErrorService,
+        private userInfo: UserService,
+        private processor: ProcessorService
     ) {
         super();
     }

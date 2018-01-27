@@ -51,12 +51,12 @@ export class AttendancePage {
     setTeam$: Subject<Team[]> = new Subject();
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public attendance: AttendanceService,
-        public timeService: TimeService,
-        public teamService: TeamService,
-        public permission: PermissionService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private attendance: AttendanceService,
+        private timeService: TimeService,
+        private teamService: TeamService,
+        private permission: PermissionService
     ) {
     }
 

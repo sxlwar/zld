@@ -14,10 +14,10 @@ import { ResetLaunchResponseAction } from '../../actions/action/launch-action';
 export class LaunchService {
 
     constructor(
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService,
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService,
     ) {
 
     }

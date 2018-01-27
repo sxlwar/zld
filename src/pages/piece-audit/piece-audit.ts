@@ -30,11 +30,11 @@ export class PieceAuditPage {
     page$$: Subscription;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public workFlow: WorkFlowService,
-        public permission: PermissionService,
-        public statistic: StatisticsService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private workFlow: WorkFlowService,
+        private permission: PermissionService,
+        private statistic: StatisticsService
     ) {
     }
 

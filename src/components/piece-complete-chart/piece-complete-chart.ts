@@ -24,8 +24,8 @@ export class PieceCompleteChartComponent implements OnInit, OnDestroy {
     subscription: Subscription;
 
     constructor(
-        public chart: ChartService,
-        public translate: TranslateService
+        private chart: ChartService,
+        private translate: TranslateService
     ) {
     }
 

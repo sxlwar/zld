@@ -45,12 +45,12 @@ export class AddTeamComponent implements OnInit, OnDestroy {
     updateTeam$: Subject<AddTeamFormModel> = new Subject();
 
     constructor(
-        public project: ProjectService,
-        public employer: EmployerService,
-        public viewCtrl: ViewController,
-        public fb: FormBuilder,
-        public team: TeamService,
-        public navParams: NavParams
+        private project: ProjectService,
+        private employer: EmployerService,
+        private viewCtrl: ViewController,
+        private fb: FormBuilder,
+        private team: TeamService,
+        private navParams: NavParams
     ) {
         this.initialForm();
     }

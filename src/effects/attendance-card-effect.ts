@@ -55,9 +55,9 @@ export class AttendanceCardEffect extends Command {
         );
 
     constructor(
-        public ws: WebsocketService,
-        public tip: TipService,
-        public actions$: Actions
+        private ws: WebsocketService,
+        private tip: TipService,
+        private actions$: Actions
     ) {
         super();
     }

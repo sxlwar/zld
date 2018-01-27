@@ -9,7 +9,7 @@ import { WorkerItem } from './../../interfaces/worker-interface';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController } from 'ionic-angular';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 @IonicPage()
@@ -34,13 +34,11 @@ export class ApplyOvertimePage {
     type: string;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public launchService: LaunchService,
-        public worker: WorkerService,
-        public fb: FormBuilder,
-        public modalCtrl: ModalController,
-        public config: ConfigService
+        private launchService: LaunchService,
+        private worker: WorkerService,
+        private fb: FormBuilder,
+        private modalCtrl: ModalController,
+        private config: ConfigService
     ) {
         this.initialForm();
     }

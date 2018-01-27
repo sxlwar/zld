@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, PopoverController } from 'ionic-angular';
 import * as icon from '../../services/business/icon-service';
 import { IconService } from '../../services/business/icon-service';
 import { IconState } from '../../reducers/reducer/icons-reducer';
@@ -55,12 +55,11 @@ export class ProjectPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public iconService: IconService,
-        public popoverCtrl: PopoverController,
-        public projectService: ProjectService,
-        public workerService: WorkerService
+        private navCtrl: NavController,
+        private iconService: IconService,
+        private popoverCtrl: PopoverController,
+        private projectService: ProjectService,
+        private workerService: WorkerService
     ) {
     }
 

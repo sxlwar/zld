@@ -31,12 +31,12 @@ import { DistinguishableWorkerItem, WorkerItem } from '../../interfaces/worker-i
 export class WorkerService {
 
     constructor(
-        public store: Store<AppState>,
-        public error: ErrorService,
-        public processor: ProcessorService,
-        public command: Command,
-        public userInfo: UserService,
-        public project: ProjectService
+        private store: Store<AppState>,
+        private error: ErrorService,
+        private processor: ProcessorService,
+        private command: Command,
+        private userInfo: UserService,
+        private project: ProjectService
     ) {
         this.handleError();
     }

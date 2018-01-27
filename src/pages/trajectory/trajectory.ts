@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { LocationService } from './../../services/business/location-service';
 import { HistoryTrajectoryComponent } from './../../components/history-trajectory/history-trajectory';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, PopoverController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController, PopoverController } from 'ionic-angular';
 import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { PlayUnit, PlayState, TrajectoryInfo } from '../../interfaces/location-interface';
 
@@ -38,13 +38,12 @@ export class TrajectoryPage {
     trajectoryInfo: Observable<TrajectoryInfo>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public modalCtrl: ModalController,
-        public location: LocationService,
-        public mapService: AmapService,
-        public config: ConfigService,
-        public popover: PopoverController
+        private navParams: NavParams,
+        private modalCtrl: ModalController,
+        private location: LocationService,
+        private mapService: AmapService,
+        private config: ConfigService,
+        private popover: PopoverController
     ) {
     }
 

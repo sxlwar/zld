@@ -9,7 +9,7 @@ import { ProjectService } from './../../services/business/project-service';
 import { Observable } from 'rxjs/Observable';
 import { TeamService } from './../../services/business/team-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, AlertController, ItemSliding, Item } from 'ionic-angular';
+import { IonicPage, NavController, ModalController, ItemSliding, Item } from 'ionic-angular';
 import { AddTeamComponent } from '../../components/add-team/add-team';
 import { putInArray } from '../../services/utils/util';
 import { LayoutService } from '../../services/utils/layout-service';
@@ -52,16 +52,14 @@ export class OrganizationPage {
     activeItemSliding: ItemSliding = null;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public team: TeamService,
-        public projectService: ProjectService,
-        public permission: PermissionService,
-        public modalCtrl: ModalController,
-        public alertCtrl: AlertController,
-        public translate: TranslateService,
-        public tip: TipService,
-        public layout: LayoutService
+        private navCtrl: NavController,
+        private team: TeamService,
+        private projectService: ProjectService,
+        private permission: PermissionService,
+        private modalCtrl: ModalController,
+        private translate: TranslateService,
+        private tip: TipService,
+        private layout: LayoutService
     ) {
     }
 

@@ -1,7 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 import { tabsPage } from './../pages';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { CertificateService } from '../../services/business/certificate-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,7 +25,7 @@ export class CertificationPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        private navParams: NavParams,
+        private navCtrl: NavController,
         private certificateService: CertificateService,
         private fb: FormBuilder
     ) {

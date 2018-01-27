@@ -64,9 +64,9 @@ export class AttendanceEffect extends Command {
         );
 
     constructor(
-        public ws: WebsocketService,
-        public actions$: Actions,
-        public tip: TipService
+        private ws: WebsocketService,
+        private actions$: Actions,
+        private tip: TipService
     ) {
         super();
     }

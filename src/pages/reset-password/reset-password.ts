@@ -15,7 +15,7 @@ export class ResetPasswordPage {
     reset: Observable<null>;
 
     constructor(
-        public userInfo: UserService
+        private userInfo: UserService
     ) {
     }
 

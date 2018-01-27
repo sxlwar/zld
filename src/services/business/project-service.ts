@@ -14,11 +14,11 @@ import { SelectProjectAction } from '../../actions/action/project-action';
 export class ProjectService {
 
     constructor(
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService,
-        public timeService: TimeService
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService,
+        private timeService: TimeService
     ) {
     }
 

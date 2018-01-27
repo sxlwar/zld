@@ -19,8 +19,8 @@ export class LeaveEffect extends Command {
         );
         
     constructor(
-        public ws: WebsocketService,
-        public actions$: Actions
+        private ws: WebsocketService,
+        private actions$: Actions
     ) {
         super();
     }

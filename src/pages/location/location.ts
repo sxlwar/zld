@@ -3,10 +3,10 @@ import { AmapService } from './../../services/business/amap-service';
 import { Subscription } from 'rxjs/Subscription';
 import { ConfigService } from './../../services/config/config-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { LocationService } from '../../services/business/location-service';
 import { HistoryLocationComponent } from '../../components/history-location/history-location';
-import { Map, MarkerClusterer, Marker } from '../../interfaces/amap-interface';
+import { Map, Marker, MarkerClusterer } from '../../interfaces/amap-interface';
 
 declare var AMap: any;
 
@@ -19,7 +19,7 @@ export class LocationPage {
 
     map: Map;
 
-    subscriptions: Subscription[];
+    subscriptions: Subscription[] = [];
 
     markersSubject: Subject<Marker[]> = new Subject();
 
@@ -28,113 +28,88 @@ export class LocationPage {
     markers: Marker[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public location: LocationService,
-        public modalCtrl: ModalController,
-        public config: ConfigService,
-        public mapService: AmapService
+        private navParams: NavParams,
+        private location: LocationService,
+        private modalCtrl: ModalController,
+        private config: ConfigService,
+        private mapService: AmapService
     ) {
     }
 
     ionViewCanEnter() {
         const { view, opt } = this.navParams.get('permission');
 
-        const result = opt || view;
-
-        return result;
+        return opt || view;
     }
 
     ionViewDidLoad() {
-        this.map = new AMap.Map('locationMap');
-
         this.config.hideTabBar();
+
+        this.initialModel();
 
         this.launch();
 
-        this.addOverlays();
-
-        this.clearOverlays();
-
         this.mapService.addControl(this.map);
+    }
+
+    initialModel(): void {
+        this.map = new AMap.Map('locationMap');
+    }
+
+    launch(): void {
+        this.subscriptions = [
+            this.mapService.monitorHistoryLocationResponse(),
+
+            this.location.getHistoryLocationList(
+                this.location.updateCondition()
+                    .startWith(true)
+                    .mergeMapTo(this.location.getAvailableOptions().take(1))
+            ),
+
+            this.location.getProjectAreaList(),
+
+            this.clearOverlays(),
+
+            ...this.addOverlays(),
+
+            ...this.location.handleError(),
+        ];
+    }
+
+    addOverlays(): Subscription[] {
+        return [
+            this.getMarkers(),
+
+            ...this.getProjectArea()
+        ];
+    }
+
+    clearOverlays(): Subscription {
+        return this.location.updateCondition()
+            .subscribe(_ => {
+                this.map.remove(this.markers);
+                this.clusterer && this.clusterer.clearMarkers();
+            });
+    }
+
+    getMarkers(): Subscription {
+        return this.mapService.addMarkersOnMap(this.map)
+            .do(markers => this.markers = markers)
+            .mergeMap(markers => this.mapService.markerClusterer(this.map, markers))
+            .subscribe(clusterer => this.clusterer = clusterer);
+    }
+
+    getProjectArea(): Subscription[] {
+        return this.mapService.generateArea(this.map);
+    }
+
+    setCondition(): void {
+        this.modalCtrl.create(HistoryLocationComponent).present();
     }
 
     ionViewWillUnload() {
         this.config.showTabBar();
 
         this.subscriptions.forEach(item => item.unsubscribe());
-    }
-
-    launch() {
-        this.subscriptions = this.location.handleError();
-
-        const subscription = this.mapService.monitorHistoryLocationResponse();
-
-        this.subscriptions.push(subscription);
-
-        this.getLocationList();
-
-        this.getProjectAreaList();
-    }
-
-    addOverlays() {
-        this.getMarkers();
-
-        this.getProjectArea();
-    }
-
-    clearOverlays() {
-        const subscription = this.location.updateCondition()
-            .subscribe(_ => {
-                this.map.remove(this.markers);
-                this.clusterer && this.clusterer.clearMarkers();
-            });
-
-        this.subscriptions.push(subscription);
-    }
-
-    getMarkers() {
-        const markers = this.mapService.addMarkersOnMap(this.map)
-
-        const subscription = markers.subscribe(markers => {
-            this.markers = markers;
-            this.getClusterer(markers);
-        });
-
-        this.subscriptions.push(subscription);
-    }
-
-    getClusterer(markers) {
-        const subscription = this.mapService.markerClusterer(this.map, markers).subscribe(clusterer => this.clusterer = clusterer);
-
-        this.subscriptions.push(subscription);
-    }
-
-    getProjectArea() {
-        const subscriptions = this.mapService.generateArea(this.map);
-
-        this.subscriptions = [...this.subscriptions, ...subscriptions];
-    }
-
-    /* ====================================================================Request operate================================================== */
-
-    getLocationList(): void {
-        this.location.updateCondition().next(true);
-
-        const subscription = this.location.getHistoryLocationList(
-            this.location.updateCondition().startWith(true).mergeMapTo(this.location.getAvailableOptions().take(1))
-        );
-
-        this.subscriptions.push(subscription);
-    }
-
-    getProjectAreaList(): void {
-        const subscription = this.location.getProjectAreaList();
-
-        this.subscriptions.push(subscription);
-    }
-
-    setCondition() {
-        this.modalCtrl.create(HistoryLocationComponent).present();
     }
 }

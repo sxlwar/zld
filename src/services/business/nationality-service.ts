@@ -10,9 +10,9 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class NationalityService {
     constructor(
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public error: ErrorService
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private error: ErrorService
     ) {
         this.getNationality();
     }

@@ -17,11 +17,11 @@ import { ProjectService } from '../business/project-service';
 export class WorkPieceService extends RecordOptionService {
 
     constructor(
-        public store: Store<AppState>,
-        public error: ErrorService,
-        public process: ProcessorService,
-        public userInfo: UserService,
-        public project: ProjectService,
+        private store: Store<AppState>,
+        private error: ErrorService,
+        private process: ProcessorService,
+        private userInfo: UserService,
+        private project: ProjectService,
     ) {
         super();
     }

@@ -7,7 +7,7 @@ import { AttendanceRecordService } from './../../services/business/attendance-re
 import { Observable } from 'rxjs/Observable';
 import { TimeService } from './../../services/utils/time-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
+import { IonicPage, ModalController, InfiniteScroll } from 'ionic-angular';
 import { range } from 'lodash';
 
 export interface RecordItem {
@@ -48,12 +48,10 @@ export class LocationAttendanceRecordPage {
     availableDayValues: number[];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public timeService: TimeService,
-        public record: AttendanceRecordService,
-        public modalCtrl: ModalController,
-        public worker: WorkerService
+        private timeService: TimeService,
+        private record: AttendanceRecordService,
+        private modalCtrl: ModalController,
+        private worker: WorkerService
     ) {
         record.resetPage();
     }

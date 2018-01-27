@@ -34,12 +34,12 @@ export class AttendanceRecordPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public attendance: AttendanceService,
-        public attendanceRecord: AttendanceRecordService,
-        public permission: PermissionService,
-        public modalCtrl: ModalController
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private attendance: AttendanceService,
+        private attendanceRecord: AttendanceRecordService,
+        private permission: PermissionService,
+        private modalCtrl: ModalController
     ) {
         this.attendanceResult = this.navParams.get('attendance');
     }

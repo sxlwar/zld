@@ -1,5 +1,4 @@
 import { Company } from './../../interfaces/response-interface';
-import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCodeAction, ResetResetPasswordResponseAction } from '../../actions/action/login-action';
@@ -27,10 +26,9 @@ import { createRandomCode } from '../utils/util';
 export class LoginService {
 
     constructor(
-        public store: Store<fromRoot.AppState>,
-        public process: ProcessorService,
-        public errorService: ErrorService,
-        public userInfo: UserService
+        private store: Store<fromRoot.AppState>,
+        private process: ProcessorService,
+        private errorService: ErrorService
     ) {
     }
 

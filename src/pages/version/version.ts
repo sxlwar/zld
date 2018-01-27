@@ -18,8 +18,8 @@ export class VersionPage {
     versions: Observable<Version[]>;
 
     constructor(
-        public appVersion: AppVersion,
-        public httpService: HttpService
+        private appVersion: AppVersion,
+        private httpService: HttpService
     ) {
     }
 

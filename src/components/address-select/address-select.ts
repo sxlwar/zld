@@ -20,8 +20,8 @@ export class AddressSelectComponent {
     address: Observable<AddressColumn<Column>[]>;
 
     constructor(
-        public addressService: AddressService,
-        public tip: TipService
+        private addressService: AddressService,
+        private tip: TipService
     ) {
         this.address = this.addressService.address;
     }

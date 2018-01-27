@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -36,12 +36,11 @@ export class EditWorkerContractPage {
     attachList: string[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public fb: FormBuilder,
-        public config: ConfigService,
-        public launchService: LaunchService,
-        public viewCtrl: ViewController
+        private navParams: NavParams,
+        private fb: FormBuilder,
+        private config: ConfigService,
+        private launchService: LaunchService,
+        private viewCtrl: ViewController
     ) {
         this.contract = <WorkerContract>this.navParams.get('contract');
 

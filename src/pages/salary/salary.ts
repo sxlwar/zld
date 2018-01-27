@@ -23,10 +23,10 @@ export class SalaryPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public time: TimeService,
-        public payProcess: PayProcessService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private time: TimeService,
+        private payProcess: PayProcessService
     ) {
 
     }

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -18,9 +18,8 @@ export class AttendanceMachinePage {
     machines: Observable<AttendanceMachine[]>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public machine: AttendanceMachineService
+        private navCtrl: NavController,
+        private machine: AttendanceMachineService
     ) {
     }
 

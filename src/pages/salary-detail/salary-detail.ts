@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { PayBillService } from './../../services/business/pay-bill-service';
 import { Observable } from 'rxjs/Observable';
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 export interface Salary {
     systemAttendanceAmount: number;
@@ -33,13 +33,12 @@ export class SalaryDetailPage {
     salary: Observable<Salary>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public payBill: PayBillService,
-        public chart: ChartService,
-        public translate: TranslateService
+        private navParams: NavParams,
+        private payBill: PayBillService,
+        private chart: ChartService,
+        private translate: TranslateService
     ) {
-        this.yearMonth = navParams.get('month');
+        this.yearMonth = this.navParams.get('month');
     }
 
     ionViewDidLoad() {

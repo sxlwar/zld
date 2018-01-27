@@ -10,7 +10,7 @@ import 'rxjs/add/operator/mergeMap';
 @Injectable()
 export class UserService {
     constructor(
-        public store: Store<AppState>
+        private store: Store<AppState>
     ) { }
 
     getUserInfo(): Observable<LoginResponse> {

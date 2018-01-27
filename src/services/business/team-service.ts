@@ -24,13 +24,13 @@ export class TeamService {
     characterHasTeam = [TL, CW, QW, SW];
 
     constructor(
-        public store: Store<AppState>,
-        public error: ErrorService,
-        public process: ProcessorService,
-        public userInfo: UserService,
-        public project: ProjectService,
-        public workerService: WorkerService,
-        public employer: EmployerService
+        private store: Store<AppState>,
+        private error: ErrorService,
+        private process: ProcessorService,
+        private userInfo: UserService,
+        private project: ProjectService,
+        private workerService: WorkerService,
+        private employer: EmployerService
     ) {
     }
 

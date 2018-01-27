@@ -6,7 +6,7 @@ import { ProjectPayBill } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { ProjectBillService } from '../../services/business/project-bill-service';
 import { initial } from 'lodash';
 
@@ -29,12 +29,11 @@ export class ProjectBillDetailPage {
     list: Observable<PayBillListItem[]>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public projectBill: ProjectBillService,
-        public chartService: ChartService,
-        public payBill: PayBillService,
-        public translate: TranslateService
+        private navParams: NavParams,
+        private projectBill: ProjectBillService,
+        private chartService: ChartService,
+        private payBill: PayBillService,
+        private translate: TranslateService
     ) {
     }
 

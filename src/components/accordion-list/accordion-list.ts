@@ -26,7 +26,7 @@ export class AccordionListComponent {
     viewHeight: number;
 
     constructor(
-        public renderer: Renderer2
+        private renderer: Renderer2
     ) {
     }
 

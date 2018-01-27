@@ -15,11 +15,11 @@ import { QW, TL } from '../../services/config/character';
 @Injectable()
 export class EmployerService {
     constructor(
-        public store: Store<AppState>,
-        public userInfo: UserService,
-        public project: ProjectService,
-        public process: ProcessorService,
-        public error: ErrorService
+        private store: Store<AppState>,
+        private userInfo: UserService,
+        private project: ProjectService,
+        private process: ProcessorService,
+        private error: ErrorService
     ) {
     }
 

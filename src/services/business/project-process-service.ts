@@ -14,11 +14,11 @@ import { SelectProjectPayProcessStatus } from '../../actions/action/pay-bill-act
 @Injectable()
 export class ProjectProcessService {
     constructor(
-        public store: Store<AppState>,
-        public userInfo: UserService,
-        public error: ErrorService,
-        public project: ProjectService,
-        public process: ProcessorService
+        private store: Store<AppState>,
+        private userInfo: UserService,
+        private error: ErrorService,
+        private project: ProjectService,
+        private process: ProcessorService
     ) {
     }
 

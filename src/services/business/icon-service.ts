@@ -406,8 +406,8 @@ export const processIdToIcon = {
 export class IconService {
 
     constructor(
-        public store: Store<AppState>,
-        public permission: PermissionService
+        private store: Store<AppState>,
+        private permission: PermissionService
     ) {
     }
 

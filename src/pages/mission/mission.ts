@@ -3,7 +3,7 @@ import { WorkFlowService } from './../../services/business/work-flow-service';
 import { Subscription } from 'rxjs/Subscription';
 import { StatisticsService } from './../../services/business/statistics-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { IconState } from '../../reducers/reducer/icons-reducer';
 import { IconService } from '../../services/business/icon-service';
@@ -36,12 +36,11 @@ export class MissionPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public iconService: IconService,
-        public statistics: StatisticsService,
-        public workFlow: WorkFlowService,
-        public attendance: AttendanceService
+        private navCtrl: NavController,
+        private iconService: IconService,
+        private statistics: StatisticsService,
+        private workFlow: WorkFlowService,
+        private attendance: AttendanceService
     ) {
     }
 

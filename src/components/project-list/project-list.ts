@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnDestroy } from '@angular/core';
-import { NavParams, ViewController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 import { ProjectService } from '../../services/business/project-service';
 import { Project } from '../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
@@ -17,10 +17,9 @@ export class ProjectListComponent implements OnDestroy {
     subscription: Subscription;
 
     constructor(
-        public viewCtrl: ViewController,
-        public workerService: WorkerService,
-        public projectService: ProjectService,
-        public navParam: NavParams
+        private viewCtrl: ViewController,
+        private workerService: WorkerService,
+        private projectService: ProjectService
     ) {
         this.projects = projectService.getUserAllProject();
     }

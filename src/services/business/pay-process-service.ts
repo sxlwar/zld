@@ -11,10 +11,10 @@ import { PayProcess } from 'interfaces/response-interface';
 @Injectable()
 export class PayProcessService {
     constructor(
-        public store: Store<AppState>,
-        public process: ProcessorService,
-        public userInfo: UserService,
-        public error: ErrorService
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private userInfo: UserService,
+        private error: ErrorService
     ) {
     }
 

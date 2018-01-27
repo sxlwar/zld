@@ -11,7 +11,7 @@ import { Team, WorkType } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component } from '@angular/core';
-import { NavController, NavParams, ModalController, IonicPage } from 'ionic-angular';
+import { NavParams, ModalController, IonicPage } from 'ionic-angular';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 
@@ -48,15 +48,14 @@ export class SignWorkerContractPage {
     attachList: string[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public fb: FormBuilder,
-        public teamService: TeamService,
-        public craft: CraftService,
-        public modalCtrl: ModalController,
-        public config: ConfigService,
-        public searchService: SearchService,
-        public launchService: LaunchService
+        private navParams: NavParams,
+        private fb: FormBuilder,
+        private teamService: TeamService,
+        private craft: CraftService,
+        private modalCtrl: ModalController,
+        private config: ConfigService,
+        private searchService: SearchService,
+        private launchService: LaunchService
     ) {
         this.initialForm();
     }

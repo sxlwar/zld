@@ -35,12 +35,12 @@ export class AddWorkCertificateComponent {
     backTip = 'CERTIFICATE_BACK_TIP';
 
     constructor(
-        public fb: FormBuilder,
-        public navParams: NavParams,
-        public viewCtrl: ViewController,
-        public mapper: MapperService,
-        public workType: CraftService,
-        public timeService: TimeService
+        private fb: FormBuilder,
+        private navParams: NavParams,
+        private viewCtrl: ViewController,
+        private mapper: MapperService,
+        private workType: CraftService,
+        private timeService: TimeService
     ) {
         this.initialData();
 

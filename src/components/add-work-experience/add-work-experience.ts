@@ -22,11 +22,11 @@ export class AddWorkExperienceComponent {
     today: string;
 
     constructor(
-        public navParams: NavParams,
-        public viewCtrl: ViewController,
-        public fb: FormBuilder,
-        public mapper: MapperService,
-        public timeService: TimeService
+        private navParams: NavParams,
+        private viewCtrl: ViewController,
+        private fb: FormBuilder,
+        private mapper: MapperService,
+        private timeService: TimeService
     ) {
         this.today = timeService.getDate(new Date(), true);
 

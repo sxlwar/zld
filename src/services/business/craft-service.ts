@@ -13,12 +13,12 @@ import { Subscription } from 'rxjs/Subscription';
 export class CraftService {
 
     constructor(
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public errorService: ErrorService,
-        public workerService: WorkerService
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private errorService: ErrorService,
+        private workerService: WorkerService
     ) {
-        processor.workTypeListProcessor();
+        this.processor.workTypeListProcessor();
     }
 
     getWorkTypeList(): Observable<WorkType[]> {

@@ -50,12 +50,12 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
     bind$: Subject<RequestOption> = new Subject();
 
     constructor(
-        public viewCtrl: ViewController,
-        public worker: WorkerService,
-        public fb: FormBuilder,
-        public card: AttendanceCardService,
-        public project: ProjectService,
-        public navParams: NavParams
+        private viewCtrl: ViewController,
+        private worker: WorkerService,
+        private fb: FormBuilder,
+        private card: AttendanceCardService,
+        private project: ProjectService,
+        private navParams: NavParams
     ) {
         worker.resetPage();
 

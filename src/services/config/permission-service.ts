@@ -6,8 +6,6 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
 import { ComprehensivePermissionResult, Permission, PermissionResult } from '../../interfaces/permission-interface';
-import { Command } from '../api/command';
-
 
 @Injectable()
 export class PermissionService {
@@ -18,8 +16,7 @@ export class PermissionService {
     // project_area_view = [PME, EME, MM, PM, LM, TL];
 
     constructor(
-        public store: Store<AppState>,
-        public command: Command
+        private store: Store<AppState>
     ) {
     }
 

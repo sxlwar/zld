@@ -42,7 +42,7 @@ export class MessageListComponent implements OnDestroy {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public messageService: MessageService
+        private messageService: MessageService
     ) {
     }
 

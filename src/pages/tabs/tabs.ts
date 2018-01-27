@@ -35,10 +35,10 @@ export class TabsPage {
     subscriptions: Subscription[];
 
     constructor(
-        public translateService: TranslateService,
-        public message: MessageService,
-        public nationality: NationalityService,
-        public workType: CraftService
+        private translateService: TranslateService,
+        private message: MessageService,
+        private nationality: NationalityService,
+        private workType: CraftService
     ) {
         this.initialTitle();
     }

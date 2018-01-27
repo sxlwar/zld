@@ -12,11 +12,11 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class ProjectBillService {
     constructor(
-        public store: Store<AppState>,
-        public process: ProcessorService,
-        public error: ErrorService,
-        public userInfo: UserService,
-        public project: ProjectService
+        private store: Store<AppState>,
+        private process: ProcessorService,
+        private error: ErrorService,
+        private userInfo: UserService,
+        private project: ProjectService
     ) {
     }
 

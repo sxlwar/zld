@@ -75,10 +75,10 @@ export class LoginEffect {
         );
 
     constructor(
-        public actions$: Actions,
-        public ws: WebsocketService,
-        public command: Command,
-        public tip: TipService
+        private actions$: Actions,
+        private ws: WebsocketService,
+        private command: Command,
+        private tip: TipService
     ) {
     }
 }

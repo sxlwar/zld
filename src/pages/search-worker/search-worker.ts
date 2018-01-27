@@ -1,4 +1,3 @@
-import { TranslateService } from '@ngx-translate/core';
 import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 import { SearchItem } from './../../interfaces/search-interface';
@@ -6,7 +5,7 @@ import { QueryWorkerBy } from './../../reducers/reducer/search-worker-reducer';
 import { SearchService } from './../../services/business/search-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
+import { IonicPage, ViewController } from 'ionic-angular';
 import { intersectionBy } from 'lodash';
 
 interface QueryCondition {
@@ -43,12 +42,8 @@ export class SearchWorkerPage {
     search: Subject<string> = new Subject();
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public searchService: SearchService,
-        public modalCtrl: ModalController,
-        public viewCtrl: ViewController,
-        public translate: TranslateService
+        private searchService: SearchService,
+        private viewCtrl: ViewController
     ) {
     }
 

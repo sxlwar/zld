@@ -29,11 +29,11 @@ export class AttendanceConfirmPage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public statistics: StatisticsService,
-        public chartService: ChartService,
-        public attendance: AttendanceService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private statistics: StatisticsService,
+        private chartService: ChartService,
+        private attendance: AttendanceService
     ) {
     }
 

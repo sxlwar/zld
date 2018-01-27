@@ -19,12 +19,12 @@ export class LocationService {
     updateMapSubject: Subject<boolean> = new Subject();
 
     constructor(
-        public store: Store<AppState>,
-        public project: ProjectService,
-        public userInfo: UserService,
-        public error: ErrorService,
-        public processor: ProcessorService,
-        public timeService: TimeService
+        private store: Store<AppState>,
+        private project: ProjectService,
+        private userInfo: UserService,
+        private error: ErrorService,
+        private processor: ProcessorService,
+        private timeService: TimeService
     ) { }
 
     /* ==================================================Data acquisition================================================ */
@@ -132,14 +132,12 @@ export class LocationService {
         this.store.dispatch(new UpdateTrajectoryOptionAction(option));
     }
 
-    resetTrajectoryEndTime() {
+    resetTrajectoryEndTime(): void {
         this.store.dispatch(new ResetTrajectoryEndTimeAction());
     }
 
-    updateMaxEndTimeOfTrajectory(date) {
-        const isToday = this.timeService.isToday(date);
-
-        const time = isToday ? this.timeService.getTime(false) : '23: 59: 59';
+    updateMaxEndTimeOfTrajectory(date: string): void {
+        const time = this.timeService.isToday(date) ? this.timeService.getTime(false) : '23: 59: 59';
 
         this.store.dispatch(new UpdateMaxEndTimeOfTrajectoryAction(time));
     }
@@ -187,15 +185,23 @@ export class LocationService {
     /* ==================================================API request operate================================================ */
 
     getHistoryLocationList(options: Observable<RequestOption>): Subscription {
-        const option = this.userInfo.getSid().combineLatest(this.project.getProjectId(), options, ((sid, project_id, options) => ({ sid, project_id, ...options })));
-
-        return this.processor.historyLocationListProcessor(option);
+        return this.processor.historyLocationListProcessor(
+            options.withLatestFrom(
+                this.userInfo.getSid(),
+                this.project.getProjectId(),
+                (options, sid, project_id) => ({ sid, project_id, ...options })
+            )
+        );
     }
 
     getProjectAreaList(): Subscription {
-        const option = this.userInfo.getSid().zip(this.project.getProjectId(), (sid, project_id) => ({ sid, project_id }));
-
-        return this.processor.projectAreaListProcessor(option);
+        return this.processor.projectAreaListProcessor(
+            this.userInfo.getSid()
+                .zip(
+                this.project.getProjectId(),
+                (sid, project_id) => ({ sid, project_id })
+                )
+        );
     }
 
     updateCondition(): Subject<boolean> {

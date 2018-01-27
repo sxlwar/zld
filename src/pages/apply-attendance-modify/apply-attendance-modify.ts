@@ -5,12 +5,11 @@ import { AttendanceResult } from './../../interfaces/response-interface';
 import { Subject } from 'rxjs/Subject';
 import { AttendanceModifyFormModel } from './../../services/api/mapper-service';
 import { Subscription } from 'rxjs/Subscription';
-import { PermissionService } from './../../services/config/permission-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { LaunchService } from './../../services/business/launch-service';
 import { AttendanceService } from './../../services/business/attendance-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController } from 'ionic-angular';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 
 @IonicPage()
@@ -31,14 +30,11 @@ export class ApplyAttendanceModifyPage {
     attendances: Observable<AttendanceResult[]>;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public attendanceService: AttendanceService,
-        public launchService: LaunchService,
-        public fb: FormBuilder,
-        public permission: PermissionService,
-        public modalCtrl: ModalController,
-        public config: ConfigService
+        private attendanceService: AttendanceService,
+        private launchService: LaunchService,
+        private fb: FormBuilder,
+        private modalCtrl: ModalController,
+        private config: ConfigService
     ) {
         this.initialForm();
     }

@@ -34,9 +34,9 @@ export class CalendarComponent implements OnInit {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public timeService: TimeService,
-        public contract: WorkerService,
-        public instant: AttendanceRecordService
+        private timeService: TimeService,
+        private contract: WorkerService,
+        private instant: AttendanceRecordService
     ) {
     }
 

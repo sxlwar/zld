@@ -6,7 +6,7 @@ import { AddWorkCertificateComponent } from './../../components/add-work-certifi
 import { WorkCertificateService } from './../../services/business/work-certificate-service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -20,11 +20,9 @@ export class WorkCertificatePage {
     subscriptions: Subscription[] = [];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public certificate: WorkCertificateService,
-        public modalCtrl: ModalController,
-        public craft: CraftService
+        private certificate: WorkCertificateService,
+        private modalCtrl: ModalController,
+        private craft: CraftService
     ) {
         this.subscriptions = certificate.handleError();
     }

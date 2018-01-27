@@ -1,11 +1,10 @@
 import { QRLoginService } from './../../services/business/qr-login-service';
-import { ConfigService } from './../../services/config/config-service';
 import { Subscription } from 'rxjs/Subscription';
 import { LogoutService } from './../../services/business/logout-service';
 import { personalInfo } from './../../services/business/icon-service';
 import { MineRoot, personalInformationPage, welcomePage } from './../pages';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController } from 'ionic-angular';
 import { IconService } from '../../services/business/icon-service';
 import { Observable } from 'rxjs/Observable';
 import { IconState } from '../../reducers/reducer/icons-reducer';
@@ -72,17 +71,15 @@ export class MinePage {
     QRLoginOptions: Subscription[];
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public userInfo: UserService,
-        public workTypeService: CraftService,
-        public projectService: ProjectService,
-        public teamService: TeamService,
-        public iconService: IconService,
-        public logoutService: LogoutService,
-        public configService: ConfigService,
-        public app: App,
-        public scan: QRLoginService
+        private navCtrl: NavController,
+        private userInfo: UserService,
+        private workTypeService: CraftService,
+        private projectService: ProjectService,
+        private teamService: TeamService,
+        private iconService: IconService,
+        private logoutService: LogoutService,
+        private app: App,
+        private scan: QRLoginService
     ) {
     }
 

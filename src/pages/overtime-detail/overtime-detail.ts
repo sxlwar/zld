@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { WorkFlow, Overtime } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavParams } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -29,11 +29,10 @@ export class OvertimeDetailPage {
     audit$$: Subscription;
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public workFlowService: WorkFlowService,
-        public overtimeService: OvertimeService,
-        public permission: PermissionService
+        private navParams: NavParams,
+        private workFlowService: WorkFlowService,
+        private overtimeService: OvertimeService,
+        private permission: PermissionService
     ) {
         this.id = navParams.get('id');
     }

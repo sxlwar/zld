@@ -28,14 +28,14 @@ import { ActionSheetController } from 'ionic-angular/components/action-sheet/act
 export class AttendanceService extends RecordOptionService {
 
     constructor(
-        public store: Store<AppState>,
-        public processor: ProcessorService,
-        public userInfo: UserService,
-        public error: ErrorService,
-        public translate: TranslateService,
-        public actionSheet: ActionSheetController,
-        public teamService: TeamService,
-        public timeService: TimeService
+        private store: Store<AppState>,
+        private processor: ProcessorService,
+        private userInfo: UserService,
+        private error: ErrorService,
+        private translate: TranslateService,
+        private actionSheet: ActionSheetController,
+        private teamService: TeamService,
+        private timeService: TimeService
     ) {
         super();
     }

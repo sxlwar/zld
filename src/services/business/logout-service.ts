@@ -13,10 +13,10 @@ import { ResetLogoutResponseAction } from '../../actions/action/logout-action';
 @Injectable()
 export class LogoutService {
     constructor(
-        public store: Store<AppState>,
-        public userInfo: UserService,
-        public processor: ProcessorService,
-        public error: ErrorService
+        private store: Store<AppState>,
+        private userInfo: UserService,
+        private processor: ProcessorService,
+        private error: ErrorService
     ) { }
 
     logout(): Subscription {

@@ -18,8 +18,8 @@ export class WorkPieceEffect extends Command {
             .catch(error => Observable.of(error))
         )
     constructor(
-        public ws: WebsocketService,
-        public actions$: Actions
+        private ws: WebsocketService,
+        private actions$: Actions
     ) {
         super();
     }

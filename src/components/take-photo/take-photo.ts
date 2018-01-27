@@ -17,8 +17,8 @@ export class TakePhotoComponent implements OnDestroy, OnDestroy {
     subscription: Subscription;
 
     constructor(
-        public photo: TakePhotoService,
-        public translate: TranslateService
+        private photo: TakePhotoService,
+        private translate: TranslateService
     ) {
     }
 

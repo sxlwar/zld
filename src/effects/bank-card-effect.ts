@@ -64,9 +64,9 @@ export class BankCardEffect extends Command {
         );
 
     constructor(
-        public actions$: Actions,
-        public ws: WebsocketService,
-        public tip: TipService
+        private actions$: Actions,
+        private ws: WebsocketService,
+        private tip: TipService
     ) {
         super();
     }

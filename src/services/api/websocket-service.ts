@@ -26,9 +26,9 @@ interface ErrorTipUnit {
 export class WebsocketService {
     private url = `ws://${ENV.DOMAIN}/wsapi`;
     private inputStream: QueueingSubject<string>;
-    public messages: Observable<WsResponse>;
-    public connectionStatus: Observable<number>;
-    public connectionStatusSubscription: Subscription;
+    private messages: Observable<WsResponse>;
+    private connectionStatus: Observable<number>;
+    private connectionStatusSubscription: Subscription;
 
     constructor() {
         this.connect();

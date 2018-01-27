@@ -14,7 +14,9 @@ export class WelcomePage {
 
     buttons = ['SIGNUP', 'LOGIN'];
 
-    constructor(public navCtrl: NavController) {
+    constructor(
+        private navCtrl: NavController
+    ) {
     }
 
     goToLogin(index) {

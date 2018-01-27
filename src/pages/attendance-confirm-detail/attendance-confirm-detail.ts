@@ -6,7 +6,6 @@ import { RequestOption } from 'interfaces/request-interface';
 import { attendanceRecordPage, MissionRoot } from './../pages';
 import { attendanceConfirm } from './../../services/business/icon-service';
 import { PermissionService } from './../../services/config/permission-service';
-import { TimeService } from './../../services/utils/time-service';
 import { Subscription } from 'rxjs/Subscription';
 import { AttendanceResult } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
@@ -41,11 +40,10 @@ export class AttendanceConfirmDetailPage {
     confirm$: Subject<AttendanceResult[]> = new Subject();
 
     constructor(
-        public navCtrl: NavController,
-        public navParams: NavParams,
-        public attendance: AttendanceService,
-        public timeService: TimeService,
-        public permission: PermissionService
+        private navCtrl: NavController,
+        private navParams: NavParams,
+        private attendance: AttendanceService,
+        private permission: PermissionService
     ) {
         this.statistic = this.navParams.get('statistic');
 
