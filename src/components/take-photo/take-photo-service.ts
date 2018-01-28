@@ -22,12 +22,13 @@ export class TakePhotoService {
     takePhoto(sourceType: number): Observable<string> {
         const options: CameraOptions = {
             quality: 100,
-            destinationType: this.camera.DestinationType.FILE_URI,
+            destinationType: this.camera.DestinationType.DATA_URL, // file uri may have compatibility issue on hua wei.
             encodingType: this.camera.EncodingType.JPEG,
             sourceType
         };
 
-        return Observable.fromPromise(this.camera.getPicture(options));
+        return Observable.fromPromise(this.camera.getPicture(options))
+            .map(data => `data:image/jpeg;base64,${data}`);
     }
 
     showActionSheet(subject: Subject<string>, buttonText: { [key: string]: string }) {

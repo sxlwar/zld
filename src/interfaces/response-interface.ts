@@ -253,7 +253,7 @@ export interface WorkerContract {
     pay_day: number;
     probation_month: string;
     request__status: string;
-    request_files: any[];
+    request_files: string[];
     request_id: number;
     start_day: string;
     team__leader__employee__realname: string;
@@ -277,6 +277,7 @@ export interface WorkerContract {
     worktype__name: string;
     worktype_id: number;
     year_bonus_day: string;
+    founder__employee__realname: string;
 }
 
 //workerContractList

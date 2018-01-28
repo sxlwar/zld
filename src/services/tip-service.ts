@@ -22,10 +22,10 @@ export class TipService {
     }
 
     showServerResponseSuccess(message: string): void {
-        this.showTipOnTop(message);
+        this.showTip(message);
     }
 
-    showTipOnTop(message: string, duration = 3000, position = 'top'): void {
+    showTip(message: string, duration = 3000, position = 'top'): void {
         this.toastCtrl.create({ message, duration, position, }).present().then(() => { });
     }
 

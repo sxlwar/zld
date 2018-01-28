@@ -96,7 +96,7 @@ export class MyApp {
             this.translate.get('OFF_LINE'),
             (_, msg) => msg
             )
-            .subscribe(msg => this.tip.showTipOnTop(msg, 10000));
+            .subscribe(msg => this.tip.showTip(msg, 10000));
     }
 
     checkSystemVersion(): void {

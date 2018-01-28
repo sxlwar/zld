@@ -1,4 +1,4 @@
-//region
+import { TipService } from './../tip-service';
 import { Injectable } from '@angular/core';
 import { ENV } from '@app/env';
 import { QueueingSubject } from 'queueing-subject';
@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { WsRequest } from '../../interfaces/request-interface';
 import { WsResponse } from '../../interfaces/response-interface';
 import * as _ from 'lodash';
-//endregion
+import { curry2Right } from '../utils/util';
 
 interface ErrorTipUnit {
     message: string;
@@ -25,12 +25,18 @@ interface ErrorTipUnit {
 @Injectable()
 export class WebsocketService {
     private url = `ws://${ENV.DOMAIN}/wsapi`;
+
     private inputStream: QueueingSubject<string>;
+
     private messages: Observable<WsResponse>;
+
     private connectionStatus: Observable<number>;
+
     private connectionStatusSubscription: Subscription;
 
-    constructor() {
+    constructor(
+        private tip: TipService
+    ) {
         this.connect();
     }
 
@@ -41,6 +47,7 @@ export class WebsocketService {
      * */
     send(parameter: WsRequest) {
         this.inputStream.next(JSON.stringify(parameter));
+
         return this.messages.filter(res => res.command.path === parameter.command.path);
     }
 
@@ -56,15 +63,23 @@ export class WebsocketService {
         const { messages, connectionStatus } = websocketConnect(this.url, this.inputStream = new QueueingSubject<string>());
 
         this.messages = messages
-            .map((msg: string): WsResponse => {
-                let response = JSON.parse(msg);
+            .map((msg: string) => {
+                let response: WsResponse = JSON.parse(msg);
+
                 response.data = this.handleDataStructure(response.data);
+
                 response.isError = response.code > 2000;
+
                 if (response.isError) response.data.errorMessage = this.handleError(response);
+
                 return response;
             })
-            .retryWhen(errors => errors.delay(2000))
-            .share();
+            .retryWhen(errors => {
+               this.tip.showTip('网络连接已断开', 3000, 'middle')
+
+                return errors.delay(2000);
+            })
+            .share()
 
         this.connectionStatus = connectionStatus;
 
@@ -79,7 +94,9 @@ export class WebsocketService {
      * */
     private handleDataStructure(data: any): object {
         if (Array.isArray(data) || typeof data === 'string') return { information: data }; //如果有一天后台发疯这data又有了新了类型，就在这加。稳定，稳定，稳定，接口的数据结构一定要稳定，不要当耳旁风。
+
         if (typeof data === 'object') return data;
+
         return {};
     }
 
@@ -89,20 +106,26 @@ export class WebsocketService {
      * */
     private handleError(data: WsResponse): string {
         const message = this.arrangeErrorInfo(data.detail);
+
         return _.isObject(data.detail) ? _.find([message, data.msg], _.identity) : data.msg;
     }
 
     /**
      * @description
-     * Use depth first to recurse the attributes of the object and record the traversal path.
+     * Use depth first to recurrence the attributes of the object and record the traversal path.
      * */
     private createErrorSheet(item, record = {}) {
-        if (_.isArray(item)) return _.map(item, this.curry2Right(_.assign)(record));
-        return _.map(_.toPairs(item), ele => {
-            let key = _.isArray(ele[1]) ? "key" : "form";
-            record[key] = ele[0];
-            return this.createErrorSheet(ele[1], record);
-        });
+        if (_.isArray(item)) {
+            return _.map(item, curry2Right(_.assign)(record));
+        } else {
+            return _.map(_.toPairs(item), ele => {
+                let key = _.isArray(ele[1]) ? "key" : "form";
+
+                record[key] = ele[0];
+
+                return this.createErrorSheet(ele[1], record);
+            });
+        }
     }
 
     /**
@@ -116,10 +139,6 @@ export class WebsocketService {
             .map((msg: ErrorTipUnit, index) => `${msg.message}\n`)
             .value()
             .join('');
-    }
-
-    private curry2Right(fn) {
-        return (value1) => (value2) => fn.call(fn, value1, value2);
     }
 }
 

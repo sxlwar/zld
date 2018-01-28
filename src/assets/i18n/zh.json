@@ -536,5 +536,7 @@
   "CHANGE_ACCOUNT": "更换手机号",
   "ORIGIN_ACCOUNT": "原手机号",
   "NEW_ACCOUNT": "新手机号",
-  "CALL_CUSTOMER_SERVICE_PHONE": "接通客服电话？"
+  "CALL_CUSTOMER_SERVICE_PHONE": "接通客服电话？",
+
+  "LAUNCHER": "发起人"
 }

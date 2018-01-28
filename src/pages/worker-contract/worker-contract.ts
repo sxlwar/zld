@@ -1,3 +1,4 @@
+import { ENV } from '@app/env';
 import { editWorkerContractPage } from './../pages';
 import { TimeService } from './../../services/utils/time-service';
 import { ProjectService } from './../../services/business/project-service';
@@ -10,16 +11,48 @@ import { IonicPage, NavParams, ModalController } from 'ionic-angular';
 import { chain } from 'lodash';
 
 interface Contract {
+    // partyA info
     partyA: string;
+    project: string;
+    team: string;
+    launcher: string;
+
+    //partyB info
     partyB: string;
+    workType: string;
+
+    // expire: string;
     expire: string;
+
+    //pay 
     payType: string;
-    attendanceTimeInterval?: string;
-    unitPrice?: number;
-    payday?: number;
-    pieceName?: string;
-    pieceLocation?: string;
-    pieceCount?: number;
+    payday: number;
+
+    //attendance time
+    attendanceTimeInterval: string;
+
+    // comment
+    comment: string;
+
+    //attach
+    attaches: string[];
+}
+
+interface Piece {
+    unitPrice: number;
+    pieceName: string;
+    pieceLocation: string;
+    pieceCount: number;
+    standard: string;
+}
+
+interface PieceContract extends Contract {
+    pieces: Piece[];
+}
+
+interface TimeContract extends Contract {
+    job: string;
+    unitPrice: number;
 }
 
 @IonicPage()
@@ -28,14 +61,17 @@ interface Contract {
     templateUrl: 'worker-contract.html',
 })
 export class WorkerContractPage {
+    contractId: number;
 
     source: WorkerContract;
 
-    contract: Contract;
+    contract$: Observable<Contract>;
 
     subscriptions: Subscription[] = [];
 
-    isTimerContract: boolean;
+    isTimerContract$: Observable<boolean>;
+
+    prefix = `http://${ENV.DOMAIN}/media/`;
 
     constructor(
         private navParams: NavParams,
@@ -44,6 +80,7 @@ export class WorkerContractPage {
         private time: TimeService,
         private modalCtrl: ModalController
     ) {
+        this.contractId = this.navParams.get('contractId');
     }
 
     /**
@@ -51,9 +88,7 @@ export class WorkerContractPage {
      * If it is launched by mine page, user must have permission to view and modify at the same time before entering;
      */
     ionViewCanEnter() {
-        const id = this.navParams.get('contractId');
-
-        if (!!id) {
+        if (!!this.contractId) {
             return true;
         } else {
             const { view, opt } = this.navParams.get('permission');
@@ -63,55 +98,71 @@ export class WorkerContractPage {
     }
 
     ionViewDidLoad() {
-        const id = this.navParams.get('contractId');
+        const contract = this.contractId ? this.getContractById(this.contractId) : this.getContractByUser();
 
-        if (id) {
-            this.getContractById(id);
-        } else {
-            this.getContractByUser();
-        }
+        this.initialModel(contract);
+
+        this.launch(contract);
     }
 
-    getContractById(id: number) {
-        const contract = this.worker.getContractById(Observable.of(id)).filter(value => !!value);
+    initialModel(contract: Observable<WorkerContract>): void {
+        this.contract$ = this.project.getCurrentProject()
+            .zip(
+            contract,
+            (project, contract) => contract.type === ContractTypeOfResponse.timer ? this.getTimerContract(contract, project) : this.getPiecerContract(contract, project)
+            );
 
+        this.isTimerContract$ = this.contract$.map(contract => contract.payType === ContractTypeOfResponse.timer);
+    }
+
+    launch(contract: Observable<WorkerContract>): void {
         this.subscriptions = [
-            this.optimizeContract(contract),
             contract.subscribe(contract => this.source = contract),
+
+            this.worker.handleError(),
+
             this.project.handleError(),
         ];
     }
 
-    getContractByUser() {
-        const contract = this.worker.getOwnContract(
+    getContractById(id: number): Observable<WorkerContract> {
+        return this.worker.getContractById(Observable.of(id)).filter(value => !!value);
+    }
+
+    getContractByUser(): Observable<WorkerContract> {
+        return this.worker.getOwnContract(
             this.worker.getUnexpiredOption()
-                .zip(this.worker.getCompleteStatusOption(), (option1, option2) => ({ ...option1, ...option2 }))
+                .zip(
+                this.worker.getCompleteStatusOption(),
+                (option1, option2) => ({ ...option1, ...option2 })
+                )
         )
             .filter(value => !!value);
-
-        this.subscriptions = [
-            this.optimizeContract(contract),
-            contract.subscribe(contract => this.source = contract),
-        ];
     }
 
-    optimizeContract(contract: Observable<WorkerContract>): Subscription {
-        return contract
-            .zip(this.project.getCurrentProject())
-            .subscribe(([contract, project]) => {
-                this.isTimerContract = contract.type === ContractTypeOfResponse.timer;
-
-                if (this.isTimerContract) {
-                    this.contract = this.getTimerContract(contract, project);
-                } else {
-                    this.contract = this.getPiecerContract(contract, project);
-                }
-            });
-    }
-
-    getTimerContract(contract: WorkerContract, project: Project): Contract {
+    getTimerContract(contract: WorkerContract, project: Project): TimeContract {
         const timePaySource = contract.work_time_pay[0];
 
+        return {
+            ...this.getCommonPart(contract, project),
+            job: timePaySource.content,
+            unitPrice: timePaySource.pay_mount
+        };
+    }
+
+    getPiecerContract(contract: WorkerContract, project: Project): PieceContract {
+        const pieces = contract.work_piece_pay.map(item => ({
+            unitPrice: item.pay_mount,
+            pieceName: item.name,
+            pieceLocation: item.location,
+            pieceCount: item.num,
+            standard: item.standard
+        }));
+
+        return { ...this.getCommonPart(contract, project), pieces };
+    }
+
+    getCommonPart(contract: WorkerContract, project: Project): Contract {
         const attendanceTimeInterval = chain([
             contract.morning_time_on_duty,
             contract.morning_time_off_duty,
@@ -127,28 +178,18 @@ export class WorkerContractPage {
 
         return {
             attendanceTimeInterval,
-            partyA: project.sub_contract__contracting__name,
-            partyB: contract.worker__employee__realname,
-            expire: contract.start_day + '—' + contract.finish_day,
-            payType: contract.type,
-            unitPrice: timePaySource.pay_mount,
-            payday: contract.pay_day
-        };
-    }
-
-    getPiecerContract(contract: WorkerContract, project: Project): Contract {
-        const piecePaySource = contract.work_piece_pay[0];
-
-        return {
-            partyA: project.sub_contract__contracting__name,
-            partyB: contract.worker__employee__realname,
             expire: contract.start_day + '-' + contract.finish_day,
+            partyA: project.sub_contract__contracting__name,
+            project: project.name,
+            team: contract.team__name,
+            launcher: contract.founder__employee__realname,
+            partyB: contract.worker__employee__realname,
+            workType: contract.worktype__name,
+            payday: contract.pay_day,
             payType: contract.type,
-            pieceName: piecePaySource.name,
-            pieceLocation: piecePaySource.location,
-            pieceCount: piecePaySource.num,
-            unitPrice: piecePaySource.pay_mount
-        };
+            comment: contract.additional_content,
+            attaches: contract.request_files
+        }
     }
 
     editContract(): void {

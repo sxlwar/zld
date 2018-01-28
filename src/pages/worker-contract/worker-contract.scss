@@ -1,3 +1,10 @@
 page-worker-contract {
-
+    .item-divider-ios {
+        background: none;
+        font-size: 12px;
+        font-weight: 500;
+    }
+    ion-item-divider {
+        margin-top: 10px;
+    }
 }

@@ -6,6 +6,10 @@ export interface ReduceFn<T> {
     (acc: T[], cur: T): T[]
 }
 
+export function curry2Right(fn) {
+    return (value1) => (value2) => fn.call(fn, value1, value2);
+}
+
 export function putInArray<T>(acc: T[], cur: T): T[] {
     acc.push(cur);
     return acc;
