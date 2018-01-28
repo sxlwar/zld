@@ -106,10 +106,10 @@ export class WorkerContractPage {
     }
 
     initialModel(contract: Observable<WorkerContract>): void {
-        this.contract$ = this.project.getCurrentProject()
-            .zip(
-            contract,
-            (project, contract) => contract.type === ContractTypeOfResponse.timer ? this.getTimerContract(contract, project) : this.getPiecerContract(contract, project)
+        this.contract$ = contract
+            .withLatestFrom(
+            this.project.getCurrentProject(),
+            (contract, project) => contract.type === ContractTypeOfResponse.timer ? this.getTimerContract(contract, project) : this.getPiecerContract(contract, project)
             );
 
         this.isTimerContract$ = this.contract$.map(contract => contract.payType === ContractTypeOfResponse.timer);

@@ -45,19 +45,19 @@ export class WorkerService {
 
     getWorkerContracts(option: Observable<RequestOption>): Subscription {
         return this.processor.workerContractListProcessor(
-            option
-                .combineLatest(
+            option.combineLatest(
                 this.userInfo.getSid(),
                 this.store.select(selectWorkerLimit),
                 this.store.select(selectWorkerPage).distinctUntilChanged(),
                 (options, sid, limit, page) => ({ sid, limit, page, ...options }) as WorkerContractOptions // use option parameters first;
-                )
+            )
         );
     }
 
     getWorkerContractsOfCurrentProject(): Subscription {
         return this.getWorkerContracts(
-            this.project.getCurrentProject().map(project => project.id)
+            this.project.getCurrentProject()
+                .map(project => project.id)
                 .withLatestFrom(
                 this.getCompleteStatusOption(),
                 (project_id, status) => ({ ...status, project_id, limit: 1, page: 1 })
@@ -121,22 +121,23 @@ export class WorkerService {
         const combineFn = (contracts, id) => contracts.find(contract => contract[idType] === id);
 
         return this.store.select(selectWorkerContracts)
-            .zip(id, combineFn)
+            .combineLatest(id, combineFn)
             .mergeMap(contract => {
                 if (contract) return Observable.of(contract);
 
-                const option = Observable.of({ limit: 1, page: 1 }).zip(
-                    id,
+                const option = id
+                    .withLatestFrom(
+                    Observable.of({ limit: 1, page: 1 }),
                     subOption.defaultIfEmpty({}),
-                    (option, user_id, subOption) => ({ ...option, user_id, ...subOption })
-                );
+                    (user_id, option, subOption) => ({ ...option, user_id, ...subOption })
+                    );
 
                 const subscription = this.getWorkerContracts(option);
 
                 return this.getWorkerContractResponse()
                     .do(_ => subscription.unsubscribe())
                     .map(res => res.worker_contract)
-                    .zip(id, combineFn)
+                    .combineLatest(id, combineFn)
                     .mergeMap(contract => !!contract ? Observable.of(contract) : Observable.of(null));
             })
     }

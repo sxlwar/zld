@@ -15,6 +15,8 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 })
 export class EditWorkerContractPage {
 
+    contract: WorkerContract;
+
     form: FormGroup;
 
     timePayContract: FormGroup;
@@ -22,8 +24,6 @@ export class EditWorkerContractPage {
     piecePayContracts: FormGroup[] = [];
 
     subscriptions: Subscription[] = [];
-
-    contract: WorkerContract;
 
     formInvalid: boolean;
 
@@ -56,8 +56,11 @@ export class EditWorkerContractPage {
     launch() {
         this.subscriptions = [
             this.launchService.editWorkerContract(this.contract$.map(_ => this.contract.type === ContractTypeOfResponse.timer ? { ...this.form.value, ...this.timePayContract.value, attach: this.attachList } : { ...this.form.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList })),
+
             this.launchService.uploadWorkerContractEditAttach(),
-            this.launchService.getSuccessResponseOfWorkerContractEdit().subscribe(_ => this.resetForm()),
+
+            this.launchService.getSuccessResponseOfWorkerContractEdit().subscribe(_ => this.dismiss()),
+
             this.launchService.handelWorkerContractEditError(),
         ];
     }
@@ -80,7 +83,6 @@ export class EditWorkerContractPage {
 
             this.timePayContract = this.fb.group({
                 hourlyWage: timePay.pay_mount,
-                overtimeHourlyWage: timePay.overtime_pay_mount,
                 content: timePay.content,
                 id: timePay.id,
             });
@@ -149,9 +151,9 @@ export class EditWorkerContractPage {
 
     resetForm(): void {
         this.form.reset();
-        
+
         this.timePayContract && this.timePayContract.reset();
-        
+
         this.piecePayContracts.forEach(item => item.reset());
     }
 
@@ -202,11 +204,6 @@ export class EditWorkerContractPage {
     get hourlyWage() {
         return this.timePayContract.get('hourlyWage');
     }
-
-    get overtimeHourlyWage() {
-        return this.timePayContract.get('overtimeHourlyWage');
-    }
-
     get content() {
         return this.timePayContract.get('content');
     }

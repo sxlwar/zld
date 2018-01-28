@@ -199,7 +199,7 @@ export class LaunchService {
     uploadWorkerContractEditAttach(): Subscription {
         return this.processor.uploadWorkerContractEditAttachProcessor(
             this.store.select(selectWorkerContractEditOptions)
-                .filter(value => !!value && !!value.attach.length)
+                .filter(value => !!value && !!value.attach && !!value.attach.length)
                 .mergeMap(option => Observable.from(option.attach).map(file => ({ file, id: option.contract_id })))
                 .withLatestFrom(
                 this.userInfo.getSid(),

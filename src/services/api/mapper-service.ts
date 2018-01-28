@@ -120,7 +120,6 @@ export interface WorkerContractFormModel {
 
 export interface TimeTypeWorkerContractFormModel extends WorkerContractFormModel {
     hourlyWage: number;
-    overtimeHourlyWage: number;
     content: string;
     // timeUnit: string;
 }
@@ -196,7 +195,6 @@ export interface WorkerContractEditFormModel {
 
 export interface TimeTypeWorkerContractEditFormModel extends WorkerContractEditFormModel {
     hourlyWage: number;
-    overtimeHourlyWage: number;
     content: string;
     id: number;
 }
@@ -447,7 +445,6 @@ export class MapperService {
             worker_contract: this.getWorkerContractCommonPart(source),
             work_time_pay: [{
                 pay_mount: source.hourlyWage,
-                overtime_pay_mount: source.overtimeHourlyWage,
                 content: source.content,
                 time_unit: '小时'
             }]
@@ -555,7 +552,6 @@ export class MapperService {
             ...this.transformWorkerContractEditFormCommonPart(source),
             work_time_pay: [{
                 pay_mount: source.hourlyWage,
-                overtime_pay_mount: source.overtimeHourlyWage,
                 content: source.content,
                 id: source.id
             }]

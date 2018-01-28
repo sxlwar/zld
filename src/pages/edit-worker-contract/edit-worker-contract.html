@@ -62,15 +62,7 @@
             <div *ngIf="hourlyWage.invalid && (hourlyWage.dirty || hourlyWage.touched)" class="form-danger">
                 <span *ngIf="hourlyWage.errors.required">{{'HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
             </div>
-
-            <ion-item>
-                <ion-label fixed>{{'OVERTIME_HOURLY_WAGE' | translate}}</ion-label>
-                <ion-input type="number" formControlName="overtimeHourlyWage" required></ion-input>
-            </ion-item>
-            <div *ngIf="overtimeHourlyWage.invalid && (overtimeHourlyWage.dirty || overtimeHourlyWage.touched)" class="form-danger">
-                <span *ngIf="overtimeHourlyWage.errors.required">{{'OVERTIME_HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
-            </div>
-        </div>
+       </div>
 
         <div *ngIf="contract.type === 'work_piece_pay'">
             <div *ngFor="let form of piecePayContracts;  index as index;" [formGroup]="form">
@@ -188,5 +180,5 @@
 </ion-content>
 
 <ion-footer>
-    <button ion-button block no-margin color="primary" [disabled]="formInvalid" (click)="contract$.next(true)" no-margin>{{'CONFIRM_BUTTON' | translate}}</button>
+    <button ion-button block no-margin color="primary" [disabled]="formInvalid" (click)="contract$.next(form.value)" no-margin>{{'CONFIRM_BUTTON' | translate}}</button>
 </ion-footer>

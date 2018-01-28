@@ -75,12 +75,11 @@
 
         <ion-item>
             <ion-label fixed>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.payType | uppercase | translate"></ion-input>
             <!-- For simplicity, the values of this field are coupled to the keys of the i18n. -->
+            <ion-input disabled [value]="contract.payType | uppercase | translate"></ion-input>
         </ion-item>
 
-        <!-- <ion-item *ngIf="isTimerContract | async as isTimer; else pieceView"> -->
-        <ion-item *ngIf="isTimerContract | async">
+        <ion-item *ngIf="isTimerContract$ | async">
             <ion-label fixed>{{'HOURLY_WAGE' | translate}}</ion-label>
             <ion-input disabled [value]="contract.unitPrice | priceUnit:'timer' | async"></ion-input>
         </ion-item>

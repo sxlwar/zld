@@ -226,7 +226,6 @@ export enum ContractTypeOfResponse {
 export interface TimePay {
     content: string;
     contract_id: number;
-    overtime_pay_mount: number; // 这个字段可能没有，垃圾数据结构，没有数据时哪怕有个空值,居然TMD字段都没有了。
     pay_mount: number;
     probation_pay_mount: number;
     time_unit: string;
@@ -250,7 +249,7 @@ export interface WorkerContract {
     id: number;
     morning_time_off_duty: string;
     morning_time_on_duty: string;
-    pay_day: number;
+    pay_day: number;  // 和editor时发起的参数类型不一样，一个string, 一个 number;
     probation_month: string;
     request__status: string;
     request_files: string[];

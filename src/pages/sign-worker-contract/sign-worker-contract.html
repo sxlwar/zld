@@ -116,14 +116,6 @@
             <div *ngIf="hourlyWage.invalid && (hourlyWage.dirty || hourlyWage.touched)" class="form-danger">
                 <span *ngIf="hourlyWage.errors.required">{{'HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
             </div>
-
-            <ion-item>
-                <ion-label fixed>{{'OVERTIME_HOURLY_WAGE' | translate}}</ion-label>
-                <ion-input type="number" formControlName="overtimeHourlyWage" required></ion-input>
-            </ion-item>
-            <div *ngIf="overtimeHourlyWage.invalid && (overtimeHourlyWage.dirty || overtimeHourlyWage.touched)" class="form-danger">
-                <span *ngIf="overtimeHourlyWage.errors.required">{{'OVERTIME_HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
-            </div>
         </div>
 
         <div *ngIf="formType.value === '2'">

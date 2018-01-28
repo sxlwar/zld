@@ -106,7 +106,6 @@ export class SignWorkerContractPage {
 
         this.timePayContract = this.fb.group({
             hourlyWage: '',
-            overtimeHourlyWage: '',
             content: ''
         });
 
@@ -239,10 +238,6 @@ export class SignWorkerContractPage {
 
     get hourlyWage() {
         return this.timePayContract.get('hourlyWage');
-    }
-
-    get overtimeHourlyWage() {
-        return this.timePayContract.get('overtimeHourlyWage');
     }
 
     get content() {

@@ -870,7 +870,6 @@ export interface MessageContentOptions {
 export interface LaunchTimePayOptions {
     time_unit?: string; // 常量传个毛线； ‘小时’
     pay_mount: number;
-    overtime_pay_mount: number;
     content: string;
 }
 
