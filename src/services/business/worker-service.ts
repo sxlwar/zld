@@ -3,7 +3,7 @@ import { ProjectService } from './project-service';
 import { WorkerContractOptions, RealTimeStatisticType } from './../../interfaces/request-interface';
 import { UserService } from './user-service';
 import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers, selectWorkTypeRealTimeStatisticsResponse, selectTeamMembersRealTimeStatisticsResponse } from './../../reducers/index-reducer';
-import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction, UpdateSelectedWorkersAction, ResetSelectedWorkersAction, UpdateManagementPiecerCountAction } from './../../actions/action/worker-action';
+import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction, UpdateSelectedWorkersAction, ResetSelectedWorkersAction, UpdateManagementPiecerCountAction, TerminateWorkerContractAtLocalAction } from './../../actions/action/worker-action';
 import { WorkerContractListResponse, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
 import { Command } from './../api/command';
 import { WorkerContract as contract } from './../api/command';
@@ -118,10 +118,13 @@ export class WorkerService {
     }
 
     getContractById(id: Observable<number>, subOption: Observable<RequestOption> = Observable.empty(), idType = 'id'): Observable<WorkerContract> {
-        const combineFn = (contracts, id) => contracts.find(contract => contract[idType] === id);
+        const combineFn = (id, contracts) => contracts.find(contract => contract[idType] === id);
 
-        return this.store.select(selectWorkerContracts)
-            .combineLatest(id, combineFn)
+        return id.withLatestFrom(
+            this.getAllWorkerContracts(),
+            combineFn
+        )
+            .distinctUntilChanged()
             .mergeMap(contract => {
                 if (contract) return Observable.of(contract);
 
@@ -134,10 +137,13 @@ export class WorkerService {
 
                 const subscription = this.getWorkerContracts(option);
 
-                return this.getWorkerContractResponse()
-                    .do(_ => subscription.unsubscribe())
-                    .map(res => res.worker_contract)
-                    .combineLatest(id, combineFn)
+
+                return id.combineLatest(
+                    this.getWorkerContractResponse()
+                        .do(_ => subscription.unsubscribe())
+                        .map(res => res.worker_contract),
+                    combineFn
+                )
                     .mergeMap(contract => !!contract ? Observable.of(contract) : Observable.of(null));
             })
     }
@@ -317,6 +323,10 @@ export class WorkerService {
 
     resetWorkContracts(): void {
         this.store.dispatch(new ResetWorkerContractsAction());
+    }
+
+    terminateWorkerContract(contractId: Observable<number>): Subscription {
+        return contractId.subscribe(id => this.store.dispatch(new TerminateWorkerContractAtLocalAction(id)));
     }
 
     /*==========================================error handle=====================================================*/

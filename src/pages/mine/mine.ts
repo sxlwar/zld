@@ -113,7 +113,10 @@ export class MinePage {
     launch(): void {
         this.subscriptions = [
             this.iconService.addRootModuleIcons(MineRoot, icons),
-            this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout())
+
+            this.logoutService.getLogout().subscribe(_ => this.resetValuesAfterLogout()),
+
+            this.logoutService.handleError(),
         ];
     }
 

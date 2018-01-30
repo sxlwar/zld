@@ -538,5 +538,6 @@
   "NEW_ACCOUNT": "新手机号",
   "CALL_CUSTOMER_SERVICE_PHONE": "接通客服电话？",
 
-  "LAUNCHER": "发起人"
+  "LAUNCHER": "发起人",
+  "TERMINATE_CONTRACT": "终止合同"
 }

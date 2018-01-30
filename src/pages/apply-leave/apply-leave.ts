@@ -89,7 +89,7 @@ export class ApplyLeavePage {
 
             this.launchService.getSuccessResponseOfLeave().subscribe(_ => this.worker.resetSelectedWorkers()),
 
-            this.launchService.handlerLeaveError(),
+            this.launchService.handleLeaveError(),
             
             this.worker.handleError(),
         ];

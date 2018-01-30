@@ -44,10 +44,16 @@ export class CertificationPage {
 
     launch(): void {
         this.subscriptions = [
-            this.certificateService.getCertificateResult().filter(value => !!value).subscribe(_ => this.navCtrl.push(tabsPage).then(() => { })),
+            this.certificateService.getCertificateResult()
+                .filter(value => !!value)
+                .subscribe(_ => this.navCtrl.push(tabsPage).then(() => { })),
+
             this.certificateService.monitorUploadResult(),
+
             ...this.certificateService.certificate(this.certificate$.map(_ => this.certificateForm.value)),
+
             this.certificateService.handleUpdateError(),
+
             this.certificateService.handleError(),
         ];
     }
@@ -68,6 +74,8 @@ export class CertificationPage {
     }
 
     ionViewWillUnload() {
+        this.navCtrl.pop();
+        
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 

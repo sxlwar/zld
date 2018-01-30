@@ -146,7 +146,7 @@ export class WorkFlowService {
             .mapTo(true);
     }
 
-    /* =====================================================Request methods===================================================== */
+    /* =====================================================API Request methods===================================================== */
 
     getWorkFlowStatistic(): Subscription {
         return this.processor.workFlowStatisticsProcessor(

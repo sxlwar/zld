@@ -7,10 +7,10 @@
 
                 <ion-item #item>
                     <span>{{exp.expire}}</span>
-                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" item-start></ion-icon>
+                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" *ngIf="canEditor" item-start></ion-icon>
                 </ion-item>
 
-                <ion-item-options side="right">
+                <ion-item-options side="right" *ngIf="canEditor">
                     <button ion-button color="primary" (click)="updateExperience.next(exp)">
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}

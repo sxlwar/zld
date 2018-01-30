@@ -142,4 +142,5 @@
 
     </ion-item-group>
 
+    <button ion-button block color="danger" (click)="terminate$.next(true)" *ngIf="!!contractId">{{'TERMINATE_CONTRACT' | translate}}</button>
 </ion-content>

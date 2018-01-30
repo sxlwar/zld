@@ -61,7 +61,7 @@ export class EditWorkerContractPage {
 
             this.launchService.getSuccessResponseOfWorkerContractEdit().subscribe(_ => this.dismiss()),
 
-            this.launchService.handelWorkerContractEditError(),
+            this.launchService.handleWorkerContractEditError(),
         ];
     }
 

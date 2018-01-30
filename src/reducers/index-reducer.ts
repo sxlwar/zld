@@ -454,6 +454,8 @@ export const selectPieceAuditResponse = createSelector(getLaunch, launch.getPiec
 export const selectPieceAuditOptions = createSelector(getLaunch, launch.getPieceAuditOptions);
 export const selectWorkerContractModifyResponse = createSelector(getLaunch, launch.getWorkerContractModifyResponse);
 export const selectWorkerContractModifyOptions = createSelector(getLaunch, launch.getWorkerContractModifyOptions);
+export const selectTerminateWorkerContractOptions = createSelector(getLaunch, launch.getTerminateContractOptions);
+export const selectTerminateWorkerContractResponse = createSelector(getLaunch, launch.getTerminateContractResponse);
 
 // search worker
 const getSearchWorker = (state: AppState) => state.searchWorker;

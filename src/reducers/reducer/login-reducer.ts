@@ -85,6 +85,9 @@ export function userInfoReducer(state = initialLoginResponse, action: actions.Ac
         case actions.RESET_SID:
             return { ...state, sid: '' };
 
+        case actions.RESET_ERROR_RESPONSE:
+            return !!state.errorMessage ? initialLoginResponse :  state;
+
         default:
             return state;
     }
@@ -119,6 +122,9 @@ export function registerReducer(state = initialRegisterState, action: actions.Ac
         case actions.REGISTER_FAIL:
             return { ...action.payload, ...initialRegisterState };
 
+        case actions.RESET_ERROR_RESPONSE:
+            return  !!state.errorMessage ? initialRegisterState : state;
+
         default:
             return state;
 
@@ -144,6 +150,9 @@ export function resetPasswordReducer(state = initialResetPasswordState, action: 
         case actions.RESET_RESET_PASSWORD_RESPONSE:
             return { ...initialResetPasswordState };
 
+        case actions.RESET_ERROR_RESPONSE:
+            return  !!state.errorMessage ? initialResetPasswordState : state;
+            
         default:
             return state;
     }
@@ -163,6 +172,9 @@ export function registerPhoneVerReducer(state = initialPhoneVerCode, action: act
         case actions.PHONE_VERIFICATION_CODE_FAIL:
             return { ...action.payload, captcha: action.payload.captcha || false };
 
+        case actions.RESET_ERROR_RESPONSE:
+            return  !!state.errorMessage ? initialPhoneVerCode : state;
+            
         case actions.PHONE_VERIFICATION_CODE_SUCCESS:
         default:
             return state;
@@ -183,6 +195,9 @@ export function resetPwdPhoneVerReducer(state = initialResetPhoneVerCode, action
         case actions.RESET_PHONE_VERIFICATION_CODE_FAIL:
             return { ...action.payload, captcha: action.payload.captcha || false };
 
+        case actions.RESET_ERROR_RESPONSE:
+            return  !!state.errorMessage ? initialResetPhoneVerCode : state;
+            
         case actions.RESET_PHONE_VERIFICATION_CODE_SUCCESS:
         default:
             return state;

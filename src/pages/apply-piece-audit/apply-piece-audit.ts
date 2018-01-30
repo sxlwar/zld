@@ -76,9 +76,13 @@ export class ApplyPieceAuditPage {
     launch(): void {
         this.subscriptions = [
             this.launchService.createPieceAudit(this.apply$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
+
             this.launchService.uploadPieceAuditAttach(),
+
             this.launchService.getSuccessResponseOfPieceAudit().subscribe(_ => this.form.patchValue({ piecePayId: '' })),
-            this.launchService.handlerPieceAuditError(),
+
+            this.launchService.handlePieceAuditError(),
+            
             this.worker.handleError(),
         ];
     }

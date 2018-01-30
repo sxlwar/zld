@@ -1,5 +1,5 @@
 import { HttpService } from './../services/api/http-service';
-import { CREATE_WORKER_CONTRACT, CreateWorkerContractAction, CreateWorkerContractFailAction, CreateWorkerContractSuccessAction, CREATE_WORKER_CONTRACT_MODIFY, CreateWorkerContractModifyAction, CreateWorkerContractModifyFailAction, CreateWorkerContractModifySuccessAction, CREATE_LEAVE, CreateLeaveAction, CreateLeaveSuccessAction, CreateLeaveFailAction, CREATE_OVERTIME, CreateOvertimeAction, CreateOvertimeFailAction, CreateOvertimeSuccessAction, CREATE_PIECE_AUDIT, CreatePieceAuditAction, CreatePieceAuditFailAction, CreatePieceAuditSuccessAction, CREATE_ATTENDANCE_MODIFY, CreateAttendanceModifyAction, CreateAttendanceModifyFailAction, CreateAttendanceModifySuccessAction, UPLOAD_WORKER_CONTRACT_ATTACH, UploadWorkerContractAttachAction, UploadWorkerContractAttachFailAction, UploadWorkerContractAttachSuccessAction, UPLOAD_ATTENDANCE_MODIFY_ATTACH, UploadAttendanceModifyAttachAction, UploadAttendanceModifyAttachFailAction, UploadAttendanceModifyAttachSuccessAction, UPLOAD_LEAVE_ATTACH, UploadLeaveAttachAction, UploadLeaveAttachFailAction, UploadLeaveAttachSuccessAction, UPLOAD_OVERTIME_ATTACH, UploadOvertimeAttachAction, UploadOvertimeAttachFailAction, UploadOvertimeAttachSuccessAction, UPLOAD_PIECE_AUDIT_ATTACH, UploadPieceAuditAttachAction, UploadPieceAuditAttachSuccessAction, UploadPieceAuditAttachFailAction, UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH, UploadWorkerContractModifyAttachSuccessAction, UploadWorkerContractModifyAttachFailAction, UploadWorkerContractModifyAttachAction } from './../actions/action/launch-action';
+import { CREATE_WORKER_CONTRACT, CreateWorkerContractAction, CreateWorkerContractFailAction, CreateWorkerContractSuccessAction, CREATE_WORKER_CONTRACT_MODIFY, CreateWorkerContractModifyAction, CreateWorkerContractModifyFailAction, CreateWorkerContractModifySuccessAction, CREATE_LEAVE, CreateLeaveAction, CreateLeaveSuccessAction, CreateLeaveFailAction, CREATE_OVERTIME, CreateOvertimeAction, CreateOvertimeFailAction, CreateOvertimeSuccessAction, CREATE_PIECE_AUDIT, CreatePieceAuditAction, CreatePieceAuditFailAction, CreatePieceAuditSuccessAction, CREATE_ATTENDANCE_MODIFY, CreateAttendanceModifyAction, CreateAttendanceModifyFailAction, CreateAttendanceModifySuccessAction, UPLOAD_WORKER_CONTRACT_ATTACH, UploadWorkerContractAttachAction, UploadWorkerContractAttachFailAction, UploadWorkerContractAttachSuccessAction, UPLOAD_ATTENDANCE_MODIFY_ATTACH, UploadAttendanceModifyAttachAction, UploadAttendanceModifyAttachFailAction, UploadAttendanceModifyAttachSuccessAction, UPLOAD_LEAVE_ATTACH, UploadLeaveAttachAction, UploadLeaveAttachFailAction, UploadLeaveAttachSuccessAction, UPLOAD_OVERTIME_ATTACH, UploadOvertimeAttachAction, UploadOvertimeAttachFailAction, UploadOvertimeAttachSuccessAction, UPLOAD_PIECE_AUDIT_ATTACH, UploadPieceAuditAttachAction, UploadPieceAuditAttachSuccessAction, UploadPieceAuditAttachFailAction, UPLOAD_WORKER_CONTRACT_MODIFY_ATTACH, UploadWorkerContractModifyAttachSuccessAction, UploadWorkerContractModifyAttachFailAction, UploadWorkerContractModifyAttachAction, TERMINATE_WORKER_CONTRACT, TerminateWorkerContractAction, TerminateWorkerContractFailAction, TerminateWorkerContractSuccessAction } from './../actions/action/launch-action';
 import { Observable } from 'rxjs/Observable';
 import { ResponseAction } from './../interfaces/response-interface';
 import { TipService } from './../services/tip-service';
@@ -29,6 +29,17 @@ export class LaunchEffect extends Command {
             .takeUntil(this.actions$.ofType(CREATE_WORKER_CONTRACT_MODIFY))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
             .map(msg => msg.isError ? new CreateWorkerContractModifyFailAction(msg.data) : new CreateWorkerContractModifySuccessAction(msg.data))
+            .catch(error => Observable.of(error))
+        );
+
+    @Effect()
+    terminateWorkerContract$: Observable<ResponseAction> = this.actions$
+        .ofType(TERMINATE_WORKER_CONTRACT)
+        .switchMap((action: TerminateWorkerContractAction) => this.ws
+            .send(this.getCreateWorkerContractModify(action.payload))
+            .takeUntil(this.actions$.ofType(TERMINATE_WORKER_CONTRACT))
+            .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
+            .map(msg => msg.isError ? new TerminateWorkerContractFailAction(msg.data) : new TerminateWorkerContractSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 

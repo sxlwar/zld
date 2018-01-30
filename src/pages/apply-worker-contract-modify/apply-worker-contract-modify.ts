@@ -65,10 +65,15 @@ export class ApplyWorkerContractModifyPage {
     launch(): void {
         this.subscriptions = [
             this.launchService.createWorkerContractModify(this.apply$.mergeMap(_ => Observable.from(this.form.get('contractId').value).map((contractId: number) => ({ contractId, date: this.form.get('date').value, attach: this.attachList })))),
+            
             this.launchService.uploadWorkerContractModifyAttach(),
+            
             this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractId: !!ids.length ? ids : '' })),
+
             this.launchService.getSuccessResponseOfWorkerContractModify().subscribe(_ => this.worker.resetSelectedWorkers()),
-            this.launchService.handlerWorkerContractModifyError(),
+
+            this.launchService.handleWorkerContractModifyError(),
+            
             this.worker.handleError(),
         ];
     }

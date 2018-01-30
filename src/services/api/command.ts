@@ -105,7 +105,7 @@ export const workerContractList: ApiUnit = {
         [WorkerContract.pieceTypeContract, new Iterator({ contract_type: 2 })]
     ]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, CW, QW, SW],
+        view: [PME, MM, PM, LM, TL, CW, QW, SW],
         opt: []
     },
     specialCharacter: new Map([
@@ -1076,13 +1076,13 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    getChangePhone(option: ChangePhoneOptions ): WsRequest {
+    getChangePhone(option: ChangePhoneOptions): WsRequest {
         const path = changePhone.operates.get(Operate.updates)[0];
 
         return this.getFullParameter(path, option);
     }
 
-    getChangePhoneVerify(option: ChangePhoneVerifyCodeOptions ): WsRequest {
+    getChangePhoneVerify(option: ChangePhoneVerifyCodeOptions): WsRequest {
         const path = changePhoneVerify.operates.get(Operate.updates)[0];
 
         return this.getFullParameter(path, option);

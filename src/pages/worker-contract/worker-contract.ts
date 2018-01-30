@@ -1,3 +1,5 @@
+import { LaunchService } from './../../services/business/launch-service';
+import { Subject } from 'rxjs/Subject';
 import { ENV } from '@app/env';
 import { editWorkerContractPage } from './../pages';
 import { TimeService } from './../../services/utils/time-service';
@@ -7,7 +9,7 @@ import { WorkerService } from './../../services/business/worker-service';
 import { WorkerContract, ContractTypeOfResponse, Project } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavParams, ModalController, NavController } from 'ionic-angular';
 import { chain } from 'lodash';
 
 interface Contract {
@@ -73,12 +75,16 @@ export class WorkerContractPage {
 
     prefix = `http://${ENV.DOMAIN}/media/`;
 
+    terminate$: Subject<boolean> = new Subject();
+
     constructor(
+        private navCtrl: NavController,
         private navParams: NavParams,
         private worker: WorkerService,
         private project: ProjectService,
         private time: TimeService,
-        private modalCtrl: ModalController
+        private modalCtrl: ModalController,
+        private launchService: LaunchService
     ) {
         this.contractId = this.navParams.get('contractId');
     }
@@ -119,9 +125,17 @@ export class WorkerContractPage {
         this.subscriptions = [
             contract.subscribe(contract => this.source = contract),
 
+            this.launchService.terminateWorkerContract(this.terminate$.mapTo({ date: this.time.getDateInfo(this.time.getYesterday()).fullDate, contractId: this.contractId, attach: [] })),
+
+            this.launchService.getSuccessResponseOfWorkerContractTermination().subscribe(_ => this.navCtrl.pop()),
+
             this.worker.handleError(),
 
             this.project.handleError(),
+
+            this.launchService.handleAttendanceModifyError(),
+
+            this.launchService.handleWorkerContractTerminationError(),
         ];
     }
 
@@ -197,6 +211,8 @@ export class WorkerContractPage {
     }
 
     ionViewWillUnload() {
+        this.launchService.resetTerminateWorkerContractResponse();
+
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

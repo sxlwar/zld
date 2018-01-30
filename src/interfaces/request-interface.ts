@@ -971,6 +971,9 @@ export interface CreateWorkerContractModifyOptions extends ProcessCreateOptions 
     contract_time_change_flow: LaunchWorkerContractModifyOptions;
 }
 
+// worker contract terminate
+export interface TerminateWorkerContractOptions extends CreateWorkerContractModifyOptions { }
+
 // overtime 
 export interface CreateOvertimeOptions extends ProcessCreateOptions {
     work_over_time: LaunchOvertimeOptions;

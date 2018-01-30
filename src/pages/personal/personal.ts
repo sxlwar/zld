@@ -19,6 +19,7 @@ export class PersonalPage {
 
     subscriptions: Subscription[] = [];
 
+    
     userId: number;
 
     basic: Observable<BasicInformation>;

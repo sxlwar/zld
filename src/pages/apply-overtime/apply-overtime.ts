@@ -71,10 +71,15 @@ export class ApplyOvertimePage {
     launch(): void {
         this.subscriptions = [
             this.launchService.createOvertime(this.apply$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
+
             this.launchService.uploadOvertimeAttach(),
+
             this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractIds: !!ids.length ? ids : '' })),
+
             this.launchService.getSuccessResponseOfOvertime().subscribe(_ => this.worker.resetSelectedWorkers()),
-            this.launchService.handlerOvertimeError(),
+
+            this.launchService.handleOvertimeError(),
+
             this.worker.handleError(),
         ];
     }

@@ -12,6 +12,8 @@ export class WorkExperienceComponent implements OnDestroy {
 
     @Input() experience: CustomWorkExperience[];
 
+    @Input() canEditor = false;
+
     @Output() updateExperience: EventEmitter<CustomWorkExperience> = new EventEmitter();
 
     @Output() deleteExperience: EventEmitter<CustomWorkExperience> = new EventEmitter();

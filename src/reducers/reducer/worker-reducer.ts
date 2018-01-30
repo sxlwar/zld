@@ -135,6 +135,17 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.RESET_WORKER_CONTRACT_EDIT_RESPONSE:
             return { ...state, contractEditResponse: null };
 
+        case actions.TERMINATE_WORKER_CONTRACT_AT_LOCAL:
+            return {
+                ...state,
+                workerContracts: state.workerContracts.filter(item => item.id !== action.payload),
+                workerContractResponse: {
+                    ...state.workerContractResponse,
+                    count: state.workerContractResponse.count - 1,
+                    worker_contract: state.workerContractResponse.worker_contract.filter(item => item.id !== action.payload)
+                }
+            };
+
         case actions.GET_QUERY_WORKER_CONTRACT_PAGE:
         case actions.GET_QUERY_WORKER_CONTRACT_LIMIT:
         case actions.GET_WORKER_CONTRACTS:

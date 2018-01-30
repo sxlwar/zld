@@ -194,6 +194,15 @@ export class ResetResetPasswordResponseAction implements Action {
     constructor() { }
 }
 
+export const RESET_ERROR_RESPONSE = 'RESET_ERROR_RESPONSE';
+
+export class ResetErrorResponseAction implements Action {
+    readonly type = RESET_ERROR_RESPONSE;
+
+    constructor() { }
+}
+
+
 export type Actions = ShowSpecificSlideAction
     | ShowSpecificInnerSlideAction
     | LoginAction
@@ -206,6 +215,7 @@ export type Actions = ShowSpecificSlideAction
     | RegisterPhoneVerCodeSuccessAction
     | RegisterAction
     | RegisterFailAction
+    | ResetErrorResponseAction
     | ResetResetPasswordResponseAction
     | RegisterSuccessAction
     | ResetPasswordAction

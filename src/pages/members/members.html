@@ -14,6 +14,21 @@
 
 
 <ion-content padding>
+
+   <ion-list>
+
+        <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
+
+       <ion-item>
+            <ion-label>{{'TEAM' | translate}}</ion-label>
+            <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="setTeam$.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate">
+                <ion-option *ngFor="let team of (teams | async)" [value]="team" [selected]="team.selected">{{team.name}}</ion-option>
+            </ion-select>
+        </ion-item>
+
+   </ion-list> 
+
     <ion-segment [(ngModel)]="type" (ngModelChange)="type$.next($event)">
         <!--Button's value comes from ContractType enum placed in request-interface. -->
         <ion-segment-button value="timer">{{'TIME_PAY_WORKER' | translate}}</ion-segment-button>
@@ -24,7 +39,7 @@
 
         <ion-list *ngSwitchCase="'timer'">
 
-            <ion-list-header>{{'WORKER_AMOUNT' | translate}} {{timersCount | async}}</ion-list-header>
+            <ion-list-header>{{'WORKER_AMOUNT' | translate}} {{timersCount | async}}</ion-list-header> 
 
             <ion-item *ngFor="let item of timers | async" (click)="goToNextPage(item)" detail-push>
                 <ion-icon [name]="item.workTypeId | workType" item-start></ion-icon>

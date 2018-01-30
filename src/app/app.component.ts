@@ -176,7 +176,7 @@ let offsetY;
 
 function tapCoordinates(event) {
     const viewPortHeight = window.innerHeight;
-    
+
     coordinateY = event.touches[0].clientY;
 
     offsetY = (viewPortHeight - coordinateY);
@@ -189,12 +189,12 @@ function keyboardShowHandler(event) {
 
     const bodyMoveStyle = bodyMove.style;
 
-    const compensationHeight = 60; 
+    const compensationHeight = 80;
 
     if (offsetY < keyboardHeight + compensationHeight) {
-        bodyMoveStyle.bottom = (keyboardHeight - offsetY + compensationHeight) + "px";
+        bodyMoveStyle.top = -compensationHeight + 'px';
 
-        bodyMoveStyle.top = "initial";
+        bodyMoveStyle.height = window.innerHeight + compensationHeight + 'px';
     }
 }
 

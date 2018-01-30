@@ -1,5 +1,5 @@
-import { UploadWorkerContractAttachResponse, UploadAttendanceModifyAttachResponse, CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateWorkerContractModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, UploadLeaveAttachResponse, UploadOvertimeAttachResponse, UploadPieceAuditAttachResponse, UploadWorkerContractModifyAttachResponse } from './../../interfaces/response-interface';
-import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions } from './../../interfaces/request-interface';
+import { UploadWorkerContractAttachResponse, UploadAttendanceModifyAttachResponse, CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateWorkerContractModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, UploadLeaveAttachResponse, UploadOvertimeAttachResponse, UploadPieceAuditAttachResponse, UploadWorkerContractModifyAttachResponse, TerminateWorkerContractResponse } from './../../interfaces/response-interface';
+import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, TerminateWorkerContractOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
 
 export const CREATE_WORKER_CONTRACT = 'CREATE_WORKER_CONTRACT';
@@ -48,6 +48,30 @@ export class CreateWorkerContractModifySuccessAction implements Action {
     readonly type = CREATE_WORKER_CONTRACT_MODIFY_SUCCESS;
 
     constructor(public payload: CreateWorkerContractModifyResponse) { }
+}
+
+export const TERMINATE_WORKER_CONTRACT = 'TERMINATE_WORKER_CONTRACT';
+
+export class TerminateWorkerContractAction implements Action {
+    readonly type = TERMINATE_WORKER_CONTRACT;
+    
+    constructor(public payload: TerminateWorkerContractOptions) { }
+}
+
+export const TERMINATE_WORKER_CONTRACT_FAIL = 'TERMINATE_WORKER_CONTRACT_FAIL';
+
+export class TerminateWorkerContractFailAction implements Action {
+    readonly type = TERMINATE_WORKER_CONTRACT_FAIL;
+
+    constructor(public payload: TerminateWorkerContractResponse) { }
+}
+
+export const TERMINATE_WORKER_CONTRACT_SUCCESS = 'TERMINATE_WORKER_CONTRACT_SUCCESS';
+
+export class TerminateWorkerContractSuccessAction implements Action {
+    readonly type = TERMINATE_WORKER_CONTRACT_SUCCESS;
+
+    constructor(public payload: TerminateWorkerContractResponse) { }
 }
 
 export const CREATE_LEAVE = 'CREATE_LEAVE';
@@ -299,6 +323,14 @@ export class ResetLaunchResponseAction implements Action {
     constructor(public payload: string) { }
 }
 
+export const RESET_TERMINATE_WORKER_CONTRACT_RESPONSE = 'RESET_TERMINATE_WORKER_CONTRACT_RESPONSE';
+
+export class ResetTerminateWorkerContractResponseAction implements Action {
+    readonly type = RESET_TERMINATE_WORKER_CONTRACT_RESPONSE;
+
+    constructor() { }
+}
+
 export type Actions = CreateWorkerContractAction
     | CreateAttendanceModifyAction
     | CreateAttendanceModifyFailAction
@@ -316,8 +348,12 @@ export type Actions = CreateWorkerContractAction
     | CreateWorkerContractModifyAction
     | CreateWorkerContractModifyFailAction
     | CreateWorkerContractModifySuccessAction
-    | ResetLaunchResponseAction
     | CreateWorkerContractSuccessAction
+    | ResetLaunchResponseAction
+    | ResetTerminateWorkerContractResponseAction
+    | TerminateWorkerContractAction
+    | TerminateWorkerContractFailAction
+    | TerminateWorkerContractSuccessAction
     | UploadAttendanceModifyAttachAction
     | UploadAttendanceModifyAttachFailAction
     | UploadAttendanceModifyAttachSuccessAction

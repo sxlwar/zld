@@ -148,6 +148,14 @@ export class TeamService {
         return this.getTeams().map(teams => teams.map(({ id, name }) => ({ id, name })));
     }
 
+    getOwnTeamsContainsSelectedProp(): Observable<Team[]> {
+        return this.getOwnTeams()
+            .withLatestFrom(
+            this.getSelectedTeams(),
+            (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 }))
+            );
+    }
+
     /* ======================================================Local state change============================================================= */
 
     setSelectTeams(ids: Observable<number[]>): Subscription {

@@ -98,7 +98,7 @@ export class ProjectPage {
 
         this.isExpired = this.remainDays.map(num => num < 0);
 
-        this.haveMultipleProject = this.projects.map(value => value.length > 1);
+        this.haveMultipleProject = this.projects.filter(value => !!value).map(value => value.length > 1);
 
         this.workerCount = this.workerService.getWorkerCount();
     }

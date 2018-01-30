@@ -201,6 +201,14 @@ export class ResetWorkerContractEditResponseAction implements Action {
     constructor() { }
 }
 
+export const TERMINATE_WORKER_CONTRACT_AT_LOCAL = 'TERMINATE_WORKER_CONTRACT_AT_LOCAL';
+
+export class TerminateWorkerContractAtLocalAction implements Action {
+    readonly type = TERMINATE_WORKER_CONTRACT_AT_LOCAL;
+
+    constructor(public payload: number) { }
+}
+
 export type Actions = GetWorkerContractsAction
     | DecrementQueryWorkerContractPageAction
     | EditWorkerContractAction
@@ -219,6 +227,7 @@ export type Actions = GetWorkerContractsAction
     | ResetWorkerContractsAction
     | SetQueryWorkerContractLimitAction
     | SetQueryWorkerContractPageAction
+    | TerminateWorkerContractAtLocalAction
     | UpdateSelectedWorkersAction
     | UpdateManagementPiecerCountAction
     | UpdateManagementTimerCountAction

@@ -29,7 +29,7 @@
             <platform-work-experience [experience]="platformWorkExperience | async"></platform-work-experience>
         </div>
         <div *ngSwitchCase="'custom'">
-            <work-experience [experience]="customWorkExperience | async" (updateExperience)="updateWorkExperience($event)" (deleteExperience)="deleteWorkExperience($event)"></work-experience>
+            <work-experience [experience]="customWorkExperience | async" [canEditor]="true" (updateExperience)="updateWorkExperience($event)" (deleteExperience)="deleteWorkExperience($event)"></work-experience>
         </div>
     </div>
 

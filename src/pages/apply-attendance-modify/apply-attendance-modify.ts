@@ -54,10 +54,14 @@ export class ApplyAttendanceModifyPage {
     launch(): void {
         this.subscriptions = [
             this.launchService.createAttendanceModify(this.modify$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
+
             this.attendances.subscribe(attendances => this.form.patchValue({ attendanceIds: attendances.map(item => item.id) })),
+            
             this.launchService.getSuccessResponseOfAttendanceModify().subscribe(_ => this.attendanceService.resetAttendancesToModify()),
+            
             this.launchService.uploadAttendanceModifyAttach(),
-            this.launchService.handlerAttendanceModifyError()
+            
+            this.launchService.handleAttendanceModifyError(),
         ];
     }
 

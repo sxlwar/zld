@@ -75,15 +75,25 @@ export class AttendancePage {
     launch() {
         this.subscriptions = [
             this.attendance.getAttendances(this.getAttendanceOption()),
+
             this.getDate(),
+
             this.attendance.getSelectedAttendanceState().subscribe(state => this.selectedAttendanceState = state),
+
             this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
+
             this.attendance.getOrderType().subscribe(type => this.orderType = type),
+
             this.attendance.getSortType().subscribe(type => this.sortType = type),
+
             this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
+
             this.teamService.handleError(),
+
             this.attendance.handleAttendanceError(),
+
             this.attendance.handleAttendanceModifyError(),
+
             this.attendance.handleAttendanceConfirmError(),
         ];
     }
@@ -94,7 +104,7 @@ export class AttendancePage {
 
         this.attendances = this.attendance.getWrappedAttendanceResultList();
 
-        this.teams = this.teamService.getOwnTeams().withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 })));
+        this.teams = this.teamService.getOwnTeamsContainsSelectedProp();
 
         this.haveMoreData = this.attendance.getAttendanceResultMoreData();
 

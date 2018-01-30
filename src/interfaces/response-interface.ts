@@ -661,12 +661,12 @@ export interface MultiProcessCreateResponse {
 }
 
 export interface WorkerContractRes {
-    WorkerContract_id: number;
+    WorkerContract_id: number; //这还是个大写，我操。
 }
 
 // create sign worker contract
 export interface CreateSignWorkerContractResponse extends MultiProcessCreateResponse {
-    information?: WorkerContractRes[];  //这还是个大写，我操。
+    information?: WorkerContractRes[];  
 }
 
 export interface AttendanceModifyRes {
@@ -701,6 +701,11 @@ export interface CreatePieceAuditResponse extends ProcessCreateResponse {
 export interface CreateWorkerContractModifyResponse extends WorkerContractRes {
     errorMessage?: string;
 }
+
+// terminate worker contract   终止合同的动作从修改用工合同时间中拆了出来，后台的终止用工合同的逻辑居然是把合同的终止时间设置为昨天，狗屁逻辑。
+export interface TerminateWorkerContractResponse extends WorkerContractRes{
+    errorMessage?: string;
+ }
 
 /*=================================================Statistics model==================================================*/
 

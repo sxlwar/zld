@@ -17,7 +17,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class WorkerSelectComponent implements OnInit, OnDestroy {
 
-    workerSubject: Subject<DistinguishableWorkerItem[]> = new BehaviorSubject([])
+    workerSubject: Subject<DistinguishableWorkerItem[]> = new BehaviorSubject([]);
 
     subscriptions: Subscription[] = [];
 

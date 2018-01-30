@@ -1,5 +1,5 @@
-import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions } from './../../interfaces/request-interface';
-import { CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, CreateWorkerContractModifyResponse } from './../../interfaces/response-interface';
+import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, TerminateWorkerContractOptions } from './../../interfaces/request-interface';
+import { CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, CreateWorkerContractModifyResponse, TerminateWorkerContractResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/launch-action';
 
 export enum LaunchResponse {
@@ -24,6 +24,8 @@ export interface State {
     workerContractModifyResponse: CreateWorkerContractModifyResponse;
     workerContractOptions: CreateWorkerContractOptions;
     workerContractResponse: CreateSignWorkerContractResponse;
+    terminateContractOptions: TerminateWorkerContractOptions;
+    terminateResponse: TerminateWorkerContractResponse;
 };
 
 export const initialState: State = {
@@ -38,28 +40,30 @@ export const initialState: State = {
     workerContractModifyOptions: null,
     workerContractModifyResponse: null,
     workerContractOptions: null,
-    workerContractResponse: null
+    workerContractResponse: null,
+    terminateContractOptions: null,
+    terminateResponse: null,
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
         case actions.CREATE_WORKER_CONTRACT:
-            return Object.assign({}, state, { workerContractOptions: action.payload });
+            return { ...state, workerContractOptions: action.payload };
 
         case actions.CREATE_WORKER_CONTRACT_MODIFY:
-            return Object.assign({}, state, { workerContractModifyOptions: action.payload });
+            return { ...state, workerContractModifyOptions: action.payload };
 
         case actions.CREATE_PIECE_AUDIT:
-            return Object.assign({}, state, { pieceAuditOptions: action.payload });
+            return { ...state, pieceAuditOptions: action.payload };
 
         case actions.CREATE_ATTENDANCE_MODIFY:
-            return Object.assign({}, state, { attendanceModifyOptions: action.payload });
+            return { ...state, attendanceModifyOptions: action.payload };
 
         case actions.CREATE_LEAVE:
-            return Object.assign({}, state, { leaveOptions: action.payload });
+            return { ...state, leaveOptions: action.payload };
 
         case actions.CREATE_OVERTIME:
-            return Object.assign({}, state, { overtimeOptions: action.payload });
+            return { ...state, overtimeOptions: action.payload };
 
         case actions.CREATE_ATTENDANCE_MODIFY_FAIL:
         case actions.CREATE_ATTENDANCE_MODIFY_SUCCESS:
@@ -85,9 +89,18 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.CREATE_WORKER_CONTRACT_MODIFY_SUCCESS:
             return { ...state, workerContractModifyResponse: action.payload };
 
-        case actions.RESET_LAUNCH_RESPONSE: {
+        case actions.RESET_LAUNCH_RESPONSE:
             return { ...state, [action.payload]: null };
-        }
+
+        case actions.TERMINATE_WORKER_CONTRACT:
+            return { ...state, terminateContractOptions: action.payload };
+
+        case actions.TERMINATE_WORKER_CONTRACT_FAIL:
+        case actions.TERMINATE_WORKER_CONTRACT_SUCCESS:
+            return { ...state, terminateResponse: action.payload };
+
+        case actions.RESET_TERMINATE_WORKER_CONTRACT_RESPONSE:
+            return { ...state, terminateResponse: null };
 
         default:
             return state;
@@ -117,3 +130,7 @@ export const getOvertimeOptions = (state: State) => state.overtimeOptions;
 export const getPieceAuditOptions = (state: State) => state.pieceAuditOptions;
 
 export const getWorkerContractModifyOptions = (state: State) => state.workerContractModifyOptions;
+
+export const getTerminateContractResponse = (state: State) => state.terminateResponse;
+
+export const getTerminateContractOptions = (state: State) => state.terminateContractOptions;

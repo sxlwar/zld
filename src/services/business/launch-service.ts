@@ -1,14 +1,15 @@
+import { CreateWorkerContractModifyOptions } from './../../interfaces/request-interface';
 import { ResetWorkerContractEditResponseAction } from './../../actions/action/worker-action';
 import { WorkerContractFormModel, AttendanceModifyFormModel, LeaveFormModel, OvertimeFormModel, PieceAuditFormModel, WorkerContractModifyFormModel, WorkerContractEditFormModel } from './../api/mapper-service';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
-import { AppState, selectAttendanceModifyOptions, selectSignWorkerContractResponse, selectAttendanceModifyResponse, selectSignWorkerContractOptions, selectWorkerContractResponse, selectLeaveResponse, selectOvertimeResponse, selectPieceAuditResponse, selectWorkerContractModifyResponse, selectLeaveOptions, selectOvertimeOptions, selectPieceAuditOptions, selectWorkerContractModifyOptions, selectWorkerContractEditOptions, selectWorkerContractEditResponse } from './../../reducers/index-reducer';
+import { AppState, selectAttendanceModifyOptions, selectSignWorkerContractResponse, selectAttendanceModifyResponse, selectSignWorkerContractOptions, selectWorkerContractResponse, selectLeaveResponse, selectOvertimeResponse, selectPieceAuditResponse, selectWorkerContractModifyResponse, selectLeaveOptions, selectOvertimeOptions, selectPieceAuditOptions, selectWorkerContractModifyOptions, selectWorkerContractEditOptions, selectWorkerContractEditResponse, selectTerminateWorkerContractResponse } from './../../reducers/index-reducer';
 import { UserService } from './user-service';
 import { ErrorService } from './../errors/error-service';
 import { ProcessorService } from './../api/processor-service';
 import { Injectable } from '@angular/core';
-import { ResetLaunchResponseAction } from '../../actions/action/launch-action';
+import { ResetLaunchResponseAction, ResetTerminateWorkerContractResponseAction } from '../../actions/action/launch-action';
 
 @Injectable()
 export class LaunchService {
@@ -66,54 +67,87 @@ export class LaunchService {
             .mapTo(true);
     }
 
+    getSuccessResponseOfWorkerContractTermination(): Observable<number> {
+        return this.store.select(selectTerminateWorkerContractResponse)
+            .filter(value => !!value && !value.errorMessage)
+            .map(res => res.WorkerContract_id);
+    }
+
     /* ====================================================API request=======================================================*/
 
     createWorkerContract(form: Observable<WorkerContractFormModel>): Subscription {
         return this.processor.createWorkerContractProcessor(
             form.map(form => this.processor.transformWorkerContractForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (form, sid) => ({ ...form, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (form, sid) => ({ ...form, sid })
+                )
         );
     }
 
     createAttendanceModify(form: Observable<AttendanceModifyFormModel>): Subscription {
         return this.processor.createAttendanceModifyProcessor(
             form.map(form => this.processor.transformAttendanceModifyForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (form, sid) => ({ ...form, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (form, sid) => ({ ...form, sid })
+                )
         );
     }
 
     createLeave(form: Observable<LeaveFormModel>): Subscription {
         return this.processor.createLeaveProcessor(
             form.map(form => this.processor.transformLeaveForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
         );
     }
 
     createOvertime(form: Observable<OvertimeFormModel>): Subscription {
         return this.processor.createOvertimeProcessor(
             form.map(form => this.processor.transformOvertimeForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
         );
     }
 
     createPieceAudit(form: Observable<PieceAuditFormModel>): Subscription {
         return this.processor.createPieceAuditProcessor(
             form.map(form => this.processor.transformPieceAuditForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
         );
     }
 
     createWorkerContractModify(form: Observable<WorkerContractModifyFormModel>): Subscription {
-        return this.processor.createWorkerContractModifyProcessor(
-            form.map(form => this.processor.transformWorkerContractModifyForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
-        );
+        return this.processor.createWorkerContractModifyProcessor(this.getWorkerContractOperateOption(form));
+    }
+
+    terminateWorkerContract(option: Observable<WorkerContractModifyFormModel>): Subscription {
+        return this.processor.createWorkerContractTerminationProcessor(this.getWorkerContractOperateOption(option));
+    }
+
+    private getWorkerContractOperateOption(option: Observable<WorkerContractModifyFormModel>): Observable<CreateWorkerContractModifyOptions> {
+        return option.map(option => this.processor.transformWorkerContractModifyForm(option))
+            .withLatestFrom(
+            this.userInfo.getSid(),
+            (option, sid) => ({ ...option, sid })
+            );
     }
 
     editWorkerContract(form: Observable<WorkerContractEditFormModel>): Subscription {
         return this.processor.workerContractEditProcessor(
             form.map(form => this.processor.transformWorkerContractEditForm(form))
-                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
         );
     }
 
@@ -218,33 +252,41 @@ export class LaunchService {
         this.store.dispatch(new ResetWorkerContractEditResponseAction());
     }
 
+    resetTerminateWorkerContractResponse(): void {
+        this.store.dispatch(new ResetTerminateWorkerContractResponseAction());
+    }
+
     /* ====================================================Error handle=======================================================*/
 
-    handlerLeaveError(): Subscription {
+    handleLeaveError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectLeaveResponse), 'API_ERROR');
     }
 
-    handlerOvertimeError(): Subscription {
+    handleOvertimeError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectOvertimeResponse), 'API_ERROR');
     }
 
-    handlerPieceAuditError(): Subscription {
+    handlePieceAuditError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectPieceAuditResponse), 'API_ERROR');
     }
 
-    handlerWorkerContractModifyError(): Subscription {
+    handleWorkerContractModifyError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractModifyResponse), 'API_ERROR');
     }
 
-    handlerWorkerContractError(): Subscription {
+    handleWorkerContractError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractResponse), 'API_ERROR');
     }
 
-    handlerAttendanceModifyError(): Subscription {
+    handleAttendanceModifyError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyResponse), 'API_ERROR');
     }
 
-    handelWorkerContractEditError(): Subscription {
+    handleWorkerContractEditError(): Subscription {
         return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractEditResponse), 'API_ERROR');
+    }
+
+    handleWorkerContractTerminationError(): Subscription {
+        return this.error.handleErrorInSpecific(this.store.select(selectTerminateWorkerContractResponse), 'API_ERROR');
     }
 }

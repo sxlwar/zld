@@ -81,10 +81,14 @@ export class SignWorkerContractPage {
     launch() {
         this.subscriptions = [
             this.searchService.getSelectedWorkers().subscribe(source => this.contract.patchValue({ workerIds: source.map(item => item.user_id) })),
+            
             this.launchService.createWorkerContract(this.contract$.map(_ => ({ ...this.contract.value, ...this.timePayContract.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList }))),
+            
             this.launchService.uploadWorkerContractAttach(),
+            
             this.launchService.getSignWorkerContractResponse().subscribe(_ => this.resetForm()),
-            this.launchService.handlerWorkerContractError(),
+            
+            this.launchService.handleWorkerContractError(),
         ];
     }
 
