@@ -38,8 +38,6 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
     boundWorker: Worker;
 
-    worker$$: Subscription;
-
     subscriptions: Subscription[] = [];
 
     switchState: Subject<boolean> = new Subject();
@@ -49,6 +47,8 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
     add$: Subject<AddAttendanceCardFormModel> = new Subject();
 
     bind$: Subject<RequestOption> = new Subject();
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private viewCtrl: ViewController,
@@ -87,7 +87,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
             (workers, boundIds) => workers.filter(item => boundIds.indexOf(item.userId) === -1)
             );
 
-        this.haveMoreData = this.worker.getHaveMoreData();
+        this.haveMoreData = this.worker.haveMoreData();
     }
 
     launch(): void {
@@ -103,6 +103,8 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
             this.card.getAddAttendanceCardResponse()
                 .merge(this.card.getUpdateAttendanceCardResponse())
                 .filter(res => !res.errorMessage).subscribe(_ => this.dismiss()),
+
+            ...this.worker.getNextPage(this.nextPage$),
 
             this.worker.handleError(),
 
@@ -142,13 +144,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
             selectedWorker: '',
         });
     }
-
-    getNextPage(infiniteScroll: InfiniteScroll) {
-        this.worker$$ && this.worker$$.unsubscribe();
-
-        this.worker$$ = this.worker.getNextPage(infiniteScroll);
-    }
-
+    
     getOption() {
         return this.worker.getCompleteStatusOption()
             .zip(
@@ -190,8 +186,6 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
         this.card.resetAttendanceCardOperateResponse(AttendanceCardResponses.addResponse);
 
         this.subscriptions.forEach(item => item.unsubscribe());
-
-        this.worker$$ && this.worker$$.unsubscribe();
     }
 
     /* ===============================================Shortcut methods for templates==================================================== */

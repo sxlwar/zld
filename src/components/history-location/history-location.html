@@ -172,7 +172,7 @@
     </ion-list>
 
     <ion-infinite-scroll
-        (ionInfinite)="getNextPage($event)"
+        (ionInfinite)="nextPage$.next($event)"
         [enabled]="enableScroll | async"
     >
         <ion-infinite-scroll-content

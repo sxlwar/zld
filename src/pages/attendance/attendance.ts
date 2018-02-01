@@ -29,6 +29,8 @@ export class AttendancePage {
 
     teams: Observable<Team[]>;
 
+    selectedTeams: Team[];
+
     attendances: Observable<AttendanceResult[]>;
 
     subscriptions: Subscription[] = [];
@@ -37,7 +39,7 @@ export class AttendancePage {
 
     actionSheet$$: Subscription;
 
-    page$$: Subscription;
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     selectedAttendanceState: number;
 
@@ -73,7 +75,7 @@ export class AttendancePage {
         this.launch();
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.attendance.getAttendances(this.getAttendanceOption()),
 
@@ -89,6 +91,8 @@ export class AttendancePage {
 
             this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
 
+            ...this.attendance.getNextPage(this.nextPage$),
+
             this.teamService.handleError(),
 
             this.attendance.handleAttendanceError(),
@@ -99,15 +103,14 @@ export class AttendancePage {
         ];
     }
 
-    initialModel() {
-
+    initialModel(): void {
         this.today = this.timeService.getDate(this.timeService.getYesterday(), true);
 
         this.attendances = this.attendance.getWrappedAttendanceResultList();
 
         this.teams = this.teamService.getOwnTeamsContainsSelectedProp();
 
-        this.haveMoreData = this.attendance.getAttendanceResultMoreData();
+        this.haveMoreData = this.attendance.haveMoreData();
 
         this.operatePermission = this.permission.getOperatePermission(attendanceIcon.icon, ProjectRoot);
 
@@ -145,12 +148,6 @@ export class AttendancePage {
         this.attendance.setSelectedAttendanceState(Number(state));
 
         this.attendance.resetAttendance();
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll) {
-        this.page$$ && this.page$$.unsubscribe();
-
-        this.page$$ = this.attendance.getNextPage(infiniteScroll);
     }
 
     sortAttendanceBy(target: number) {

@@ -42,8 +42,6 @@ export class MembersPage {
 
     haveMorePiecer: Observable<boolean>;
 
-    page$$: Subscription;
-
     subscriptions: Subscription[] = [];
 
     type$: Subject<string> = new Subject();
@@ -53,6 +51,8 @@ export class MembersPage {
     setTeam$: Subject<Team[]> = new Subject();
 
     teams: Observable<Team[]>;
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private navCtrl: NavController,
@@ -103,18 +103,17 @@ export class MembersPage {
 
     launch(): void {
         this.subscriptions = [
-            this.worker.getWorkerContracts(this.getOption(ContractType[1])),
+            this.worker.getWorkerContracts(this.getOption()),
 
             this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
 
-            this.worker.getWorkerContracts(this.type$.filter(value => value === ContractType[2]).take(1).mergeMap(type => this.getOption(type))),
-
             this.worker.setWorkersCountDistinctByPayType(this.type$.startWith(ContractType[1])),
 
-            this.worker.terminateWorkerContract(this.launchService.getSuccessResponseOfWorkerContractTermination()), 
+            this.worker.terminateWorkerContract(this.launchService.getSuccessResponseOfWorkerContractTermination()),
+
+            ...this.worker.getNextPage(this.nextPage$, this.type$.startWith(this.type).map(type => ContractType[type])),
 
             this.worker.handleError(),
-
         ];
     }
 
@@ -132,20 +131,17 @@ export class MembersPage {
             })));
     }
 
-    getOption(type: string): Observable<RequestOption> {
-        return this.worker.getManagementPage(type)
+    getOption(): Observable<RequestOption> {
+        const type = this.type$.startWith(this.type);
+
+        return type
+            .switchMap(type => this.worker.getManagementPage(type))
             .withLatestFrom(
-            this.worker.getContractTypeOption(Observable.of(type)),
+            this.worker.getContractTypeOption(type),
             this.worker.getCompleteStatusOption(),
             this.worker.getUnexpiredOption(),
             (option1, option2, option3, option4) => ({ ...option1, ...option2, ...option3, ...option4 })
-            );
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.page$$ && this.page$$.unsubscribe();
-
-        this.page$$ = this.worker.getNextPage(infiniteScroll, ContractType[this.type]);
+            )
     }
 
     goToNextPage(item: WorkerItem): void {
@@ -157,8 +153,6 @@ export class MembersPage {
     }
 
     ionViewWillUnload() {
-        this.page$$ && this.page$$.unsubscribe();
-
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

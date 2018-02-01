@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AuditTarget, MissionListItem, WorkFlowPageType } from '../../interfaces/mission-interface';
@@ -28,7 +29,9 @@ export class IStartedPage {
 
     subscriptions: Subscription[] = [];
 
-    page$$: Subscription;
+    nextPage$: Subject<InfiniteScroll> = new Subject();
+
+    audit$: Subject<AuditTarget> = new Subject();
 
     screeningConditions: ScreeningCondition[] = screeningConditions;
 
@@ -73,20 +76,12 @@ export class IStartedPage {
 
             this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
 
+            this.workFlow.updateMultiTask(this.audit$.map(({ comment, ids, approve }) => ({ id: ids, comment, approve: Number(approve) }))),
+
+            ...this.workFlow.getNextPage(this.nextPage$, WorkFlowPageType.iCompletedPage),
+
             this.workFlow.handleWorkFlowError(),
         ];
-    }
-
-    audit(target: AuditTarget): void {
-        const { comment, ids, approve } = target;
-
-        this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.page$$ && this.page$$.unsubscribe();
-
-        this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.iStartedPage);
     }
 
     goToNextPage(target: MissionListItem): void {
@@ -101,8 +96,6 @@ export class IStartedPage {
         this.workFlow.resetWorkFlowResponse();
 
         this.workFlow.resetPage(WorkFlowPageType.iStartedPage);
-
-        this.page$$ && this.page$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());
     }

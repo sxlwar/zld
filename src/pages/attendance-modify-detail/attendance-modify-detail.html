@@ -12,7 +12,7 @@
                 ion-button
                 small
                 clear
-                (click)="audit()"
+                (click)="audit$.next(true)"
             >
                 {{'AUDIT' | translate}}
             </button>

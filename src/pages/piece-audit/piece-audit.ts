@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AuditTarget, MissionListItem, WorkFlowPageType } from './../../interfaces/mission-interface';
@@ -28,7 +29,9 @@ export class PieceAuditPage {
 
     subscriptions: Subscription[] = [];
 
-    page$$: Subscription;
+    nextPage$: Subject<InfiniteScroll> = new Subject();
+
+    audit$: Subject<AuditTarget> = new Subject();
 
     constructor(
         private navCtrl: NavController,
@@ -69,26 +72,19 @@ export class PieceAuditPage {
             ),
             this.statistic.updateWorkFlowStatisticAtLocal(ProcessIdOptions.pieceAudit, this.workFlow.getTaskUpdateSuccessCount()),
 
+            ...this.workFlow.getNextPage(this.nextPage$, WorkFlowPageType.pieceAuditPage),
+
+            this.workFlow.updateMultiTask(this.audit$.map(({ comment, ids, approve }) => ({ approve: Number(approve), ids, comment }))),
+
+
             this.workFlow.handleWorkFlowError(),
 
             this.workFlow.handleUpdateError(),
         ];
     }
 
-    audit(target: AuditTarget): void {
-        const { comment, ids, approve } = target;
-
-        this.workFlow.updateMultiTask(Observable.of({ approve: Number(approve), id: ids, comment }));
-    }
-
     applyPieceAudit(): void {
         this.navCtrl.push(applyPieceAuditPage).then(() => { });
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll) {
-        this.page$$ && this.page$$.unsubscribe();
-
-        this.page$$ = this.workFlow.getNextPage(infiniteScroll, WorkFlowPageType.pieceAuditPage);
     }
 
     goToNextPage(target: MissionListItem): void {
@@ -101,8 +97,6 @@ export class PieceAuditPage {
         this.workFlow.resetTaskUpdateResponse();
 
         this.workFlow.resetPage(WorkFlowPageType.pieceAuditPage);
-
-        this.page$$ && this.page$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());
     }

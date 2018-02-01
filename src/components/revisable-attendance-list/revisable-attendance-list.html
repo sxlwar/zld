@@ -75,7 +75,7 @@
         [total]="count | async"
         [operate]="true"
         [haveMoreData]="haveMoreData | async"
-        (getNextPage)="getNextPage($event)"
+        (getNextPage)="nextPage$.next($event)"
         (audit)="audit($event)"
     ></attendance-list>
 </ion-content>

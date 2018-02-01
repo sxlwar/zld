@@ -44,11 +44,11 @@ export class AddLocationCardComponent {
 
     checked: boolean;
 
-    worker$$: Subscription;
-
     bind$: Subject<RequestOption> = new Subject();
 
     add$: Subject<AddLocationCardFormModel> = new Subject();
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private navParams: NavParams,
@@ -82,7 +82,7 @@ export class AddLocationCardComponent {
             (workers, boundIds) => workers.filter(item => boundIds.indexOf(item.userId) === -1)
             );
 
-        this.haveMoreData = this.worker.getHaveMoreData();
+        this.haveMoreData = this.worker.haveMoreData();
     }
 
     launch(): void {
@@ -101,6 +101,8 @@ export class AddLocationCardComponent {
             this.locationCard.addLocationCard(this.add$),
 
             this.locationCard.updateLocationCard(this.bind$), // This error handled in location-card.ts
+
+            ...this.worker.getNextPage(this.nextPage$),
 
             this.worker.handleError(),
 
@@ -139,12 +141,6 @@ export class AddLocationCardComponent {
             bind: { value: this.checked, disabled: this.isUpdate },
             selectedWorker: '',
         });
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.worker$$ && this.worker$$.unsubscribe();
-
-        this.worker$$ = this.worker.getNextPage(infiniteScroll);
     }
 
     getOption(): Observable<RequestOption> {
@@ -189,8 +185,6 @@ export class AddLocationCardComponent {
         this.locationCard.resetOperateResponse(LocationCardResponses.addResponse);
 
         this.subscriptions.forEach(item => item.unsubscribe());
-
-        this.worker$$ && this.worker$$.unsubscribe();
     }
 
     /* ===============================================Shortcut methods for templates==================================================== */

@@ -4,6 +4,7 @@ import { RequestOption } from 'interfaces/request-interface';
 import { InfiniteScroll, ViewController } from 'ionic-angular';
 import { range } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
@@ -44,8 +45,6 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
 
     workers: Observable<DistinguishableWorkerItem[]>;
 
-    workers$$: Subscription;
-
     enableScroll: Observable<boolean>;
 
     locationForm: FormGroup;
@@ -63,6 +62,8 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
     loading = false;
 
     selectedWorkTypes: WorkTypeItem[];
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private viewCtrl: ViewController,
@@ -104,6 +105,8 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
             this.getRestWorkerList(),
 
             this.getTimeRelatedOptions(),
+
+            ...this.worker.getNextPage(this.nextPage$),
 
             this.worker.handleError(),
 
@@ -218,12 +221,6 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
     /* ============================================================================================================= */
     dismiss(): void {
         this.viewCtrl.dismiss();
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.workers$$ && this.workers$$.unsubscribe();
-
-        this.workers$$ = this.worker.getNextPage(infiniteScroll);
     }
 
     execution(): void {

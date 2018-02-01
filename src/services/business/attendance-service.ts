@@ -38,6 +38,7 @@ import {
     ResetAttendancesToModifyAction,
 } from './../../actions/action/attendance-action';
 import { AttendanceSortType, AttendanceState } from './../../interfaces/attendance-interface';
+import { GetNextPage } from './../../interfaces/paging-query-interface';
 import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
 import { AttendanceModify, AttendanceResultListResponse, AttendanceStatistics } from './../../interfaces/response-interface';
 import {
@@ -56,7 +57,7 @@ import { RecordOptionService } from './record-option-service';
 import { TeamService } from './team-service';
 
 @Injectable()
-export class AttendanceService extends RecordOptionService {
+export class AttendanceService extends RecordOptionService implements GetNextPage {
     constructor(
         private store: Store<AppState>,
         private processor: ProcessorService,
@@ -132,7 +133,7 @@ export class AttendanceService extends RecordOptionService {
         return this.store.select(selectSelectedAttendanceState);
     }
 
-    getAttendanceResultMoreData(): Observable<boolean> {
+    haveMoreData(): Observable<boolean> {
         return this.getAttendanceCount()
             .combineLatest(
             this.store.select(selectAttendanceLimit),
@@ -206,12 +207,15 @@ export class AttendanceService extends RecordOptionService {
         );
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): Subscription {
-        this.increasePage();
+    getNextPage(notification: Observable<InfiniteScroll>): Subscription[] {
+        return [
+            notification.subscribe(_ => this.store.dispatch(new IncreaseAttendancePageAction())),
 
-        return this.getAttendanceResultResponse()
-            .skip(1)
-            .subscribe(_ => infiniteScroll.complete());
+            this.getAttendanceResultResponse()
+                .skip(1)
+                .withLatestFrom(notification, (_, infiniteScroll) => infiniteScroll)
+                .subscribe(infiniteScroll => infiniteScroll.complete()),
+        ];
     }
 
     /* =========================================================Local state operation================================================= */
@@ -238,10 +242,6 @@ export class AttendanceService extends RecordOptionService {
 
     setSelectedAttendanceState(state: number): void {
         this.store.dispatch(new SetQueryAttendanceStateAction(state));
-    }
-
-    increasePage(): void {
-        this.store.dispatch(new IncreaseAttendancePageAction());
     }
 
     resetPage(): void {

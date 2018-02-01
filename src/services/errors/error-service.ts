@@ -45,12 +45,11 @@ export class ErrorService {
      * */
     handleUIError(msgKey: string) {
         this.translate.get(msgKey).subscribe(message => {
-            const toast = this.toastCtrl.create({
+            this.toastCtrl.create({
                 message,
                 duration: 3000,
                 position: 'top',
-            });
-            toast.present().then(() => { });
+            }).present().then(() => { });
         });
     }
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { InfiniteScroll, IonicPage, ModalController } from 'ionic-angular';
 import { range } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { WorkerItem } from '../../interfaces/worker-interface';
@@ -24,29 +25,29 @@ export interface RecordItem {
 })
 export class LocationAttendanceRecordPage {
 
-    subscriptions: Subscription[] = [];
-
-    endDate: string;
-
-    startDate: string;
-
-    pageSubscription: Subscription;
-
-    maxDate: Observable<string>;
-
-    records: Observable<RecordItem[]>;
-
-    workers: Observable<WorkerItem[]>;
-
-    names: Observable<string>;
-
-    haveMoreData: Observable<boolean>;
-
-    availableYearValues: number[];
+    availableDayValues: number[];
 
     availableMonthValues: number[];
 
-    availableDayValues: number[];
+    availableYearValues: number[];
+
+    endDate: string;
+
+    haveMoreData: Observable<boolean>;
+
+    maxDate: Observable<string>;
+
+    names: Observable<string>;
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
+
+    records: Observable<RecordItem[]>;
+
+    startDate: string;
+
+    subscriptions: Subscription[] = [];
+
+    workers: Observable<WorkerItem[]>;
 
     constructor(
         private timeService: TimeService,
@@ -63,10 +64,10 @@ export class LocationAttendanceRecordPage {
         this.launch();
     }
 
-    initialModel() {
+    initialModel(): void {
         this.maxDate = this.record.getMaxDate().map(date => this.timeService.getDate(date, true));
 
-        this.haveMoreData = this.record.getHaveMoreData();
+        this.haveMoreData = this.record.haveMoreData();
 
         this.workers = this.worker.getSelectedWorkersContainsWorkerId();
 
@@ -84,12 +85,18 @@ export class LocationAttendanceRecordPage {
             .scan((acc, cur) => acc.concat(cur), []);
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.workers.subscribe(workers => this.record.updateLocationAttendanceRecordUserIds(workers.map(item => item.id))),
+
             this.record.getAttendanceInstantList(this.record.getOptions()),
+
             this.getDays(),
+
+            ...this.record.getNextPage(this.nextPage$),
+
             this.record.handleError(),
+
             this.worker.handleError(),
         ];
     }
@@ -127,13 +134,7 @@ export class LocationAttendanceRecordPage {
         this.record.updateLocationAttendanceRecordDate(date, 'end');
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.pageSubscription && this.pageSubscription.unsubscribe();
-
-        this.pageSubscription = this.record.getNextPage(infiniteScroll);
-    }
-
-    openWorkerSelect() {
+    openWorkerSelect(): void {
         this.modalCtrl.create(WorkerSelectComponent, null, { cssClass: 'inset-modal' }).present();
     }
 
@@ -141,8 +142,6 @@ export class LocationAttendanceRecordPage {
 
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe);
-
-        this.pageSubscription && this.pageSubscription.unsubscribe();
     }
 
 }

@@ -14,7 +14,7 @@
         [operate]="operatePermission | async"
         (audit)="confirm$.next($event)"
         (showDetail)="goToDetailPage($event)"
-        (getNextPage)="getNextPage($event)"
+        (getNextPage)="nextPage$.next($event)"
         [haveMoreData]="haveMoreData | async"
         [operateButtonText]="'ATTENDANCE_CONFIRM'"
     ></attendance-list>

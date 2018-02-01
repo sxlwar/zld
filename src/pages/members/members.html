@@ -81,7 +81,7 @@
             </ion-item>
 
             <ion-infinite-scroll
-                (ionInfinite)="getNextPage($event)"
+                (ionInfinite)="nextPage$.next($event)"
                 *ngIf="haveMoreTimer | async"
             >
                 <ion-infinite-scroll-content
@@ -123,7 +123,7 @@
             </ion-item>
 
             <ion-infinite-scroll
-                (ionInfinite)="getNextPage($event)"
+                (ionInfinite)="nextPage$.next($event)"
                 *ngIf="haveMorePiecer | async"
             >
                 <ion-infinite-scroll-content

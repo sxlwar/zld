@@ -55,6 +55,7 @@ export class CalendarComponent implements OnInit {
     launch(): void {
         this.subscriptions = [
             this.instant.getAttendanceInstantList(this.getOption()),
+
             this.instant.handleError(),
         ];
     }

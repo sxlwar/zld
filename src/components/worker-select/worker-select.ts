@@ -22,8 +22,6 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     subscriptions: Subscription[] = [];
 
-    workers$$: Subscription;
-
     canQueryOther: Observable<boolean>;
 
     haveMoreData: Observable<boolean>;
@@ -33,6 +31,8 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     selectedWorker: DistinguishableWorkerItem;
 
     single = false;
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private worker: WorkerService,
@@ -58,7 +58,7 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
             .take(1)
             .filter(value => !!value);
 
-        this.haveMoreData = this.worker.getHaveMoreData();
+        this.haveMoreData = this.worker.haveMoreData();
     }
 
     launch(): void {
@@ -66,6 +66,8 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
             this.getWorkers(),
 
             this.worker.getWorkerContracts(this.getOption()),
+
+            ...this.worker.getNextPage(this.nextPage$),
             
             this.worker.handleError(),
         ];
@@ -104,12 +106,6 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
             });
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.workers$$ && this.workers$$.unsubscribe();
-
-        this.workers$$ = this.worker.getNextPage(infiniteScroll);
-    }
-
     updateSelectedWorkers(): void {
         const subscription = this.workerSubject.take(1).subscribe(workers => {
             if (!this.single) {
@@ -129,8 +125,6 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.workers$$ && this.workers$$.unsubscribe();
-
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

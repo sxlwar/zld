@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
 import { range } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Map } from '../../interfaces/amap-interface';
@@ -40,13 +41,13 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
     options: Observable<TrajectoryOptions>;
 
-    workers$$: Subscription;
-
     availableHourValues: number[];
 
     availableMinuteValues: number[];
 
     enableScroll: Observable<boolean>;
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private worker: WorkerService,
@@ -60,7 +61,8 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
         private navParams: NavParams
     ) {
         this.today = this.timeService.getDate(new Date, true);
-        worker.resetPage();
+
+        this.worker.resetPage();
     }
 
     ngOnInit() {
@@ -89,6 +91,8 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
             this.getTimeOptions(),
 
             this.getRestWorkerList(),
+
+            ...this.worker.getNextPage(this.nextPage$),
 
             this.worker.handleError(),
         ];
@@ -131,15 +135,6 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
         const { id, selected } = worker;
 
         this.location.updateTrajectorySelectedWorker({ id, selected });
-    }
-
-    /**
-     * @param infiniteScroll - ionic's infiniteScroll instance;
-     */
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.workers$$ && this.workers$$.unsubscribe();
-
-        this.workers$$ = this.worker.getNextPage(infiniteScroll);
     }
 
     /* ===================================================Update options methods================================================= */
@@ -207,8 +202,6 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscriptions.forEach(item => item.unsubscribe());
-
-        this.workers$$ && this.workers$$.unsubscribe();
     }
 
     /* =========================================================== Shortcut methods for template ======================================= */

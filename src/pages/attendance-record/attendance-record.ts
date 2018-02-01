@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { InfiniteScroll, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { uniqBy } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-interface';
@@ -26,13 +27,11 @@ export class AttendanceRecordPage {
 
     haveMoreData: Observable<boolean>;
 
-    pageSubscription: Subscription;
-
-    recordSubscription: Subscription;
-
     actionSheet$$: Subscription;
 
     subscriptions: Subscription[] = [];
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private navCtrl: NavController,
@@ -61,23 +60,19 @@ export class AttendanceRecordPage {
         this.subscriptions = [
             this.attendanceRecord.getAttendanceInstantList(Observable.of({ start_day: this.attendanceResult.day, end_day: this.attendanceResult.day, user_id: [this.attendanceResult.contract__worker_id] })),
 
+            ...this.attendanceRecord.getNextPage(this.nextPage$),
+
             this.attendanceRecord.handleError(),
         ];
     }
 
     initialModel(): void {
-        this.haveMoreData = this.attendanceRecord.getHaveMoreData();
+        this.haveMoreData = this.attendanceRecord.haveMoreData();
 
         this.records = this.attendanceRecord
             .getAttendanceRecord()
             .scan((acc, cur) => acc.concat(cur))
             .map(result => uniqBy(result, 'id'));
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.pageSubscription && this.pageSubscription.unsubscribe();
-
-        this.pageSubscription = this.attendanceRecord.getNextPage(infiniteScroll);
     }
 
     showActionSheet(): void {
@@ -98,10 +93,6 @@ export class AttendanceRecordPage {
     ionViewWillUnload() {
         this.attendanceRecord.resetRecordResponse();
         
-        this.pageSubscription && this.pageSubscription.unsubscribe();
-
-        this.recordSubscription && this.recordSubscription.unsubscribe();
-
         this.actionSheet$$ && this.actionSheet$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());

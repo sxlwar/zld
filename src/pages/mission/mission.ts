@@ -31,8 +31,6 @@ export class MissionPage {
 
     icons: Observable<IconState[]>;
 
-    subscription: Subscription;
-
     subscriptions: Subscription[] = [];
 
     constructor(

@@ -19,8 +19,6 @@ import { TimeService } from './../../services/utils/time-service';
 export class AttendanceMachineRecordPage {
     records: Observable<AttendanceInstant[]>;
 
-    pageSubscription: Subscription;
-
     haveMoreData: Observable<boolean>;
 
     date: string;
@@ -36,6 +34,8 @@ export class AttendanceMachineRecordPage {
     subscriptions: Subscription[] = [];
 
     count: Observable<number>;
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private navParams: NavParams,
@@ -62,7 +62,7 @@ export class AttendanceMachineRecordPage {
 
         this.machineName = this.machine.getMachineName(this.id);
 
-        this.haveMoreData = this.instant.getHaveMoreData();
+        this.haveMoreData = this.instant.haveMoreData();
 
         this.records = this.date$
             .startWith(this.date)
@@ -90,14 +90,10 @@ export class AttendanceMachineRecordPage {
                     }))
             ),
 
+            ...this.instant.getNextPage(this.nextPage$),
+
             this.instant.handleError(),
         ];
-    }
-
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.pageSubscription && this.pageSubscription.unsubscribe();
-
-        this.pageSubscription = this.instant.getNextPage(infiniteScroll);
     }
 
     showCapture(instant: AttendanceInstant): void {
@@ -112,7 +108,5 @@ export class AttendanceMachineRecordPage {
         this.instant.resetRecordResponse();
 
         this.subscriptions.forEach(item => item.unsubscribe());
-
-        this.pageSubscription && this.pageSubscription.unsubscribe();
     }
 }

@@ -15,6 +15,7 @@ import {
 } from './../../actions/action/work-flow-action';
 import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-flow-audit';
 import { AuditTarget, MissionListItem } from './../../interfaces/mission-interface';
+import { GetNextPage } from './../../interfaces/paging-query-interface';
 import { MultiTaskUpdateOptions, WorkFlowStatus } from './../../interfaces/request-interface';
 import { MultiTaskUpdateResponse, WorkFlow, WorkFlowAggregation } from './../../interfaces/response-interface';
 import {
@@ -42,7 +43,7 @@ import { ProjectService } from './project-service';
 import { UserService } from './user-service';
 
 @Injectable()
-export class WorkFlowService {
+export class WorkFlowService implements GetNextPage {
     constructor(
         private store: Store<AppState>,
         private userInfo: UserService,
@@ -142,13 +143,16 @@ export class WorkFlowService {
             .map(source => source.request.find(item => item.id === id));
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll, page: string): Subscription {
-        this.increasePage(page);
+    getNextPage(notification: Observable<InfiniteScroll>, page: string): Subscription[] {
+        return [
+            notification.subscribe(_ => this.store.dispatch(new IncreasePageAction(page))),
 
-        return this.store.select(selectWorkFlowListResponse)
-            .filter(value => !!value)
-            .skip(1)
-            .subscribe(_ => infiniteScroll.complete());
+            this.store.select(selectWorkFlowListResponse)
+                .filter(value => !!value)
+                .skip(1)
+                .withLatestFrom(notification, (_, infiniteScroll) => infiniteScroll)
+                .subscribe(infiniteScroll => infiniteScroll.complete()),
+        ]
     }
 
     isAuditButtonVisibility(status: string, permission: Observable<boolean>): Observable<boolean> {
@@ -223,13 +227,12 @@ export class WorkFlowService {
         this.store.dispatch(new ResetPageAction(page));
     }
 
-    increasePage(page: string) {
-        this.store.dispatch(new IncreasePageAction(page));
-    }
-
-    auditTask(id: number): Subscription {
+    auditTask(id: Observable<number>): Subscription {
         return this.getList()
-            .map(source => source.filter(item => item.id === id))
+            .zip(
+            id,
+            (list, id) => list.filter(item => item.id === id)
+            )
             .take(1)
             .subscribe(list => {
                 const modal = this.modalCtrl.create(WorkFlowAuditComponent, { list });

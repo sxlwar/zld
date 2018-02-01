@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/action/attendance-record-action';
+import { GetNextPage } from '../../interfaces/paging-query-interface';
 import { AttendanceInstantListOptions, RequestOption } from '../../interfaces/request-interface';
 import { AttendanceInstant, AttendanceInstantListResponse } from '../../interfaces/response-interface';
 import {
@@ -25,7 +26,7 @@ import {
 import { selectAttendanceRecordMaxDate, selectLocationAttendanceOptions } from './../../reducers/index-reducer';
 
 @Injectable()
-export class AttendanceRecordService {
+export class AttendanceRecordService implements GetNextPage{
 
     constructor(
         private store: Store<AppState>,
@@ -55,7 +56,7 @@ export class AttendanceRecordService {
         return this.store.select(selectAttendanceRecordMaxDate);
     }
 
-    getHaveMoreData(): Observable<boolean> {
+    haveMoreData(): Observable<boolean> {
         return this.getAttendanceRecordResponse()
             .map(res => res.count)
             .combineLatest(
@@ -73,12 +74,16 @@ export class AttendanceRecordService {
         return this.store.select(selectAttendanceRecordPage);
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): Subscription {
-        this.increasePage();
+    getNextPage(notification: Observable<InfiniteScroll>): Subscription[] {
+        return [
+            notification.subscribe(_ => this.store.dispatch(new IncreaseRecordPageAction())),
 
-        return this.getAttendanceRecordResponse().skip(1).subscribe(_ => infiniteScroll.complete());
+            this.getAttendanceRecordResponse()
+                .skip(1)
+                .withLatestFrom(notification, (_, infiniteScroll) => infiniteScroll)
+                .subscribe(infiniteScroll => infiniteScroll.complete()),
+        ]
     }
-
     /* ===========================================================API request ======================================================== */
 
     getAttendanceInstantList(option: Observable<RequestOption>): Subscription {
@@ -94,10 +99,6 @@ export class AttendanceRecordService {
     }
 
     /* ==========================================================Local state change==================================================== */
-
-    increasePage(): void {
-        this.store.dispatch(new IncreaseRecordPageAction());
-    }
 
     resetPage(): void {
         this.store.dispatch(new ResetRecordPageAction());

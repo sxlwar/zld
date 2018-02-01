@@ -42,6 +42,7 @@ import {
     UpdateManagementTimerCountAction,
     UpdateSelectedWorkersAction,
 } from './../../actions/action/worker-action';
+import { GetNextPage } from './../../interfaces/paging-query-interface';
 import { RealTimeStatisticType, WorkerContractOptions } from './../../interfaces/request-interface';
 import {
     TeamMembersRealTimeStatisticsResponse,
@@ -64,7 +65,7 @@ import { ProjectService } from './project-service';
 import { UserService } from './user-service';
 
 @Injectable()
-export class WorkerService {
+export class WorkerService implements GetNextPage{
     constructor(
         private store: Store<AppState>,
         private error: ErrorService,
@@ -125,13 +126,23 @@ export class WorkerService {
         )
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll, type?: number): Subscription {
-        this.incrementPage(type);
+    getNextPage(notification: Observable<InfiniteScroll>, type: Observable<number> = Observable.empty()): Subscription[] {
+        return [
+            this.increasePage(
+                notification.mapTo(null)
+                    .withLatestFrom(
+                    type.defaultIfEmpty(null),
+                    (_, type) => type
+                    )
+            ),
 
-        return this.getWorkerContractResponse()
-            .skip(1)
-            .subscribe(_ => infiniteScroll.complete());
+            this.getWorkerContractResponse()
+                .skip(1)
+                .withLatestFrom(notification, (_, infiniteScroll) => infiniteScroll)
+                .subscribe(infiniteScroll => infiniteScroll.complete()),
+        ]
     }
+
 
     /*=============================================================Data acquisition===========================================================*/
 
@@ -235,7 +246,7 @@ export class WorkerService {
     }
 
     getManagementPage(type: string): Observable<RequestOption> {
-        return this.store.select(type === ContractType[1] ? selectManageTimerPage : selectManageTimerPage).map(page => ({ page }));
+        return this.store.select(type === ContractType[1] ? selectManageTimerPage : selectManagePiecerPage).map(page => ({ page }));
     }
 
     getNoLocationCardWorker(): Observable<RequestOption> {
@@ -289,7 +300,7 @@ export class WorkerService {
             .startWith(true);
     }
 
-    getHaveMoreData(): Observable<boolean> {
+    haveMoreData(): Observable<boolean> {
         return this.getWorkerCount().combineLatest(
             this.store.select(selectWorkerLimit),
             this.getCurrentPage(),
@@ -338,18 +349,25 @@ export class WorkerService {
     setWorkersCountDistinctByPayType(type: Observable<string>): Subscription {
         return this.getWorkerCount()
             .withLatestFrom(type)
-            .subscribe(([amount, type]) => this.store.dispatch(type === ContractType[1] ? new UpdateManagementTimerCountAction(amount) : new UpdateManagementPiecerCountAction(amount)));
+            .subscribe(([amount, type]) => this.store.dispatch(type === ContractType[1]
+                ? new UpdateManagementTimerCountAction(amount)
+                : new UpdateManagementPiecerCountAction(amount)));
     }
 
     /**
      *@description Page operations:  incrementPage decrementPage resetPage getCurrentPage getLimit
      */
-    incrementPage(type?: number): void {
-        if (!type) {
-            this.store.dispatch(new IncrementQueryWorkerContractPageAction());
-        } else {
-            this.store.dispatch(type === ContractType.timer ? new IncrementManagementTimerPageAction() : new IncrementManagementPiecerPageAction());
-        }
+    private increasePage(type: Observable<number>): Subscription {
+        return type.subscribe(type => {
+            if (!type) {
+                this.store.dispatch(new IncrementQueryWorkerContractPageAction());
+            } else {
+                this.store.dispatch(type === ContractType.timer
+                    ? new IncrementManagementTimerPageAction()
+                    : new IncrementManagementPiecerPageAction()
+                );
+            }
+        });
     }
 
     decrementPage(): void {
@@ -360,7 +378,9 @@ export class WorkerService {
         if (!type) {
             this.store.dispatch(new ResetQueryWorkerContractPageAction());
         } else {
-            this.store.dispatch(type === ContractType.timer ? new ResetManagementTimerPageAction() : new ResetManagementPiecerPageAction());
+            this.store.dispatch(type === ContractType.timer
+                ? new ResetManagementTimerPageAction()
+                : new ResetManagementPiecerPageAction());
         }
     }
 

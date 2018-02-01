@@ -25,11 +25,13 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
 
     teams: Observable<Team[]>;
 
+    selectedTeams: Team[];
+
     attendances: Observable<AttendanceResult[]>;
 
     subscriptions: Subscription[] = [];
 
-    page$$: Subscription;
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     haveMoreData: Observable<boolean>;
 
@@ -61,6 +63,8 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
 
             this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
 
+            ...this.attendance.getNextPage(this.nextPage$),
+
             this.teamService.handleError(),
 
             this.attendance.handleAttendanceError(),
@@ -73,9 +77,13 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
 
         this.attendances = this.attendance.getWrappedAttendanceResultList();
 
-        this.teams = this.teamService.getOwnTeams().withLatestFrom(this.teamService.getSelectedTeams(), (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 })));
+        this.teams = this.teamService.getOwnTeams()
+            .withLatestFrom(
+            this.teamService.getSelectedTeams(),
+            (teams, ids) => teams.map(team => ({ ...team, selected: ids.indexOf(team.id) !== -1 }))
+            );
 
-        this.haveMoreData = this.attendance.getAttendanceResultMoreData();
+        this.haveMoreData = this.attendance.haveMoreData();
 
         this.count = this.attendance.getWrappedAttendanceCount();
     }
@@ -91,7 +99,8 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
     getAttendanceOption(): Observable<RequestOption> {
         return this.teamService.getSelectedTeams()
             .combineLatest(
-            this.attendance.getSelectedDate().map(data => ({ start_day: this.timeService.getDate(data.start, true), end_day: this.timeService.getDate(data.end, true) })),
+            this.attendance.getSelectedDate()
+                .map(data => ({ start_day: this.timeService.getDate(data.start, true), end_day: this.timeService.getDate(data.end, true) })),
             Observable.of(attendanceList.noMagicNumber.get(AttendanceState[0]).value),
             (ids, date, queryType) => ({ ...date, team_id: ids, ...queryType })
             );
@@ -113,11 +122,6 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
         this.attendance.resetAttendance();
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.page$$ && this.page$$.unsubscribe();
-
-        this.page$$ = this.attendance.getNextPage(infiniteScroll);
-    }
 
     sortAttendanceBy(target: number) {
         this.attendance.switchSortType(target);
@@ -139,8 +143,6 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this.subscriptions.forEach(item => item && item.unsubscribe());
-
-        this.page$$ && this.page$$.unsubscribe();
 
         this.attendance.resetAttendance();
     }

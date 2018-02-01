@@ -82,7 +82,7 @@
         </ion-item>
 
         <ion-infinite-scroll
-            (ionInfinite)="getNextPage($event)"
+            (ionInfinite)="nextPage$.next($event)"
             *ngIf="haveMoreData | async; let morData;"
         >
             <ion-infinite-scroll-content

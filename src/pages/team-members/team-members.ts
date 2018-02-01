@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { putInArray } from '../../services/utils/util';
@@ -30,9 +31,9 @@ export class TeamMembersPage {
 
     workerCount: Observable<number>;
 
-    pageSubscription: Subscription;
-
     subscriptions: Subscription[] = [];
+
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     constructor(
         private navCtrl: NavController,
@@ -63,6 +64,8 @@ export class TeamMembersPage {
     launch(): void {
         this.subscriptions = [
             this.getWorkerContractList(),
+
+            ...this.worker.getNextPage(this.nextPage$),
 
             this.worker.handleError(),
         ];
@@ -99,12 +102,6 @@ export class TeamMembersPage {
             .scan((acc, cur) => acc.concat(cur), []);
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.pageSubscription && this.pageSubscription.unsubscribe();
-
-        this.pageSubscription = this.worker.getNextPage(infiniteScroll);
-    }
-
     goToNextPage(data?: WorkerItem) {
         const userId = data ? data.id : this.team.foremanId;
 
@@ -113,8 +110,6 @@ export class TeamMembersPage {
 
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
-
-        this.pageSubscription && this.pageSubscription.unsubscribe();
     }
 
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { WorkFlowService } from '../../services/business/work-flow-service';
@@ -25,7 +26,7 @@ export class AttendanceModifyDetailPage {
 
     subscriptions: Subscription[] = [];
 
-    audit$$: Subscription;
+    audit$: Subject<boolean> =new Subject();
 
     isAuditButtonVisibility: Observable<boolean>;
 
@@ -62,20 +63,14 @@ export class AttendanceModifyDetailPage {
 
             this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
 
+            this.workFlowService.auditTask(this.audit$.mapTo(this.id)),
+
             this.attendanceService.handleAttendanceModifyError(),
         ];
     }
 
-    audit() {
-        this.audit$$ && this.audit$$.unsubscribe();
-
-        this.audit$$ = this.workFlowService.auditTask(this.id);
-    }
-
     ionViewWillUnload() {
         this.workFlowService.resetTaskUpdateResponse();
-
-        this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());
     }

@@ -159,7 +159,7 @@
         [operate]="operatePermission | async"
         (audit)="showActionSheet($event)"
         (showDetail)="goToDetailPage($event)"
-        (getNextPage)="getNextPage($event)"
+        (getNextPage)="nextPage$.next($event)"
         [haveMoreData]="haveMoreData | async"
     ></attendance-list>
 </ion-content>

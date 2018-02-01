@@ -28,7 +28,7 @@ export class AttendanceConfirmDetailPage {
 
     actionSheet$$: Subscription;
 
-    page$$: Subscription;
+    nextPage$: Subject<InfiniteScroll> = new Subject();
 
     selectedAttendanceState: number;
 
@@ -57,7 +57,7 @@ export class AttendanceConfirmDetailPage {
         this.launch();
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.attendance.getAttendances(this.getAttendanceOption()),
 
@@ -65,13 +65,15 @@ export class AttendanceConfirmDetailPage {
 
             this.attendance.confirmAttendance(this.confirm$),
 
+            ...this.attendance.getNextPage(this.nextPage$),
+
             this.attendance.handleAttendanceError(),
 
             this.attendance.handleAttendanceConfirmError(),
         ];
     }
 
-    initialModel() {
+    initialModel(): void {
         this.attendances = this.attendance.getAttendanceResultList().scan((acc, cur) => acc.concat(cur), []);
 
         this.haveMoreData = this.attendance.getAttendanceResultMoreData();
@@ -87,11 +89,6 @@ export class AttendanceConfirmDetailPage {
         return Observable.of({ start_day: date, end_day: date, ...state, team_id: teamIds });
     }
 
-    getNextPage(infiniteScroll: InfiniteScroll): void {
-        this.page$$ && this.page$$.unsubscribe();
-
-        this.page$$ = this.attendance.getNextPage(infiniteScroll);
-    }
 
     goToDetailPage(attendance: AttendanceResult): void {
         this.navCtrl.push(attendanceRecordPage, { attendance, rootName: MissionRoot, iconName: attendanceConfirm.icon }).then(() => { });
@@ -99,7 +96,5 @@ export class AttendanceConfirmDetailPage {
     
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item && item.unsubscribe());
-
-        this.page$$ && this.page$$.unsubscribe();
     }
 }

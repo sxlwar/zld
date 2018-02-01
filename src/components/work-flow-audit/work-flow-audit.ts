@@ -20,7 +20,7 @@ export class WorkFlowAuditComponent implements OnInit {
         private navParams: NavParams,
         private viewCtrl: ViewController
     ) {
-        this.list = this.navParams.get('list');
+        this.list = <MissionListItem[]>this.navParams.get('list');
     }
 
     ngOnInit() {

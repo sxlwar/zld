@@ -21,8 +21,8 @@
         [total]="total | async"
         [operate]="operate | async"
         [haveMoreData]="haveMoreData | async"
-        (auditApply)="audit($event)"
-        (getNextPage)="getNextPage($event)"
+        (auditApply)="audit$.next($event)"
+        (getNextPage)="nextPage$.next($event)"
         (showDetail)="goToNextPage($event)"
     ></mission-list>
 

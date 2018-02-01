@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { leave } from '../../services/business/icon-service';
@@ -27,7 +28,7 @@ export class LeaveDetailPage {
 
     isAuditButtonVisibility: Observable<boolean>;
 
-    audit$$: Subscription;
+    audit$: Subject<boolean> = new Subject();
 
     constructor(
         private navCtrl: NavController,
@@ -62,20 +63,14 @@ export class LeaveDetailPage {
 
             this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
 
+            this.workFlowService.auditTask(this.audit$.mapTo(this.id)),
+
             this.leaveService.handleError(),
         ];
     }
 
-    audit() {
-        this.audit$$ && this.audit$$.unsubscribe();
-
-        this.audit$$ = this.workFlowService.auditTask(this.id);
-    }
-
     ionViewWillUnload() {
         this.workFlowService.resetTaskUpdateResponse();
-
-        this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());
     }
