@@ -121,6 +121,6 @@ export class AttendanceRecordService {
     /* =========================================================Error handle ============================================================ */
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceRecordResponse), 'APP_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectAttendanceRecordResponse));
     }
 }

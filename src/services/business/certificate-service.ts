@@ -32,7 +32,9 @@ export class CertificateService {
     /*=========================================================Data acquisition========================================================*/
 
     getCertificateResult(): Observable<boolean> {
-        return this.store.select(selectCertificateResponse).filter(value => !!value).map(res => res.auth_pass);
+        return this.store.select(selectCertificateResponse)
+            .filter(value => !!value)
+            .map(res => res.auth_pass);
     }
 
     getRealName(): Observable<string> {
@@ -55,7 +57,11 @@ export class CertificateService {
     certificate(form: Observable<CertificateFormModel>): Subscription[] {
         const source = form.map(form => this.process.certificateForm(form));
 
-        return [this.uploadPersonalIdImage(source), this.userCertificate(source)];
+        return [
+            this.uploadPersonalIdImage(source),
+            
+            this.userCertificate(source),
+        ];
     }
 
     private uploadPersonalIdImage(source: Observable<CertificateOptions>): Subscription {
@@ -108,7 +114,7 @@ export class CertificateService {
         //             return acc;
         //         }, { errorMessage: '' })
         //     );
-        
+
         return this.tip.loadingSpy(this.store.select(selectPersonalIdImageUpdateState));
     }
 }

@@ -96,7 +96,10 @@ export class AccountChangeService {
     changePhone(option: Observable<ChangeAccountFormModel>): Subscription {
         return this.processor.changePhoneProcessor(
             option.map(value => this.processor.transformChangeAccountForm(value))
-                .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+                )
         );
     }
 
@@ -104,7 +107,10 @@ export class AccountChangeService {
         return this.processor.checkPhoneVerifyProcessor(
             phone.withLatestFrom(
                 this.userInfo.getSid(),
-                imageVerification.zip(this.getCheckRandomCode(), (captcha_code, rand_captcha_key) => !!captcha_code ? { rand_captcha_key, captcha_code } : {}),
+                imageVerification.zip(
+                    this.getCheckRandomCode(),
+                    (captcha_code, rand_captcha_key) => !!captcha_code ? { rand_captcha_key, captcha_code } : {}
+                ),
                 (username, sid, option) => ({ ...option, sid, username })
             )
         );
@@ -114,7 +120,10 @@ export class AccountChangeService {
         return this.processor.changePhoneVerifyProcessor(
             phone.withLatestFrom(
                 this.userInfo.getSid(),
-                imageVerification.zip(this.getChangeRandomCode(), (captcha_code, rand_captcha_key) => !!captcha_code ? { rand_captcha_key, captcha_code } : {}),
+                imageVerification.zip(
+                    this.getChangeRandomCode(),
+                    (captcha_code, rand_captcha_key) => !!captcha_code ? { rand_captcha_key, captcha_code } : {}
+                ),
                 (username, sid, option) => ({ ...option, sid, username })
             )
         );
@@ -151,10 +160,10 @@ export class AccountChangeService {
 
     handleError(): Subscription[] {
         return [
-            this.error.handleErrorInSpecific(this.getChangePhoneResponse(), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.getChangePhoneVerifyResponse(), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.getCheckPhoneResponse(), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.getCheckPhoneVerifyResponse(), 'API_ERROR'),
+            this.error.handleApiRequestError(this.getChangePhoneResponse()),
+            this.error.handleApiRequestError(this.getChangePhoneVerifyResponse()),
+            this.error.handleApiRequestError(this.getCheckPhoneResponse()),
+            this.error.handleApiRequestError(this.getCheckPhoneVerifyResponse()),
         ];
     }
 }

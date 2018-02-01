@@ -53,13 +53,17 @@ export class EmployerService {
                 .reduce(putInArray, [])
             );
     }
-    
+
     /* ==============================================================API request=========================================================== */
 
     getCompanyUserList(): Subscription {
         return this.process.companyUserListProcessor(
-            this.project.getProjectPrimeCompanyId().map(id => ([id]))
-                .withLatestFrom(this.userInfo.getSid(), (company_id, sid) => ({ company_id, sid }))
+            this.project.getProjectPrimeCompanyId()
+                .map(id => ([id]))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (company_id, sid) => ({ company_id, sid })
+                )
         );
     }
 
@@ -75,6 +79,6 @@ export class EmployerService {
     /* ==============================================================Error handle===================================================== */
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectCompanyUserResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectCompanyUserResponse));
     }
 }

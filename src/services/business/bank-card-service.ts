@@ -9,13 +9,20 @@ import {
     ResetDeleteBankcardResponseAction,
 } from './../../actions/action/bank-card-action';
 import { SetBankNoMasterOptions, WorkerBankNoAddOptions } from './../../interfaces/request-interface';
-import { Bankcard, BankInfoResponse } from './../../interfaces/response-interface';
+import {
+    Bankcard,
+    BankInfoResponse,
+    SetBankNOMasterResponse,
+    WorkerBankNoAddResponse,
+    WorkerBankNoDeleteResponse,
+    WorkerBankNoListResponse,
+} from './../../interfaces/response-interface';
 import {
     AppState,
     selectBankcardAddResponse,
     selectBankcardDeleteResponse,
-    selectBankcardList,
-    selectBankInfo,
+    selectBankcardListResponse,
+    selectBankInfoResponse,
     selectSetMasterCardResponse,
 } from './../../reducers/index-reducer';
 import { ProcessorService } from './../api/processor-service';
@@ -36,15 +43,28 @@ export class BankcardService {
 
     /* ====================================================Date acquisition================================== */
 
-    getBankCards(): Observable<Bankcard[]> {
-        return this.store.select(selectBankcardList)
-            .filter(value => !!value)
-            .map(res => res.person_bank_no)
+    getBankCardListResponse(): Observable<WorkerBankNoListResponse> {
+        return this.store.select(selectBankcardListResponse).filter(value => !!value);
     }
 
-    getBankInfo(): Observable<BankInfoResponse> {
-        return this.store.select(selectBankInfo)
-            .filter(value => !!value);
+    getBankcardAddResponse(): Observable<WorkerBankNoAddResponse> {
+        return this.store.select(selectBankcardAddResponse).filter(value => !!value);
+    }
+
+    getBankcardDeleteResponse(): Observable<WorkerBankNoDeleteResponse> {
+        return this.store.select(selectBankcardDeleteResponse).filter(value => !!value);
+    }
+
+    getSetMasterBankcardResponse(): Observable<SetBankNOMasterResponse> {
+        return this.store.select(selectSetMasterCardResponse).filter(value => !!value);
+    }
+
+    getBankCards(): Observable<Bankcard[]> {
+        return this.getBankCardListResponse().map(res => res.person_bank_no);
+    }
+
+    getBankInfoResponse(): Observable<BankInfoResponse> {
+        return this.store.select(selectBankInfoResponse).filter(value => !!value);
     }
 
     /* ====================================================API request====================================== */
@@ -68,11 +88,21 @@ export class BankcardService {
     }
 
     deleteBankCard(cardId: Observable<number>): Subscription {
-        return this.processor.bankCardDeleteProcessor(cardId.withLatestFrom(this.userInfo.getSid(), (card_id, sid) => ({ sid, card_id })));
+        return this.processor.bankCardDeleteProcessor(
+            cardId.withLatestFrom(
+                this.userInfo.getSid(),
+                (card_id, sid) => ({ sid, card_id })
+            )
+        );
     }
 
     setMasterCard(option: Observable<SetBankNoMasterOptions>): Subscription {
-        return this.processor.setMasterBankCardProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })));
+        return this.processor.setMasterBankCardProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            )
+        );
     }
 
     /* ====================================================Local State update============================================================ */
@@ -93,15 +123,19 @@ export class BankcardService {
 
     handleError(): Subscription[] {
         return [
-            this.error.handleErrorInSpecific(this.store.select(selectBankcardList).filter(value => !!value), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectBankcardAddResponse).filter(value => !!value), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectBankcardDeleteResponse).filter(value => !!value), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectSetMasterCardResponse).filter(value => !!value), 'API_ERROR'),
+            this.error.handleApiRequestError(this.getBankCardListResponse()),
+
+            this.error.handleApiRequestError(this.getBankcardAddResponse()),
+
+            this.error.handleApiRequestError(this.getBankcardDeleteResponse()),
+
+            this.error.handleApiRequestError(this.getSetMasterBankcardResponse()),
+
             this.handleBankInfoError(),
         ];
     }
 
     handleBankInfoError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectBankInfo).filter(value => !!value), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getBankInfoResponse());
     }
 }

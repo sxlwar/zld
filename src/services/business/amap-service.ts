@@ -108,22 +108,18 @@ export class AmapService {
         }
 
         const promise: Promise<SimpleMarker> = new Promise(resolve => {
-            AMapUI.loadUI(['overlay/SimpleMarker'], SimpleMarker => {
-                resolve(new SimpleMarker(markerConfig));
-            });
+            AMapUI.loadUI(['overlay/SimpleMarker'], SimpleMarker => resolve(new SimpleMarker(markerConfig)));
         });
 
         return Observable.fromPromise(promise);
     }
 
     addControl(map: Map) {
-        AMapUI.loadUI(['control/BasicControl'], (basicControl: BasicControl) => {
-            map.addControl(new basicControl.Zoom({ position: 'lb' }));
-        });
+        AMapUI.loadUI(['control/BasicControl'], (basicControl: BasicControl) => map.addControl(new basicControl.Zoom({ position: 'lb' })));
     }
 
     generateInfoWindowContent(title: string, content: string): string {
-        return '<b>' + title + '</b><br/>' + content;
+        return `<b>${title}</b><br/>${content}`;
     }
 
     /**
@@ -131,9 +127,11 @@ export class AmapService {
      */
     convertFrom(source: LngLat[], coordinateType: string): Observable<LngLat[]> {
         return Observable.fromPromise(new Promise(resolve => {
-            AMap.convertFrom(source.map(item => ([item.lng, item.lat])), coordinateType, (status: string, result: ConvertorResult) => {
-                if (status === 'complete') resolve(result.locations);
-            });
+            AMap.convertFrom(
+                source.map(item => ([item.lng, item.lat])),
+                coordinateType,
+                (status: string, result: ConvertorResult) => status === 'complete' && resolve(result.locations)
+            );
         }));
     }
 
@@ -175,7 +173,8 @@ export class AmapService {
     addClickForEveryPolygon(map: Map, polygons: Observable<Polygon>): Subscription {
         const projectName = this.project.getProjectName();
 
-        const areaName = this.location.getProjectAreaResponse().mergeMap(res => Observable.from(res.project_areas.map(item => item.name)));
+        const areaName = this.location.getProjectAreaResponse()
+            .mergeMap(res => Observable.from(res.project_areas.map(item => item.name)));
 
         return this.areaSubject
             .zip(areaName, polygons)
@@ -190,7 +189,9 @@ export class AmapService {
     }
 
     setCenterToFirstArea(map: Map): Subscription {
-        return this.areaSubject.first().subscribe(coordinates => map.setZoomAndCenter(defaultZoomLever, coordinates[0]));
+        return this.areaSubject
+            .first()
+            .subscribe(coordinates => map.setZoomAndCenter(defaultZoomLever, coordinates[0]));
     }
 
     /* ============================================================Marker functions ======================================================== */
@@ -198,15 +199,12 @@ export class AmapService {
     addMarkersOnMap(map: Map): Observable<Marker[]> {
         return this.getSimpleMarker(map, this.getMarkers())
             .zip(this.getMarkerInfoWindow())
-            .map(([markers, infoWindows]) => {
-                const result = markers.map((marker, index) => this.addClickForMarker(marker, infoWindows[index], map));
-
-                return flattenDeep(result);
-            });
+            .map(([markers, infoWindows]) => flattenDeep(markers.map((marker, index) => this.addClickForMarker(marker, infoWindows[index], map))));
     }
 
     addClickForMarker(marker: Marker, infoWindow: InfoWindow, map: Map): Marker {
         marker.on('click', () => infoWindow.open(map, marker.getPosition()));
+
         return marker;
     }
 
@@ -221,7 +219,8 @@ export class AmapService {
     }
 
     getMarkerInformation(): Observable<HistoryLocation> {
-        return this.markersSubject.mergeMap(res => Observable.from(res.data_loc_list.filter(item => !!item.loc_list.length)));
+        return this.markersSubject
+            .mergeMap(res => Observable.from(res.data_loc_list.filter(item => !!item.loc_list.length)));
     }
 
     getMarkers(): Observable<LngLat[][]> {
@@ -256,9 +255,10 @@ export class AmapService {
 
 
     markerClusterer(map, markers: Marker[]): Observable<MarkerClusterer> {
-        const promise: Promise<MarkerClusterer> = new Promise(resolve => {
-            map.plugin(['AMap.MarkerClusterer'], () => resolve(new AMap.MarkerClusterer(map, markers, { gridSize: 10 })));
-        });
+        const promise: Promise<MarkerClusterer> = new Promise(resolve => map.plugin(
+            ['AMap.MarkerClusterer'],
+            () => resolve(new AMap.MarkerClusterer(map, markers, { gridSize: 10 })))
+        );
 
         return Observable.fromPromise(promise);
     }
@@ -296,9 +296,10 @@ export class AmapService {
     }
 
     getMoveMarkers(map: Map): Observable<SimpleMarker[]> {
-        const markers = this.getMarkers().map(markers => markers.map(item => [item[0]]));
-
-        return this.getSimpleMarker(map, markers)
+        return this.getSimpleMarker(
+            map,
+            this.getMarkers().map(markers => markers.map(item => [item[0]]))
+        )
             .zip(this.getMarkerInfoWindow())
             .map(([markers, infoWindows]) => {
                 const result = flattenDeep(markers);
@@ -315,9 +316,7 @@ export class AmapService {
     }
 
     polyline(config: PolylineOptions, onlyConfig: boolean): Polyline {
-        const option = onlyConfig ? config : { ...config, ...polylineConfig };
-
-        return new AMap.Polyline(option);
+        return new AMap.Polyline(onlyConfig ? config : { ...config, ...polylineConfig });
     }
 
     getPlayUnits(map: Map): Observable<PlayUnit[]> {
@@ -356,13 +355,17 @@ export class AmapService {
                 unit.moveMarker.hide();
                 unit.passedPolyline.hide();
                 this.location.updatePlayState(Observable.of(PlayState.stop))
+            } else {
+                //nothing to do
             }
         });
     }
 
     stopPlay(unit: PlayUnit): void {
         unit.moveMarker.stopMove();
+
         unit.moveMarker.hide();
+
         unit.passedPolyline.hide();
     }
 
@@ -370,8 +373,11 @@ export class AmapService {
         return this.location.getTrajectories()
             .subscribe(trajectories => trajectories.forEach(item => {
                 map.remove(item.polyline);
+
                 map.remove(item.startMarker);
+
                 map.remove(item.endMarker);
+
                 map.remove(item.moveMarker);
             }));
     }

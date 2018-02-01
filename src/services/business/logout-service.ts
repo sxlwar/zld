@@ -33,6 +33,6 @@ export class LogoutService {
     }
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLogoutResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectLogoutResponse));
     }
 }

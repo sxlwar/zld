@@ -32,6 +32,6 @@ export class NationalityService {
     }
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectNationalityResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectNationalityResponse));
     }
 }

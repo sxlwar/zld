@@ -61,10 +61,15 @@ export class AttendanceCardService {
             )
             .map(([cards, bindCondition, orderCondition]) => {
                 let result = [...cards];
+
                 if (bindCondition === BindingStateFlag.binding) result = cards.filter(item => item.user_id);
+
                 if (bindCondition === BindingStateFlag.unbind) result = cards.filter(item => !item.user_id);
+
                 if (orderCondition === OrderFlag.lowToHigh) result = orderBy(result, ['ic_card_num'], ['asc']);
+
                 if (orderCondition === OrderFlag.highToLow) result = orderBy(result, ['ic_card_num'], ['desc']);
+
                 return result;
             });
     }
@@ -140,22 +145,30 @@ export class AttendanceCardService {
     /* =============================================================Error handle================================================================ */
 
     handleError(): Subscription[] {
-        return [this.handleAddError(), this.handleDeleteError(), this.handleQueryError(), this.handleUpdateError()];
+        return [
+            this.handleAddError(),
+
+            this.handleDeleteError(),
+
+            this.handleQueryError(),
+
+            this.handleUpdateError(),
+        ];
     }
 
     handleQueryError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getCardListResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getCardListResponse());
     }
 
     handleAddError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getAddAttendanceCardResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getAddAttendanceCardResponse());
     }
 
     handleDeleteError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getDeleteAttendanceCardResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getDeleteAttendanceCardResponse());
     }
 
     handleUpdateError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getUpdateAttendanceCardResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getUpdateAttendanceCardResponse());
     }
 }

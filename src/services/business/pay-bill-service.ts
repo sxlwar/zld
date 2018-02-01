@@ -97,6 +97,6 @@ export class PayBillService {
     /* ============================================================Error handle========================================================================= */
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectPayBillListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectPayBillListResponse));
     }
 }

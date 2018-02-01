@@ -238,14 +238,18 @@ export class LocationService {
     /* ==================================================Error handle================================================ */
 
     handleError(): Subscription[] {
-        return [this.handleHistoryLocationError(), this.handleProjectAreaError()];
+        return [
+            this.handleHistoryLocationError(),
+
+            this.handleProjectAreaError(),
+        ];
     }
 
     handleHistoryLocationError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectHistoryLocationResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectHistoryLocationResponse));
     }
 
     handleProjectAreaError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectProjectAreaResponse), 'APP_ERROR');
+        return this.error.handleApiRequestError(this.getProjectAreaResponse());
     }
 }

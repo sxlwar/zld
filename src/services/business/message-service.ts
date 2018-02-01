@@ -201,10 +201,13 @@ export class MessageService {
 
     handleError(): Subscription[] {
         return [
-            this.error.handleErrorInSpecific(this.store.select(selectMessageListResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectUnreadMessageCountResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectMessageDeleteResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectMessageContentResponse), 'API_ERROR'),
+            this.error.handleApiRequestError(this.store.select(selectMessageListResponse)),
+
+            this.error.handleApiRequestError(this.store.select(selectUnreadMessageCountResponse)),
+
+            this.error.handleApiRequestError(this.store.select(selectMessageDeleteResponse)),
+
+            this.error.handleApiRequestError(this.store.select(selectMessageContentResponse)),
         ];
     }
 
@@ -215,6 +218,8 @@ export class MessageService {
 
         if (selectedType) {
             result = result.filter(item => item.msg_type === selectedType);
+        } else {
+            // nothing to do 
         }
 
         return result;

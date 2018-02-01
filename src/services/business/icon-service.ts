@@ -425,7 +425,9 @@ export class IconService {
 
     getIcon(rootName: string, iconName: string): Observable<IconState> {
         return this.selectIcons(rootName)
-            .mergeMap(icons => Observable.from(icons).filter(item => item.icon === iconName));
+            .mergeMap(icons => Observable.from(icons)
+                .filter(item => item.icon === iconName)
+            );
     }
 
     addMissionBadge(attendanceConfirmNumber: Observable<number>): Subscription {

@@ -135,7 +135,12 @@ export class LocationCardService {
 
         return this.getLocationCards()
             .combineLatest(condition)
-            .map(([cards, [bindingState, order, deviceState]]) => pipe(cards, curry(this.sortCards, order), curry(this.filterCardByBindingState, bindingState), curry(this.filterCardByDeviceState, deviceState)));
+            .map(([cards, [bindingState, order, deviceState]]) => pipe(
+                cards,
+                curry(this.sortCards, order),
+                curry(this.filterCardByBindingState, bindingState),
+                curry(this.filterCardByDeviceState, deviceState))
+            );
     }
 
     getOrderOptions(): Observable<ConditionOption[]> {
@@ -156,7 +161,9 @@ export class LocationCardService {
 
     getSelectedTeam(): Observable<ConditionOption> {
         return this.store.select(selectLocationCardTeamStateOptions)
-            .mergeMap(source => Observable.from(source).find(item => item.selected));
+            .mergeMap(source => Observable.from(source)
+                .find(item => item.selected)
+            );
     }
 
     getAddLocationCardResponse(): Observable<LocationCardAddResponse> {
@@ -244,18 +251,18 @@ export class LocationCardService {
     /* ==================================================Error handlers=================================================== */
 
     handleQueryError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getLocationCardListResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getLocationCardListResponse());
     }
 
     handleAddError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getAddLocationCardResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getAddLocationCardResponse());
     }
 
     handleUpdateError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getUpdateLocationCardResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getUpdateLocationCardResponse());
     }
 
     handleDeleteError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getDeleteLocationCardResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getDeleteLocationCardResponse());
     }
 }

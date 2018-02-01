@@ -83,11 +83,8 @@ export class AttendanceService extends RecordOptionService {
     getWrappedAttendanceResultList(): Observable<AttendanceResult[]> {
         return this.getAttendanceResultList()
             .scan((acc, cur) => acc.concat(cur), [])
-            .mergeMap(source =>
-                this.getConfirmedAttendance().map(ids => source.map(item => ids.indexOf(item.id) === -1
-                    ? item
-                    : { ...item, confirm: 1 })
-                )
+            .mergeMap(source => this.getConfirmedAttendance()
+                .map(ids => source.map(item => ids.indexOf(item.id) === -1 ? item : { ...item, confirm: 1 }))
             )
             .combineLatest(
             this.getSortType().map(type => AttendanceSortType[type]).distinctUntilChanged(),
@@ -117,9 +114,7 @@ export class AttendanceService extends RecordOptionService {
         return this.getAttendanceCount().combineLatest(
             this.getConfirmedAttendance().map(ids => ids.length),
             this.getSelectedAttendanceState(),
-            (count, confirmedCount, state) => state === AttendanceState.unconfirmed || state === AttendanceState.allTypes
-                ? count - confirmedCount
-                : count
+            (count, confirmedCount, state) => state === AttendanceState.unconfirmed || state === AttendanceState.allTypes ? count - confirmedCount : count
         );
     }
 
@@ -138,11 +133,12 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getAttendanceResultMoreData(): Observable<boolean> {
-        return this.getAttendanceCount().combineLatest(
+        return this.getAttendanceCount()
+            .combineLatest(
             this.store.select(selectAttendanceLimit),
             this.store.select(selectAttendancePage),
             (count, limit, page) => limit * page < count
-        );
+            );
     }
 
     getSortType(): Observable<number> {
@@ -158,8 +154,7 @@ export class AttendanceService extends RecordOptionService {
             .select(selectAttendanceResultConfirmResponse)
             .filter(value => !!value && !value.errorMessage)
             .mergeMapTo(
-            this.store
-                .select(selectAttendanceConfirmOptions)
+            this.store.select(selectAttendanceConfirmOptions)
                 .filter(value => !!value)
                 .map(options => options.attendance_result_id)
             )
@@ -185,8 +180,7 @@ export class AttendanceService extends RecordOptionService {
 
     getAttendanceStatisticsByTeam(): Subscription {
         return this.processor.attendanceResultTeamStatListProcessor(
-            this.teamService
-                .getOwnTeams()
+            this.teamService.getOwnTeams()
                 .filter(teams => !!teams.length)
                 .map(teams => teams.map(team => team.id))
                 .withLatestFrom(this.userInfo.getSid(), (team_ids, sid) => ({ team_ids, sid }))
@@ -194,17 +188,21 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getAttendanceModifyRecord(option: Observable<RequestOption>): Subscription {
-        return this.processor.attendanceModifyRecordListProcessor(option.withLatestFrom(
-            this.userInfo.getSid(),
-            (option, sid) => ({ ...option, sid })
-        ) as Observable<AttendanceModifyRecordListOptions>);
+        return this.processor.attendanceModifyRecordListProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            ) as Observable<AttendanceModifyRecordListOptions>
+        );
     }
 
     confirmAttendance(attendance: Observable<AttendanceResult[]>): Subscription {
         return this.processor.attendanceResultConfirmProcessor(
-            attendance
-                .map(attendances => attendances.map(item => item.id))
-                .withLatestFrom(this.userInfo.getSid(), (attendance_result_id, sid) => ({ attendance_result_id, sid }))
+            attendance.map(attendances => attendances.map(item => item.id))
+                .withLatestFrom(
+                this.userInfo.getSid(),
+                (attendance_result_id, sid) => ({ attendance_result_id, sid })
+                )
         );
     }
 
@@ -225,8 +223,9 @@ export class AttendanceService extends RecordOptionService {
     setDate(type: string, data: string): void {
         if (type === 'start') {
             this.store.dispatch(new SetAttendanceStartDateAction(data));
+        } else {
+            this.store.dispatch(new SetAttendanceEndDateAction(data));
         }
-        this.store.dispatch(new SetAttendanceEndDateAction(data));
     }
 
     switchSortType(num: number): void {

@@ -196,7 +196,9 @@ export class LaunchService {
                 .filter(value => !!value && !!value.attend_amend.attach.length)
                 .mergeMap(option => Observable.from(option.attend_amend.attach))
                 .withLatestFrom(
-                this.store.select(selectAttendanceModifyResponse).filter(value => !!value).map(res => res.information.length > 1 ? JSON.stringify(res.information) : String(res.information[0])),
+                this.store.select(selectAttendanceModifyResponse)
+                    .filter(value => !!value)
+                    .map(res => res.information.length > 1 ? JSON.stringify(res.information) : String(res.information[0])),
                 this.userInfo.getSid(),
                 (file, id, sid) => ({ file, id, sid })
                 )
@@ -209,7 +211,9 @@ export class LaunchService {
                 .filter(value => !!value && !!value.leave.attach.length)
                 .mergeMap(option => Observable.from(option.leave.attach))
                 .withLatestFrom(
-                this.store.select(selectLeaveResponse).filter(value => !!value).map(res => res.request_id),
+                this.store.select(selectLeaveResponse)
+                    .filter(value => !!value)
+                    .map(res => res.request_id),
                 this.userInfo.getSid(),
                 (file, id, sid) => ({ file, id, sid, type: 'attachment' })
                 )
@@ -222,7 +226,9 @@ export class LaunchService {
                 .filter(value => !!value && !!value.work_over_time.attach.length)
                 .mergeMap(option => Observable.from(option.work_over_time.attach))
                 .withLatestFrom(
-                this.store.select(selectOvertimeResponse).filter(value => !!value).map(res => res.request_id),
+                this.store.select(selectOvertimeResponse)
+                    .filter(value => !!value)
+                    .map(res => res.request_id),
                 this.userInfo.getSid(),
                 (file, id, sid) => ({ file, id, sid, type: 'attachment' })
                 )
@@ -235,7 +241,9 @@ export class LaunchService {
                 .filter(value => !!value && !!value.work_piece_finish_flow.attach.length)
                 .mergeMap(option => Observable.from(option.work_piece_finish_flow.attach))
                 .withLatestFrom(
-                this.store.select(selectPieceAuditResponse).filter(value => !!value).map(res => res.request_id),
+                this.store.select(selectPieceAuditResponse)
+                    .filter(value => !!value)
+                    .map(res => res.request_id),
                 this.userInfo.getSid(),
                 (file, id, sid) => ({ file, id, sid, type: 'attachment' })
                 )
@@ -249,7 +257,9 @@ export class LaunchService {
                 .distinct(value => value)
                 .mergeMap(option => Observable.from(option.contract_time_change_flow.attach))
                 .withLatestFrom(
-                this.store.select(selectWorkerContractModifyResponse).filter(value => !!value).map(res => res.WorkerContract_id),
+                this.store.select(selectWorkerContractModifyResponse)
+                    .filter(value => !!value)
+                    .map(res => res.WorkerContract_id),
                 this.userInfo.getSid(),
                 (file, id, sid) => ({ file, id, sid, type: 'attachment' })
                 )
@@ -260,7 +270,9 @@ export class LaunchService {
         return this.processor.uploadWorkerContractEditAttachProcessor(
             this.store.select(selectWorkerContractEditOptions)
                 .filter(value => !!value && !!value.attach && !!value.attach.length)
-                .mergeMap(option => Observable.from(option.attach).map(file => ({ file, id: option.contract_id })))
+                .mergeMap(option => Observable.from(option.attach)
+                    .map(file => ({ file, id: option.contract_id }))
+                )
                 .withLatestFrom(
                 this.userInfo.getSid(),
                 (option, sid) => ({ ...option, sid })
@@ -285,34 +297,34 @@ export class LaunchService {
     /* ====================================================Error handle=======================================================*/
 
     handleLeaveError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLeaveResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectLeaveResponse));
     }
 
     handleOvertimeError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectOvertimeResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectOvertimeResponse));
     }
 
     handlePieceAuditError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectPieceAuditResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectPieceAuditResponse));
     }
 
     handleWorkerContractModifyError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractModifyResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkerContractModifyResponse));
     }
 
     handleWorkerContractError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectSignWorkerContractResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectSignWorkerContractResponse));
     }
 
     handleAttendanceModifyError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectAttendanceModifyResponse));
     }
 
     handleWorkerContractEditError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractEditResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkerContractEditResponse));
     }
 
     handleWorkerContractTerminationError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectTerminateWorkerContractResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectTerminateWorkerContractResponse));
     }
 }

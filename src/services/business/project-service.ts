@@ -83,8 +83,11 @@ export class ProjectService {
 
     private cutDownDays(date: string): number {
         if (!date) return NaN;
+
         const end = new Date(date);
+
         const now = new Date();
+        
         return this.timeService.countDownDays(now, end);
     }
 

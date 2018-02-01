@@ -44,6 +44,6 @@ export class CraftService {
     }
 
     handleError(): Subscription {
-        return this.errorService.handleErrorInSpecific(this.store.select(selectWorkTypeResponse), 'API_ERROR');
+        return this.errorService.handleApiRequestError(this.store.select(selectWorkTypeResponse));
     }
 }

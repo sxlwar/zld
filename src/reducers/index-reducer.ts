@@ -372,8 +372,8 @@ export const selectTrajectoryIndexes = createSelector(getLocation, location.getS
 
 //bank card related 
 const getBankCard = (state: AppState) => state.bankCard;
-export const selectBankcardList = createSelector(getBankCard, bankCard.getBankcardListResponse);
-export const selectBankInfo = createSelector(getBankCard, bankCard.getBankInfoResponse);
+export const selectBankcardListResponse = createSelector(getBankCard, bankCard.getBankcardListResponse);
+export const selectBankInfoResponse = createSelector(getBankCard, bankCard.getBankInfoResponse);
 export const selectBankcardAddResponse = createSelector(getBankCard, bankCard.getBankcardAddResponse);
 export const selectBankcardDeleteResponse = createSelector(getBankCard, bankCard.getBankcardDeleteResponse);
 export const selectSetMasterCardResponse = createSelector(getBankCard, bankCard.getSetMasterResponse);

@@ -24,10 +24,11 @@ export class AttendanceMachineService {
 
     getMachineList(): Subscription {
         return this.process.attendanceMachineListProcessor(
-            this.userInfo.getSid().zip(
+            this.userInfo.getSid()
+                .zip(
                 this.project.getProjectId(),
                 (sid, project_id) => ({ sid, project_id })
-            )
+                )
         );
     }
 
@@ -46,6 +47,6 @@ export class AttendanceMachineService {
     /* ========================================Error handle and refuse clean======================================== */
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectMachineListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectMachineListResponse));
     }
 }

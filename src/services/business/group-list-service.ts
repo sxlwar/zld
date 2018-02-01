@@ -32,6 +32,6 @@ export class GroupListService {
     }
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getGroupListResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getGroupListResponse());
     }
 }

@@ -64,7 +64,8 @@ export class ErrorService {
         const lang$ = this.translate.get([title, button])
             .map(lang => ({ title: lang[title], buttons: [lang[button]] }));
 
-        const error$: Observable<ErrorInfo> = obs.withLatestFrom(lang$)
+        const error$: Observable<ErrorInfo> = obs
+            .withLatestFrom(lang$)
             .map(res => Object.assign({ msg: res[0] }, res[1]) as ErrorInfo);
 
         return this.handleResponseError(error$);

@@ -35,10 +35,14 @@ export class LeaveService extends RecordOptionService {
     }
 
     getLeaveRecord(option: Observable<RequestOption>): Subscription {
-        return this.processor.leaveRecordListProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })) as Observable<LeaveRecordListOptions>);
+        return this.processor.leaveRecordListProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            ) as Observable<LeaveRecordListOptions>);
     }
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectLeaveRecordListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getLeaveRecordListResponse());
     }
 }

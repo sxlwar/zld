@@ -54,7 +54,9 @@ export class QRLoginService {
     private permissionDenied(): Subscription {
         const msg = Observable.fromPromise(this.scanner.prepare())
             .filter(status => status.denied)
-            .mergeMapTo(this.translate.get('CAMERA_PERMISSION_DENIED').map(errorMessage => ({ errorMessage })))
+            .mergeMapTo(this.translate.get('CAMERA_PERMISSION_DENIED')
+                .map(errorMessage => ({ errorMessage }))
+            )
 
         return this.error.handleErrorInSpecific(msg, 'PERMISSION_DENIED');
     }

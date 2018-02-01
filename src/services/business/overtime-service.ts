@@ -46,6 +46,6 @@ export class OvertimeService extends RecordOptionService {
     }
 
     handleError() {
-        return this.error.handleErrorInSpecific(this.store.select(selectOvertimeRecordResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectOvertimeRecordResponse));
     }
 }
