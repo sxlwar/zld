@@ -1,6 +1,17 @@
-import { WorkFlowListResponse, MultiTaskUpdateResponse, TaskUpdateResponse, ProjectPayBillFlowListResponse } from './../../interfaces/response-interface';
 import { Action } from '@ngrx/store';
-import { WorkFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, ProjectPayBillFlowListOptions } from './../../interfaces/request-interface';
+
+import {
+    MultiTaskUpdateOptions,
+    ProjectPayBillFlowListOptions,
+    TaskUpdateOptions,
+    WorkFlowListOptions,
+} from './../../interfaces/request-interface';
+import {
+    MultiTaskUpdateResponse,
+    ProjectPayBillFlowListResponse,
+    TaskUpdateResponse,
+    WorkFlowListResponse,
+} from './../../interfaces/response-interface';
 
 export const GET_WORK_FLOW_LIST = 'GET_WORK_FLOW_LIST';
 
@@ -155,4 +166,3 @@ export type Actions = GetWorkFlowListAction
     | UpdateTaskAction
     | UpdateTaskFailAction
     | UpdateTaskSuccessAction;
-

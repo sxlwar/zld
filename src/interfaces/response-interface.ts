@@ -220,7 +220,7 @@ export interface ProjectListResponse {
  */
 export enum ContractTypeOfResponse {
     timer = 'work_time_pay',
-    piecer = 'work_piece_pay'
+    piecer = 'work_piece_pay',
 }
 
 export interface TimePay {
@@ -316,7 +316,7 @@ export interface AmendAttendanceResult {
 export enum AttendanceState {
     UNCONFIRMED,
     CONFIRMED,
-    AUDITING
+    AUDITING,
 }
 
 export interface AttendanceResult {
@@ -361,7 +361,7 @@ export interface AttendanceInstant {
 export enum AttendanceInstantType {
     CAN_NOT_READ,
     IN,
-    OUT
+    OUT,
 }
 
 // attendanceInstantList
@@ -396,7 +396,7 @@ export enum PayBillTime {
     manualOvertime,
     manualOverOvertime,
     pieceActual = '',
-    prefix = 'hour_'
+    prefix = 'hour_',
 }
 
 export enum PayBillAmount {
@@ -406,7 +406,7 @@ export enum PayBillAmount {
     manualAtt,
     manualOvertime,
     manualOverOvertime,
-    prefix = 'amount_'
+    prefix = 'amount_',
 }
 
 export interface PayBill {
@@ -450,7 +450,7 @@ export enum ProjectPayBillTime {
     manualOvertime,
     manualOverOvertime,
     prefix = 'pay_bill__hour_',
-    suffix = '__sum'
+    suffix = '__sum',
 }
 
 export enum ProjectPayBillAmount {
@@ -463,7 +463,7 @@ export enum ProjectPayBillAmount {
     pieceShouldPay = 'all',
     pieceActualPay = '',
     prefix = 'pay_bill__amount_',
-    suffix = '__sum'
+    suffix = '__sum',
 }
 
 export interface ProjectPayBill {
@@ -528,8 +528,8 @@ export interface PayProcessListResponse {
 
 export enum PayProcessStatus {
     grantIn = '发放中',
-    pendingRelease = "待发放",
-    alreadyIssued = "已发放"
+    pendingRelease = '待发放',
+    alreadyIssued = '已发放',
 }
 
 export interface ProjectPayProcess {
@@ -1059,7 +1059,7 @@ export interface AttendanceCardDeleteResponse {
 
 export enum DeviceStatus {
     offline,
-    online
+    online,
 }
 
 /** 
@@ -1236,14 +1236,14 @@ export interface QRScanLoginResponse {
 /* =======================================================Message API model============================================ */
 
 export enum MessageType {
-    "全部类型",
-    "工资发放",
-    "总包合同到期",
-    "分包合同到期",
-    "用工合同到期",
-    "工资卡不存在",
-    "工作流审核通过" = 7,
-    "考勤未确认"
+    '全部类型',
+    '工资发放',
+    '总包合同到期',
+    '分包合同到期',
+    '用工合同到期',
+    '工资卡不存在',
+    '工作流审核通过' = 7,
+    '考勤未确认',
 }; // 假程序员吧，这么喜欢以1开头, 我操，没有6，太恶心了，明天再写吧，让一个6搞的重写。
 
 export interface Message {

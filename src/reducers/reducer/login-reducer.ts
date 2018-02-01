@@ -1,7 +1,13 @@
+import { ENV } from '@app/env';
+
 import * as actions from '../../actions/action/login-action';
 import { LoginOptions } from '../../interfaces/request-interface';
-import { ENV } from '@app/env';
-import { RegisterResponse, LoginResponse, ResetPasswordResponse, PhoneVerCodeResponse } from '../../interfaces/response-interface';
+import {
+    LoginResponse,
+    PhoneVerCodeResponse,
+    RegisterResponse,
+    ResetPasswordResponse,
+} from '../../interfaces/response-interface';
 
 export interface State {
     activeIndexOfSlides: number
@@ -20,28 +26,29 @@ export const initialSate: State = {
         username: '',
         password: '',
         captcha_code: '',
-        rand_captcha_key: ''
+        rand_captcha_key: '',
     },
     loginVerificationImage: '',
-    randomCode: '00000'
+    randomCode: '00000',
 };
 
 export function reducer(state = initialSate, action: actions.Actions): State {
     switch (action.type) {
         case actions.SHOW_SPECIFIC_SLIDE:
-            return Object.assign({}, state, { activeIndexOfSlides: action.payload });
+            return { ...state, activeIndexOfSlides: action.payload };
 
         case actions.SHOW_SPECIFIC_INNER_SLIDE:
-            return Object.assign({}, state, { activeIndexOfInnerSlides: action.payload });
+            return { ...state, activeIndexOfInnerSlides: action.payload };
 
         case actions.LOGIN:
-            return Object.assign({}, state, { loginForm: { ...action.payload, password: '***********' } });
+            return { ...state, loginForm: { ...action.payload, password: '***********' } };
 
         case actions.UPDATE_RANDOM_CODE:
-            return Object.assign({}, state, {
+            return {
+                ...state,
                 randomCode: action.payload,
-                loginVerificationImage: `http://${ENV.DOMAIN}/check_captcha/${action.payload}`
-            });
+                loginVerificationImage: `http://${ENV.DOMAIN}/check_captcha/${action.payload}`,
+            };
 
         case actions.UPDATE_ACCOUNT:
             return { ...state, loginForm: { ...state.loginForm, username: action.payload } };
@@ -71,7 +78,7 @@ export const initialLoginResponse: LoginResponse = {
     auth_pass: false,
     captcha: false,
     groups_list: [],
-    face_image: ''
+    face_image: '',
 };
 
 export function userInfoReducer(state = initialLoginResponse, action: actions.Actions): LoginResponse {
@@ -86,7 +93,7 @@ export function userInfoReducer(state = initialLoginResponse, action: actions.Ac
             return { ...state, sid: '' };
 
         case actions.RESET_ERROR_RESPONSE:
-            return !!state.errorMessage ? initialLoginResponse :  state;
+            return !!state.errorMessage ? initialLoginResponse : state;
 
         default:
             return state;
@@ -111,7 +118,7 @@ export const getFaceImage = (state: LoginResponse) => state.face_image;
 /*================================================Register api response============================================*/
 
 export const initialRegisterState: RegisterResponse = {
-    user_id: NaN
+    user_id: NaN,
 };
 
 export function registerReducer(state = initialRegisterState, action: actions.Actions) {
@@ -123,7 +130,7 @@ export function registerReducer(state = initialRegisterState, action: actions.Ac
             return { ...action.payload, ...initialRegisterState };
 
         case actions.RESET_ERROR_RESPONSE:
-            return  !!state.errorMessage ? initialRegisterState : state;
+            return !!state.errorMessage ? initialRegisterState : state;
 
         default:
             return state;
@@ -136,7 +143,7 @@ export const getRegisterUserId = (state: RegisterResponse) => state.user_id;
 /*================================================Reset password response============================================*/
 
 export const initialResetPasswordState: ResetPasswordResponse = {
-    user_id: NaN
+    user_id: NaN,
 };
 
 export function resetPasswordReducer(state = initialResetPasswordState, action: actions.Actions) {
@@ -151,8 +158,8 @@ export function resetPasswordReducer(state = initialResetPasswordState, action: 
             return { ...initialResetPasswordState };
 
         case actions.RESET_ERROR_RESPONSE:
-            return  !!state.errorMessage ? initialResetPasswordState : state;
-            
+            return !!state.errorMessage ? initialResetPasswordState : state;
+
         default:
             return state;
     }
@@ -164,7 +171,7 @@ export const getResetPasswordUserId = (state: ResetPasswordResponse) => state.us
 /*===========================================Register phone verification code=====================================*/
 
 export const initialPhoneVerCode: PhoneVerCodeResponse = {
-    captcha: false
+    captcha: false,
 };
 
 export function registerPhoneVerReducer(state = initialPhoneVerCode, action: actions.Actions) {
@@ -173,8 +180,8 @@ export function registerPhoneVerReducer(state = initialPhoneVerCode, action: act
             return { ...action.payload, captcha: action.payload.captcha || false };
 
         case actions.RESET_ERROR_RESPONSE:
-            return  !!state.errorMessage ? initialPhoneVerCode : state;
-            
+            return !!state.errorMessage ? initialPhoneVerCode : state;
+
         case actions.PHONE_VERIFICATION_CODE_SUCCESS:
         default:
             return state;
@@ -187,7 +194,7 @@ export const getRegisterPhoneVerCaptcha = (state: PhoneVerCodeResponse) => state
 
 
 export const initialResetPhoneVerCode: PhoneVerCodeResponse = {
-    captcha: false
+    captcha: false,
 };
 
 export function resetPwdPhoneVerReducer(state = initialResetPhoneVerCode, action: actions.Actions) {
@@ -196,8 +203,8 @@ export function resetPwdPhoneVerReducer(state = initialResetPhoneVerCode, action
             return { ...action.payload, captcha: action.payload.captcha || false };
 
         case actions.RESET_ERROR_RESPONSE:
-            return  !!state.errorMessage ? initialResetPhoneVerCode : state;
-            
+            return !!state.errorMessage ? initialResetPhoneVerCode : state;
+
         case actions.RESET_PHONE_VERIFICATION_CODE_SUCCESS:
         default:
             return state;

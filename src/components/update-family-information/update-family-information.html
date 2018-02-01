@@ -2,18 +2,27 @@
     <ion-toolbar>
 
         <ion-buttons start>
-            <button ion-button icon-only (click)="dismiss()">
+            <button
+                ion-button
+                icon-only
+                (click)="dismiss()"
+            >
                 <ion-icon name="close"></ion-icon>
             </button>
         </ion-buttons>
 
-        <ion-title>{{'UPDATE_FAMILY_INFORMATION' | translate}}</ion-title>
+        <ion-title>
+            {{'UPDATE_FAMILY_INFORMATION' | translate}}
+        </ion-title>
     </ion-toolbar>
 </ion-header>
 
-
 <ion-content>
 
-    <family-information [family]="family" [disabled]="false" (updateHomeInfo)="updateFamily.next($event)"></family-information>
+    <family-information
+        [family]="family"
+        [disabled]="false"
+        (updateHomeInfo)="updateFamily.next($event)"
+    ></family-information>
 
 </ion-content>

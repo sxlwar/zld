@@ -2,8 +2,17 @@
 
     <ion-list-header>
         {{'ATTACH' | translate}}
-        <button item-end ion-button icon-only clear (click)="addAttach()">
-            <ion-icon color="primary" name="add-circle"></ion-icon>
+        <button
+            item-end
+            ion-button
+            icon-only
+            clear
+            (click)="addAttach()"
+        >
+            <ion-icon
+                color="primary"
+                name="add-circle"
+            ></ion-icon>
         </button>
     </ion-list-header>
 
@@ -12,10 +21,21 @@
             <ion-icon name="attach">
                 <span>{{item.title |translate}}{{index + 1}}</span>
             </ion-icon>
-            <take-photo [placeholder]="'ADD_ATTACH' | translate" (fileUrl)="getAttach($event, index)"></take-photo>
+            <take-photo
+                [placeholder]="'ADD_ATTACH' | translate"
+                (fileUrl)="getAttach($event, index)"
+            ></take-photo>
         </ion-item>
-        <ion-item-options icon-start (ionSwipe)="deleteAttach(attach, index)">
-            <button color="danger" ion-button expandable (click)="deleteAttach(attach, index)">
+        <ion-item-options
+            icon-start
+            (ionSwipe)="deleteAttach(attach, index)"
+        >
+            <button
+                color="danger"
+                ion-button
+                expandable
+                (click)="deleteAttach(attach, index)"
+            >
                 <ion-icon name="trash"></ion-icon>
             </button>
         </ion-item-options>

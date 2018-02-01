@@ -1,6 +1,7 @@
-import { DeleteImagesResponse } from './../../interfaces/response-interface';
-import { DeleteImagesOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { DeleteImagesOptions } from './../../interfaces/request-interface';
+import { DeleteImagesResponse } from './../../interfaces/response-interface';
 
 export const DELETE_IMAGES = 'DELETE_IMAGES';
 

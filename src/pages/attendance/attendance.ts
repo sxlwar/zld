@@ -1,18 +1,19 @@
-import { Subject } from 'rxjs/Subject';
-import { RequestOption } from '../../interfaces/request-interface';
-import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
-import { AttendanceService } from '../../services/business/attendance-service';
-import { TimeService } from '../../services/utils/time-service';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { AttendanceResult, Team } from '../../interfaces/response-interface';
-import { TeamService } from '../../services/business/team-service';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { attendanceList } from '../../services/api/command';
-import { attendance as attendanceIcon } from '../../services/business/icon-service';
-import { ProjectRoot, attendanceRecordPage, applyAttendanceModifyPage } from '../../pages/pages';
+
 import { AttendanceState } from '../../interfaces/attendance-interface';
+import { RequestOption } from '../../interfaces/request-interface';
+import { AttendanceResult, Team } from '../../interfaces/response-interface';
+import { applyAttendanceModifyPage, attendanceRecordPage, ProjectRoot } from '../../pages/pages';
+import { attendanceList } from '../../services/api/command';
+import { AttendanceService } from '../../services/business/attendance-service';
+import { attendance as attendanceIcon } from '../../services/business/icon-service';
+import { TeamService } from '../../services/business/team-service';
+import { TimeService } from '../../services/utils/time-service';
+import { PermissionService } from './../../services/config/permission-service';
 
 @IonicPage()
 @Component({

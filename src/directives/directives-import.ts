@@ -1,4 +1,4 @@
-import { AutoSize } from './auto-size'
+import { AutoSize } from './auto-size';
 
 export const directives = [
     AutoSize,

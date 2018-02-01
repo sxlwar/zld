@@ -1,9 +1,10 @@
-import { AppState } from './../../reducers/index-reducer';
 import { Injectable } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
-import { SetPlatformDirectionAction } from '../../actions/action/config-action';
+import { TranslateService } from '@ngx-translate/core';
 import { Platform } from 'ionic-angular';
+
+import { SetPlatformDirectionAction } from '../../actions/action/config-action';
+import { AppState } from './../../reducers/index-reducer';
 
 @Injectable()
 export class ConfigService {

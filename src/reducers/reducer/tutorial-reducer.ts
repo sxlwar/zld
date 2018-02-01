@@ -10,7 +10,7 @@ export interface State {
 export const initialState: State = {
     skipState: true,
     welcomeSlides: [],
-    defaultDirection: 'ltr'
+    defaultDirection: 'ltr',
 };
 
 export function reducer(state = initialState, action: actions.Actions) {
@@ -19,7 +19,7 @@ export function reducer(state = initialState, action: actions.Actions) {
             return {
                 skipState: action.payload,
                 welcomeSlides: state.welcomeSlides,
-                defaultDirection: state.defaultDirection
+                defaultDirection: state.defaultDirection,
             }
         }
 
@@ -27,7 +27,7 @@ export function reducer(state = initialState, action: actions.Actions) {
             return {
                 skipState: state.skipState,
                 welcomeSlides: action.payload,
-                defaultDirection: state.defaultDirection
+                defaultDirection: state.defaultDirection,
             }
         }
 
@@ -35,7 +35,7 @@ export function reducer(state = initialState, action: actions.Actions) {
             return {
                 skipState: state.skipState,
                 welcomeSlides: [...state.welcomeSlides, action.payload],
-                defaultDirection: state.defaultDirection
+                defaultDirection: state.defaultDirection,
             }
         }
 
@@ -43,7 +43,7 @@ export function reducer(state = initialState, action: actions.Actions) {
             return {
                 skipState: state.skipState,
                 welcomeSlides: state.welcomeSlides.filter((slide: Slide) => slide.title !== action.payload.title),
-                defaultDirection: state.defaultDirection
+                defaultDirection: state.defaultDirection,
             }
         default:
             return state;
@@ -54,7 +54,3 @@ export function reducer(state = initialState, action: actions.Actions) {
 export const getTutorialSlides = (state: State) => state.welcomeSlides;
 
 export const getSkipState = (state: State) => state.skipState;
-
-
-
-

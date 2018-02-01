@@ -27,7 +27,8 @@ export class TimeService {
     }
 
     toTwo(s: string): string {
-        let str = String(s);
+        const str = String(s);
+        
         return str.length > 1 ? str : `0${str}`;
     }
 
@@ -48,7 +49,7 @@ export class TimeService {
     }
 
     getDate(date: Date, isFullDate: boolean): string {
-        let y = date.getFullYear(),
+        const y = date.getFullYear(),
             month = date.getMonth() + 1,
             day = date.getDate();
         const m = this.toTwo(String(month));
@@ -71,41 +72,39 @@ export class TimeService {
 
     // eslint-disable-next-line complexity
     createCalendar(date: Date, full: Boolean): Calendar[] {
-        let result = [
+        const result = [
             {
                 week: '日',
-                days: []
+                days: [],
             },
             {
                 week: '一',
-                days: []
+                days: [],
             },
             {
                 week: '二',
-                days: []
+                days: [],
             },
             {
                 week: '三',
-                days: []
+                days: [],
             },
             {
                 week: '四',
-                days: []
+                days: [],
             },
             {
                 week: '五',
-                days: []
+                days: [],
             },
             {
                 week: '六',
-                days: []
+                days: [],
             }],
             millionSeconds = date.getTime(),
             max = full ? this.getLastDayOfMonth(date) : 6,
             min = full ? 1 : 0,
-            current = full ? date.getDate() : date.getDay(),
-            val = 0,
-            i = 0;
+            current = full ? date.getDate() : date.getDay()
 
         function predicate() {
             return full ? i >= min : i > min;
@@ -117,6 +116,10 @@ export class TimeService {
 
             result[index].days.push(date);
         }
+
+        var val = 0;
+
+        var i = 0;
 
         for (i = current - min; predicate(); i -= 1) {
             val = millionSeconds - i * 24 * 3600 * 1000;
@@ -184,7 +187,7 @@ export class TimeService {
             shortDate: month + '-' + date,
             time: hours + ':' + minutes,
             dateWithoutDay: year + '-' + month,
-            week: week
+            week: week,
         };
     }
 
@@ -254,7 +257,7 @@ export class TimeService {
     addTime(startTime: string): string {
         const ary = startTime.split(':');
 
-        let hour = parseInt(ary[0]) + 2;
+        const hour = parseInt(ary[0]) + 2;
 
         ary[0] = hour > 23 ? '00' : String(hour);
 

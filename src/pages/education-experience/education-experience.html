@@ -3,14 +3,17 @@
     <ion-navbar>
         <ion-title>{{'EDUCATION_EXPERIENCE' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="addEducation()">
+            <button
+                ion-button
+                icon-only
+                (click)="addEducation()"
+            >
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -21,15 +24,30 @@
 
                 <ion-item #item>
                     <span>{{edu.start_date}}—{{edu.finish_date}}</span>
-                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" item-start></ion-icon>
+                    <ion-icon
+                        name="more"
+                        color="primary"
+                        (click)="openOption(slidingItem, item, $event)"
+                        item-start
+                    ></ion-icon>
                 </ion-item>
 
                 <ion-item-options side="right">
-                    <button ion-button color="primary" [disabled]="!edu.id" (click)="updateEducation(edu)">
+                    <button
+                        ion-button
+                        color="primary"
+                        [disabled]="!edu.id"
+                        (click)="updateEducation(edu)"
+                    >
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}
                     </button>
-                    <button ion-button color="danger" [disabled]="!edu.id" (click)="delete$.next(edu)">
+                    <button
+                        ion-button
+                        color="danger"
+                        [disabled]="!edu.id"
+                        (click)="delete$.next(edu)"
+                    >
                         <ion-icon name="trash"></ion-icon>
                         {{'DELETE_BUTTON' | translate}}
                     </button>
@@ -40,17 +58,26 @@
 
         <ion-item>
             <ion-label fixed>{{'SCHOOL' | translate}}</ion-label>
-            <ion-input disabled [value]="edu.school__name"></ion-input>
+            <ion-input
+                disabled
+                [value]="edu.school__name"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'DEGREE' | translate}}</ion-label>
-            <ion-input disabled [value]="edu.degree | degree"></ion-input>
+            <ion-input
+                disabled
+                [value]="edu.degree | degree"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'MAJOR' | translate}}</ion-label>
-            <ion-input disabled [value]="edu.major"></ion-input>
+            <ion-input
+                disabled
+                [value]="edu.major"
+            ></ion-input>
         </ion-item>
 
     </ion-list>

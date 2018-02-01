@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
-import { State } from '../../reducers/reducer/icons-reducer';
+
 import { RootModuleBadge } from '../../interfaces/icon-interface';
+import { State } from '../../reducers/reducer/icons-reducer';
 
 export const ADD_ICONS_BAR = 'ADD_ICONS_BAR';
 

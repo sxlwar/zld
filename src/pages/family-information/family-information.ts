@@ -1,11 +1,13 @@
-import { UpdateFamilyInformationComponent } from './../../components/update-family-information/update-family-information';
-import { AddressService } from './../../services/utils/address-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Family } from './../../interfaces/personal-interface';
-import { Observable } from 'rxjs/Observable';
-import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { UpdateFamilyInformationComponent } from './../../components/update-family-information/update-family-information';
+import { Family } from './../../interfaces/personal-interface';
+import { PersonalService } from './../../services/business/personal-service';
+import { AddressService } from './../../services/utils/address-service';
 
 @IonicPage()
 @Component({
@@ -17,6 +19,8 @@ export class FamilyInformationPage {
     family: Observable<Family>;
 
     subscriptions: Subscription[] = [];
+
+    update$: Subject<boolean> = new Subject();
 
     constructor(
         private navParams: NavParams,
@@ -40,7 +44,8 @@ export class FamilyInformationPage {
 
     initialData() {
         this.family = this.personal.getOwnFamily()
-            .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' '))).map(res => res.join(' '))
+            .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' ')))
+                .map(res => res.join(' '))
                 .zip(
                 Observable.of(res),
                 (addressArea, res) => ({ ...res, addressArea })
@@ -52,14 +57,11 @@ export class FamilyInformationPage {
         this.subscriptions = [
             this.personal.getHomeInfoList(),
 
+            this.update$.withLatestFrom(this.family, (_, family) => family)
+                .subscribe(family => this.modalCtrl.create(UpdateFamilyInformationComponent, { family }).present()),
+
             this.personal.handleHomeInfoError(),
         ];
-    }
-
-    updateHomeInfo(): void {
-        this.subscriptions.push(
-            this.family.take(1).subscribe(family => this.modalCtrl.create(UpdateFamilyInformationComponent, { family }).present())
-        );
     }
 
     ionViewWillUnload() {

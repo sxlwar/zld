@@ -1,18 +1,19 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
+import { Team, WorkType } from './../../interfaces/response-interface';
 import { WorkerContractFormModel } from './../../services/api/mapper-service';
+import { CraftService } from './../../services/business/craft-service';
 import { LaunchService } from './../../services/business/launch-service';
 import { SearchService } from './../../services/business/search-service';
-import { searchWorkerPage } from './../pages';
-import { ConfigService } from './../../services/config/config-service';
-import { Subscription } from 'rxjs/Subscription';
-import { CraftService } from './../../services/business/craft-service';
 import { TeamService } from './../../services/business/team-service';
-import { Team, WorkType } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
-import { NavParams, ModalController, IonicPage } from 'ionic-angular';
-import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
+import { ConfigService } from './../../services/config/config-service';
+import { searchWorkerPage } from './../pages';
 
 
 @IonicPage()
@@ -21,6 +22,8 @@ import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
     templateUrl: 'sign-worker-contract.html',
 })
 export class SignWorkerContractPage {
+    contractType: number;
+
     selectedTeam: Observable<Team>;
 
     contract: FormGroup;
@@ -81,13 +84,13 @@ export class SignWorkerContractPage {
     launch() {
         this.subscriptions = [
             this.searchService.getSelectedWorkers().subscribe(source => this.contract.patchValue({ workerIds: source.map(item => item.user_id) })),
-            
+
             this.launchService.createWorkerContract(this.contract$.map(_ => ({ ...this.contract.value, ...this.timePayContract.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList }))),
-            
+
             this.launchService.uploadWorkerContractAttach(),
-            
+
             this.launchService.getSignWorkerContractResponse().subscribe(_ => this.resetForm()),
-            
+
             this.launchService.handleWorkerContractError(),
         ];
     }
@@ -110,7 +113,7 @@ export class SignWorkerContractPage {
 
         this.timePayContract = this.fb.group({
             hourlyWage: '',
-            content: ''
+            content: '',
         });
 
         this.piecePayContracts = [this.createPieceForm()];
@@ -122,7 +125,7 @@ export class SignWorkerContractPage {
             location: '',
             pieceWage: '',
             num: '',
-            standard: ''
+            standard: '',
         });
     }
 

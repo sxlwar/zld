@@ -1,6 +1,17 @@
-import { CheckPhoneResponse, ChangePhoneResponse, CheckPhoneVerifyCodeResponse, ChangePhoneVerifyCodeResponse } from './../../interfaces/response-interface';
-import { CheckPhoneOptions, ChangePhoneOptions, CheckPhoneVerifyCodeOptions, ChangePhoneVerifyCodeOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    ChangePhoneOptions,
+    ChangePhoneVerifyCodeOptions,
+    CheckPhoneOptions,
+    CheckPhoneVerifyCodeOptions,
+} from './../../interfaces/request-interface';
+import {
+    ChangePhoneResponse,
+    ChangePhoneVerifyCodeResponse,
+    CheckPhoneResponse,
+    CheckPhoneVerifyCodeResponse,
+} from './../../interfaces/response-interface';
 
 export const CHECK_PHONE_NUMBER = 'CHECK_PHONE_NUMBER';
 
@@ -135,6 +146,6 @@ export type Actions = CheckPhoneNumberAction
     | CheckPhoneVerifyAction
     | CheckPhoneVerifyFailAction
     | CheckPhoneVerifySuccessAction
-    | ResetLocalDataAction 
-    | UpdateChangeRandomCodeAction 
+    | ResetLocalDataAction
+    | UpdateChangeRandomCodeAction
     | UpdateCheckRandomCodeAction;

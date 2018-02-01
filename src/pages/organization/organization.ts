@@ -1,18 +1,19 @@
-import { Subject } from 'rxjs/Subject';
-import { TipService, ConfirmProp } from './../../services/tip-service';
-import { Subscription } from 'rxjs/Subscription';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { PermissionService } from './../../services/config/permission-service';
-import { ProjectRoot, teamMembersPage, personalPage } from './../pages';
+import { IonicPage, Item, ItemSliding, ModalController, NavController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AddTeamComponent } from '../../components/add-team/add-team';
+import { LayoutService } from '../../services/utils/layout-service';
+import { putInArray } from '../../services/utils/util';
 import { organization } from './../../services/business/icon-service';
 import { ProjectService } from './../../services/business/project-service';
-import { Observable } from 'rxjs/Observable';
 import { TeamService } from './../../services/business/team-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, ModalController, ItemSliding, Item } from 'ionic-angular';
-import { AddTeamComponent } from '../../components/add-team/add-team';
-import { putInArray } from '../../services/utils/util';
-import { LayoutService } from '../../services/utils/layout-service';
+import { PermissionService } from './../../services/config/permission-service';
+import { ConfirmProp, TipService } from './../../services/tip-service';
+import { personalPage, ProjectRoot, teamMembersPage } from './../pages';
 
 export interface ProjectSimple {
     id: number;
@@ -80,7 +81,7 @@ export class OrganizationPage {
                     qualityClerk: team.quality_manage__employee__realname,
                     foreman: team.leader__employee__realname,
                     qualityClerkId: team.quality_manage_id,
-                    foremanId: team.leader_id
+                    foremanId: team.leader_id,
                 }))
                 .reduce(putInArray, [])
             )
@@ -91,7 +92,7 @@ export class OrganizationPage {
                 projectManager: project.manager__employee__realname,
                 labourManager: project.sub_contract__labour_manager__employee__realname,
                 projectManagerId: project.manager_id,
-                labourManagerId: project.sub_contract__labour_manager_id
+                labourManagerId: project.sub_contract__labour_manager_id,
             }));
 
     }
@@ -111,7 +112,7 @@ export class OrganizationPage {
 
     updateTeam(team: TeamItem, event: Event): void {
         event.stopPropagation();
-        
+
         this.modalCtrl.create(AddTeamComponent, { update: true, team }).present();
     }
 
@@ -124,7 +125,7 @@ export class OrganizationPage {
                 title: res.DELETE_TEAM,
                 message: res.DELETE_TEAM_TIP + team.name,
                 cancelText: res.CANCEL_BUTTON,
-                confirmText: res.CONFIRM_BUTTON
+                confirmText: res.CONFIRM_BUTTON,
             }));
 
         const confirmFn = () => this.deleteTeam$.next(team.id);

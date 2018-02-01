@@ -1,19 +1,21 @@
-import { TipService } from './../tip-service';
-import { selectPersonalIdImageResponse, selectPersonalIdImageUpdateState } from './../../reducers/index-reducer';
-import { UserService } from './user-service';
-import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState, selectCertificateResponse } from '../../reducers/index-reducer';
-import { Observable } from 'rxjs/Observable';
-import { CertificateFormModel } from '../api/mapper-service';
-import { ProcessorService } from '../api/processor-service';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/zip';
-import 'rxjs/add/operator/zip';
-import { CertificateOptions } from '../../interfaces/request-interface';
-import { Subscription } from 'rxjs/Subscription';
 import 'rxjs/add/operator/withLatestFrom';
+import 'rxjs/add/operator/zip';
+
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { CertificateOptions } from '../../interfaces/request-interface';
+import { AppState, selectCertificateResponse } from '../../reducers/index-reducer';
+import { CertificateFormModel } from '../api/mapper-service';
+import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
+import { selectPersonalIdImageResponse, selectPersonalIdImageUpdateState } from './../../reducers/index-reducer';
+import { TipService } from './../tip-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class CertificateService {
@@ -109,6 +111,4 @@ export class CertificateService {
         
         return this.tip.loadingSpy(this.store.select(selectPersonalIdImageUpdateState));
     }
-
-    
 }

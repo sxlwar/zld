@@ -1,17 +1,18 @@
-import { PersonalService } from './../../services/business/personal-service';
-import { MapperService } from './../../services/api/mapper-service';
-import { AddressService } from './../../services/utils/address-service';
-import { HomeInfoUpdateOptions } from './../../interfaces/request-interface';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import { Family } from './../../interfaces/personal-interface';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Family } from './../../interfaces/personal-interface';
+import { HomeInfoUpdateOptions } from './../../interfaces/request-interface';
+import { MapperService } from './../../services/api/mapper-service';
+import { PersonalService } from './../../services/business/personal-service';
+import { AddressService } from './../../services/utils/address-service';
 
 @Component({
     selector: 'update-family-information',
-    templateUrl: 'update-family-information.html'
+    templateUrl: 'update-family-information.html',
 })
 export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
 
@@ -36,9 +37,9 @@ export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
         this.subscriptions = [
             this.personal.updateHomeInfo(this.getOption()),
 
-            this.updateFamily.zip(this.personal.getHomeInfoUpdateSuccessResponse(), (_1, _2) => true).subscribe(_ => this.dismiss()),
+            this.updateFamily.zip(this.personal.getHomeInfoUpdateSuccessResponse()).subscribe(_ => this.dismiss()),
 
-            this.personal.handleHomeInfoError(),
+            this.personal.handleUpdateHomeInfoError(),
         ];
     }
 
@@ -57,5 +58,4 @@ export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
-
 }

@@ -1,25 +1,26 @@
-import { Map } from '../../interfaces/amap-interface';
-import { AmapService } from './../../services/business/amap-service';
-import { RequestOption } from './../../interfaces/request-interface';
-import { ProjectService } from './../../services/business/project-service';
-import { WorkerContractListResponse } from './../../interfaces/response-interface';
-import { TrajectoryOptions } from './../../interfaces/location-interface';
-import { PermissionService } from './../../services/config/permission-service';
-import { workerContractList } from './../../services/api/command';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
+import { range } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LocationService } from './../../services/business/location-service';
-import { TimeService } from './../../services/utils/time-service';
-import { ViewController, NavParams, InfiniteScroll } from 'ionic-angular';
-import { WorkerService } from './../../services/business/worker-service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { range } from 'lodash';
+
+import { Map } from '../../interfaces/amap-interface';
 import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
+import { TrajectoryOptions } from './../../interfaces/location-interface';
+import { RequestOption } from './../../interfaces/request-interface';
+import { WorkerContractListResponse } from './../../interfaces/response-interface';
+import { workerContractList } from './../../services/api/command';
+import { AmapService } from './../../services/business/amap-service';
+import { LocationService } from './../../services/business/location-service';
+import { ProjectService } from './../../services/business/project-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { PermissionService } from './../../services/config/permission-service';
+import { TimeService } from './../../services/utils/time-service';
 
 @Component({
     selector: 'history-trajectory',
-    templateUrl: 'history-trajectory.html'
+    templateUrl: 'history-trajectory.html',
 })
 export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
@@ -84,9 +85,12 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
     launch(): void {
         this.subscriptions = [
             this.worker.getWorkerContracts(this.getOption()),
+
             this.getTimeOptions(),
+
             this.getRestWorkerList(),
-            this.worker.handleError()
+
+            this.worker.handleError(),
         ];
     }
 
@@ -101,7 +105,7 @@ export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
 
             this.trajectoryForm = this.fb.group({
                 startTime: [startTime, Validators.required],
-                endTime: [endTime, Validators.required]
+                endTime: [endTime, Validators.required],
             });
         });
     }

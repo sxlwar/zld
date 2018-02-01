@@ -1,24 +1,47 @@
-<!-- Generated template for the FuzzySearchComponent component -->
 
-<ion-searchbar [type]="type" (ionInput)="search.emit($event.target.value)" [placeholder]="placeholder"></ion-searchbar>
+<ion-searchbar
+    [type]="type"
+    (ionInput)="search.emit($event.target.value)"
+    [placeholder]="placeholder"
+></ion-searchbar>
 
 <div [ngSwitch]="selectType">
 
-    <!--check box-->
+    <!-- check box -->
     <div *ngSwitchCase="'checkbox'">
         <ion-item *ngFor="let item of items">
             <ion-label fixed>{{item.name}}</ion-label>
-            <ion-input *ngIf="item.distinct" [value]="item.distinct"></ion-input>
-            <ion-checkbox color="primary" [(ngModel)]="item.selected" [checked]="item.selected" (ionChange)="select.emit(item)"></ion-checkbox>
+            <ion-input
+                *ngIf="item.distinct"
+                [value]="item.distinct"
+            ></ion-input>
+            <ion-checkbox
+                color="primary"
+                [(ngModel)]="item.selected"
+                [checked]="item.selected"
+                (ionChange)="select.emit(item)"
+            ></ion-checkbox>
         </ion-item>
     </div>
 
-    <!--radio-->
-    <ion-list *ngSwitchCase="'radio'" radio-group>
-        <ion-item *ngFor="let item of items" (click)="confirm.emit(item)">
+    <!-- radio -->
+    <ion-list
+        *ngSwitchCase="'radio'"
+        radio-group
+    >
+        <ion-item
+            *ngFor="let item of items"
+            (click)="confirm.emit(item)"
+        >
             <ion-label>{{item.name}}</ion-label>
-            <ion-input *ngIf="item.distinct" [value]="item.distinct"></ion-input>
-            <ion-radio value="{{item.id}}" (ionSelect)="select.emit($event)"></ion-radio>
+            <ion-input
+                *ngIf="item.distinct"
+                [value]="item.distinct"
+            ></ion-input>
+            <ion-radio
+                value="{{item.id}}"
+                (ionSelect)="select.emit($event)"
+            ></ion-radio>
         </ion-item>
     </ion-list>
 

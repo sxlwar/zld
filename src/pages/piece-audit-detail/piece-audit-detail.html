@@ -2,8 +2,16 @@
 
     <ion-navbar>
         <ion-title>{{'PIECE_AUDIT_DETAIL' | translate}}</ion-title>
-        <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
-            <button ion-button small clear (click)="audit()">
+        <ion-buttons
+            *ngIf="isAuditButtonVisibility | async"
+            end
+        >
+            <button
+                ion-button
+                small
+                clear
+                (click)="audit()"
+            >
                 {{'AUDIT' | translate}}
             </button>
         </ion-buttons>
@@ -11,39 +19,56 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-list *ngIf="pieceFlow | async; let data">
 
         <ion-item>
             <ion-label>{{'NAME' | translate}}</ion-label>
-            <ion-input disabled [value]="data.workpieces__contract__worker__employee__realname"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.workpieces__contract__worker__employee__realname"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'PIECE_NAME' | translate}}</ion-label>
-            <ion-input disabled [value]="(piece | async)?.name"></ion-input>
+            <ion-input
+                disabled
+                [value]="(piece | async)?.name"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'COMPLETE_DATE' | translate}}</ion-label>
-            <ion-input disabled [value]="data.finish_date"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.finish_date"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'COMPLETE_COUNT' | translate}}</ion-label>
-            <ion-input disabled [value]="(piece | async)?.num"></ion-input>
+            <ion-input
+                disabled
+                [value]="(piece | async)?.num"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'PAY_PERCENT' | translate}}</ion-label>
-            <ion-input disabled [value]="data.quality_percent"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.quality_percent"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'QUALITY_DESCRIPTION' | translate}}</ion-label>
-            <ion-input disabled [value]="data.comment"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.comment"
+            ></ion-input>
         </ion-item>
 
     </ion-list>

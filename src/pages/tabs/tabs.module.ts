@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
+import { EffectsModule } from '@ngrx/effects';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
-import { TabsPage } from './tabs';
-import { EffectsModule } from '@ngrx/effects';
+
 import { EFFECTS } from '../../effects/effect-import';
+import { TabsPage } from './tabs';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,7 @@ import { EFFECTS } from '../../effects/effect-import';
         EffectsModule.forRoot(EFFECTS),
     ],
     exports: [
-        TabsPage
-    ]
+        TabsPage,
+    ],
 })
 export class TabsPageModule { }

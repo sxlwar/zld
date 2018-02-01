@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { ProjectBillPage } from './project-bill';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
+import { ProjectBillPage } from './project-bill';
 
 @NgModule({
     declarations: [

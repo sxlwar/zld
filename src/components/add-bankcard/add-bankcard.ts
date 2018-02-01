@@ -1,17 +1,18 @@
-import { MapperService } from './../../services/api/mapper-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { PersonalId } from './../../interfaces/response-interface';
-import { PersonalService } from './../../services/business/personal-service';
-import { BankcardService } from './../../services/business/bank-card-service';
-import { mobilePhoneValidator, bankcardNumberValidator, creditCardValidator } from '../../validators/validators';
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { ViewController } from 'ionic-angular';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ViewController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { bankcardNumberValidator, creditCardValidator, mobilePhoneValidator } from '../../validators/validators';
+import { PersonalId } from './../../interfaces/response-interface';
+import { MapperService } from './../../services/api/mapper-service';
+import { BankcardService } from './../../services/business/bank-card-service';
+import { PersonalService } from './../../services/business/personal-service';
 
 @Component({
     selector: 'add-bankcard',
-    templateUrl: 'add-bankcard.html'
+    templateUrl: 'add-bankcard.html',
 })
 export class AddBankcardComponent implements OnInit, OnDestroy {
 
@@ -60,7 +61,7 @@ export class AddBankcardComponent implements OnInit, OnDestroy {
             cardNumber: ['', bankcardNumberValidator],
             phoneNumber: ['', mobilePhoneValidator],
             cardType: ['', creditCardValidator],
-            isMaster: false
+            isMaster: false,
         });
     }
 

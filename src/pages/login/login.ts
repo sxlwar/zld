@@ -1,14 +1,20 @@
-import { tabsPage, certificationPage } from './../pages';
-import { LoginFormModel, SignUpFormModel } from './../../services/api/mapper-service';
-import { Subject } from 'rxjs/Subject';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, ModalController, NavController, NavParams, Slides, ViewController } from 'ionic-angular';
-import { LoginService } from '../../services/business/login-service';
-import { mobilePhoneValidator, passwordMatchValidator, passwordValidator, realNameValidator, } from '../../validators/validators';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Company, LoginResponse, PhoneVerCodeResponse, RegisterResponse } from '../../interfaces/response-interface';
+import { LoginService } from '../../services/business/login-service';
+import {
+    mobilePhoneValidator,
+    passwordMatchValidator,
+    passwordValidator,
+    realNameValidator,
+} from '../../validators/validators';
+import { LoginFormModel, SignUpFormModel } from './../../services/api/mapper-service';
+import { certificationPage, tabsPage } from './../pages';
 
 export class LoginForm {
     mobilePhone = ['', mobilePhoneValidator];
@@ -128,7 +134,7 @@ export class LoginPage {
             this.loginService.handleLoginError(),
 
             this.loginService.handleRegisterError(),
-            
+
             this.loginService.handleSignPhoneVerCodeError(),
         ];
     }
@@ -145,8 +151,8 @@ export class LoginPage {
             imageVerification: '',
             passwordInfo: this.fb.group({
                 password: ['', passwordValidator],
-                confirmPassword: ['', passwordValidator]
-            }, { validator: passwordMatchValidator })
+                confirmPassword: ['', passwordValidator],
+            }, { validator: passwordMatchValidator }),
         });
     }
 

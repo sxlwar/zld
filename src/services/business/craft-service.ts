@@ -1,13 +1,14 @@
-import { UpdateSelectedWorkTypesAction } from './../../actions/action/craft-action';
 import { Injectable } from '@angular/core';
-import { AppState, selectWorkTypeList, selectSelectedWorkTypes, selectWorkTypeResponse } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { WorkType } from '../../interfaces/response-interface';
-import { WorkerService } from './worker-service';
+import { AppState, selectSelectedWorkTypes, selectWorkTypeList, selectWorkTypeResponse } from '../../reducers/index-reducer';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
-import { Subscription } from 'rxjs/Subscription';
+import { UpdateSelectedWorkTypesAction } from './../../actions/action/craft-action';
+import { WorkerService } from './worker-service';
 
 @Injectable()
 export class CraftService {

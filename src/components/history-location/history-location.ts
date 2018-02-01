@@ -1,18 +1,19 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestOption } from 'interfaces/request-interface';
+import { InfiniteScroll, ViewController } from 'ionic-angular';
+import { range } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
 import { LocationOptions } from './../../interfaces/location-interface';
-import { ProjectService } from './../../services/business/project-service';
 import { CraftService } from './../../services/business/craft-service';
 import { LocationService } from './../../services/business/location-service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProjectService } from './../../services/business/project-service';
 import { TeamService } from './../../services/business/team-service';
-import { TimeService } from './../../services/utils/time-service';
 import { WorkerService } from './../../services/business/worker-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { ViewController, InfiniteScroll } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { range } from 'lodash';
-import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
+import { TimeService } from './../../services/utils/time-service';
 
 interface TeamItem {
     id: number;
@@ -28,7 +29,7 @@ interface WorkTypeItem {
 
 @Component({
     selector: 'history-location',
-    templateUrl: 'history-location.html'
+    templateUrl: 'history-location.html',
 })
 export class HistoryLocationComponent implements OnInit, OnDestroy {
     today: string;
@@ -61,6 +62,8 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
 
     loading = false;
 
+    selectedWorkTypes: WorkTypeItem[];
+
     constructor(
         private viewCtrl: ViewController,
         private worker: WorkerService,
@@ -72,6 +75,7 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
         private workType: CraftService
     ) {
         this.today = this.timeService.getDate(new Date, true);
+
         worker.resetPage();
     }
 
@@ -96,10 +100,14 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
     launch(): void {
         this.subscriptions = [
             this.worker.getWorkerContracts(this.getOption()),
+
             this.getRestWorkerList(),
+
             this.getTimeRelatedOptions(),
+
             this.worker.handleError(),
-            this.workType.handleError()
+
+            this.workType.handleError(),
         ];
     }
 
@@ -134,14 +142,16 @@ export class HistoryLocationComponent implements OnInit, OnDestroy {
 
                 this.isTimeSlot = isTimeSlot;
 
-                const form = isTimeSlot ? {
-                    startTime: [startTime, Validators.required],
-                    endTime: [endTime, Validators.required],
-                    time: time
-                } : {
+                const form = isTimeSlot
+                    ? {
+                        startTime: [startTime, Validators.required],
+                        endTime: [endTime, Validators.required],
+                        time: time,
+                    }
+                    : {
                         startTime,
                         endTime,
-                        time: [time, Validators.required]
+                        time: [time, Validators.required],
 
                     }
 

@@ -1,6 +1,7 @@
+import { Action } from '@ngrx/store';
+
 import { SearchWorkerOptions } from './../../interfaces/request-interface';
 import { SearchWorkerResponse } from './../../interfaces/response-interface';
-import { Action } from '@ngrx/store';
 
 export const SEARCH_WORKER = 'SEARCH_WORKER';
 

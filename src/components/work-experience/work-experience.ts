@@ -1,12 +1,13 @@
-import { ItemSliding, Item } from 'ionic-angular';
-import { CustomWorkExperience } from './../../interfaces/personal-interface';
-import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Item, ItemSliding } from 'ionic-angular';
+
 import { LayoutService } from '../../services/utils/layout-service';
+import { CustomWorkExperience } from './../../interfaces/personal-interface';
 
 @Component({
     selector: 'work-experience',
     templateUrl: 'work-experience.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkExperienceComponent implements OnDestroy {
 

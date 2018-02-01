@@ -1,12 +1,12 @@
-import { LogoutResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/logout-action';
+import { LogoutResponse } from './../../interfaces/response-interface';
 
 export interface State {
     logoutResponse: LogoutResponse;
 }
 
 export const initialState = {
-    logoutResponse: null
+    logoutResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

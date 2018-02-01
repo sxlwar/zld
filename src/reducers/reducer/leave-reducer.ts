@@ -1,12 +1,12 @@
-import { LeaveRecordListResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/leave-action';
+import { LeaveRecordListResponse } from './../../interfaces/response-interface';
 
 export interface State {
     leaveRecordResponse: LeaveRecordListResponse;
 }
 
 export const initialState: State = {
-    leaveRecordResponse: null
+    leaveRecordResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

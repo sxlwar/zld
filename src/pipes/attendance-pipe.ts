@@ -1,8 +1,9 @@
-import { AttendanceState } from './../interfaces/response-interface';
 import { Pipe, PipeTransform } from '@angular/core';
 
+import { AttendanceState } from './../interfaces/response-interface';
+
 @Pipe({
-    name: 'attendanceState'
+    name: 'attendanceState',
 })
 export class AttendanceStatePipe implements PipeTransform {
     transform(value: number): string {
@@ -10,14 +11,14 @@ export class AttendanceStatePipe implements PipeTransform {
     }
 }
 
-export enum AttendanceStateIcon{
-    "help-circle",
-    "checkmark-circle",
-    time
+export enum AttendanceStateIcon {
+    'help-circle',
+    'checkmark-circle',
+    time,
 }
 
 @Pipe({
-    name: "attendanceStateIcon"
+    name: 'attendanceStateIcon',
 })
 export class AttendanceStateIconPipe implements PipeTransform {
     transform(value: number): string {

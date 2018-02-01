@@ -1,7 +1,18 @@
-import { ConditionOption } from './../../interfaces/order-interface';
-import { LocationCardListResponse, LocationCardAddResponse, LocationCardUpdateResponse, LocationCardDeleteResponse } from './../../interfaces/response-interface';
-import { LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { ConditionOption } from './../../interfaces/order-interface';
+import {
+    LocationCardAddOptions,
+    LocationCardDeleteOptions,
+    LocationCardListOptions,
+    LocationCardUpdateOptions,
+} from './../../interfaces/request-interface';
+import {
+    LocationCardAddResponse,
+    LocationCardDeleteResponse,
+    LocationCardListResponse,
+    LocationCardUpdateResponse,
+} from './../../interfaces/response-interface';
 
 /* =====================================================Api operate actions================================================ */
 

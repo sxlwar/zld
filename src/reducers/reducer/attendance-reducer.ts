@@ -1,8 +1,12 @@
-import { TimeService } from './../../services/utils/time-service';
-import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
-import { AttendanceResultConfirmResponse, AttendanceModifyRecordListResponse, AttendanceResult } from './../../interfaces/response-interface';
-import { AttendanceResultListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-action';
+import { AttendanceResultListResponse } from '../../interfaces/response-interface';
+import { AttendanceResultConfirmOptions } from './../../interfaces/request-interface';
+import {
+    AttendanceModifyRecordListResponse,
+    AttendanceResult,
+    AttendanceResultConfirmResponse,
+} from './../../interfaces/response-interface';
+import { TimeService } from './../../services/utils/time-service';
 
 const timeService = new TimeService();
 
@@ -30,7 +34,7 @@ export const initialState: State = {
     page: 1,
     datePeriod: {
         start: timeService.getYesterday(),
-        end: timeService.getYesterday()
+        end: timeService.getYesterday(),
     },
     response: null,
     sortType: 0,
@@ -39,7 +43,7 @@ export const initialState: State = {
     attendanceResultConfirmOptions: null,
     attendanceModifyRecordListResponse: null,
     selectedAttendanceState: 0,
-    readyToModify: null
+    readyToModify: null,
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -110,13 +114,13 @@ export function datePeriodReducer(state = initialState.datePeriod, action: actio
         case actions.SET_ATTENDANCE_START_DATE:
             return {
                 start: new Date(action.payload),
-                end: state.end
+                end: state.end,
             };
 
         case actions.SET_ATTENDANCE_END_DATE:
             return {
                 start: state.start,
-                end: new Date(action.payload)
+                end: new Date(action.payload),
             };
 
         default:

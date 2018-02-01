@@ -6,10 +6,17 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
-    <attendance-list [list]="attendances | async" [total]="statistic.count" [operate]="operatePermission | async" (audit)="confirm$.next($event)"
-        (showDetail)="goToDetailPage($event)" (getNextPage)="getNextPage($event)" [haveMoreData]="haveMoreData | async" [operateButtonText]="'ATTENDANCE_CONFIRM'"></attendance-list>
-        
+    <attendance-list
+        [list]="attendances | async"
+        [total]="statistic.count"
+        [operate]="operatePermission | async"
+        (audit)="confirm$.next($event)"
+        (showDetail)="goToDetailPage($event)"
+        (getNextPage)="getNextPage($event)"
+        [haveMoreData]="haveMoreData | async"
+        [operateButtonText]="'ATTENDANCE_CONFIRM'"
+    ></attendance-list>
+
 </ion-content>

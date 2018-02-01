@@ -9,7 +9,7 @@ export enum Edu {
     本科,
     硕士,
     博士及以上,
-    MBA
+    MBA,
 }
 
 export interface Certification {

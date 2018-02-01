@@ -1,12 +1,13 @@
-import { putInArray } from '../../services/utils/util';
-import { personalPage } from './../pages';
-import { Subscription } from 'rxjs/Subscription';
-import { WorkerContractListResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { WorkerService } from './../../services/business/worker-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { putInArray } from '../../services/utils/util';
 import { TeamItem } from '../organization/organization';
+import { WorkerContractListResponse } from './../../interfaces/response-interface';
+import { WorkerService } from './../../services/business/worker-service';
+import { personalPage } from './../pages';
 
 export interface WorkerItem {
     name: string;
@@ -62,7 +63,7 @@ export class TeamMembersPage {
     launch(): void {
         this.subscriptions = [
             this.getWorkerContractList(),
-            
+
             this.worker.handleError(),
         ];
     }
@@ -87,7 +88,12 @@ export class TeamMembersPage {
     getWorkerList(source: Observable<WorkerContractListResponse>): Observable<WorkerItem[]> {
         return source.map(res => res.worker_contract)
             .mergeMap(result => Observable.from(result)
-                .map(item => ({ name: item.worker__employee__realname, workType: item.worktype__name, id: item.worker_id, workTypeId: item.worktype_id }))
+                .map(item => ({
+                    name: item.worker__employee__realname,
+                    workType: item.worktype__name,
+                    id: item.worker_id,
+                    workTypeId: item.worktype_id,
+                }))
                 .reduce(putInArray, [])
             )
             .scan((acc, cur) => acc.concat(cur), []);

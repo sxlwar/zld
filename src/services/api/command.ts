@@ -1,14 +1,123 @@
-import { RequestAggregationOptions, AttendanceResultTeamStatListOptions, WorkOvertimeRecordListOptions, WorkPieceListOptions, PayBillListOptions, AttendanceInstantListOptions, AttendanceResultListOptions, TeamListOptions, LoginOptions, SearchCompanyOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, ProjectListOptions, WorkerContractOptions, ProjectPayBillListOptions, ProjectPayProcessListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, CompanyUserListOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, PlatformWorkExperienceListOptions, WorkExperienceUpdateOptions, WorkExperienceDeleteOptions, BankInfoOptions, WorkerBankNoDeleteOptions, WorkerBankNoAddOptions, WorkerBankNoListOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, WsRequest, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, UnreadMessageCountOptions, MessageDeleteOptions, MessageContentOptions, MessageListOptions, SpecificWorkFlowState, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, AttendanceResultConfirmOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, WorkerContractEditOptions, DeleteImagesOptions, ProcessIdOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, SearchWorkerOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, WorkerContractFormType, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, UploadPersonalIdImageOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions, CheckPhoneOptions, CheckPhoneVerifyCodeOptions, ChangePhoneVerifyCodeOptions, ChangePhoneOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
+import { isEmpty, omit, omitBy } from 'lodash';
+
+import { ApiUnit, Iterator, Operate } from '../../interfaces/api-interface';
 import { CW, EME, LM, MM, PM, PME, QW, SW, TL, UW } from '../config/character';
-import { omitBy, omit, isEmpty } from 'lodash';
-import { ApiUnit, Operate, Iterator } from '../../interfaces/api-interface';
-import { uploadPersonalIdImage, uploadCertificateImage, uploadWorkerContractAttach, uploadAttendanceModifyAttach, uploadLeaveAttach, uploadOvertimeAttach, uploadPieceAuditAttach, uploadWorkerContractModifyAttach } from './http-service';
+import {
+    AttendanceCardAddOptions,
+    AttendanceCardDeleteOptions,
+    AttendanceCardListOptions,
+    AttendanceCardUpdateOptions,
+    AttendanceInstantListOptions,
+    AttendanceMachineListOptions,
+    AttendanceModifyRecordListOptions,
+    AttendanceResultConfirmOptions,
+    AttendanceResultListOptions,
+    AttendanceResultTeamStatListOptions,
+    BankInfoOptions,
+    BasicInfoListOptions,
+    CertificateAddOptions,
+    CertificateDeleteOptions,
+    CertificateListOptions,
+    CertificateOptions,
+    CertificateUpdateOptions,
+    ChangePhoneOptions,
+    ChangePhoneVerifyCodeOptions,
+    CheckPhoneOptions,
+    CheckPhoneVerifyCodeOptions,
+    CompanyUserListOptions,
+    CreateAttendanceModifyOptions,
+    CreateLeaveOptions,
+    CreateOvertimeOptions,
+    CreatePieceAuditOptions,
+    CreateWorkerContractModifyOptions,
+    CreateWorkerContractOptions,
+    DeleteImagesOptions,
+    EducationAddOptions,
+    EducationDeleteOptions,
+    EducationListOptions,
+    EducationUpdateOptions,
+    GroupsListOptions,
+    HistoryLocationListOptions,
+    HomeInfoListOptions,
+    HomeInfoUpdateOptions,
+    LeaveRecordListOptions,
+    LocationCardAddOptions,
+    LocationCardDeleteOptions,
+    LocationCardListOptions,
+    LocationCardUpdateOptions,
+    LoginOptions,
+    LogoutOptions,
+    MessageContentOptions,
+    MessageDeleteOptions,
+    MessageListOptions,
+    MultiTaskUpdateOptions,
+    PayBillListOptions,
+    PersonalIdListOptions,
+    PhoneVerificationCodeOptions,
+    PlatformWorkExperienceListOptions,
+    ProcessIdOptions,
+    ProjectAreaListOptions,
+    ProjectListOptions,
+    ProjectPayBillFlowListOptions,
+    ProjectPayBillListOptions,
+    ProjectPayProcessListOptions,
+    QRLoginOptions,
+    RegisterOptions,
+    RequestAggregationOptions,
+    ResetPasswordOptions,
+    SearchCompanyOptions,
+    SearchWorkerOptions,
+    SetBankNoMasterOptions,
+    SpecificWorkFlowState,
+    TaskUpdateOptions,
+    TeamAddOptions,
+    TeamDeleteOptions,
+    TeamListOptions,
+    TeamMembersRealTimeStatisticsOptions,
+    TeamUpdateOptions,
+    UnreadMessageCountOptions,
+    UploadAttendanceModifyAttachOptions,
+    UploadCertificateImageOptions,
+    UploadLeaveAttachOptions,
+    UploadOvertimeAttachOptions,
+    UploadPersonalIdImageOptions,
+    UploadPieceAuditAttachOptions,
+    UploadWorkerContractAttachOptions,
+    UploadWorkerContractModifyAttachOptions,
+    WorkerBankNoAddOptions,
+    WorkerBankNoDeleteOptions,
+    WorkerBankNoListOptions,
+    WorkerContractEditOptions,
+    WorkerContractFormType,
+    WorkerContractOptions,
+    WorkerDetailListOptions,
+    WorkerDetailUpdateOptions,
+    WorkExperienceAddOptions,
+    WorkExperienceDeleteOptions,
+    WorkExperienceListOptions,
+    WorkExperienceUpdateOptions,
+    WorkFlowListOptions,
+    WorkOvertimeRecordListOptions,
+    WorkPieceListOptions,
+    WorkTypeRealTimeStatisticsOptions,
+    WsRequest,
+} from './../../interfaces/request-interface';
+import {
+    uploadAttendanceModifyAttach,
+    uploadCertificateImage,
+    uploadLeaveAttach,
+    uploadOvertimeAttach,
+    uploadPersonalIdImage,
+    uploadPieceAuditAttach,
+    uploadWorkerContractAttach,
+    uploadWorkerContractModifyAttach,
+} from './http-service';
 
 /* =======================================================API unit definition===================================================================== */
 
 const login: ApiUnit = {
-    operates: new Map([[Operate.querying, ['employee.consumer.Login']]])
+    operates: new Map([[Operate.querying, ['employee.consumer.Login']]]),
 };
 
 const company: ApiUnit = {
@@ -17,74 +126,56 @@ const company: ApiUnit = {
         [Operate.updates, ['employer.consumer.CompanyUpdate']],
         [Operate.addition, ['employer.consumer.CompanyAdd']],
         [Operate.deletion, ['employer.consumer.CompanyDelete']],
-        [Operate.search, ['employer.consumer.SearchCompany']]
-    ])
+        [Operate.search, ['employer.consumer.SearchCompany']],
+    ]),
 };
 
 const phoneVerificationCode: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.RegPhoneVerifyCode']]
-    ])
+    operates: new Map([[Operate.querying, ['employee.consumer.RegPhoneVerifyCode']]]),
 };
 
 const resetPhoneVerificationCode: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.ResetPWPhoneVerifyCode']]
-    ])
+    operates: new Map([[Operate.querying, ['employee.consumer.ResetPWPhoneVerifyCode']]]),
 };
 
 const register: ApiUnit = {
     operates: new Map([
         [Operate.addition, ['employee.consumer.EmployeeRegister', 'employee.consumer.WorkerRegister']],
-    ])
+    ]),
 };
 
 const resetPassword: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.ResetPassword']]
-    ])
+    operates: new Map([[Operate.updates, ['employee.consumer.ResetPassword']]]),
 };
 
 const updatePersonalIdImage: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.PersonalIdUpdate']]
-    ])
+    operates: new Map([[Operate.updates, ['employee.consumer.PersonalIdUpdate']]]),
 };
 
 const changePhone: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.ChangePhone']]
-    ])
+    operates: new Map([[Operate.updates, ['employee.consumer.ChangePhone']]]),
 };
 
 const checkPhone: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.CheckPhone']]
-    ])
+    operates: new Map([[Operate.querying, ['employee.consumer.CheckPhone']]]),
 };
 
 const changePhoneVerify: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.ChangePhoneVerifyCode']]
-    ])
+    operates: new Map([[Operate.updates, ['employee.consumer.ChangePhoneVerifyCode']]]),
 };
 
 const checkPhoneVerify: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.CheckPhoneVerifyCode']]
-    ])
+    operates: new Map([[Operate.querying, ['employee.consumer.CheckPhoneVerifyCode']]]),
 };
 
 /* =======================================================Project===================================================================== */
 
 const projectList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employer.consumer.ProjectList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employer.consumer.ProjectList']]]),
     permission: {
         view: [PME, EME, MM, PM, LM, TL, CW, QW, SW],
-        opt: []
-    }
+        opt: [],
+    },
 };
 
 /* =======================================================Work contract===================================================================== */
@@ -92,83 +183,69 @@ const projectList: ApiUnit = {
 export enum WorkerContract {
     unexpired = 'unexpired',
     timeTypeContract = 'timeTypeContract',
-    pieceTypeContract = 'pieceTypeContract'
+    pieceTypeContract = 'pieceTypeContract',
 }
 
 export const workerContractList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.WorkerContractList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.WorkerContractList']]]),
     noMagicNumber: new Map([
         [WorkerContract.unexpired, new Iterator({ flag: 1 })],
         [WorkerContract.timeTypeContract, new Iterator({ contract_type: 1 })],
-        [WorkerContract.pieceTypeContract, new Iterator({ contract_type: 2 })]
+        [WorkerContract.pieceTypeContract, new Iterator({ contract_type: 2 })],
     ]),
     permission: {
         view: [PME, MM, PM, LM, TL, CW, QW, SW],
-        opt: []
+        opt: [],
     },
-    specialCharacter: new Map([
-        [SW, new Iterator({ self: 1 })]
-    ])
+    specialCharacter: new Map([[SW, new Iterator({ self: 1 })]]),
 };
 
 /* =======================================================Work Type===================================================================== */
 
 export const workTypeList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.WorkTypeList']]
-    ])
+    operates: new Map([[Operate.querying, ['employee.consumer.WorkTypeList']]]),
 };
 
 /* ==============================================================Team========================================================================== */
 
 export const teamList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.TeamList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.TeamList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, QW],
-        opt: []
+        opt: [],
     },
     specialCharacter: new Map([
         [SW, new Iterator({ self: 1 })],
         [TL, new Iterator({ flag: 1 })],
         [LM, new Iterator({ flag: 1 })],
         [PM, new Iterator({ flag: 1 })],
-        [MM, new Iterator({ flag: 1 })]
-    ])
+        [MM, new Iterator({ flag: 1 })],
+    ]),
 };
 
 export const teamAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['project.consumer.TeamAdd']]
-    ]),
+    operates: new Map([[Operate.addition, ['project.consumer.TeamAdd']]]),
     permission: {
         view: [],
-        opt: [PME, PM]
-    }
-}
+        opt: [PME, PM],
+    },
+};
 
 export const teamDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['project.consumer.TeamDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['project.consumer.TeamDelete']]]),
     permission: {
         view: [],
-        opt: [PM]
-    }
-}
+        opt: [PM],
+    },
+};
 
 export const teamUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['project.consumer.TeamUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['project.consumer.TeamUpdate']]]),
     permission: {
         view: [],
-        opt: [PM]
-    }
-}
+        opt: [PM],
+    },
+};
 
 /* =======================================================Attendance===================================================================== */
 
@@ -177,48 +254,38 @@ export enum attendance {
     unconfirmed = 'unconfirmed',
     confirmed = 'confirmed',
     applyToModify = 'applyToModify',
-    allTypes = 'allTypes'
+    allTypes = 'allTypes',
 }
 
 export const attendanceList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.AttendResultList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.AttendResultList']]]),
     permission: {
-        view: [PME, MM, PM, LM, TL,],
-        opt: []
+        view: [PME, MM, PM, LM, TL],
+        opt: [],
     },
     noMagicNumber: new Map([
         [attendance.attendanceOnlyDisplay, new Iterator({ flag: 1 })],
         [attendance.unconfirmed, new Iterator({ confirm: 0 })],
         [attendance.confirmed, new Iterator({ confirm: 1 })],
         [attendance.applyToModify, new Iterator({ confirm: 2 })],
-        [attendance.allTypes, new Iterator({ confirm: 3 })]
+        [attendance.allTypes, new Iterator({ confirm: 3 })],
     ]),
-    specialCharacter: new Map([
-        [SW, new Iterator({ self: 1 })]
-    ])
+    specialCharacter: new Map([[SW, new Iterator({ self: 1 })]]),
 };
 
 export enum attendanceInstant {
-    attendanceInstantOnlyDisplay = 'onlyDisplay' //鬼知道文档上的这个字段是干啥的
+    attendanceInstantOnlyDisplay = 'onlyDisplay', //鬼知道文档上的这个字段是干啥的
 }
 
 export const attendanceInstantList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.AttendanceInstantList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.AttendanceInstantList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, SW],
-        opt: []
+        opt: [],
     },
-    noMagicNumber: new Map([
-        [attendanceInstant.attendanceInstantOnlyDisplay, new Iterator({ flag: 1 })]
-    ]),
-    specialCharacter: new Map([
-        [SW, new Iterator({ self: 1 })]
-    ])
-}
+    noMagicNumber: new Map([[attendanceInstant.attendanceInstantOnlyDisplay, new Iterator({ flag: 1 })]]),
+    specialCharacter: new Map([[SW, new Iterator({ self: 1 })]]),
+};
 
 export function onlyOwnTeam(ary: number[]): boolean {
     //TODO: 根据传进来的id:number确定这些班组是不是当前用户的班组。
@@ -226,167 +293,115 @@ export function onlyOwnTeam(ary: number[]): boolean {
 }
 
 export const attendanceResultConfirm: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['project.consumer.AttendResultConfirm']]
-    ])
-}
+    operates: new Map([[Operate.updates, ['project.consumer.AttendResultConfirm']]]),
+};
 
 /* =======================================================Pay Bill===================================================================== */
 
 export const payBillList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.PayBillList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.PayBillList']]]),
     permission: {
         view: [PME, EME, PM, LM, TL, SW],
-        opt: []
+        opt: [],
     },
-    specialCharacter: new Map([
-        [TL, new Iterator({ check: onlyOwnTeam })],
-        [SW, new Iterator({ self: 1 })]
-    ])
-}
+    specialCharacter: new Map([[TL, new Iterator({ check: onlyOwnTeam })], [SW, new Iterator({ self: 1 })]]),
+};
 
 export const payProcessList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.PayProcessList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.PayProcessList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, SW],
-        opt: []
+        opt: [],
     },
-    specialCharacter: new Map([
-        [SW, new Iterator({ self: 1 })]
-    ])
-}
+    specialCharacter: new Map([[SW, new Iterator({ self: 1 })]]),
+};
 
 export const projectPayBillList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.ProjectPayBillList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.ProjectPayBillList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const projectPayProcessList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.ProjectPayProcessList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.ProjectPayProcessList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 /* =======================================================Work piece===================================================================== */
 
 export const workPieceList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.WorkPieceList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.WorkPieceList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, QW],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* =======================================================Overtime===================================================================== */
 
 export const workOvertimeRecordList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.WorkOvertimeRecordList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.WorkOvertimeRecordList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* =======================================================Statistics===================================================================== */
 
 export const attendanceResultTeamStatList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['operation.consumer.AttendResultTeamStatList']]
-    ]),
+    operates: new Map([[Operate.querying, ['operation.consumer.AttendResultTeamStatList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const workFlowStatistics: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['workflow.consumer.RequestAggregation']]
-    ]),
+    operates: new Map([[Operate.querying, ['workflow.consumer.RequestAggregation']]]),
     permission: {
         view: [PM, LM, TL, SW],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const realTimeStatistics: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['operation.consumer.RealTimePeopleNum']]
-    ]),
+    operates: new Map([[Operate.querying, ['operation.consumer.RealTimePeopleNum']]]),
     permission: {
         view: [PME, PM, MM],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* =========================================================CompanyUser================================================================ */
 
 export const companyUserList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employer.consumer.CompanyUserList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employer.consumer.CompanyUserList']]]),
     permission: {
         view: [PME, EME, MM, PM],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* ==========================================================Personal information api================================================================ */
 
 export const basicInfoList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.BasicInfoList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.BasicInfoList']]]),
     permission: {
         view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const personalIdList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.PersonalIdList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.PersonalIdList']]]),
     permission: {
         view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
-        opt: []
-    },
-    specialCharacter: new Map([
-        [PME, new Iterator({ self: 1 })],
-        [EME, new Iterator({ self: 1 })],
-        [MM, new Iterator({ self: 1 })],
-        [PM, new Iterator({ self: 1 })],
-        [LM, new Iterator({ self: 1 })],
-        [TL, new Iterator({ self: 1 })],
-        [SW, new Iterator({ self: 1 })],
-        [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
-
-export const workerDetailList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.WorkerDetailList']]
-    ]),
-    permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],  //文档上的权限只有前6个，操
-        opt: []
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -399,26 +414,42 @@ export const workerDetailList: ApiUnit = {
         [QW, new Iterator({ self: 1 })],
         [CW, new Iterator({ self: 1 })],
         [UW, new Iterator({ self: 1 })],
-    ])
-}
+    ]),
+};
+
+export const workerDetailList: ApiUnit = {
+    operates: new Map([[Operate.querying, ['employee.consumer.WorkerDetailList']]]),
+    permission: {
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW], //文档上的权限只有前6个，操
+        opt: [],
+    },
+    specialCharacter: new Map([
+        [PME, new Iterator({ self: 1 })],
+        [EME, new Iterator({ self: 1 })],
+        [MM, new Iterator({ self: 1 })],
+        [PM, new Iterator({ self: 1 })],
+        [LM, new Iterator({ self: 1 })],
+        [TL, new Iterator({ self: 1 })],
+        [SW, new Iterator({ self: 1 })],
+        [QW, new Iterator({ self: 1 })],
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 export const workerDetailUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.WorkerDetailUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employee.consumer.WorkerDetailUpdate']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const homeInfoList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.HomeInfoList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.HomeInfoList']]]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
-        opt: []
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -429,27 +460,24 @@ export const homeInfoList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 export const homeInfoUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.HomeInfoUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employee.consumer.HomeInfoUpdate']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const educationList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.EducationList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.EducationList']]]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
-        opt: []
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -460,47 +488,40 @@ export const educationList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 export const educationAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['employee.consumer.EducationAdd']]
-    ]),
+    operates: new Map([[Operate.addition, ['employee.consumer.EducationAdd']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const educationUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.EducationUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employee.consumer.EducationUpdate']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const educationDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['employee.consumer.EducationDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['employee.consumer.EducationDelete']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const workExperienceList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.WorkExperienceList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.WorkExperienceList']]]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
-        opt: []
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -511,47 +532,40 @@ export const workExperienceList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 export const workExperienceAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['employee.consumer.WorkExperienceAdd']]
-    ]),
+    operates: new Map([[Operate.addition, ['employee.consumer.WorkExperienceAdd']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const workExperienceDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['employee.consumer.WorkExperienceDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['employee.consumer.WorkExperienceDelete']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const workExperienceUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.WorkExperienceUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employee.consumer.WorkExperienceUpdate']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const platformWorkExperienceList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.WorkPlatformExperienceList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.WorkPlatformExperienceList']]]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
-        opt: []
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -562,153 +576,125 @@ export const platformWorkExperienceList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 /* ==========================================================Attendance machine api================================================================ */
 
 export const attendanceMachineList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.AttendanceMachineList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.AttendanceMachineList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, QW],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* ==========================================================Attendance card api================================================================ */
 
 export const attendanceCardList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employer.consumer.AttendanceCardList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employer.consumer.AttendanceCardList']]]),
     permission: {
         view: [PME, EME, MM, PM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const attendanceCardAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['employer.consumer.AttendanceCardAdd']]
-    ]),
+    operates: new Map([[Operate.addition, ['employer.consumer.AttendanceCardAdd']]]),
     permission: {
         view: [],
         opt: [MM, EME, PM],
-    }
-}
+    },
+};
 
 export const attendanceCardUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employer.consumer.AttendanceCardUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employer.consumer.AttendanceCardUpdate']]]),
     permission: {
         view: [],
-        opt: [PME, MM, EME, PM]
-    }
-}
+        opt: [PME, MM, EME, PM],
+    },
+};
 
 export const attendanceCardDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['employer.consumer.AttendanceCardDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['employer.consumer.AttendanceCardDelete']]]),
     permission: {
         view: [],
-        opt: [MM, PME, PM]
-    }
-}
+        opt: [MM, PME, PM],
+    },
+};
 
 /* ==========================================================Location card api================================================================ */
 
 export const locationCardList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employer.consumer.LocationCardList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employer.consumer.LocationCardList']]]),
     permission: {
         view: [PME, EME, MM, PM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const locationCardAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['employer.consumer.LocationCardAdd']]
-    ]),
+    operates: new Map([[Operate.addition, ['employer.consumer.LocationCardAdd']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM]
-    }
-}
+        opt: [PME, EME, MM, PM],
+    },
+};
 
 export const locationCardUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employer.consumer.LocationCardUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employer.consumer.LocationCardUpdate']]]),
     permission: {
         view: [],
-        opt: [MM, EME, PM]
-    }
-}
+        opt: [MM, EME, PM],
+    },
+};
 
 export const locationCardDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['employer.consumer.LocationCardDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['employer.consumer.LocationCardDelete']]]),
     permission: {
         view: [],
-        opt: [MM, EME, PM]
-    }
-}
+        opt: [MM, EME, PM],
+    },
+};
 
 /* ==========================================================Location related api================================================================ */
 
 export const historyLocationList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.ListHisLoc']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.ListHisLoc']]]),
     permission: {
         view: [PME, MM, PM, TL],
-        opt: []
+        opt: [],
     },
-    specialCharacter: new Map([
-        [SW, new Iterator({ self: 1 })]
-    ])
-}
+    specialCharacter: new Map([[SW, new Iterator({ self: 1 })]]),
+};
 
 export const projectAreaList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.ProjectAreaList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.ProjectAreaList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, QW],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* ========================================================Bank card model=========================================== */
 
 export const bankInfo: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.BankInfo']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.BankInfo']]]),
     permission: {
         view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const workerBankNoList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.WorkerBankNoList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.WorkerBankNoList']]]),
     permission: {
         view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
-        opt: []
+        opt: [],
     },
     specialCharacter: new Map([
-        // [PME, new Iterator({ self: 1 })],
         [EME, new Iterator({ self: 1 })],
         [MM, new Iterator({ self: 1 })],
         [PM, new Iterator({ self: 1 })],
@@ -718,48 +704,40 @@ export const workerBankNoList: ApiUnit = {
         [QW, new Iterator({ self: 1 })],
         [CW, new Iterator({ self: 1 })],
         [UW, new Iterator({ self: 1 })],
-    ])
-}
+    ]),
+};
 
 export const workerBankNoAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['employee.consumer.WorkerBankNoAdd']]
-    ]),
+    operates: new Map([[Operate.addition, ['employee.consumer.WorkerBankNoAdd']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const workerBankNoDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['employee.consumer.WorkerBankNoDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['employee.consumer.WorkerBankNoDelete']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 export const setBankNoMaster: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.SetBankNoMaster']]
-    ]),
+    operates: new Map([[Operate.updates, ['employee.consumer.SetBankNoMaster']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+    },
+};
 
 /* ========================================================Certificate model=========================================== */
 
 export const certificateList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.WorkCertificateList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.WorkCertificateList']]]),
     permission: {
-        view: [PME, EME, MM, PM, LM, TL],
-        opt: []
+        view: [PME, EME, MM, PM, LM, TL, SW, QW, CW, UW],
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -770,90 +748,69 @@ export const certificateList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 export const certificateAdd: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['employee.consumer.WorkCertificateCreate']]
-    ]),
+    operates: new Map([[Operate.addition, ['employee.consumer.WorkCertificateCreate']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    },
+};
 
 export const certificateDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['employee.consumer.WorkCertificateDelete']]
-    ]),
+    operates: new Map([[Operate.deletion, ['employee.consumer.WorkCertificateDelete']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    },
+};
 
 export const certificateUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['employee.consumer.WorkCertificateUpdate']]
-    ]),
+    operates: new Map([[Operate.updates, ['employee.consumer.WorkCertificateUpdate']]]),
     permission: {
         view: [],
-        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW]
-    }
-}
+        opt: [PME, EME, MM, PM, LM, TL, SW, QW, CW],
+    },
+};
 
 /* ========================================================Message model=========================================== */
 
 export const messageList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['operation.consumer.MsgTitleList']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['operation.consumer.MsgTitleList']]]),
+};
 
 export const unreadMessageCount: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['operation.consumer.UnreadMsgCount']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['operation.consumer.UnreadMsgCount']]]),
+};
 
 export const messageDelete: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['operation.consumer.MsgTitleDelete']]
-    ])
-}
+    operates: new Map([[Operate.deletion, ['operation.consumer.MsgTitleDelete']]]),
+};
 
 export const messageContent: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['operation.consumer.ReadMsgContent']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['operation.consumer.ReadMsgContent']]]),
+};
 
 /* ========================================================Common model=========================================== */
 
 export const logout: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.Logout']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['employee.consumer.Logout']]]),
+};
 
 export const QRLogin: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.QRLoginForApp']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['employee.consumer.QRLoginForApp']]]),
+};
 
 export const nationalityList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.NationalityList']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['employee.consumer.NationalityList']]]),
+};
 
 export const groupsList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employee.consumer.GroupsList']]
-    ]),
+    operates: new Map([[Operate.querying, ['employee.consumer.GroupsList']]]),
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
         [EME, new Iterator({ self: 1 })],
@@ -863,37 +820,30 @@ export const groupsList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
-    ])
-}
+        [CW, new Iterator({ self: 1 })],
+        [UW, new Iterator({ self: 1 })],
+    ]),
+};
 
 /* ========================================================Work flow model=========================================== */
 
 export const multiTaskUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['workflow.consumer.MultiTaskUpdate']]
-    ])
-}
+    operates: new Map([[Operate.updates, ['workflow.consumer.MultiTaskUpdate']]]),
+};
 
 export const taskUpdate: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['workflow.consumer.TaskUpdate']]
-    ])
-}
+    operates: new Map([[Operate.updates, ['workflow.consumer.TaskUpdate']]]),
+};
 
 export const projectPayBillFlowList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.ProjectPayBillFlowList']]
-    ])
-}
+    operates: new Map([[Operate.querying, ['project.consumer.ProjectPayBillFlowList']]]),
+};
 
 export const workFlowList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['workflow.consumer.RequestList']]
-    ]),
+    operates: new Map([[Operate.querying, ['workflow.consumer.RequestList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL, QW, SW, CW],
-        opt: []
+        opt: [],
     },
     specialCharacter: new Map([
         [PME, new Iterator({ self: 1 })],
@@ -903,96 +853,81 @@ export const workFlowList: ApiUnit = {
         [TL, new Iterator({ self: 1 })],
         [QW, new Iterator({ self: 1 })],
         [SW, new Iterator({ self: 1 })],
-        [CW, new Iterator({ self: 1 })]
+        [CW, new Iterator({ self: 1 })],
     ]),
     noMagicNumber: new Map([
         [SpecificWorkFlowState.launch, new Iterator({ flag: 1 })],
         [SpecificWorkFlowState.completed, new Iterator({ flag: 2 })],
-        [SpecificWorkFlowState.pending, new Iterator({ flag: 3 })]
-    ])
-}
+        [SpecificWorkFlowState.pending, new Iterator({ flag: 3 })],
+    ]),
+};
 
 export const attendanceModifyRecordList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.AmendAttendRecordList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.AmendAttendRecordList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 export const leaveRecordList: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['project.consumer.LeaveRecordList']]
-    ]),
+    operates: new Map([[Operate.querying, ['project.consumer.LeaveRecordList']]]),
     permission: {
         view: [PME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* =========================================================Launch related======================================= */
 
 export const multiProcessCreate: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['workflow.consumer.MultiProcessCreate']]
-    ]),
+    operates: new Map([[Operate.addition, ['workflow.consumer.MultiProcessCreate']]]),
     permission: {
         view: [],
-        opt: [PM, LM, TL]
-    }
-}
+        opt: [PM, LM, TL],
+    },
+};
 
 export const deleteImages: ApiUnit = {
-    operates: new Map([
-        [Operate.deletion, ['operation.consumer.DeleteFiles']]
-    ])
-}
+    operates: new Map([[Operate.deletion, ['operation.consumer.DeleteFiles']]]),
+};
 
 export const processCreate: ApiUnit = {
-    operates: new Map([
-        [Operate.addition, ['workflow.consumer.ProcessCreate']]
-    ]),
+    operates: new Map([[Operate.addition, ['workflow.consumer.ProcessCreate']]]),
     permission: {
         view: [],
-        opt: [PM, LM, TL]
-    }
-}
+        opt: [PM, LM, TL],
+    },
+};
 
 export const workerContractEdit: ApiUnit = {
-    operates: new Map([
-        [Operate.updates, ['project.consumer.WorkerContractEdit']]
-    ]),
+    operates: new Map([[Operate.updates, ['project.consumer.WorkerContractEdit']]]),
     permission: {
         view: [],
-        opt: [PM, LM, TL]
-    }
-}
+        opt: [PM, LM, TL],
+    },
+};
 
 export const searchWorker: ApiUnit = {
-    operates: new Map([
-        [Operate.querying, ['employer.consumer.SearchWorker']]
-    ]),
+    operates: new Map([[Operate.querying, ['employer.consumer.SearchWorker']]]),
     permission: {
         view: [PME, EME, MM, PM, LM, TL],
-        opt: []
-    }
-}
+        opt: [],
+    },
+};
 
 /* ===================================================API END====================================================== */
 
 @Injectable()
 export class Command {
-    workTimePayList = "project.consumer.WorkTimePayList"; // 工人管理下的接口，工时支付列表；
-    constructor() {
-    }
+    workTimePayList = 'project.consumer.WorkTimePayList'; // 工人管理下的接口，工时支付列表；
+    constructor() { }
 
     private getFullParameter(path: string, parameters: object): WsRequest {
-        return { command: { path }, parameters }
+        return { command: { path }, parameters };
     }
 
-    /**
+	/**
      * @description APIs before entry into the app: login, searchCompany, phoneVerificationCode, resetPhoneVerificationCode, register, resetPassword, updatePersonalIdImage.
      */
     login(option: LoginOptions): WsRequest {
@@ -1021,7 +956,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * FIXME: NO.1
      * @description 后台把注册和重置密码的手机验证码分成了2个接口，其逻辑和参数完全相同。所以这里分成2个函数处理，phoneVerificationCode
      * 处理注册时的手机验证码，resetPhoneVerificationCode处理重置密码时的手机验证码。
@@ -1088,7 +1023,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Project API: getProjectList;
      */
     getProjectList(option: ProjectListOptions): WsRequest {
@@ -1097,7 +1032,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Contract related API: getWorkerContractList;
      */
     getWorkerContractList(option: WorkerContractOptions, ...magicNumberNames: string[]): WsRequest {
@@ -1111,7 +1046,7 @@ export class Command {
         return this.getFullParameter(path, { ...option, ...magicOption });
     }
 
-    /**
+	/**
      * @description WorkType API: getWorkTypeList;
      */
     getWorkTypeList(): WsRequest {
@@ -1120,7 +1055,7 @@ export class Command {
         return this.getFullParameter(path, {});
     }
 
-    /**
+	/**
      * @description team API: getTeamList, getTeamAdd, getTeamUpdate, getTeamDelete;
      */
     getTeamList(option: TeamListOptions): WsRequest {
@@ -1147,7 +1082,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Attendance API: getAttendanceList, getAttendanceInstantList, getAttendanceResultConfirm;
      */
     getAttendanceList(option: AttendanceResultListOptions): WsRequest {
@@ -1168,7 +1103,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Salary related API: getPayBillList, getPayProcessList, getProjectPayBillList, getProjectPayProcessList;
      */
     getPayBillList(option: PayBillListOptions): WsRequest {
@@ -1189,7 +1124,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Work piece API: getWorkerPieceList;
      */
     getWorkPieceList(option: WorkPieceListOptions): WsRequest {
@@ -1198,7 +1133,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Overtime API: getWorkOvertimeRecordList;
      */
     getWorkOvertimeRecordList(option: WorkOvertimeRecordListOptions): WsRequest {
@@ -1207,7 +1142,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Statistics related API: getAttendanceResultTeamStatList, getWorkFlowStatistics;
      */
     getAttendanceResultTeamStatList(option: AttendanceResultTeamStatListOptions): WsRequest {
@@ -1222,7 +1157,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Company user API: getCompanyUser;
      */
     getCompanyUserList(option: CompanyUserListOptions): WsRequest {
@@ -1231,7 +1166,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Personal information API: getBasicInfo, getPersonalIdList, getWorkerDetailList...;
      */
     getBasicInfoList(option: BasicInfoListOptions): WsRequest {
@@ -1255,7 +1190,7 @@ export class Command {
     getWorkerDetailUpdate(originOption: WorkerDetailUpdateOptions): WsRequest {
         const path = workerDetailUpdate.operates.get(Operate.updates)[0];
 
-        const { sid, work_type_id, province, city, street, detail, dist } = originOption
+        const { sid, work_type_id, province, city, street, detail, dist } = originOption;
 
         const address_form = omitBy({ province, city, street, detail, dist }, (value, key) => !value);
 
@@ -1277,12 +1212,32 @@ export class Command {
     getHomeInfoUpdate(originOption: HomeInfoUpdateOptions): WsRequest {
         const path = homeInfoUpdate.operates.get(Operate.updates)[0];
 
-        const { sid, emergency_contact_relation, emergency_contact_name, emergency_contact_tel, marriage, marryday, childnum, province, city, detail, dist, street } = originOption;
+        const {
+			sid,
+            emergency_contact_relation,
+            emergency_contact_name,
+            emergency_contact_tel,
+            marriage,
+            marryday,
+            childnum,
+            province,
+            city,
+            detail,
+            dist,
+            street,
+		} = originOption;
 
         const option = {
             sid,
-            home_info_form: { emergency_contact_relation, emergency_contact_name, emergency_contact_tel, marriage, marryday, childnum },
-            address_form: { province, city, detail, dist, street }
+            home_info_form: {
+                emergency_contact_relation,
+                emergency_contact_name,
+                emergency_contact_tel,
+                marriage,
+                marryday,
+                childnum,
+            },
+            address_form: { province, city, detail, dist, street },
         };
 
         return this.getFullParameter(path, option);
@@ -1358,7 +1313,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Attendance machine API: getAttendanceMachineList
      */
     getAttendanceMachineList(option: AttendanceMachineListOptions): WsRequest {
@@ -1367,7 +1322,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Attendance card API: getAttendanceCardList, getAttendanceCardAdd, getAttendanceCardDelete, getAttendanceCardUpdate
      */
     getAttendanceCardList(option: AttendanceCardListOptions): WsRequest {
@@ -1406,7 +1361,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Location card API: getLocationCardList, getLocationCardAdd, getLocationCardUpdate, getLocationCardDelete
      */
     getLocationCardList(option: LocationCardListOptions): WsRequest {
@@ -1435,7 +1390,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Location related api: getHistoryLocationList, getProjectAreaList
      */
     getHistoryLocationList(option: HistoryLocationListOptions): WsRequest {
@@ -1450,7 +1405,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Bank no related api: getBankInfo, getWorkerBankNoList, getWorkerBankNoAdd, getWorkerBankNoDelete;
      */
     getBankInfo(option: BankInfoOptions): WsRequest {
@@ -1483,7 +1438,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description logout api
      */
     getLogout(option: LogoutOptions): WsRequest {
@@ -1492,7 +1447,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description qr login api 
      */
     getQRLogin(option: QRLoginOptions): WsRequest {
@@ -1501,7 +1456,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description certificate related api: getCertificateList, getCertificateAdd, getCertificateDelete, getCertificateUpdate
      */
     getCertificateList(option: CertificateListOptions): WsRequest {
@@ -1513,9 +1468,29 @@ export class Command {
     getCertificateAdd(originOption: CertificateAddOptions): WsRequest {
         const path = certificateAdd.operates.get(Operate.addition)[0];
 
-        const { sid, worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } = originOption;
+        const {
+			sid,
+            worktype_id,
+            num,
+            usefinish_date,
+            usestart_date,
+            firstget_date,
+            education,
+            mechanism,
+		} = originOption;
 
-        const option = { sid, work_certificate_form: { worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } };
+        const option = {
+            sid,
+            work_certificate_form: {
+                worktype_id,
+                num,
+                usefinish_date,
+                usestart_date,
+                firstget_date,
+                education,
+                mechanism,
+            },
+        };
 
         return this.getFullParameter(path, option);
     }
@@ -1529,9 +1504,31 @@ export class Command {
     getCertificateUpdate(originOption: CertificateUpdateOptions): WsRequest {
         const path = certificateUpdate.operates.get(Operate.updates)[0];
 
-        const { sid, id, worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } = originOption;
+        const {
+			sid,
+            id,
+            worktype_id,
+            num,
+            usefinish_date,
+            usestart_date,
+            firstget_date,
+            education,
+            mechanism,
+		} = originOption;
 
-        const option = { sid, work_certificate_form: { id, worktype_id, num, usefinish_date, usestart_date, firstget_date, education, mechanism } };
+        const option = {
+            sid,
+            work_certificate_form: {
+                id,
+                worktype_id,
+                num,
+                usefinish_date,
+                usestart_date,
+                firstget_date,
+                education,
+                mechanism,
+            },
+        };
 
         return this.getFullParameter(path, option);
     }
@@ -1542,7 +1539,7 @@ export class Command {
         return { ...option, command };
     }
 
-    /**
+	/**
      * @description message related api: getMessageList, getMessageContent, getUnreadMessageCount, getMessageDelete;
      */
     getMessageList(option: MessageListOptions): WsRequest {
@@ -1569,7 +1566,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Work flow relates api: getWorkFlowList, getProjectPayBillFlowList, getMultiTaskUpdate;
      */
     getWorkFlowList(option: WorkFlowListOptions): WsRequest {
@@ -1600,7 +1597,7 @@ export class Command {
         return this.getFullParameter(path, { sid, task: { comment, id, approve } });
     }
 
-    /**
+	/**
      * @description Leave relate api: getLeaveRecordList;
      */
     getLeaveRecordList(option: LeaveRecordListOptions): WsRequest {
@@ -1609,7 +1606,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description Attendance modify related api: getAttendanceModifyRecordList
      */
     getAttendanceModifyRecordList(option: AttendanceModifyRecordListOptions): WsRequest {
@@ -1618,7 +1615,7 @@ export class Command {
         return this.getFullParameter(path, option);
     }
 
-    /**
+	/**
      * @description launch related api: getProcessCreate, getDeleteImages, getWorkerTimeDuty, getWorkerContractEdit ...
      */
     getWorkerContractEdit(option: WorkerContractEditOptions): WsRequest {
@@ -1636,23 +1633,37 @@ export class Command {
     getCreateWorkerContract(originOption: CreateWorkerContractOptions): WsRequest {
         const path = multiProcessCreate.operates.get(Operate.addition)[0];
 
-        let { worker_contract, work_piece_pay, work_time_pay } = originOption;
+        let { worker_contract } = originOption;
+
+        const { work_piece_pay, work_time_pay, sid } = originOption;
 
         const { formType } = worker_contract;
 
         worker_contract = omit(worker_contract, ['attach', 'formType']);
 
         if (formType === WorkerContractFormType.timePayType) {
-            return this.getFullParameter(path, { worker_contract, flow_name: ProcessIdOptions.workerContract, work_time_pay });
+            return this.getFullParameter(path, {
+                sid,
+                worker_contract,
+                flow_name: ProcessIdOptions.workerContract,
+                work_time_pay,
+            });
         } else {
-            return this.getFullParameter(path, { worker_contract, flow_name: ProcessIdOptions.workerContract, work_piece_pay });
+            return this.getFullParameter(path, {
+                sid,
+                worker_contract,
+                flow_name: ProcessIdOptions.workerContract,
+                work_piece_pay,
+            });
         }
     }
 
     getCreateWorkerContractModify(originOption: CreateWorkerContractModifyOptions): WsRequest {
         const path = processCreate.operates.get(Operate.addition)[0];
 
-        let { sid, contract_time_change_flow } = originOption;
+        let { contract_time_change_flow } = originOption;
+
+        const { sid } = originOption;
 
         contract_time_change_flow = omit(contract_time_change_flow, ['attach']);
 
@@ -1664,7 +1675,9 @@ export class Command {
     getCreateLeave(originOption: CreateLeaveOptions): WsRequest {
         const path = processCreate.operates.get(Operate.addition)[0];
 
-        let { sid, leave } = originOption
+        let { leave } = originOption;
+
+        const { sid } = originOption;
 
         leave = omit(leave, ['attach']);
 
@@ -1676,7 +1689,9 @@ export class Command {
     getCreateOvertime(originOption: CreateOvertimeOptions): WsRequest {
         const path = processCreate.operates.get(Operate.addition)[0];
 
-        let { sid, work_over_time } = originOption;
+        let { work_over_time } = originOption;
+
+        const { sid } = originOption;
 
         work_over_time = omit(work_over_time, ['attach']);
 
@@ -1688,7 +1703,9 @@ export class Command {
     getCreatePieceAudit(originOption: CreatePieceAuditOptions): WsRequest {
         const path = processCreate.operates.get(Operate.addition)[0];
 
-        let { sid, work_piece_finish_flow } = originOption;
+        let { work_piece_finish_flow } = originOption;
+
+        const { sid } = originOption;
 
         work_piece_finish_flow = omit(work_piece_finish_flow, ['attach']);
 
@@ -1700,7 +1717,9 @@ export class Command {
     getCreateAttendanceModify(originOption: CreateAttendanceModifyOptions): WsRequest {
         const path = multiProcessCreate.operates.get(Operate.addition)[0];
 
-        let { sid, attend_amend } = originOption;
+        let { attend_amend } = originOption;
+
+        const { sid } = originOption;
 
         attend_amend = omit(attend_amend, ['attach']);
 
@@ -1759,7 +1778,7 @@ export class Command {
 
     /* ==========================================================Api unit reference api====================================================== */
 
-    /**
+	/**
      * @description API unit interfaces for http methods;
      */
 
@@ -1767,7 +1786,7 @@ export class Command {
         return uploadCertificateImage.operates.get(Operate.updates)[0];
     }
 
-    /**
+	/**
      * @description API unit interfaces for websocket methods;
      */
     get projectList() {

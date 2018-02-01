@@ -1,8 +1,9 @@
-import { TranslateModule } from '@ngx-translate/core';
-import { ComponentsModule } from './../../components/components.module';
-import { SharedModule } from './../../app/shared.modules';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
+
+import { SharedModule } from './../../app/shared.modules';
+import { ComponentsModule } from './../../components/components.module';
 import { AttendanceModifyPage } from './attendance-modify';
 
 @NgModule({

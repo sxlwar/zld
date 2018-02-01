@@ -1,16 +1,17 @@
-import { RequestOption } from '../../interfaces/request-interface';
-import { AddAttendanceCardFormModel } from './../../services/api/mapper-service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { ProjectService } from './../../services/business/project-service';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceCardService } from './../../services/business/attendance-card-service';
-import { WorkerService } from './../../services/business/worker-service';
-import { ViewController, NavParams, InfiniteScroll } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { cardNumberValidator } from '../../validators/validators';
+
+import { RequestOption } from '../../interfaces/request-interface';
 import { AttendanceCardResponses } from '../../reducers/reducer/attendance-card-reducer';
+import { cardNumberValidator } from '../../validators/validators';
+import { AddAttendanceCardFormModel } from './../../services/api/mapper-service';
+import { AttendanceCardService } from './../../services/business/attendance-card-service';
+import { ProjectService } from './../../services/business/project-service';
+import { WorkerService } from './../../services/business/worker-service';
 
 export interface Worker {
     name: string;
@@ -21,7 +22,7 @@ export interface Worker {
 
 @Component({
     selector: 'add-attendance-card',
-    templateUrl: 'add-attendance-card.html'
+    templateUrl: 'add-attendance-card.html',
 })
 export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
@@ -75,7 +76,12 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
     initialModel(): void {
         this.workers = this.worker.getAllWorkerContracts()
-            .map(res => res.map(item => ({ name: item.worker__employee__realname, userId: item.worker_id, teamName: item.team__name, workTypeId: item.worktype_id })))
+            .map(res => res.map(item => ({
+                name: item.worker__employee__realname,
+                userId: item.worker_id,
+                teamName: item.team__name,
+                workTypeId: item.worktype_id,
+            })))
             .combineLatest(
             this.card.getCards().map(cards => cards.filter(item => !!item.user_id).map(item => item.user_id)),
             (workers, boundIds) => workers.filter(item => boundIds.indexOf(item.userId) === -1)
@@ -94,7 +100,9 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
 
             this.card.updateAttendanceCard(this.bind$),
 
-            this.card.getAddAttendanceCardResponse().merge(this.card.getUpdateAttendanceCardResponse()).filter(res => !res.errorMessage).subscribe(_ => this.dismiss()),
+            this.card.getAddAttendanceCardResponse()
+                .merge(this.card.getUpdateAttendanceCardResponse())
+                .filter(res => !res.errorMessage).subscribe(_ => this.dismiss()),
 
             this.worker.handleError(),
 
@@ -131,7 +139,7 @@ export class AddAttendanceCardComponent implements OnInit, OnDestroy {
         this.addAttendanceCardForm = this.fb.group({
             cardNumber: [{ value: number, disabled: this.isUpdate }, cardNumberValidator],
             bind: { value: this.checked, disabled: this.isUpdate },
-            selectedWorker: ''
+            selectedWorker: '',
         });
     }
 

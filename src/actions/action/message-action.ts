@@ -1,6 +1,17 @@
-import { UnreadMessageCountResponse, MessageListResponse, MessageContentResponse, MessageDeleteResponse } from './../../interfaces/response-interface';
-import { UnreadMessageCountOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    MessageContentOptions,
+    MessageDeleteOptions,
+    MessageListOptions,
+    UnreadMessageCountOptions,
+} from './../../interfaces/request-interface';
+import {
+    MessageContentResponse,
+    MessageDeleteResponse,
+    MessageListResponse,
+    UnreadMessageCountResponse,
+} from './../../interfaces/response-interface';
 
 /* ====================================================Server Action==================================================== */
 

@@ -1,16 +1,17 @@
-import { RequestOption } from './../../interfaces/request-interface';
-import { ProjectService } from './../../services/business/project-service';
-import { Subscription } from 'rxjs/Subscription';
-import { cardNumberValidator } from '../../validators/validators';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { LocationCardService } from './../../services/business/location-card-service';
-import { WorkerService } from './../../services/business/worker-service';
-import { NavParams, ViewController, InfiniteScroll } from 'ionic-angular';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
 import { AddLocationCardFormModel } from '../../services/api/mapper-service';
+import { cardNumberValidator } from '../../validators/validators';
+import { RequestOption } from './../../interfaces/request-interface';
+import { LocationCardService } from './../../services/business/location-card-service';
+import { ProjectService } from './../../services/business/project-service';
+import { WorkerService } from './../../services/business/worker-service';
 
 interface Worker {
     userId: number;
@@ -21,7 +22,7 @@ interface Worker {
 
 @Component({
     selector: 'add-location-card',
-    templateUrl: 'add-location-card.html'
+    templateUrl: 'add-location-card.html',
 })
 export class AddLocationCardComponent {
 
@@ -136,7 +137,7 @@ export class AddLocationCardComponent {
         this.addLocationCardForm = this.fb.group({
             cardNumber: [{ value: number, disabled: this.isUpdate }, cardNumberValidator],
             bind: { value: this.checked, disabled: this.isUpdate },
-            selectedWorker: ''
+            selectedWorker: '',
         });
     }
 
@@ -177,10 +178,7 @@ export class AddLocationCardComponent {
     addCard(): void {
         const { cardNumber, bind } = this.addLocationCardForm.value;
 
-        this.add$.next(
-            bind ? { cardNumber, userId: this.boundWorker.userId, userName: this.boundWorker.name }
-                : { cardNumber }
-        );
+        this.add$.next(bind ? { cardNumber, userId: this.boundWorker.userId, userName: this.boundWorker.name } : { cardNumber });
     }
 
     dismiss(): void {

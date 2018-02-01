@@ -1,7 +1,8 @@
-import { UploadPersonalIdImageOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
 import { CertificateOptions } from '../../interfaces/request-interface';
 import { CertificateResponse, UploadPersonalIdImageResponse } from '../../interfaces/response-interface';
+import { UploadPersonalIdImageOptions } from './../../interfaces/request-interface';
 
 export const CERTIFICATE = 'CERTIFICATE';
 
@@ -60,4 +61,3 @@ export type Actions = CertificateAction
     | UploadPersonalIdImageAction
     | UploadPersonalIdImageFailAction
     | UploadPersonalIdImageSuccessAction;
-

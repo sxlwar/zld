@@ -1,16 +1,17 @@
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
-import { LoginService } from './../../services/business/login-service';
-import { ResetPasswordResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
+import { Component, Input, OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Component, Input, OnDestroy } from '@angular/core';
-import { mobilePhoneValidator, passwordValidator, passwordMatchValidator } from '../../validators/validators';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { mobilePhoneValidator, passwordMatchValidator, passwordValidator } from '../../validators/validators';
+import { ResetPasswordResponse } from './../../interfaces/response-interface';
+import { LoginService } from './../../services/business/login-service';
 
 @Component({
     selector: 'reset-password',
-    templateUrl: 'reset-password.html'
+    templateUrl: 'reset-password.html',
 })
 export class ResetPasswordComponent implements OnInit, OnDestroy {
 
@@ -56,9 +57,13 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
     launch(): void {
         this.subscriptions = [
             this.loginService.updateVerificationImageUrl(this.updateImage$),
+
             this.loginService.getResetPwdPhoneVerCode(this.phoneVerCode$.map(_ => this.resetPwdForm.value)),
+
             this.loginService.resetPwd(this.reset$.map(_ => this.resetPwdForm.value)),
+
             this.loginService.handleResetPassWordInfoError(),
+
             this.loginService.handleResetPhoneVerCodeError(),
         ];
 
@@ -74,14 +79,14 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
             phoneVerification: '',
             passwordInfo: this.fb.group({
                 password: ['', passwordValidator],
-                confirmPassword: ['', passwordValidator]
+                confirmPassword: ['', passwordValidator],
             }, { validator: passwordMatchValidator }),
         });
     }
 
     ngOnDestroy() {
         this.loginService.resetResetPasswordResponse();
-        
+
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 

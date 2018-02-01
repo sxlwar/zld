@@ -1,15 +1,15 @@
-import { Subject } from 'rxjs/Subject';
-import { FaceImageComponent } from './../../components/face-image/face-image';
-import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
-import { uniqBy } from 'lodash';
-import { TimeService } from './../../services/utils/time-service';
-import { AttendanceRecordService } from './../../services/business/attendance-record-service';
-import { Subscription } from 'rxjs/Subscription';
-import { AttendanceInstant } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
+import { InfiniteScroll, IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { uniqBy } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
+import { FaceImageComponent } from './../../components/face-image/face-image';
+import { AttendanceInstant } from './../../interfaces/response-interface';
+import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
+import { AttendanceRecordService } from './../../services/business/attendance-record-service';
+import { TimeService } from './../../services/utils/time-service';
 
 @IonicPage()
 @Component({
@@ -17,7 +17,6 @@ import { IonicPage, NavParams, ModalController, InfiniteScroll } from 'ionic-ang
     templateUrl: 'attendance-machine-record.html',
 })
 export class AttendanceMachineRecordPage {
-
     records: Observable<AttendanceInstant[]>;
 
     pageSubscription: Subscription;
@@ -51,12 +50,12 @@ export class AttendanceMachineRecordPage {
     }
 
     ionViewDidLoad() {
-        this.initialData();
+        this.initialModel();
 
         this.launch();
     }
 
-    initialData(): void {
+    initialModel(): void {
         this.date = this.time.getDate(new Date(), true);
 
         this.maxDate = this.instant.getMaxDate().map(date => this.time.getDate(date, true));
@@ -65,9 +64,11 @@ export class AttendanceMachineRecordPage {
 
         this.haveMoreData = this.instant.getHaveMoreData();
 
-        this.records = this.date$.startWith(this.date)
+        this.records = this.date$
+            .startWith(this.date)
             .switchMapTo(
-            this.instant.getAttendanceRecord()
+            this.instant
+                .getAttendanceRecord()
                 .scan((acc, cur) => acc.concat(cur))
                 .map(result => uniqBy(result, 'id').filter(item => item.day === this.date))
             );
@@ -78,7 +79,17 @@ export class AttendanceMachineRecordPage {
     launch(): void {
         this.subscriptions = [
             this.date$.subscribe(_ => this.instant.resetPage()),
-            this.instant.getAttendanceInstantList(this.date$.startWith(this.date).withLatestFrom(Observable.of(this.id), (date, id) => ({ id, start_day: date, end_day: date }))),
+
+            this.instant.getAttendanceInstantList(
+                this.date$
+                    .startWith(this.date)
+                    .withLatestFrom(Observable.of(this.id), (date, attendance_machine_id) => ({
+                        attendance_machine_id,
+                        start_day: date,
+                        end_day: date,
+                    }))
+            ),
+
             this.instant.handleError(),
         ];
     }
@@ -89,17 +100,19 @@ export class AttendanceMachineRecordPage {
         this.pageSubscription = this.instant.getNextPage(infiniteScroll);
     }
 
-
     showCapture(instant: AttendanceInstant): void {
         const { similarity, screen_image, capture_image } = instant;
 
-        this.modalCtrl.create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image }).present();
+        this.modalCtrl
+            .create(FaceImageComponent, { similarity, screen: screen_image, capture: capture_image })
+            .present();
     }
 
     ionViewWillUnload() {
+        this.instant.resetRecordResponse();
+
         this.subscriptions.forEach(item => item.unsubscribe());
 
         this.pageSubscription && this.pageSubscription.unsubscribe();
     }
-
 }

@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, MenuController, NavController, Slides } from 'ionic-angular';
-import { TutorialService } from '../../services/business/tutorial-service';
-import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
-import * as fromRoot from '../../reducers/index-reducer'
+import { IonicPage, MenuController, NavController, Slides } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+import * as fromRoot from '../../reducers/index-reducer';
+import { TutorialService } from '../../services/business/tutorial-service';
 
 @IonicPage()
 @Component({
     selector: 'page-tutorial',
-    templateUrl: 'tutorial.html'
+    templateUrl: 'tutorial.html',
 })
 export class TutorialPage implements OnInit {
     slides: Observable<object[]>;
@@ -36,7 +37,7 @@ export class TutorialPage implements OnInit {
             'TUTORIAL_SLIDE3_TITLE',
             'TUTORIAL_SLIDE3_DESCRIPTION',
             'TUTORIAL_SLIDE4_TITLE',
-            'TUTORIAL_SLIDE4_BUTTON'
+            'TUTORIAL_SLIDE4_BUTTON',
         ];
         const address = ['assets/img/ica-slidebox-img-1.png', 'assets/img/ica-slidebox-img-2.png', 'assets/img/ica-slidebox-img-3.png', 'assets/img/ica-slidebox-img-4.png'];
 
@@ -52,7 +53,7 @@ export class TutorialPage implements OnInit {
     startApp() {
         this.navCtrl.setRoot('WelcomePage', {}, {
             animate: true,
-            direction: 'forward'
+            direction: 'forward',
         }).then(() => {
             this.tutorial.resetSkipState();
         });
@@ -62,17 +63,13 @@ export class TutorialPage implements OnInit {
         this.tutorial.slideChange(slides);
     }
 
-    // noinspection JSUnusedGlobalSymbols
     ionViewDidEnter() {
-        // the root left menu should be disabled on the tutorial page
         this.menu.enable(false);
     }
 
-    // noinspection JSUnusedGlobalSymbols
     ionViewWillLeave() {
-        // enable the root left menu when leaving the tutorial page
         this.menu.enable(true);
-        
+
         this.slides$$.unsubscribe();
     }
 

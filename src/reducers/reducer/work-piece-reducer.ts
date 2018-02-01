@@ -1,5 +1,5 @@
-import { WorkPieceListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/work-piece-action';
+import { WorkPieceListResponse } from '../../interfaces/response-interface';
 
 export interface State {
     response: WorkPieceListResponse
@@ -8,8 +8,8 @@ export interface State {
 export const initialState: State = {
     response: {
         work_piece_pay: [],
-        work_piece_finish_flow: []
-    }
+        work_piece_finish_flow: [],
+    },
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

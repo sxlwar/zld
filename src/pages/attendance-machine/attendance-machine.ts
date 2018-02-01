@@ -1,10 +1,11 @@
-import { attendanceMachineRecordPage } from './../pages';
-import { AttendanceMachine } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceMachine } from './../../interfaces/response-interface';
+import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
+import { attendanceMachineRecordPage } from './../pages';
 
 @IonicPage()
 @Component({
@@ -32,7 +33,8 @@ export class AttendanceMachinePage {
     launch(): void {
         this.subscriptions = [
             this.machine.getMachineList(),
-            this.machine.handleError()
+
+            this.machine.handleError(),
         ]
     }
 

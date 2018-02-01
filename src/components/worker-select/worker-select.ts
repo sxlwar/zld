@@ -1,19 +1,20 @@
-import { DistinguishableWorkerItem } from './../../interfaces/worker-interface';
-import { Subject } from 'rxjs/Subject';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestOption } from 'interfaces/request-interface';
-import { ViewController, InfiniteScroll, NavParams } from 'ionic-angular';
-import { Subscription } from 'rxjs/Subscription';
-import { ProjectService } from './../../services/business/project-service';
-import { workerContractList } from './../../services/api/command';
-import { Observable } from 'rxjs/Observable';
-import { PermissionService } from './../../services/config/permission-service';
-import { WorkerService } from './../../services/business/worker-service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
 import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { DistinguishableWorkerItem } from './../../interfaces/worker-interface';
+import { workerContractList } from './../../services/api/command';
+import { ProjectService } from './../../services/business/project-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { PermissionService } from './../../services/config/permission-service';
 
 @Component({
     selector: 'worker-select',
-    templateUrl: 'worker-select.html'
+    templateUrl: 'worker-select.html',
 })
 export class WorkerSelectComponent implements OnInit, OnDestroy {
 
@@ -29,7 +30,7 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     selectedWorkers: Observable<number[]>;
 
-    selectedWorker:  DistinguishableWorkerItem;
+    selectedWorker: DistinguishableWorkerItem;
 
     single = false;
 
@@ -41,7 +42,7 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
         private navParams: NavParams
     ) {
         this.single = !!this.navParams.get('single');
-        
+
         worker.resetPage();
     }
 
@@ -63,7 +64,9 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
     launch(): void {
         this.subscriptions = [
             this.getWorkers(),
+
             this.worker.getWorkerContracts(this.getOption()),
+            
             this.worker.handleError(),
         ];
     }
@@ -85,7 +88,11 @@ export class WorkerSelectComponent implements OnInit, OnDestroy {
 
     getOption(): Observable<RequestOption> {
         return this.worker.getCompleteStatusOption()
-            .zip(this.worker.getUnexpiredOption(), this.project.getProjectId(), (option1, option2, project_id) => ({ ...option1, ...option2, project_id }))
+            .zip(
+            this.worker.getUnexpiredOption(),
+            this.project.getProjectId(),
+            (option1, option2, project_id) => ({ ...option1, ...option2, project_id })
+            )
             .map(option => {
                 const passedInOption: RequestOption = this.navParams.get('option');
 

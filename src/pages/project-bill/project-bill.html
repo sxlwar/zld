@@ -10,38 +10,59 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-card>
-        <ion-card-header text-center>{{'TOTAL_AMOUNT_OVERVIEW' | translate}}： {{overviewTotal | currency: 'CNY': '1.2-2'}}</ion-card-header>
+        <ion-card-header text-center>
+            {{'TOTAL_AMOUNT_OVERVIEW' | translate}}： {{overviewTotal | currency: 'CNY': '1.2-2'}}
+        </ion-card-header>
         <ion-card-content>
             <canvas #overview></canvas>
         </ion-card-content>
     </ion-card>
 
-    <ion-segment [(ngModel)]="selectedStatus" color="primary" (ionChange)="segmentChanged($event)">
+    <ion-segment
+        [(ngModel)]="selectedStatus"
+        color="primary"
+        (ionChange)="segmentChanged($event)"
+    >
         <ion-segment-button value="grantIn">
-            <!--不要改成接口中的字段，因为接口中用的是中文，模板字段不支持中文；牛逼的后台，直接用中文，我觉得后台应该用易语言写，用毛的python-->
+            <!-- 不要改成接口中的字段，因为接口中用的是中文，模板字段不支持中文；牛逼的后台，直接用中文，我觉得后台应该用易语言写，用毛的python -->
             {{'GRANT_IN' | translate}}
         </ion-segment-button>
-        <ion-segment-button value="pendingRelease">
-            {{'PENDING_RELEASE' | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="alreadyIssued">
-            {{'ALREADY_ISSUED' | translate}}
-        </ion-segment-button>
+        <ion-segment-button value="pendingRelease">{{'PENDING_RELEASE' | translate}}</ion-segment-button>
+        <ion-segment-button value="alreadyIssued">{{'ALREADY_ISSUED' | translate}}</ion-segment-button>
     </ion-segment>
 
     <div [ngSwitch]="selectedStatus">
         <ion-list>
-            <ion-item>{{'SUB_TOTAL_AMOUNT' | translate}}：{{subTotal | async | currency: 'CNY': '1.2-2'}}</ion-item>
-            <ion-item *ngFor="let item of list | async" (click)="goToNextPage(item)">
-                <ion-icon *ngSwitchCase="'grantIn'" name="send" item-start></ion-icon>
-                <ion-icon *ngSwitchCase="'pendingRelease'" name="leaf" item-start></ion-icon>
-                <ion-icon *ngSwitchCase="'alreadyIssued'" name="rose" item-start></ion-icon>
+            <ion-item>
+                {{'SUB_TOTAL_AMOUNT' | translate}}：{{subTotal | async | currency: 'CNY': '1.2-2'}}
+            </ion-item>
+            <ion-item
+                *ngFor="let item of list | async"
+                (click)="goToNextPage(item)"
+            >
+                <ion-icon
+                    *ngSwitchCase="'grantIn'"
+                    name="send"
+                    item-start
+                ></ion-icon>
+                <ion-icon
+                    *ngSwitchCase="'pendingRelease'"
+                    name="leaf"
+                    item-start
+                ></ion-icon>
+                <ion-icon
+                    *ngSwitchCase="'alreadyIssued'"
+                    name="rose"
+                    item-start
+                ></ion-icon>
                 {{item.yearMonth}} {{item.amount | currency: 'CNY': '1.2-2'}}
-                <ion-icon name="arrow-forward" item-end></ion-icon>
+                <ion-icon
+                    name="arrow-forward"
+                    item-end
+                ></ion-icon>
             </ion-item>
         </ion-list>
     </div>

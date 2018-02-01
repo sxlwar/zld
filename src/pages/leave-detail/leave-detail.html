@@ -2,8 +2,16 @@
 
     <ion-navbar>
         <ion-title>{{'LEAVE_DETAIL' | translate}}</ion-title>
-        <ion-buttons *ngIf="isAuditButtonVisibility | async" end>
-            <button ion-button small clear (click)="audit()">
+        <ion-buttons
+            *ngIf="isAuditButtonVisibility | async"
+            end
+        >
+            <button
+                ion-button
+                small
+                clear
+                (click)="audit()"
+            >
                 {{'AUDIT' | translate}}
             </button>
         </ion-buttons>
@@ -11,36 +19,50 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
-    <!--这部分内容和加班看起来都一样，但是字段的内容是有差别的，例如:start,finish,type, contracts
-    ,为了方便处理，不要抽象到到组件中,否则耦合起来处理又是麻烦事-->
+    <!-- 这部分内容和加班看起来都一样，但是字段的内容是有差别的，例如:start,finish,type, contracts
+    ,为了方便处理，不要抽象到到组件中,否则耦合起来处理又是麻烦事 -->
     <ion-list *ngIf="leave | async; let data">
 
         <ion-item>
             <ion-label>{{'APPLY_PEOPLE' | translate}}</ion-label>
-            <ion-input disabled [value]="data.contracts | names"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.contracts | names"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
-            <ion-input disabled [value]="data.reason"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.reason"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'VACATION_TYPE' | translate}}</ion-label>
-            <ion-input disabled [value]="data.type"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.type"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'START_TIME' | translate}}</ion-label>
-            <ion-input disabled [value]="data.start"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.start"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'END_TIME' | translate}}</ion-label>
-            <ion-input disabled [value]="data.finish"></ion-input>
+            <ion-input
+                disabled
+                [value]="data.finish"
+            ></ion-input>
         </ion-item>
 
     </ion-list>

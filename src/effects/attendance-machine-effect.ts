@@ -1,10 +1,16 @@
-import { GET_ATTENDANCE_MACHINE_LIST, GetAttendanceMachineListAction, AttendanceMachineListFailAction, AttendanceMachineListSuccessAction } from './../actions/action/attendance-machine-action';
-import { ResponseAction } from './../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from './../services/api/websocket-service';
-import { Command } from './../services/api/command';
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+
+import {
+    AttendanceMachineListFailAction,
+    AttendanceMachineListSuccessAction,
+    GET_ATTENDANCE_MACHINE_LIST,
+    GetAttendanceMachineListAction,
+} from './../actions/action/attendance-machine-action';
+import { ResponseAction } from './../interfaces/response-interface';
+import { Command } from './../services/api/command';
+import { WebsocketService } from './../services/api/websocket-service';
 
 @Injectable()
 export class AttendanceMachineEffect extends Command {
@@ -15,7 +21,9 @@ export class AttendanceMachineEffect extends Command {
         .switchMap((action: GetAttendanceMachineListAction) => this.ws
             .send(this.getAttendanceMachineList(action.payload))
             .takeUntil(this.actions$.ofType(GET_ATTENDANCE_MACHINE_LIST))
-            .map(msg => msg.isError ? new AttendanceMachineListFailAction(msg.data) : new AttendanceMachineListSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new AttendanceMachineListFailAction(msg.data)
+                : new AttendanceMachineListSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 

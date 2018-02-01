@@ -3,7 +3,12 @@
     <ion-navbar>
         <ion-title>{{'ATTENDANCE_CARD' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only *ngIf="canOperate | async" (click)="addCard()">
+            <button
+                ion-button
+                icon-only
+                *ngIf="canOperate | async"
+                (click)="addCard()"
+            >
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-buttons>
@@ -11,23 +16,43 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-list>
         <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
 
         <ion-item>
             <ion-label>{{'BY_CARD_NUMBER' | translate}}</ion-label>
-            <ion-select [(ngModel)]="byCardNumber" (ngModelChange)="setOrderCondition()" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of orderOptions | async" [value]="item" [selected]="item.selected">{{item.text | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="byCardNumber"
+                (ngModelChange)="setOrderCondition()"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of orderOptions | async"
+                    [value]="item"
+                    [selected]="item.selected"
+                >
+                    {{item.text | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'BY_BINDING_STATUS' | translate}}</ion-label>
-            <ion-select [(ngModel)]="byBindingState" (ngModelChange)="setBindCondition()" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of bindingStateOptions | async" [value]="item" [selected]="item.selected">{{item.text | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="byBindingState"
+                (ngModelChange)="setBindCondition()"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of bindingStateOptions | async"
+                    [value]="item"
+                    [selected]="item.selected"
+                >
+                    {{item.text | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
     </ion-list>
@@ -37,20 +62,37 @@
 
             <ion-item>
                 <ion-label fixed>{{item.ic_card_num}}</ion-label>
-                <ion-input disabled [value]="item.user__employee__realname"></ion-input>
+                <ion-input
+                    disabled
+                    [value]="item.user__employee__realname"
+                ></ion-input>
             </ion-item>
 
             <ion-item-options side="right">
-                <button ion-button color="primary" *ngIf="!item.user_id" (click)="bindCard(item)">
+                <button
+                    ion-button
+                    color="primary"
+                    *ngIf="!item.user_id"
+                    (click)="bindCard(item)"
+                >
                     <ion-icon name="link"></ion-icon>
-                    <!--TODO: ICON-->
+                    <!-- TODO: ICON -->
                     {{'BIND' | translate}}
                 </button>
-                <button ion-button color="secondary" *ngIf="item.user_id" (click)="unbind$.next(item)">
+                <button
+                    ion-button
+                    color="secondary"
+                    *ngIf="item.user_id"
+                    (click)="unbind$.next(item)"
+                >
                     <ion-icon name="call"></ion-icon>
                     {{'UNBIND' | translate}}
                 </button>
-                <button ion-button color="danger" (click)="delete$.next(item)">
+                <button
+                    ion-button
+                    color="danger"
+                    (click)="delete$.next(item)"
+                >
                     <ion-icon name="trash"></ion-icon>
                     {{'DELETE_BUTTON' | translate}}
                 </button>

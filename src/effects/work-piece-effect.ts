@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
-import { WebsocketService } from '../services/api/websocket-service';
 import { Actions, Effect } from '@ngrx/effects';
-import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
+
+import {
+    GET_WORK_PIECE,
+    GetWorkPieceListAction,
+    WorkPieceListFailAction,
+    WorkPieceListSuccessAction,
+} from '../actions/action/work-piece-action';
 import { ResponseAction } from '../interfaces/response-interface';
-import { GET_WORK_PIECE, WorkPieceListSuccessAction, WorkPieceListFailAction, GetWorkPieceListAction } from '../actions/action/work-piece-action';
+import { Command } from '../services/api/command';
+import { WebsocketService } from '../services/api/websocket-service';
 
 @Injectable()
 export class WorkPieceEffect extends Command {
@@ -14,7 +20,9 @@ export class WorkPieceEffect extends Command {
         .switchMap((action: GetWorkPieceListAction) => this.ws
             .send(this.getWorkPieceList(action.payload))
             .takeUntil(this.actions$.ofType(GET_WORK_PIECE))
-            .map(msg => msg.isError ? new WorkPieceListFailAction(msg.data) : new WorkPieceListSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new WorkPieceListFailAction(msg.data)
+                : new WorkPieceListSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         )
     constructor(

@@ -3,28 +3,46 @@
 
     <ion-item>
         <ion-label fixed>{{'AVAILABILITY_EXPIRE' | translate}}</ion-label>
-        <ion-input disabled [value]="item.expire"></ion-input>
+        <ion-input
+            disabled
+            [value]="item.expire"
+        ></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>{{'ISSUING_AGENCY' | translate}}</ion-label>
-        <ion-input disabled [value]="item.mechanism"></ion-input>
+        <ion-input
+            disabled
+            [value]="item.mechanism"
+        ></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>{{'CERTIFICATION_NUMBER' | translate}}</ion-label>
-        <ion-input disabled [value]="item.identifier"></ion-input>
+        <ion-input
+            disabled
+            [value]="item.identifier"
+        ></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>{{'CERTIFICATION_NUMBER' | translate}}</ion-label>
-        <ion-input disabled [value]="item.education"></ion-input>
+        <ion-input
+            disabled
+            [value]="item.education"
+        ></ion-input>
     </ion-item>
 
     <ion-item>
         <ion-label fixed>{{'CERTIFICATION_DETAIL' | translate}}</ion-label>
     </ion-item>
-    <img *ngIf="item.imageFace" [src]="prefix + item.imageFace">
-    <img *ngIf="item.imageBack" [src]="prefix + item.imageBack">
+    <img
+        *ngIf="item.imageFace"
+        [src]="prefix + item.imageFace"
+    >
+    <img
+        *ngIf="item.imageBack"
+        [src]="prefix + item.imageBack"
+    >
 
 </ion-list>

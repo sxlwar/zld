@@ -1,11 +1,12 @@
-import { Subscription } from 'rxjs/Subscription';
-import { putInArray } from '../utils/util';
-import { Observable } from 'rxjs/Observable';
-import { Store } from '@ngrx/store';
-import { AppState, selectNationalityResponse } from './../../reducers/index-reducer';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { putInArray } from '../utils/util';
+import { AppState, selectNationalityResponse } from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
 
 @Injectable()
 export class NationalityService {

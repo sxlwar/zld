@@ -1,14 +1,15 @@
-import { WorkerItem } from '../../interfaces/worker-interface';
-import { AttendanceMachineType } from './../../interfaces/request-interface';
-import { WorkerService } from './../../services/business/worker-service';
-import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
-import { Subscription } from 'rxjs/Subscription';
-import { AttendanceRecordService } from './../../services/business/attendance-record-service';
-import { Observable } from 'rxjs/Observable';
-import { TimeService } from './../../services/utils/time-service';
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, InfiniteScroll } from 'ionic-angular';
+import { InfiniteScroll, IonicPage, ModalController } from 'ionic-angular';
 import { range } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { WorkerItem } from '../../interfaces/worker-interface';
+import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
+import { AttendanceMachineType } from './../../interfaces/request-interface';
+import { AttendanceRecordService } from './../../services/business/attendance-record-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { TimeService } from './../../services/utils/time-service';
 
 export interface RecordItem {
     name: string;

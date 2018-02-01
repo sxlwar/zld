@@ -6,12 +6,17 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
-    <ion-item (click)="goToNextPage()" detail-push>
+    <ion-item
+        (click)="goToNextPage()"
+        detail-push
+    >
         <ion-label fixed>{{team.foreman}}</ion-label>
-        <ion-input disabled [value]="'FOREMAN' | translate"></ion-input>
+        <ion-input
+            disabled
+            [value]="'FOREMAN' | translate"
+        ></ion-input>
     </ion-item>
 
     <ion-list>
@@ -20,16 +25,38 @@
             {{'WORKER_AMOUNT' | translate}}：{{workerCount | async}}
         </ion-list-header>
 
-        <ion-item *ngFor="let item of list | async" (click)="goToNextPage(item)" detail-push>
-            <ion-icon [name]="item.workTypeId | workType" item-start></ion-icon>
+        <ion-item
+            *ngFor="let item of list | async"
+            (click)="goToNextPage(item)"
+            detail-push
+        >
+            <ion-icon
+                [name]="item.workTypeId | workType"
+                item-start
+            ></ion-icon>
             <ion-label fixed>{{item.name}}</ion-label>
-            <ion-input disabled [value]="item.workType"></ion-input>
+            <ion-input
+                disabled
+                [value]="item.workType"
+            ></ion-input>
         </ion-item>
 
-        <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
-            <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
+        <ion-infinite-scroll
+            (ionInfinite)="getNextPage($event)"
+            *ngIf="haveMoreData | async"
+        >
+            <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                [loadingText]="'LOADING' | translate"
+            ></ion-infinite-scroll-content>
         </ion-infinite-scroll>
-        <ion-item *ngIf="!(haveMoreData | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+        <ion-item
+            *ngIf="!(haveMoreData | async)"
+            class="complete"
+            text-center
+        >
+            {{'NO_MORE_DATA' | translate}}
+        </ion-item>
 
     </ion-list>
 </ion-content>

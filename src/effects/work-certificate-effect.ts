@@ -1,12 +1,34 @@
-import { HttpService } from './../services/api/http-service';
-import { GET_CERTIFICATE_LIST, GetCertificateListAction, CertificateListFailAction, CertificateListSuccessAction, ADD_CERTIFICATE, AddCertificateAction, CertificateAddSuccessAction, CertificateAddFailAction, DELETE_CERTIFICATE, DeleteCertificateAction, CertificateDeleteFailAction, CertificateDeleteSuccessAction, UPDATE_CERTIFICATE, CertificateUpdateSuccessAction, CertificateUpdateFailAction, UpdateCertificateAction, UPLOAD_CERTIFICATE_IMAGE, UploadCertificateImageAction, CertificateImageUploadSuccessAction, CertificateImageUploadFailAction } from './../actions/action/work-certificate-action';
-import { TipService } from './../services/tip-service';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from '../services/api/websocket-service';
-import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
+
 import { ResponseAction } from '../interfaces/response-interface';
+import { Command } from '../services/api/command';
+import { WebsocketService } from '../services/api/websocket-service';
+import {
+    ADD_CERTIFICATE,
+    AddCertificateAction,
+    CertificateAddFailAction,
+    CertificateAddSuccessAction,
+    CertificateDeleteFailAction,
+    CertificateDeleteSuccessAction,
+    CertificateImageUploadFailAction,
+    CertificateImageUploadSuccessAction,
+    CertificateListFailAction,
+    CertificateListSuccessAction,
+    CertificateUpdateFailAction,
+    CertificateUpdateSuccessAction,
+    DELETE_CERTIFICATE,
+    DeleteCertificateAction,
+    GET_CERTIFICATE_LIST,
+    GetCertificateListAction,
+    UPDATE_CERTIFICATE,
+    UpdateCertificateAction,
+    UPLOAD_CERTIFICATE_IMAGE,
+    UploadCertificateImageAction,
+} from './../actions/action/work-certificate-action';
+import { HttpService } from './../services/api/http-service';
+import { TipService } from './../services/tip-service';
 
 @Injectable()
 export class WorkCertificateEffect extends Command {
@@ -16,7 +38,9 @@ export class WorkCertificateEffect extends Command {
         .mergeMap((action: GetCertificateListAction) => this.ws
             .send(this.getCertificateList(action.payload))
             .takeUntil(this.actions$.ofType(GET_CERTIFICATE_LIST))
-            .map(msg => msg.isError ? new CertificateListFailAction(msg.data) : new CertificateListSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CertificateListFailAction(msg.data)
+                : new CertificateListSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -27,7 +51,9 @@ export class WorkCertificateEffect extends Command {
             .send(this.getCertificateAdd(action.payload))
             .takeUntil(this.actions$.ofType(ADD_CERTIFICATE))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new CertificateAddFailAction(msg.data) : new CertificateAddSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CertificateAddFailAction(msg.data)
+                : new CertificateAddSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -38,7 +64,9 @@ export class WorkCertificateEffect extends Command {
             .send(this.getCertificateDelete(action.payload))
             .takeUntil(this.actions$.ofType(DELETE_CERTIFICATE))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new CertificateDeleteFailAction(msg.data) : new CertificateDeleteSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CertificateDeleteFailAction(msg.data)
+                : new CertificateDeleteSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -49,7 +77,9 @@ export class WorkCertificateEffect extends Command {
             .send(this.getCertificateUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_CERTIFICATE))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new CertificateUpdateFailAction(msg.data) : new CertificateUpdateSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CertificateUpdateFailAction(msg.data)
+                : new CertificateUpdateSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -58,7 +88,9 @@ export class WorkCertificateEffect extends Command {
         .ofType(UPLOAD_CERTIFICATE_IMAGE)
         .mergeMap((action: UploadCertificateImageAction) => this.http
             .transferFileObservable(this.getCertificateImageUpload(action.payload))
-            .map(res => res.responseCode === 200 ? new CertificateImageUploadSuccessAction(JSON.parse(res.response)) : new CertificateImageUploadFailAction(JSON.parse(res.response)))
+            .map(res => res.responseCode === 200
+                ? new CertificateImageUploadSuccessAction(JSON.parse(res.response))
+                : new CertificateImageUploadFailAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         );
 

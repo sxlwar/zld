@@ -1,9 +1,10 @@
-import { MultiPickerModule } from 'ion-multi-picker';
-import { ComponentsModule } from './../../components/components.module';
-import { SharedModule } from './../../app/shared.modules';
-import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { MultiPickerModule } from 'ion-multi-picker';
 import { IonicPageModule } from 'ionic-angular';
+
+import { SharedModule } from './../../app/shared.modules';
+import { ComponentsModule } from './../../components/components.module';
 import { PersonalInformationPage } from './personal-information';
 
 @NgModule({

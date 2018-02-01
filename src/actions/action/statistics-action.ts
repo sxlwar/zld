@@ -1,6 +1,17 @@
-import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
-import { AttendanceResultTeamStatListOptions, RequestAggregationOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    AttendanceResultTeamStatListOptions,
+    RequestAggregationOptions,
+    TeamMembersRealTimeStatisticsOptions,
+    WorkTypeRealTimeStatisticsOptions,
+} from './../../interfaces/request-interface';
+import {
+    AttendanceResultTeamStatListResponse,
+    RequestAggregationResponse,
+    TeamMembersRealTimeStatisticsResponse,
+    WorkTypeRealTimeStatisticsResponse,
+} from './../../interfaces/response-interface';
 
 /* ===============================================Attendance by team================================================ */
 

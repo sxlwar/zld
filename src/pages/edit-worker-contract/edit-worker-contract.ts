@@ -1,12 +1,13 @@
-import { WorkerContract, ContractTypeOfResponse } from './../../interfaces/response-interface';
-import { LaunchService } from './../../services/business/launch-service';
-import { ConfigService } from './../../services/config/config-service';
-import { WorkerContractEditFormModel } from './../../services/api/mapper-service';
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Component } from '@angular/core';
-import { IonicPage, NavParams, ViewController } from 'ionic-angular';
+
+import { ContractTypeOfResponse, WorkerContract } from './../../interfaces/response-interface';
+import { WorkerContractEditFormModel } from './../../services/api/mapper-service';
+import { LaunchService } from './../../services/business/launch-service';
+import { ConfigService } from './../../services/config/config-service';
 
 @IonicPage()
 @Component({
@@ -55,7 +56,11 @@ export class EditWorkerContractPage {
 
     launch() {
         this.subscriptions = [
-            this.launchService.editWorkerContract(this.contract$.map(_ => this.contract.type === ContractTypeOfResponse.timer ? { ...this.form.value, ...this.timePayContract.value, attach: this.attachList } : { ...this.form.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList })),
+            this.launchService.editWorkerContract(
+                this.contract$.map(_ => this.contract.type === ContractTypeOfResponse.timer
+                    ? { ...this.form.value, ...this.timePayContract.value, attach: this.attachList }
+                    : { ...this.form.value, pieces: this.piecePayContracts.map(item => item.value), attach: this.attachList })
+            ),
 
             this.launchService.uploadWorkerContractEditAttach(),
 
@@ -75,7 +80,7 @@ export class EditWorkerContractPage {
             morningOffDuty: this.contract.morning_time_off_duty,
             comment: this.contract.additional_content,
             afternoonOnDuty: this.contract.afternoon_time_on_duty,
-            afternoonOffDuty: this.contract.afternoon_time_off_duty
+            afternoonOffDuty: this.contract.afternoon_time_off_duty,
         });
 
         if (this.contract.type === ContractTypeOfResponse.timer) {
@@ -93,7 +98,7 @@ export class EditWorkerContractPage {
                 pieceWage: item.pay_mount,
                 num: item.num,
                 standard: item.standard,
-                id: item.id
+                id: item.id,
             }));
         }
 
@@ -129,7 +134,9 @@ export class EditWorkerContractPage {
         if (this.form.invalid) {
             return true;
         } else {
-            return this.contract.type === ContractTypeOfResponse.timer ? this.timePayContract.invalid : this.piecePayContracts.some(form => form.invalid);
+            return this.contract.type === ContractTypeOfResponse.timer
+                ? this.timePayContract.invalid
+                : this.piecePayContracts.some(form => form.invalid);
         }
     }
 
@@ -204,8 +211,8 @@ export class EditWorkerContractPage {
     get hourlyWage() {
         return this.timePayContract.get('hourlyWage');
     }
+
     get content() {
         return this.timePayContract.get('content');
     }
-
 }

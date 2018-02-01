@@ -1,7 +1,7 @@
-import { LocationRecordOptions } from './../../interfaces/location-attendance-record-interface';
-import { AttendanceInstantListResponse } from "../../interfaces/response-interface";
 import * as actions from '../../actions/action/attendance-record-action';
+import { AttendanceInstantListResponse } from '../../interfaces/response-interface';
 import { TimeService } from '../../services/utils/time-service';
+import { LocationRecordOptions } from './../../interfaces/location-attendance-record-interface';
 
 const timeService = new TimeService();
 
@@ -21,8 +21,8 @@ export const initialState: State = {
     locationAttendanceOptions: {
         startDate: '',
         endDate: timeService.getDate(new Date(), true),
-        userIds: []
-    }
+        userIds: [],
+    },
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -37,17 +37,17 @@ export function reducer(state = initialState, action: actions.Actions): State {
         case actions.RESET_RECORD_PAGE:
             return { ...state, page: 1 };
         
-        case actions.SET_LOCATION_ATTENDANCE_END_DATE: {
+        case actions.SET_LOCATION_ATTENDANCE_END_DATE: 
             return { ...state, locationAttendanceOptions: { ...state.locationAttendanceOptions, endDate: action.payload } };
-        }
 
-        case actions.SET_LOCATION_ATTENDANCE_START_DATE: {
+        case actions.SET_LOCATION_ATTENDANCE_START_DATE: 
             return { ...state, locationAttendanceOptions: { ...state.locationAttendanceOptions, startDate: action.payload } };
-        }
 
-        case actions.SET_LOCATION_ATTENDANCE_USERS: {
+        case actions.SET_LOCATION_ATTENDANCE_USERS: 
             return { ...state, locationAttendanceOptions: { ...state.locationAttendanceOptions, userIds: action.payload } };
-        }
+
+        case actions.RESET_RECORD_RESPONSE:
+            return { ...state, response: null };
 
         case actions.GET_ATTENDANCE_RECORD:
         default:

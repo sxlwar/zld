@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { Slide } from '../../interfaces/tutorial-interface';
 
 export const ADD_SLIDES = 'ADD_SLIDES';
@@ -6,8 +7,6 @@ export const ADD_SLIDE = 'ADD_SLIDE';
 export const DELETE_SLIDE = 'DELETE_SLIDE';
 
 export const TOGGLE_SKIP = 'TOGGLE_SKIP';
-
-
 
 export class ToggleSkipAction implements Action {
     readonly type = TOGGLE_SKIP;

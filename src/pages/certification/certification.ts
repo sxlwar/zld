@@ -1,13 +1,15 @@
-import { Subject } from 'rxjs/Subject';
-import { tabsPage } from './../pages';
+import 'rxjs/add/operator/filter';
+
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { CertificateService } from '../../services/business/certificate-service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { personalIdValidator, realNameValidator } from '../../validators/validators';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import 'rxjs/add/operator/filter';
+
+import { CertificateService } from '../../services/business/certificate-service';
+import { personalIdValidator, realNameValidator } from '../../validators/validators';
+import { tabsPage } from './../pages';
 
 @IonicPage()
 @Component({
@@ -64,8 +66,8 @@ export class CertificationPage {
             personalId: ['', personalIdValidator],
             personalIdPhoto: this.fb.group({
                 front: ['', Validators.required],
-                back: ['', Validators.required]
-            })
+                back: ['', Validators.required],
+            }),
         });
     }
 
@@ -75,7 +77,7 @@ export class CertificationPage {
 
     ionViewWillUnload() {
         this.navCtrl.pop();
-        
+
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 

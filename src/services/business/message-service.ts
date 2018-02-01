@@ -1,16 +1,43 @@
-import { OrderFlag } from './../../interfaces/order-interface';
-import { orderBy } from 'lodash';
-import { Message } from './../../interfaces/response-interface';
-import { IncreaseReadMessagePageAction, IncreaseUnreadMessagePageAction, ResetMessagePageAction, UpdateUnreadTimeOrderAction, UpdateReadTimeOrderAction, UpdateUnreadSelectedTypeAction, UpdateReadSelectedTypeAction, DecreaseUnreadMessageCountAction, SetMessageReadTypeAtLocalAction } from './../../actions/action/message-action';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { RequestOption, MessageReadTag } from './../../interfaces/request-interface';
-import { AppState, selectMessageLimit, selectUnreadMessagePage, selectUnreadMessageCountResponse, selectReadMessagePage, selectReadCount, selectMessageDeleteResponse, selectMessageListResponse, selectMessageContentResponse, selectUnreadMessages, selectReadMessages, selectUnreadMessageTimeOrder, selectUnreadMessageSelectedType, selectReadMessageTimeOrder, selectReadMessageSelectedType } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { UserService } from './user-service';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { orderBy } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    DecreaseUnreadMessageCountAction,
+    IncreaseReadMessagePageAction,
+    IncreaseUnreadMessagePageAction,
+    ResetMessagePageAction,
+    SetMessageReadTypeAtLocalAction,
+    UpdateReadSelectedTypeAction,
+    UpdateReadTimeOrderAction,
+    UpdateUnreadSelectedTypeAction,
+    UpdateUnreadTimeOrderAction,
+} from './../../actions/action/message-action';
+import { OrderFlag } from './../../interfaces/order-interface';
+import { MessageReadTag, RequestOption } from './../../interfaces/request-interface';
+import { Message } from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectMessageContentResponse,
+    selectMessageDeleteResponse,
+    selectMessageLimit,
+    selectMessageListResponse,
+    selectReadCount,
+    selectReadMessagePage,
+    selectReadMessages,
+    selectReadMessageSelectedType,
+    selectReadMessageTimeOrder,
+    selectUnreadMessageCountResponse,
+    selectUnreadMessagePage,
+    selectUnreadMessages,
+    selectUnreadMessageSelectedType,
+    selectUnreadMessageTimeOrder,
+} from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class MessageService {
@@ -177,7 +204,7 @@ export class MessageService {
             this.error.handleErrorInSpecific(this.store.select(selectMessageListResponse), 'API_ERROR'),
             this.error.handleErrorInSpecific(this.store.select(selectUnreadMessageCountResponse), 'API_ERROR'),
             this.error.handleErrorInSpecific(this.store.select(selectMessageDeleteResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectMessageContentResponse), 'API_ERROR')
+            this.error.handleErrorInSpecific(this.store.select(selectMessageContentResponse), 'API_ERROR'),
         ];
     }
 
@@ -192,5 +219,4 @@ export class MessageService {
 
         return result;
     }
-
 }

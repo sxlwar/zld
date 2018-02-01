@@ -1,6 +1,22 @@
-import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, TerminateWorkerContractOptions } from './../../interfaces/request-interface';
-import { CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, CreateWorkerContractModifyResponse, TerminateWorkerContractResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/launch-action';
+import {
+    CreateAttendanceModifyOptions,
+    CreateLeaveOptions,
+    CreateOvertimeOptions,
+    CreatePieceAuditOptions,
+    CreateWorkerContractModifyOptions,
+    CreateWorkerContractOptions,
+    TerminateWorkerContractOptions,
+} from './../../interfaces/request-interface';
+import {
+    CreateAttendanceModifyResponse,
+    CreateLeaveResponse,
+    CreateOvertimeResponse,
+    CreatePieceAuditResponse,
+    CreateSignWorkerContractResponse,
+    CreateWorkerContractModifyResponse,
+    TerminateWorkerContractResponse,
+} from './../../interfaces/response-interface';
 
 export enum LaunchResponse {
     attendanceModify = 'attendanceModifyResponse',

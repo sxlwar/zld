@@ -1,17 +1,36 @@
-import { ChangeAccountFormModel } from './../api/mapper-service';
-import { ENV } from '@app/env';
-import { UpdateCheckRandomCodeAction, UpdateChangeRandomCodeAction, ResetLocalDataAction } from './../../actions/action/account-change-action';
-import { UserService } from './user-service';
-import { CheckPhoneOptions } from './../../interfaces/request-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { CheckPhoneResponse, ChangePhoneVerifyCodeResponse, CheckPhoneVerifyCodeResponse, ChangePhoneResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Store } from '@ngrx/store';
-import { AppState, selectCheckPhoneResponse, selectChangePhoneVerifyResponse, selectCheckPhoneVerifyResponse, selectChangePhoneResponse, selectAccountChangeCheckRandomCode, selectAccountChangeChangeRandomCode, selectChangePhoneOptions } from './../../reducers/index-reducer';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
 import { Injectable } from '@angular/core';
+import { ENV } from '@app/env';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { createRandomCode } from '../utils/util';
+import {
+    ResetLocalDataAction,
+    UpdateChangeRandomCodeAction,
+    UpdateCheckRandomCodeAction,
+} from './../../actions/action/account-change-action';
+import { CheckPhoneOptions } from './../../interfaces/request-interface';
+import {
+    ChangePhoneResponse,
+    ChangePhoneVerifyCodeResponse,
+    CheckPhoneResponse,
+    CheckPhoneVerifyCodeResponse,
+} from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectAccountChangeChangeRandomCode,
+    selectAccountChangeCheckRandomCode,
+    selectChangePhoneOptions,
+    selectChangePhoneResponse,
+    selectChangePhoneVerifyResponse,
+    selectCheckPhoneResponse,
+    selectCheckPhoneVerifyResponse,
+} from './../../reducers/index-reducer';
+import { ChangeAccountFormModel } from './../api/mapper-service';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class AccountChangeService {

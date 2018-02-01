@@ -1,6 +1,7 @@
-import { GroupsListResponse } from './../../interfaces/response-interface';
-import { GroupsListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { GroupsListOptions } from './../../interfaces/request-interface';
+import { GroupsListResponse } from './../../interfaces/response-interface';
 
 export const GET_GROUP_LIST = 'GET_GROUP_LIST';
 

@@ -1,16 +1,17 @@
-import { degrees } from './../../interfaces/request-interface';
-import { Observable } from 'rxjs/Observable';
-import { TimeService } from './../../services/utils/time-service';
-import { Certificate, WorkType } from './../../interfaces/response-interface';
-import { CraftService } from './../../services/business/craft-service';
-import { MapperService } from './../../services/api/mapper-service';
-import { NavParams, ViewController } from 'ionic-angular';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NavParams, ViewController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+
+import { degrees } from './../../interfaces/request-interface';
+import { Certificate, WorkType } from './../../interfaces/response-interface';
+import { MapperService } from './../../services/api/mapper-service';
+import { CraftService } from './../../services/business/craft-service';
+import { TimeService } from './../../services/utils/time-service';
 
 @Component({
     selector: 'add-work-certificate',
-    templateUrl: 'add-work-certificate.html'
+    templateUrl: 'add-work-certificate.html',
 })
 export class AddWorkCertificateComponent {
 
@@ -63,7 +64,7 @@ export class AddWorkCertificateComponent {
             education: '',
             mechanism: '',
             imageFace: '',
-            imageBack: ''
+            imageBack: '',
         });
 
         const form: Certificate = this.navParams.get('form');
@@ -83,7 +84,7 @@ export class AddWorkCertificateComponent {
             availableStartDate: data.usestart_date,
             availableEndDate: data.usefinish_date,
             education: data.education,
-            mechanism: data.mechanism
+            mechanism: data.mechanism,
         });
     }
 

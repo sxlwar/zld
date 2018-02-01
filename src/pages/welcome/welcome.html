@@ -5,7 +5,19 @@
         <span class="splash-intro">{{'WELCOME_INTRO' | translate}}</span>
     </div>
     <div padding>
-        <button ion-button block *ngFor="let button of buttons; index as index" (click)="goToLogin(index)" [ngClass]="{'login': index, 'register': !index}">{{button | translate}}</button>
+        <button
+            ion-button
+            block
+            *ngFor="let button of buttons; index as index"
+            (click)="goToLogin(index)"
+            [ngClass]="{'login': index, 'register': !index}"
+        >
+            {{button | translate}}
+        </button>
     </div>
-    <ion-icon name="refresh" color="primary" (click)="replayTutorial()"></ion-icon>
+    <ion-icon
+        name="refresh"
+        color="primary"
+        (click)="replayTutorial()"
+    ></ion-icon>
 </ion-content>

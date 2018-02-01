@@ -19,7 +19,7 @@ export interface LoginOptions {
 
 export enum RegisterUserType {
     personalUser,
-    companyUser
+    companyUser,
 }
 
 export interface RegisterOptions {
@@ -71,7 +71,7 @@ export interface GroupsListOptions {
 export enum CertificateStatus {
     noCertificate,
     available,
-    overdue
+    overdue,
 }
 
 export interface SearchWorkerOptions {
@@ -168,7 +168,7 @@ export interface ProjectListOptions {
 
 export enum ContractType {
     timer = 1,
-    piecer
+    piecer,
 }
 
 export interface WorkerContractOptions {
@@ -235,7 +235,7 @@ export interface AttendanceInstantListOptions {
     identity_num?: string;
     team_id?: number[];
     flag?: number;
-    attendance_machine_id?: number;
+    attendance_machine_id?: number; //注意传对参数的名称，否SB后台会自己忽略错误的参数，传回一个他认为正确的结果。
 }
 
 export interface AttendanceResultConfirmOptions {
@@ -330,7 +330,7 @@ export interface RequestAggregationOptions {
 
 export enum RealTimeStatisticType {
     workType = 'worktype',
-    team = 'team'
+    team = 'team',
 }
 
 export interface RealTimeStatisticsOptions {
@@ -364,7 +364,7 @@ export interface CompanyUserListOptions {
 export enum AttendanceMachineType {
     fixedMachine = '固定式人脸识别考勤机-1',
     mobileMachine = '移动式人脸识别考勤机-1',
-    gpsMachine = 'GPS定位考勤机-1'
+    gpsMachine = 'GPS定位考勤机-1',
 }
 
 export interface AttendanceMachineListOptions {
@@ -520,11 +520,11 @@ export interface HomeInfoListOptions {
 }
 
 export const homeAddressNameMapBetweenResponseAndRequest = {
-    province: "homeaddr__province",
-    city: "homeaddr__city",
-    dist: "homeaddr__dist",
-    detail: "homeaddr__detail",
-    street: "homeaddr__street"
+    province: 'homeaddr__province',
+    city: 'homeaddr__city',
+    dist: 'homeaddr__dist',
+    detail: 'homeaddr__detail',
+    street: 'homeaddr__street',
 }
 
 export const relationShip = [
@@ -534,7 +534,7 @@ export const relationShip = [
     '亲戚',
     '朋友',
     '同事',
-    '其它'
+    '其它',
 ]
 
 export interface HomeInfoUpdateOptions {
@@ -560,16 +560,16 @@ export interface EducationListOptions {
 }
 
 export const degrees = [
-    "小学",
-    "初中",
-    "高中",
-    "中技",
-    "中专",
-    "大专",
-    "本科",
-    "硕士",
-    "博士及以上",
-    "MBA"
+    '小学',
+    '初中',
+    '高中',
+    '中技',
+    '中专',
+    '大专',
+    '本科',
+    '硕士',
+    '博士及以上',
+    'MBA',
 ];
 
 export interface EducationAddOptions {
@@ -601,7 +601,7 @@ export interface WorkExperienceAddOptions {
     project_name: string;
     sid: string;
     start: string;
-    finish?: string;
+    finish: string;
 }
 
 export interface WorkExperienceDeleteOptions {
@@ -645,7 +645,7 @@ export interface WorkerBankNoDeleteOptions {
 
 export enum BankCardSetting {
     cancel = 1,
-    setting
+    setting,
 }
 
 export interface SetBankNoMasterOptions {
@@ -712,12 +712,12 @@ export interface CertificateUpdateOptions {
 export enum RequestStatus {
     processing = '处理中',
     completed = '完成',
-    canceled = '取消'
+    canceled = '取消',
 }
 
 export enum TaskStatus {
     processing = '处理中',
-    completed = '完成'
+    completed = '完成',
 }
 
 /** 又是两个2B接口，multiTaskUpdateOptions 和 taskUpdateOptions，格式:
@@ -743,7 +743,7 @@ export interface TaskUpdateOptions {
 export enum WorkFlowStatus {
     cancel = '取消',
     complete = '完成',
-    processing = '处理中'
+    processing = '处理中',
 }
 
 export interface ProjectPayBillFlowListOptions {
@@ -766,7 +766,7 @@ export enum ProcessId {
     leave_apply = '请假工作流',
     workovertime_apply = '加班工作流',
     timeduty_apply = '修改出勤时间工作流',
-    project_payflow_apply = '项目工资对帐单审核工作流'
+    project_payflow_apply = '项目工资对帐单审核工作流',
 }
 
 export enum ProcessIdOptions {
@@ -781,13 +781,13 @@ export enum ProcessIdOptions {
     leave = 'leave_apply',
     overtime = 'workovertime_apply',
     duty = 'timeduty_apply',
-    projectPayFlow = 'project_payflow_apply'
+    projectPayFlow = 'project_payflow_apply',
 }
 
 export enum SpecificWorkFlowState {
     launch = 'launch',
     completed = 'complete',
-    pending = 'pending'
+    pending = 'pending',
 }
 
 export interface WorkFlowListOptions {  //这名字，果断改了; requestList，这两个单词和工作流有几吧的关系。
@@ -839,12 +839,12 @@ export interface UnreadMessageCountOptions {
 
 export enum MessageReadTag {
     unread = 1,
-    read
+    read,
 }
 
 export enum MessageTag {
     systemNotification = 1,
-    missionNotification
+    missionNotification,
 }
 
 export interface MessageListOptions { // 名字改了，为毛有title这个词，下面2个也一样
@@ -883,7 +883,7 @@ export interface LaunchPiecePayOptions {
 
 export enum WorkerContractFormType {
     timePayType = '1',
-    pieceType = '2'
+    pieceType = '2',
 }
 
 export interface LaunchWorkerContractOptions {
@@ -1013,7 +1013,7 @@ export interface QRLoginOptions {
 
 export enum ImageFace {
     front = 'imageface',
-    back = 'imageback'
+    back = 'imageback',
 }
 
 export interface UploadFileOptions {

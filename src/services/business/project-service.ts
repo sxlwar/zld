@@ -1,14 +1,15 @@
-import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Project } from '../../interfaces/response-interface';
-import { AppState, selectSelectedProject, selectProjectListResponse, } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { SelectProjectAction } from '../../actions/action/project-action';
+import { Project } from '../../interfaces/response-interface';
+import { AppState, selectProjectListResponse, selectSelectedProject } from '../../reducers/index-reducer';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
-import { Subscription } from 'rxjs/Subscription';
 import { TimeService } from '../utils/time-service';
-import { SelectProjectAction } from '../../actions/action/project-action';
+import { UserService } from './user-service';
 
 @Injectable()
 export class ProjectService {
@@ -41,7 +42,9 @@ export class ProjectService {
     }
 
     getUserAllProject(): Observable<Project[]> {
-        return this.store.select(selectProjectListResponse).filter(value => !!value).map(res => res.projects);
+        return this.store.select(selectProjectListResponse)
+            .filter(value => !!value)
+            .map(res => res.projects);
     }
 
     getProjectName(): Observable<string> {
@@ -75,7 +78,7 @@ export class ProjectService {
     /*================================================error handle===============================================*/
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectProjectListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectProjectListResponse));
     }
 
     private cutDownDays(date: string): number {

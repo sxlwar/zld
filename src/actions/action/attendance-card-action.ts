@@ -1,7 +1,18 @@
-import { ConditionOption } from './../../interfaces/order-interface';
-import { AttendanceCardListResponse, AttendanceCardAddResponse, AttendanceCardUpdateResponse, AttendanceCardDeleteResponse } from './../../interfaces/response-interface';
-import { AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { ConditionOption } from './../../interfaces/order-interface';
+import {
+    AttendanceCardAddOptions,
+    AttendanceCardDeleteOptions,
+    AttendanceCardListOptions,
+    AttendanceCardUpdateOptions,
+} from './../../interfaces/request-interface';
+import {
+    AttendanceCardAddResponse,
+    AttendanceCardDeleteResponse,
+    AttendanceCardListResponse,
+    AttendanceCardUpdateResponse,
+} from './../../interfaces/response-interface';
 
 /* ========================================Attendance card operate actions ======================================== */
 
@@ -175,7 +186,7 @@ export type Actions = GetAttendanceCardListAction
     | GetAttendanceCardLimitAction
     | GetAttendanceCardPageAction
     | IncrementAttendanceCardPageAction
-    | ResetAttendanceCardOperateResponseAction 
+    | ResetAttendanceCardOperateResponseAction
     | ResetAttendanceCardPageAction
     | UpdateAttendanceCardAction
     | UpdateAttendanceCardFailAction

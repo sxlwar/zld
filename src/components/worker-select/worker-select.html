@@ -1,11 +1,14 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons start>
-            <button ion-button icon-only (click)="dismiss()">
+            <button
+                ion-button
+                icon-only
+                (click)="dismiss()"
+            >
                 <ion-icon name="close"></ion-icon>
             </button>
         </ion-buttons>
-
 
         <ion-title>{{'SELECT_WORKER' | translate}}</ion-title>
     </ion-toolbar>
@@ -13,7 +16,11 @@
 
 <ion-content>
 
-    <ion-list padding class="worker-list" *ngIf="(canQueryOther | async) && !single">
+    <ion-list
+        padding
+        class="worker-list"
+        *ngIf="(canQueryOther | async) && !single"
+    >
 
         <ion-item *ngFor="let item of workerSubject | async">
             <ion-label>
@@ -21,13 +28,25 @@
                 {{item.name}}
                 <span>{{item.teamName}}</span>
             </ion-label>
-            <ion-checkbox [(ngModel)]="item.selected" [checked]="item.selected"></ion-checkbox>
-            <ion-radio *ngIf="single" [value]="item"></ion-radio>
+            <ion-checkbox
+                [(ngModel)]="item.selected"
+                [checked]="item.selected"
+            ></ion-checkbox>
+            <ion-radio
+                *ngIf="single"
+                [value]="item"
+            ></ion-radio>
         </ion-item>
 
     </ion-list>
 
-    <ion-list padding radio-group class="worker-list" [(ngModel)]="selectedWorker" *ngIf="(canQueryOther | async) && single">
+    <ion-list
+        padding
+        radio-group
+        class="worker-list"
+        [(ngModel)]="selectedWorker"
+        *ngIf="(canQueryOther | async) && single"
+    >
 
         <ion-item *ngFor="let item of workerSubject | async">
             <ion-label>
@@ -39,14 +58,34 @@
 
     </ion-list>
 
-    <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async; let moreData;">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
+    <ion-infinite-scroll
+        (ionInfinite)="getNextPage($event)"
+        *ngIf="haveMoreData | async; let moreData;"
+    >
+        <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            [loadingText]="'LOADING' | translate"
+        ></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <ion-item *ngIf="!moreData" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+    <ion-item
+        *ngIf="!moreData"
+        class="complete"
+        text-center
+    >
+        {{'NO_MORE_DATA' | translate}}
+    </ion-item>
 
 </ion-content>
 
 <ion-footer>
-    <button ion-button full color="primary" (click)="updateSelectedWorkers()" no-margin>{{'CONFIRM_BUTTON' | translate}} </button>
+    <button
+        ion-button
+        full
+        color="primary"
+        (click)="updateSelectedWorkers()"
+        no-margin
+    >
+        {{'CONFIRM_BUTTON' | translate}}
+    </button>
 </ion-footer>

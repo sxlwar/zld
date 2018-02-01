@@ -3,7 +3,12 @@
     <ion-navbar>
         <ion-title>{{'LOCATION_CARD' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only *ngIf="canOperate | async" (click)="addCard()">
+            <button
+                ion-button
+                icon-only
+                *ngIf="canOperate | async"
+                (click)="addCard()"
+            >
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-buttons>
@@ -11,37 +16,78 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-list>
         <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
         <ion-item>
             <ion-label>{{'SET_TEAM' | translate}}</ion-label>
-            <ion-select [(ngModel)]="selectedTeam" (ngModelChange)="setSelectedTeam()" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of teamStateOptions | async" [value]="item" [selected]="item.selected">{{item.text}}</ion-option>
+            <ion-select
+                [(ngModel)]="selectedTeam"
+                (ngModelChange)="setSelectedTeam()"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of teamStateOptions | async"
+                    [value]="item"
+                    [selected]="item.selected"
+                >
+                    {{item.text}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'BY_CARD_NUMBER' | translate}}</ion-label>
-            <ion-select [(ngModel)]="orderOption" (ngModelChange)="setOrderCondition()" [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of orderOptions | async" [value]="item" [selected]="item.selected">{{item.text | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="orderOption"
+                (ngModelChange)="setOrderCondition()"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of orderOptions | async"
+                    [value]="item"
+                    [selected]="item.selected"
+                >
+                    {{item.text | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'BY_BINDING_STATUS' | translate}}</ion-label>
-            <ion-select [(ngModel)]="bindingStateOption" (ngModelChange)="setBindCondition()" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of bindingStateOptions | async" [value]="item" [selected]="item.selected">{{item.text | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="bindingStateOption"
+                (ngModelChange)="setBindCondition()"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of bindingStateOptions | async"
+                    [value]="item"
+                    [selected]="item.selected"
+                >
+                    {{item.text | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'BY_DEVICE_STATUS' | translate}}</ion-label>
-            <ion-select [(ngModel)]="deviceStateOption" (ngModelChange)="setDeviceCondition()" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of deviceStateOptions | async" [value]="item" [selected]="item.selected">{{item.text | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="deviceStateOption"
+                (ngModelChange)="setDeviceCondition()"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of deviceStateOptions | async"
+                    [value]="item"
+                    [selected]="item.selected"
+                >
+                    {{item.text | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
     </ion-list>
@@ -55,30 +101,63 @@
                     <ion-row>
                         <ion-col>
                             <span>{{item.dev_id}}</span>
-                            <ion-badge color="secondary" *ngIf="item.status">{{item.status | locationCardStatus | translate }}</ion-badge>
-                            <ion-badge color="forbidden" *ngIf="!item.status">{{item.status | locationCardStatus | translate }}</ion-badge>
+                            <ion-badge
+                                color="secondary"
+                                *ngIf="item.status"
+                            >
+                                {{item.status | locationCardStatus | translate }}
+                            </ion-badge>
+                            <ion-badge
+                                color="forbidden"
+                                *ngIf="!item.status"
+                            >
+                                {{item.status | locationCardStatus | translate }}
+                            </ion-badge>
                         </ion-col>
                         <ion-col class="battery-container">
-                            <i color='primary' class="battery" [ngStyle]="{background: item.battery | battery}" [ngClass]="{'low-power': item.battery | isLowPower}">{{item.battery | percentBattery}}</i>
+                            <i
+                                color="primary"
+                                class="battery"
+                                [ngStyle]="{background: item.battery | battery}"
+                                [ngClass]="{'low-power': item.battery | isLowPower}"
+                            >
+                                {{item.battery | percentBattery}}
+                            </i>
                         </ion-col>
                     </ion-row>
                     <ion-row *ngIf="item.user__employee__realname">
                         <ion-col>{{item.user__employee__realname}}</ion-col>
-                        <ion-col class="report">{{'LATEST_REPORT' | translate}} {{item.time}}</ion-col>
+                        <ion-col class="report">
+                            {{'LATEST_REPORT' | translate}} {{item.time}}
+                        </ion-col>
                     </ion-row>
                 </ion-grid>
             </ion-item>
 
             <ion-item-options side="right">
-                <button ion-button color="primary" *ngIf="!item.user_id" (click)="bindCard(item)">
+                <button
+                    ion-button
+                    color="primary"
+                    *ngIf="!item.user_id"
+                    (click)="bindCard(item)"
+                >
                     <ion-icon name="link"></ion-icon>
                     {{'BIND' | translate}}
                 </button>
-                <button ion-button color="secondary" *ngIf="item.user_id" (click)="unbind$.next(item)">
+                <button
+                    ion-button
+                    color="secondary"
+                    *ngIf="item.user_id"
+                    (click)="unbind$.next(item)"
+                >
                     <ion-icon name="call"></ion-icon>
                     {{'UNBIND' | translate}}
                 </button>
-                <button ion-button color="danger" (click)="delete$.next(item)">
+                <button
+                    ion-button
+                    color="danger"
+                    (click)="delete$.next(item)"
+                >
                     <ion-icon name="trash"></ion-icon>
                     {{'DELETE_BUTTON' | translate}}
                 </button>

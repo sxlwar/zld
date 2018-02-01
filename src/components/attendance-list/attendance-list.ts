@@ -1,11 +1,12 @@
-import { AttendanceState } from './../../interfaces/attendance-interface';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InfiniteScroll } from 'ionic-angular';
+
+import { AttendanceState } from './../../interfaces/attendance-interface';
 import { AttendanceResult } from './../../interfaces/response-interface';
-import { Component, Input, EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'attendance-list',
-    templateUrl: 'attendance-list.html'
+    templateUrl: 'attendance-list.html',
 })
 export class AttendanceListComponent {
 
@@ -18,7 +19,7 @@ export class AttendanceListComponent {
     @Input() haveMoreData = true;
 
     @Input() operateButtonText = 'MODIFY_ATTENDANCE';
-    
+
     @Output() showDetail: EventEmitter<AttendanceResult> = new EventEmitter();
 
     @Output() getNextPage: EventEmitter<InfiniteScroll> = new EventEmitter();

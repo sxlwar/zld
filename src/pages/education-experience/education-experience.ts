@@ -1,13 +1,14 @@
-import { EducationUpdateOptions, EducationAddOptions } from './../../interfaces/request-interface';
-import { Subject } from 'rxjs/Subject';
-import { LayoutService } from './../../services/utils/layout-service';
-import { AddEducationComponent } from './../../components/add-education/add-education';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController, ItemSliding, Item } from 'ionic-angular';
 import { Education } from 'interfaces/response-interface';
+import { IonicPage, Item, ItemSliding, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AddEducationComponent } from './../../components/add-education/add-education';
+import { EducationAddOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
+import { PersonalService } from './../../services/business/personal-service';
+import { LayoutService } from './../../services/utils/layout-service';
 
 @IonicPage()
 @Component({
@@ -55,7 +56,7 @@ export class EducationExperiencePage {
             this.personal.getEducationList(),
 
             this.personal.addEducation(this.add$),
-            
+
             this.personal.updateEducation(this.update$),
 
             this.personal.deleteEducation(this.delete$.map(edu => edu.id)),
@@ -75,7 +76,7 @@ export class EducationExperiencePage {
 
         modal.present();
 
-        modal.onDidDismiss((data: EducationAddOptions) => data && this.add$.next(data)); 
+        modal.onDidDismiss((data: EducationAddOptions) => data && this.add$.next(data));
     }
 
     updateEducation(target: Education): void {
@@ -89,7 +90,7 @@ export class EducationExperiencePage {
     openOption(itemSlide: ItemSliding, item: Item, event) {
         this.layout.openOption(itemSlide, item, event);
     }
-    
+
     ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
 

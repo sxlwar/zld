@@ -1,12 +1,13 @@
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import { SearchItem } from './../../interfaces/search-interface';
-import { QueryWorkerBy } from './../../reducers/reducer/search-worker-reducer';
-import { SearchService } from './../../services/business/search-service';
-import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, ViewController } from 'ionic-angular';
 import { intersectionBy } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { SearchItem } from './../../interfaces/search-interface';
+import { QueryWorkerBy } from './../../reducers/reducer/search-worker-reducer';
+import { SearchService } from './../../services/business/search-service';
 
 interface QueryCondition {
     value: string;
@@ -15,7 +16,7 @@ interface QueryCondition {
 
 const searchConditions: QueryCondition[] = [
     { text: 'NAME', value: QueryWorkerBy.name },
-    { text: 'MOBILE_PHONE', value: QueryWorkerBy.userName }
+    { text: 'MOBILE_PHONE', value: QueryWorkerBy.userName },
 ]
 
 @IonicPage()
@@ -56,10 +57,15 @@ export class SearchWorkerPage {
     launch(): void {
         this.subscriptions = [
             this.searchService.getSearchCondition().subscribe(condition => this.selectedCondition === condition),
+
             this.searchService.searchWorker(this.search.filter(value => !!value).debounceTime(500)),
+
             this.searchService.toggleSelectedWorker(this.select),
-            this.searchService.getSearchCondition().take(1).subscribe(value => this.selectedCondition = value)
-        ]
+
+            this.searchService.getSearchCondition().take(1).subscribe(value => this.selectedCondition = value),
+
+            this.searchService.handleWorkerError(),
+        ];
     }
 
     initialModel(): void {

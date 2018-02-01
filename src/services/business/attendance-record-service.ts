@@ -1,18 +1,28 @@
-import { InfiniteScroll } from 'ionic-angular';
-import { selectLocationAttendanceOptions } from './../../reducers/index-reducer';
-import { selectAttendanceRecordMaxDate } from './../../reducers/index-reducer';
-import { SetLocationAttendanceRecordStartDateAction, SetLocationAttendanceRecordEndDateAction, SetLocationAttendanceRecordUsersAction } from './../../actions/action/attendance-record-action';
 import { Injectable } from '@angular/core';
-import { AppState, selectAttendanceRecordPage, selectAttendanceRecordLimit, selectAttendanceRecordResponse } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
-import { ProcessorService } from '..//api/processor-service';
-import { ErrorService } from '..//errors/error-service';
-import { Subscription } from 'rxjs/Subscription';
+import { InfiniteScroll } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { AttendanceInstant, AttendanceInstantListResponse } from '../../interfaces/response-interface';
-import { RequestOption, AttendanceInstantListOptions } from '../../interfaces/request-interface';
-import { UserService } from '..//business/user-service';
+import { Subscription } from 'rxjs/Subscription';
+
 import { IncreaseRecordPageAction, ResetRecordPageAction } from '../../actions/action/attendance-record-action';
+import { AttendanceInstantListOptions, RequestOption } from '../../interfaces/request-interface';
+import { AttendanceInstant, AttendanceInstantListResponse } from '../../interfaces/response-interface';
+import {
+    AppState,
+    selectAttendanceRecordLimit,
+    selectAttendanceRecordPage,
+    selectAttendanceRecordResponse,
+} from '../../reducers/index-reducer';
+import { ProcessorService } from '..//api/processor-service';
+import { UserService } from '..//business/user-service';
+import { ErrorService } from '..//errors/error-service';
+import {
+    ResetRecordResponseAction,
+    SetLocationAttendanceRecordEndDateAction,
+    SetLocationAttendanceRecordStartDateAction,
+    SetLocationAttendanceRecordUsersAction,
+} from './../../actions/action/attendance-record-action';
+import { selectAttendanceRecordMaxDate, selectLocationAttendanceOptions } from './../../reducers/index-reducer';
 
 @Injectable()
 export class AttendanceRecordService {
@@ -105,6 +115,9 @@ export class AttendanceRecordService {
         this.store.dispatch(new SetLocationAttendanceRecordUsersAction(userIds));
     }
 
+    resetRecordResponse(): void {
+        this.store.dispatch(new ResetRecordResponseAction());
+    }
     /* =========================================================Error handle ============================================================ */
 
     handleError(): Subscription {

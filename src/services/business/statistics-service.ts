@@ -1,12 +1,17 @@
-import { putInArray } from '../utils/util';
-import { Subscription } from 'rxjs/Subscription';
-import { ShowSpecificAttendanceStatisticsByTeam, ShowSpecificAttendanceStatisticsByDate, UpdateSpecificWorkFlowStatisticAtLocalAction } from './../../actions/action/statistics-action';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { filter, isEmpty, orderBy, toPairs, values } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceStatistics } from '../../interfaces/response-interface';
+import { putInArray } from '../utils/util';
+import {
+    ShowSpecificAttendanceStatisticsByDate,
+    ShowSpecificAttendanceStatisticsByTeam,
+    UpdateSpecificWorkFlowStatisticAtLocalAction,
+} from './../../actions/action/statistics-action';
 import { AppState, selectAttendanceStatisticList, selectAttendanceStatistics } from './../../reducers/index-reducer';
-import { Injectable } from "@angular/core";
-import { AttendanceStatistics } from "../../interfaces/response-interface";
-import { Observable } from "rxjs/Observable";
-import { values, isEmpty, toPairs, filter, orderBy } from 'lodash';
 
 export interface AttendanceStatisticDayItem {
     date: string;
@@ -107,10 +112,11 @@ export class StatisticsService {
     getAttendanceItemOf(key: string): Observable<AttendanceStatisticDayItem[]> {
         const source = this.store.select(selectAttendanceStatisticList);
 
-        const list: Observable<AttendanceStatisticDayItem[]> = this.getAttendanceByDay(source, key).map(data => data.map(item => Object.assign(item, { teams: [], teamIds: [] })));
+        const list: Observable<AttendanceStatisticDayItem[]> = this.getAttendanceByDay(source, key)
+            .map(data => data.map(item => Object.assign(item, { teams: [], teamIds: [] })));
 
         const teamWithDates: Observable<AttendanceStatisticTeamItem[]> = source.map(data => {
-            let result: AttendanceStatistics[] = data.filter(item => !isEmpty(item.confirm_status));
+            const result: AttendanceStatistics[] = data.filter(item => !isEmpty(item.confirm_status));
 
             return result.map(item => {
                 const status = filter(toPairs(item.confirm_status), ([date, value]) => value[key]);

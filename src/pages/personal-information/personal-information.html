@@ -6,7 +6,6 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-list *ngIf="!!personalId">
@@ -14,32 +13,50 @@
 
         <ion-item>
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
-            <ion-input disabled [value]="personalId.realname"></ion-input>
+            <ion-input
+                disabled
+                [value]="personalId.realname"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'PERSONAL_ID' | translate}}</ion-label>
-            <ion-input disabled [value]="personalId.num"></ion-input>
+            <ion-input
+                disabled
+                [value]="personalId.num"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'SEX' | translate}}</ion-label>
-            <ion-input disabled [value]="personalId.sex | sex | translate"></ion-input>
+            <ion-input
+                disabled
+                [value]="personalId.sex | sex | translate"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'BIRTHDAY' | translate}}</ion-label>
-            <ion-input disabled [value]="personalId.birth_date"></ion-input>
+            <ion-input
+                disabled
+                [value]="personalId.birth_date"
+            ></ion-input>
         </ion-item>
 
         <ion-item *ngIf="!!workerDetail">
             <ion-label fixed>{{'NATIONALITY' | translate}}</ion-label>
-            <ion-input disabled [value]="workerDetail.nationality"></ion-input>
+            <ion-input
+                disabled
+                [value]="workerDetail.nationality"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'CENSUS_ADDRESS' | translate}}</ion-label>
-            <ion-input disabled [value]="personalId.addr"></ion-input>
+            <ion-input
+                disabled
+                [value]="personalId.addr"
+            ></ion-input>
         </ion-item>
 
     </ion-list>
@@ -47,12 +64,21 @@
     <ion-list>
         <ion-list-header>
             {{'WORK_TYPE' | translate}}
-            <ion-icon name="list" color="primary" item-end (click)="modifyWorkType()" item-end></ion-icon>
+            <ion-icon
+                name="list"
+                color="primary"
+                item-end
+                (click)="modifyWorkType()"
+                item-end
+            ></ion-icon>
         </ion-list-header>
 
         <ion-item *ngFor="let item of workTypes | async">
             <ion-label>{{item.name}}</ion-label>
-            <ion-icon [name]="item.id | workType" item-start></ion-icon>
+            <ion-icon
+                [name]="item.id | workType"
+                item-start
+            ></ion-icon>
         </ion-item>
 
         <ion-item *ngIf="!(workTypes | async)?.length">
@@ -60,6 +86,10 @@
         </ion-item>
     </ion-list>
 
-    <address-select [selectedArea]="selectedArea | async" [addressDetail]="workerDetail?.curraddr__detail" (addressChange)="addressSubject.next($event)"></address-select>
+    <address-select
+        [selectedArea]="selectedArea | async"
+        [addressDetail]="workerDetail?.curraddr__detail"
+        (addressChange)="addressSubject.next($event)"
+    ></address-select>
 
 </ion-content>

@@ -1,16 +1,17 @@
-import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
-import { ConfigService } from './../../services/config/config-service';
-import { WorkerService } from './../../services/business/worker-service';
-import { LaunchService } from './../../services/business/launch-service';
-import { WorkerContractModifyFormModel } from './../../services/api/mapper-service';
-import { Subject } from 'rxjs/Subject';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { WorkerItem } from './../../interfaces/worker-interface';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
+import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
+import { WorkerItem } from './../../interfaces/worker-interface';
+import { WorkerContractModifyFormModel } from './../../services/api/mapper-service';
+import { LaunchService } from './../../services/business/launch-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { ConfigService } from './../../services/config/config-service';
 
 @IonicPage()
 @Component({
@@ -58,22 +59,22 @@ export class ApplyWorkerContractModifyPage {
     initialForm(): void {
         this.form = this.fb.group({
             date: '',
-            contractId: ['', Validators.required]
+            contractId: ['', Validators.required],
         });
     }
 
     launch(): void {
         this.subscriptions = [
             this.launchService.createWorkerContractModify(this.apply$.mergeMap(_ => Observable.from(this.form.get('contractId').value).map((contractId: number) => ({ contractId, date: this.form.get('date').value, attach: this.attachList })))),
-            
+
             this.launchService.uploadWorkerContractModifyAttach(),
-            
+
             this.workers.map(workers => workers.map(item => item.id)).subscribe(ids => this.form.patchValue({ contractId: !!ids.length ? ids : '' })),
 
             this.launchService.getSuccessResponseOfWorkerContractModify().subscribe(_ => this.worker.resetSelectedWorkers()),
 
             this.launchService.handleWorkerContractModifyError(),
-            
+
             this.worker.handleError(),
         ];
     }
@@ -105,6 +106,4 @@ export class ApplyWorkerContractModifyPage {
     get contractId() {
         return this.form.get('contractId');
     }
-
-
 }

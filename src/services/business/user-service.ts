@@ -1,11 +1,13 @@
-import { ResetSidAction, UpdateAccountAction } from './../../actions/action/login-action';
-import { Injectable } from '@angular/core';
-import { AppState, selectLoginForm, selectUserInfo } from '../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { LoginResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/mergeMap';
+
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import { LoginResponse } from '../../interfaces/response-interface';
+import { AppState, selectLoginForm, selectUserInfo } from '../../reducers/index-reducer';
+import { ResetSidAction, UpdateAccountAction } from './../../actions/action/login-action';
 
 @Injectable()
 export class UserService {

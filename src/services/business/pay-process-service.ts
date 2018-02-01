@@ -1,12 +1,13 @@
-import { Observable } from 'rxjs/Observable';
-import { AppState, selectPayProcessResponse, selectPayProcessList } from './../../reducers/index-reducer';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { PayProcess } from 'interfaces/response-interface';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AppState, selectPayProcessList, selectPayProcessResponse } from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
-import { ProcessorService } from './../api/processor-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Injectable } from "@angular/core";
-import { PayProcess } from 'interfaces/response-interface';
 
 @Injectable()
 export class PayProcessService {
@@ -27,6 +28,6 @@ export class PayProcessService {
     }
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectPayProcessResponse), 'APP_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectPayProcessResponse));
     }
 }

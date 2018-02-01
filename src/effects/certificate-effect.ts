@@ -1,16 +1,28 @@
-import { UPLOAD_PERSONAL_ID_IMAGE, UploadPersonalIdImageAction, UploadPersonalIdImageSuccessAction, UploadPersonalIdImageFailAction } from './../actions/action/certificate-action';
-import { HttpService } from './../services/api/http-service';
-import { Actions, Effect } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { ResponseAction } from '../interfaces/response-interface';
-import { CERTIFICATE, CertificateAction, CertificateFailAction, CertificateSuccessAction } from '../actions/action/certificate-action';
-import { WebsocketService } from '../services/api/websocket-service';
-import { Command } from '../services/api/command';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/takeUntil';
-import 'rxjs/add/operator/catch';
+
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+
+import {
+    CERTIFICATE,
+    CertificateAction,
+    CertificateFailAction,
+    CertificateSuccessAction,
+} from '../actions/action/certificate-action';
+import { ResponseAction } from '../interfaces/response-interface';
+import { Command } from '../services/api/command';
+import { WebsocketService } from '../services/api/websocket-service';
+import {
+    UPLOAD_PERSONAL_ID_IMAGE,
+    UploadPersonalIdImageAction,
+    UploadPersonalIdImageFailAction,
+    UploadPersonalIdImageSuccessAction,
+} from './../actions/action/certificate-action';
+import { HttpService } from './../services/api/http-service';
 
 @Injectable()
 export class CertificateEffect extends Command {
@@ -21,7 +33,9 @@ export class CertificateEffect extends Command {
         .mergeMap((action: CertificateAction) => this.ws
             .send(this.updatePersonalIdImage(action.payload))
             .takeUntil(this.actions$.ofType(CERTIFICATE))
-            .map(msg => msg.isError ? new CertificateFailAction(msg.data) : new CertificateSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CertificateFailAction(msg.data)
+                : new CertificateSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -31,7 +45,9 @@ export class CertificateEffect extends Command {
         .ofType(UPLOAD_PERSONAL_ID_IMAGE)
         .mergeMap((action: UploadPersonalIdImageAction) => this.http
             .upload(Observable.of(this.uploadPersonalIdImage(action.payload)))
-            .map(res => res.responseCode !== 200 ? new UploadPersonalIdImageFailAction(JSON.parse(res.response)) : new UploadPersonalIdImageSuccessAction(JSON.parse(res.response)))
+            .map(res => res.responseCode !== 200
+                ? new UploadPersonalIdImageFailAction(JSON.parse(res.response))
+                : new UploadPersonalIdImageSuccessAction(JSON.parse(res.response)))
             .catch(error => Observable.of(error))
         )
 

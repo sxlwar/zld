@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { NationalityResponse } from '../../interfaces/response-interface';
 
 export const GET_NATIONALITY = 'GET_NATIONALITY';

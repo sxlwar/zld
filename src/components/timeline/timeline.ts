@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 
 @Component({
     selector: 'timeline',
-    templateUrl: 'timeline.html'
+    templateUrl: 'timeline.html',
 })
 export class TimelineComponent {
-    @Input('endIcon') endIcon = "ionic";
+    @Input('endIcon') endIcon = 'ionic';
+
     constructor() {
 
     }
@@ -14,7 +15,7 @@ export class TimelineComponent {
 
 @Component({
     selector: 'timeline-item',
-    template: '<ng-content></ng-content>'
+    template: '<ng-content></ng-content>',
 })
 export class TimelineItemComponent {
     constructor() {
@@ -25,7 +26,7 @@ export class TimelineItemComponent {
 
 @Component({
     selector: 'timeline-time',
-    template: '<span>{{time}}</span>'
+    template: '<span>{{time}}</span>',
 })
 export class TimelineTimeComponent {
     @Input('time') time = '';

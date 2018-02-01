@@ -1,19 +1,45 @@
-import { UpdateOrderStateAction, UpdateBindingStateAction, UpdateDeviceStateAction, SetSelectedTeamAction, UpdateTeamStateAction, ResetLocationCardOperateResponseAction } from './../../actions/action/location-card-action';
-import { orderBy } from 'lodash';
-import { ConditionOption, OrderFlag, BindingStateFlag, DeviceStateFlag } from './../../interfaces/order-interface';
-import { LocationCardDeleteOptions } from './../../interfaces/request-interface';
-import { RequestOption, LocationCardUpdateOptions } from '../../interfaces/request-interface';
-import { LocationCard, DeviceStatus, LocationCardAddResponse, LocationCardUpdateResponse, LocationCardDeleteResponse, LocationCardListResponse } from './../../interfaces/response-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { UserService } from './user-service';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
-import { ProjectService } from './project-service';
-import { Store } from '@ngrx/store';
-import { AppState, selectLocationCardListResponse, selectLocationCardAddResponse, selectLocationCardUpdateResponse, selectLocationCardDeleteResponse, selectLocationCardCount, selectLocationCardOrderOptions, selectLocationCardBindingOptions, selectLocationCardDeviceOptions, selectLocationCardTeamStateOptions } from './../../reducers/index-reducer';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { orderBy } from 'lodash';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { LocationCardUpdateOptions, RequestOption } from '../../interfaces/request-interface';
 import { AddLocationCardFormModel } from '../../services/api/mapper-service';
+import {
+    ResetLocationCardOperateResponseAction,
+    SetSelectedTeamAction,
+    UpdateBindingStateAction,
+    UpdateDeviceStateAction,
+    UpdateOrderStateAction,
+    UpdateTeamStateAction,
+} from './../../actions/action/location-card-action';
+import { BindingStateFlag, ConditionOption, DeviceStateFlag, OrderFlag } from './../../interfaces/order-interface';
+import { LocationCardDeleteOptions } from './../../interfaces/request-interface';
+import {
+    DeviceStatus,
+    LocationCard,
+    LocationCardAddResponse,
+    LocationCardDeleteResponse,
+    LocationCardListResponse,
+    LocationCardUpdateResponse,
+} from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectLocationCardAddResponse,
+    selectLocationCardBindingOptions,
+    selectLocationCardCount,
+    selectLocationCardDeleteResponse,
+    selectLocationCardDeviceOptions,
+    selectLocationCardListResponse,
+    selectLocationCardOrderOptions,
+    selectLocationCardTeamStateOptions,
+    selectLocationCardUpdateResponse,
+} from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { ProjectService } from './project-service';
+import { UserService } from './user-service';
 
 export interface ExecFn<T> {
     (T): T
@@ -56,10 +82,10 @@ export class LocationCardService {
     addLocationCard(option: Observable<AddLocationCardFormModel>): Subscription {
         return this.processor.locationCardAddProcessor(
             option.map(form => this.processor.addLocationCardForm(form))
-            .withLatestFrom(
+                .withLatestFrom(
                 this.userInfo.getSid(),
                 (option, sid) => ({ ...option, sid })
-            )
+                )
         );
     }
 
@@ -103,7 +129,7 @@ export class LocationCardService {
             this.getDeviceStateOptions().map(options => options.find(item => item.selected).condition)
             );
 
-        const curry: CurryFn<LocationCard[], number> = (fun, secondArg) => (firstArg) => fun(firstArg, secondArg);
+        const curry: CurryFn<LocationCard[], number> = (fun, secondArg) => firstArg => fun(firstArg, secondArg);
 
         const pipe: PipeFn<LocationCard[], ExecFn<LocationCard[]>> = (source, ...functions) => functions.reduce((memo, fun) => fun(memo), source);
 

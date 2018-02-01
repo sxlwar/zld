@@ -1,9 +1,10 @@
-import { SharedModule } from './../../app/shared.modules';
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { AttendanceRecordPage } from './attendance-record';
-import { TranslateModule } from '@ngx-translate/core';
 import { Actions } from '@ngrx/effects';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
+import { SharedModule } from './../../app/shared.modules';
+import { AttendanceRecordPage } from './attendance-record';
 
 @NgModule({
     declarations: [
@@ -15,10 +16,10 @@ import { Actions } from '@ngrx/effects';
         SharedModule,
     ],
     exports: [
-        AttendanceRecordPage
+        AttendanceRecordPage,
     ],
     providers: [
-        Actions
-    ]
+        Actions,
+    ],
 })
 export class AttendanceRecordPageModule { }

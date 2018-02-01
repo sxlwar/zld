@@ -1,13 +1,14 @@
-import { ProjectPayBill, ProjectPayBillAmount } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { UserService } from './user-service';
-import { ProjectService } from './project-service';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
-import { Store } from '@ngrx/store';
-import { AppState, selectProjectBillResponse, selectProjectBillList } from './../../reducers/index-reducer';
-import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { ProjectPayBill, ProjectPayBillAmount } from './../../interfaces/response-interface';
+import { AppState, selectProjectBillList, selectProjectBillResponse } from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { ProjectService } from './project-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class ProjectBillService {
@@ -25,7 +26,12 @@ export class ProjectBillService {
     }
 
     getProjectBillList(id: Observable<number> = Observable.of(null)): Subscription {
-        return this.process.projectPayBillProcessor(id.combineLatest(this.userInfo.getSid(), this.project.getProjectId(), (id, sid, project_id) => id ? { id, sid, project_id } : { sid, project_id }));
+        return this.process.projectPayBillProcessor(
+            id.combineLatest(
+                this.userInfo.getSid(),
+                this.project.getProjectId(),
+                (id, sid, project_id) => id ? { id, sid, project_id } : { sid, project_id })
+        );
     }
 
     /**
@@ -36,7 +42,10 @@ export class ProjectBillService {
     }
 
     countOvertimeAmount(bill: ProjectPayBill): number {
-        return bill[this.getFullKey(ProjectPayBillAmount.systemOvertime)] + bill[this.getFullKey(ProjectPayBillAmount.systemOverOvertime)] + bill[this.getFullKey(ProjectPayBillAmount.manualOvertime)] + bill[this.getFullKey(ProjectPayBillAmount.manualOverOvertime)];
+        return bill[this.getFullKey(ProjectPayBillAmount.systemOvertime)]
+            + bill[this.getFullKey(ProjectPayBillAmount.systemOverOvertime)]
+            + bill[this.getFullKey(ProjectPayBillAmount.manualOvertime)]
+            + bill[this.getFullKey(ProjectPayBillAmount.manualOverOvertime)];
     }
 
     countPieceAmount(bill: ProjectPayBill): number {

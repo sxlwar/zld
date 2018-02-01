@@ -1,19 +1,20 @@
-import { Subject } from 'rxjs/Subject';
-import { AddLocationCardComponent } from './../../components/add-location-card/add-location-card';
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
+import { AddLocationCardComponent } from './../../components/add-location-card/add-location-card';
 import { ConditionOption } from './../../interfaces/order-interface';
 import { LocationCard } from './../../interfaces/response-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { ProjectRoot } from './../pages';
 import { locationCard } from './../../services/business/icon-service';
-import { Observable } from 'rxjs/Observable';
-import { ProjectService } from './../../services/business/project-service';
-import { PermissionService } from './../../services/config/permission-service';
 import { LocationCardService } from './../../services/business/location-card-service';
+import { ProjectService } from './../../services/business/project-service';
 import { TeamService } from './../../services/business/team-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
-import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
+import { PermissionService } from './../../services/config/permission-service';
+import { ProjectRoot } from './../pages';
 
 @IonicPage()
 @Component({

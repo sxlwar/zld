@@ -3,7 +3,10 @@
     <ion-navbar>
         <ion-title>{{'PIECE_AUDIT' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button (click)="applyPieceAudit()">
+            <button
+                ion-button
+                (click)="applyPieceAudit()"
+            >
                 <ion-icon name="create"></ion-icon>
             </button>
         </ion-buttons>
@@ -11,10 +14,16 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
-    <mission-list [list]="list | async" [total]="total | async" [operate]="operate | async" [haveMoreData]="haveMoreData | async"
-        (auditApply)="audit($event)" (getNextPage)="getNextPage($event)" (showDetail)="goToNextPage($event)"></mission-list>
+    <mission-list
+        [list]="list | async"
+        [total]="total | async"
+        [operate]="operate | async"
+        [haveMoreData]="haveMoreData | async"
+        (auditApply)="audit($event)"
+        (getNextPage)="getNextPage($event)"
+        (showDetail)="goToNextPage($event)"
+    ></mission-list>
 
 </ion-content>

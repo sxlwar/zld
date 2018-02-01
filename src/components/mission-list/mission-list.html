@@ -5,18 +5,33 @@
 
             <span id="count">{{countText | translate}}: {{total}}</span>
 
-            <ion-buttons *ngIf="operate" end>
-                <button ion-button small clear (click)="showComment()">
+            <ion-buttons
+                *ngIf="operate"
+                end
+            >
+                <button
+                    ion-button
+                    small
+                    clear
+                    (click)="showComment()"
+                >
                     {{'AUDIT' | translate}}
                 </button>
             </ion-buttons>
 
         </ion-label>
 
-        <ion-checkbox *ngIf="operate" [(ngModel)]="allSelected" (ngModelChange)="toggleAllSelected($event)"></ion-checkbox>
+        <ion-checkbox
+            *ngIf="operate"
+            [(ngModel)]="allSelected"
+            (ngModelChange)="toggleAllSelected($event)"
+        ></ion-checkbox>
     </ion-list-header>
 
-    <ion-item *ngFor="let item of list" detail-push>
+    <ion-item
+        *ngFor="let item of list"
+        detail-push
+    >
 
         <ion-label>
             <ion-grid (click)="showDetail.next(item)">
@@ -24,21 +39,45 @@
                     <ion-col>{{item.title}}</ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col>{{'REQUESTER' | translate}}: {{item.requester}}</ion-col>
+                    <ion-col>
+                        {{'REQUESTER' | translate}}: {{item.requester}}
+                    </ion-col>
                 </ion-row>
                 <ion-row>
-                    <ion-col>{{'REQUEST_TIME' | translate}}: {{item.createTime}}</ion-col>
+                    <ion-col>
+                        {{'REQUEST_TIME' | translate}}: {{item.createTime}}
+                    </ion-col>
                 </ion-row>
             </ion-grid>
         </ion-label>
-        <ion-checkbox *ngIf="operate" [(ngModel)]="item.selected" (ngModelChange)="checkAllSelectedFlag($event)"></ion-checkbox>
+        <ion-checkbox
+            *ngIf="operate"
+            [(ngModel)]="item.selected"
+            (ngModelChange)="checkAllSelectedFlag($event)"
+        ></ion-checkbox>
 
-        <ion-icon *ngIf="showIcon" [name]="item.icon" item-start></ion-icon>
+        <ion-icon
+            *ngIf="showIcon"
+            [name]="item.icon"
+            item-start
+        ></ion-icon>
     </ion-item>
 
-    <ion-infinite-scroll (ionInfinite)="getNextPage.next($event)" *ngIf="haveMoreData">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
+    <ion-infinite-scroll
+        (ionInfinite)="getNextPage.next($event)"
+        *ngIf="haveMoreData"
+    >
+        <ion-infinite-scroll-content
+            loadingSpinner="bubbles"
+            [loadingText]="'LOADING' | translate"
+        ></ion-infinite-scroll-content>
     </ion-infinite-scroll>
 
-    <ion-item *ngIf="!haveMoreData" text-center class="complete">{{'NO_MORE_DATA' | translate}}</ion-item>
+    <ion-item
+        *ngIf="!haveMoreData"
+        text-center
+        class="complete"
+    >
+        {{'NO_MORE_DATA' | translate}}
+    </ion-item>
 </ion-list>

@@ -1,14 +1,15 @@
-import { HistoryTrajectoryWorkersComponent } from './../../components/history-trajectory-workers/history-trajectory-workers';
-import { ConfigService } from './../../services/config/config-service';
-import { AmapService } from './../../services/business/amap-service';
-import { Map } from '../../interfaces/amap-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { LocationService } from './../../services/business/location-service';
-import { HistoryTrajectoryComponent } from './../../components/history-trajectory/history-trajectory';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController, PopoverController } from 'ionic-angular';
-import { Subject, Observable, BehaviorSubject } from 'rxjs';
-import { PlayUnit, PlayState, TrajectoryInfo } from '../../interfaces/location-interface';
+import { IonicPage, ModalController, NavParams, PopoverController } from 'ionic-angular';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Map } from '../../interfaces/amap-interface';
+import { PlayState, PlayUnit, TrajectoryInfo } from '../../interfaces/location-interface';
+import { HistoryTrajectoryWorkersComponent } from './../../components/history-trajectory-workers/history-trajectory-workers';
+import { HistoryTrajectoryComponent } from './../../components/history-trajectory/history-trajectory';
+import { AmapService } from './../../services/business/amap-service';
+import { LocationService } from './../../services/business/location-service';
+import { ConfigService } from './../../services/config/config-service';
 
 declare var AMap: any;
 
@@ -81,9 +82,12 @@ export class TrajectoryPage {
     launch(): void {
         this.subscriptions = [
             this.mapService.monitorHistoryLocationResponse(),
+
             ...this.sendRequest(),
+
             ...this.addOverlays(),
-            ...this.monitorPlay()
+
+            ...this.monitorPlay(),
         ];
     }
 
@@ -95,7 +99,8 @@ export class TrajectoryPage {
     sendRequest(): Subscription[] {
         return [
             this.location.getProjectAreaList(),
-            this.getLocationList()
+
+            this.getLocationList(),
         ];
     }
 
@@ -103,7 +108,9 @@ export class TrajectoryPage {
         this.location.updateCondition().next(true);
 
         return this.location.getHistoryLocationList(
-            this.location.updateCondition().startWith(true).mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
+            this.location.updateCondition()
+                .startWith(true)
+                .mergeMapTo(this.location.getTrajectoryAvailableOptions().take(1))
         );
     }
 
@@ -113,8 +120,10 @@ export class TrajectoryPage {
     addOverlays(): Subscription[] {
         return [
             ...this.mapService.generateArea(this.map),
+
             this.mapService.updateTrajectory(this.map),
-            this.location.toggleTrajectoryDisplayState()
+
+            this.location.toggleTrajectoryDisplayState(),
         ];
     }
 
@@ -123,12 +132,18 @@ export class TrajectoryPage {
     monitorPlay(): Subscription[] {
         return [
             this.mapService.getPlayUnits(this.map).subscribe(this.playSubject),
+
             this.play(),
+
             this.stop(),
+
             this.pause(),
+
             this.resume(),
+
             this.location.updatePlayState(this.playStateSubject),
-            this.location.updateRateState(this.rateSubject)
+
+            this.location.updateRateState(this.rateSubject),
         ];
     }
 

@@ -1,11 +1,29 @@
-import { TipService } from './../services/tip-service';
-import { CHECK_PHONE_NUMBER, CheckPhoneNumberAction, CheckPhoneNumberFailAction, CheckPhoneNumberSuccessAction, CHECK_PHONE_VERIFY, CheckPhoneVerifyAction, CheckPhoneVerifyFailAction, CheckPhoneVerifySuccessAction, CHANGE_PHONE_NUMBER, ChangePhoneNumberAction, ChangePhoneNumberFailAction, ChangePhoneNumberSuccessAction, ChangePhoneVerifyAction, CHANGE_PHONE_VERIFY, ChangePhoneVerifyFailAction, ChangePhoneVerifySuccessAction } from './../actions/action/account-change-action';
 import { Injectable } from '@angular/core';
-import { WebsocketService } from '../services/api/websocket-service';
 import { Actions, Effect } from '@ngrx/effects';
-import { ResponseAction } from '../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
+
+import { ResponseAction } from '../interfaces/response-interface';
 import { Command } from '../services/api/command';
+import { WebsocketService } from '../services/api/websocket-service';
+import {
+    CHANGE_PHONE_NUMBER,
+    CHANGE_PHONE_VERIFY,
+    ChangePhoneNumberAction,
+    ChangePhoneNumberFailAction,
+    ChangePhoneNumberSuccessAction,
+    ChangePhoneVerifyAction,
+    ChangePhoneVerifyFailAction,
+    ChangePhoneVerifySuccessAction,
+    CHECK_PHONE_NUMBER,
+    CHECK_PHONE_VERIFY,
+    CheckPhoneNumberAction,
+    CheckPhoneNumberFailAction,
+    CheckPhoneNumberSuccessAction,
+    CheckPhoneVerifyAction,
+    CheckPhoneVerifyFailAction,
+    CheckPhoneVerifySuccessAction,
+} from './../actions/action/account-change-action';
+import { TipService } from './../services/tip-service';
 
 @Injectable()
 export class AccountChangeEffect extends Command {
@@ -16,7 +34,9 @@ export class AccountChangeEffect extends Command {
             .send(this.getCheckPhone(action.payload))
             .takeUntil(this.actions$.ofType(CHECK_PHONE_NUMBER))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new CheckPhoneNumberFailAction(msg.data) : new CheckPhoneNumberSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CheckPhoneNumberFailAction(msg.data)
+                : new CheckPhoneNumberSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -27,7 +47,9 @@ export class AccountChangeEffect extends Command {
             .send(this.getCheckPhoneVerify(action.payload))
             .takeUntil(this.actions$.ofType(CHECK_PHONE_VERIFY))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new CheckPhoneVerifyFailAction(msg.data) : new CheckPhoneVerifySuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new CheckPhoneVerifyFailAction(msg.data)
+                : new CheckPhoneVerifySuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -38,7 +60,9 @@ export class AccountChangeEffect extends Command {
             .send(this.getChangePhone(action.payload))
             .takeUntil(this.actions$.ofType(CHANGE_PHONE_NUMBER))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new ChangePhoneNumberFailAction(msg.data) : new ChangePhoneNumberSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new ChangePhoneNumberFailAction(msg.data)
+                : new ChangePhoneNumberSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -49,7 +73,9 @@ export class AccountChangeEffect extends Command {
             .send(this.getChangePhoneVerify(action.payload))
             .takeUntil(this.actions$.ofType(CHANGE_PHONE_VERIFY))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new ChangePhoneVerifyFailAction(msg.data) : new ChangePhoneVerifySuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new ChangePhoneVerifyFailAction(msg.data)
+                : new ChangePhoneVerifySuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 

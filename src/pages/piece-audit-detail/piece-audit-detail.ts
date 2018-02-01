@@ -1,13 +1,14 @@
-import { MissionRoot } from './../pages';
-import { pieceAudit } from './../../services/business/icon-service';
-import { PermissionService } from './../../services/config/permission-service';
-import { WorkPieceService } from './../../services/business/work-piece-service';
-import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { WorkFlow, WorkPieceFinish, WorkPiece } from './../../interfaces/response-interface';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, NavController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { WorkFlow, WorkPiece, WorkPieceFinish } from './../../interfaces/response-interface';
+import { pieceAudit } from './../../services/business/icon-service';
+import { WorkFlowService } from './../../services/business/work-flow-service';
+import { WorkPieceService } from './../../services/business/work-piece-service';
+import { PermissionService } from './../../services/config/permission-service';
+import { MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({
@@ -69,7 +70,7 @@ export class PieceAuditDetailPage {
             this.workPiece.getWorkPieceList(this.workPiece.getRecordOptions(this.id, this.navParams.get('status'))),
 
             this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
-            
+
             this.workPiece.handleError(),
         ];
     }
@@ -82,7 +83,7 @@ export class PieceAuditDetailPage {
 
     ionViewWillUnload() {
         this.workFlowService.resetTaskUpdateResponse();
-        
+
         this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());

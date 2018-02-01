@@ -1,5 +1,5 @@
-import { CompanyUserListResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/employer-action';
+import { CompanyUserListResponse } from './../../interfaces/response-interface';
 
 export interface State {
     companyUserResponse: CompanyUserListResponse;
@@ -9,10 +9,10 @@ export interface State {
 
 export const initialState: State = {
     companyUserResponse: {
-        worker: []
+        worker: [],
     },
     selectedForemen: [],
-    selectedQualityClerks: []
+    selectedQualityClerks: [],
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

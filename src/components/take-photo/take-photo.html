@@ -1,7 +1,13 @@
 <div (click)="showActionSheet()">
     <ion-card>
-        <ion-card-content class="photo-container" style="padding: 0;">
-            <img *ngIf="fileUrl | async; let file" [src]="file" />
+        <ion-card-content
+            class="photo-container"
+            style="padding: 0;"
+        >
+            <img
+                *ngIf="fileUrl | async; let file"
+                [src]="file"
+            >
             <span [hidden]="!!file">{{placeholder | translate}}</span>
         </ion-card-content>
     </ion-card>

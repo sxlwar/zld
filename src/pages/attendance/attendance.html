@@ -6,7 +6,6 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-list>
@@ -14,32 +13,83 @@
         <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
         <ion-item>
             <ion-label>{{'START_TIME' | translate}}</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                min="2017-01-01" [max]="today" [(ngModel)]="startDate" (ngModelChange)="setDate('start')"></ion-datetime>
+            <ion-datetime
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY MM DD"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                min="2017-01-01"
+                [max]="today"
+                [(ngModel)]="startDate"
+                (ngModelChange)="setDate('start')"
+            ></ion-datetime>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'END_TIME' | translate}}</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                [min]="startDate" [max]="today" [(ngModel)]="endDate" (ngModelChange)="setDate('end')"></ion-datetime>
+            <ion-datetime
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY MM DD"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                [min]="startDate"
+                [max]="today"
+                [(ngModel)]="endDate"
+                (ngModelChange)="setDate('end')"
+            ></ion-datetime>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'TEAM' | translate}}</ion-label>
-            <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="setTeam$.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let team of (teams | async)" [value]="team" [selected]="team.selected">{{team.name}}</ion-option>
+            <ion-select
+                [(ngModel)]="selectedTeams"
+                multiple="true"
+                (ngModelChange)="setTeam$.next($event)"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let team of (teams | async)"
+                    [value]="team"
+                    [selected]="team.selected"
+                >
+                    {{team.name}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'ATTENDANCE_STATUS' | translate}}</ion-label>
-            <ion-select [(ngModel)]="selectedAttendanceState" (ngModelChange)="updateSelectedAttendanceState($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option value="0" [selected]="selectedAttendanceState === 0">{{'UNCONFIRMED' | translate}}</ion-option>
-                <ion-option value="1" [selected]="selectedAttendanceState === 1">{{'CONFIRMED' | translate}}</ion-option>
-                <ion-option value="2" [selected]="selectedAttendanceState === 2">{{'AUDITING' | translate}}</ion-option>
-                <ion-option value="3" [selected]="selectedAttendanceState === 3">{{'ALL' | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="selectedAttendanceState"
+                (ngModelChange)="updateSelectedAttendanceState($event)"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    value="0"
+                    [selected]="selectedAttendanceState === 0"
+                >
+                    {{'UNCONFIRMED' | translate}}
+                </ion-option>
+                <ion-option
+                    value="1"
+                    [selected]="selectedAttendanceState === 1"
+                >
+                    {{'CONFIRMED' | translate}}
+                </ion-option>
+                <ion-option
+                    value="2"
+                    [selected]="selectedAttendanceState === 2"
+                >
+                    {{'AUDITING' | translate}}
+                </ion-option>
+                <ion-option
+                    value="3"
+                    [selected]="selectedAttendanceState === 3"
+                >
+                    {{'ALL' | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
@@ -50,26 +100,66 @@
 
         <ion-item>
             <ion-label>{{'VIEW_ORDER' | translate}}</ion-label>
-            <ion-select [(ngModel)]="orderType" (ngModelChange)="switchOrderType($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option value="asc" [selected]="orderType === 'asc'">{{'LOW_TO_HIGH' | translate}}</ion-option>
-                <ion-option value="desc" [selected]="orderType === 'desc'">{{'HIGH_TO_LOW' | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="orderType"
+                (ngModelChange)="switchOrderType($event)"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    value="asc"
+                    [selected]="orderType === 'asc'"
+                >
+                    {{'LOW_TO_HIGH' | translate}}
+                </ion-option>
+                <ion-option
+                    value="desc"
+                    [selected]="orderType === 'desc'"
+                >
+                    {{'HIGH_TO_LOW' | translate}}
+                </ion-option>
             </ion-select>
             {{orderType}}
         </ion-item>
 
         <ion-item>
             <ion-label>{{'VIEW_TYPE' | translate}}</ion-label>
-            <ion-select [(ngModel)]="sortType" (ngModelChange)="sortAttendanceBy($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option value="0" [selected]="sortType === 0">{{'NAME' | translate}}</ion-option>
-                <ion-option value="1" [selected]="sortType === 1">{{'TOTAL_TIME' | translate}}</ion-option>
-                <ion-option value="2" [selected]="sortType === 2">{{'VALID_TIME' | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="sortType"
+                (ngModelChange)="sortAttendanceBy($event)"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    value="0"
+                    [selected]="sortType === 0"
+                >
+                    {{'NAME' | translate}}
+                </ion-option>
+                <ion-option
+                    value="1"
+                    [selected]="sortType === 1"
+                >
+                    {{'TOTAL_TIME' | translate}}
+                </ion-option>
+                <ion-option
+                    value="2"
+                    [selected]="sortType === 2"
+                >
+                    {{'VALID_TIME' | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
     </ion-list>
 
-    <attendance-list [list]="attendances | async" [total]="count | async" [operate]="operatePermission | async" (audit)="showActionSheet($event)"
-        (showDetail)="goToDetailPage($event)" (getNextPage)="getNextPage($event)" [haveMoreData]="haveMoreData | async"></attendance-list>
+    <attendance-list
+        [list]="attendances | async"
+        [total]="count | async"
+        [operate]="operatePermission | async"
+        (audit)="showActionSheet($event)"
+        (showDetail)="goToDetailPage($event)"
+        (getNextPage)="getNextPage($event)"
+        [haveMoreData]="haveMoreData | async"
+    ></attendance-list>
 </ion-content>

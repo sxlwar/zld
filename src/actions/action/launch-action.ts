@@ -1,6 +1,35 @@
-import { UploadWorkerContractAttachResponse, UploadAttendanceModifyAttachResponse, CreateSignWorkerContractResponse, CreateAttendanceModifyResponse, CreateWorkerContractModifyResponse, CreateLeaveResponse, CreateOvertimeResponse, CreatePieceAuditResponse, UploadLeaveAttachResponse, UploadOvertimeAttachResponse, UploadPieceAuditAttachResponse, UploadWorkerContractModifyAttachResponse, TerminateWorkerContractResponse } from './../../interfaces/response-interface';
-import { CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, TerminateWorkerContractOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    CreateAttendanceModifyOptions,
+    CreateLeaveOptions,
+    CreateOvertimeOptions,
+    CreatePieceAuditOptions,
+    CreateWorkerContractModifyOptions,
+    CreateWorkerContractOptions,
+    TerminateWorkerContractOptions,
+    UploadAttendanceModifyAttachOptions,
+    UploadLeaveAttachOptions,
+    UploadOvertimeAttachOptions,
+    UploadPieceAuditAttachOptions,
+    UploadWorkerContractAttachOptions,
+    UploadWorkerContractModifyAttachOptions,
+} from './../../interfaces/request-interface';
+import {
+    CreateAttendanceModifyResponse,
+    CreateLeaveResponse,
+    CreateOvertimeResponse,
+    CreatePieceAuditResponse,
+    CreateSignWorkerContractResponse,
+    CreateWorkerContractModifyResponse,
+    TerminateWorkerContractResponse,
+    UploadAttendanceModifyAttachResponse,
+    UploadLeaveAttachResponse,
+    UploadOvertimeAttachResponse,
+    UploadPieceAuditAttachResponse,
+    UploadWorkerContractAttachResponse,
+    UploadWorkerContractModifyAttachResponse,
+} from './../../interfaces/response-interface';
 
 export const CREATE_WORKER_CONTRACT = 'CREATE_WORKER_CONTRACT';
 
@@ -54,7 +83,7 @@ export const TERMINATE_WORKER_CONTRACT = 'TERMINATE_WORKER_CONTRACT';
 
 export class TerminateWorkerContractAction implements Action {
     readonly type = TERMINATE_WORKER_CONTRACT;
-    
+
     constructor(public payload: TerminateWorkerContractOptions) { }
 }
 

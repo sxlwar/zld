@@ -3,14 +3,17 @@
     <ion-navbar color="primary">
         <ion-title>{{'MINE' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="scanToLogin()">
+            <button
+                ion-button
+                icon-only
+                (click)="scanToLogin()"
+            >
                 <ion-icon name="qr-scanner"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -21,30 +24,50 @@
             </ion-avatar>
             <h6>{{name | async}}</h6>
             <h6>{{account | async}}</h6>
-            <ion-icon name="arrow-forward" color="light" item-end></ion-icon>
+            <ion-icon
+                name="arrow-forward"
+                color="light"
+                item-end
+            ></ion-icon>
         </ion-item>
 
         <ion-item class="project-info">
-            <h5>{{'MY_ACCOUNT_CURRENT_INFO' | translate}}</h5>
-            <div>
-                <p *ngIf="!!(projectName | async)">{{projectName | async}}</p>
-                <p *ngIf="!!(team | async)">{{(team | async) || ''}}</p>
-                <p>{{character | async}}</p>
-                <p *ngIf="!!(workType | async)">{{(workType | async) || ''}}</p>
-            </div>
+            <p *ngIf="!!(projectName | async)">{{projectName | async}}</p>
+            <p *ngIf="!!(team | async)">{{(team | async) || ''}}</p>
+            <p>{{character | async}}</p>
+            <p *ngIf="!!(workType | async)">{{(workType | async) || ''}}</p>
         </ion-item>
     </ion-card>
 
-    <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
+    <icon-bar
+        [icons]="icons | async"
+        (goTo)="goTo($event)"
+    ></icon-bar>
 
     <ion-list>
-        <ion-item *ngFor="let setting of settings" (click)="goTo(setting)">
-            <ion-icon [name]="setting.icon" item-start></ion-icon>
+        <ion-item
+            *ngFor="let setting of settings"
+            (click)="goTo(setting)"
+        >
+            <ion-icon
+                [name]="setting.icon"
+                item-start
+            ></ion-icon>
             {{setting.name | translate}}
-            <ion-icon name="arrow-forward" item-end></ion-icon>
+            <ion-icon
+                name="arrow-forward"
+                item-end
+            ></ion-icon>
         </ion-item>
     </ion-list>
 
-    <button ion-button block color="danger" (click)="logout()">{{'LOGOUT' | translate}}</button>
+    <button
+        ion-button
+        block
+        color="danger"
+        (click)="logout()"
+    >
+        {{'LOGOUT' | translate}}
+    </button>
 
 </ion-content>

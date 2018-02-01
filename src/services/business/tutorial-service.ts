@@ -1,19 +1,21 @@
-import { Slides } from 'ionic-angular';
+import 'rxjs/add/observable/from';
+import 'rxjs/add/operator/bufferCount';
+import 'rxjs/add/operator/last';
+import 'rxjs/add/operator/mergeAll';
+import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/zip';
+
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
-import { AddSlidesAction, ToggleSkipAction } from '../../actions/action/tutorial-action';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/from';
-import 'rxjs/add/operator/bufferCount';
-import 'rxjs/add/operator/zip'
-import 'rxjs/add/operator/reduce';
-import 'rxjs/add/operator/last';
-import 'rxjs/add/operator/mergeAll';
+import { Slides } from 'ionic-angular';
 import { zipObject } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AddSlidesAction, ToggleSkipAction } from '../../actions/action/tutorial-action';
 import { Slide } from '../../interfaces/tutorial-interface';
 import { State } from '../../reducers/reducer/tutorial-reducer';
-import { Subscription } from 'rxjs/Subscription';
 
 @Injectable()
 export class TutorialService {
@@ -21,7 +23,6 @@ export class TutorialService {
         private store: Store<State>,
         private translate: TranslateService
     ) {
-
     }
 
     slideChange(slides: Slides) {

@@ -1,13 +1,23 @@
-import { OrderFlag, BindingStateFlag, ConditionOption } from './../../interfaces/order-interface';
-import { AttendanceCardAddOptions, AttendanceCardDeleteOptions, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
-import { AttendanceCardListResponse, AttendanceCardAddResponse, AttendanceCardDeleteResponse, AttendanceCardUpdateResponse, AttendanceCard } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/attendance-card-action';
+import { BindingStateFlag, ConditionOption, OrderFlag } from './../../interfaces/order-interface';
+import {
+    AttendanceCardAddOptions,
+    AttendanceCardDeleteOptions,
+    AttendanceCardUpdateOptions,
+} from './../../interfaces/request-interface';
+import {
+    AttendanceCard,
+    AttendanceCardAddResponse,
+    AttendanceCardDeleteResponse,
+    AttendanceCardListResponse,
+    AttendanceCardUpdateResponse,
+} from './../../interfaces/response-interface';
 
 export enum AttendanceCardResponses {
     queryResponse = 'queryResponse',
     addResponse = 'addResponse',
     deleteResponse = 'deleteResponse',
-    updateResponse = 'updateResponse'
+    updateResponse = 'updateResponse',
 }
 
 export interface State {
@@ -36,13 +46,13 @@ export const initialState: State = {
     updateOptions: null,
     orderOptions: [
         { text: 'HIGH_TO_LOW', selected: true, condition: OrderFlag.highToLow },
-        { text: 'LOW_TO_HIGH', selected: false, condition: OrderFlag.lowToHigh }
+        { text: 'LOW_TO_HIGH', selected: false, condition: OrderFlag.lowToHigh },
     ],
     bindingStateOptions: [
         { text: 'ALL', selected: true, condition: BindingStateFlag.noneState },
         { text: 'BINDING', selected: false, condition: BindingStateFlag.binding },
-        { text: 'UNBOUND', selected: false, condition: BindingStateFlag.unbind }
-    ]
+        { text: 'UNBOUND', selected: false, condition: BindingStateFlag.unbind },
+    ],
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -129,7 +139,7 @@ export function updateCard(card: AttendanceCard, option: AttendanceCardUpdateOpt
             user_id: NaN,
             id: card.id,
             user__employee__realname: '',
-            company_id: NaN
+            company_id: NaN,
         };
     }
 }

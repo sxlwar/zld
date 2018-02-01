@@ -1,10 +1,20 @@
-import { GET_HISTORY_LOCATION, GetHistoryLocationListAction, HistoryLocationListFailAction, HistoryLocationListSuccessAction, GET_PROJECT_AREA, ProjectAreaListFailAction, ProjectAreaListSuccessAction, GetProjectAreaListAction } from './../actions/action/location-action';
-import { ResponseAction, Area } from './../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from './../services/api/websocket-service';
-import { Command } from './../services/api/command';
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+
+import {
+    GET_HISTORY_LOCATION,
+    GET_PROJECT_AREA,
+    GetHistoryLocationListAction,
+    GetProjectAreaListAction,
+    HistoryLocationListFailAction,
+    HistoryLocationListSuccessAction,
+    ProjectAreaListFailAction,
+    ProjectAreaListSuccessAction,
+} from './../actions/action/location-action';
+import { Area, ResponseAction } from './../interfaces/response-interface';
+import { Command } from './../services/api/command';
+import { WebsocketService } from './../services/api/websocket-service';
 
 @Injectable()
 export class LocationEffect extends Command {
@@ -14,7 +24,9 @@ export class LocationEffect extends Command {
         .switchMap((action: GetHistoryLocationListAction) => this.ws
             .send(this.getHistoryLocationList(action.payload))
             .takeUntil(this.actions$.ofType(GET_HISTORY_LOCATION))
-            .map(msg => msg.isError ? new HistoryLocationListFailAction(msg.data) : new HistoryLocationListSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new HistoryLocationListFailAction(msg.data)
+                : new HistoryLocationListSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -38,7 +50,7 @@ export class LocationEffect extends Command {
                         project_id,
                         bigpolygons: bigpolygons && JSON.parse(bigpolygons as string),
                         polygons: polygons && JSON.parse(polygons as string),
-                        wgspolygons: wgspolygons && JSON.parse(wgspolygons as string)
+                        wgspolygons: wgspolygons && JSON.parse(wgspolygons as string),
                     };
                 });
 

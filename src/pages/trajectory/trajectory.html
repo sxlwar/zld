@@ -4,10 +4,19 @@
         <ion-title>{{'WORKER_TRAJECTORY' | translate}}</ion-title>
         <ion-buttons end>
 
-            <button ion-button icon-only (click)="selectWorker($event)" *ngIf="haveTrajectory | async">
+            <button
+                ion-button
+                icon-only
+                (click)="selectWorker($event)"
+                *ngIf="haveTrajectory | async"
+            >
                 <ion-icon name="man"></ion-icon>
             </button>
-            <button ion-button icon-only (click)="setCondition()">
+            <button
+                ion-button
+                icon-only
+                (click)="setCondition()"
+            >
                 <ion-icon name="settings"></ion-icon>
             </button>
 
@@ -17,37 +26,92 @@
 
 </ion-header>
 
-
 <ion-content>
-    <ion-toolbar class="location-tip-pane" *ngIf="!!(trajectoryInfo | async)?.name">
+    <ion-toolbar
+        class="location-tip-pane"
+        *ngIf="!!(trajectoryInfo | async)?.name"
+    >
         <div>{{(trajectoryInfo | async)?.time}}</div>
         <div>{{(trajectoryInfo | async)?.name}}</div>
     </ion-toolbar>
 
-    <div #trajectory id="trajectory" class="map"></div>
+    <div
+        #trajectory
+        id="trajectory"
+        class="map"
+    ></div>
 
-    <ion-fab bottom right>
+    <ion-fab
+        bottom
+        right
+    >
         <button ion-fab>{{'PLAY' | translate}}</button>
         <ion-fab-list side="left">
-            <button ion-fab [color]="(playButtonColor | async) === 1 ? 'primary' : 'light'" (click)="playStateSubject.next(1)">
+            <button
+                ion-fab
+                [color]="(playButtonColor | async) === 1 ? 'primary' : 'light'"
+                (click)="playStateSubject.next(1)"
+            >
                 <ion-icon name="play"></ion-icon>
             </button>
-            <button ion-fab [color]="(playButtonColor | async) === 2 ? 'primary' : 'light'" (click)="playStateSubject.next(2)">
+            <button
+                ion-fab
+                [color]="(playButtonColor | async) === 2 ? 'primary' : 'light'"
+                (click)="playStateSubject.next(2)"
+            >
                 <ion-icon name="pause"></ion-icon>
             </button>
-            <button ion-fab [color]="(playButtonColor | async) === 3 ? 'primary' : 'light'" (click)="playStateSubject.next(3)">
+            <button
+                ion-fab
+                [color]="(playButtonColor | async) === 3 ? 'primary' : 'light'"
+                (click)="playStateSubject.next(3)"
+            >
                 <ion-icon name="refresh"></ion-icon>
             </button>
-            <button ion-fab [color]="(playButtonColor | async) === 0 ? 'primary' : 'light'" (click)="playStateSubject.next(0)">
+            <button
+                ion-fab
+                [color]="(playButtonColor | async) === 0 ? 'primary' : 'light'"
+                (click)="playStateSubject.next(0)"
+            >
                 <ion-icon name="square"></ion-icon>
             </button>
         </ion-fab-list>
         <ion-fab-list side="top">
-            <button ion-fab [color]="(rateButtonColor | async) === 1? 'primary': 'light'" (click)="rateSubject.next(1)">{{'NORMAL' | translate}}</button>
-            <button ion-fab [color]="(rateButtonColor | async) === 2? 'primary': 'light'" (click)="rateSubject.next(2)">{{'DOUBLE_RATE' | translate}}</button>
-            <button ion-fab [color]="(rateButtonColor | async) === 4? 'primary': 'light'" (click)="rateSubject.next(4)">{{'FOUR_FOLD_RATE' | translate}}</button>
-            <button ion-fab [color]="(rateButtonColor | async) === 8? 'primary': 'light'" (click)="rateSubject.next(8)">{{'EIGHT_FOLD_RATE' | translate}}</button>
-            <button ion-fab [color]="(rateButtonColor | async) === 16? 'primary': 'light'" (click)="rateSubject.next(16)">{{'SIXTEEN_RATE' | translate}}</button>
+            <button
+                ion-fab
+                [color]="(rateButtonColor | async) === 1? 'primary': 'light'"
+                (click)="rateSubject.next(1)"
+            >
+                {{'NORMAL' | translate}}
+            </button>
+            <button
+                ion-fab
+                [color]="(rateButtonColor | async) === 2? 'primary': 'light'"
+                (click)="rateSubject.next(2)"
+            >
+                {{'DOUBLE_RATE' | translate}}
+            </button>
+            <button
+                ion-fab
+                [color]="(rateButtonColor | async) === 4? 'primary': 'light'"
+                (click)="rateSubject.next(4)"
+            >
+                {{'FOUR_FOLD_RATE' | translate}}
+            </button>
+            <button
+                ion-fab
+                [color]="(rateButtonColor | async) === 8? 'primary': 'light'"
+                (click)="rateSubject.next(8)"
+            >
+                {{'EIGHT_FOLD_RATE' | translate}}
+            </button>
+            <button
+                ion-fab
+                [color]="(rateButtonColor | async) === 16? 'primary': 'light'"
+                (click)="rateSubject.next(16)"
+            >
+                {{'SIXTEEN_RATE' | translate}}
+            </button>
         </ion-fab-list>
     </ion-fab>
 </ion-content>

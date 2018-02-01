@@ -1,9 +1,10 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { MessageService } from './../../services/business/message-service';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { InfiniteScroll } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { Message, MessageType } from './../../interfaces/response-interface';
-import { Component, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { MessageService } from './../../services/business/message-service';
 
 const messageTypes = [
     { value: 0, text: MessageType[0] },
@@ -18,7 +19,7 @@ const messageTypes = [
 
 @Component({
     selector: 'message-list',
-    templateUrl: 'message-list.html'
+    templateUrl: 'message-list.html',
 })
 export class MessageListComponent implements OnDestroy {
     @Input() messages: Message[];
@@ -51,7 +52,8 @@ export class MessageListComponent implements OnDestroy {
 
         this.subscriptions = [
             ...this.subscriptions,
-            this.messageService.deleteMessage(Observable.of([target.id]))
+
+            this.messageService.deleteMessage(Observable.of([target.id])),
         ];
     }
 

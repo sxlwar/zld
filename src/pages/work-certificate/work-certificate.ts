@@ -1,12 +1,14 @@
-import { CraftService } from './../../services/business/craft-service';
-import { CertificateAddOptions } from './../../interfaces/request-interface';
-import { Certificate } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { AddWorkCertificateComponent } from './../../components/add-work-certificate/add-work-certificate';
-import { WorkCertificateService } from './../../services/business/work-certificate-service';
-import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AddWorkCertificateComponent } from './../../components/add-work-certificate/add-work-certificate';
+import { CertificateAddOptions, CertificateUpdateOptions } from './../../interfaces/request-interface';
+import { Certificate } from './../../interfaces/response-interface';
+import { CraftService } from './../../services/business/craft-service';
+import { WorkCertificateService } from './../../services/business/work-certificate-service';
 
 @IonicPage()
 @Component({
@@ -19,25 +21,38 @@ export class WorkCertificatePage {
 
     subscriptions: Subscription[] = [];
 
+    add$: Subject<CertificateAddOptions> = new Subject();
+
+    update$: Subject<CertificateUpdateOptions> = new Subject();
+
+    delete$: Subject<Certificate> = new Subject();
+
     constructor(
         private certificate: WorkCertificateService,
         private modalCtrl: ModalController,
         private craft: CraftService
     ) {
-        this.subscriptions = certificate.handleError();
     }
 
     ionViewDidLoad() {
         this.initialModel();
 
-        this.sendRequest();
+        this.launch();
     }
 
-    sendRequest(): void {
+    launch(): void {
         this.subscriptions = [
-            ...this.subscriptions,
             this.certificate.getCertificateList(),
+
+            this.certificate.addCertificate(this.add$),
+
+            this.certificate.updateCertificate(this.update$),
+
+            this.certificate.deleteCertificate(this.delete$.map(item => item.id)),
+
             this.certificate.updateCertificateImage(),
+
+            ...this.certificate.handleError(),
         ];
     }
 
@@ -54,7 +69,7 @@ export class WorkCertificatePage {
 
         modal.present();
 
-        modal.onDidDismiss((data: CertificateAddOptions) => data && this.subscriptions.push(this.certificate.addCertificate(Observable.of(data))))
+        modal.onDidDismiss((data: CertificateAddOptions) => data && this.add$.next(data));
     }
 
     updateCertificate($event: Event, target: Certificate): void {
@@ -64,16 +79,12 @@ export class WorkCertificatePage {
 
         modal.present();
 
-        modal.onDidDismiss((data: CertificateAddOptions) => data && this.subscriptions.push(this.certificate.updateCertificate(Observable.of({ ...data, id: target.id }))));
-    }
-
-    deleteCertificate($event: Event, target: Certificate): void {
-        $event.stopPropagation();
-
-        this.certificate.deleteCertificate(Observable.of(target.id));
+        modal.onDidDismiss((data: CertificateAddOptions) => data && this.update$.next({ ...data, id: target.id }));
     }
 
     ionViewWillUnload() {
+        this.certificate.resetErrorResponse();
+
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

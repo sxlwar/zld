@@ -1,19 +1,15 @@
 history-location {
-
     .worker-list {
         margin-bottom: 0;
-        padding-bottom: 0!important;
+        padding-bottom: 0 !important;
         min-height: 60vh;
     }
-    
     .ios .worker-list {
         margin-top: -64px;
     }
-
     .md .worker-list {
         margin-top: -32px;
     }
-
     ion-label span {
         font-size: 12px;
         float: right;

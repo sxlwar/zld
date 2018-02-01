@@ -1,14 +1,15 @@
+import { Component } from '@angular/core';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AuditTarget, MissionListItem, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
-import { MissionRoot, pieceAuditDetailPage, applyPieceAuditPage } from './../pages';
 import { pieceAudit } from './../../services/business/icon-service';
 import { StatisticsService } from './../../services/business/statistics-service';
-import { PermissionService } from './../../services/config/permission-service';
-import { Subscription } from 'rxjs/Subscription';
-import { MissionListItem, AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
-import { Observable } from 'rxjs/Observable';
 import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { PermissionService } from './../../services/config/permission-service';
+import { applyPieceAuditPage, MissionRoot, pieceAuditDetailPage } from './../pages';
 
 @IonicPage()
 @Component({

@@ -1,5 +1,5 @@
-import { WorkTypeListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/craft-action';
+import { WorkTypeListResponse } from '../../interfaces/response-interface';
 
 export interface State {
     workTypeResponse: WorkTypeListResponse;
@@ -8,9 +8,9 @@ export interface State {
 
 export const initialState: State = {
     workTypeResponse: {
-        information: []
+        information: [],
     },
-    selectedWorkTypes: []
+    selectedWorkTypes: [],
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {

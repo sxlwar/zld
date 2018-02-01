@@ -1,16 +1,18 @@
-import { LaunchService } from './../../services/business/launch-service';
-import { Subject } from 'rxjs/Subject';
-import { ENV } from '@app/env';
-import { editWorkerContractPage } from './../pages';
-import { TimeService } from './../../services/utils/time-service';
-import { ProjectService } from './../../services/business/project-service';
-import { Subscription } from 'rxjs/Subscription';
-import { WorkerService } from './../../services/business/worker-service';
-import { WorkerContract, ContractTypeOfResponse, Project } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController, NavController } from 'ionic-angular';
+import { ENV } from '@app/env';
+import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { chain } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { ContractTypeOfResponse, Project, WorkerContract } from './../../interfaces/response-interface';
+import { LaunchService } from './../../services/business/launch-service';
+import { ProjectService } from './../../services/business/project-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { TimeService } from './../../services/utils/time-service';
+import { editWorkerContractPage } from './../pages';
+
 
 interface Contract {
     // partyA info
@@ -26,7 +28,7 @@ interface Contract {
     // expire: string;
     expire: string;
 
-    //pay 
+    //pay
     payType: string;
     payday: number;
 
@@ -104,7 +106,9 @@ export class WorkerContractPage {
     }
 
     ionViewDidLoad() {
-        const contract = this.contractId ? this.getContractById(this.contractId) : this.getContractByUser();
+        const contract = this.contractId
+            ? this.worker.getContractByIdReactContractsChange(Observable.of(this.contractId)).filter(value => !!value)
+            : this.getContractByUser();
 
         this.initialModel(contract);
 
@@ -112,20 +116,27 @@ export class WorkerContractPage {
     }
 
     initialModel(contract: Observable<WorkerContract>): void {
-        this.contract$ = contract
-            .withLatestFrom(
+        this.contract$ = contract.withLatestFrom(
             this.project.getCurrentProject(),
-            (contract, project) => contract.type === ContractTypeOfResponse.timer ? this.getTimerContract(contract, project) : this.getPiecerContract(contract, project)
-            );
+            (contract, project) => contract.type === ContractTypeOfResponse.timer
+                ? this.getTimerContract(contract, project)
+                : this.getPiecerContract(contract, project)
+        );
 
         this.isTimerContract$ = this.contract$.map(contract => contract.payType === ContractTypeOfResponse.timer);
     }
 
     launch(contract: Observable<WorkerContract>): void {
         this.subscriptions = [
-            contract.subscribe(contract => this.source = contract),
+            contract.subscribe(contract => (this.source = contract)),
 
-            this.launchService.terminateWorkerContract(this.terminate$.mapTo({ date: this.time.getDateInfo(this.time.getYesterday()).fullDate, contractId: this.contractId, attach: [] })),
+            this.launchService.terminateWorkerContract(
+                this.terminate$.mapTo({
+                    date: this.time.getDateInfo(this.time.getYesterday()).fullDate,
+                    contractId: this.contractId,
+                    attach: [],
+                })
+            ),
 
             this.launchService.getSuccessResponseOfWorkerContractTermination().subscribe(_ => this.navCtrl.pop()),
 
@@ -137,10 +148,6 @@ export class WorkerContractPage {
 
             this.launchService.handleWorkerContractTerminationError(),
         ];
-    }
-
-    getContractById(id: number): Observable<WorkerContract> {
-        return this.worker.getContractById(Observable.of(id)).filter(value => !!value);
     }
 
     getContractByUser(): Observable<WorkerContract> {
@@ -160,17 +167,17 @@ export class WorkerContractPage {
         return {
             ...this.getCommonPart(contract, project),
             job: timePaySource.content,
-            unitPrice: timePaySource.pay_mount
+            unitPrice: timePaySource.pay_mount,
         };
     }
 
     getPiecerContract(contract: WorkerContract, project: Project): PieceContract {
         const pieces = contract.work_piece_pay.map(item => ({
-            unitPrice: item.pay_mount,
-            pieceName: item.name,
-            pieceLocation: item.location,
             pieceCount: item.num,
-            standard: item.standard
+            pieceLocation: item.location,
+            pieceName: item.name,
+            standard: item.standard,
+            unitPrice: item.pay_mount,
         }));
 
         return { ...this.getCommonPart(contract, project), pieces };
@@ -178,10 +185,10 @@ export class WorkerContractPage {
 
     getCommonPart(contract: WorkerContract, project: Project): Contract {
         const attendanceTimeInterval = chain([
-            contract.morning_time_on_duty,
-            contract.morning_time_off_duty,
+            contract.afternoon_time_off_duty,
             contract.afternoon_time_on_duty,
-            contract.afternoon_time_off_duty
+            contract.morning_time_off_duty,
+            contract.morning_time_on_duty,
         ])
             .compact()
             .map(this.time.withOutSecond)
@@ -191,19 +198,19 @@ export class WorkerContractPage {
             .join(' ');
 
         return {
+            attaches: contract.request_files,
             attendanceTimeInterval,
+            comment: contract.additional_content,
             expire: contract.start_day + '-' + contract.finish_day,
+            launcher: contract.founder__employee__realname,
             partyA: project.sub_contract__contracting__name,
+            partyB: contract.worker__employee__realname,
+            payType: contract.type,
+            payday: contract.pay_day,
             project: project.name,
             team: contract.team__name,
-            launcher: contract.founder__employee__realname,
-            partyB: contract.worker__employee__realname,
             workType: contract.worktype__name,
-            payday: contract.pay_day,
-            payType: contract.type,
-            comment: contract.additional_content,
-            attaches: contract.request_files
-        }
+        };
     }
 
     editContract(): void {

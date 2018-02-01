@@ -1,13 +1,14 @@
-import { getGroupListResponse } from '../../reducers/index-reducer';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
-import { Subscription } from 'rxjs/Subscription';
-import { AppState } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { UserService } from './user-service';
-import { GroupsListResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { getGroupListResponse } from '../../reducers/index-reducer';
+import { GroupsListResponse } from './../../interfaces/response-interface';
+import { AppState } from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class GroupListService {

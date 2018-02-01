@@ -1,7 +1,11 @@
-import { TimeService } from './../../services/utils/time-service';
-import { LocationOptions, TrajectoryOptions, PlayOptions, PlayState } from './../../interfaces/location-interface';
-import { HistoryLocationListResponse, ProjectAreaListResponse, HistoryLocation } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/location-action';
+import { LocationOptions, PlayOptions, PlayState, TrajectoryOptions } from './../../interfaces/location-interface';
+import {
+    HistoryLocation,
+    HistoryLocationListResponse,
+    ProjectAreaListResponse,
+} from './../../interfaces/response-interface';
+import { TimeService } from './../../services/utils/time-service';
 
 export interface State {
     historyLocationResponse: HistoryLocationListResponse;
@@ -27,7 +31,7 @@ export const initialState: State = {
         teamIds: [],
         time: timeService.getTime(false),
         userIds: [],
-        workTypeIds: []
+        workTypeIds: [],
     },
     maxEndTime: '',
     trajectoryMaxEndTime: '',
@@ -35,15 +39,15 @@ export const initialState: State = {
         date: timeService.getDate(new Date(), true),
         endTime: '',
         startTime: '',
-        userIds: []
+        userIds: [],
     },
     playOptions: {
         userIds: [],
         indexes: [],
         trajectories: [],
         playState: PlayState.stop,
-        rateState: 1
-    }
+        rateState: 1,
+    },
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

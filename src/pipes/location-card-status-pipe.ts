@@ -1,6 +1,7 @@
-import { PipeTransform, Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
+
 @Pipe({
-    name: 'locationCardStatus'
+    name: 'locationCardStatus',
 })
 export class LocationCardStatusPipe implements PipeTransform {
     transform(value: number): string {

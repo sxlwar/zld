@@ -6,18 +6,27 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-item>
         <ion-label>{{'SET_QUERY_DATE' | translate}}</ion-label>
-        <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-            min="2017-01-01" [max]="maxDate | async" [(ngModel)]="date" (ngModelChange)="date$.next($event)"></ion-datetime>
+        <ion-datetime
+            displayFormat="YYYY-MM-DD"
+            pickerFormat="YYYY MM DD"
+            [cancelText]="'CANCEL_BUTTON' | translate"
+            [doneText]="'CONFIRM_BUTTON' | translate"
+            min="2017-01-01"
+            [max]="maxDate | async"
+            [(ngModel)]="date"
+            (ngModelChange)="date$.next($event)"
+        ></ion-datetime>
     </ion-item>
-    
+
     <ion-list>
 
-        <ion-list-header text-left>{{'ATTENDANCE_RECORD_TOTAL' | translate}}: {{count | async}}</ion-list-header>
+        <ion-list-header text-left>
+            {{'ATTENDANCE_RECORD_TOTAL' | translate}}: {{count | async}}
+        </ion-list-header>
 
         <ion-item *ngFor="let record of records | async">
             <ion-label>
@@ -26,8 +35,17 @@
 
                     <ion-row>
                         <ion-col>
-                            <ion-icon name="md-log-in" color="secondary" *ngIf="record.type === 1"></ion-icon>
-                            <ion-icon name="md-log-out" color="danger" *ngIf="record.type === 2" style="transform:rotate(180deg)"></ion-icon>
+                            <ion-icon
+                                name="md-log-in"
+                                color="secondary"
+                                *ngIf="record.type === 1"
+                            ></ion-icon>
+                            <ion-icon
+                                name="md-log-out"
+                                color="danger"
+                                *ngIf="record.type === 2"
+                                style="transform:rotate(180deg)"
+                            ></ion-icon>
                             <span>{{record.time}}</span>
                         </ion-col>
                     </ion-row>
@@ -44,13 +62,30 @@
                 <h6>{{record.type | inOut | translate}}</h6>
             </ion-label>
 
-            <ion-icon name="images" color="primary" (click)="showCapture(record)" item-end></ion-icon>
+            <ion-icon
+                name="images"
+                color="primary"
+                (click)="showCapture(record)"
+                item-end
+            ></ion-icon>
         </ion-item>
 
-        <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreData | async">
-            <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
+        <ion-infinite-scroll
+            (ionInfinite)="getNextPage($event)"
+            *ngIf="haveMoreData | async"
+        >
+            <ion-infinite-scroll-content
+                loadingSpinner="bubbles"
+                [loadingText]="'LOADING' | translate"
+            ></ion-infinite-scroll-content>
         </ion-infinite-scroll>
-        <ion-item *ngIf="!(haveMoreData | async)" text-center class="complete">{{'NO_MORE_DATA' | translate}}</ion-item>
+        <ion-item
+            *ngIf="!(haveMoreData | async)"
+            text-center
+            class="complete"
+        >
+            {{'NO_MORE_DATA' | translate}}
+        </ion-item>
 
     </ion-list>
 </ion-content>

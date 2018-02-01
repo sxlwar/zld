@@ -1,10 +1,17 @@
 <ion-header>
 
     <ion-navbar>
-        <ion-title>{{'WORKER_CONTRACT_DETAIL' | translate}}</ion-title>
+        <ion-title>
+            {{'WORKER_CONTRACT_DETAIL' | translate}}
+        </ion-title>
 
         <ion-buttons end>
-            <button ion-button icon-only (click)="editContract()">
+            <button
+                ion-button
+                icon-only
+                (click)="editContract()"
+                *ngIf="!!contractId"
+            >
                 <ion-icon name="create"></ion-icon>
             </button>
         </ion-buttons>
@@ -12,84 +19,119 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-item-group *ngIf="contract$ | async; let contract">
 
-        <!------------------------------------Common section------------------------------------>
+        <!-- ----------------------------------Common section---------------------------------- -->
 
         <ion-item>
             <ion-label fixed>{{'CONTRACT_TYPE' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.payType  | uppercase | translate"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.payType  | uppercase | translate"
+            ></ion-input>
         </ion-item>
 
         <ion-item-divider>{{'PARTY_A' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.partyA"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.partyA"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'PROJECT_NAME' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.project"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.project"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'TEAM' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.team"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.team"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'LAUNCHER' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.launcher"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.launcher"
+            ></ion-input>
         </ion-item>
 
         <ion-item-divider>{{'PARTY_B' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label fixed>{{'NAME' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.partyB"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.partyB"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'WORK_TYPE' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.workType"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.workType"
+            ></ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item *ngIf="isTimerContract$ | async">
             <ion-label fixed>{{'JOB_DUTY' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.job"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.job"
+            ></ion-input>
         </ion-item>
 
         <ion-item-divider>{{'CONTRACT_EXPIRE' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label fixed>{{'CONTRACT_EXPIRE' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.expire"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.expire"
+            ></ion-input>
         </ion-item>
 
-        <!------------------------------------Timer contract section------------------------------------>
+        <!-- ----------------------------------Timer contract section---------------------------------- -->
 
         <ion-item-divider>{{'SALARY_PAY_TYPE' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label fixed>{{'SALARY_PAY_TYPE' | translate}}</ion-label>
             <!-- For simplicity, the values of this field are coupled to the keys of the i18n. -->
-            <ion-input disabled [value]="contract.payType | uppercase | translate"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.payType | uppercase | translate"
+            ></ion-input>
         </ion-item>
 
         <ion-item *ngIf="isTimerContract$ | async">
             <ion-label fixed>{{'HOURLY_WAGE' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.unitPrice | priceUnit:'timer' | async"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.unitPrice | priceUnit:'timer' | async"
+            ></ion-input>
         </ion-item>
 
         <ion-item>
             <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.payday | everyMonth"></ion-input>
+            <ion-input
+                disabled
+                [value]="contract.payday | everyMonth"
+            ></ion-input>
         </ion-item>
 
-        <!------------------------------------Piecer contract section------------------------------------>
+        <!-- ----------------------------------Piecer contract section---------------------------------- -->
 
         <ion-card *ngFor="let piece of contract?.pieces">
             <ion-card-header text-center>{{piece.pieceName}}</ion-card-header>
@@ -99,48 +141,82 @@
 
                     <ion-item>
                         <ion-label fixed>{{'PIECE_LOCATION' | translate}}</ion-label>
-                        <ion-input disabled [value]="piece.pieceLocation"></ion-input>
+                        <ion-input
+                            disabled
+                            [value]="piece.pieceLocation"
+                        ></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label fixed>{{'PIECE_COUNT' | translate}}</ion-label>
-                        <ion-input disabled [value]="piece.pieceCount"></ion-input>
+                        <ion-input
+                            disabled
+                            [value]="piece.pieceCount"
+                        ></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
-                        <ion-input disabled [value]="piece.unitPrice | priceUnit:'piecer' | async"></ion-input>
+                        <ion-input
+                            disabled
+                            [value]="piece.unitPrice | priceUnit:'piecer' | async"
+                        ></ion-input>
                     </ion-item>
 
                     <ion-item>
                         <ion-label fixed>{{'STANDARD' | translate}}</ion-label>
-                        <ion-input disabled [value]="piece.standard"></ion-input>
+                        <ion-input
+                            disabled
+                            [value]="piece.standard"
+                        ></ion-input>
                     </ion-item>
 
                 </ion-list>
             </ion-card-content>
         </ion-card>
 
-        <ion-item-divider>{{'ATTENDANCE_TIME_INTERVAL' | translate}}</ion-item-divider>
+        <ion-item-divider>
+            {{'ATTENDANCE_TIME_INTERVAL' | translate}}
+        </ion-item-divider>
 
         <ion-item>
-            <ion-label fixed>{{'ATTENDANCE_TIME_INTERVAL' | translate}}</ion-label>
-            <ion-input disabled [value]="contract.attendanceTimeInterval"></ion-input>
+            <ion-label fixed>
+                {{'ATTENDANCE_TIME_INTERVAL' | translate}}
+            </ion-label>
+            <ion-input
+                disabled
+                [value]="contract.attendanceTimeInterval"
+            ></ion-input>
         </ion-item>
 
         <ion-item-divider>{{'SUPPLEMENT_CONTENT' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label fixed>{{'COMMENT' | translate}}</ion-label>
-            <ion-textarea disabled [value]="contract.comment" autoSize></ion-textarea>
+            <ion-textarea
+                disabled
+                [value]="contract.comment"
+                autoSize
+            ></ion-textarea>
         </ion-item>
 
         <div *ngIf="contract?.attaches?.length">
             <ion-item-divider>{{'ATTACH' | translate}}</ion-item-divider>
-            <img *ngFor="let src of contract?.attaches" [src]="prefix + src">
+            <img
+                *ngFor="let src of contract?.attaches"
+                [src]="prefix + src"
+            >
         </div>
 
     </ion-item-group>
 
-    <button ion-button block color="danger" (click)="terminate$.next(true)" *ngIf="!!contractId">{{'TERMINATE_CONTRACT' | translate}}</button>
+    <button
+        ion-button
+        block
+        color="danger"
+        (click)="terminate$.next(true)"
+        *ngIf="!!contractId"
+    >
+        {{'TERMINATE_CONTRACT' | translate}}
+    </button>
 </ion-content>

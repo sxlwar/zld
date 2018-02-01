@@ -1,8 +1,9 @@
-import { WorkerContractEditOptions, EditPiecePayOptions } from './../../interfaces/request-interface';
-import { WorkerContractEditResponse, ContractTypeOfResponse, PiecePay } from './../../interfaces/response-interface';
 import { uniqBy } from 'lodash';
-import { WorkerContract, WorkerContractListResponse } from '../../interfaces/response-interface';
+
 import * as actions from '../../actions/action/worker-action';
+import { WorkerContract, WorkerContractListResponse } from '../../interfaces/response-interface';
+import { EditPiecePayOptions, WorkerContractEditOptions } from './../../interfaces/request-interface';
+import { ContractTypeOfResponse, PiecePay, WorkerContractEditResponse } from './../../interfaces/response-interface';
 
 export interface ContractManagement {
     timerPage: number;
@@ -35,7 +36,7 @@ export const initialState: State = {
         piecerPage: 1,
         piecerCount: 0,
         timerContractIds: [],
-        piecerContractIds: []
+        piecerContractIds: [],
     },
     selectedWorkers: [],
     contractEditResponse: null,
@@ -129,7 +130,10 @@ export function reducer(state = initialState, action: actions.Actions): State {
                 ...state,
                 contractEditResponse: action.payload,
                 workerContracts: updateWorkerContract(state.contractEditOptions, state.workerContracts),
-                workerContractResponse: { ...state.workerContractResponse, worker_contract: updateWorkerContract(state.contractEditOptions, state.workerContractResponse.worker_contract) },
+                workerContractResponse: {
+                    ...state.workerContractResponse,
+                    worker_contract: updateWorkerContract(state.contractEditOptions, state.workerContractResponse.worker_contract),
+                },
             };
 
         case actions.RESET_WORKER_CONTRACT_EDIT_RESPONSE:
@@ -142,8 +146,8 @@ export function reducer(state = initialState, action: actions.Actions): State {
                 workerContractResponse: {
                     ...state.workerContractResponse,
                     count: state.workerContractResponse.count - 1,
-                    worker_contract: state.workerContractResponse.worker_contract.filter(item => item.id !== action.payload)
-                }
+                    worker_contract: state.workerContractResponse.worker_contract.filter(item => item.id !== action.payload),
+                },
             };
 
         case actions.GET_QUERY_WORKER_CONTRACT_PAGE:

@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import Chart from 'chart.js';
 
 export interface ChartSourceData {
@@ -23,7 +23,7 @@ export enum ChartType {
     pie = 'pie',
     doughnut = 'doughnut',
     bar = 'bar',
-    horizontalBar = 'horizontalBar'
+    horizontalBar = 'horizontalBar',
 }
 
 const COLORS = [
@@ -82,9 +82,9 @@ export class ChartService {
                 {
                     backgroundColor,
                     hoverBackgroundColor,
-                    data: sourceData.data
-                }
-            ]
+                    data: sourceData.data,
+                },
+            ],
         }
     }
 
@@ -104,9 +104,9 @@ export class ChartService {
                     label: legendLabel,
                     backgroundColor,
                     hoverBackgroundColor,
-                    data
-                }
-            ]
+                    data,
+                },
+            ],
         }
     }
 
@@ -117,17 +117,17 @@ export class ChartService {
                     ticks: {
                         callback(value: string, index: number, values): string {
                             return value.length > 4 ? value.slice(0, 4) + '...' : value;
-                        }
-                    }
-                }]
+                        },
+                    },
+                }],
             },
             tooltips: {
                 callbacks: {
                     title(tooltipItems, data): string {
                         return data.labels[tooltipItems[0].index];
-                    }
-                }
-            }
+                    },
+                },
+            },
         };
     }
 

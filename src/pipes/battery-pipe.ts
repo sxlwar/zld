@@ -1,9 +1,9 @@
-import { PipeTransform, Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 const warningValue = 20;
 
 @Pipe({
-    name: 'battery'
+    name: 'battery',
 })
 export class BatteryPipe implements PipeTransform {
     transform(value: number): string {
@@ -13,7 +13,7 @@ export class BatteryPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'percentBattery'
+    name: 'percentBattery',
 })
 export class PercentBatteryPipe implements PipeTransform {
     transform(value: number): string {
@@ -23,7 +23,7 @@ export class PercentBatteryPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'isLowPower'
+    name: 'isLowPower',
 })
 export class IsLowPowerPipe implements PipeTransform {
     transform(value: number): boolean {

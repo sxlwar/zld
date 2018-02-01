@@ -1,7 +1,18 @@
 import { omit } from 'lodash';
-import { WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions } from './../../interfaces/request-interface';
-import { WorkerBankNoListResponse, BankInfoResponse, WorkerBankNoAddResponse, WorkerBankNoDeleteResponse, SetBankNOMasterResponse } from './../../interfaces/response-interface';
+
 import * as actions from '../../actions/action/bank-card-action';
+import {
+    SetBankNoMasterOptions,
+    WorkerBankNoAddOptions,
+    WorkerBankNoDeleteOptions,
+} from './../../interfaces/request-interface';
+import {
+    BankInfoResponse,
+    SetBankNOMasterResponse,
+    WorkerBankNoAddResponse,
+    WorkerBankNoDeleteResponse,
+    WorkerBankNoListResponse,
+} from './../../interfaces/response-interface';
 
 export interface State {
     bankcardResponse: WorkerBankNoListResponse;
@@ -22,7 +33,7 @@ export const initialState: State = {
     bankcardAddResponse: null,
     bankcardDeleteResponse: null,
     setMasterCardResponse: null,
-    setMasterCardOptions: null
+    setMasterCardOptions: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -42,7 +53,13 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, bankcardAddResponse: action.payload };
 
         case actions.ADD_BANK_CARD_SUCCESS:
-            return { ...state, bankcardAddResponse: action.payload, bankcardResponse: { person_bank_no: [...state.bankcardResponse.person_bank_no, omit(state.bankcardAddOptions, ['sid'])] } }; //TODO: 添加成功以后需要再去查一下卡的信息；
+            return {
+                ...state,
+                bankcardAddResponse: action.payload,
+                bankcardResponse: {
+                    person_bank_no: [...state.bankcardResponse.person_bank_no, omit(state.bankcardAddOptions, ['sid'])],
+                },
+            }; //TODO: 添加成功以后需要再去查一下卡的信息；
 
         case actions.DELETE_BANK_CARD:
             return { ...state, bankcardDeleteOptions: action.payload };
@@ -51,7 +68,13 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, bankcardDeleteResponse: action.payload };
 
         case actions.BANK_CARD_DELETE_SUCCESS:
-            return { ...state, bankcardDeleteResponse: action.payload, bankcardResponse: { person_bank_no: state.bankcardResponse.person_bank_no.filter(item => item.id !== state.bankcardDeleteOptions.card_id) } };
+            return {
+                ...state,
+                bankcardDeleteResponse: action.payload,
+                bankcardResponse: {
+                    person_bank_no: state.bankcardResponse.person_bank_no.filter(item => item.id !== state.bankcardDeleteOptions.card_id),
+                },
+            };
 
         case actions.SET_MASTER_BANK_CARD:
             return { ...state, setMasterCardOptions: action.payload };
@@ -60,7 +83,16 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, setMasterCardResponse: action.payload };
 
         case actions.SET_MASTER_BANK_CARD_SUCCESS:
-            return { ...state, setMasterCardResponse: action.payload, bankcardResponse: { person_bank_no: state.bankcardResponse.person_bank_no.map(item => item.id === state.setMasterCardOptions.bankno_id ? { ...item, ismaster: state.setMasterCardOptions.flag === 2 } : item) } };
+            return {
+                ...state,
+                setMasterCardResponse: action.payload,
+                bankcardResponse: {
+                    person_bank_no: state.bankcardResponse.person_bank_no.map(item => item.id === state.setMasterCardOptions.bankno_id
+                        ? { ...item, ismaster: state.setMasterCardOptions.flag === 2 }
+                        : item
+                    ),
+                },
+            };
 
         case actions.RESET_ADD_BANK_CARD_RESPONSE:
             return { ...state, bankcardAddResponse: null };

@@ -1,6 +1,11 @@
-import { MultiTaskUpdateOptions, TaskUpdateOptions, WorkFlowListOptions } from './../../interfaces/request-interface';
-import { WorkFlowListResponse, ProjectPayBillFlowListResponse, MultiTaskUpdateResponse, TaskUpdateResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/work-flow-action';
+import { MultiTaskUpdateOptions, TaskUpdateOptions, WorkFlowListOptions } from './../../interfaces/request-interface';
+import {
+    MultiTaskUpdateResponse,
+    ProjectPayBillFlowListResponse,
+    TaskUpdateResponse,
+    WorkFlowListResponse,
+} from './../../interfaces/response-interface';
 
 export interface State {
     workFlowListResponse: WorkFlowListResponse;
@@ -37,10 +42,8 @@ export const initialState: State = {
     iStartedPage: 1,
     iCompletedPage: 1,
     limit: 20,
-    screeningCondition: ''
+    screeningCondition: '',
 }
-
-
 
 export function reducer(state = initialState, action: actions.Actions): State {
     switch (action.type) {
@@ -52,7 +55,9 @@ export function reducer(state = initialState, action: actions.Actions): State {
 
         case actions.WORK_FLOW_LIST_SUCCESS: {
             if (state.workFlowListResponse) {
-                let { count, request, requests_types } = action.payload;
+                let { request } = action.payload;
+
+                const { count, requests_types } = action.payload;
 
                 request = state.workFlowListResponse.request.concat(request);
 
@@ -73,7 +78,15 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, multiTaskUpdateResponse: action.payload };
 
         case actions.UPDATE_MULTI_TASK_SUCCESS:
-            return { ...state, multiTaskUpdateResponse: action.payload, workFlowListResponse: { ...state.workFlowListResponse, request: state.workFlowListResponse.request.filter(item => state.multiTaskUpdateOptions.id.indexOf(item.task[item.task.length - 1].id) === -1), count: state.workFlowListResponse.count - state.multiTaskUpdateOptions.id.length } };
+            return {
+                ...state,
+                multiTaskUpdateResponse: action.payload,
+                workFlowListResponse: {
+                    ...state.workFlowListResponse,
+                    request: state.workFlowListResponse.request.filter(item => state.multiTaskUpdateOptions.id.indexOf(item.task[item.task.length - 1].id) === -1),
+                    count: state.workFlowListResponse.count - state.multiTaskUpdateOptions.id.length,
+                },
+            };
 
         case actions.UPDATE_TASK:
             return { ...state, taskUpdateOptions: action.payload };
@@ -82,7 +95,15 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, taskUpdateResponse: action.payload };
 
         case actions.UPDATE_TASK_SUCCESS:
-            return { ...state, taskUpdateResponse: action.payload, workFlowListResponse: { ...state.workFlowListResponse, request: state.workFlowListResponse.request.filter(item => item.task[item.task.length - 1].id !== state.taskUpdateOptions.id), count: state.workFlowListResponse.count - 1 } };
+            return {
+                ...state,
+                taskUpdateResponse: action.payload,
+                workFlowListResponse: {
+                    ...state.workFlowListResponse,
+                    request: state.workFlowListResponse.request.filter(item => item.task[item.task.length - 1].id !== state.taskUpdateOptions.id),
+                    count: state.workFlowListResponse.count - 1,
+                },
+            };
 
         case actions.RESET_PAGE: {
             return { ...state, [action.payload]: 1 };

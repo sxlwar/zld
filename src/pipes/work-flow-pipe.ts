@@ -1,9 +1,10 @@
-import { TaskStatus } from './../interfaces/request-interface';
-import { WorkerContractSimple } from './../interfaces/response-interface';
 import { Pipe, PipeTransform } from '@angular/core';
 
+import { TaskStatus } from './../interfaces/request-interface';
+import { WorkerContractSimple } from './../interfaces/response-interface';
+
 @Pipe({
-    name: 'names'
+    name: 'names',
 })
 export class NamesPipe implements PipeTransform {
     transform(source: WorkerContractSimple[]): string {
@@ -12,7 +13,7 @@ export class NamesPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'taskStatus'
+    name: 'taskStatus',
 })
 export class TaskStatusPipe implements PipeTransform {
     transform(source: string): string {
@@ -25,7 +26,7 @@ export class TaskStatusPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'taskStatusColor'
+    name: 'taskStatusColor',
 })
 export class TaskStatusColorPipe implements PipeTransform {
     transform(source: string): string {
@@ -39,7 +40,7 @@ export class TaskStatusColorPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'overtimePay'
+    name: 'overtimePay',
 })
 export class OvertimePayPipe implements PipeTransform {
     transform(source: string): string {

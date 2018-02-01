@@ -1,11 +1,12 @@
-import { WorkFlowAuditComponent } from './../work-flow-audit/work-flow-audit';
-import { ModalController } from 'ionic-angular';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MissionListItem, AuditTarget } from '../../interfaces/mission-interface';
+import { ModalController } from 'ionic-angular';
+
+import { AuditTarget, MissionListItem } from '../../interfaces/mission-interface';
+import { WorkFlowAuditComponent } from './../work-flow-audit/work-flow-audit';
 
 @Component({
     selector: 'mission-list',
-    templateUrl: 'mission-list.html'
+    templateUrl: 'mission-list.html',
 })
 export class MissionListComponent {
 

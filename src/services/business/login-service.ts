@@ -1,26 +1,38 @@
-import { Company } from './../../interfaces/response-interface';
-import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { ShowSpecificInnerSlideAction, ShowSpecificSlideAction, UpdateRandomCodeAction, ResetResetPasswordResponseAction, ResetErrorResponseAction } from '../../actions/action/login-action';
-import { RegisterUserType } from '../../interfaces/request-interface';
-import { Observable } from 'rxjs/Observable';
-import * as fromRoot from '../../reducers/index-reducer';
-import { getPhoneVerCode, getRegister, getResetPassword, getResetPhoneVerCode, selectPhoneVerCodeCaptcha, selectRandomCode, selectResetPhoneVerCodeCaptcha, selectSelectedCompany, selectUserInfo } from '../../reducers/index-reducer';
-import 'rxjs/add/operator/distinctUntilChanged';
-import { ENV } from '@app/env';
-import 'rxjs/add/observable/range';
-import 'rxjs/add/operator/reduce';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/zip'
-import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/operator/switchMap';
-import { Subscription } from 'rxjs/Subscription';
-import { ErrorService } from '../errors/error-service';
-import { LoginResponse, PhoneVerCodeResponse, RegisterResponse, ResetPasswordResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/range';
+import 'rxjs/add/observable/zip';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/reduce';
+import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/withLatestFrom';
+
+import { Injectable } from '@angular/core';
+import { ENV } from '@app/env';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    ResetErrorResponseAction,
+    ResetResetPasswordResponseAction,
+    ShowSpecificInnerSlideAction,
+    ShowSpecificSlideAction,
+    UpdateRandomCodeAction,
+} from '../../actions/action/login-action';
+import { RegisterUserType } from '../../interfaces/request-interface';
+import {
+    LoginResponse,
+    PhoneVerCodeResponse,
+    RegisterResponse,
+    ResetPasswordResponse,
+} from '../../interfaces/response-interface';
+import * as fromRoot from '../../reducers/index-reducer';
 import { LoginFormModel, ResetPwdFormModel, SignUpFormModel } from '../api/mapper-service';
 import { ProcessorService } from '../api/processor-service';
+import { ErrorService } from '../errors/error-service';
 import { createRandomCode } from '../utils/util';
+import { Company } from './../../interfaces/response-interface';
 
 @Injectable()
 export class LoginService {
@@ -43,31 +55,31 @@ export class LoginService {
     }
 
     getVerificationImageUrl(): Observable<string> {
-        return this.store.select(selectRandomCode).map(randomCode => `http://${ENV.DOMAIN}/check_captcha/${randomCode}`);
+        return this.store.select(fromRoot.selectRandomCode).map(randomCode => `http://${ENV.DOMAIN}/check_captcha/${randomCode}`);
     }
 
     getSelectedCompany(): Observable<Company> {
-        return this.store.select(selectSelectedCompany);
+        return this.store.select(fromRoot.selectSelectedCompany);
     }
 
     getLoginInfo(): Observable<LoginResponse> {
-        return this.store.select(selectUserInfo);
+        return this.store.select(fromRoot.selectUserInfo);
     }
 
     getSignUpPhoneVer(): Observable<PhoneVerCodeResponse> {
-        return this.store.select(getPhoneVerCode);
+        return this.store.select(fromRoot.getPhoneVerCode);
     }
 
     getResetPwdPhoneVer(): Observable<PhoneVerCodeResponse> {
-        return this.store.select(getResetPhoneVerCode);
+        return this.store.select(fromRoot.getResetPhoneVerCode);
     }
 
     getRegisterInfo(): Observable<RegisterResponse> {
-        return this.store.select(getRegister);
+        return this.store.select(fromRoot.getRegister);
     }
 
     getResetPasswordInfo(): Observable<ResetPasswordResponse> {
-        return this.store.select(getResetPassword);
+        return this.store.select(fromRoot.getResetPassword);
     }
 
     /* ===================================================================API Request======================================================================== */
@@ -82,8 +94,10 @@ export class LoginService {
         return this.process.loginProcessor(
             form.map(form => this.process.loginFormMap(form))
                 .withLatestFrom(
-                this.store.select(selectRandomCode),
-                ({ username, password, captcha_code }, random_key) => !!captcha_code ? { username, password, captcha_code, random_key } : { username, password }
+                this.store.select(fromRoot.selectRandomCode),
+                ({ username, password, captcha_code }, random_key) => !!captcha_code
+                    ? { username, password, captcha_code, random_key }
+                    : { username, password }
                 )
         );
     }
@@ -97,9 +111,11 @@ export class LoginService {
         return this.process.phoneVerificationProcessor(
             form.map(form => this.process.signUpFormMap(form))
                 .withLatestFrom(
-                this.store.select(selectPhoneVerCodeCaptcha),
-                this.store.select(selectRandomCode),
-                ({ username, captcha_code }, needImageVerCode, random_key) => needImageVerCode ? { username, captcha_code, random_key } : { username }
+                this.store.select(fromRoot.selectPhoneVerCodeCaptcha),
+                this.store.select(fromRoot.selectRandomCode),
+                ({ username, captcha_code }, needImageVerCode, random_key) => needImageVerCode
+                    ? { username, captcha_code, random_key }
+                    : { username }
                 )
         );
     }
@@ -108,9 +124,11 @@ export class LoginService {
         return this.process.resetPhoneVerificationProcessor(
             form.map(form => this.process.resetPwdForm(form))
                 .withLatestFrom(
-                this.store.select(selectResetPhoneVerCodeCaptcha),
-                this.store.select(selectRandomCode),
-                ({ username, captcha_code }, needImageVerCode, random_key) => needImageVerCode ? { username, captcha_code, random_key } : { username }
+                this.store.select(fromRoot.selectResetPhoneVerCodeCaptcha),
+                this.store.select(fromRoot.selectRandomCode),
+                ({ username, captcha_code }, needImageVerCode, random_key) => needImageVerCode
+                    ? { username, captcha_code, random_key }
+                    : { username }
                 )
         );
     }
@@ -119,8 +137,8 @@ export class LoginService {
         return this.process.registerProcessor(
             form.map(form => this.process.signUpFormMap(form))
                 .withLatestFrom(
-                this.store.select(selectRandomCode),
-                this.store.select(selectSelectedCompany),
+                this.store.select(fromRoot.selectRandomCode),
+                this.store.select(fromRoot.selectSelectedCompany),
                 ({ username, password, code, real_name, captcha_code, userType }, rand_captcha_key, company) => {
                     const option = { username, password, code };
 
@@ -136,8 +154,10 @@ export class LoginService {
     resetPwd(form: Observable<ResetPwdFormModel>): Subscription {
         return this.process.resetPwdProcessor(
             form.map(form => this.process.resetPwdForm(form))
-                .withLatestFrom(this.store.select(selectRandomCode),
-                ({ username, password, code, captcha_code }, rand_captcha_key) => !!captcha_code ? { username, password, code, captcha_code, rand_captcha_key } : { username, password, code }
+                .withLatestFrom(this.store.select(fromRoot.selectRandomCode),
+                ({ username, password, code, captcha_code }, rand_captcha_key) => !!captcha_code
+                    ? { username, password, code, captcha_code, rand_captcha_key }
+                    : { username, password, code }
                 )
         );
     }
@@ -165,7 +185,7 @@ export class LoginService {
     resetErrorResponse(): void {
         this.store.dispatch(new ResetErrorResponseAction());
     }
-    
+
     /* =================================================================Error handle================================================================== */
 
     handleLoginError(): Subscription {

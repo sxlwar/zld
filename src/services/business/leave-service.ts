@@ -1,15 +1,16 @@
-import { LeaveRecordListOptions } from './../../interfaces/request-interface';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { RequestOption } from 'interfaces/request-interface';
-import { LeaveRecordListResponse, Leave } from './../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+import { LeaveRecordListOptions } from './../../interfaces/request-interface';
+import { Leave, LeaveRecordListResponse } from './../../interfaces/response-interface';
 import { AppState, selectLeaveRecordListResponse } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
-import { UserService } from './user-service';
-import { Injectable } from '@angular/core';
 import { RecordOptionService } from './record-option-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class LeaveService extends RecordOptionService {

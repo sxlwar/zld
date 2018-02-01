@@ -1,6 +1,7 @@
-import { Action } from "@ngrx/store";
-import { AttendanceInstantListOptions } from "../../interfaces/request-interface";
-import { AttendanceInstantListResponse } from "../../interfaces/response-interface";
+import { Action } from '@ngrx/store';
+
+import { AttendanceInstantListOptions } from '../../interfaces/request-interface';
+import { AttendanceInstantListResponse } from '../../interfaces/response-interface';
 
 /* ======================================================Attendance record response=================================================== */
 
@@ -80,12 +81,21 @@ export class SetLocationAttendanceRecordUsersAction implements Action {
     constructor(public payload: number[]) { }
 }
 
+export const RESET_RECORD_RESPONSE = 'RESET_RECORD_RESPONSE';
+
+export class ResetRecordResponseAction implements Action {
+    readonly type = RESET_RECORD_RESPONSE;
+
+    constructor() { }
+}
+
 export type Actions = GetAttendanceRecordAction
     | AttendanceRecordFailAction
     | AttendanceRecordSuccessAction
     | GetAttendanceRecordMaxDateAction
     | IncreaseRecordPageAction
     | ResetRecordPageAction
+    | ResetRecordResponseAction
     | SetLocationAttendanceRecordEndDateAction
     | SetLocationAttendanceRecordStartDateAction
     | SetLocationAttendanceRecordUsersAction;

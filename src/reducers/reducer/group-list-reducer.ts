@@ -1,12 +1,12 @@
-import { GroupsListResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/group-list-action';
+import { GroupsListResponse } from './../../interfaces/response-interface';
 
 export interface State {
     groupListResponse: GroupsListResponse;
 }
 
 export const initialState: State = {
-    groupListResponse: null
+    groupListResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

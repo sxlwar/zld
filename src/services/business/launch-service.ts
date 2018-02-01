@@ -1,15 +1,41 @@
-import { CreateWorkerContractModifyOptions } from './../../interfaces/request-interface';
-import { ResetWorkerContractEditResponseAction } from './../../actions/action/worker-action';
-import { WorkerContractFormModel, AttendanceModifyFormModel, LeaveFormModel, OvertimeFormModel, PieceAuditFormModel, WorkerContractModifyFormModel, WorkerContractEditFormModel } from './../api/mapper-service';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Store } from '@ngrx/store';
-import { AppState, selectAttendanceModifyOptions, selectSignWorkerContractResponse, selectAttendanceModifyResponse, selectSignWorkerContractOptions, selectWorkerContractResponse, selectLeaveResponse, selectOvertimeResponse, selectPieceAuditResponse, selectWorkerContractModifyResponse, selectLeaveOptions, selectOvertimeOptions, selectPieceAuditOptions, selectWorkerContractModifyOptions, selectWorkerContractEditOptions, selectWorkerContractEditResponse, selectTerminateWorkerContractResponse } from './../../reducers/index-reducer';
-import { UserService } from './user-service';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
-import { Injectable } from '@angular/core';
+
 import { ResetLaunchResponseAction, ResetTerminateWorkerContractResponseAction } from '../../actions/action/launch-action';
+import { ResetWorkerContractEditResponseAction } from './../../actions/action/worker-action';
+import { CreateWorkerContractModifyOptions } from './../../interfaces/request-interface';
+import {
+    AppState,
+    selectAttendanceModifyOptions,
+    selectAttendanceModifyResponse,
+    selectLeaveOptions,
+    selectLeaveResponse,
+    selectOvertimeOptions,
+    selectOvertimeResponse,
+    selectPieceAuditOptions,
+    selectPieceAuditResponse,
+    selectSignWorkerContractOptions,
+    selectSignWorkerContractResponse,
+    selectTerminateWorkerContractResponse,
+    selectWorkerContractEditOptions,
+    selectWorkerContractEditResponse,
+    selectWorkerContractModifyOptions,
+    selectWorkerContractModifyResponse,
+} from './../../reducers/index-reducer';
+import {
+    AttendanceModifyFormModel,
+    LeaveFormModel,
+    OvertimeFormModel,
+    PieceAuditFormModel,
+    WorkerContractEditFormModel,
+    WorkerContractFormModel,
+    WorkerContractModifyFormModel,
+} from './../api/mapper-service';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class LaunchService {
@@ -18,7 +44,7 @@ export class LaunchService {
         private store: Store<AppState>,
         private processor: ProcessorService,
         private error: ErrorService,
-        private userInfo: UserService,
+        private userInfo: UserService
     ) {
 
     }
@@ -27,7 +53,7 @@ export class LaunchService {
 
     getSignWorkerContractResponse(): Observable<number[]> {
         return this.store.select(selectSignWorkerContractResponse)
-            .filter(value => !!value)
+            .filter(value => !!value && !value.errorMessage)
             .map(res => res.information.map(item => item.WorkerContract_id));
     }
 
@@ -275,7 +301,7 @@ export class LaunchService {
     }
 
     handleWorkerContractError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractResponse), 'API_ERROR');
+        return this.error.handleErrorInSpecific(this.store.select(selectSignWorkerContractResponse), 'API_ERROR');
     }
 
     handleAttendanceModifyError(): Subscription {

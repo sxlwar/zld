@@ -1,10 +1,12 @@
+import 'rxjs/add/operator/scan';
+
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import 'rxjs/add/operator/scan'
+
 import { SearchItem } from '../../interfaces/search-interface';
 
 @Component({
     selector: 'fuzzy-search',
-    templateUrl: 'fuzzy-search.html'
+    templateUrl: 'fuzzy-search.html',
 })
 export class FuzzySearchComponent {
 

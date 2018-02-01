@@ -1,5 +1,6 @@
+import { has, omit, random, reduce, values } from 'lodash';
 import { Observable } from 'rxjs/Observable';
-import { omit, has, reduce, values, random } from 'lodash';
+
 import { RequestOption } from './../../interfaces/request-interface';
 
 export interface ReduceFn<T> {
@@ -7,7 +8,7 @@ export interface ReduceFn<T> {
 }
 
 export function curry2Right(fn) {
-    return (value1) => (value2) => fn.call(fn, value1, value2);
+    return value1 => value2 => fn.call(fn, value1, value2);
 }
 
 export function putInArray<T>(acc: T[], cur: T): T[] {

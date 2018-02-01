@@ -1,12 +1,29 @@
-import { TipService } from './../services/tip-service';
-import { ResponseAction } from './../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { GET_LOCATION_CARD_LIST, LocationCardListFailAction, LocationCardListSuccessAction, ADD_LOCATION_CARD, AddLocationCardFailAction, AddLocationCardSuccessAction, AddLocationCardAction, UPDATE_LOCATION_CARD, UpdateLocationCardAction, UpdateLocationCardFailAction, UpdateLocationCardSuccessAction, DELETE_LOCATION_CARD, DeleteLocationCardAction, DeleteLocationCardFailAction, DeleteLocationCardSuccessAction } from './../actions/action/location-card-action';
-import { Command } from './../services/api/command';
-import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from './../services/api/websocket-service';
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+
 import { GetLocationCardListAction } from '../actions/action/location-card-action';
+import {
+    ADD_LOCATION_CARD,
+    AddLocationCardAction,
+    AddLocationCardFailAction,
+    AddLocationCardSuccessAction,
+    DELETE_LOCATION_CARD,
+    DeleteLocationCardAction,
+    DeleteLocationCardFailAction,
+    DeleteLocationCardSuccessAction,
+    GET_LOCATION_CARD_LIST,
+    LocationCardListFailAction,
+    LocationCardListSuccessAction,
+    UPDATE_LOCATION_CARD,
+    UpdateLocationCardAction,
+    UpdateLocationCardFailAction,
+    UpdateLocationCardSuccessAction,
+} from './../actions/action/location-card-action';
+import { ResponseAction } from './../interfaces/response-interface';
+import { Command } from './../services/api/command';
+import { WebsocketService } from './../services/api/websocket-service';
+import { TipService } from './../services/tip-service';
 
 @Injectable()
 export class LocationCardEffect extends Command {
@@ -16,7 +33,9 @@ export class LocationCardEffect extends Command {
         .switchMap((action: GetLocationCardListAction) => this.ws
             .send(this.getLocationCardList(action.payload))
             .takeUntil(this.actions$.ofType(GET_LOCATION_CARD_LIST))
-            .map(msg => msg.isError ? new LocationCardListFailAction(msg.data) : new LocationCardListSuccessAction(msg.data))
+            .map(msg => msg.isError 
+                ? new LocationCardListFailAction(msg.data) 
+                : new LocationCardListSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -27,7 +46,9 @@ export class LocationCardEffect extends Command {
             .send(this.getLocationCardAdd(action.payload))
             .takeUntil(this.actions$.ofType(ADD_LOCATION_CARD))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new AddLocationCardFailAction(msg.data) : new AddLocationCardSuccessAction(msg.data))
+            .map(msg => msg.isError 
+                ? new AddLocationCardFailAction(msg.data) 
+                : new AddLocationCardSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -38,7 +59,9 @@ export class LocationCardEffect extends Command {
             .send(this.getLocationCardUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_LOCATION_CARD))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new UpdateLocationCardFailAction(msg.data) : new UpdateLocationCardSuccessAction(msg.data))
+            .map(msg => msg.isError 
+                ? new UpdateLocationCardFailAction(msg.data) 
+                : new UpdateLocationCardSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -49,7 +72,9 @@ export class LocationCardEffect extends Command {
             .send(this.getLocationCardDelete(action.payload))
             .takeUntil(this.actions$.ofType(DELETE_LOCATION_CARD))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new DeleteLocationCardFailAction(msg.data) : new DeleteLocationCardSuccessAction(msg.data))
+            .map(msg => msg.isError 
+                ? new DeleteLocationCardFailAction(msg.data) 
+                : new DeleteLocationCardSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 

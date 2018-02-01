@@ -1,14 +1,15 @@
-import { putInArray } from '../../services/utils/util';
-import { PayBillService } from './../../services/business/pay-bill-service';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartService, ChartType } from './../../services/utils/chart-service';
-import { ProjectPayBill } from './../../interfaces/response-interface';
+import { IonicPage, NavParams } from 'ionic-angular';
+import { initial } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavParams } from 'ionic-angular';
+
 import { ProjectBillService } from '../../services/business/project-bill-service';
-import { initial } from 'lodash';
+import { putInArray } from '../../services/utils/util';
+import { ProjectPayBill } from './../../interfaces/response-interface';
+import { PayBillService } from './../../services/business/pay-bill-service';
+import { ChartService, ChartType } from './../../services/utils/chart-service';
 
 export interface PayBillListItem {
     attendance: number;
@@ -54,9 +55,13 @@ export class ProjectBillDetailPage {
     launch(bills: Observable<ProjectPayBill>): void {
         this.subscriptions = [
             this.projectBill.getProjectBillList(Observable.of(this.navParams.get('billId'))),
+
             this.getProjectBillChart(bills),
+
             this.payBill.getPayBillList(bills.map(({ project_id, month }) => ({ project_id, month: initial(month.split('-')).join('-') }))),
+
             this.projectBill.handleError(),
+            
             this.payBill.handleError(),
         ];
     }

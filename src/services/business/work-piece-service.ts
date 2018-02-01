@@ -1,17 +1,23 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { orderBy } from 'lodash';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+
+import { RequestOption, RequestStatus } from '../../interfaces/request-interface';
+import { WorkPiece, WorkPieceFinish } from '../../interfaces/response-interface';
+import {
+    AppState,
+    selectWorkPieceFinishFlow,
+    selectWorkPieceResponse,
+    selectWorkPieces,
+} from '../../reducers/index-reducer';
+import { ProcessorService } from '..//api/processor-service';
+import { ProjectService } from '../business/project-service';
+import { UserService } from '../business/user-service';
+import { ErrorService } from '../errors/error-service';
 import { putInArray } from '../utils/util';
 import { RecordOptionService } from './record-option-service';
-import { orderBy } from 'lodash';
-import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { AppState, selectWorkPieceResponse, selectWorkPieces, selectWorkPieceFinishFlow } from '../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { ErrorService } from '../errors/error-service';
-import { ProcessorService } from '..//api/processor-service';
-import { Observable } from 'rxjs/Observable';
-import { WorkPiece, WorkPieceFinish } from '../../interfaces/response-interface';
-import { RequestOption, RequestStatus } from '../../interfaces/request-interface';
-import { UserService } from '../business/user-service';
-import { ProjectService } from '../business/project-service';
 
 @Injectable()
 export class WorkPieceService extends RecordOptionService {
@@ -21,7 +27,7 @@ export class WorkPieceService extends RecordOptionService {
         private error: ErrorService,
         private process: ProcessorService,
         private userInfo: UserService,
-        private project: ProjectService,
+        private project: ProjectService
     ) {
         super();
     }
@@ -73,6 +79,6 @@ export class WorkPieceService extends RecordOptionService {
     /* ==========================================Error handle======================================================  */
 
     handleError() {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkPieceResponse), 'APP_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkPieceResponse));
     }
 }

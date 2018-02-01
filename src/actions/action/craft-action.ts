@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+
 import { WorkTypeListResponse } from '../../interfaces/response-interface';
 
 export const GET_WORK_TYPE_LIST = 'GET_WORK_TYPE_LIST';

@@ -4,33 +4,54 @@
         <ion-title>{{'WORKER_MANAGEMENT' | translate}}</ion-title>
 
         <ion-buttons end>
-            <button ion-button icon-only *ngIf="haveStatisticsPermission | async" (click)="goToStatisticsPage()">
-                <ion-icon name="stats" color="primary"></ion-icon>
+            <button
+                ion-button
+                icon-only
+                *ngIf="haveStatisticsPermission | async"
+                (click)="goToStatisticsPage()"
+            >
+                <ion-icon
+                    name="stats"
+                    color="primary"
+                ></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
 
-   <ion-list>
+    <ion-list>
 
         <ion-list-header>{{'SET_QUERY_CONDITION' | translate}}</ion-list-header>
 
-       <ion-item>
+        <ion-item>
             <ion-label>{{'TEAM' | translate}}</ion-label>
-            <ion-select [(ngModel)]="selectedTeams" multiple="true" (ngModelChange)="setTeam$.next($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let team of (teams | async)" [value]="team" [selected]="team.selected">{{team.name}}</ion-option>
+            <ion-select
+                [(ngModel)]="selectedTeams"
+                multiple="true"
+                (ngModelChange)="setTeam$.next($event)"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let team of (teams | async)"
+                    [value]="team"
+                    [selected]="team.selected"
+                >
+                    {{team.name}}
+                </ion-option>
             </ion-select>
         </ion-item>
 
-   </ion-list> 
+    </ion-list>
 
-    <ion-segment [(ngModel)]="type" (ngModelChange)="type$.next($event)">
-        <!--Button's value comes from ContractType enum placed in request-interface. -->
+    <ion-segment
+        [(ngModel)]="type"
+        (ngModelChange)="type$.next($event)"
+    >
+        <!-- Button's value comes from ContractType enum placed in request-interface. -->
         <ion-segment-button value="timer">{{'TIME_PAY_WORKER' | translate}}</ion-segment-button>
         <ion-segment-button value="piecer">{{'PIECE_PAY_WORKER' | translate}}</ion-segment-button>
     </ion-segment>
@@ -39,35 +60,84 @@
 
         <ion-list *ngSwitchCase="'timer'">
 
-            <ion-list-header>{{'WORKER_AMOUNT' | translate}} {{timersCount | async}}</ion-list-header> 
+            <ion-list-header>
+                {{'WORKER_AMOUNT' | translate}} {{timersCount | async}}
+            </ion-list-header>
 
-            <ion-item *ngFor="let item of timers | async" (click)="goToNextPage(item)" detail-push>
-                <ion-icon [name]="item.workTypeId | workType" item-start></ion-icon>
+            <ion-item
+                *ngFor="let item of timers | async"
+                (click)="goToNextPage(item)"
+                detail-push
+            >
+                <ion-icon
+                    [name]="item.workTypeId | workType"
+                    item-start
+                ></ion-icon>
                 <ion-label fixed>{{item.name}}</ion-label>
-                <ion-input disabled [value]="item.workType"></ion-input>
+                <ion-input
+                    disabled
+                    [value]="item.workType"
+                ></ion-input>
             </ion-item>
 
-            <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMoreTimer | async">
-                <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate" *ngIf="haveMoreTimer | async"></ion-infinite-scroll-content>
+            <ion-infinite-scroll
+                (ionInfinite)="getNextPage($event)"
+                *ngIf="haveMoreTimer | async"
+            >
+                <ion-infinite-scroll-content
+                    loadingSpinner="bubbles"
+                    [loadingText]="'LOADING' | translate"
+                    *ngIf="haveMoreTimer | async"
+                ></ion-infinite-scroll-content>
             </ion-infinite-scroll>
-            <ion-item *ngIf="!(haveMoreTimer | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+            <ion-item
+                *ngIf="!(haveMoreTimer | async)"
+                class="complete"
+                text-center
+            >
+                {{'NO_MORE_DATA' | translate}}
+            </ion-item>
 
         </ion-list>
 
         <ion-list *ngSwitchCase="'piecer'">
 
-            <ion-list-header>{{'WORKER_AMOUNT' | translate}} {{piecersCount | async}}</ion-list-header>
+            <ion-list-header>
+                {{'WORKER_AMOUNT' | translate}} {{piecersCount | async}}
+            </ion-list-header>
 
-            <ion-item *ngFor="let item of piecers | async" (click)="goToNextPage(item)" detail-push>
-                <ion-icon [name]="item.workTypeId | workType" item-start></ion-icon>
+            <ion-item
+                *ngFor="let item of piecers | async"
+                (click)="goToNextPage(item)"
+                detail-push
+            >
+                <ion-icon
+                    [name]="item.workTypeId | workType"
+                    item-start
+                ></ion-icon>
                 <ion-label fixed>{{item.name}}</ion-label>
-                <ion-input disabled [value]="item.workType"></ion-input>
+                <ion-input
+                    disabled
+                    [value]="item.workType"
+                ></ion-input>
             </ion-item>
 
-            <ion-infinite-scroll (ionInfinite)="getNextPage($event)" *ngIf="haveMorePiecer | async">
-                <ion-infinite-scroll-content loadingSpinner="bubbles" [loadingText]="'LOADING' | translate"></ion-infinite-scroll-content>
+            <ion-infinite-scroll
+                (ionInfinite)="getNextPage($event)"
+                *ngIf="haveMorePiecer | async"
+            >
+                <ion-infinite-scroll-content
+                    loadingSpinner="bubbles"
+                    [loadingText]="'LOADING' | translate"
+                ></ion-infinite-scroll-content>
             </ion-infinite-scroll>
-            <ion-item *ngIf="!(haveMorePiecer | async)" class="complete" text-center>{{'NO_MORE_DATA' | translate}}</ion-item>
+            <ion-item
+                *ngIf="!(haveMorePiecer | async)"
+                class="complete"
+                text-center
+            >
+                {{'NO_MORE_DATA' | translate}}
+            </ion-item>
 
         </ion-list>
 

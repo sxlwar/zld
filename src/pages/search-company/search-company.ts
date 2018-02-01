@@ -1,16 +1,17 @@
-import { SearchCompanyOptions } from './../../interfaces/request-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/withLatestFrom';
+
 import { Component } from '@angular/core';
 import { IonicPage, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { Company } from '../../interfaces/response-interface';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/withLatestFrom';
-import 'rxjs/add/operator/map';
-import { SearchService } from '../../services/business/search-service';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 
+import { Company } from '../../interfaces/response-interface';
+import { SearchService } from '../../services/business/search-service';
+import { SearchCompanyOptions } from './../../interfaces/request-interface';
 
 @IonicPage()
 @Component({

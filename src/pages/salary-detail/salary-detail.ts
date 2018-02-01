@@ -1,10 +1,11 @@
-import { ChartService, ChartType } from './../../services/utils/chart-service';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs/Subscription';
-import { PayBillService } from './../../services/business/pay-bill-service';
-import { Observable } from 'rxjs/Observable';
-import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { PayBillService } from './../../services/business/pay-bill-service';
+import { ChartService, ChartType } from './../../services/utils/chart-service';
 
 export interface Salary {
     systemAttendanceAmount: number;

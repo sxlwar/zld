@@ -8,7 +8,7 @@ export enum Operate {
     addition = 'add',
     updates = 'update',
     deletion = 'delete',
-    search = 'search'
+    search = 'search',
 }
 
 export interface checkFn {

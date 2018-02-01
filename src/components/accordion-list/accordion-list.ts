@@ -1,8 +1,8 @@
-import { Component, Input, ViewChild, ElementRef, Renderer2, Output, EventEmitter } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, Renderer2, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'accordion-list',
-    templateUrl: 'accordion-list.html'
+    templateUrl: 'accordion-list.html',
 })
 export class AccordionListComponent {
     @Input() headerColor: string = '#00c1DE';

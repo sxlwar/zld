@@ -6,50 +6,107 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-list [formGroup]="form">
         <ion-item>
             <ion-label>{{'VACATION_TYPE' | translate}}</ion-label>
-            <ion-select [(ngModel)]="vacation" formControlName="leaveType" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-                <!--一做国际化绝对完蛋，因为这个值需要是一个中文。。。。。。-->
-                <ion-option *ngFor="let item of leaveTypes" [value]="item | translate" [selected]="(item | translate) === vacaction">{{item | translate}}</ion-option>
+            <ion-select
+                [(ngModel)]="vacation"
+                formControlName="leaveType"
+                required
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <!-- 一做国际化绝对完蛋，因为这个值需要是一个中文。。。。。。 -->
+                <ion-option
+                    *ngFor="let item of leaveTypes"
+                    [value]="item | translate"
+                    [selected]="(item | translate) === vacation"
+                >
+                    {{item | translate}}
+                </ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="leaveType.invalid && (leaveType.dirty || leaveType.touched)" class="form-danger">
-            <span *ngIf="leaveType.errors.required">{{'LEAVE_TYPE_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="leaveType.invalid && (leaveType.dirty || leaveType.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="leaveType.errors.required">
+                {{'LEAVE_TYPE_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item>
             <ion-label>{{'SELECT_WORKER' | translate}}</ion-label>
-            <ion-input type="text" [value]="names | async" disabled></ion-input>
-            <ion-icon name="man" color="primary" item-end (click)="openWorkerSelect()"></ion-icon>
+            <ion-input
+                type="text"
+                [value]="names | async"
+                disabled
+            ></ion-input>
+            <ion-icon
+                name="man"
+                color="primary"
+                item-end
+                (click)="openWorkerSelect()"
+            ></ion-icon>
         </ion-item>
 
         <ion-item>
             <ion-label>{{'START_DATE' | translate}}</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                formControlName="startDay" (ngModelChange)="updateExpireDate($event)" required></ion-datetime>
+            <ion-datetime
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY MM DD"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                formControlName="startDay"
+                (ngModelChange)="updateExpireDate($event)"
+                required
+            ></ion-datetime>
         </ion-item>
-        <div *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)" class="form-danger">
-            <span *ngIf="startDay.errors.required">{{'LEAVE_START_TIME_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="startDay.errors.required">
+                {{'LEAVE_START_TIME_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item>
             <ion-label>{{'END_DATE' | translate}}</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                [min]="startDay.value" formControlName="endDay" required [disabled]="!startDay.value"></ion-datetime>
+            <ion-datetime
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY MM DD"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                [min]="startDay.value"
+                formControlName="endDay"
+                required
+                [disabled]="!startDay.value"
+            ></ion-datetime>
         </ion-item>
-        <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-danger">
-            <span *ngIf="endDay.errors.required">{{'LEAVE_END_TIME_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="endDay.errors.required">
+                {{'LEAVE_END_TIME_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item>
             <ion-label>{{'APPLY_REASON' | translate}}</ion-label>
-            <ion-textarea autoSize formControlName="reason" required></ion-textarea>
+            <ion-textarea
+                autoSize
+                formControlName="reason"
+                required
+            ></ion-textarea>
         </ion-item>
-        <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="form-danger">
+        <div
+            *ngIf="reason.invalid && (reason.dirty || reason.touched)"
+            class="form-danger"
+        >
             <span *ngIf="reason.errors.required">{{'' | translate}}</span>
         </div>
 
@@ -60,5 +117,15 @@
 </ion-content>
 
 <ion-footer>
-    <button ion-button block no-margin color="primary" [disabled]="form.invalid" (click)="apply$.next(true)" no-margin>{{'CONFIRM_BUTTON' | translate}}</button>
+    <button
+        ion-button
+        block
+        no-margin
+        color="primary"
+        [disabled]="form.invalid"
+        (click)="apply$.next(true)"
+        no-margin
+    >
+        {{'CONFIRM_BUTTON' | translate}}
+    </button>
 </ion-footer>

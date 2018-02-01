@@ -6,11 +6,14 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-list>
 
-        <ion-item detail-push *ngFor="let item of machines | async" (click)="goToNextPage(item)">
+        <ion-item
+            detail-push
+            *ngFor="let item of machines | async"
+            (click)="goToNextPage(item)"
+        >
             <ion-label>
 
                 <ion-grid>
@@ -20,7 +23,9 @@
                     </ion-row>
 
                     <ion-row>
-                        <ion-col col-4>{{'ATTENDANCE_MACHINE_TYPE' | translate}}</ion-col>
+                        <ion-col col-4>
+                            {{'ATTENDANCE_MACHINE_TYPE' | translate}}
+                        </ion-col>
                         <ion-col col-auto>{{item.type | translate}}</ion-col>
                     </ion-row>
 

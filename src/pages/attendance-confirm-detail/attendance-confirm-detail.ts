@@ -1,17 +1,18 @@
-import { Subject } from 'rxjs/Subject';
-import { AttendanceStatisticDayItem } from './../../services/business/statistics-service';
-import { AttendanceState } from './../../interfaces/attendance-interface';
-import { attendanceList } from './../../services/api/command';
-import { RequestOption } from 'interfaces/request-interface';
-import { attendanceRecordPage, MissionRoot } from './../pages';
-import { attendanceConfirm } from './../../services/business/icon-service';
-import { PermissionService } from './../../services/config/permission-service';
-import { Subscription } from 'rxjs/Subscription';
-import { AttendanceResult } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceService } from './../../services/business/attendance-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { RequestOption } from 'interfaces/request-interface';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceState } from './../../interfaces/attendance-interface';
+import { AttendanceResult } from './../../interfaces/response-interface';
+import { attendanceList } from './../../services/api/command';
+import { AttendanceService } from './../../services/business/attendance-service';
+import { attendanceConfirm } from './../../services/business/icon-service';
+import { AttendanceStatisticDayItem } from './../../services/business/statistics-service';
+import { PermissionService } from './../../services/config/permission-service';
+import { attendanceRecordPage, MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({

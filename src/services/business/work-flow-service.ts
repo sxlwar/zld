@@ -1,22 +1,45 @@
-import { ProjectService } from './project-service';
-import { processIdToIcon } from './icon-service';
-import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-flow-audit';
-import { InfiniteScroll, ModalController } from 'ionic-angular';
-import { MissionListItem, AuditTarget } from './../../interfaces/mission-interface';
-import { MultiTaskUpdateOptions, WorkFlowStatus } from './../../interfaces/request-interface';
-import { IncreasePageAction, ResetPageAction, SetScreeningConditionAction, ResetTaskUpdateResponseAction } from './../../actions/action/work-flow-action';
-import { Command } from './../api/command';
-import { RequestOption, WorkFlowListOptions } from '../../interfaces/request-interface';
-import { Observable } from 'rxjs/Observable';
-import { WorkFlowAggregation, WorkFlow, MultiTaskUpdateResponse } from './../../interfaces/response-interface';
-import { ProcessorService } from './../api/processor-service';
-import { UserService } from './user-service';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState, selectWorkFlowStatisticsResponse, selectWorkFlowLimit, selectLeavePage, selectOvertimePage, selectPieceAuditPage, selectAttendanceModifyPage, selectWorkFlowListResponse, selectMultiTaskUpdateResponse, selectMultiTaskUpdateOptions, selectTaskUpdateResponse, selectIStartedPage, selectICompletedPage, selectScreeningCondition, selectPayrollPage, selectProjectPayBillFlowListResponse } from './../../reducers/index-reducer';
+import { InfiniteScroll, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { Injectable } from "@angular/core";
-import { ErrorService } from '../../services/errors/error-service';
+
 import { ResetWorkFlowResponseAction } from '../../actions/action/work-flow-action';
+import { RequestOption, WorkFlowListOptions } from '../../interfaces/request-interface';
+import { ErrorService } from '../../services/errors/error-service';
+import {
+    IncreasePageAction,
+    ResetPageAction,
+    ResetTaskUpdateResponseAction,
+    SetScreeningConditionAction,
+} from './../../actions/action/work-flow-action';
+import { WorkFlowAuditComponent } from './../../components/work-flow-audit/work-flow-audit';
+import { AuditTarget, MissionListItem } from './../../interfaces/mission-interface';
+import { MultiTaskUpdateOptions, WorkFlowStatus } from './../../interfaces/request-interface';
+import { MultiTaskUpdateResponse, WorkFlow, WorkFlowAggregation } from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectAttendanceModifyPage,
+    selectICompletedPage,
+    selectIStartedPage,
+    selectLeavePage,
+    selectMultiTaskUpdateOptions,
+    selectMultiTaskUpdateResponse,
+    selectOvertimePage,
+    selectPayrollPage,
+    selectPieceAuditPage,
+    selectProjectPayBillFlowListResponse,
+    selectScreeningCondition,
+    selectTaskUpdateResponse,
+    selectWorkFlowLimit,
+    selectWorkFlowListResponse,
+    selectWorkFlowStatisticsResponse,
+} from './../../reducers/index-reducer';
+import { Command } from './../api/command';
+import { ProcessorService } from './../api/processor-service';
+import { processIdToIcon } from './icon-service';
+import { ProjectService } from './project-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class WorkFlowService {
@@ -88,7 +111,7 @@ export class WorkFlowService {
                 id: item.id,
                 processId: item.process_id,
                 status: item.status,
-                icon: processIdToIcon[item.process_id]
+                icon: processIdToIcon[item.process_id],
             })));
     }
 
@@ -228,18 +251,18 @@ export class WorkFlowService {
     /* =====================================================Refuse clean======================================================== */
 
     handleStatisticsError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkFlowStatisticsResponse), 'APP_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkFlowStatisticsResponse));
     }
 
     handleWorkFlowError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkFlowListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkFlowListResponse));
     }
 
     handleProjectPayBillFlowError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectProjectPayBillFlowListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectProjectPayBillFlowListResponse));
     }
 
     handleUpdateError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getTaskUpdateResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getTaskUpdateResponse());
     }
 }

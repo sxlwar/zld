@@ -1,18 +1,20 @@
-import { AddTeamFormModel } from './../../services/api/mapper-service';
-import { Subject } from 'rxjs/Subject';
-import { putInArray } from '../../services/utils/util';
-//region
-import { Subscription } from 'rxjs/Subscription';
-import { TeamService } from './../../services/business/team-service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ViewController, NavParams } from 'ionic-angular';
-import { Employer } from './../../interfaces/response-interface';
-import { ProjectService } from './../../services/business/project-service';
+import { NavParams, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { EmployerService } from '../../services/business/employer-service';
-import { TL, QW } from '../../services/config/character';
+import { QW, TL } from '../../services/config/character';
+import { putInArray } from '../../services/utils/util';
 import { teamNameValidator } from '../../validators/validators';
+import { Employer } from './../../interfaces/response-interface';
+import { AddTeamFormModel } from './../../services/api/mapper-service';
+import { ProjectService } from './../../services/business/project-service';
+import { TeamService } from './../../services/business/team-service';
+
+//region
 //endregion
 
 interface Person {
@@ -23,7 +25,7 @@ interface Person {
 
 @Component({
     selector: 'add-team',
-    templateUrl: 'add-team.html'
+    templateUrl: 'add-team.html',
 })
 export class AddTeamComponent implements OnInit, OnDestroy {
     operateType = 'ADD_TEAM';
@@ -86,7 +88,7 @@ export class AddTeamComponent implements OnInit, OnDestroy {
             this.employer.handleError(),
 
             this.team.handleAddTeamError(),
-            
+
             this.team.handleUpdateTeamError(),
         ];
 
@@ -104,7 +106,7 @@ export class AddTeamComponent implements OnInit, OnDestroy {
         this.addTeamForm = this.fb.group({
             teamName: [name, teamNameValidator],
             foreman: '',
-            qualityClerk: ''
+            qualityClerk: '',
         });
     }
 

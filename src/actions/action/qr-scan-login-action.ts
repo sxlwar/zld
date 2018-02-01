@@ -1,7 +1,7 @@
-import { QRLoginOptions } from './../../interfaces/request-interface';
-import { QRScanLoginResponse } from './../../interfaces/response-interface';
 import { Action } from '@ngrx/store';
 
+import { QRLoginOptions } from './../../interfaces/request-interface';
+import { QRScanLoginResponse } from './../../interfaces/response-interface';
 
 export const SET_QR_CODE = 'SET_QR_CODE';
 

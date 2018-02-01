@@ -5,7 +5,10 @@
             {{'REGISTER_SEARCH_COMPANY' | translate}}
         </ion-title>
         <ion-buttons start>
-            <button ion-button (click)="dismiss()">
+            <button
+                ion-button
+                (click)="dismiss()"
+            >
                 <ion-icon name="md-close"></ion-icon>
             </button>
         </ion-buttons>
@@ -13,12 +16,24 @@
 
 </ion-header>
 
-
 <ion-content padding>
-    <fuzzy-search [selectType]="selectType" [items]="companies$ | async" [placeholder]="'REGISTER_SEARCH_COMPANY_TIP' | translate"
-        (select)="selectCompany($event)" (search)="getSearch($event)"></fuzzy-search>
+    <fuzzy-search
+        [selectType]="selectType"
+        [items]="companies$ | async"
+        [placeholder]="'REGISTER_SEARCH_COMPANY_TIP' | translate"
+        (select)="selectCompany($event)"
+        (search)="getSearch($event)"
+    ></fuzzy-search>
 </ion-content>
 
 <ion-footer>
-    <button ion-button block (click)="dismiss()" color="primary" no-margin>{{'CONFIRM_BUTTON' | translate}}</button>
+    <button
+        ion-button
+        block
+        (click)="dismiss()"
+        color="primary"
+        no-margin
+    >
+        {{'CONFIRM_BUTTON' | translate}}
+    </button>
 </ion-footer>

@@ -1,10 +1,9 @@
-//region
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { PersonalAttendancePage } from './personal-attendance';
-import { ComponentsModule } from '../../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
-//endregion
+import { IonicPageModule } from 'ionic-angular';
+
+import { ComponentsModule } from '../../components/components.module';
+import { PersonalAttendancePage } from './personal-attendance';
 
 @NgModule({
     declarations: [
@@ -17,6 +16,6 @@ import { TranslateModule } from '@ngx-translate/core';
     ],
     exports: [
         PersonalAttendancePage,
-    ]
+    ],
 })
 export class PersonalAttendancePageModule { }

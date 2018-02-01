@@ -6,7 +6,6 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-card>
@@ -36,7 +35,10 @@
                 </div>
 
                 <div *ngSwitchCase="'7'">
-                    <work-flow-message [content]="content | async | messageParse" [time]="msg.modify_time"></work-flow-message>
+                    <work-flow-message
+                        [content]="content | async | messageParse"
+                        [time]="msg.modify_time"
+                    ></work-flow-message>
                 </div>
 
                 <div *ngSwitchCase="'8'">

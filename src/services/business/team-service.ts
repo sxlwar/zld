@@ -1,22 +1,23 @@
-import { UpdateTeamAtLocalAction } from './../../actions/action/team-action';
-import { EmployerService } from './employer-service';
-import { selectAddTeamResponse, selectUpdateTeamResponse, selectDeleteTeamResponse } from './../../reducers/index-reducer';
-import { TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse } from './../../interfaces/response-interface';
-import { AddTeamFormModel } from './../api/mapper-service';
 import { Injectable } from '@angular/core';
-import { AppState, selectTeamResponse, selectSelectedTeams } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
-import { ErrorService } from '../errors/error-service';
-import { ProcessorService } from '../api/processor-service';
-import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
-import { Team } from '../../interfaces/response-interface';
-import { UserService } from './user-service';
-import { RequestOption } from '../../interfaces/request-interface';
-import { WorkerService } from './worker-service';
-import { CW, QW, SW, TL } from '../config/character';
-import { ProjectService } from './project-service';
+import { Subscription } from 'rxjs/Subscription';
+
 import { SetSelectTeamsAction } from '../../actions/action/team-action';
+import { RequestOption } from '../../interfaces/request-interface';
+import { Team } from '../../interfaces/response-interface';
+import { AppState, selectSelectedTeams, selectTeamResponse } from '../../reducers/index-reducer';
+import { ProcessorService } from '../api/processor-service';
+import { CW, QW, SW, TL } from '../config/character';
+import { ErrorService } from '../errors/error-service';
+import { UpdateTeamAtLocalAction } from './../../actions/action/team-action';
+import { TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse } from './../../interfaces/response-interface';
+import { selectAddTeamResponse, selectDeleteTeamResponse, selectUpdateTeamResponse } from './../../reducers/index-reducer';
+import { AddTeamFormModel } from './../api/mapper-service';
+import { EmployerService } from './employer-service';
+import { ProjectService } from './project-service';
+import { UserService } from './user-service';
+import { WorkerService } from './worker-service';
 
 @Injectable()
 export class TeamService {
@@ -165,18 +166,18 @@ export class TeamService {
     /* ======================================================Error handle============================================================= */
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectTeamResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectTeamResponse));
     }
 
     handleAddTeamError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectAddTeamResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectAddTeamResponse));
     }
 
     handelDeleteTeamError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectDeleteTeamResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectDeleteTeamResponse));
     }
 
     handleUpdateTeamError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectUpdateTeamResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectUpdateTeamResponse));
     }
 }

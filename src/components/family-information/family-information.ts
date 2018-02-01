@@ -1,11 +1,12 @@
-import { addressAreaFormat } from './../../validators/validators';
-import { Family } from './../../interfaces/personal-interface';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
 import { relationShip } from '../../interfaces/request-interface';
+import { Family } from './../../interfaces/personal-interface';
+import { addressAreaFormat } from './../../validators/validators';
 
 @Component({
     selector: 'family-information',
-    templateUrl: 'family-information.html'
+    templateUrl: 'family-information.html',
 })
 export class FamilyInformationComponent {
 

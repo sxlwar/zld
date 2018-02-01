@@ -1,6 +1,6 @@
-import { ProjectListResponse } from './../../interfaces/response-interface';
-import { Project } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/project-action';
+import { Project } from '../../interfaces/response-interface';
+import { ProjectListResponse } from './../../interfaces/response-interface';
 
 export interface State {
     response: ProjectListResponse;
@@ -9,7 +9,7 @@ export interface State {
 
 export const initialState: State = {
     response: null,
-    selectedProject: null
+    selectedProject: null,
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {

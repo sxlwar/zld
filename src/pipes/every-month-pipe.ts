@@ -1,7 +1,7 @@
-import { PipeTransform, Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'everyMonth'
+    name: 'everyMonth',
 })
 export class EveryMonthPipe implements PipeTransform {
     transform(value: number): string {

@@ -1,17 +1,31 @@
-import { SearchItem } from './../../interfaces/search-interface';
-import { QueryWorkerBy } from './../../reducers/reducer/search-worker-reducer';
-import { SetQueryWorkerConditionAction, AddSelectedWorkerAction, RemoveSelectedWorkerAction } from './../../actions/action/search-worker-action';
-import { UserService } from './user-service';
-import { Subscription } from 'rxjs/Subscription';
-import { SearchCompanyOptions } from './../../interfaces/request-interface';
-import { SelectCompanyAction } from './../../actions/action/search-company-action';
-import { Company, SearchWorkerResponse, WorkerInfo } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { AppState, selectSearchQuery, selectSearchLoading, selectSearchWorkerResponse, selectSearchCompanyResponse, selectSearchWorkerCondition, selectSearchWorkerContent, selectSelectedWorkersFromSearch } from './../../reducers/index-reducer';
+import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { SelectCompanyAction } from './../../actions/action/search-company-action';
+import {
+    AddSelectedWorkerAction,
+    RemoveSelectedWorkerAction,
+    SetQueryWorkerConditionAction,
+} from './../../actions/action/search-worker-action';
+import { SearchCompanyOptions } from './../../interfaces/request-interface';
+import { Company, SearchWorkerResponse, WorkerInfo } from './../../interfaces/response-interface';
+import { SearchItem } from './../../interfaces/search-interface';
+import {
+    AppState,
+    selectSearchCompanyResponse,
+    selectSearchLoading,
+    selectSearchQuery,
+    selectSearchWorkerCondition,
+    selectSearchWorkerContent,
+    selectSearchWorkerResponse,
+    selectSelectedWorkersFromSearch,
+} from './../../reducers/index-reducer';
+import { QueryWorkerBy } from './../../reducers/reducer/search-worker-reducer';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
-import { Injectable } from '@angular/core';
+import { UserService } from './user-service';
 
 @Injectable()
 export class SearchService {
@@ -99,10 +113,10 @@ export class SearchService {
     /* =====================================================Error handle ========================================== */
 
     handleCompanyError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectSearchCompanyResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectSearchCompanyResponse));
     }
 
     handleWorkerError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectSearchWorkerResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectSearchWorkerResponse));
     }
 }

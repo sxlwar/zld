@@ -1,18 +1,18 @@
-import { PermissionResult } from './../../interfaces/permission-interface';
+import { Component } from '@angular/core';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceCardResponses } from '../../reducers/reducer/attendance-card-reducer';
 import { AddAttendanceCardComponent } from './../../components/add-attendance-card/add-attendance-card';
 import { ConditionOption } from './../../interfaces/order-interface';
+import { PermissionResult } from './../../interfaces/permission-interface';
+import { AttendanceCard } from './../../interfaces/response-interface';
+import { AttendanceCardService } from './../../services/business/attendance-card-service';
+import { attendanceCard } from './../../services/business/icon-service';
 import { PermissionService } from './../../services/config/permission-service';
 import { ProjectRoot } from './../pages';
-import { attendanceCard } from './../../services/business/icon-service';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceCard } from './../../interfaces/response-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { AttendanceCardService } from './../../services/business/attendance-card-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
-import { AttendanceCardResponses } from '../../reducers/reducer/attendance-card-reducer';
-
 
 @IonicPage()
 @Component({

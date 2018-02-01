@@ -1,19 +1,19 @@
 export enum OrderFlag {
     noneOrder,
     highToLow,
-    lowToHigh
+    lowToHigh,
 }
 
 export enum BindingStateFlag {
     noneState,
     binding,
-    unbind
+    unbind,
 }
 
 export enum DeviceStateFlag {
     noneState,
     online,
-    offline
+    offline,
 }
 
 export interface ConditionOption {

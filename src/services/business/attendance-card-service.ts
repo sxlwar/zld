@@ -1,17 +1,36 @@
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { orderBy } from 'lodash';
-import { ConditionOption, BindingStateFlag, OrderFlag } from './../../interfaces/order-interface';
-import { UpdateOrderStateAction, UpdateBindingStateAction, ResetAttendanceCardOperateResponseAction } from './../../actions/action/attendance-card-action';
-import { AddAttendanceCardFormModel } from './../api/mapper-service';
-import { RequestOption, AttendanceCardUpdateOptions } from './../../interfaces/request-interface';
 import { Observable } from 'rxjs/Observable';
-import { AttendanceCardListResponse, AttendanceCard, AttendanceCardAddResponse, AttendanceCardDeleteResponse, AttendanceCardUpdateResponse } from './../../interfaces/response-interface';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    ResetAttendanceCardOperateResponseAction,
+    UpdateBindingStateAction,
+    UpdateOrderStateAction,
+} from './../../actions/action/attendance-card-action';
+import { BindingStateFlag, ConditionOption, OrderFlag } from './../../interfaces/order-interface';
+import { AttendanceCardUpdateOptions, RequestOption } from './../../interfaces/request-interface';
+import {
+    AttendanceCard,
+    AttendanceCardAddResponse,
+    AttendanceCardDeleteResponse,
+    AttendanceCardListResponse,
+    AttendanceCardUpdateResponse,
+} from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectAttendanceCardAddResponse,
+    selectAttendanceCardBindingOptions,
+    selectAttendanceCardDeleteResponse,
+    selectAttendanceCardOrderOptions,
+    selectAttendanceCardResponse,
+    selectAttendanceCardUpdateResponse,
+} from './../../reducers/index-reducer';
+import { AddAttendanceCardFormModel } from './../api/mapper-service';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
 import { UserService } from './user-service';
-import { AppState, selectAttendanceCardResponse, selectAttendanceCardAddResponse, selectAttendanceCardDeleteResponse, selectAttendanceCardUpdateResponse, selectAttendanceCardBindingOptions, selectAttendanceCardOrderOptions } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs/Subscription';
-import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AttendanceCardService {

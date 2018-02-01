@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicModule } from 'ionic-angular/module';
-import { PIPES, DIRECTIVES } from './app.import';
+
+import { DIRECTIVES, PIPES } from './app.import';
 
 @NgModule({
     declarations: [

@@ -1,25 +1,26 @@
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicPage, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { WorkerItem } from '../../interfaces/worker-interface';
-import { ConfigService } from './../../services/config/config-service';
+import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
 import { LeaveFormModel } from './../../services/api/mapper-service';
-import { Subject } from 'rxjs/Subject';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { WorkerService } from './../../services/business/worker-service';
 import { LaunchService } from './../../services/business/launch-service';
-import { Component } from '@angular/core';
-import { IonicPage, ModalController } from 'ionic-angular';
-import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
+import { WorkerService } from './../../services/business/worker-service';
+import { ConfigService } from './../../services/config/config-service';
 
 export const leaveTypes = [
     'SICK_LEAVE',
-    "ABSENCE_LEAVE",
-    "ANNUAL_LEAVE",
-    "MATERNITY_LEAVE",
-    "FUNERAL_LEAVE",
-    "MARRIAGE_LEAVE",
-    "WORK_RELATED_LEAVE"
+    'ABSENCE_LEAVE',
+    'ANNUAL_LEAVE',
+    'MATERNITY_LEAVE',
+    'FUNERAL_LEAVE',
+    'MARRIAGE_LEAVE',
+    'WORK_RELATED_LEAVE',
 ];
 
 @IonicPage()
@@ -75,7 +76,7 @@ export class ApplyLeavePage {
             startDay: '',
             endDay: '',
             reason: '',
-            contractIds: ['', Validators.required]
+            contractIds: ['', Validators.required],
         });
     }
 
@@ -134,5 +135,4 @@ export class ApplyLeavePage {
     get contractIds() {
         return this.form.get('contractIds');
     }
-
 }

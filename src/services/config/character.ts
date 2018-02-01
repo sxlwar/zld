@@ -1,17 +1,15 @@
-
-
-const platformMaintenance = "平台运维";
-const enterpriseMaintenance = "企业运维";
-const managementManager = "管理层";
-const projectManager = "项目经理";
-const labourManager = "劳务经理";
-const teamLeader = "班组长";
-const constructionWorker = "施工员";
-const qualityWorker = "质量员";
-const signedWorker = "签约工人";
-const unsignedWorker = "未签约工人";
-const pendingAccount = "待审核职员帐号";
-const rejectedAccount = "拒绝职员帐号";
+const platformMaintenance = '平台运维';
+const enterpriseMaintenance = '企业运维';
+const managementManager = '管理层';
+const projectManager = '项目经理';
+const labourManager = '劳务经理';
+const teamLeader = '班组长';
+const constructionWorker = '施工员';
+const qualityWorker = '质量员';
+const signedWorker = '签约工人';
+const unsignedWorker = '未签约工人';
+const pendingAccount = '待审核职员帐号';
+const rejectedAccount = '拒绝职员帐号';
 
 export const CHARACTER = {
     1: platformMaintenance,
@@ -25,7 +23,7 @@ export const CHARACTER = {
     9: signedWorker,
     10: unsignedWorker,
     11: pendingAccount,
-    12: rejectedAccount
+    12: rejectedAccount,
 };
 
 export { platformMaintenance as PME }

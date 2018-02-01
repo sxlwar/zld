@@ -1,13 +1,23 @@
-import { ConditionOption, OrderFlag, BindingStateFlag, DeviceStateFlag } from './../../interfaces/order-interface';
-import { LocationCardAddOptions, LocationCardDeleteOptions, LocationCardUpdateOptions } from './../../interfaces/request-interface';
-import { LocationCardListResponse, LocationCardAddResponse, LocationCardDeleteResponse, LocationCardUpdateResponse, LocationCard } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/location-card-action';
+import { BindingStateFlag, ConditionOption, DeviceStateFlag, OrderFlag } from './../../interfaces/order-interface';
+import {
+    LocationCardAddOptions,
+    LocationCardDeleteOptions,
+    LocationCardUpdateOptions,
+} from './../../interfaces/request-interface';
+import {
+    LocationCard,
+    LocationCardAddResponse,
+    LocationCardDeleteResponse,
+    LocationCardListResponse,
+    LocationCardUpdateResponse,
+} from './../../interfaces/response-interface';
 
 export enum LocationCardResponses {
     cardResponse = 'cardResponse ',
     addResponse = 'addResponse',
     deleteResponse = 'deleteResponse',
-    updateResponse = 'updateResponse'
+    updateResponse = 'updateResponse',
 }
 
 export interface State {
@@ -38,19 +48,19 @@ export const initialState: State = {
     deleteOptions: null,
     orderOptions: [
         { text: 'HIGH_TO_LOW', selected: true, condition: OrderFlag.highToLow },
-        { text: 'LOW_TO_HIGH', selected: false, condition: OrderFlag.lowToHigh }
+        { text: 'LOW_TO_HIGH', selected: false, condition: OrderFlag.lowToHigh },
     ],
     bindingStateOptions: [
         { text: 'ALL', selected: true, condition: BindingStateFlag.noneState },
         { text: 'BINDING', selected: false, condition: BindingStateFlag.binding },
-        { text: 'UNBOUND', selected: false, condition: BindingStateFlag.unbind }
+        { text: 'UNBOUND', selected: false, condition: BindingStateFlag.unbind },
     ],
     deviceStateOptions: [
         { text: 'ALL', selected: true, condition: DeviceStateFlag.noneState },
         { text: 'ONLINE', selected: false, condition: DeviceStateFlag.online },
         { text: 'OFFLINE', selected: false, condition: DeviceStateFlag.offline },
     ],
-    teamStateOptions: []
+    teamStateOptions: [],
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

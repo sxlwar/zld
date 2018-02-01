@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'sex'
+    name: 'sex',
 })
 export class SexPipe implements PipeTransform {
     transform(value: number): string {

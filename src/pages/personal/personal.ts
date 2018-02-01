@@ -1,11 +1,18 @@
+import { Component } from '@angular/core';
+import { IonicPage, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    Certification,
+    CustomWorkExperience,
+    Education,
+    Family,
+    PlatformExperience,
+} from '../../interfaces/personal-interface';
 import { BasicInformation, PersonalId } from './../../interfaces/response-interface';
 import { PersonalService } from './../../services/business/personal-service';
 import { UserService } from './../../services/business/user-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Component } from '@angular/core';
-import { IonicPage,  NavParams } from 'ionic-angular';
-import { Certification, Education, Family, PlatformExperience, CustomWorkExperience } from '../../interfaces/personal-interface';
 
 @IonicPage()
 @Component({
@@ -19,7 +26,7 @@ export class PersonalPage {
 
     subscriptions: Subscription[] = [];
 
-    
+
     userId: number;
 
     basic: Observable<BasicInformation>;

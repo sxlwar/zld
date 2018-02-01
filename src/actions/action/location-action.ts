@@ -1,7 +1,8 @@
-import { HistoryLocationListResponse, ProjectAreaListResponse } from './../../interfaces/response-interface';
-import { HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
 import { Trajectory } from '../../interfaces/location-interface';
+import { HistoryLocationListOptions, ProjectAreaListOptions } from './../../interfaces/request-interface';
+import { HistoryLocationListResponse, ProjectAreaListResponse } from './../../interfaces/response-interface';
 
 /* ==================================================API actions=============================================== */
 

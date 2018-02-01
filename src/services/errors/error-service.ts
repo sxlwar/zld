@@ -1,11 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { AlertController, ToastController } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
-import { ErrorMessage, ErrorResponse } from '../../interfaces/response-interface';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
+
+import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { AlertController, ToastController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { ErrorMessage, ErrorResponse } from '../../interfaces/response-interface';
 
 export interface ErrorInfo {
     title: string;
@@ -32,7 +34,7 @@ export class ErrorService {
             .map(info => this.alertCtrl.create({
                 title: info.title,
                 subTitle: info.msg.errorMessage,
-                buttons: info.buttons
+                buttons: info.buttons,
             }))
             .subscribe(alert => alert.present().then(() => { }));
     }
@@ -46,7 +48,7 @@ export class ErrorService {
             const toast = this.toastCtrl.create({
                 message,
                 duration: 3000,
-                position: 'top'
+                position: 'top',
             });
             toast.present().then(() => { });
         });
@@ -66,5 +68,9 @@ export class ErrorService {
             .map(res => Object.assign({ msg: res[0] }, res[1]) as ErrorInfo);
 
         return this.handleResponseError(error$);
+    }
+
+    handleApiRequestError(obs: Observable<ErrorResponse>): Subscription {
+        return this.handleErrorInSpecific(obs, 'API_ERROR');
     }
 }

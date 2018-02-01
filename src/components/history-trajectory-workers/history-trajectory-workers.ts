@@ -1,8 +1,9 @@
-import { Subscription } from 'rxjs/Subscription';
-import { LocationService } from './../../services/business/location-service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ViewController } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
+
+import { LocationService } from './../../services/business/location-service';
 
 interface WorkerItem {
     id: number;
@@ -11,7 +12,7 @@ interface WorkerItem {
 }
 @Component({
     selector: 'history-trajectory-workers',
-    templateUrl: 'history-trajectory-workers.html'
+    templateUrl: 'history-trajectory-workers.html',
 })
 export class HistoryTrajectoryWorkersComponent implements OnInit, OnDestroy {
 

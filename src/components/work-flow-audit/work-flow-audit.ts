@@ -1,10 +1,11 @@
-import { MissionListItem } from './../../interfaces/mission-interface';
-import { NavParams, ViewController } from 'ionic-angular';
 import { Component, OnInit } from '@angular/core';
+import { NavParams, ViewController } from 'ionic-angular';
+
+import { MissionListItem } from './../../interfaces/mission-interface';
 
 @Component({
     selector: 'work-flow-audit',
-    templateUrl: 'work-flow-audit.html'
+    templateUrl: 'work-flow-audit.html',
 })
 export class WorkFlowAuditComponent implements OnInit {
     list: MissionListItem[];

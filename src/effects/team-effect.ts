@@ -1,12 +1,26 @@
-import { TipService } from './../services/tip-service';
-import { ADD_TEAM, AddTeamAction, AddTeamFailAction, AddTeamSuccessAction, UPDATE_TEAM, UpdateTeamAction, UpdateTeamFailAction, UpdateTeamSuccessAction, DELETE_TEAM, DeleteTeamFailAction, DeleteTeamAction, DeleteTeamSuccessAction } from './../actions/action/team-action';
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from '../services/api/websocket-service';
-import { Command } from '../services/api/command';
 import { Observable } from 'rxjs/Observable';
-import { ResponseAction } from '../interfaces/response-interface';
+
 import { GET_TEAM_LIST, GetTeamListAction, TeamListFailAction, TeamListSuccessAction } from '../actions/action/team-action';
+import { ResponseAction } from '../interfaces/response-interface';
+import { Command } from '../services/api/command';
+import { WebsocketService } from '../services/api/websocket-service';
+import {
+    ADD_TEAM,
+    AddTeamAction,
+    AddTeamFailAction,
+    AddTeamSuccessAction,
+    DELETE_TEAM,
+    DeleteTeamAction,
+    DeleteTeamFailAction,
+    DeleteTeamSuccessAction,
+    UPDATE_TEAM,
+    UpdateTeamAction,
+    UpdateTeamFailAction,
+    UpdateTeamSuccessAction,
+} from './../actions/action/team-action';
+import { TipService } from './../services/tip-service';
 
 @Injectable()
 export class TeamEffect extends Command {
@@ -16,7 +30,9 @@ export class TeamEffect extends Command {
         .mergeMap((action: GetTeamListAction) => this.ws
             .send(this.getTeamList(action.payload))
             .takeUntil(this.actions$.ofType(GET_TEAM_LIST))
-            .map(msg => msg.isError ? new TeamListFailAction(msg.data) : new TeamListSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new TeamListFailAction(msg.data)
+                : new TeamListSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 
@@ -27,7 +43,9 @@ export class TeamEffect extends Command {
             .send(this.getTeamAdd(action.payload))
             .takeUntil(this.actions$.ofType(ADD_TEAM))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new AddTeamFailAction(msg.data) : new AddTeamSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new AddTeamFailAction(msg.data)
+                : new AddTeamSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         )
 
@@ -38,7 +56,9 @@ export class TeamEffect extends Command {
             .send(this.getTeamUpdate(action.payload))
             .takeUntil(this.actions$.ofType(UPDATE_TEAM))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new UpdateTeamFailAction(msg.data) : new UpdateTeamSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new UpdateTeamFailAction(msg.data)
+                : new UpdateTeamSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         )
 
@@ -49,7 +69,9 @@ export class TeamEffect extends Command {
             .send(this.getTeamDelete(action.payload))
             .takeUntil(this.actions$.ofType(DELETE_TEAM))
             .do(msg => !msg.isError && this.tip.showServerResponseSuccess(msg.msg))
-            .map(msg => msg.isError ? new DeleteTeamFailAction(msg.data) : new DeleteTeamSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new DeleteTeamFailAction(msg.data)
+                : new DeleteTeamSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         )
 

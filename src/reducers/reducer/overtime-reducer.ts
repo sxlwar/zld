@@ -1,5 +1,5 @@
-import { WorkOvertimeRecordListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/overtime-action';
+import { WorkOvertimeRecordListResponse } from '../../interfaces/response-interface';
 
 export interface State {
     page: number;
@@ -12,8 +12,8 @@ export const initialState: State = {
     limit: 20,
     response: {
         work_overtimes: [],
-        count: 0
-    }
+        count: 0,
+    },
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

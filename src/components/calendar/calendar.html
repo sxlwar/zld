@@ -6,9 +6,16 @@
 
 <ion-grid style="background: rgba(241, 241,241,.5)">
     <ion-row *ngFor="let row of (data | async)">
-        <ion-col *ngFor="let day of row" (click)="dayClicked.emit(day)">
+        <ion-col
+            *ngFor="let day of row"
+            (click)="dayClicked.emit(day)"
+        >
             <div>{{day | date: 'd'}}</div>
-            <i *ngIf="day" class="small-dot" [ngClass]="{'normal': day.isNormalAttendance, 'abnormal': day.isLegalDay}"></i>
+            <i
+                *ngIf="day"
+                class="small-dot"
+                [ngClass]="{'normal': day.isNormalAttendance, 'abnormal': day.isLegalDay}"
+            ></i>
         </ion-col>
     </ion-row>
 </ion-grid>

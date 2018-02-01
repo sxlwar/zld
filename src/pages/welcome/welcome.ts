@@ -8,7 +8,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 @IonicPage()
 @Component({
     selector: 'page-welcome',
-    templateUrl: 'welcome.html'
+    templateUrl: 'welcome.html',
 })
 export class WelcomePage {
 
@@ -24,7 +24,6 @@ export class WelcomePage {
     }
 
     replayTutorial() {
-        this.navCtrl.setRoot('TutorialPage').then(() => {
-        });
+        this.navCtrl.setRoot('TutorialPage').then(() => { });
     }
 }

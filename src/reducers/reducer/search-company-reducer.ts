@@ -1,6 +1,6 @@
-import { SearchCompanyResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/search-company-action';
 import { Company } from '../../interfaces/response-interface';
+import { SearchCompanyResponse } from './../../interfaces/response-interface';
 
 export interface State {
     searchCompanyResponse: SearchCompanyResponse;
@@ -13,7 +13,7 @@ export const initialState: State = {
     searchCompanyResponse: null,
     loading: false,
     query: '',
-    selected: null
+    selected: null,
 };
 
 

@@ -3,7 +3,11 @@
     <ion-navbar>
         <ion-title>{{'BANK_CARD' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="addCard()">
+            <button
+                ion-button
+                icon-only
+                (click)="addCard()"
+            >
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-buttons>
@@ -11,14 +15,20 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-card *ngFor="let item of bankcards | async">
 
         <ion-toolbar>
-            <ion-buttons start *ngIf="item.ismaster">
-                <button ion-button color="advanced" disabled>
+            <ion-buttons
+                start
+                *ngIf="item.ismaster"
+            >
+                <button
+                    ion-button
+                    color="advanced"
+                    disabled
+                >
                     {{'SALARY_CARD' | translate}}
                     <ion-icon name="checkmark"></ion-icon>
                 </button>
@@ -27,23 +37,37 @@
             <ion-title>{{item.bank__name}}</ion-title>
 
             <ion-buttons end>
-                <button ion-button icon-only color="primary" (click)="deleteCard(item)">
+                <button
+                    ion-button
+                    icon-only
+                    color="primary"
+                    (click)="deleteCard(item)"
+                >
                     <ion-icon name="close"></ion-icon>
                 </button>
             </ion-buttons>
         </ion-toolbar>
 
-        <img src="../../assets/img/advance-card-tmntr.jpg" style="height: 200px;">
+        <img
+            src="../../assets/img/advance-card-tmntr.jpg"
+            style="height: 200px;"
+        >
 
         <ion-list>
             <ion-item>
                 <ion-label fixed>{{'BANKCARD_TYPE' | translate}}</ion-label>
-                <ion-input disabled [value]="item.card_type"></ion-input>
+                <ion-input
+                    disabled
+                    [value]="item.card_type"
+                ></ion-input>
             </ion-item>
 
             <ion-item>
                 <ion-label fixed>{{'CARD_NUMBER' | translate}}</ion-label>
-                <ion-input disabled [value]="item.num"></ion-input>
+                <ion-input
+                    disabled
+                    [value]="item.num"
+                ></ion-input>
             </ion-item>
 
         </ion-list>

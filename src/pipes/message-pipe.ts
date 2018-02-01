@@ -1,4 +1,4 @@
-import { PipeTransform, Pipe } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 export const messageIcon = [
     'android',
@@ -7,11 +7,11 @@ export const messageIcon = [
     'baseball',
     'basketball',
     'bicycle',
-    'boat'
+    'boat',
 ]; // 瞎几吧写的，完了再弄
 
 @Pipe({
-    name: 'messageIcon'
+    name: 'messageIcon',
 })
 export class MessageIconPipe implements PipeTransform {
     transform(value: number): string {
@@ -20,7 +20,7 @@ export class MessageIconPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'messageSplit'
+    name: 'messageSplit',
 })
 export class MessageSplitPipe implements PipeTransform {
     transform(value: string): string[] {
@@ -29,7 +29,7 @@ export class MessageSplitPipe implements PipeTransform {
 }
 
 @Pipe({
-    name: 'messageParse'
+    name: 'messageParse',
 })
 export class MessageParsePipe implements PipeTransform {
     transform(value: string): object {

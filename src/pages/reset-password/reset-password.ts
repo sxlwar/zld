@@ -1,7 +1,8 @@
-import { Observable } from 'rxjs/Observable';
-import { UserService } from './../../services/business/user-service';
 import { Component } from '@angular/core';
 import { IonicPage } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+
+import { UserService } from './../../services/business/user-service';
 
 @IonicPage()
 @Component({
@@ -24,5 +25,4 @@ export class ResetPasswordPage {
 
         this.reset = Observable.empty();
     }
-
 }

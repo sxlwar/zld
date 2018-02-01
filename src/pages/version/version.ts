@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs/Observable';
-import { HttpService } from './../../services/api/http-service';
-import { AppVersion } from '@ionic-native/app-version';
 import { Component } from '@angular/core';
+import { AppVersion } from '@ionic-native/app-version';
 import { IonicPage } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+
 import { Version } from '../../interfaces/response-interface';
 import { putInArray } from '../../services/utils/util';
-
+import { HttpService } from './../../services/api/http-service';
 
 @IonicPage()
 @Component({
@@ -36,5 +36,4 @@ export class VersionPage {
                 }).reduce(putInArray, []))
             );
     }
-
 }

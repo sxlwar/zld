@@ -1,29 +1,29 @@
-import { SearchWorkerEffect } from './search-worker-effect';
-import { LaunchEffect } from './launch-effect';
-import { LeaveEffect } from './leave-effect';
-import { GroupsListEffect } from './group-list-effect';
-import { NationalityEffect } from './nationality-effect';
-import { MessageEffect } from './message-effect';
-import { WorkCertificateEffect } from './work-certificate-effect';
-import { LogoutEffect } from './logout-effect';
-import { LocationEffect } from './location-effect';
-import { LocationCardEffect } from './location-card-effect';
+import { AccountChangeEffect } from './account-change-effect';
 import { AttendanceCardEffect } from './attendance-card-effect';
-import { AttendanceMachineEffect } from './attendance-machine-effect';
-import { PersonalEffect } from './personal-effect';
 import { AttendanceEffect } from './attendance-effect';
+import { AttendanceMachineEffect } from './attendance-machine-effect';
+import { BankCardEffect } from './bank-card-effect';
 import { CraftEffect } from './craft-effect';
 import { EmployerEffect } from './employer-effect';
+import { GroupsListEffect } from './group-list-effect';
+import { LaunchEffect } from './launch-effect';
+import { LeaveEffect } from './leave-effect';
+import { LocationCardEffect } from './location-card-effect';
+import { LocationEffect } from './location-effect';
+import { LogoutEffect } from './logout-effect';
+import { MessageEffect } from './message-effect';
+import { NationalityEffect } from './nationality-effect';
 import { OvertimeEffect } from './overtime-effect';
 import { PayBillEffect } from './pay-bill-effect';
+import { PersonalEffect } from './personal-effect';
 import { ProjectEffect } from './project-effect';
+import { QRLoginEffect } from './qr-scan-login-effect';
+import { SearchWorkerEffect } from './search-worker-effect';
 import { TeamEffect } from './team-effect';
+import { WorkCertificateEffect } from './work-certificate-effect';
 import { WorkFlowEffect } from './work-flow-effect';
 import { WorkPieceEffect } from './work-piece-effect';
 import { WorkerEffect } from './worker-effect';
-import { BankCardEffect } from './bank-card-effect';
-import { QRLoginEffect } from './qr-scan-login-effect';
-import { AccountChangeEffect } from './account-change-effect';
 
 /**
  * @description These are all needed after the user enters the APP,
@@ -56,4 +56,4 @@ export const EFFECTS = [
     WorkPieceEffect,
     WorkerEffect,
     WorkCertificateEffect,
-]
+];

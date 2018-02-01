@@ -1,48 +1,89 @@
-<ion-content class="transparent-header" [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}">
+<ion-content
+    class="transparent-header"
+    [ngStyle]="{'background-image': 'url(' + backgroundImage +')'}"
+>
     <ion-header>
         <ion-navbar></ion-navbar>
     </ion-header>
-    <ion-slides #slider [direction]="direction" class="content-slider">
+    <ion-slides
+        #slider
+        [direction]="direction"
+        class="content-slider"
+    >
 
-        <!--========================================signUp  start===================================================-->
+        <!-- ========================================signUp  start=================================================== -->
         <ion-slide class="zoom swiper-no-swiping">
-            <form action="" [formGroup]="signUpForm" style="padding: 20% 32px 0;">
+            <form
+                action
+                [formGroup]="signUpForm"
+                style="padding: 20% 32px 0;"
+            >
 
-                <!--user type-->
+                <!-- user type -->
                 <ion-item>
                     <ion-label>{{'REGISTER_USER_TYPE' | translate}}</ion-label>
-                    <ion-select formControlName="userType" (ngModelChange)="adjustmentValidationRules($event)" [cancelText]="'CANCEL_BUTTON' | translate"
-                        [okText]="'CONFIRM_BUTTON' | translate" required>
-                        <ion-option value="0">{{'REGISTER_PERSONAL_USER' | translate}}</ion-option>
+                    <ion-select
+                        formControlName="userType"
+                        (ngModelChange)="adjustmentValidationRules($event)"
+                        [cancelText]="'CANCEL_BUTTON' | translate"
+                        [okText]="'CONFIRM_BUTTON' | translate"
+                        required
+                    >
+                        <ion-option value="0">
+                            {{'REGISTER_PERSONAL_USER' | translate}}
+                        </ion-option>
                         <ion-option value="1">{{'REGISTER_COMPANY_USER' | translate}}</ion-option>
                     </ion-select>
                 </ion-item>
-                <div *ngIf="userType.invalid && (userType.dirty || userType.touched)" class="form-error">
-                    <span *ngIf="userType.errors.required">{{'REGISTER_USER_TYPE_REQUIRED_ERROR' | translate}}</span>
+                <div
+                    *ngIf="userType.invalid && (userType.dirty || userType.touched)"
+                    class="form-error"
+                >
+                    <span *ngIf="userType.errors.required">
+                        {{'REGISTER_USER_TYPE_REQUIRED_ERROR' | translate}}
+                    </span>
                 </div>
 
-                <!--company user need to select one company from the results of remote search-->
+                <!-- company user need to select one company from the results of remote search -->
                 <div *ngIf="userType.value === '1'">
-                    <!--company name-->
+                    <!-- company name -->
                     <div class="custom-container">
                         <ion-item>
                             <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
-                            <ion-textarea formControlName="company" [value]="(selectedCompany$ | async)?.name" [required]="userType.value === 'REGISTER_COMPANY_USER'"
-                                class="company-input"></ion-textarea>
+                            <ion-textarea
+                                formControlName="company"
+                                [value]="(selectedCompany$ | async)?.name"
+                                [required]="userType.value === 'REGISTER_COMPANY_USER'"
+                                class="company-input"
+                            ></ion-textarea>
                         </ion-item>
-                        <ion-icon name="search" (click)="getCompany()"></ion-icon>
+                        <ion-icon
+                            name="search"
+                            (click)="getCompany()"
+                        ></ion-icon>
                     </div>
 
-                    <div *ngIf="company.dirty || company.touched" class="form-error">
-                        <span *ngIf="userType.value === 'REGISTER_COMPANY_USER' && (company.errors)?.required">{{'REGISTER_COMPANY_REQUIRED_ERROR' | translate}}</span>
+                    <div
+                        *ngIf="company.dirty || company.touched"
+                        class="form-error"
+                    >
+                        <span *ngIf="userType.value === 'REGISTER_COMPANY_USER' && (company.errors)?.required">
+                            {{'REGISTER_COMPANY_REQUIRED_ERROR' | translate}}
+                        </span>
                     </div>
 
-                    <!--realName of company user-->
+                    <!-- realName of company user -->
                     <ion-item>
                         <ion-label fixed>{{'NAME' | translate}}</ion-label>
-                        <ion-input type="text" formControlName="realName"></ion-input>
+                        <ion-input
+                            type="text"
+                            formControlName="realName"
+                        ></ion-input>
                     </ion-item>
-                    <div *ngIf="userType.value === 'REGISTER_COMPANY_USER' && realName.invalid && (realName.dirty || realName.touched)" class="form-error">
+                    <div
+                        *ngIf="userType.value === 'REGISTER_COMPANY_USER' && realName.invalid && (realName.dirty || realName.touched)"
+                        class="form-error"
+                    >
                         <span *ngIf="realName.errors.required">{{'NAME_REQUIRED_ERROR' | translate}}</span>
                         <span *ngIf="!realName.errors.required && realName.errors.nameFormat">
                             {{signUpForm.getError('nameFormat', 'realName') | translate}}
@@ -50,12 +91,19 @@
                     </div>
                 </div>
 
-                <!--mobile phone number, used as account for user-->
+                <!-- mobile phone number, used as account for user -->
                 <ion-item>
                     <ion-label fixed>{{'MOBILE_PHONE' | translate}}</ion-label>
-                    <ion-input type="tel" formControlName="mobilePhone" required></ion-input>
+                    <ion-input
+                        type="tel"
+                        formControlName="mobilePhone"
+                        required
+                    ></ion-input>
                 </ion-item>
-                <div *ngIf="mobilePhoneSignUp.invalid && (mobilePhoneSignUp.dirty || mobilePhoneSignUp.touched)" class="form-error">
+                <div
+                    *ngIf="mobilePhoneSignUp.invalid && (mobilePhoneSignUp.dirty || mobilePhoneSignUp.touched)"
+                    class="form-error"
+                >
                     <span *ngIf="mobilePhoneSignUp.errors.required">
                         {{'ACCOUNT_REQUIRED_ERROR' | translate}}
                     </span>
@@ -64,97 +112,173 @@
                     </span>
                 </div>
 
-                <!--image verification code-->
+                <!-- image verification code -->
                 <div *ngIf="(signUpImageVerification$ | async)?.captcha">
                     <ion-item>
                         <ion-label fixed>{{'IMAGE_VERIFICATION' | translate}}</ion-label>
-                        <ion-input type="text" formControlName="imageVerification" required></ion-input>
+                        <ion-input
+                            type="text"
+                            formControlName="imageVerification"
+                            required
+                        ></ion-input>
                     </ion-item>
-                    <image-verification [src]="loginVerificationImage$ | async" (update)="updateImage$.next(true)"></image-verification>
-                    <div *ngIf="imageVerificationSignUp.invalid && (imageVerificationSignUp.dirty || imageVerificationSignUp.touched)" class="form-error">
+                    <image-verification
+                        [src]="loginVerificationImage$ | async"
+                        (update)="updateImage$.next(true)"
+                    ></image-verification>
+                    <div
+                        *ngIf="imageVerificationSignUp.invalid && (imageVerificationSignUp.dirty || imageVerificationSignUp.touched)"
+                        class="form-error"
+                    >
                         <span *ngIf="imageVerificationSignUp.errors.required">
                             {{'IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
                         </span>
                     </div>
                 </div>
 
-                <!--mobile phone verification code-->
+                <!-- mobile phone verification code -->
                 <div class="custom-container">
                     <ion-item>
                         <ion-label fixed>{{'PHONE_VERIFICATION' | translate}}</ion-label>
-                        <ion-input type="number" formControlName="phoneVerification" required></ion-input>
+                        <ion-input
+                            type="number"
+                            formControlName="phoneVerification"
+                            required
+                        ></ion-input>
                     </ion-item>
-                    <cut-down (request)="phoneVerCode$.next(true)" [hidden]="signUpForm.get('mobilePhone').invalid || signUpForm.get('imageVerification').invalid">
+                    <cut-down
+                        (request)="phoneVerCode$.next(true)"
+                        [hidden]="signUpForm.get('mobilePhone').invalid || signUpForm.get('imageVerification').invalid"
+                    >
                     </cut-down>
                 </div>
-                <div *ngIf="phoneVerificationSignUp.invalid && (phoneVerificationSignUp.dirty || phoneVerificationSignUp.touched)" class="form-error">
+                <div
+                    *ngIf="phoneVerificationSignUp.invalid && (phoneVerificationSignUp.dirty || phoneVerificationSignUp.touched)"
+                    class="form-error"
+                >
                     <span *ngIf="phoneVerificationSignUp.errors.required">
                         {{'VERIFICATION_REQUIRED_ERROR' | translate}}
                     </span>
                 </div>
 
-                <!--password-->
+                <!-- password -->
                 <div formGroupName="passwordInfo">
-                    <!--first input-->
+                    <!-- first input -->
                     <ion-item>
                         <ion-label fixed>{{'PASSWORD' | translate}}</ion-label>
-                        <ion-input type="password" formControlName="password" required></ion-input>
+                        <ion-input
+                            type="password"
+                            formControlName="password"
+                            required
+                        ></ion-input>
                     </ion-item>
-                    <div *ngIf="passwordSignUp.invalid && (passwordSignUp.dirty || passwordSignUp.touched)" class="form-error">
-                        <span *ngIf="passwordSignUp.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
+                    <div
+                        *ngIf="passwordSignUp.invalid && (passwordSignUp.dirty || passwordSignUp.touched)"
+                        class="form-error"
+                    >
+                        <span *ngIf="passwordSignUp.errors.required">
+                            {{'PASSWORD_REQUIRED_ERROR' | translate}}
+                        </span>
                         <span *ngIf="!passwordSignUp.errors.required && passwordSignUp.errors.pwdFormat">
                             {{signUpForm.getError('pwdFormat', 'passwordInfo.password') | translate}}
                         </span>
                     </div>
 
-                    <!--second input-->
+                    <!-- second input -->
                     <ion-item class="margin-bottom">
                         <ion-label fixed>{{'CONFIRM_PASSWORD' | translate}}</ion-label>
-                        <ion-input type="password" formControlName="confirmPassword" required></ion-input>
+                        <ion-input
+                            type="password"
+                            formControlName="confirmPassword"
+                            required
+                        ></ion-input>
                     </ion-item>
-                    <div *ngIf="confirmPasswordSignUp.invalid && (confirmPasswordSignUp.dirty || confirmPasswordSignUp.touched)" class="form-error">
-                        <span *ngIf="confirmPasswordSignUp.errors.required">{{'PASSWORD_REQUIRED_ERROR' | translate}}</span>
+                    <div
+                        *ngIf="confirmPasswordSignUp.invalid && (confirmPasswordSignUp.dirty || confirmPasswordSignUp.touched)"
+                        class="form-error"
+                    >
+                        <span *ngIf="confirmPasswordSignUp.errors.required">
+                            {{'PASSWORD_REQUIRED_ERROR' | translate}}
+                        </span>
                         <span *ngIf="!confirmPasswordSignUp.errors.required && confirmPasswordSignUp.errors.pwdFormat">
                             {{signUpForm.getError('pwdFormat', 'passwordInfo.confirmPassword') | translate}}
                         </span>
                     </div>
 
-                    <!--password match validate-->
-                    <div *ngIf="signUpForm.hasError('mismatch', 'passwordInfo') && (confirmPasswordSignUp.dirty || confirmPasswordSignUp.touched)"
-                        class="form-error">
+                    <!-- password match validate -->
+                    <div
+                        *ngIf="signUpForm.hasError('mismatch', 'passwordInfo') && (confirmPasswordSignUp.dirty || confirmPasswordSignUp.touched)"
+                        class="form-error"
+                    >
                         <span>
                             {{signUpForm.getError('mismatch', 'passwordInfo') | translate}}
                         </span>
                     </div>
                 </div>
 
-                <button ion-button block round (click)="signUp$.next(true)" [disabled]="signUpForm.invalid" color="light" class="login-button">{{'SIGNUP' | translate}}</button>
+                <button
+                    ion-button
+                    block
+                    round
+                    (click)="signUp$.next(true)"
+                    [disabled]="signUpForm.invalid"
+                    color="light"
+                    class="login-button"
+                >
+                    {{'SIGNUP' | translate}}
+                </button>
             </form>
 
-            <button ion-button clear (click)="changeSlidesActive(1); signUpForm.reset();" class="slide-button position-bottom">
+            <button
+                ion-button
+                clear
+                (click)="changeSlidesActive(1); signUpForm.reset();"
+                class="slide-button position-bottom"
+            >
                 {{'NEED_TO_LOGIN' | translate}}
                 <ion-icon name="arrow-down"></ion-icon>
             </button>
         </ion-slide>
-        <!--========================================signUp  end===================================================-->
+        <!-- ========================================signUp  end=================================================== -->
 
         <ion-slide class="zoom swiper-no-swiping">
-            <ion-slides #innerSlider class="content-slider">
+            <ion-slides
+                #innerSlider
+                class="content-slider"
+            >
 
-                <!--========================================login part start==============================================-->
-                <ion-slide class="swiper-no-swiping" style="margin-top: 4em;">
-                    <button ion-button clear (click)="changeSlidesActive(0);loginForm.reset();" class="slide-button">
+                <!-- ========================================login part start============================================== -->
+                <ion-slide
+                    class="swiper-no-swiping"
+                    style="margin-top: 4em;"
+                >
+                    <button
+                        ion-button
+                        clear
+                        (click)="changeSlidesActive(0);loginForm.reset();"
+                        class="slide-button"
+                    >
                         {{'LOGIN_NEED_TO_SIGN_UP' | translate}}
                         <ion-icon name="arrow-up"></ion-icon>
                     </button>
-                    <div [formGroup]="loginForm" style="padding: 0 32px 32px 32px">
+                    <div
+                        [formGroup]="loginForm"
+                        style="padding: 0 32px 32px 32px"
+                    >
 
-                        <!--mobile phone -->
+                        <!-- mobile phone -->
                         <ion-item>
                             <ion-label floating>{{'MOBILE_PHONE' | translate}}</ion-label>
-                            <ion-input type="number" formControlName="mobilePhone" required></ion-input>
+                            <ion-input
+                                type="number"
+                                formControlName="mobilePhone"
+                                required
+                            ></ion-input>
                         </ion-item>
-                        <div *ngIf="mobilePhone.invalid && (mobilePhone.dirty || mobilePhone.touched)" class="form-error">
+                        <div
+                            *ngIf="mobilePhone.invalid && (mobilePhone.dirty || mobilePhone.touched)"
+                            class="form-error"
+                        >
                             <span *ngIf="mobilePhone.errors.required">
                                 {{'ACCOUNT_REQUIRED_ERROR' | translate}}
                             </span>
@@ -163,12 +287,19 @@
                             </span>
                         </div>
 
-                        <!--pass word-->
+                        <!-- pass word -->
                         <ion-item>
                             <ion-label floating>{{'PASSWORD' | translate}}</ion-label>
-                            <ion-input type="password" formControlName="password" required></ion-input>
+                            <ion-input
+                                type="password"
+                                formControlName="password"
+                                required
+                            ></ion-input>
                         </ion-item>
-                        <div *ngIf="password.invalid && (password.dirty || password.touched)" class="form-error">
+                        <div
+                            *ngIf="password.invalid && (password.dirty || password.touched)"
+                            class="form-error"
+                        >
                             <span *ngIf="password.errors.required">
                                 {{'PASSWORD_REQUIRED_ERROR' | translate}}
                             </span>
@@ -177,39 +308,71 @@
                             </span>
                         </div>
 
-                        <!--image verification-->
+                        <!-- image verification -->
                         <div *ngIf="(loginInfo$ | async)?.captcha">
                             <ion-item>
                                 <ion-label floating>{{'IMAGE_VERIFICATION' | translate}}</ion-label>
-                                <ion-input type="text" formControlName="imageVerification" required></ion-input>
+                                <ion-input
+                                    type="text"
+                                    formControlName="imageVerification"
+                                    required
+                                ></ion-input>
                             </ion-item>
-                            <image-verification [src]="loginVerificationImage$ | async" (update)="updateImage$.next(true)"></image-verification>
-                            <div *ngIf="imageVerification.invalid && (imageVerification.dirty || imageVerification.touched)" class="form-error">
+                            <image-verification
+                                [src]="loginVerificationImage$ | async"
+                                (update)="updateImage$.next(true)"
+                            ></image-verification>
+                            <div
+                                *ngIf="imageVerification.invalid && (imageVerification.dirty || imageVerification.touched)"
+                                class="form-error"
+                            >
                                 <span *ngIf="imageVerification.errors.required">
                                     {{'IMAGE_VERIFICATION_REQUIRED_ERROR' | translate}}
                                 </span>
                             </div>
                         </div>
 
-                        <button ion-button block round (click)="login$.next(true)" [disabled]="loginForm.invalid" color="light" class="login-button">{{'LOGIN' | translate}}
+                        <button
+                            ion-button
+                            block
+                            round
+                            (click)="login$.next(true)"
+                            [disabled]="loginForm.invalid"
+                            color="light"
+                            class="login-button"
+                        >
+                            {{'LOGIN' | translate}}
                         </button>
-                        <button ion-button clear (click)="changeInnerSlidesActive(1); loginForm.reset();" color="light" class="forgot-button">{{'LOGIN_FORGOT_PASSWORD' | translate}}
+                        <button
+                            ion-button
+                            clear
+                            (click)="changeInnerSlidesActive(1); loginForm.reset();"
+                            color="light"
+                            class="forgot-button"
+                        >
+                            {{'LOGIN_FORGOT_PASSWORD' | translate}}
                         </button>
                     </div>
                 </ion-slide>
-                <!--========================================login part end===================================================-->
+                <!-- ========================================login part end=================================================== -->
 
-                <!--========================================reset password start===================================================-->
+                <!-- ========================================reset password start=================================================== -->
                 <ion-slide class="swiper-no-swiping">
                     <div style="padding: 20% 32px 32px 32px">
                         <reset-password [reset]="reset$"></reset-password>
-                        <button ion-button clear (click)="changeInnerSlidesActive(0); reset$.next(null);" color="light" class="goback-button">
+                        <button
+                            ion-button
+                            clear
+                            (click)="changeInnerSlidesActive(0); reset$.next(null);"
+                            color="light"
+                            class="goback-button"
+                        >
                             <ion-icon name="arrow-back"></ion-icon>
                             {{'NEED_TO_LOGIN' | translate}}
                         </button>
                     </div>
                 </ion-slide>
-                <!--========================================reset password end===================================================-->
+                <!-- ========================================reset password end=================================================== -->
             </ion-slides>
         </ion-slide>
 

@@ -1,13 +1,14 @@
-import { MissionRoot } from './../pages';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Overtime, WorkFlow } from './../../interfaces/response-interface';
 import { overtime } from './../../services/business/icon-service';
-import { PermissionService } from './../../services/config/permission-service';
 import { OvertimeService } from './../../services/business/overtime-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Subscription } from 'rxjs/Subscription';
-import { WorkFlow, Overtime } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Component } from '@angular/core';
-import { IonicPage, NavParams, NavController } from 'ionic-angular';
+import { PermissionService } from './../../services/config/permission-service';
+import { MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({
@@ -58,9 +59,9 @@ export class OvertimeDetailPage {
     launch() {
         this.subscriptions = [
             this.overtimeService.getOvertimeRecordList(this.overtimeService.getRecordOptions(this.id, this.navParams.get('status'))),
-            
+
             this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
-            
+
             this.overtimeService.handleError(),
         ];
     }
@@ -73,7 +74,7 @@ export class OvertimeDetailPage {
 
     ionViewWillUnload() {
         this.workFlowService.resetTaskUpdateResponse();
-        
+
         this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());

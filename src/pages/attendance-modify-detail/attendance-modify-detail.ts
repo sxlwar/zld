@@ -1,13 +1,14 @@
-import { MissionRoot } from './../pages';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { WorkFlowService } from '../../services/business/work-flow-service';
+import { AttendanceModify, WorkFlow } from './../../interfaces/response-interface';
+import { AttendanceService } from './../../services/business/attendance-service';
 import { modifyAttendance } from './../../services/business/icon-service';
 import { PermissionService } from './../../services/config/permission-service';
-import { AttendanceService } from './../../services/business/attendance-service';
-import { WorkFlowService } from '../../services/business/work-flow-service';
-import { Subscription } from 'rxjs/Subscription';
-import { WorkFlow, AttendanceModify } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Component } from '@angular/core';
-import { IonicPage, NavParams, NavController } from 'ionic-angular';
+import { MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({
@@ -58,7 +59,7 @@ export class AttendanceModifyDetailPage {
     launch() {
         this.subscriptions = [
             this.attendanceService.getAttendanceModifyRecord(this.attendanceService.getRecordOptions(this.id, this.navParams.get('status'))),
-            
+
             this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
 
             this.attendanceService.handleAttendanceModifyError(),
@@ -73,7 +74,7 @@ export class AttendanceModifyDetailPage {
 
     ionViewWillUnload() {
         this.workFlowService.resetTaskUpdateResponse();
-        
+
         this.audit$$ && this.audit$$.unsubscribe();
 
         this.subscriptions.forEach(item => item.unsubscribe());

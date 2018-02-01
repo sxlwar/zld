@@ -1,11 +1,12 @@
 <ion-header>
 
     <ion-navbar>
-        <ion-title>{{'CREATE_WORKER_CONTRACT' | translate}}</ion-title>
+        <ion-title>
+            {{'CREATE_WORKER_CONTRACT' | translate}}
+        </ion-title>
     </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -13,38 +14,68 @@
 
         <ion-item>
             <ion-label>{{'CONTRACT_TYPE' | translate}}</ion-label>
-            <ion-select [(ngModel)]="contractType" formControlName="formType" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
+            <ion-select
+                [(ngModel)]="contractType"
+                formControlName="formType"
+                required
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
                 <ion-option value="1">{{'WORK_TIME_PAY' | translate}}</ion-option>
                 <ion-option value="2">{{'WORK_PIECE_PAY' | translate}}</ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="formType.invalid && (formType.dirty || formType.touched)" class="form-danger">
-            <span *ngIf="formType.errors.required">{{'CONTRACT_TYPE_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="formType.invalid && (formType.dirty || formType.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="formType.errors.required">
+                {{'CONTRACT_TYPE_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item-divider>{{'PARTY_A' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label>{{'TEAM' | translate}}</ion-label>
-            <ion-select formControlName="teamId" (ngModelChange)="showPartyAInfo($event)" required [cancelText]="'CANCEL_BUTTON' | translate"
-                [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of teams | async" [value]="item.id">{{item.name}}</ion-option>
+            <ion-select
+                formControlName="teamId"
+                (ngModelChange)="showPartyAInfo($event)"
+                required
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of teams | async"
+                    [value]="item.id"
+                >
+                    {{item.name}}
+                </ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="teamId.invalid && (teamId.dirty || teamId.touched)" class="form-danger">
+        <div
+            *ngIf="teamId.invalid && (teamId.dirty || teamId.touched)"
+            class="form-danger"
+        >
             <span *ngIf="teamId.errors.required">{{'TEAM_REQUIRED_ERROR' | translate}}</span>
         </div>
 
         <div *ngIf="selectedTeam | async; let selectedTeam;">
             <ion-item>
                 <ion-label fixed>{{'PROJECT_NAME' | translate}}</ion-label>
-                <!--不知道为什么这个地方是project__name，也许是后台疯了吧-->
-                <ion-input [value]="selectedTeam?.project__name" disabled></ion-input>
+                <!-- 不知道为什么这个地方是project__name，也许是后台疯了吧 -->
+                <ion-input
+                    [value]="selectedTeam?.project__name"
+                    disabled
+                ></ion-input>
             </ion-item>
 
             <ion-item>
                 <ion-label fixed>{{'FOREMAN' | translate}}</ion-label>
-                <ion-input [value]="selectedTeam?.leader__employee__realname" disabled></ion-input>
+                <ion-input
+                    [value]="selectedTeam?.leader__employee__realname"
+                    disabled
+                ></ion-input>
             </ion-item>
         </div>
 
@@ -55,115 +86,251 @@
                 {{'NAME' | translate}}
                 <span>{{workers | async}}</span>
             </ion-label>
-            <ion-icon name="search" color="primary" item-end (click)="searchWorker($event)"></ion-icon>
+            <ion-icon
+                name="search"
+                color="primary"
+                item-end
+                (click)="searchWorker($event)"
+            ></ion-icon>
         </ion-item>
-        <div *ngIf="workerIds.invalid && (workerIds.dirty || workerIds.touched)" class="form-danger">
-            <span *ngIf="workerIds.errors.required">{{'WORKERS_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="workerIds.invalid && (workerIds.dirty || workerIds.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="workerIds.errors.required">
+                {{'WORKERS_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item>
             <ion-label>{{'WORK_TYPE' | translate}}</ion-label>
-            <ion-select formControlName="workTypeId" required [cancelText]="'CANCEL_BUTTON' | translate" [okText]="'CONFIRM_BUTTON' | translate">
-                <ion-option *ngFor="let item of workTypes | async" [value]="item.id">{{item.name}}</ion-option>
+            <ion-select
+                formControlName="workTypeId"
+                required
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [okText]="'CONFIRM_BUTTON' | translate"
+            >
+                <ion-option
+                    *ngFor="let item of workTypes | async"
+                    [value]="item.id"
+                >
+                    {{item.name}}
+                </ion-option>
             </ion-select>
         </ion-item>
-        <div *ngIf="workTypeId.invalid && (workTypeId.dirty || workTypeId.touched)" class="form-danger">
-            <span *ngIf="workTypeId.errors.required">{{'WORK_TYPE_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="workTypeId.invalid && (workTypeId.dirty || workTypeId.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="workTypeId.errors.required">
+                {{'WORK_TYPE_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item-divider>{{'CONTRACT_EXPIRE' | translate}}</ion-item-divider>
 
         <ion-item>
             <ion-label>{{'START_DATE' | translate}}</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                formControlName="startDay" (ngModelChange)="updateExpireDate($event)" required></ion-datetime>
+            <ion-datetime
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY MM DD"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                formControlName="startDay"
+                (ngModelChange)="updateExpireDate($event)"
+                required
+            ></ion-datetime>
         </ion-item>
-        <div *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)" class="form-danger">
-            <span *ngIf="startDay.errors.required">{{'CONTRACT_START_DATE_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="startDay.invalid && (startDay.dirty || startDay.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="startDay.errors.required">
+                {{'CONTRACT_START_DATE_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item>
             <ion-label>{{'END_DATE' | translate}}</ion-label>
-            <ion-datetime displayFormat="YYYY-MM-DD" pickerFormat="YYYY MM DD" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                [min]="startDay.value" formControlName="endDay" required [disabled]="!startDay.value"></ion-datetime>
+            <ion-datetime
+                displayFormat="YYYY-MM-DD"
+                pickerFormat="YYYY MM DD"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                [min]="startDay.value"
+                max="2038-12-31"
+                formControlName="endDay"
+                required
+                [disabled]="!startDay.value"
+            ></ion-datetime>
         </ion-item>
-        <div *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)" class="form-danger">
-            <span *ngIf="endDay.errors.required">{{'CONTRACT_END_DATE_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="endDay.invalid && (endDay.dirty || endDay.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="endDay.errors.required">
+                {{'CONTRACT_END_DATE_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item-divider>
             {{'SALARY_PAY_TYPE' | translate}}
-            <ion-icon *ngIf="formType.value === '2'" name="add" color="primary" item-end (click)="addPiece()"></ion-icon>
+            <ion-icon
+                *ngIf="formType.value === '2'"
+                name="add"
+                color="primary"
+                item-end
+                (click)="addPiece()"
+            ></ion-icon>
         </ion-item-divider>
 
-        <!--FIXME:使用日期组件，只选择日期的时候这个地方搞不清楚是哪的问题，payDay的值无法正确设置-->
+        <!-- FIXME:使用日期组件，只选择日期的时候这个地方搞不清楚是哪的问题，payDay的值无法正确设置 -->
         <ion-item>
             <ion-label fixed>{{'PAYDAY' | translate}}</ion-label>
-            <ion-input type="number" formControlName="payDay" required></ion-input>
+            <ion-input
+                type="number"
+                formControlName="payDay"
+                required
+            ></ion-input>
         </ion-item>
-        <div *ngIf="payDay.invalid && (payDay.dirty || payDay.touched)" class="form-danger">
+        <div
+            *ngIf="payDay.invalid && (payDay.dirty || payDay.touched)"
+            class="form-danger"
+        >
             <span *ngIf="payDay.errors.required">{{'PAYDAY_REQUIRED_ERROR' | translate}}</span>
-            <span *ngIf="!payDay.errors.required && (payDay.errors.max || payDay.errors.min)">
-                {{'DATE_RANGE_ERROR' | translate}}
-            </span>
+            <span *ngIf="!payDay.errors.required && (payDay.errors.max || payDay.errors.min)">{{'DATE_RANGE_ERROR' | translate}}</span>
         </div>
 
-        <div *ngIf="formType.value === '1'" [formGroup]="timePayContract">
+        <div
+            *ngIf="formType.value === '1'"
+            [formGroup]="timePayContract"
+        >
+            <ion-item>
+                <ion-label fixed>{{'JOB_DUTY' | translate}}</ion-label>
+                <ion-input
+                    type="text"
+                    formControlName="content"
+                    required
+                ></ion-input>
+            </ion-item>
+            <div
+                *ngIf="content.invalid && (content.dirty || content.touched)"
+                class="form-danger"
+            >
+                <span *ngIf="content.errors.required">
+                    {{'JOB_DUTY_REQUIRED_ERROR' | translate}}
+                </span>
+            </div>
+
             <ion-item>
                 <ion-label fixed>{{'HOURLY_WAGE' | translate}}</ion-label>
-                <ion-input type="number" formControlName="hourlyWage" required></ion-input>
+                <ion-input
+                    type="number"
+                    formControlName="hourlyWage"
+                    required
+                ></ion-input>
             </ion-item>
-            <div *ngIf="hourlyWage.invalid && (hourlyWage.dirty || hourlyWage.touched)" class="form-danger">
-                <span *ngIf="hourlyWage.errors.required">{{'HOURLY_WAGE_REQUIRED_ERROR' | translate}}</span>
+            <div
+                *ngIf="hourlyWage.invalid && (hourlyWage.dirty || hourlyWage.touched)"
+                class="form-danger"
+            >
+                <span *ngIf="hourlyWage.errors.required">
+                    {{'HOURLY_WAGE_REQUIRED_ERROR' | translate}}
+                </span>
             </div>
         </div>
 
         <div *ngIf="formType.value === '2'">
-            <div *ngFor="let form of piecePayContracts;  index as index;" [formGroup]="form">
+            <div
+                *ngFor="let form of piecePayContracts;  index as index;"
+                [formGroup]="form"
+            >
 
                 <ion-card>
                     <ion-card-header text-center>
                         {{form.value.name}}
-                        <ion-icon name="close" color="primary" (click)="deletePieceForm(index)" float-right></ion-icon>
+                        <ion-icon
+                            name="close"
+                            color="primary"
+                            (click)="deletePieceForm(index)"
+                            float-right
+                        ></ion-icon>
                     </ion-card-header>
 
                     <ion-card-content>
                         <ion-list>
                             <ion-item>
                                 <ion-label fixed>{{'PIECE_NAME' | translate}}</ion-label>
-                                <ion-input [formControl]="form.get('name')" required></ion-input>
+                                <ion-input
+                                    [formControl]="form.get('name')"
+                                    required
+                                ></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)" class="form-danger">
-                                <span *ngIf="form.get('name').errors.required">{{'PIECE_NAME_REQUIRED_ERROR' | translate}}</span>
+                            <div
+                                *ngIf="form.get('name').invalid && (form.get('name').dirty || form.get('name').touched)"
+                                class="form-danger"
+                            >
+                                <span *ngIf="form.get('name').errors.required">
+                                    {{'PIECE_NAME_REQUIRED_ERROR' | translate}}
+                                </span>
                             </div>
 
                             <ion-item>
                                 <ion-label fixed>{{'PIECE_LOCATION' | translate}}</ion-label>
-                                <ion-input [formControl]="form.get('location')" required></ion-input>
+                                <ion-input
+                                    [formControl]="form.get('location')"
+                                    required
+                                ></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('location').invalid && (form.get('location').dirty || form.get('location').touched)" class="form-danger">
-                                <span *ngIf="form.get('location').errors.required">{{'PIECE_LOCATION_REQUIRED_ERROR' | translate}}</span>
+                            <div
+                                *ngIf="form.get('location').invalid && (form.get('location').dirty || form.get('location').touched)"
+                                class="form-danger"
+                            >
+                                <span *ngIf="form.get('location').errors.required">
+                                    {{'PIECE_LOCATION_REQUIRED_ERROR' | translate}}
+                                </span>
                             </div>
 
                             <ion-item>
                                 <ion-label fixed>{{'PIECE_COUNT' | translate}}</ion-label>
-                                <ion-input type="number" [formControl]="form.get('num')" required></ion-input>
+                                <ion-input
+                                    type="number"
+                                    [formControl]="form.get('num')"
+                                    required
+                                ></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('num').invalid && (form.get('num').dirty || form.get('num').touched)" class="form-danger">
-                                <span *ngIf="form.get('num').errors.required">{{'PIECE_COUNT_REQUIRED_ERROR' | translate}}</span>
+                            <div
+                                *ngIf="form.get('num').invalid && (form.get('num').dirty || form.get('num').touched)"
+                                class="form-danger"
+                            >
+                                <span *ngIf="form.get('num').errors.required">
+                                    {{'PIECE_COUNT_REQUIRED_ERROR' | translate}}
+                                </span>
                             </div>
 
                             <ion-item>
                                 <ion-label fixed>{{'UNIT_PRICE' | translate}}</ion-label>
-                                <ion-input type="number" [formControl]="form.get('pieceWage')" required></ion-input>
+                                <ion-input
+                                    type="number"
+                                    [formControl]="form.get('pieceWage')"
+                                    required
+                                ></ion-input>
                             </ion-item>
-                            <div *ngIf="form.get('pieceWage').invalid && (form.get('pieceWage').dirty || form.get('pieceWage').touched)" class="form-danger">
-                                <span *ngIf="form.get('pieceWage').errors.required">{{'PIECE_PRICE_REQUIRED_ERROR' | translate}}</span>
+                            <div
+                                *ngIf="form.get('pieceWage').invalid && (form.get('pieceWage').dirty || form.get('pieceWage').touched)"
+                                class="form-danger"
+                            >
+                                <span *ngIf="form.get('pieceWage').errors.required">
+                                    {{'PIECE_PRICE_REQUIRED_ERROR' | translate}}
+                                </span>
                             </div>
 
                             <ion-item>
                                 <ion-label fixed>{{'STANDARD' | translate}}</ion-label>
-                                <ion-textarea autoSize [formControl]="form.get('standard')"></ion-textarea>
+                                <ion-textarea
+                                    autoSize
+                                    [formControl]="form.get('standard')"
+                                ></ion-textarea>
                             </ion-item>
                         </ion-list>
                     </ion-card-content>
@@ -174,27 +341,60 @@
 
         <ion-item-divider>
             {{'ATTENDANCE_TIME' | translate}}
-            <button ion-button clear color="primary" (click)="toggleAttendanceTime()" item-end>{{attendanceTimeSettingText | translate}}</button>
+            <button
+                ion-button
+                clear
+                color="primary"
+                (click)="toggleAttendanceTime()"
+                item-end
+            >
+                {{attendanceTimeSettingText | translate}}
+            </button>
         </ion-item-divider>
 
         <ion-item *ngIf="isPieceWiseAttendance">{{'FIRST_DUTY' | translate}}</ion-item>
 
         <ion-item>
             <ion-label>{{'ON_DUTY_TIME' | translate}}</ion-label>
-            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                formControlName="morningOnDuty" (ngModelChange)="resetMorningOffDuty()" required></ion-datetime>
+            <ion-datetime
+                displayFormat="HH:mm"
+                pickerFormat="HH:mm"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                formControlName="morningOnDuty"
+                (ngModelChange)="resetMorningOffDuty()"
+                required
+            ></ion-datetime>
         </ion-item>
-        <div *ngIf="morningOnDuty.invalid && (morningOnDuty.dirty || morningOnDuty.touched)" class="form-danger">
-            <span *ngIf="morningOnDuty.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="morningOnDuty.invalid && (morningOnDuty.dirty || morningOnDuty.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="morningOnDuty.errors.required">
+                {{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <ion-item>
             <ion-label>{{'OFF_DUTY_TIME' | translate}}</ion-label>
-            <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                [min]="morningOnDuty.value" formControlName="morningOffDuty" [disabled]="!morningOnDuty.value" required></ion-datetime>
+            <ion-datetime
+                displayFormat="HH:mm"
+                pickerFormat="HH:mm"
+                [cancelText]="'CANCEL_BUTTON' | translate"
+                [doneText]="'CONFIRM_BUTTON' | translate"
+                [min]="morningOnDuty.value"
+                formControlName="morningOffDuty"
+                [disabled]="!morningOnDuty.value"
+                required
+            ></ion-datetime>
         </ion-item>
-        <div *ngIf="morningOffDuty.invalid && (morningOffDuty.dirty || morningOffDuty.touched)" class="form-danger">
-            <span *ngIf="morningOffDuty.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
+        <div
+            *ngIf="morningOffDuty.invalid && (morningOffDuty.dirty || morningOffDuty.touched)"
+            class="form-danger"
+        >
+            <span *ngIf="morningOffDuty.errors.required">
+                {{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}
+            </span>
         </div>
 
         <div *ngIf="isPieceWiseAttendance">
@@ -203,20 +403,43 @@
 
             <ion-item>
                 <ion-label>{{'ON_DUTY_TIME' | translate}}</ion-label>
-                <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                    formControlName="afternoonOnDuty" (ngModelChange)="resetAfternoonOffDuty()"></ion-datetime>
+                <ion-datetime
+                    displayFormat="HH:mm"
+                    pickerFormat="HH:mm"
+                    [cancelText]="'CANCEL_BUTTON' | translate"
+                    [doneText]="'CONFIRM_BUTTON' | translate"
+                    formControlName="afternoonOnDuty"
+                    (ngModelChange)="resetAfternoonOffDuty()"
+                ></ion-datetime>
             </ion-item>
-            <div *ngIf="afternoonOnDuty.invalid && (afternoonOnDuty.dirty || afternoonOnDuty.touched)" class="form-danger">
-                <span *ngIf="afternoonOnDuty.errors.required">{{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
+            <div
+                *ngIf="afternoonOnDuty.invalid && (afternoonOnDuty.dirty || afternoonOnDuty.touched)"
+                class="form-danger"
+            >
+                <span *ngIf="afternoonOnDuty.errors.required">
+                    {{'ON_DUTY_TIME_REQUIRED_ERROR' | translate}}
+                </span>
             </div>
 
             <ion-item>
                 <ion-label>{{'OFF_DUTY_TIME' | translate}}</ion-label>
-                <ion-datetime displayFormat="HH:mm" pickerFormat="HH:mm" [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate"
-                    [min]="afternoonOnDuty.value" formControlName="afternoonOffDuty" [disabled]="!afternoonOnDuty.value"></ion-datetime>
+                <ion-datetime
+                    displayFormat="HH:mm"
+                    pickerFormat="HH:mm"
+                    [cancelText]="'CANCEL_BUTTON' | translate"
+                    [doneText]="'CONFIRM_BUTTON' | translate"
+                    [min]="afternoonOnDuty.value"
+                    formControlName="afternoonOffDuty"
+                    [disabled]="!afternoonOnDuty.value"
+                ></ion-datetime>
             </ion-item>
-            <div *ngIf="afternoonOffDuty.invalid && (afternoonOffDuty.dirty || afternoonOffDuty.touched)" class="form-danger">
-                <span *ngIf="afternoonOffDuty.errors.required">{{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}</span>
+            <div
+                *ngIf="afternoonOffDuty.invalid && (afternoonOffDuty.dirty || afternoonOffDuty.touched)"
+                class="form-danger"
+            >
+                <span *ngIf="afternoonOffDuty.errors.required">
+                    {{'OFF_DUTY_TIME_REQUIRED_ERROR' | translate}}
+                </span>
             </div>
 
         </div>
@@ -225,7 +448,11 @@
 
         <ion-item>
             <ion-label>{{'COMMENT' | translate}}</ion-label>
-            <ion-textarea formControlName="comment" [placeholder]="'SUPPLEMENT_TIP' | translate" autoSize></ion-textarea>
+            <ion-textarea
+                formControlName="comment"
+                [placeholder]="'SUPPLEMENT_TIP' | translate"
+                autoSize
+            ></ion-textarea>
         </ion-item>
 
         <attach-list (file)="getAttach($event)"></attach-list>
@@ -234,5 +461,15 @@
 </ion-content>
 
 <ion-footer>
-    <button ion-button block no-margin color="primary" [disabled]="formInvalid" (click)="contract$.next(true)" no-margin>{{'CONFIRM_BUTTON' | translate}}</button>
+    <button
+        ion-button
+        block
+        no-margin
+        color="primary"
+        [disabled]="formInvalid"
+        (click)="contract$.next(true)"
+        no-margin
+    >
+        {{'CONFIRM_BUTTON' | translate}}
+    </button>
 </ion-footer>

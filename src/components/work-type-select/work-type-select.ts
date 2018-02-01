@@ -1,8 +1,9 @@
-import { Subject } from 'rxjs/Subject';
-import { CraftService } from './../../services/business/craft-service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReplaySubject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
+
+import { CraftService } from './../../services/business/craft-service';
 
 interface WorkTypeItem {
     id: number;
@@ -12,7 +13,7 @@ interface WorkTypeItem {
 
 @Component({
     selector: 'work-type-select',
-    templateUrl: 'work-type-select.html'
+    templateUrl: 'work-type-select.html',
 })
 export class WorkTypeSelectComponent implements OnInit, OnDestroy {
 

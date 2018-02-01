@@ -1,9 +1,10 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { TranslateService } from '@ngx-translate/core';
-import { TipService, ConfirmProp } from './../../services/tip-service';
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { IonicPage } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { ConfirmProp, TipService } from './../../services/tip-service';
 
 @IonicPage()
 @Component({
@@ -30,7 +31,7 @@ export class ContactPage {
         this.subscription = this.tip.showConfirmProp(content, confirmFn);
     }
 
-    ionViewWillUnload(){
+    ionViewWillUnload() {
         this.subscription && this.subscription.unsubscribe();
     }
 }

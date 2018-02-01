@@ -1,9 +1,10 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Message } from './../../interfaces/response-interface';
-import { MessageService } from './../../services/business/message-service';
-import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Message } from './../../interfaces/response-interface';
+import { MessageService } from './../../services/business/message-service';
 
 @IonicPage()
 @Component({
@@ -38,7 +39,7 @@ export class MessageContentPage {
 
     sendRequest(): void {
         this.subscriptions = [
-            this.message.getMessageContent(Observable.of(this.msg.id))
+            this.message.getMessageContent(Observable.of(this.msg.id)),
         ];
     }
 

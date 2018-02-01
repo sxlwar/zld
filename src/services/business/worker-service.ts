@@ -1,35 +1,70 @@
-import { InfiniteScroll } from 'ionic-angular';
-import { ProjectService } from './project-service';
-import { WorkerContractOptions, RealTimeStatisticType } from './../../interfaces/request-interface';
-import { UserService } from './user-service';
-import { selectTimerContractIds, selectPiecerContractIds, selectManageTimerPage, selectManagePiecerPage, selectManageTimerCount, selectManagePiecerCount, selectSelectedWorkers, selectWorkTypeRealTimeStatisticsResponse, selectTeamMembersRealTimeStatisticsResponse } from './../../reducers/index-reducer';
-import { IncrementManagementTimerPageAction, IncrementManagementPiecerPageAction, ResetManagementTimerPageAction, ResetManagementPiecerPageAction, ResetWorkerContractsAction, UpdateManagementTimerCountAction, UpdateSelectedWorkersAction, ResetSelectedWorkersAction, UpdateManagementPiecerCountAction, TerminateWorkerContractAtLocalAction } from './../../actions/action/worker-action';
-import { WorkerContractListResponse, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
-import { Command } from './../api/command';
-import { WorkerContract as contract } from './../api/command';
-import { Injectable } from '@angular/core';
-import { AppState, selectWorkerContractResponse, selectWorkerContracts, selectWorkerLimit, selectWorkerPage } from '../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import { ProcessorService } from '../api/processor-service';
-import { DecrementQueryWorkerContractPageAction, IncrementQueryWorkerContractPageAction, ResetQueryWorkerContractPageAction } from '../../actions/action/worker-action';
-import 'rxjs/add/operator/zip';
-import { Subscription } from 'rxjs/Subscription';
-import { ErrorService } from '../errors/error-service';
-import { WorkerContract } from '../../interfaces/response-interface';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/empty';
-import 'rxjs/add/operator/first';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/defaultIfEmpty';
-import { RequestOption, ContractType } from '../../interfaces/request-interface';
+import 'rxjs/add/operator/first';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/zip';
+
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { InfiniteScroll } from 'ionic-angular';
 import { uniqBy } from 'lodash';
-import { DistinguishableWorkerItem, WorkerItem } from '../../interfaces/worker-interface';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    DecrementQueryWorkerContractPageAction,
+    IncrementQueryWorkerContractPageAction,
+    ResetQueryWorkerContractPageAction,
+} from '../../actions/action/worker-action';
+import { ContractType, RequestOption } from '../../interfaces/request-interface';
+import { WorkerContract } from '../../interfaces/response-interface';
+import { DistinguishableWorkerItem, FindFn, TransformToObservableFn, WorkerItem } from '../../interfaces/worker-interface';
+import {
+    AppState,
+    selectWorkerContractResponse,
+    selectWorkerContracts,
+    selectWorkerLimit,
+    selectWorkerPage,
+} from '../../reducers/index-reducer';
+import { ProcessorService } from '../api/processor-service';
+import { ErrorService } from '../errors/error-service';
+import {
+    IncrementManagementPiecerPageAction,
+    IncrementManagementTimerPageAction,
+    ResetManagementPiecerPageAction,
+    ResetManagementTimerPageAction,
+    ResetSelectedWorkersAction,
+    ResetWorkerContractsAction,
+    TerminateWorkerContractAtLocalAction,
+    UpdateManagementPiecerCountAction,
+    UpdateManagementTimerCountAction,
+    UpdateSelectedWorkersAction,
+} from './../../actions/action/worker-action';
+import { RealTimeStatisticType, WorkerContractOptions } from './../../interfaces/request-interface';
+import {
+    TeamMembersRealTimeStatisticsResponse,
+    WorkerContractListResponse,
+    WorkTypeRealTimeStatisticsResponse,
+} from './../../interfaces/response-interface';
+import {
+    selectManagePiecerCount,
+    selectManagePiecerPage,
+    selectManageTimerCount,
+    selectManageTimerPage,
+    selectPiecerContractIds,
+    selectSelectedWorkers,
+    selectTeamMembersRealTimeStatisticsResponse,
+    selectTimerContractIds,
+    selectWorkTypeRealTimeStatisticsResponse,
+} from './../../reducers/index-reducer';
+import { Command, WorkerContract as contract } from './../api/command';
+import { ProjectService } from './project-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class WorkerService {
-
     constructor(
         private store: Store<AppState>,
         private error: ErrorService,
@@ -38,7 +73,6 @@ export class WorkerService {
         private userInfo: UserService,
         private project: ProjectService
     ) {
-        this.handleError();
     }
 
     /*=================================================================API request===========================================================*/
@@ -49,7 +83,7 @@ export class WorkerService {
                 this.userInfo.getSid(),
                 this.store.select(selectWorkerLimit),
                 this.store.select(selectWorkerPage).distinctUntilChanged(),
-                (options, sid, limit, page) => ({ sid, limit, page, ...options }) as WorkerContractOptions // use option parameters first;
+                (options, sid, limit, page) => ({ sid, limit, page, ...options } as WorkerContractOptions) // use option parameters first;
             )
         );
     }
@@ -67,12 +101,17 @@ export class WorkerService {
 
     getWorkTypeRealTimeStatistics(option: Observable<RequestOption> = Observable.empty()): Subscription {
         return this.processor.workTypeRealTimeStatisticsProcessor(
-            option.defaultIfEmpty({})
+            option
+                .defaultIfEmpty({})
                 .withLatestFrom(
                 this.userInfo.getSid(),
                 this.project.getProjectId(),
-                (option, sid, project_id) => ({ ...option, sid, project_id, statistics_type: RealTimeStatisticType.workType })
-                )
+                (option, sid, project_id) => ({
+                    ...option,
+                    sid,
+                    project_id,
+                    statistics_type: RealTimeStatisticType.workType,
+                }))
         );
     }
 
@@ -82,9 +121,8 @@ export class WorkerService {
                 .withLatestFrom(
                 this.userInfo.getSid(),
                 this.project.getProjectId(),
-                (option, sid, project_id) => ({ ...option, sid, project_id, statistics_type: RealTimeStatisticType.team })
-                )
-        );
+                (option, sid, project_id) => ({ ...option, sid, project_id, statistics_type: RealTimeStatisticType.team }))
+        )
     }
 
     getNextPage(infiniteScroll: InfiniteScroll, type?: number): Subscription {
@@ -114,38 +152,46 @@ export class WorkerService {
      * If there is a repository, use this data directly, if not, we need to get it from the server
      * */
     getContractByUserId(userId: Observable<number>, subOption: Observable<RequestOption> = Observable.empty()): Observable<WorkerContract> {
-        return this.getContractById(userId, subOption, 'worker_id')
+        return this.getContractById(userId, subOption, this.findContractById('worker_id'));
     }
 
-    getContractById(id: Observable<number>, subOption: Observable<RequestOption> = Observable.empty(), idType = 'id'): Observable<WorkerContract> {
-        const combineFn = (id, contracts) => contracts.find(contract => contract[idType] === id);
-
+    getContractById(id: Observable<number>, subOption: Observable<RequestOption> = Observable.empty(), combineFn: FindFn<number, WorkerContract> = this.findContractById('id')): Observable<WorkerContract> {
         return id.withLatestFrom(
             this.getAllWorkerContracts(),
             combineFn
         )
             .distinctUntilChanged()
-            .mergeMap(contract => {
-                if (contract) return Observable.of(contract);
+            .mergeMap(this.getContractFromServeWhenLocalEmpty(id, combineFn, subOption));
+    }
 
-                const option = id
-                    .withLatestFrom(
-                    Observable.of({ limit: 1, page: 1 }),
-                    subOption.defaultIfEmpty({}),
-                    (user_id, option, subOption) => ({ ...option, user_id, ...subOption })
-                    );
+    getContractByIdReactContractsChange(id: Observable<number>, subOption: Observable<RequestOption> = Observable.empty(), combineFn: FindFn<number, WorkerContract> = this.findContractById('id')): Observable<WorkerContract> {
+        return id.combineLatest(this.getAllWorkerContracts(), combineFn)
+            .distinctUntilChanged()
+            .mergeMap(this.getContractFromServeWhenLocalEmpty(id, combineFn, subOption));
+    }
 
-                const subscription = this.getWorkerContracts(option);
+    private getContractFromServeWhenLocalEmpty(id: Observable<number>, combineFn, subOption: Observable<RequestOption> = Observable.empty()): TransformToObservableFn<WorkerContract> {
+        return (contract: WorkerContract) => {
+            if (contract) return Observable.of(contract);
 
+            const option = id.withLatestFrom(
+                Observable.of({ limit: 1, page: 1 }),
+                subOption.defaultIfEmpty({}),
+                (user_id, option, subOption) => ({ ...option, user_id, ...subOption })
+            );
 
-                return id.combineLatest(
-                    this.getWorkerContractResponse()
-                        .do(_ => subscription.unsubscribe())
-                        .map(res => res.worker_contract),
-                    combineFn
-                )
-                    .mergeMap(contract => !!contract ? Observable.of(contract) : Observable.of(null));
-            })
+            const subscription = this.getWorkerContracts(option);
+
+            return id.combineLatest(
+                this.getWorkerContractResponse().do(_ => subscription.unsubscribe()).map(res => res.worker_contract),
+                combineFn
+            )
+                .mergeMap(contract => (!!contract ? Observable.of(contract) : Observable.of(null)));
+        };
+    }
+
+    private findContractById(idType = 'id'): FindFn<number, WorkerContract> {
+        return (id, contracts) => contracts.find(contract => contract[idType] === id);
     }
 
     getOwnContract(option: Observable<RequestOption> = Observable.empty()): Observable<WorkerContract> {
@@ -200,23 +246,34 @@ export class WorkerService {
         return this.getCurrentPage()
             .skip(1)
             .distinctUntilChanged()
-            .combineLatest(this.getLimit(), this.getWorkerContractResponse().map(item => item.count).distinctUntilChanged())
+            .combineLatest(
+            this.getLimit(),
+            this.getWorkerContractResponse().map(item => item.count).distinctUntilChanged()
+            )
             .map(([page, limit, count]) => Math.ceil(count / limit) + 1 >= page)
             .filter(result => !!result);
     }
 
     /**
-     * 
+     *
      * @param options userIds
-     * @description Set selected property by userIds that passed in, 
+     * @description Set selected property by userIds that passed in,
      * selected should be true if the item's worker_id is contained in userIds, otherwise is false;
      */
     getWorkerItems(options: Observable<number[]>): Observable<DistinguishableWorkerItem[]> {
         return this.getWorkerContractResponse()
-            .map(res => res.worker_contract.map(item => ({ id: item.worker_id, name: item.worker__employee__realname, teamName: item.team__name, workType: item.worktype__name, workTypeId: item.worktype_id, selected: false })))
+            .map(res => res.worker_contract.map(item => ({
+                id: item.worker_id,
+                name: item.worker__employee__realname,
+                teamName: item.team__name,
+                workType: item.worktype__name,
+                workTypeId: item.worktype_id,
+                selected: false,
+            })))
             .scan((acc, cur) => acc.concat(cur))
             .combineLatest(options)
-            .map(([workers, selectedUserIds]) => uniqBy(workers.map(item => ({ ...item, selected: selectedUserIds.indexOf(item.id) !== -1 })), 'id'));
+            .map(([workers, selectedUserIds]) => uniqBy(workers.map(item => ({ ...item, selected: selectedUserIds.indexOf(item.id) !== -1 })), 'id')
+            );
     }
 
     /**
@@ -229,16 +286,15 @@ export class WorkerService {
             .skip(1)
             .map(response => !!response.worker_contract.length)
             .filter(value => !value)
-            .startWith(true)
+            .startWith(true);
     }
 
     getHaveMoreData(): Observable<boolean> {
-        return this.getWorkerCount()
-            .combineLatest(
+        return this.getWorkerCount().combineLatest(
             this.store.select(selectWorkerLimit),
             this.getCurrentPage(),
             (count, limit, page) => limit * page < count
-            );
+        );
     }
 
     getSelectedWorkers(): Observable<number[]> {
@@ -248,9 +304,7 @@ export class WorkerService {
     getSelectedWorkersContainsSpecificId(idKey: string): Observable<WorkerItem[]> {
         return this.getSelectedWorkers()
             .combineLatest(this.getAllWorkerContracts())
-            .map(([userIds, workers]) => workers.filter(item => userIds.indexOf(item.worker_id) !== -1)
-                .map(item => ({ id: item[idKey], name: item.worker__employee__realname }))
-            );
+            .map(([userIds, workers]) => workers.filter(item => userIds.indexOf(item.worker_id) !== -1).map(item => ({ id: item[idKey], name: item.worker__employee__realname })));
     }
 
     getSelectedWorkersContainsWorkerId(): Observable<WorkerItem[]> {
@@ -262,11 +316,13 @@ export class WorkerService {
     }
 
     getWorkTypeRealTimeStatisticsResponse(): Observable<WorkTypeRealTimeStatisticsResponse> {
-        return this.store.select(selectWorkTypeRealTimeStatisticsResponse).filter(value => !!value && !value.errorMessage);
+        return this.store.select(selectWorkTypeRealTimeStatisticsResponse)
+            .filter(value => !!value && !value.errorMessage);
     }
 
     getTeamMembersStatisticsResponse(): Observable<TeamMembersRealTimeStatisticsResponse> {
-        return this.store.select(selectTeamMembersRealTimeStatisticsResponse).filter(value => !!value && !value.errorMessage);
+        return this.store.select(selectTeamMembersRealTimeStatisticsResponse)
+            .filter(value => !!value && !value.errorMessage);
     }
 
     getCurrentPage(): Observable<number> {
@@ -282,8 +338,7 @@ export class WorkerService {
     setWorkersCountDistinctByPayType(type: Observable<string>): Subscription {
         return this.getWorkerCount()
             .withLatestFrom(type)
-            .subscribe(([amount, type]) => this.store.dispatch(type === ContractType[1] ? new UpdateManagementTimerCountAction(amount)
-                : new UpdateManagementPiecerCountAction(amount)));
+            .subscribe(([amount, type]) => this.store.dispatch(type === ContractType[1] ? new UpdateManagementTimerCountAction(amount) : new UpdateManagementPiecerCountAction(amount)));
     }
 
     /**
@@ -293,9 +348,7 @@ export class WorkerService {
         if (!type) {
             this.store.dispatch(new IncrementQueryWorkerContractPageAction());
         } else {
-            this.store.dispatch(
-                type === ContractType.timer ? new IncrementManagementTimerPageAction() : new IncrementManagementPiecerPageAction()
-            );
+            this.store.dispatch(type === ContractType.timer ? new IncrementManagementTimerPageAction() : new IncrementManagementPiecerPageAction());
         }
     }
 
@@ -307,9 +360,7 @@ export class WorkerService {
         if (!type) {
             this.store.dispatch(new ResetQueryWorkerContractPageAction());
         } else {
-            this.store.dispatch(
-                type === ContractType.timer ? new ResetManagementTimerPageAction() : new ResetManagementPiecerPageAction()
-            );
+            this.store.dispatch(type === ContractType.timer ? new ResetManagementTimerPageAction() : new ResetManagementPiecerPageAction());
         }
     }
 
@@ -332,14 +383,14 @@ export class WorkerService {
     /*==========================================error handle=====================================================*/
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkerContractResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkerContractResponse));
     }
 
     handlerWorkTypeRealTimeStatisticsError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectWorkTypeRealTimeStatisticsResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectWorkTypeRealTimeStatisticsResponse));
     }
 
     handlerTeamMembersRealTimeStatisticsError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectTeamMembersRealTimeStatisticsResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectTeamMembersRealTimeStatisticsResponse));
     }
 }

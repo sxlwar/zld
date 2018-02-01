@@ -1,16 +1,18 @@
-import { putInArray } from '../../services/utils/util';
-import { Subscription } from 'rxjs/Subscription';
-import { RequestOption } from 'interfaces/request-interface';
-import { workerContractList, WorkerContract } from './../../services/api/command';
-import { WorkerService } from './../../services/business/worker-service';
-import { Observable } from 'rxjs/Observable';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { dayNames, TimeService, Calendar } from '../../services/utils/time-service';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { chain, isEmpty, every } from 'lodash';
-import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add//operator/skip';
+import 'rxjs/add/operator/combineLatest';
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { RequestOption } from 'interfaces/request-interface';
+import { chain, every, isEmpty } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { AttendanceRecordService } from '../../services/business/attendance-record-service';
+import { Calendar, dayNames, TimeService } from '../../services/utils/time-service';
+import { putInArray } from '../../services/utils/util';
+import { WorkerContract, workerContractList } from './../../services/api/command';
+import { WorkerService } from './../../services/business/worker-service';
 
 export interface DatePeriod {
     start: string;
@@ -20,7 +22,7 @@ export interface DatePeriod {
 
 @Component({
     selector: 'calendar',
-    templateUrl: 'calendar.html'
+    templateUrl: 'calendar.html',
 })
 export class CalendarComponent implements OnInit {
     @Input() isMonth: boolean;
@@ -131,7 +133,7 @@ export class CalendarComponent implements OnInit {
     private getOption(): Observable<RequestOption> {
         return Observable.of({
             start_day: this.timeService.getDate(this.timeService.getFirstDateOfMonth(new Date()), true),
-            end_day: this.timeService.getDate(this.timeService.getYesterday(), true)
+            end_day: this.timeService.getDate(this.timeService.getYesterday(), true),
         });
     }
 

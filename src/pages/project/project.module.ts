@@ -1,9 +1,10 @@
-import { SharedModule } from './../../app/shared.modules';
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { ProjectPage } from './project';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
 import { ComponentsModule } from '../../components/components.module';
+import { SharedModule } from './../../app/shared.modules';
+import { ProjectPage } from './project';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,6 @@ import { ComponentsModule } from '../../components/components.module';
     ],
     exports: [
         ProjectPage,
-    ]
+    ],
 })
 export class ProjectPageModule { }

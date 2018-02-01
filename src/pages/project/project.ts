@@ -1,17 +1,18 @@
-import { Subscription } from 'rxjs/Subscription';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/zip';
+
 import { Component } from '@angular/core';
 import { IonicPage, NavController, PopoverController } from 'ionic-angular';
-import * as icon from '../../services/business/icon-service';
-import { IconService } from '../../services/business/icon-service';
-import { IconState } from '../../reducers/reducer/icons-reducer';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { ProjectListComponent } from '../../components/project-list/project-list';
+import { Project } from '../../interfaces/response-interface';
+import { ProjectRoot } from '../../pages/pages';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import * as icon from '../../services/business/icon-service';
 import { ProjectService } from '../../services/business/project-service';
 import { WorkerService } from '../../services/business/worker-service';
-import 'rxjs/add/operator/zip';
-import 'rxjs/add/observable/of';
-import { Project } from '../../interfaces/response-interface';
-import { ProjectListComponent } from '../../components/project-list/project-list';
-import { ProjectRoot } from '../../pages/pages';
 
 const icons = [
     icon.attendance,
@@ -24,7 +25,7 @@ const icons = [
     icon.attendanceMachine,
     icon.locationCard,
     icon.attendanceCard,
-    icon.locationAttendanceRecord
+    icon.locationAttendanceRecord,
 ];
 
 @IonicPage()
@@ -56,7 +57,7 @@ export class ProjectPage {
 
     constructor(
         private navCtrl: NavController,
-        private iconService: IconService,
+        private iconService: icon.IconService,
         private popoverCtrl: PopoverController,
         private projectService: ProjectService,
         private workerService: WorkerService
@@ -78,7 +79,7 @@ export class ProjectPage {
             this.workerService.getWorkerContractsOfCurrentProject(),
 
             this.workerService.handleError(),
-            
+
             this.projectService.handleError(),
         ];
     }
@@ -102,7 +103,7 @@ export class ProjectPage {
 
         this.workerCount = this.workerService.getWorkerCount();
     }
-    
+
     switchProject($event) {
         this.popoverCtrl.create(ProjectListComponent).present({ ev: $event }).then(() => { });
     }

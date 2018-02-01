@@ -1,9 +1,9 @@
-import { SearchWorkerResponse, WorkerInfo } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/search-worker-action';
+import { SearchWorkerResponse, WorkerInfo } from './../../interfaces/response-interface';
 
 export enum QueryWorkerBy {
     name = 'name',
-    userName = 'username'
+    userName = 'username',
 }
 
 export interface State {
@@ -17,7 +17,7 @@ export const initialState: State = {
     searchWorkerResponse: null,
     selectedWorkers: [],
     query: '',
-    queryBy: QueryWorkerBy.name
+    queryBy: QueryWorkerBy.name,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

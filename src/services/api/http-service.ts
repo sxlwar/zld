@@ -1,12 +1,14 @@
-import { UploadOptions, AttachOptions } from './../../interfaces/request-interface';
-import { Http } from '@angular/http';
-import { Injectable } from '@angular/core';
-import { FileTransfer, FileTransferObject, FileUploadOptions, FileUploadResult } from '@ionic-native/file-transfer';
-import { ENV } from '@app/env';
-import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/fromPromise';
-import { Version } from '../../interfaces/response-interface';
+
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { ENV } from '@app/env';
+import { FileTransfer, FileTransferObject, FileUploadOptions, FileUploadResult } from '@ionic-native/file-transfer';
+import { Observable } from 'rxjs/Observable';
+
 import { ApiUnit, Operate } from '../../interfaces/api-interface';
+import { Version } from '../../interfaces/response-interface';
+import { AttachOptions, UploadOptions } from './../../interfaces/request-interface';
 
 export interface HttpApiUnit extends ApiUnit {
     url: string;
@@ -14,58 +16,58 @@ export interface HttpApiUnit extends ApiUnit {
 
 export const uploadPersonalIdImage: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['personalIdUpdate']]
+        [Operate.updates, ['personalIdUpdate']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file`
+    url: `http://${ENV.DOMAIN}/upload_file`,
 };
 
 export const uploadCertificateImage: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['workCertificateCreate']]
+        [Operate.updates, ['workCertificateCreate']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 export const uploadWorkerContractAttach: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['workerContractAttach']]
+        [Operate.updates, ['workerContractAttach']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 export const uploadAttendanceModifyAttach: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['requestFileAdd']]
+        [Operate.updates, ['requestFileAdd']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 export const uploadLeaveAttach: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['leaveTask']]
+        [Operate.updates, ['leaveTask']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 export const uploadOvertimeAttach: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['workOverTimeTask']]  // 好BB的，这个地方的time就大写了。
+        [Operate.updates, ['workOverTimeTask']],  // 好BB的，这个地方的time就大写了。
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 export const uploadPieceAuditAttach: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['requestFileAdd']]
+        [Operate.updates, ['requestFileAdd']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 export const uploadWorkerContractModifyAttach: HttpApiUnit = {
     operates: new Map([
-        [Operate.updates, ['requestFileAdd']]
+        [Operate.updates, ['requestFileAdd']],
     ]),
-    url: `http://${ENV.DOMAIN}/upload_file/`
+    url: `http://${ENV.DOMAIN}/upload_file/`,
 }
 
 @Injectable()
@@ -88,8 +90,8 @@ export class HttpService {
 
         const options: FileUploadOptions = {
             fileKey: 'file',
-            fileName: file.substr(file.lastIndexOf("/") + 1),
-            params: { sid, command, type }
+            fileName: file.substr(file.lastIndexOf('/') + 1),
+            params: { sid, command, type },
         };
 
         const fileTransfer: FileTransferObject = this.fileTransfer.create();

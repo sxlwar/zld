@@ -1,9 +1,9 @@
-import { NavParams, ViewController } from 'ionic-angular';
 import { Component, OnInit } from '@angular/core';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
     selector: 'face-image',
-    templateUrl: 'face-image.html'
+    templateUrl: 'face-image.html',
 })
 export class FaceImageComponent implements OnInit {
     similarity: number;
@@ -20,7 +20,7 @@ export class FaceImageComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.similarity = this.navParams.get('similarity') * 100;
+        this.similarity = this.navParams.get('similarity');
 
         this.screen = this.navParams.get('screen');
 

@@ -1,19 +1,16 @@
-import { ApiUnit } from '../../interfaces/api-interface';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { selectIcon, AppState, selectGroupList } from '../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/first';
+
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+
+import { ApiUnit } from '../../interfaces/api-interface';
 import { ComprehensivePermissionResult, Permission, PermissionResult } from '../../interfaces/permission-interface';
+import { AppState, selectGroupList, selectIcon } from '../../reducers/index-reducer';
 
 @Injectable()
 export class PermissionService {
-
-    // project_teamList_view = [PME, EME, MM, PM, LM, TL, CW, QW];
-    // project_timeContract_view = [PME, EME, MM, PM, LM, TL];
-    // project_pieceContract_view = [PME, EME, MM, PM, LM, TL, QW];
-    // project_area_view = [PME, EME, MM, PM, LM, TL];
 
     constructor(
         private store: Store<AppState>
@@ -66,7 +63,7 @@ export class PermissionService {
     private get character() {
         return this.store
             .select(selectGroupList)
-            .mergeMap(res => Observable.from(res).first())
+            .mergeMap(res => Observable.from(res).first());
     }
 
     private generatePermission([permission, character]): PermissionResult {
@@ -74,8 +71,8 @@ export class PermissionService {
 
         return {
             view: view.indexOf(character) !== -1,
-            opt: opt.indexOf(character) !== -1
-        }
+            opt: opt.indexOf(character) !== -1,
+        };
     }
 
 }

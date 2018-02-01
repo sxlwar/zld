@@ -1,13 +1,13 @@
-import { TimeService } from './../../services/utils/time-service';
-import { MapperService } from './../../services/api/mapper-service';
-import { CustomWorkExperience } from './../../interfaces/personal-interface';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Component } from '@angular/core';
+
+import { CustomWorkExperience } from './../../interfaces/personal-interface';
+import { TimeService } from './../../services/utils/time-service';
 
 @Component({
     selector: 'add-work-experience',
-    templateUrl: 'add-work-experience.html'
+    templateUrl: 'add-work-experience.html',
 })
 export class AddWorkExperienceComponent {
 
@@ -25,7 +25,6 @@ export class AddWorkExperienceComponent {
         private navParams: NavParams,
         private viewCtrl: ViewController,
         private fb: FormBuilder,
-        private mapper: MapperService,
         private timeService: TimeService
     ) {
         this.today = timeService.getDate(new Date(), true);
@@ -68,7 +67,7 @@ export class AddWorkExperienceComponent {
     }
 
     execution() {
-        this.viewCtrl.dismiss(this.mapper.transformWorkExperienceOptions(this.workExperienceForm.value));
+        this.viewCtrl.dismiss(this.workExperienceForm.value);
     }
 
     dismiss() {

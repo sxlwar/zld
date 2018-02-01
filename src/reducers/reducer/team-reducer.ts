@@ -1,6 +1,13 @@
-import { TeamAddOptions, TeamDeleteOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
-import { TeamListResponse, TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse, Team, Employer } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/team-action';
+import { TeamAddOptions, TeamDeleteOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
+import {
+    Employer,
+    Team,
+    TeamAddResponse,
+    TeamDeleteResponse,
+    TeamListResponse,
+    TeamUpdateResponse,
+} from './../../interfaces/response-interface';
 
 export interface State {
     teamListResponse: TeamListResponse;
@@ -15,7 +22,7 @@ export interface State {
 
 export const initialState: State = {
     teamListResponse: {
-        teams: []
+        teams: [],
     },
     selectedTeams: [],
     addTeamResponse: null,
@@ -23,7 +30,7 @@ export const initialState: State = {
     updateTeamResponse: null,
     addTeamOption: null,
     deleteTeamOption: null,
-    updateTeamOption: null
+    updateTeamOption: null,
 };
 
 export function reducer(state = initialState, action: actions.Actions): State {

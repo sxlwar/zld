@@ -1,6 +1,11 @@
-import { ChangePhoneOptions } from './../../interfaces/request-interface';
-import { ChangePhoneResponse, ChangePhoneVerifyCodeResponse, CheckPhoneResponse, CheckPhoneVerifyCodeResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/account-change-action';
+import { ChangePhoneOptions } from './../../interfaces/request-interface';
+import {
+    ChangePhoneResponse,
+    ChangePhoneVerifyCodeResponse,
+    CheckPhoneResponse,
+    CheckPhoneVerifyCodeResponse,
+} from './../../interfaces/response-interface';
 
 export interface State {
     changePhoneResponse: ChangePhoneResponse;

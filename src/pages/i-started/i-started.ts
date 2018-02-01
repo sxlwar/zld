@@ -1,14 +1,15 @@
+import { Component } from '@angular/core';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AuditTarget, MissionListItem, WorkFlowPageType } from '../../interfaces/mission-interface';
 import { processIdToPage, ScreeningCondition, screeningConditions } from './../../interfaces/mission-interface';
 import { SpecificWorkFlowState } from './../../interfaces/request-interface';
-import { MissionRoot } from './../pages';
 import { iStarted } from './../../services/business/icon-service';
-import { PermissionService } from './../../services/config/permission-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Subscription } from 'rxjs/Subscription';
-import { MissionListItem, AuditTarget, WorkFlowPageType } from '../../interfaces/mission-interface';
-import { Observable } from 'rxjs/Observable';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { PermissionService } from './../../services/config/permission-service';
+import { MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({
@@ -37,7 +38,7 @@ export class IStartedPage {
         private navCtrl: NavController,
         private navParams: NavParams,
         private workFlow: WorkFlowService,
-        private permission: PermissionService,
+        private permission: PermissionService
     ) {
     }
 
@@ -69,8 +70,10 @@ export class IStartedPage {
                 Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.launch)),
                 this.workFlow.getIStartedPage()
             ),
+
             this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
-            this.workFlow.handleWorkFlowError()
+
+            this.workFlow.handleWorkFlowError(),
         ];
     }
 

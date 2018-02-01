@@ -1,12 +1,12 @@
+import * as actions from '../../actions/action/delete-images-action';
 import { DeleteImagesResponse } from './../../interfaces/response-interface';
-import * as actions from '../../actions/action/delete-images-action'
 
 export interface State {
     deleteImagesResponse: DeleteImagesResponse;
 }
 
 export const initialState: State = {
-    deleteImagesResponse: null
+    deleteImagesResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

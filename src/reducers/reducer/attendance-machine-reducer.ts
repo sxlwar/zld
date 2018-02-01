@@ -1,5 +1,5 @@
-import { AttendanceMachineListResponse } from './../../interfaces/response-interface';
 import * as actions from './../../actions/action/attendance-machine-action';
+import { AttendanceMachineListResponse } from './../../interfaces/response-interface';
 
 export interface State {
     response: AttendanceMachineListResponse;
@@ -8,7 +8,7 @@ export interface State {
 export const initialState: State = {
     response: {
         count: 0,
-        attendance_machines: []
+        attendance_machines: [],
     },
 }
 

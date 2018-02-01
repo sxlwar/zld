@@ -1,6 +1,19 @@
-import { CertificateListResponse, CertificateAddResponse, CertificateDeleteResponse, CertificateUpdateResponse, UploadCertificateImageResponse } from './../../interfaces/response-interface';
-import { CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    CertificateAddOptions,
+    CertificateDeleteOptions,
+    CertificateListOptions,
+    CertificateUpdateOptions,
+    UploadCertificateImageOptions,
+} from './../../interfaces/request-interface';
+import {
+    CertificateAddResponse,
+    CertificateDeleteResponse,
+    CertificateListResponse,
+    CertificateUpdateResponse,
+    UploadCertificateImageResponse,
+} from './../../interfaces/response-interface';
 
 export const GET_CERTIFICATE_LIST = 'GET_CERTIFICATE_LIST';
 
@@ -122,6 +135,14 @@ export class CertificateImageUploadSuccessAction implements Action {
     constructor(public payload: UploadCertificateImageResponse) { }
 }
 
+export const RESET_WORKER_CERTIFICATE_ERROR_RESPONSE = 'RESET_WORKER_CERTIFICATE_ERROR_RESPONSE';
+
+export class ResetWorkerCertificateErrorResponse implements Action {
+    readonly type = RESET_WORKER_CERTIFICATE_ERROR_RESPONSE;
+
+    constructor() { }
+}
+
 export type Actions = GetCertificateListAction
     | AddCertificateAction
     | CertificateAddFailAction
@@ -135,5 +156,6 @@ export type Actions = GetCertificateListAction
     | CertificateUpdateFailAction
     | CertificateUpdateSuccessAction
     | DeleteCertificateAction
+    | ResetWorkerCertificateErrorResponse
     | UpdateCertificateAction
     | UploadCertificateImageAction;

@@ -1,6 +1,7 @@
-import { CompanyUserListResponse } from './../../interfaces/response-interface';
-import { CompanyUserListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { CompanyUserListOptions } from './../../interfaces/request-interface';
+import { CompanyUserListResponse } from './../../interfaces/response-interface';
 
 export const GET_COMPANY_USER = 'GET_COMPANY_USER';
 

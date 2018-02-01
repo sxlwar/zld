@@ -1,12 +1,13 @@
+import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { TipService } from './../../services/tip-service';
-import { AddBankcardComponent } from './../../components/add-bankcard/add-bankcard';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AddBankcardComponent } from './../../components/add-bankcard/add-bankcard';
 import { Bankcard } from './../../interfaces/response-interface';
 import { BankcardService } from './../../services/business/bank-card-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { TipService } from './../../services/tip-service';
 
 @IonicPage()
 @Component({
@@ -57,7 +58,8 @@ export class BankcardPage {
     sendRequest(): void {
         this.subscriptions = [
             ...this.bankcard.handleError(),
-            this.bankcard.getBankCardList()
+            
+            this.bankcard.getBankCardList(),
         ];
     }
 

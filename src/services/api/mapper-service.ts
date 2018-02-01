@@ -1,9 +1,47 @@
-import { Family, CustomWorkExperience, PlatformExperience, Certification, Edu } from './../../interfaces/personal-interface';
-import { Home, WorkExperience, PlatformWorkExperience, Education, Certificate, WorkType, ContractTypeOfResponse } from './../../interfaces/response-interface';
-import { TeamAddOptions, ResetPasswordOptions, RegisterOptions, CertificateOptions, LoginOptions, TeamUpdateOptions, AttendanceCardAddOptions, HomeInfoUpdateOptions, EducationAddOptions, WorkExperienceAddOptions, WorkerBankNoAddOptions, CertificateAddOptions, CreateWorkerContractOptions, LaunchWorkerContractOptions, CreateAttendanceModifyOptions, CreateLeaveOptions, CreatePieceAuditOptions, CreateOvertimeOptions, CreateWorkerContractModifyOptions, WorkerContractEditOptions, ChangePhoneOptions, LocationCardAddOptions } from './../../interfaces/request-interface';
 import { Injectable } from '@angular/core';
-import { Education as EducationUI } from './../../interfaces/personal-interface';
 
+import {
+    Certification,
+    CustomWorkExperience,
+    Edu,
+    Education as EducationUI,
+    Family,
+    PlatformExperience,
+} from './../../interfaces/personal-interface';
+import {
+    AttendanceCardAddOptions,
+    CertificateAddOptions,
+    CertificateOptions,
+    ChangePhoneOptions,
+    CreateAttendanceModifyOptions,
+    CreateLeaveOptions,
+    CreateOvertimeOptions,
+    CreatePieceAuditOptions,
+    CreateWorkerContractModifyOptions,
+    CreateWorkerContractOptions,
+    EducationAddOptions,
+    HomeInfoUpdateOptions,
+    LaunchWorkerContractOptions,
+    LocationCardAddOptions,
+    LoginOptions,
+    RegisterOptions,
+    ResetPasswordOptions,
+    TeamAddOptions,
+    TeamUpdateOptions,
+    WorkerBankNoAddOptions,
+    WorkerContractEditOptions,
+    WorkExperienceAddOptions,
+    WorkExperienceUpdateOptions,
+} from './../../interfaces/request-interface';
+import {
+    Certificate,
+    ContractTypeOfResponse,
+    Education,
+    Home,
+    PlatformWorkExperience,
+    WorkExperience,
+    WorkType,
+} from './../../interfaces/response-interface';
 
 export interface LoginFormModel {
     mobilePhone: string;
@@ -81,6 +119,10 @@ export interface WorkExperienceFormModel {
     company: string;
     project: string;
     job: string;
+}
+
+export interface WorkExperienceUpdateFormModel extends WorkExperienceFormModel {
+    id: number;
 }
 
 export interface AddBankcardFormModel {
@@ -225,7 +267,7 @@ export class MapperService {
         return {
             username: form.mobilePhone,
             password: form.password,
-            captcha_code: form.imageVerification
+            captcha_code: form.imageVerification,
         };
     }
 
@@ -236,7 +278,7 @@ export class MapperService {
             code: form.phoneVerification,
             real_name: form.realName,
             captcha_code: form.imageVerification,
-            userType: Number(form.userType)
+            userType: Number(form.userType),
         };
     }
 
@@ -245,7 +287,7 @@ export class MapperService {
             username: form.mobilePhone,
             password: form.passwordInfo.password,
             code: form.phoneVerification,
-            captcha_code: form.imageVerification
+            captcha_code: form.imageVerification,
         };
     }
 
@@ -255,7 +297,7 @@ export class MapperService {
             num: form.personalId,
             sid: '',
             imageface: form.personalIdPhoto.front,
-            imageback: form.personalIdPhoto.back
+            imageback: form.personalIdPhoto.back,
         };
     }
 
@@ -265,7 +307,7 @@ export class MapperService {
             project_id: 0,
             leader_id: form.foreman.id,
             quality_manage_id: form.qualityClerk.id,
-            name: form.teamName
+            name: form.teamName,
         };
     }
 
@@ -279,17 +321,17 @@ export class MapperService {
             attendance_card_form: {
                 user_id: form.userId,
                 ic_card_num: form.cardNumber,
-                userName: form.userName
-            }
+                userName: form.userName,
+            },
         };
     }
 
     addLocationCardForm(form: AddLocationCardFormModel): LocationCardAddOptions {
-        return { 
+        return {
             sid: '',
             dev_id: form.cardNumber,
             user_id: form.userId,
-            userName: form.userName 
+            userName: form.userName,
         }
     }
 
@@ -309,7 +351,7 @@ export class MapperService {
             education: Edu[education],
             identifier: cer.num,
             imageFace: cer.imageface,
-            imageBack: cer.imageback
+            imageBack: cer.imageback,
         }
     }
 
@@ -334,7 +376,7 @@ export class MapperService {
             emergencyPhone: source.emergency_contact_tel,
             emergencyRelation: source.emergency_contact_relation,
             addressArea: source.homeaddr__province + ' ' + source.homeaddr__city + ' ' + source.homeaddr__dist,
-            addressDetail: source.homeaddr__street + ' ' + source.homeaddr__detail
+            addressDetail: source.homeaddr__street + ' ' + source.homeaddr__detail,
         }
     }
 
@@ -352,7 +394,7 @@ export class MapperService {
             dist: dist,
             street: '',
             detail: source.addressDetail,
-            marryday: source.marryDay
+            marryday: source.marryDay,
         } as HomeInfoUpdateOptions  // no sid;
     }
 
@@ -362,7 +404,7 @@ export class MapperService {
             project: source.project_name,
             company: source.company_name,
             job: source.job,
-            id: source.id
+            id: source.id,
         }
     }
 
@@ -371,7 +413,7 @@ export class MapperService {
             expire: source.start_day + '—' + source.finish_day,
             workType: source.worktype__name,
             project: source.team__project__name,
-            team: source.team__name
+            team: source.team__name,
         }
     }
 
@@ -382,18 +424,25 @@ export class MapperService {
             school__name: source.school,
             degree: source.degree,
             major: source.major,
-            sid: ''
+            sid: '',
         }
     }
 
-    transformWorkExperienceOptions(source: WorkExperienceFormModel): WorkExperienceAddOptions {
+    transformWorkExperienceAddOptions(source: WorkExperienceFormModel): WorkExperienceAddOptions {
         return {
             sid: '',
             start: source.startDate,
             finish: source.endDate,
             company_name: source.company,
             project_name: source.project,
-            job: source.job
+            job: source.job,
+        }
+    }
+
+    transformWorkExperienceUpdateOptions(source: WorkExperienceUpdateFormModel): WorkExperienceUpdateOptions {
+        return {
+            ...this.transformWorkExperienceAddOptions(source),
+            id: source.id,
         }
     }
 
@@ -403,40 +452,40 @@ export class MapperService {
             num: source.cardNumber,
             phone_num: source.phoneNumber,
             is_master: source.isMaster,
-            user_id: NaN
+            user_id: NaN,
         }
     }
 
     transformAddCertificate(source: AddCertificateFormModel): CertificateAddOptions {
         return {
+            education: source.education,
+            firstget_date: source.firstGetDate,
+            imageback: source.imageBack,
+            imageface: source.imageFace,
+            mechanism: source.mechanism,
+            num: source.certificateNumber,
             sid: '',
             usefinish_date: source.availableEndDate,
             usestart_date: source.availableStartDate,
-            num: source.certificateNumber,
-            firstget_date: source.firstGetDate,
-            education: source.education,
             worktype_id: source.workTypeId,
-            mechanism: source.mechanism,
-            imageface: source.imageFace,
-            imageback: source.imageBack
         }
     }
 
     private getWorkerContractCommonPart(source: WorkerContractFormModel): LaunchWorkerContractOptions {
         return {
-            team_id: source.teamId,
-            worktype_id: source.workTypeId,
-            start_day: source.startDay,
-            finish_day: source.endDay,
-            pay_day: source.payDay,
-            morning_time_on_duty: source.morningOnDuty,
-            morning_time_off_duty: source.morningOffDuty,
+            additional_content: source.comment,
             afternoon_time_off_duty: source.afternoonOnDuty,
             afternoon_time_on_duty: source.afternoonOffDuty,
-            worker_id: source.workerIds,
-            additional_content: source.comment,
             attach: source.attach,
-            formType: source.formType
+            finish_day: source.endDay,
+            formType: source.formType,
+            morning_time_off_duty: source.morningOffDuty,
+            morning_time_on_duty: source.morningOnDuty,
+            pay_day: source.payDay,
+            start_day: source.startDay,
+            team_id: source.teamId,
+            worker_id: source.workerIds,
+            worktype_id: source.workTypeId,
         }
     }
     private transformTimeTypeWorkerContractForm(source: TimeTypeWorkerContractFormModel): CreateWorkerContractOptions {
@@ -446,8 +495,8 @@ export class MapperService {
             work_time_pay: [{
                 pay_mount: source.hourlyWage,
                 content: source.content,
-                time_unit: '小时'
-            }]
+                time_unit: '小时',
+            }],
         }
     }
 
@@ -455,12 +504,14 @@ export class MapperService {
         return {
             sid: '',
             worker_contract: this.getWorkerContractCommonPart(source),
-            work_piece_pay: source.pieces.map(({ name, pieceWage, location, num, standard }) => ({ name, location, num, pay_mount: pieceWage, standard }))
+            work_piece_pay: source.pieces.map(({ name, pieceWage, location, num, standard }) => ({ name, location, num, pay_mount: pieceWage, standard })),
         }
     }
 
     transformWorkerContractForm(source: WorkerContractFormModel): CreateWorkerContractOptions {
-        return source.formType === '1' ? this.transformTimeTypeWorkerContractForm(source as TimeTypeWorkerContractFormModel) : this.transformPieceTypeWorkerContractForm(source as PieceTypeWorkerContractFormModel);
+        return source.formType === '1'
+            ? this.transformTimeTypeWorkerContractForm(source as TimeTypeWorkerContractFormModel)
+            : this.transformPieceTypeWorkerContractForm(source as PieceTypeWorkerContractFormModel);
     }
 
     transformAttendanceModifyForm(source: AttendanceModifyFormModel): CreateAttendanceModifyOptions {
@@ -471,8 +522,8 @@ export class MapperService {
                 result_id: source.attendanceIds,
                 on_duty: source.onDutyTime,
                 off_duty: source.offDutyTime,
-                attach: source.attach
-            }
+                attach: source.attach,
+            },
         }
     }
 
@@ -485,8 +536,8 @@ export class MapperService {
                 start: source.startDay,
                 finish: source.endDay,
                 contracts_id: source.contractIds,
-                attach: source.attach
-            }
+                attach: source.attach,
+            },
         }
     }
 
@@ -500,8 +551,8 @@ export class MapperService {
                 finish: source.endTime,
                 reason: source.reason,
                 contracts_id: source.contractIds,
-                attach: source.attach
-            }
+                attach: source.attach,
+            },
         }
     }
 
@@ -514,8 +565,8 @@ export class MapperService {
                 comment: source.comment,
                 finish_date: source.finishDate,
                 work_piece_pay_id: source.piecePayId,
-                attach: source.attach
-            }
+                attach: source.attach,
+            },
         }
     }
 
@@ -525,8 +576,8 @@ export class MapperService {
             contract_time_change_flow: {
                 date_after: source.date,
                 contract_id: source.contractId,
-                attach: source.attach
-            }
+                attach: source.attach,
+            },
         }
     }
 
@@ -543,7 +594,7 @@ export class MapperService {
                 afternoon_time_on_duty: source.afternoonOnDuty,
                 pay_day: source.payDay,
                 finish_day: source.endDay,
-            }
+            },
         }
     }
 
@@ -553,20 +604,29 @@ export class MapperService {
             work_time_pay: [{
                 pay_mount: source.hourlyWage,
                 content: source.content,
-                id: source.id
-            }]
+                id: source.id,
+            }],
         };
     }
 
     private transformPieceTypeWorkerContractEditForm(source: PieceTypeWorkerContractEditFormModel): WorkerContractEditOptions {
         return {
             ...this.transformWorkerContractEditFormCommonPart(source),
-            work_piece_pay: source.pieces.map(item => ({ name: item.name, id: item.id, location: item.location, pay_mount: item.pieceWage, standard: item.standard, num: item.num }))
+            work_piece_pay: source.pieces.map(item => ({
+                name: item.name,
+                id: item.id,
+                location: item.location,
+                pay_mount: item.pieceWage,
+                standard: item.standard,
+                num: item.num,
+            })),
         };
     }
 
     transformWorkerContractEditForm(source: WorkerContractEditFormModel): WorkerContractEditOptions {
-        return source.type === ContractTypeOfResponse.timer ? this.transformTimeTypeWorkerContractEditForm(source as TimeTypeWorkerContractEditFormModel) : this.transformPieceTypeWorkerContractEditForm(source as PieceTypeWorkerContractEditFormModel);
+        return source.type === ContractTypeOfResponse.timer
+            ? this.transformTimeTypeWorkerContractEditForm(source as TimeTypeWorkerContractEditFormModel)
+            : this.transformPieceTypeWorkerContractEditForm(source as PieceTypeWorkerContractEditFormModel);
     }
 
     transformChangeAccountForm(source: ChangeAccountFormModel): ChangePhoneOptions {
@@ -578,5 +638,4 @@ export class MapperService {
             new_code: source.newPhoneVerification,
         };
     }
-
 }

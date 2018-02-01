@@ -1,15 +1,21 @@
-import { putInArray } from '../utils/util';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { ProjectPayProcess, PayProcessStatus } from './../../interfaces/response-interface';
-import { ProjectService } from './project-service';
 import { Subscription } from 'rxjs/Subscription';
+
+import { SelectProjectPayProcessStatus } from '../../actions/action/pay-bill-action';
+import { putInArray } from '../utils/util';
+import { PayProcessStatus, ProjectPayProcess } from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectProjectProcessList,
+    selectProjectProcessResponse,
+    selectProjectProcessSelectedStatus,
+} from './../../reducers/index-reducer';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
+import { ProjectService } from './project-service';
 import { UserService } from './user-service';
-import { AppState, selectProjectProcessResponse, selectProjectProcessList, selectProjectProcessSelectedStatus } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { Injectable } from '@angular/core';
-import { SelectProjectPayProcessStatus } from '../../actions/action/pay-bill-action';
 
 @Injectable()
 export class ProjectProcessService {
@@ -54,6 +60,6 @@ export class ProjectProcessService {
     }
 
     handleError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectProjectProcessResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectProjectProcessResponse));
     }
 }

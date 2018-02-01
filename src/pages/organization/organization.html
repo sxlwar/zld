@@ -4,7 +4,12 @@
         <ion-title>{{'ORGANIZATION' | translate}}</ion-title>
 
         <ion-buttons end>
-            <button ion-button icon-only *ngIf="canOperate | async" (click)="addTeam()">
+            <button
+                ion-button
+                icon-only
+                *ngIf="canOperate | async"
+                (click)="addTeam()"
+            >
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-buttons>
@@ -12,32 +17,54 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-list>
-        <ion-item (click)="goToPersonalInfoPage('projectManagerId')" detail-push>
+        <ion-item
+            (click)="goToPersonalInfoPage('projectManagerId')"
+            detail-push
+        >
             {{'PROJECT_MANAGER' | translate}}：{{(project | async)?.projectManager}}
         </ion-item>
-        <ion-item (click)="goToPersonalInfoPage('labourManagerId')" detail-push>
+        <ion-item
+            (click)="goToPersonalInfoPage('labourManagerId')"
+            detail-push
+        >
             {{'LABOUR_MANAGER' | translate}}：{{(project | async)?.labourManager}}
         </ion-item>
     </ion-list>
-
 
     <ion-list *ngFor="let team of teams | async">
         <ion-list-header (click)="goToNextPage(team)">
             <ion-item-sliding #slidingItem>
                 <ion-item #item>
                     {{team.name}}
-                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" *ngIf="canOperate | async" item-start></ion-icon>
+                    <ion-icon
+                        name="more"
+                        color="primary"
+                        (click)="openOption(slidingItem, item, $event)"
+                        *ngIf="canOperate | async"
+                        item-start
+                    ></ion-icon>
                 </ion-item>
 
                 <ion-item-options side="right">
-                    <button ion-button color="primary" [disabled]="!team.id" (click)="updateTeam(team, $event)" *ngIf="canOperate | async">
+                    <button
+                        ion-button
+                        color="primary"
+                        [disabled]="!team.id"
+                        (click)="updateTeam(team, $event)"
+                        *ngIf="canOperate | async"
+                    >
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}
                     </button>
-                    <button ion-button color="danger" [disabled]="!team.id" (click)="deleteTeam(team,$event)" *ngIf="canOperate | async">
+                    <button
+                        ion-button
+                        color="danger"
+                        [disabled]="!team.id"
+                        (click)="deleteTeam(team,$event)"
+                        *ngIf="canOperate | async"
+                    >
                         <ion-icon name="trash"></ion-icon>
                         {{'DELETE_BUTTON' | translate}}
                     </button>
@@ -46,10 +73,16 @@
 
         </ion-list-header>
 
-        <ion-item (click)="goToPersonalInfoPage(team)" detail-push>
+        <ion-item
+            (click)="goToPersonalInfoPage(team)"
+            detail-push
+        >
             {{'QUALITY_CLERK' | translate}}：{{team.qualityClerk}}
         </ion-item>
-        <ion-item (click)="goToNextPage(team)" detail-push>
+        <ion-item
+            (click)="goToNextPage(team)"
+            detail-push
+        >
             {{'FOREMAN' | translate}}：{{team.foreman}}
         </ion-item>
     </ion-list>

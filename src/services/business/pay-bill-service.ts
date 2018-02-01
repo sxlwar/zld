@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { AppState, selectPayBillListResponse, selectPayBillList } from '../../reducers/index-reducer';
-import { ErrorService } from '../errors/error-service';
-import { ProcessorService } from '../api/processor-service';
+import { Subscription } from 'rxjs';
 import { Observable } from 'rxjs/Observable';
-import { PayBill, PayBillTime, PayBillAmount } from '../../interfaces/response-interface';
-import { RequestOption, PayBillListOptions } from '../../interfaces/request-interface';
+
+import { PayBillListOptions, RequestOption } from '../../interfaces/request-interface';
+import { PayBill, PayBillAmount, PayBillTime } from '../../interfaces/response-interface';
+import { AppState, selectPayBillList, selectPayBillListResponse } from '../../reducers/index-reducer';
+import { ProcessorService } from '../api/processor-service';
 import { UserService } from '../business/user-service';
+import { ErrorService } from '../errors/error-service';
 
 @Injectable()
 export class PayBillService {

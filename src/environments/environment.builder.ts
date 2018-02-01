@@ -4,5 +4,5 @@ export const ENV = {
     },
     get DOMAIN() {
         return 'builder.zlddata.cn'
-    }
+    },
 };

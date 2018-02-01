@@ -1,6 +1,7 @@
-import { LogoutResponse } from './../../interfaces/response-interface';
-import { LogoutOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { LogoutOptions } from './../../interfaces/request-interface';
+import { LogoutResponse } from './../../interfaces/response-interface';
 
 export const LOGOUT = 'LOGOUT';
 

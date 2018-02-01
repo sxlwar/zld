@@ -1,12 +1,12 @@
-import { NationalityResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/nationality-action';
+import { NationalityResponse } from './../../interfaces/response-interface';
 
 export interface State {
     nationalityResponse: NationalityResponse;
 }
 
 export const initialState: State = {
-    nationalityResponse: null
+    nationalityResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

@@ -1,15 +1,30 @@
-import { TranslateService } from '@ngx-translate/core';
-import { LocationService } from './location-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import { ProjectService } from './project-service';
-import { HistoryLocation, HistoryLocationListResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { flattenDeep } from 'lodash';
-import { Map, LngLat, ConvertorResult, Marker, MarkerOptions, SimpleMarker, Polygon, InfoWindow, BasicControl, MarkerClusterer, Polyline, PolylineOptions, MoveEvent } from '../../interfaces/amap-interface';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    BasicControl,
+    ConvertorResult,
+    InfoWindow,
+    LngLat,
+    Map,
+    Marker,
+    MarkerClusterer,
+    MarkerOptions,
+    MoveEvent,
+    Polygon,
+    Polyline,
+    PolylineOptions,
+    SimpleMarker,
+} from '../../interfaces/amap-interface';
 import { putInArray } from '../utils/util';
-import { PlayUnit, PlayState } from './../../interfaces/location-interface';
+import { PlayState, PlayUnit } from './../../interfaces/location-interface';
+import { HistoryLocation, HistoryLocationListResponse } from './../../interfaces/response-interface';
+import { LocationService } from './location-service';
+import { ProjectService } from './project-service';
 
 declare var AMap: any;
 
@@ -18,31 +33,31 @@ declare var AMapUI: any;
 const defaultZoomLever = 15;
 
 const polygonConfig = {
-    strokeColor: "#e42112",
+    strokeColor: '#e42112',
     strokeWeight: 3,
     strokeOpacity: 0.2,
-    fillColor: "#33cd5f",
-    fillOpacity: 0.35
+    fillColor: '#33cd5f',
+    fillOpacity: 0.35,
 }
 
 const polylineConfig = {
-    strokeColor: "#6b46e5",
+    strokeColor: '#6b46e5',
     strokeOpacity: 1,
     strokeWeight: 2,
-    strokeStyle: "solid"
+    strokeStyle: 'solid',
 }
 
 const passedPolylineConfig = {
-    strokeColor: "#FF0000",
-    strokeWeight: 2
+    strokeColor: '#FF0000',
+    strokeWeight: 2,
 }
 
 export const walkIconStyle = {
     src: './../../assets/svg/map_walk_icon.png',
     style: {
         width: '36px',
-        height: '36px'
-    }
+        height: '36px',
+    },
 }
 
 export const walkIconLabelStyle = {
@@ -50,8 +65,8 @@ export const walkIconLabelStyle = {
         position: 'absolute',
         top: '-10px',
         left: '-3px',
-        color: 'black'
-    }
+        color: 'black',
+    },
 }
 
 export const topPosition = -30;
@@ -80,20 +95,20 @@ export class AmapService {
         const markerConfig = {
             map: config.map,
             position: config.position,
-            iconStyle: "red",
+            iconStyle: 'red',
             iconLabel: {
-                innerHTML: "<div class='locationIcon'>" + config.content + "</div>",
+                innerHTML: '<div class="locationIcon">' + config.content + '</div>',
                 style: {
-                    color: "white",
-                    fontSize: "12px",
-                    marginTop: "2px",
-                    whiteSpace: "nowarp"
-                }
-            }
+                    color: 'white',
+                    fontSize: '12px',
+                    marginTop: '2px',
+                    whiteSpace: 'nowarp',
+                },
+            },
         }
 
         const promise: Promise<SimpleMarker> = new Promise(resolve => {
-            AMapUI.loadUI(["overlay/SimpleMarker"], SimpleMarker => {
+            AMapUI.loadUI(['overlay/SimpleMarker'], SimpleMarker => {
                 resolve(new SimpleMarker(markerConfig));
             });
         });
@@ -102,13 +117,13 @@ export class AmapService {
     }
 
     addControl(map: Map) {
-        AMapUI.loadUI(["control/BasicControl"], (basicControl: BasicControl) => {
-            map.addControl(new basicControl.Zoom({ position: "lb" }));
+        AMapUI.loadUI(['control/BasicControl'], (basicControl: BasicControl) => {
+            map.addControl(new basicControl.Zoom({ position: 'lb' }));
         });
     }
 
     generateInfoWindowContent(title: string, content: string): string {
-        return "<b>" + title + "</b><br/>" + content;
+        return '<b>' + title + '</b><br/>' + content;
     }
 
     /**
@@ -132,9 +147,12 @@ export class AmapService {
 
         return [
             this.transformProjectAreaCoordinate(),
+
             this.setCenterToFirstArea(map),
+
             this.setPolygonOnMap(map, polygon),
-            this.addClickForEveryPolygon(map, polygon)
+
+            this.addClickForEveryPolygon(map, polygon),
         ];
     }
 
@@ -193,10 +211,11 @@ export class AmapService {
     }
 
     getSimpleMarker(map: Map, source: Observable<LngLat[][]>): Observable<SimpleMarker[]> {
-        return source
-            .zip(this.getMarkerInformation())
+        return source.zip(this.getMarkerInformation())
             .mergeMap(([coordinates, { uname }]) => Observable.from(coordinates)
-                .mergeMap(group => Observable.from(group).mergeMap(({ lng, lat }) => this.simpleMarker({ position: [lng, lat], content: uname, map })))
+                .mergeMap(group => Observable.from(group)
+                    .mergeMap(({ lng, lat }) => this.simpleMarker({ position: [lng, lat], content: uname, map }))
+                )
                 .reduce(putInArray, [])
             );
     }
@@ -217,7 +236,10 @@ export class AmapService {
 
     getMarkerInfoWindow(): Observable<InfoWindow[]> {
         return this.getMarkerInformation()
-            .combineLatest(this.translate.get(['NAME', 'TEAM', 'ELECTRICITY', 'TIME']), this.project.getProjectName(), (marker, label, project) => marker.loc_list.map(item => {
+            .combineLatest(
+            this.translate.get(['NAME', 'TEAM', 'ELECTRICITY', 'TIME']),
+            this.project.getProjectName(),
+            (marker, label, project) => marker.loc_list.map(item => {
                 const { battery, time } = item;
 
                 const content = `
@@ -225,7 +247,8 @@ export class AmapService {
                 <div>${label.TEAM}: ${marker.team_name}</div>
                 <div>${label.ELECTRICITY}: ${battery}</div>
                 <div>${label.TIME}: ${time}</div>
-                `
+                `;
+
                 return this.generateInfoWindowContent(project, content);
             }))
             .map(contents => contents.map(content => new AMap.InfoWindow({ content, offset: new AMap.Pixel(0, topPosition) })));
@@ -301,7 +324,12 @@ export class AmapService {
         return this.location.getTrajectories()
             .combineLatest(this.location.getPlayRate())
             .mergeMap(([trajectories, rate]) => Observable.from(trajectories)
-                .map(trajectory => ({ path: trajectory.polyline.getPath(), moveMarker: trajectory.moveMarker, passedPolyline: new AMap.Polyline({ ...passedPolylineConfig, map }), rate: rate * rateSpeed }))
+                .map(trajectory => ({
+                    path: trajectory.polyline.getPath(),
+                    moveMarker: trajectory.moveMarker,
+                    passedPolyline: new AMap.Polyline({ ...passedPolylineConfig, map }),
+                    rate: rate * rateSpeed,
+                }))
                 .reduce(putInArray, [])
             );
     }

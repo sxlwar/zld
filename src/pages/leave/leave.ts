@@ -1,15 +1,16 @@
-import { StatisticsService } from './../../services/business/statistics-service';
-import { leave } from './../../services/business/icon-service';
-import { MissionRoot, leaveDetailPage, applyLeavePage } from './../pages';
-import { PermissionService } from './../../services/config/permission-service';
-import { AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
-import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
+import { Component } from '@angular/core';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+
 import { MissionListItem } from '../../interfaces/mission-interface';
+import { AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
+import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
+import { leave } from './../../services/business/icon-service';
+import { StatisticsService } from './../../services/business/statistics-service';
+import { WorkFlowService } from './../../services/business/work-flow-service';
+import { PermissionService } from './../../services/config/permission-service';
+import { applyLeavePage, leaveDetailPage, MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({

@@ -1,6 +1,19 @@
-import { WorkerBankNoListResponse, BankInfoResponse, WorkerBankNoAddResponse, WorkerBankNoDeleteResponse, SetBankNOMasterResponse } from './../../interfaces/response-interface';
-import { WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    BankInfoOptions,
+    SetBankNoMasterOptions,
+    WorkerBankNoAddOptions,
+    WorkerBankNoDeleteOptions,
+    WorkerBankNoListOptions,
+} from './../../interfaces/request-interface';
+import {
+    BankInfoResponse,
+    SetBankNOMasterResponse,
+    WorkerBankNoAddResponse,
+    WorkerBankNoDeleteResponse,
+    WorkerBankNoListResponse,
+} from './../../interfaces/response-interface';
 
 export const GET_BANK_CARD_LIST = 'GET_BANK_CARD_LIST';
 

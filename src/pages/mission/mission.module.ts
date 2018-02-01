@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { MissionPage } from './mission';
-import { ComponentsModule } from '../../components/components.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
+import { ComponentsModule } from '../../components/components.module';
+import { MissionPage } from './mission';
 
 @NgModule({
     declarations: [
@@ -11,10 +12,10 @@ import { TranslateModule } from '@ngx-translate/core';
     imports: [
         IonicPageModule.forChild(MissionPage),
         ComponentsModule,
-        TranslateModule
+        TranslateModule,
     ],
     exports: [
         MissionPage,
-    ]
+    ],
 })
 export class MissionPageModule { }

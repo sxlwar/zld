@@ -6,54 +6,70 @@
 
 </ion-header>
 
-
 <ion-content padding>
 
     <ion-segment [(ngModel)]="type">
 
-        <ion-segment-button value="basic">
-            {{'BASIC_INFORMATION' | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="certification">
-            {{'CERTIFICATION' | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="workExperience">
-            {{'WORK_EXPERIENCE' | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="educationExperience">
-            {{'EDUCATION_EXPERIENCE' | translate}}
-        </ion-segment-button>
-        <ion-segment-button value="family">
-            {{'FAMILY_INFO' | translate}}
-        </ion-segment-button>
+        <ion-segment-button value="basic">{{'BASIC_INFORMATION' | translate}}</ion-segment-button>
+        <ion-segment-button value="certification">{{'CERTIFICATION' | translate}}</ion-segment-button>
+        <ion-segment-button value="workExperience">{{'WORK_EXPERIENCE' | translate}}</ion-segment-button>
+        <ion-segment-button value="educationExperience">{{'EDUCATION_EXPERIENCE' | translate}}</ion-segment-button>
+        <ion-segment-button value="family">{{'FAMILY_INFO' | translate}}</ion-segment-button>
 
     </ion-segment>
 
-    <div [ngSwitch]="type" id="work-experience">
+    <div
+        [ngSwitch]="type"
+        id="work-experience"
+    >
 
-        <basic-information *ngSwitchCase="'basic'" [basic]="basic | async" [personalId]="personalIdInfo | async"></basic-information>
+        <basic-information
+            *ngSwitchCase="'basic'"
+            [basic]="basic | async"
+            [personalId]="personalIdInfo | async"
+        ></basic-information>
 
-        <certification *ngSwitchCase="'certification'" [certification]="certification | async"></certification>
+        <certification
+            *ngSwitchCase="'certification'"
+            [certification]="certification | async"
+        ></certification>
 
         <div *ngSwitchCase="'workExperience'">
-            <ion-segment [(ngModel)]="workType" margin-bottom>
+            <ion-segment
+                [(ngModel)]="workType"
+                margin-bottom
+            >
 
-                <ion-segment-button value="platform">{{'PLATFORM_WORK_EXPERIENCE'| translate}}</ion-segment-button>
+                <ion-segment-button value="platform">
+                    {{'PLATFORM_WORK_EXPERIENCE'| translate}}
+                </ion-segment-button>
 
                 <ion-segment-button value="custom">{{'CUSTOM_WORK_EXPERIENCE'| translate}}</ion-segment-button>
 
             </ion-segment>
 
             <div [ngSwitch]="workType">
-                <platform-work-experience *ngSwitchCase="'platform'" [experience]="platformExperience | async"></platform-work-experience>
+                <platform-work-experience
+                    *ngSwitchCase="'platform'"
+                    [experience]="platformExperience | async"
+                ></platform-work-experience>
 
-                <work-experience *ngSwitchCase="'custom'" [experience]="workExperience | async"></work-experience>
+                <work-experience
+                    *ngSwitchCase="'custom'"
+                    [experience]="workExperience | async"
+                ></work-experience>
             </div>
         </div>
 
-        <education *ngSwitchCase="'educationExperience'" [education]="education | async"></education>
+        <education
+            *ngSwitchCase="'educationExperience'"
+            [education]="education | async"
+        ></education>
 
-        <family-information *ngSwitchCase="'family'" [family]="family | async"></family-information>
+        <family-information
+            *ngSwitchCase="'family'"
+            [family]="family | async"
+        ></family-information>
 
     </div>
 

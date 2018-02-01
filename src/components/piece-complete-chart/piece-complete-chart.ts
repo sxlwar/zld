@@ -1,17 +1,12 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { ChartService, ChartType } from './../../services/utils/chart-service';
-import { Component, Input, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
 
-/**
- * Generated class for the PieceCompleteChartComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
+import { ChartService, ChartType } from './../../services/utils/chart-service';
+
 @Component({
     selector: 'piece-complete-chart',
-    templateUrl: 'piece-complete-chart.html'
+    templateUrl: 'piece-complete-chart.html',
 })
 export class PieceCompleteChartComponent implements OnInit, OnDestroy {
 

@@ -1,5 +1,5 @@
+import { attendanceModifyDetailPage, leaveDetailPage, overtimeDetailPage, pieceAuditDetailPage } from './../pages/pages';
 import { ProcessIdOptions } from './request-interface';
-import { leaveDetailPage, pieceAuditDetailPage, attendanceModifyDetailPage, overtimeDetailPage } from './../pages/pages';
 import { WorkFlow } from './response-interface';
 
 export interface MissionListItem {
@@ -27,7 +27,7 @@ export enum WorkFlowPageType {
     pieceAuditPage = 'pieceAuditPage',
     attendanceModifyPage = 'attendanceModifyPage',
     iStartedPage = 'iStartedPage',
-    iCompletedPage = 'iCompletedPage'
+    iCompletedPage = 'iCompletedPage',
 }
 
 export const processIdToPage = {
@@ -38,7 +38,7 @@ export const processIdToPage = {
     leave_apply: leaveDetailPage,
     workovertime_apply: overtimeDetailPage,
     project_payflow_apply: '',
-    attendanceConfirm: ''
+    attendanceConfirm: '',
 }
 
 export const screeningConditions = [
@@ -48,7 +48,7 @@ export const screeningConditions = [
     { text: 'PIECE_AUDIT', processId: ProcessIdOptions.pieceAudit },
     { text: 'MODIFY_ATTENDANCE', processId: ProcessIdOptions.attendanceModify },
     { text: 'WORK_CONTRACT', processId: ProcessIdOptions.workerContract },
-    { text: 'MODIFY_WORK_CONTRACT', processId: ProcessIdOptions.workerContractExpire }
+    { text: 'MODIFY_WORK_CONTRACT', processId: ProcessIdOptions.workerContractExpire },
 ];
 
 export interface ScreeningCondition {

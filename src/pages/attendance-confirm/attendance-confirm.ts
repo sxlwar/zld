@@ -1,13 +1,18 @@
-import { attendanceConfirmDetailPage } from './../pages';
-import { AttendanceService } from './../../services/business/attendance-service';
-import { orderBy } from 'lodash';
-import { AttendanceConfirmStatisticByTeam, AttendanceConfirmStatisticByDay, AttendanceStatisticDayItem } from './../../services/business/statistics-service';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import { ChartService, ChartType } from './../../services/utils/chart-service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { orderBy } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { StatisticsService } from '../../services/business/statistics-service';
+import { AttendanceService } from './../../services/business/attendance-service';
+import {
+    AttendanceConfirmStatisticByDay,
+    AttendanceConfirmStatisticByTeam,
+    AttendanceStatisticDayItem,
+} from './../../services/business/statistics-service';
+import { ChartService, ChartType } from './../../services/utils/chart-service';
+import { attendanceConfirmDetailPage } from './../pages';
 
 @IonicPage()
 @Component({
@@ -15,6 +20,7 @@ import { StatisticsService } from '../../services/business/statistics-service';
     templateUrl: 'attendance-confirm.html',
 })
 export class AttendanceConfirmPage {
+    selectedTeams: { name: string }[]
 
     @ViewChild('teamChart') teamChart: ElementRef;
 
@@ -45,7 +51,7 @@ export class AttendanceConfirmPage {
 
     ionViewDidLoad() {
         this.initialModel();
-        
+
         this.launch();
     }
 
@@ -102,8 +108,8 @@ export class AttendanceConfirmPage {
             .subscribe(data => {
                 const options = {
                     scales: {
-                        yAxes: [{ ticks: { beginAtZero: true } }]
-                    }
+                        yAxes: [{ ticks: { beginAtZero: true } }],
+                    },
                 };
 
                 this.chartService.getChart(this.dayChart.nativeElement, ChartType.bar, data, options);

@@ -1,25 +1,25 @@
-import { AttendanceService } from './../../services/business/attendance-service';
-import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Subscription } from 'rxjs/Subscription';
-import { StatisticsService } from './../../services/business/statistics-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { IconState } from '../../reducers/reducer/icons-reducer';
-import { IconService } from '../../services/business/icon-service';
-import * as Icons from '../../services/business/icon-service';
+import { Subscription } from 'rxjs/Subscription';
+
 import * as pages from '../../pages/pages';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import * as icon from '../../services/business/icon-service';
+import { AttendanceService } from './../../services/business/attendance-service';
+import { StatisticsService } from './../../services/business/statistics-service';
+import { WorkFlowService } from './../../services/business/work-flow-service';
 
 const icons = [
-    Icons.attendanceConfirm,
-    Icons.leave,
-    Icons.overtime,
-    Icons.pieceAudit,
-    Icons.modifyAttendance,
-    Icons.signWorkerContract,
-    Icons.workContractModify,
-    Icons.iStarted,
-    Icons.iCompleted
+    icon.attendanceConfirm,
+    icon.leave,
+    icon.overtime,
+    icon.pieceAudit,
+    icon.modifyAttendance,
+    icon.signWorkerContract,
+    icon.workContractModify,
+    icon.iStarted,
+    icon.iCompleted,
 ];
 
 @IonicPage()
@@ -37,7 +37,7 @@ export class MissionPage {
 
     constructor(
         private navCtrl: NavController,
-        private iconService: IconService,
+        private iconService: icon.IconService,
         private statistics: StatisticsService,
         private workFlow: WorkFlowService,
         private attendance: AttendanceService
@@ -56,7 +56,7 @@ export class MissionPage {
 
     launch() {
         this.subscriptions = [
-            this.attendance.getAttendanceStatisticsByTeam(), 
+            this.attendance.getAttendanceStatisticsByTeam(),
 
             this.iconService.addRootModuleIcons(pages.MissionRoot, icons),
 
@@ -65,7 +65,7 @@ export class MissionPage {
             this.workFlow.getWorkFlowStatistic(),
 
             this.workFlow.handleStatisticsError(),
-            
+
             this.attendance.handleStatisticsError(),
         ];
     }

@@ -1,20 +1,18 @@
-import { NamesPipe, TaskStatusPipe, TaskStatusColorPipe, OvertimePayPipe } from './../pipes/work-flow-pipe';
-import { MessageIconPipe, MessageSplitPipe, MessageParsePipe } from './../pipes/message-pipe';
-import { DegreePipe, WorkTypePipe } from './../pipes/personal-pipe';
-import { LocationCardStatusPipe } from './../pipes/location-card-status-pipe';
-import { InOutPipe } from './../pipes/inOut-pipe';
-import { EveryMonthPipe } from './../pipes/every-month-pipe';
-import { SexPipe } from './../pipes/sex-pipe';
-import { BadgePipe } from './../pipes/badge-pipe';
-import { PositiveIntegerPipe } from './../pipes/positive-integer-pipe';
-import { JoinPipe } from './../pipes/join-pipe';
-import { PriceUnitPipe } from './../pipes/price-unit-pipe';
-import { BatteryPipe, PercentBatteryPipe, IsLowPowerPipe } from './../pipes/battery-pipe';
 import { directives } from '../directives/directives-import';
+import { AttendanceStateIconPipe, AttendanceStatePipe } from './../pipes/attendance-pipe';
+import { BadgePipe } from './../pipes/badge-pipe';
+import { BatteryPipe, IsLowPowerPipe, PercentBatteryPipe } from './../pipes/battery-pipe';
+import { EveryMonthPipe } from './../pipes/every-month-pipe';
+import { InOutPipe } from './../pipes/inOut-pipe';
+import { JoinPipe } from './../pipes/join-pipe';
+import { LocationCardStatusPipe } from './../pipes/location-card-status-pipe';
+import { MessageIconPipe, MessageParsePipe, MessageSplitPipe } from './../pipes/message-pipe';
+import { DegreePipe, WorkTypePipe } from './../pipes/personal-pipe';
+import { PositiveIntegerPipe } from './../pipes/positive-integer-pipe';
+import { PriceUnitPipe } from './../pipes/price-unit-pipe';
+import { SexPipe } from './../pipes/sex-pipe';
+import { NamesPipe, OvertimePayPipe, TaskStatusColorPipe, TaskStatusPipe } from './../pipes/work-flow-pipe';
 import { WorkerContractTypePipe } from './../pipes/worker-contract-pipe';
-import { AttendanceStatePipe, AttendanceStateIconPipe } from './../pipes/attendance-pipe';
-
-
 
 export const PIPES = [
     AttendanceStatePipe,

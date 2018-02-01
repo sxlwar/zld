@@ -1,18 +1,20 @@
-import { TipService } from './../tip-service';
+import 'rxjs/add/observable/fromEvent';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/retryWhen';
+
 import { Injectable } from '@angular/core';
 import { ENV } from '@app/env';
+import * as _ from 'lodash';
 import { QueueingSubject } from 'queueing-subject';
 import websocketConnect from 'rxjs-websockets';
-import 'rxjs/add/operator/retryWhen';
-import 'rxjs/add/operator/delay';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/observable/fromEvent';
 import { Subscription } from 'rxjs/Subscription';
+
 import { WsRequest } from '../../interfaces/request-interface';
 import { WsResponse } from '../../interfaces/response-interface';
-import * as _ from 'lodash';
 import { curry2Right } from '../utils/util';
+import { TipService } from './../tip-service';
 
 interface ErrorTipUnit {
     message: string;
@@ -64,7 +66,7 @@ export class WebsocketService {
 
         this.messages = messages
             .map((msg: string) => {
-                let response: WsResponse = JSON.parse(msg);
+                const response: WsResponse = JSON.parse(msg);
 
                 response.data = this.handleDataStructure(response.data);
 
@@ -75,7 +77,7 @@ export class WebsocketService {
                 return response;
             })
             .retryWhen(errors => {
-               this.tip.showTip('网络连接已断开', 3000, 'middle')
+                this.tip.showTip('网络连接已断开', 3000, 'middle')
 
                 return errors.delay(2000);
             })
@@ -119,7 +121,7 @@ export class WebsocketService {
             return _.map(item, curry2Right(_.assign)(record));
         } else {
             return _.map(_.toPairs(item), ele => {
-                let key = _.isArray(ele[1]) ? "key" : "form";
+                const key = _.isArray(ele[1]) ? 'key' : 'form';
 
                 record[key] = ele[0];
 

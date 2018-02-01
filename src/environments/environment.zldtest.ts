@@ -5,5 +5,5 @@ export const ENV = {
 
     get DOMAIN() {
         return 'zldtest.zlddata.cn'
-    }
+    },
 };

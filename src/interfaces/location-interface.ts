@@ -1,4 +1,5 @@
-import { LngLat, SimpleMarker, Polyline } from './amap-interface';
+import { LngLat, Polyline, SimpleMarker } from './amap-interface';
+
 export interface LocationBasicOptions {
     date: string;
     startTime: string; //yyy-MM-dd hh:mm:ss
@@ -43,7 +44,7 @@ export enum PlayState {
     stop,
     play,
     pause,
-    resume
+    resume,
 }
 
 export interface TrajectoryInfo {

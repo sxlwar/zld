@@ -1,6 +1,12 @@
-import { MessageDeleteOptions, MessageListOptions, MessageReadTag } from './../../interfaces/request-interface';
-import { MessageListResponse, UnreadMessageCountResponse, MessageContentResponse, MessageDeleteResponse, Message } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/message-action';
+import { MessageDeleteOptions, MessageListOptions, MessageReadTag } from './../../interfaces/request-interface';
+import {
+    Message,
+    MessageContentResponse,
+    MessageDeleteResponse,
+    MessageListResponse,
+    UnreadMessageCountResponse,
+} from './../../interfaces/response-interface';
 
 export interface State {
     messageListResponse: MessageListResponse;
@@ -37,7 +43,7 @@ export const initialState: State = {
     unreadMessageTimeOrder: 1,
     readMessageTimeOrder: 1,
     unreadMessageSelectedType: 0,
-    readMessageSelectedType: 0
+    readMessageSelectedType: 0,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {
@@ -59,7 +65,11 @@ export function reducer(state = initialState, action: actions.Actions): State {
             }
 
             if (state.messageListOption.read_tag === MessageReadTag.unread) {
-                return { ...state, messageListResponse: action.payload, unreadMessages: state.unreadMessages ? state.unreadMessages.concat(action.payload.msgs) : action.payload.msgs };
+                return {
+                    ...state,
+                    messageListResponse: action.payload,
+                    unreadMessages: state.unreadMessages ? state.unreadMessages.concat(action.payload.msgs) : action.payload.msgs,
+                };
             }
 
             return { ...state, messageListResponse: action.payload };
@@ -79,10 +89,13 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return {
                 ...state,
                 messageDeleteResponse: action.payload,
-                messageListResponse: { msgs: state.messageListResponse.msgs.filter(item => state.messageDeleteOptions.title_ids.indexOf(item.id) === -1), count: state.messageListResponse.count - state.messageDeleteOptions.title_ids.length },
+                messageListResponse: {
+                    msgs: state.messageListResponse.msgs.filter(item => state.messageDeleteOptions.title_ids.indexOf(item.id) === -1),
+                    count: state.messageListResponse.count - state.messageDeleteOptions.title_ids.length,
+                },
                 unreadMessageCountResponse: { count: calculateUnreadMessageCount(state.unreadMessageCountResponse.count, state.unreadMessages, state.messageDeleteOptions.title_ids) },
                 unreadMessages: state.unreadMessages.filter(item => state.messageDeleteOptions.title_ids.indexOf(item.id) === -1),
-                readMessages: state.readMessages.filter(item => state.messageDeleteOptions.title_ids.indexOf(item.id) === -1)
+                readMessages: state.readMessages.filter(item => state.messageDeleteOptions.title_ids.indexOf(item.id) === -1),
             };
 
         case actions.UNREAD_MESSAGE_COUNT_FAIL:
@@ -114,7 +127,11 @@ export function reducer(state = initialState, action: actions.Actions): State {
             return { ...state, readMessageSelectedType: action.payload };
 
         case actions.SET_MESSAGE_READ_TYPE_AT_LOCAL:
-            return { ...state, readMessages: state.readMessages.concat([findMessage(state.unreadMessages, action.payload)]), unreadMessages: state.unreadMessages.filter(item => item.id !== action.payload) };
+            return {
+                ...state,
+                readMessages: state.readMessages.concat([findMessage(state.unreadMessages, action.payload)]),
+                unreadMessages: state.unreadMessages.filter(item => item.id !== action.payload),
+            };
 
         case actions.GET_UNREAD_MESSAGE_COUNT:
         case actions.GET_MESSAGE_CONTENT:

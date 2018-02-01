@@ -1,17 +1,16 @@
-import { putInArray } from '../../services/utils/util';
-//region
-import { ProjectService } from './../../services/business/project-service';
-import { Subscription } from 'rxjs/Subscription';
-import { TranslateService } from '@ngx-translate/core';
-import { TimeService } from './../../services/utils/time-service';
-import { Observable } from 'rxjs/Observable';
-import { ProjectPayProcess } from './../../interfaces/response-interface';
-import { ChartService, ChartType } from './../../services/utils/chart-service';
-import { ProjectProcessService } from './../../services/business/project-process-service';
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { projectBillDetailPage } from '../../pages/pages';
-//endregion
+import { putInArray } from '../../services/utils/util';
+import { ProjectPayProcess } from './../../interfaces/response-interface';
+import { ProjectProcessService } from './../../services/business/project-process-service';
+import { ProjectService } from './../../services/business/project-service';
+import { ChartService, ChartType } from './../../services/utils/chart-service';
+import { TimeService } from './../../services/utils/time-service';
 
 export interface ProcessList {
     yearMonth: string;

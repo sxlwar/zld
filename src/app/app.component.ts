@@ -1,23 +1,24 @@
-import { tabsPage } from './../pages/pages';
-import { GroupListService } from './../services/business/group-list-service';
-import { TranslateService } from '@ngx-translate/core';
-import { TipService } from './../services/tip-service';
-import { Subscription } from 'rxjs/Subscription';
 import { Component, ViewChild } from '@angular/core';
+import { ENV } from '@app/env';
+import { Device } from '@ionic-native/device';
+import { Keyboard } from '@ionic-native/keyboard';
+import { Network } from '@ionic-native/network';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { Nav, Platform } from 'ionic-angular';
-import { Keyboard } from '@ionic-native/keyboard';
-import { FirstRunPage, PAGES, Page } from '../pages/pages';
+import { Subscription } from 'rxjs/Subscription';
+
+import { FirstRunPage, Page, PAGES } from '../pages/pages';
 import { ConfigService } from '../services/config/config-service';
-import { ENV } from '@app/env';
-import { Network } from '@ionic-native/network';
-import { Device } from '@ionic-native/device';
+import { tabsPage } from './../pages/pages';
+import { GroupListService } from './../services/business/group-list-service';
+import { TipService } from './../services/tip-service';
 
 console.log(ENV.DOMAIN);
 
 @Component({
-    templateUrl: './app.component.html'
+    templateUrl: './app.component.html',
 })
 export class MyApp {
 
@@ -100,7 +101,7 @@ export class MyApp {
     }
 
     checkSystemVersion(): void {
-        let dVersion = this.device.version.split(".");
+        const dVersion = this.device.version.split('.');
 
         let rVersion = undefined;
 
@@ -185,7 +186,7 @@ function tapCoordinates(event) {
 function keyboardShowHandler(event) {
     const keyboardHeight = event.keyboardHeight;
 
-    const bodyMove = <HTMLElement>document.querySelector("ion-app");
+    const bodyMove = <HTMLElement>document.querySelector('ion-app');
 
     const bodyMoveStyle = bodyMove.style;
 
@@ -199,9 +200,9 @@ function keyboardShowHandler(event) {
 }
 
 function keyboardHideHandler() {
-    const removeStyles = <HTMLElement>document.querySelector("ion-app");
+    const removeStyles = <HTMLElement>document.querySelector('ion-app');
 
-    removeStyles.removeAttribute("style");
+    removeStyles.removeAttribute('style');
 }
 
 window.addEventListener('native.keyboardshow', keyboardShowHandler);

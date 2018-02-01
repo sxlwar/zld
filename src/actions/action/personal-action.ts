@@ -1,6 +1,39 @@
-import { BasicInfoListResponse, PersonalIdListResponse, WorkerDetailListResponse, WorkerDetailUpdateResponse, HomeInfoListResponse, HomeInfoUpdateResponse, EducationListResponse, EducationAddResponse, EducationDeleteResponse, EducationUpdateResponse, WorkExperienceListResponse, WorkExperienceAddResponse, WorkExperienceDeleteResponse, WorkExperienceUpdateResponse, PlatformWorkExperienceResponse } from './../../interfaces/response-interface';
-import { BasicInfoListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import {
+    BasicInfoListOptions,
+    EducationAddOptions,
+    EducationDeleteOptions,
+    EducationListOptions,
+    EducationUpdateOptions,
+    HomeInfoListOptions,
+    HomeInfoUpdateOptions,
+    PersonalIdListOptions,
+    PlatformWorkExperienceListOptions,
+    WorkerDetailListOptions,
+    WorkerDetailUpdateOptions,
+    WorkExperienceAddOptions,
+    WorkExperienceDeleteOptions,
+    WorkExperienceListOptions,
+    WorkExperienceUpdateOptions,
+} from './../../interfaces/request-interface';
+import {
+    BasicInfoListResponse,
+    EducationAddResponse,
+    EducationDeleteResponse,
+    EducationListResponse,
+    EducationUpdateResponse,
+    HomeInfoListResponse,
+    HomeInfoUpdateResponse,
+    PersonalIdListResponse,
+    PlatformWorkExperienceResponse,
+    WorkerDetailListResponse,
+    WorkerDetailUpdateResponse,
+    WorkExperienceAddResponse,
+    WorkExperienceDeleteResponse,
+    WorkExperienceListResponse,
+    WorkExperienceUpdateResponse,
+} from './../../interfaces/response-interface';
 
 /*  ===================================================Basic information================================================== */
 

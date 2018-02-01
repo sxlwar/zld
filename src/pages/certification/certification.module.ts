@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { CertificationPage } from './certification';
-import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
-import { CertificateEffect } from '../../effects/certificate-effect';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
 import { ComponentsModule } from '../../components/components.module';
+import { CertificateEffect } from '../../effects/certificate-effect';
+import { CertificationPage } from './certification';
 
 @NgModule({
     declarations: [
@@ -16,11 +17,11 @@ import { ComponentsModule } from '../../components/components.module';
         TranslateModule.forChild(),
         ReactiveFormsModule,
         EffectsModule.forRoot([CertificateEffect]),
-        ComponentsModule
+        ComponentsModule,
     ],
     exports: [
         CertificationPage,
-    ]
+    ],
 })
 export class CertificationPageModule {
 }

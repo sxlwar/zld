@@ -1,14 +1,15 @@
-import { FaceImageComponent } from './../../components/face-image/face-image';
-import { applyAttendanceModifyPage } from './../pages';
-import { PermissionService } from './../../services/config/permission-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, InfiniteScroll } from 'ionic-angular';
-import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceService } from '../../services/business/attendance-service';
-import { AttendanceRecordService } from '../../services/business/attendance-record-service';
+import { InfiniteScroll, IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { uniqBy } from 'lodash';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-interface';
+import { AttendanceRecordService } from '../../services/business/attendance-record-service';
+import { AttendanceService } from '../../services/business/attendance-service';
+import { FaceImageComponent } from './../../components/face-image/face-image';
+import { PermissionService } from './../../services/config/permission-service';
+import { applyAttendanceModifyPage } from './../pages';
 
 @IonicPage()
 @Component({
@@ -59,6 +60,7 @@ export class AttendanceRecordPage {
     launch(): void {
         this.subscriptions = [
             this.attendanceRecord.getAttendanceInstantList(Observable.of({ start_day: this.attendanceResult.day, end_day: this.attendanceResult.day, user_id: [this.attendanceResult.contract__worker_id] })),
+
             this.attendanceRecord.handleError(),
         ];
     }
@@ -94,6 +96,8 @@ export class AttendanceRecordPage {
     }
 
     ionViewWillUnload() {
+        this.attendanceRecord.resetRecordResponse();
+        
         this.pageSubscription && this.pageSubscription.unsubscribe();
 
         this.recordSubscription && this.recordSubscription.unsubscribe();

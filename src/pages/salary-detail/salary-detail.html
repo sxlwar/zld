@@ -6,30 +6,45 @@
 
 </ion-header>
 
-
 <ion-content padding>
     <ion-item-divider text-center>{{yearMonth}}</ion-item-divider>
 
     <ion-card>
-        <ion-card-header text-center>{{'TOTAL_AMOUNT_OVERVIEW' | translate}}：{{totalAmount | currency: 'CNY': '1.2-2'}}</ion-card-header>
+        <ion-card-header text-center>
+            {{'TOTAL_AMOUNT_OVERVIEW' | translate}}：{{totalAmount | currency: 'CNY': '1.2-2'}}
+        </ion-card-header>
         <ion-card-content>
             <canvas #salaryDetail></canvas>
         </ion-card-content>
     </ion-card>
 
     <ion-item-group>
-        <ion-item-divider>{{'ATTENDANCE_SALARY' | translate}} {{(salary | async)?.attendanceAmount | currency: 'CNY': '1.2-2'}}</ion-item-divider>
-        <ion-item>{{'SYSTEM_ATTENDANCE_SALARY' | translate}}: {{(salary | async)?.systemAttendanceAmount | currency: 'CNY': '1.2-2'}}</ion-item>
-        <ion-item>{{'MANUAL_ATTENDANCE_SALARY' | translate}}: {{(salary | async)?.manualAttendanceAmount | currency: 'CNY': '1.2-2'}}</ion-item>
+        <ion-item-divider>
+            {{'ATTENDANCE_SALARY' | translate}} {{(salary | async)?.attendanceAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item-divider>
+        <ion-item>
+            {{'SYSTEM_ATTENDANCE_SALARY' | translate}}: {{(salary | async)?.systemAttendanceAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item>
+        <ion-item>
+            {{'MANUAL_ATTENDANCE_SALARY' | translate}}: {{(salary | async)?.manualAttendanceAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item>
     </ion-item-group>
     <ion-item-group>
-        <ion-item-divider>{{'OVERTIME_SALARY' | translate}} {{(salary | async)?.overtimeAmount | currency: 'CNY': '1.2-2'}}</ion-item-divider>
-        <ion-item>{{'SYSTEM_OVERTIME_SALARY' | translate}}: {{(salary | async)?.systemOvertimeAmount | currency: 'CNY': '1.2-2'}}</ion-item>
-        <ion-item>{{'MANUAL_OVERTIME_SALARY' | translate}}: {{(salary | async)?.manualOvertimeAmount | currency: 'CNY': '1.2-2'}}</ion-item>
+        <ion-item-divider>
+            {{'OVERTIME_SALARY' | translate}} {{(salary | async)?.overtimeAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item-divider>
+        <ion-item>
+            {{'SYSTEM_OVERTIME_SALARY' | translate}}: {{(salary | async)?.systemOvertimeAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item>
+        <ion-item>
+            {{'MANUAL_OVERTIME_SALARY' | translate}}: {{(salary | async)?.manualOvertimeAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item>
     </ion-item-group>
     <ion-item-group>
         <ion-item-divider>{{'WORK_PIECE_SALARY' | translate}}</ion-item-divider>
-        <ion-item>{{'WORK_PIECE_SALARY' | translate}}: {{(salary | async)?.pieceAmount | currency: 'CNY': '1.2-2'}}</ion-item>
+        <ion-item>
+            {{'WORK_PIECE_SALARY' | translate}}: {{(salary | async)?.pieceAmount | currency: 'CNY': '1.2-2'}}
+        </ion-item>
     </ion-item-group>
 
 </ion-content>

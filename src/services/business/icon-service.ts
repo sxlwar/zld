@@ -1,17 +1,18 @@
+import { Injectable } from '@angular/core';
+import { createSelector, Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AddBadgeForRootModuleAction, AddIconsBarAction } from '../../actions/action/icons-action';
+import { IconItem } from '../../interfaces/icon-interface';
+import * as pages from '../../pages/pages';
+import { AppState, getIconsState, selectWorkFlowStatisticsResponse } from '../../reducers/index-reducer';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import { CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW } from '../config/character';
+import { PermissionService } from '../config/permission-service';
+import { putInArray } from '../utils/util';
 import { WorkFlowAggregation } from './../../interfaces/response-interface';
 import { MineRoot, MissionRoot } from './../../pages/pages';
-import { putInArray } from '../utils/util';
-import { Observable } from 'rxjs/Observable';
-import { IconState } from '../../reducers/reducer/icons-reducer';
-import { AppState, getIconsState, selectWorkFlowStatisticsResponse } from '../../reducers/index-reducer';
-import { createSelector, Store } from '@ngrx/store';
-import { Injectable } from '@angular/core';
-import { AddIconsBarAction, AddBadgeForRootModuleAction } from '../../actions/action/icons-action';
-import { Subscription } from 'rxjs/Subscription';
-import { PermissionService } from '../config/permission-service';
-import { CW, EME, LM, MM, PA, PM, PME, QW, SW, TL, UW } from '../config/character';
-import * as pages from '../../pages/pages';
-import { IconItem } from '../../interfaces/icon-interface';
 
 /**
  * @description These constants are icon names used in application.
@@ -62,7 +63,7 @@ export const workFlowMap = new Map([
     [primeContractIcon, 'prime_contract_time_change'],
     [subContractIcon, 'sub_contract_time_change'],
     [modifyDutyIcon, 'timeduty_apply'],
-    [workContractModifyIcon, 'worker_contract_time_change']
+    [workContractModifyIcon, 'worker_contract_time_change'],
 ]);
 
 /* ================================================================Icon model START================================================================ */
@@ -73,9 +74,9 @@ export const attendance: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, PM, LM],
-        opt: [TL]
+        opt: [TL],
     },
-    page: pages.attendancePage
+    page: pages.attendancePage,
 };
 
 export const payroll: IconItem = {
@@ -84,9 +85,9 @@ export const payroll: IconItem = {
     color: 'economics',
     permission: {
         view: [PME, EME, MM, PM, LM, TL],
-        opt: []
+        opt: [],
     },
-    page: pages.projectBillPage
+    page: pages.projectBillPage,
 };
 
 export const organization: IconItem = {
@@ -95,9 +96,9 @@ export const organization: IconItem = {
     color: 'advanced',
     permission: {
         view: [PME, EME, MM, LM, TL, QW],
-        opt: [PM]
+        opt: [PM],
     },
-    page: pages.organizationPage
+    page: pages.organizationPage,
 };
 
 export const workerManager: IconItem = {
@@ -106,9 +107,9 @@ export const workerManager: IconItem = {
     color: 'advanced',
     permission: {
         view: [PME, EME, MM, PM, CW, QW],
-        opt: [LM, TL]
+        opt: [LM, TL],
     },
-    page: pages.membersPage
+    page: pages.membersPage,
 };
 
 export const workPiece: IconItem = {
@@ -117,9 +118,9 @@ export const workPiece: IconItem = {
     color: 'piece',
     permission: {
         view: [PME, EME, MM, PM, LM, TL, QW],
-        opt: []
+        opt: [],
     },
-    page: pages.workPiecePage
+    page: pages.workPiecePage,
 };
 
 export const location: IconItem = {
@@ -128,9 +129,9 @@ export const location: IconItem = {
     color: 'location',
     permission: {
         view: [PME, EME, MM, PM, LM, TL],
-        opt: []
+        opt: [],
     },
-    page: pages.locationPage
+    page: pages.locationPage,
 };
 
 export const trajectory: IconItem = {
@@ -139,9 +140,9 @@ export const trajectory: IconItem = {
     color: 'location',
     permission: {
         view: [PME, MM, PM, LM, TL, CW, QW, SW],
-        opt: []
+        opt: [],
     },
-    page: pages.trajectoryPage
+    page: pages.trajectoryPage,
 };
 
 export const attendanceMachine: IconItem = {
@@ -150,9 +151,9 @@ export const attendanceMachine: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, MM, PM, LM, TL, QW],
-        opt: []
+        opt: [],
     },
-    page: pages.attendanceMachinePage
+    page: pages.attendanceMachinePage,
 };
 
 export const locationCard: IconItem = {
@@ -161,9 +162,9 @@ export const locationCard: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME, MM, LM, TL],
-        opt: [PM]
+        opt: [PM],
     },
-    page: pages.locationCardPage
+    page: pages.locationCardPage,
 };
 
 export const attendanceCard: IconItem = {
@@ -172,9 +173,9 @@ export const attendanceCard: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME, MM, TL],
-        opt: [PM]
+        opt: [PM],
     },
-    page: pages.attendanceCardPage
+    page: pages.attendanceCardPage,
 };
 
 export const locationAttendanceRecord: IconItem = {
@@ -183,9 +184,9 @@ export const locationAttendanceRecord: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, MM, PM, LM, TL, CW, QW, SW],
-        opt: []
+        opt: [],
     },
-    page: pages.locationAttendanceRecordPage
+    page: pages.locationAttendanceRecordPage,
 
 }
 
@@ -195,9 +196,9 @@ export const attendanceConfirm: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME],
-        opt: [TL]
+        opt: [TL],
     },
-    page: pages.attendanceConfirmPage
+    page: pages.attendanceConfirmPage,
 };
 
 export const leave: IconItem = {
@@ -206,9 +207,9 @@ export const leave: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME, MM],
-        opt: [PM, LM, TL]
+        opt: [PM, LM, TL],
     },
-    page: pages.leavePage
+    page: pages.leavePage,
 };
 
 export const overtime: IconItem = {
@@ -217,9 +218,9 @@ export const overtime: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME, MM],
-        opt: [PM, TL]
+        opt: [PM, TL],
     },
-    page: pages.overtimePage
+    page: pages.overtimePage,
 };
 
 export const pieceAudit: IconItem = {
@@ -228,9 +229,9 @@ export const pieceAudit: IconItem = {
     color: 'piece',
     permission: {
         view: [PME, EME, MM],
-        opt: [PM, QW, TL]
+        opt: [PM, QW, TL],
     },
-    page: pages.pieceAuditPage
+    page: pages.pieceAuditPage,
 };
 
 export const modifyAttendance: IconItem = {
@@ -239,9 +240,9 @@ export const modifyAttendance: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME, MM],
-        opt: [PM, LM, TL]
+        opt: [PM, LM, TL],
     },
-    page: pages.attendanceModifyPage
+    page: pages.attendanceModifyPage,
 };
 
 export const signWorkerContract: IconItem = {
@@ -250,9 +251,9 @@ export const signWorkerContract: IconItem = {
     color: 'contract',
     permission: {
         view: [],
-        opt: [PM, LM, TL]
+        opt: [PM, LM, TL],
     },
-    page: pages.signWorkerContractPage
+    page: pages.signWorkerContractPage,
 };
 
 /**
@@ -264,9 +265,9 @@ export const workerContract: IconItem = {
     color: 'contract',
     permission: {
         view: [SW, UW],
-        opt: [PM, LM, TL, SW, UW]
+        opt: [PM, LM, TL, SW, UW],
     },
-    page: pages.workerContractPage
+    page: pages.workerContractPage,
 };
 
 export const workContractModify: IconItem = {
@@ -275,9 +276,9 @@ export const workContractModify: IconItem = {
     color: 'contract',
     permission: {
         view: [],
-        opt: [PM, LM]
+        opt: [PM, LM],
     },
-    page: pages.applyWorkerContractModifyPage
+    page: pages.applyWorkerContractModifyPage,
 };
 
 export const iCompleted: IconItem = {
@@ -286,9 +287,9 @@ export const iCompleted: IconItem = {
     color: 'related',
     permission: {
         view: [PME, EME, MM, PM, LM, TL, QW, SW, UW],
-        opt: []
+        opt: [],
     },
-    page: pages.iCompletedPage
+    page: pages.iCompletedPage,
 };
 
 export const iStarted: IconItem = {
@@ -297,9 +298,9 @@ export const iStarted: IconItem = {
     color: 'related',
     permission: {
         view: [PME, EME, MM, PM, LM, TL, QW],
-        opt: []
+        opt: [],
     },
-    page: pages.iStartedPage
+    page: pages.iStartedPage,
 };
 
 export const myAttendance: IconItem = {
@@ -308,9 +309,9 @@ export const myAttendance: IconItem = {
     color: 'primary',
     permission: {
         view: [SW],
-        opt: []
+        opt: [],
     },
-    page: pages.personalAttendancePage
+    page: pages.personalAttendancePage,
 };
 
 export const salary: IconItem = {
@@ -319,9 +320,9 @@ export const salary: IconItem = {
     color: 'economics',
     permission: {
         view: [SW, UW],
-        opt: []
+        opt: [],
     },
-    page: pages.salaryPage
+    page: pages.salaryPage,
 };
 
 export const bankCard: IconItem = {
@@ -330,9 +331,9 @@ export const bankCard: IconItem = {
     color: 'primary',
     permission: {
         view: [PME, EME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
-        opt: []
+        opt: [],
     },
-    page: pages.bankcardPage
+    page: pages.bankcardPage,
 };
 
 export const certificate: IconItem = {
@@ -341,9 +342,9 @@ export const certificate: IconItem = {
     color: 'contract',
     permission: {
         view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
-        opt: []
+        opt: [],
     },
-    page: pages.workCertificatePage
+    page: pages.workCertificatePage,
 };
 
 export const personalInfo: IconItem = {
@@ -354,7 +355,7 @@ export const personalInfo: IconItem = {
         view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
         opt: [],
     },
-    page: pages.personalInformationPage
+    page: pages.personalInformationPage,
 };
 
 export const familyInfo: IconItem = {
@@ -365,7 +366,7 @@ export const familyInfo: IconItem = {
         view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
         opt: [],
     },
-    page: pages.familyInformationPage
+    page: pages.familyInformationPage,
 };
 
 export const workInfo: IconItem = {
@@ -376,7 +377,7 @@ export const workInfo: IconItem = {
         view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
         opt: [],
     },
-    page: pages.workExperiencePage
+    page: pages.workExperiencePage,
 };
 
 export const educationInfo: IconItem = {
@@ -387,7 +388,7 @@ export const educationInfo: IconItem = {
         view: [PME, MM, PM, LM, TL, CW, QW, SW, UW, PA],
         opt: [],
     },
-    page: pages.educationExperiencePage
+    page: pages.educationExperiencePage,
 };
 
 /* ================================================================Icon model EDN================================================================= */
@@ -399,7 +400,7 @@ export const processIdToIcon = {
     workpiece_finish: pieceAudit.icon,
     leave_apply: leave.icon,
     workovertime_apply: overtime.icon,
-    attendanceConfirm: attendanceConfirm.icon
+    attendanceConfirm: attendanceConfirm.icon,
 }
 
 @Injectable()

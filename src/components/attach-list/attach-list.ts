@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 interface AttachItem {
     title: string;
@@ -21,7 +21,7 @@ export class AttachListComponent {
     }
 
     addAttach(): void {
-        this.attach.push({ title: 'ATTACH'});
+        this.attach.push({ title: 'ATTACH' });
 
         this.data.push('');
     }

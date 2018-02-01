@@ -1,12 +1,13 @@
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import { Observable } from 'rxjs/Observable';
-import { mobilePhoneValidator } from '../../validators/validators';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { AccountChangeService } from './../../services/business/account-change-service';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { IonicPage } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { ChangeAccountFormModel } from '../../services/api/mapper-service';
+import { mobilePhoneValidator } from '../../validators/validators';
+import { AccountChangeService } from './../../services/business/account-change-service';
 
 @IonicPage()
 @Component({
@@ -57,7 +58,7 @@ export class AccountChangePage {
             oldPhoneVerification: '',
             newPhoneVerification: '',
             oldImageVerification: '',
-            newImageVerification: ''
+            newImageVerification: '',
         });
     }
 
@@ -74,13 +75,27 @@ export class AccountChangePage {
     launch(): void {
         this.subscriptions = [
             this.accountChange.changePhone(this.change$.map(_ => this.form.value)),
-            this.accountChange.checkPhoneVerify(this.oldPhoneVerification$.map(_ => this.form.get('oldMobilePhone').value), this.oldPhoneVerification$.map(_ => this.form.get('oldImageVerification').value)),
-            this.accountChange.changePhoneVerify(this.newPhoneVerification$.map(_ => this.form.get('newMobilePhone').value), this.newPhoneVerification$.map(_ => this.form.get('newImageVerification').value)),
+
+            this.accountChange.checkPhoneVerify(
+                this.oldPhoneVerification$.map(_ => this.form.get('oldMobilePhone').value),
+                this.oldPhoneVerification$.map(_ => this.form.get('oldImageVerification').value)
+            ),
+
+            this.accountChange.changePhoneVerify(
+                this.newPhoneVerification$.map(_ => this.form.get('newMobilePhone').value),
+                this.newPhoneVerification$.map(_ => this.form.get('newImageVerification').value)
+            ),
+
             this.accountChange.updateCheckRandomCode(this.oldImageVerification$),
+
             this.accountChange.updateChangeRandomCode(this.newImageVerification$),
+
             this.accountChange.getAccount().subscribe(oldMobilePhone => this.form.patchValue({ oldMobilePhone })),
+
             this.accountChange.getChangePhoneSuccessResponse().subscribe(_ => this.form.reset()),
+
             this.accountChange.updateAccount(),
+
             ...this.accountChange.handleError(),
         ];
     }

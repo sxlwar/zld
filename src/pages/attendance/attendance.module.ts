@@ -1,11 +1,10 @@
+import { NgModule } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
 import { SharedModule } from './../../app/shared.modules';
 import { ComponentsModule } from './../../components/components.module';
-//region
-import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
 import { AttendancePage } from './attendance';
-import { TranslateModule } from '@ngx-translate/core';
-//endregion
 
 @NgModule({
     declarations: [
@@ -19,7 +18,7 @@ import { TranslateModule } from '@ngx-translate/core';
     ],
     exports: [
         AttendancePage,
-    ]
+    ],
 })
 export class AttendancePageModule {
 }

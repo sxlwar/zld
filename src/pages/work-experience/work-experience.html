@@ -3,14 +3,17 @@
     <ion-navbar>
         <ion-title>{{'WORK_EXPERIENCE' | translate}}</ion-title>
         <ion-buttons end>
-            <button ion-button icon-only (click)="addWorkExperience()">
+            <button
+                ion-button
+                icon-only
+                (click)="addWorkExperience()"
+            >
                 <ion-icon name="add"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
 
 </ion-header>
-
 
 <ion-content padding>
 
@@ -23,13 +26,17 @@
         </ion-segment-button>
     </ion-segment>
 
-
     <div [ngSwitch]="type">
         <div *ngSwitchCase="'platform'">
             <platform-work-experience [experience]="platformWorkExperience | async"></platform-work-experience>
         </div>
         <div *ngSwitchCase="'custom'">
-            <work-experience [experience]="customWorkExperience | async" [canEditor]="true" (updateExperience)="updateWorkExperience($event)" (deleteExperience)="deleteWorkExperience($event)"></work-experience>
+            <work-experience
+                [experience]="customWorkExperience | async"
+                [canEditor]="true"
+                (updateExperience)="updateWorkExperience($event)"
+                (deleteExperience)="delete$.next($event)"
+            ></work-experience>
         </div>
     </div>
 

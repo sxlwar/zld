@@ -1,14 +1,15 @@
-import { Subscription } from 'rxjs/Subscription';
 import { Component, OnDestroy } from '@angular/core';
 import { ViewController } from 'ionic-angular';
-import { ProjectService } from '../../services/business/project-service';
-import { Project } from '../../interfaces/response-interface';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { Project } from '../../interfaces/response-interface';
+import { ProjectService } from '../../services/business/project-service';
 import { WorkerService } from '../../services/business/worker-service';
 
 @Component({
     selector: 'project-list',
-    templateUrl: 'project-list.html'
+    templateUrl: 'project-list.html',
 })
 export class ProjectListComponent implements OnDestroy {
 

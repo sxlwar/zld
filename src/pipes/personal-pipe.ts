@@ -1,8 +1,9 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
 import { degrees } from './../interfaces/request-interface';
-import { PipeTransform, Pipe } from '@angular/core';
 
 @Pipe({
-    name: 'degree'
+    name: 'degree',
 })
 export class DegreePipe implements PipeTransform {
     transform(value: number): string {
@@ -48,11 +49,11 @@ export enum WorkTypeIcon {
     roadRoller,
     soilShifter,
     truck,
-    blaster
+    blaster,
 }
 
 @Pipe({
-    name: 'workType'
+    name: 'workType',
 })
 export class WorkTypePipe implements PipeTransform {
     transform(value: number): string {

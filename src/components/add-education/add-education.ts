@@ -1,15 +1,16 @@
-import { TimeService } from './../../services/utils/time-service';
-import { degrees } from './../../interfaces/request-interface';
-import { MapperService } from './../../services/api/mapper-service';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavParams, ViewController } from 'ionic-angular';
-import { Component } from '@angular/core';
+
 import { Education } from '../../interfaces/response-interface';
 import { mustBeChineseValidator } from '../../validators/validators';
+import { degrees } from './../../interfaces/request-interface';
+import { MapperService } from './../../services/api/mapper-service';
+import { TimeService } from './../../services/utils/time-service';
 
 @Component({
     selector: 'add-education',
-    templateUrl: 'add-education.html'
+    templateUrl: 'add-education.html',
 })
 export class AddEducationComponent {
 
@@ -33,7 +34,7 @@ export class AddEducationComponent {
         private timeService: TimeService
     ) {
         this.today = this.timeService.getDate(new Date(), true);
-        
+
         this.initialModel();
     }
 
@@ -90,5 +91,4 @@ export class AddEducationComponent {
     get school() {
         return this.educationForm.get('school');
     }
-
 }

@@ -1,10 +1,16 @@
-import { SEARCH_WORKER, SearchWorkerAction, SearchWorkerFailAction, SearchWorkerSuccessAction } from './../actions/action/search-worker-action';
-import { Observable } from 'rxjs/Observable';
-import { ResponseAction } from './../interfaces/response-interface';
-import { Actions, Effect } from '@ngrx/effects';
-import { WebsocketService } from './../services/api/websocket-service';
-import { Command } from './../services/api/command';
 import { Injectable } from '@angular/core';
+import { Actions, Effect } from '@ngrx/effects';
+import { Observable } from 'rxjs/Observable';
+
+import {
+    SEARCH_WORKER,
+    SearchWorkerAction,
+    SearchWorkerFailAction,
+    SearchWorkerSuccessAction,
+} from './../actions/action/search-worker-action';
+import { ResponseAction } from './../interfaces/response-interface';
+import { Command } from './../services/api/command';
+import { WebsocketService } from './../services/api/websocket-service';
 
 @Injectable()
 export class SearchWorkerEffect extends Command {
@@ -14,7 +20,9 @@ export class SearchWorkerEffect extends Command {
         .switchMap((action: SearchWorkerAction) => this.ws
             .send(this.getSearchWorker(action.payload))
             .takeUntil(this.actions$.ofType(SEARCH_WORKER))
-            .map(msg => msg.isError ? new SearchWorkerFailAction(msg.data) : new SearchWorkerSuccessAction(msg.data))
+            .map(msg => msg.isError
+                ? new SearchWorkerFailAction(msg.data)
+                : new SearchWorkerSuccessAction(msg.data))
             .catch(error => Observable.of(error))
         );
 

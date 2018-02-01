@@ -1,5 +1,12 @@
-import { AttendanceResultTeamStatListResponse, RequestAggregationResponse, AttendanceStatistics, WorkFlowAggregation, WorkTypeRealTimeStatisticsResponse, TeamMembersRealTimeStatisticsResponse } from './../../interfaces/response-interface';
 import * as actions from '../../actions/action/statistics-action';
+import {
+    AttendanceResultTeamStatListResponse,
+    AttendanceStatistics,
+    RequestAggregationResponse,
+    TeamMembersRealTimeStatisticsResponse,
+    WorkFlowAggregation,
+    WorkTypeRealTimeStatisticsResponse,
+} from './../../interfaces/response-interface';
 
 export interface AttendanceConditions {
     selectedTeams: string[];
@@ -17,11 +24,11 @@ export interface State {
 export const initialState: State = {
     attendanceConditions: { selectedTeams: [], selectedDates: [], statisticList: [] },
     attendanceResultTeamStatResponse: {
-        attend_result_team_stat_list: []
+        attend_result_team_stat_list: [],
     },
     requestAggregationResponse: null,
     workTypeRealTimeStatisticsResponse: null,
-    teamMemberRealTimeStatisticsResponse: null
+    teamMemberRealTimeStatisticsResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

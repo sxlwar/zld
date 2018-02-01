@@ -1,32 +1,62 @@
-import { InfiniteScroll } from 'ionic-angular';
-import { AddAttendancesToModifyAction, ResetAttendancesToModifyAction, RemoveAttendanceFromReadyToModify } from './../../actions/action/attendance-action';
-import { uniqBy, orderBy } from 'lodash';
-import { TimeService } from './../utils/time-service';
-import { AttendanceSortType, AttendanceState } from './../../interfaces/attendance-interface';
-import { RecordOptionService } from './record-option-service';
-import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
-import { AttendanceStatistics, AttendanceModify, AttendanceResultListResponse } from './../../interfaces/response-interface';
-import { selectAttendanceStatisticsResponse, selectAttendanceStatistics, selectAttendanceModifyRecordListResponse, selectSelectedAttendanceState, selectAttendanceSortType, selectAttendanceOrderType, selectAttendanceResultConfirmResponse, selectAttendanceConfirmOptions, selectAttendancesToModify } from './../../reducers/index-reducer';
-import { TeamService } from './team-service';
+import 'rxjs/add/observable/empty';
+
 import { Injectable } from '@angular/core';
-import { AppState, selectAttendanceDatePeriod, selectAttendanceLimit, selectAttendancePage, selectAttendanceResponse } from '../../reducers/index-reducer';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { InfiniteScroll } from 'ionic-angular';
+import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
+import { orderBy, uniqBy } from 'lodash';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    IncreaseAttendancePageAction,
+    ResetAttendanceDataAction,
+    ResetAttendancePageAction,
+    SetAttendanceEndDateAction,
+    SetAttendanceStartDateAction,
+    SetQueryAttendanceStateAction,
+    ToggleAttendanceSortTypeAction,
+    ToggleOrderTypeAction,
+} from '../../actions/action/attendance-action';
+import { RequestOption } from '../../interfaces/request-interface';
+import { AttendanceResult } from '../../interfaces/response-interface';
+import {
+    AppState,
+    selectAttendanceDatePeriod,
+    selectAttendanceLimit,
+    selectAttendancePage,
+    selectAttendanceResponse,
+} from '../../reducers/index-reducer';
+import { DatePeriod } from '../../reducers/reducer/attendance-reducer';
+import { UserService } from '..//business/user-service';
 import { ProcessorService } from '../api/processor-service';
 import { ErrorService } from '../errors/error-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import { AttendanceResult } from '../../interfaces/response-interface';
-import { RequestOption } from '../../interfaces/request-interface';
-import 'rxjs/add/observable/empty'
-import { DatePeriod } from '../../reducers/reducer/attendance-reducer';
-import { SetAttendanceEndDateAction, SetAttendanceStartDateAction, IncreaseAttendancePageAction, ResetAttendancePageAction, ToggleAttendanceSortTypeAction, SetQueryAttendanceStateAction, ToggleOrderTypeAction, ResetAttendanceDataAction } from '../../actions/action/attendance-action';
-import { UserService } from '..//business/user-service';
-import { TranslateService } from '@ngx-translate/core';
-import { ActionSheetController } from 'ionic-angular/components/action-sheet/action-sheet-controller';
+import {
+    AddAttendancesToModifyAction,
+    RemoveAttendanceFromReadyToModify,
+    ResetAttendancesToModifyAction,
+} from './../../actions/action/attendance-action';
+import { AttendanceSortType, AttendanceState } from './../../interfaces/attendance-interface';
+import { AttendanceModifyRecordListOptions } from './../../interfaces/request-interface';
+import { AttendanceModify, AttendanceResultListResponse, AttendanceStatistics } from './../../interfaces/response-interface';
+import {
+    selectAttendanceConfirmOptions,
+    selectAttendanceModifyRecordListResponse,
+    selectAttendanceOrderType,
+    selectAttendanceResultConfirmResponse,
+    selectAttendanceSortType,
+    selectAttendanceStatistics,
+    selectAttendanceStatisticsResponse,
+    selectAttendancesToModify,
+    selectSelectedAttendanceState,
+} from './../../reducers/index-reducer';
+import { TimeService } from './../utils/time-service';
+import { RecordOptionService } from './record-option-service';
+import { TeamService } from './team-service';
 
 @Injectable()
 export class AttendanceService extends RecordOptionService {
-
     constructor(
         private store: Store<AppState>,
         private processor: ProcessorService,
@@ -53,16 +83,30 @@ export class AttendanceService extends RecordOptionService {
     getWrappedAttendanceResultList(): Observable<AttendanceResult[]> {
         return this.getAttendanceResultList()
             .scan((acc, cur) => acc.concat(cur), [])
-            .mergeMap(source => this.getConfirmedAttendance().map(ids => source.map(item => ids.indexOf(item.id) === -1 ? item : { ...item, confirm: 1 })))
+            .mergeMap(source =>
+                this.getConfirmedAttendance().map(ids => source.map(item => ids.indexOf(item.id) === -1
+                    ? item
+                    : { ...item, confirm: 1 })
+                )
+            )
             .combineLatest(
             this.getSortType().map(type => AttendanceSortType[type]).distinctUntilChanged(),
             this.getOrderType().distinctUntilChanged(),
-            this.getSelectedDate().map(date => ({ start: this.timeService.getDate(date.start, true), end: this.timeService.getDate(date.end, true) })),
+            this.getSelectedDate().map(date => ({
+                start: this.timeService.getDate(date.start, true),
+                end: this.timeService.getDate(date.end, true),
+            })),
             this.teamService.getSelectedTeams(),
             this.getSelectedAttendanceState(),
-            (list: AttendanceResult[], type: string, order: string, { start, end }, teamIds: number[], confirmState: number) => orderBy(list, [type], [order]).filter(item => (teamIds.length === 0 || teamIds.indexOf(item.contract__team_id) !== -1) && (item.confirm === confirmState || confirmState === 3) && item.day >= start && item.day <= end)
+            (list: AttendanceResult[], type: string, order: string, { start, end }, teamIds: number[], confirmState: number) =>
+                orderBy(list, [type], [order]).filter(
+                    item => (teamIds.length === 0 || teamIds.indexOf(item.contract__team_id) !== -1) &&
+                        (item.confirm === confirmState || confirmState === 3) &&
+                        item.day >= start &&
+                        item.day <= end
+                )
             )
-            .map(result => uniqBy(result, item => item.id)) // because of team id condition, so need to uniq result here.
+            .map(result => uniqBy(result, item => item.id)); // because of team id condition, so need to uniq result here.
     }
 
     getAttendanceCount(): Observable<number> {
@@ -70,18 +114,19 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getWrappedAttendanceCount(): Observable<number> {
-        return this.getAttendanceCount()
-            .combineLatest(
+        return this.getAttendanceCount().combineLatest(
             this.getConfirmedAttendance().map(ids => ids.length),
             this.getSelectedAttendanceState(),
-            (count, confirmedCount, state) => state === AttendanceState.unconfirmed || state === AttendanceState.allTypes ? count - confirmedCount : count
-            );
+            (count, confirmedCount, state) => state === AttendanceState.unconfirmed || state === AttendanceState.allTypes
+                ? count - confirmedCount
+                : count
+        );
     }
 
     getAttendanceModifyRecordLists(): Observable<AttendanceModify[]> {
         return this.store.select(selectAttendanceModifyRecordListResponse)
             .filter(value => !!value)
-            .map(res => res.attend_amends)
+            .map(res => res.attend_amends);
     }
 
     getAttendanceStatistics(): Observable<AttendanceStatistics[]> {
@@ -93,12 +138,11 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getAttendanceResultMoreData(): Observable<boolean> {
-        return this.getAttendanceCount()
-            .combineLatest(
+        return this.getAttendanceCount().combineLatest(
             this.store.select(selectAttendanceLimit),
             this.store.select(selectAttendancePage),
             (count, limit, page) => limit * page < count
-            );
+        );
     }
 
     getSortType(): Observable<number> {
@@ -110,9 +154,15 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getConfirmedAttendance(): Observable<number[]> {
-        return this.store.select(selectAttendanceResultConfirmResponse)
+        return this.store
+            .select(selectAttendanceResultConfirmResponse)
             .filter(value => !!value && !value.errorMessage)
-            .mergeMapTo(this.store.select(selectAttendanceConfirmOptions).filter(value => !!value).map(options => options.attendance_result_id))
+            .mergeMapTo(
+            this.store
+                .select(selectAttendanceConfirmOptions)
+                .filter(value => !!value)
+                .map(options => options.attendance_result_id)
+            )
             .startWith([]);
     }
 
@@ -123,17 +173,20 @@ export class AttendanceService extends RecordOptionService {
     /* =========================================================API request operation================================================= */
 
     getAttendances(option: Observable<RequestOption> = Observable.empty()): Subscription {
-        return this.processor.attendanceListProcessor(option.combineLatest(
-            this.userInfo.getSid(),
-            this.store.select(selectAttendancePage),
-            this.store.select(selectAttendanceLimit),
-            (option, sid, page, limit) => ({ ...option, sid, page, limit })
-        ));
+        return this.processor.attendanceListProcessor(
+            option.combineLatest(
+                this.userInfo.getSid(),
+                this.store.select(selectAttendancePage),
+                this.store.select(selectAttendanceLimit),
+                (option, sid, page, limit) => ({ ...option, sid, page, limit })
+            )
+        );
     }
 
     getAttendanceStatisticsByTeam(): Subscription {
         return this.processor.attendanceResultTeamStatListProcessor(
-            this.teamService.getOwnTeams()
+            this.teamService
+                .getOwnTeams()
                 .filter(teams => !!teams.length)
                 .map(teams => teams.map(team => team.id))
                 .withLatestFrom(this.userInfo.getSid(), (team_ids, sid) => ({ team_ids, sid }))
@@ -141,17 +194,21 @@ export class AttendanceService extends RecordOptionService {
     }
 
     getAttendanceModifyRecord(option: Observable<RequestOption>): Subscription {
-        return this.processor.attendanceModifyRecordListProcessor(option.withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid })) as Observable<AttendanceModifyRecordListOptions>);
+        return this.processor.attendanceModifyRecordListProcessor(option.withLatestFrom(
+            this.userInfo.getSid(),
+            (option, sid) => ({ ...option, sid })
+        ) as Observable<AttendanceModifyRecordListOptions>);
     }
 
     confirmAttendance(attendance: Observable<AttendanceResult[]>): Subscription {
         return this.processor.attendanceResultConfirmProcessor(
-            attendance.map(attendances => attendances.map(item => item.id))
+            attendance
+                .map(attendances => attendances.map(item => item.id))
                 .withLatestFrom(this.userInfo.getSid(), (attendance_result_id, sid) => ({ attendance_result_id, sid }))
         );
     }
 
-    getNextPage(infiniteScroll:InfiniteScroll): Subscription {
+    getNextPage(infiniteScroll: InfiniteScroll): Subscription {
         this.increasePage();
 
         return this.getAttendanceResultResponse()
@@ -177,7 +234,7 @@ export class AttendanceService extends RecordOptionService {
     }
 
     switchOrderType(order: string): void {
-        this.store.dispatch(new ToggleOrderTypeAction(order))
+        this.store.dispatch(new ToggleOrderTypeAction(order));
     }
 
     setSelectedAttendanceState(state: number): void {
@@ -211,7 +268,8 @@ export class AttendanceService extends RecordOptionService {
     /* =========================================================Attendance modify operation================================================= */
 
     showActionSheet(attendances: AttendanceResult[], applyModifyFn): Subscription {
-        return this.translate.get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
+        return this.translate
+            .get(['ATTENDANCE_CONFIRM', 'ATTENDANCE_APPLY_FOR_MODIFY', 'CANCEL_BUTTON'])
             .subscribe(value => this.createActionSheet(value, attendances, applyModifyFn));
     }
 
@@ -226,7 +284,7 @@ export class AttendanceService extends RecordOptionService {
                         actionSheet.dismiss(subscription);
 
                         return false;
-                    }
+                    },
                 },
                 {
                     text: buttonText.ATTENDANCE_APPLY_FOR_MODIFY,
@@ -238,14 +296,14 @@ export class AttendanceService extends RecordOptionService {
                         actionSheet.dismiss();
 
                         return false;
-                    }
+                    },
                 },
                 {
                     text: buttonText.CANCEL_BUTTON,
                     role: 'cancel',
-                    handler: () => {
-                    }
-                }]
+                    handler: () => { },
+                },
+            ],
         });
 
         actionSheet.present().then(() => { });
@@ -256,18 +314,18 @@ export class AttendanceService extends RecordOptionService {
     /* ================================================================Error handle================================================= */
 
     handleAttendanceError(): Subscription {
-        return this.error.handleErrorInSpecific(this.getAttendanceResultResponse(), 'API_ERROR');
+        return this.error.handleApiRequestError(this.getAttendanceResultResponse());
     }
 
     handleStatisticsError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceStatisticsResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectAttendanceStatisticsResponse));
     }
 
     handleAttendanceModifyError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceModifyRecordListResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectAttendanceModifyRecordListResponse));
     }
 
     handleAttendanceConfirmError(): Subscription {
-        return this.error.handleErrorInSpecific(this.store.select(selectAttendanceResultConfirmResponse), 'API_ERROR');
+        return this.error.handleApiRequestError(this.store.select(selectAttendanceResultConfirmResponse));
     }
 }

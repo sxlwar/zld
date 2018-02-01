@@ -1,9 +1,8 @@
-//region
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TutorialPage } from './tutorial';
 import { TranslateModule } from '@ngx-translate/core';
-//endregion
+import { IonicPageModule } from 'ionic-angular';
+
+import { TutorialPage } from './tutorial';
 
 @NgModule({
     declarations: [
@@ -11,10 +10,10 @@ import { TranslateModule } from '@ngx-translate/core';
     ],
     imports: [
         IonicPageModule.forChild(TutorialPage),
-        TranslateModule.forChild()
+        TranslateModule.forChild(),
     ],
     exports: [
-        TutorialPage
-    ]
+        TutorialPage,
+    ],
 })
 export class TutorialPageModule { }

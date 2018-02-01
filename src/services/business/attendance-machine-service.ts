@@ -1,13 +1,14 @@
-import { Observable } from 'rxjs/Observable';
-import { AttendanceMachine } from './../../interfaces/response-interface';
-import { ProjectService } from './project-service';
-import { ErrorService } from './../errors/error-service';
-import { UserService } from './user-service';
-import { ProcessorService } from './../api/processor-service';
-import { Store } from '@ngrx/store';
-import { AppState, selectMachineListResponse, selectMachines } from './../../reducers/index-reducer';
-import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceMachine } from './../../interfaces/response-interface';
+import { AppState, selectMachineListResponse, selectMachines } from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { ProjectService } from './project-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class AttendanceMachineService {

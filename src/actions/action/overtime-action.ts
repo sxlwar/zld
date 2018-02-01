@@ -1,6 +1,7 @@
-import { Action } from '@ngrx/store'
-import { WorkOvertimeRecordListOptions } from '../../interfaces/request-interface';
+import { Action } from '@ngrx/store';
 import { WorkOvertimeRecordListResponse } from 'interfaces/response-interface';
+
+import { WorkOvertimeRecordListOptions } from '../../interfaces/request-interface';
 
 /* ===========================================Overtime api operate======================================== */
 

@@ -1,11 +1,13 @@
-import { Subscription } from 'rxjs/Subscription';
-import { MapperService } from './../../services/api/mapper-service';
-import { PlatformExperience, CustomWorkExperience } from './../../interfaces/personal-interface';
-import { Observable } from 'rxjs/Observable';
-import { PersonalService } from './../../services/business/personal-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { AddWorkExperienceComponent } from '../../components/add-work-experience/add-work-experience';
+import { CustomWorkExperience, PlatformExperience } from './../../interfaces/personal-interface';
+import { MapperService, WorkExperienceFormModel, WorkExperienceUpdateFormModel } from './../../services/api/mapper-service';
+import { PersonalService } from './../../services/business/personal-service';
 
 @IonicPage()
 @Component({
@@ -21,6 +23,12 @@ export class WorkExperiencePage {
     customWorkExperience: Observable<CustomWorkExperience[]>;
 
     subscriptions: Subscription[] = [];
+
+    update$: Subject<WorkExperienceUpdateFormModel> = new Subject();
+
+    add$: Subject<WorkExperienceFormModel> = new Subject();
+
+    delete$: Subject<CustomWorkExperience> = new Subject();
 
     constructor(
         private navParams: NavParams,
@@ -54,6 +62,12 @@ export class WorkExperiencePage {
 
             this.personal.getPlatformWorkExperienceList(),
 
+            this.personal.updateWorkExperience(this.update$),
+
+            this.personal.addWorkExperience(this.add$),
+
+            this.personal.deleteWorkExperience(this.delete$.map(item => item.id)),
+
             this.personal.handleWorkExperienceError(),
 
             this.personal.handlePlatformWorkExperienceError(),
@@ -69,11 +83,7 @@ export class WorkExperiencePage {
 
         modal.present();
 
-        modal.onDidDismiss((data) => this.personal.updateWorkExperience(Observable.of({ ...data, id: target.id })));
-    }
-
-    deleteWorkExperience(target: CustomWorkExperience): void {
-        this.personal.deleteWorkExperience(Observable.of(target.id));
+        modal.onDidDismiss((data: WorkExperienceFormModel) => !!data && this.update$.next({ ...data, id: target.id }));
     }
 
     addWorkExperience() {
@@ -81,10 +91,10 @@ export class WorkExperiencePage {
 
         modal.present();
 
-        modal.onDidDismiss((data) => this.personal.addWorkExperience(Observable.of(data)));
+        modal.onDidDismiss((data: WorkExperienceFormModel) => !!data && this.add$.next(data));
     }
 
-    ionViewWillUnload(){
+    ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

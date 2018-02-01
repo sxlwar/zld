@@ -1,10 +1,10 @@
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { PayBillService } from './../../services/business/pay-bill-service';
-import { Component, Input, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { ChartService, ChartType } from '../../services/utils/chart-service';
 import { Subscription } from 'rxjs/Subscription';
 
+import { ChartService, ChartType } from '../../services/utils/chart-service';
+import { PayBillService } from './../../services/business/pay-bill-service';
 
 export interface ChartSourceData {
     labels: string[];
@@ -13,7 +13,7 @@ export interface ChartSourceData {
 
 @Component({
     selector: 'attendance-time-chart',
-    templateUrl: 'attendance-time-chart.html'
+    templateUrl: 'attendance-time-chart.html',
 })
 export class AttendanceTimeChartComponent implements OnInit, OnDestroy {
 
@@ -74,4 +74,3 @@ export class AttendanceTimeChartComponent implements OnInit, OnDestroy {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }
-

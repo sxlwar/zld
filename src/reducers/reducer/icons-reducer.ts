@@ -31,7 +31,7 @@ export function reducer(state = initialState, action: actions.Actions): State {
             const result = { ...state };
 
             if (opt || view) {
-                result[rootName][index] = { ...result[rootName][index], badge: count};
+                result[rootName][index] = { ...result[rootName][index], badge: count };
             }
 
             return result;
@@ -55,7 +55,7 @@ export function getIconReducer(state: State, path: string | string[]): IconState
 
     if (typeof path === 'string') {
 
-        for (let prop in state) {
+        for (const prop in state) {
             if (!state.hasOwnProperty(prop)) continue;
 
             const target = state[prop];

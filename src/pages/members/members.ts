@@ -1,16 +1,17 @@
+import { Component } from '@angular/core';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { ContractType, RequestOption } from './../../interfaces/request-interface';
+import { Team } from './../../interfaces/response-interface';
+import { Command } from './../../services/api/command';
 import { LaunchService } from './../../services/business/launch-service';
 import { TeamService } from './../../services/business/team-service';
-import { Command } from './../../services/api/command';
-import { PermissionService } from './../../services/config/permission-service';
-import { Subject } from 'rxjs/Subject';
-import { workerContractPage, memberStatisticsPage } from './../pages';
-import { Subscription } from 'rxjs/Subscription';
-import { Team } from './../../interfaces/response-interface';
-import { ContractType, RequestOption } from './../../interfaces/request-interface';
-import { Observable } from 'rxjs/Observable';
 import { WorkerService } from './../../services/business/worker-service';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { PermissionService } from './../../services/config/permission-service';
+import { memberStatisticsPage, workerContractPage } from './../pages';
 
 export interface WorkerItem {
     name: string;
@@ -25,6 +26,7 @@ export interface WorkerItem {
     templateUrl: 'members.html',
 })
 export class MembersPage {
+    selectedTeams: Team[];
 
     type = ContractType[1];
 
@@ -126,7 +128,7 @@ export class MembersPage {
                 name: item.worker__employee__realname,
                 workType: item.worktype__name,
                 contractId: item.id,
-                workTypeId: item.worktype_id
+                workTypeId: item.worktype_id,
             })));
     }
 

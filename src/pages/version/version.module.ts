@@ -1,7 +1,8 @@
+import { NgModule } from '@angular/core';
 import { AppVersion } from '@ionic-native/app-version';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
+
 import { VersionPage } from './version';
 
 @NgModule({
@@ -13,7 +14,7 @@ import { VersionPage } from './version';
         TranslateModule,
     ],
     providers: [
-        AppVersion
-    ]
+        AppVersion,
+    ],
 })
 export class VersionPageModule { }

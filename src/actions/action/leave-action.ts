@@ -1,6 +1,7 @@
-import { LeaveRecordListResponse } from './../../interfaces/response-interface';
-import { LeaveRecordListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { LeaveRecordListOptions } from './../../interfaces/request-interface';
+import { LeaveRecordListResponse } from './../../interfaces/response-interface';
 
 export const GET_LEAVE_RECORD_LIST = 'GET_LEAVE_RECORD_LIST';
 

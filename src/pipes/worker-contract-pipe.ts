@@ -1,8 +1,9 @@
-import { ContractTypeOfResponse } from './../interfaces/response-interface';
 import { Pipe, PipeTransform } from '@angular/core';
 
+import { ContractTypeOfResponse } from './../interfaces/response-interface';
+
 @Pipe({
-    name: 'workerContractType'
+    name: 'workerContractType',
 })
 export class WorkerContractTypePipe implements PipeTransform {
     transform(type: string): string {

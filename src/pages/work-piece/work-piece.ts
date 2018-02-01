@@ -1,12 +1,13 @@
-import { WorkPieceAxisComponent } from './../../components/work-piece-axis/work-piece-axis';
-import { Subscription } from 'rxjs/Subscription';
-import { RequestOption } from '../../interfaces/request-interface';
-import { ProjectService } from './../../services/business/project-service';
-import { WorkPiece } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { WorkPieceService } from './../../services/business/work-piece-service';
 import { Component } from '@angular/core';
-import { IonicPage, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, ModalController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { RequestOption } from '../../interfaces/request-interface';
+import { WorkPieceAxisComponent } from './../../components/work-piece-axis/work-piece-axis';
+import { WorkPiece } from './../../interfaces/response-interface';
+import { ProjectService } from './../../services/business/project-service';
+import { WorkPieceService } from './../../services/business/work-piece-service';
 
 @IonicPage()
 @Component({

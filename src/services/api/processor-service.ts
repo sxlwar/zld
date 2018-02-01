@@ -1,52 +1,232 @@
-import { CheckPhoneNumberAction, ChangePhoneNumberAction, CheckPhoneVerifyAction, ChangePhoneVerifyAction } from './../../actions/action/account-change-action';
-import { UploadPersonalIdImageAction } from './../../actions/action/certificate-action';
-import { SearchCompanyAction } from './../../actions/action/search-company-action';
-import { EditWorkerContractAction } from './../../actions/action/worker-action';
-import { DeleteImagesAction } from './../../actions/action/delete-images-action';
-import { SearchWorkerAction } from './../../actions/action/search-worker-action';
-import { CreateWorkerContractAction, CreateWorkerContractModifyAction, CreateLeaveAction, CreateOvertimeAction, CreatePieceAuditAction, CreateAttendanceModifyAction, UploadWorkerContractAttachAction, UploadAttendanceModifyAttachAction, UploadLeaveAttachAction, UploadOvertimeAttachAction, UploadPieceAuditAttachAction, UploadWorkerContractModifyAttachAction, TerminateWorkerContractAction } from './../../actions/action/launch-action';
-import { GetLeaveRecordListAction } from './../../actions/action/leave-action';
-import { GetWorkFlowListAction, GetProjectPayBillFlowListAction, UpdateMultiTaskAction, UpdateTaskAction } from './../../actions/action/work-flow-action';
-import { GetGroupListAction } from './../../actions/action/group-list-action';
-import { ConfirmAttendanceAction, GetAttendanceModifyRecordListAction } from './../../actions/action/attendance-action';
-import { GetNationalityAction } from './../../actions/action/nationality-action';
-import { GetMessageListAction, GetMessageContentAction, DeleteMessageAction, GetUnreadMessageCountAction } from './../../actions/action/message-action';
-import { GetCertificateListAction, AddCertificateAction, DeleteCertificateAction, UpdateCertificateAction, UploadCertificateImageAction } from './../../actions/action/work-certificate-action';
-import { QRLoginAction } from './../../actions/action/qr-scan-login-action';
-import { LogoutAction } from './../../actions/action/logout-action';
-import { GetBankCardListAction, GetBankInformationAction, AddBankCardAction, DeleteBankCardAction, SetMasterBankCardAction } from './../../actions/action/bank-card-action';
-import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../actions/action/location-action';
-import { GetLocationCardListAction, AddLocationCardAction, UpdateLocationCardAction, DeleteLocationCardAction } from './../../actions/action/location-card-action';
-import { GetAttendanceCardListAction, AddAttendanceCardAction, UpdateAttendanceCardAction, DeleteAttendanceCardAction } from './../../actions/action/attendance-card-action';
-import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
-import { GetBasicInformationAction, GetPersonalIdListAction, GetWorkerDetailListAction, UpdateWorkerDetailAction, GetHomeInfoListAction, UpdateHomeInfoAction, GetEducationListAction, AddEducationAction, DeleteEducationAction, UpdateEducationAction, GetWorkExperienceListAction, AddWorkExperienceAction, DeleteWorkExperienceAction, UpdateWorkExperienceAction, GetPlatformWorkExperienceListAction } from './../../actions/action/personal-action';
-import { AddTeamAction, UpdateTeamAction, DeleteTeamAction } from './../../actions/action/team-action';
-import { GetCompanyUserListAction } from './../../actions/action/employer-action';
-import { GetProjectPayProcessListAction, GetProjectPayBillListAction, GetPayProcessListAction } from './../../actions/action/pay-bill-action';
-import { RequestAggregationOptions, ProjectPayProcessListOptions, LoginOptions, PhoneVerificationCodeOptions, RegisterOptions, ResetPasswordOptions, CertificateOptions, UploadPersonalIdImageOptions, WorkerContractOptions, TeamListOptions, AttendanceResultListOptions, AttendanceInstantListOptions, PayBillListOptions, WorkPieceListOptions, WorkOvertimeRecordListOptions, ProjectPayBillListOptions, CompanyUserListOptions, TeamAddOptions, TeamUpdateOptions, TeamDeleteOptions, BasicInfoListOptions, AttendanceMachineListOptions, AttendanceCardListOptions, AttendanceCardAddOptions, AttendanceCardUpdateOptions, AttendanceCardDeleteOptions, LocationCardListOptions, LocationCardAddOptions, LocationCardUpdateOptions, LocationCardDeleteOptions, HistoryLocationListOptions, ProjectAreaListOptions, PersonalIdListOptions, WorkerDetailListOptions, WorkerDetailUpdateOptions, HomeInfoListOptions, HomeInfoUpdateOptions, EducationListOptions, EducationAddOptions, EducationDeleteOptions, EducationUpdateOptions, WorkExperienceListOptions, WorkExperienceAddOptions, WorkExperienceDeleteOptions, WorkExperienceUpdateOptions, PlatformWorkExperienceListOptions, WorkerBankNoListOptions, BankInfoOptions, WorkerBankNoAddOptions, WorkerBankNoDeleteOptions, SetBankNoMasterOptions, LogoutOptions, QRLoginOptions, CertificateListOptions, CertificateAddOptions, CertificateDeleteOptions, CertificateUpdateOptions, UploadCertificateImageOptions, MessageListOptions, MessageContentOptions, MessageDeleteOptions, UnreadMessageCountOptions, AttendanceResultConfirmOptions, GroupsListOptions, WorkFlowListOptions, ProjectPayBillFlowListOptions, MultiTaskUpdateOptions, TaskUpdateOptions, LeaveRecordListOptions, AttendanceModifyRecordListOptions, CreateWorkerContractOptions, CreateWorkerContractModifyOptions, CreateLeaveOptions, CreateOvertimeOptions, CreatePieceAuditOptions, CreateAttendanceModifyOptions, DeleteImagesOptions, SearchWorkerOptions, WorkerContractEditOptions, SearchCompanyOptions, PayProcessListOptions, UploadWorkerContractAttachOptions, UploadAttendanceModifyAttachOptions, UploadLeaveAttachOptions, UploadOvertimeAttachOptions, UploadPieceAuditAttachOptions, UploadWorkerContractModifyAttachOptions, ProjectListOptions, WorkTypeRealTimeStatisticsOptions, TeamMembersRealTimeStatisticsOptions, CheckPhoneOptions, CheckPhoneVerifyCodeOptions, ChangePhoneVerifyCodeOptions, ChangePhoneOptions, TerminateWorkerContractOptions } from './../../interfaces/request-interface';
-import { GetAttendanceResultTeamStatListAction, GetWorkFlowStatisticsAction, GetWorkTypeRealTimeStatisticsAction, GetTeamMembersRealTimeStatisticsAction } from './../../actions/action/statistics-action';
-import { AttendanceResultTeamStatListOptions } from './../../interfaces/request-interface';
-import { LoginAction, RegisterAction, RegisterPhoneVerCodeAction, ResetPasswordAction, ResetPhoneVerCodeAction } from '../../actions/action/login-action';
+import 'rxjs';
+
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../reducers/index-reducer';
 import { Observable } from 'rxjs/Observable';
-import { ErrorService } from '../errors/error-service';
 import { Subscription } from 'rxjs/Subscription';
-import { MapperService } from './mapper-service';
-import { CertificateAction } from '../../actions/action/certificate-action';
-import 'rxjs';
-import { Command } from './command';
-import { PermissionService } from '../config/permission-service';
-import { GetProjectListAction } from '../../actions/action/project-action';
-import { GetWorkerContractsAction } from '../../actions/action/worker-action';
-import { GetWorkTypeListAction } from '../../actions/action/craft-action';
-import { GetTeamListAction } from '../../actions/action/team-action';
+
 import { GetAttendanceResultListAction } from '../../actions/action/attendance-action';
 import { GetAttendanceRecordAction } from '../../actions/action/attendance-record-action';
-import { GetPayBillListAction } from '../../actions/action/pay-bill-action';
-import { GetWorkPieceListAction } from '../../actions/action/work-piece-action';
+import { CertificateAction } from '../../actions/action/certificate-action';
+import { GetWorkTypeListAction } from '../../actions/action/craft-action';
+import {
+    LoginAction,
+    RegisterAction,
+    RegisterPhoneVerCodeAction,
+    ResetPasswordAction,
+    ResetPhoneVerCodeAction,
+} from '../../actions/action/login-action';
 import { GetWorkOvertimeRecordAction } from '../../actions/action/overtime-action';
+import { GetPayBillListAction } from '../../actions/action/pay-bill-action';
+import { GetProjectListAction } from '../../actions/action/project-action';
+import { GetTeamListAction } from '../../actions/action/team-action';
+import { GetWorkPieceListAction } from '../../actions/action/work-piece-action';
+import { GetWorkerContractsAction } from '../../actions/action/worker-action';
+import { AppState } from '../../reducers/index-reducer';
+import { PermissionService } from '../config/permission-service';
+import { ErrorService } from '../errors/error-service';
+import {
+    ChangePhoneNumberAction,
+    ChangePhoneVerifyAction,
+    CheckPhoneNumberAction,
+    CheckPhoneVerifyAction,
+} from './../../actions/action/account-change-action';
+import { ConfirmAttendanceAction, GetAttendanceModifyRecordListAction } from './../../actions/action/attendance-action';
+import {
+    AddAttendanceCardAction,
+    DeleteAttendanceCardAction,
+    GetAttendanceCardListAction,
+    UpdateAttendanceCardAction,
+} from './../../actions/action/attendance-card-action';
+import { GetAttendanceMachineListAction } from './../../actions/action/attendance-machine-action';
+import {
+    AddBankCardAction,
+    DeleteBankCardAction,
+    GetBankCardListAction,
+    GetBankInformationAction,
+    SetMasterBankCardAction,
+} from './../../actions/action/bank-card-action';
+import { UploadPersonalIdImageAction } from './../../actions/action/certificate-action';
+import { DeleteImagesAction } from './../../actions/action/delete-images-action';
+import { GetCompanyUserListAction } from './../../actions/action/employer-action';
+import { GetGroupListAction } from './../../actions/action/group-list-action';
+import {
+    CreateAttendanceModifyAction,
+    CreateLeaveAction,
+    CreateOvertimeAction,
+    CreatePieceAuditAction,
+    CreateWorkerContractAction,
+    CreateWorkerContractModifyAction,
+    TerminateWorkerContractAction,
+    UploadAttendanceModifyAttachAction,
+    UploadLeaveAttachAction,
+    UploadOvertimeAttachAction,
+    UploadPieceAuditAttachAction,
+    UploadWorkerContractAttachAction,
+    UploadWorkerContractModifyAttachAction,
+} from './../../actions/action/launch-action';
+import { GetLeaveRecordListAction } from './../../actions/action/leave-action';
+import { GetHistoryLocationListAction, GetProjectAreaListAction } from './../../actions/action/location-action';
+import {
+    AddLocationCardAction,
+    DeleteLocationCardAction,
+    GetLocationCardListAction,
+    UpdateLocationCardAction,
+} from './../../actions/action/location-card-action';
+import { LogoutAction } from './../../actions/action/logout-action';
+import {
+    DeleteMessageAction,
+    GetMessageContentAction,
+    GetMessageListAction,
+    GetUnreadMessageCountAction,
+} from './../../actions/action/message-action';
+import { GetNationalityAction } from './../../actions/action/nationality-action';
+import {
+    GetPayProcessListAction,
+    GetProjectPayBillListAction,
+    GetProjectPayProcessListAction,
+} from './../../actions/action/pay-bill-action';
+import {
+    AddEducationAction,
+    AddWorkExperienceAction,
+    DeleteEducationAction,
+    DeleteWorkExperienceAction,
+    GetBasicInformationAction,
+    GetEducationListAction,
+    GetHomeInfoListAction,
+    GetPersonalIdListAction,
+    GetPlatformWorkExperienceListAction,
+    GetWorkerDetailListAction,
+    GetWorkExperienceListAction,
+    UpdateEducationAction,
+    UpdateHomeInfoAction,
+    UpdateWorkerDetailAction,
+    UpdateWorkExperienceAction,
+} from './../../actions/action/personal-action';
+import { QRLoginAction } from './../../actions/action/qr-scan-login-action';
+import { SearchCompanyAction } from './../../actions/action/search-company-action';
+import { SearchWorkerAction } from './../../actions/action/search-worker-action';
+import {
+    GetAttendanceResultTeamStatListAction,
+    GetTeamMembersRealTimeStatisticsAction,
+    GetWorkFlowStatisticsAction,
+    GetWorkTypeRealTimeStatisticsAction,
+} from './../../actions/action/statistics-action';
+import { AddTeamAction, DeleteTeamAction, UpdateTeamAction } from './../../actions/action/team-action';
+import {
+    AddCertificateAction,
+    DeleteCertificateAction,
+    GetCertificateListAction,
+    UpdateCertificateAction,
+    UploadCertificateImageAction,
+} from './../../actions/action/work-certificate-action';
+import {
+    GetProjectPayBillFlowListAction,
+    GetWorkFlowListAction,
+    UpdateMultiTaskAction,
+    UpdateTaskAction,
+} from './../../actions/action/work-flow-action';
+import { EditWorkerContractAction } from './../../actions/action/worker-action';
+import {
+    AttendanceCardAddOptions,
+    AttendanceCardDeleteOptions,
+    AttendanceCardListOptions,
+    AttendanceCardUpdateOptions,
+    AttendanceInstantListOptions,
+    AttendanceMachineListOptions,
+    AttendanceModifyRecordListOptions,
+    AttendanceResultConfirmOptions,
+    AttendanceResultListOptions,
+    AttendanceResultTeamStatListOptions,
+    BankInfoOptions,
+    BasicInfoListOptions,
+    CertificateAddOptions,
+    CertificateDeleteOptions,
+    CertificateListOptions,
+    CertificateOptions,
+    CertificateUpdateOptions,
+    ChangePhoneOptions,
+    ChangePhoneVerifyCodeOptions,
+    CheckPhoneOptions,
+    CheckPhoneVerifyCodeOptions,
+    CompanyUserListOptions,
+    CreateAttendanceModifyOptions,
+    CreateLeaveOptions,
+    CreateOvertimeOptions,
+    CreatePieceAuditOptions,
+    CreateWorkerContractModifyOptions,
+    CreateWorkerContractOptions,
+    DeleteImagesOptions,
+    EducationAddOptions,
+    EducationDeleteOptions,
+    EducationListOptions,
+    EducationUpdateOptions,
+    GroupsListOptions,
+    HistoryLocationListOptions,
+    HomeInfoListOptions,
+    HomeInfoUpdateOptions,
+    LeaveRecordListOptions,
+    LocationCardAddOptions,
+    LocationCardDeleteOptions,
+    LocationCardListOptions,
+    LocationCardUpdateOptions,
+    LoginOptions,
+    LogoutOptions,
+    MessageContentOptions,
+    MessageDeleteOptions,
+    MessageListOptions,
+    MultiTaskUpdateOptions,
+    PayBillListOptions,
+    PayProcessListOptions,
+    PersonalIdListOptions,
+    PhoneVerificationCodeOptions,
+    PlatformWorkExperienceListOptions,
+    ProjectAreaListOptions,
+    ProjectListOptions,
+    ProjectPayBillFlowListOptions,
+    ProjectPayBillListOptions,
+    ProjectPayProcessListOptions,
+    QRLoginOptions,
+    RegisterOptions,
+    RequestAggregationOptions,
+    ResetPasswordOptions,
+    SearchCompanyOptions,
+    SearchWorkerOptions,
+    SetBankNoMasterOptions,
+    TaskUpdateOptions,
+    TeamAddOptions,
+    TeamDeleteOptions,
+    TeamListOptions,
+    TeamMembersRealTimeStatisticsOptions,
+    TeamUpdateOptions,
+    TerminateWorkerContractOptions,
+    UnreadMessageCountOptions,
+    UploadAttendanceModifyAttachOptions,
+    UploadCertificateImageOptions,
+    UploadLeaveAttachOptions,
+    UploadOvertimeAttachOptions,
+    UploadPersonalIdImageOptions,
+    UploadPieceAuditAttachOptions,
+    UploadWorkerContractAttachOptions,
+    UploadWorkerContractModifyAttachOptions,
+    WorkerBankNoAddOptions,
+    WorkerBankNoDeleteOptions,
+    WorkerBankNoListOptions,
+    WorkerContractEditOptions,
+    WorkerContractOptions,
+    WorkerDetailListOptions,
+    WorkerDetailUpdateOptions,
+    WorkExperienceAddOptions,
+    WorkExperienceDeleteOptions,
+    WorkExperienceListOptions,
+    WorkExperienceUpdateOptions,
+    WorkFlowListOptions,
+    WorkOvertimeRecordListOptions,
+    WorkPieceListOptions,
+    WorkTypeRealTimeStatisticsOptions,
+} from './../../interfaces/request-interface';
+import { Command } from './command';
+import { MapperService } from './mapper-service';
 
 @Injectable()
 export class ProcessorService extends MapperService {

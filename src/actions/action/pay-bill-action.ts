@@ -1,8 +1,17 @@
-import { PayProcessListResponse, ProjectPayProcessListResponse, ProjectPayBillListResponse } from './../../interfaces/response-interface';
-import { PayProcessListOptions, ProjectPayProcessListOptions, ProjectPayBillListOptions } from './../../interfaces/request-interface';
-import { Action } from "@ngrx/store";
-import { PayBillListOptions } from "../../interfaces/request-interface";
-import { PayBillListResponse } from "../../interfaces/response-interface";
+import { Action } from '@ngrx/store';
+
+import { PayBillListOptions } from '../../interfaces/request-interface';
+import { PayBillListResponse } from '../../interfaces/response-interface';
+import {
+    PayProcessListOptions,
+    ProjectPayBillListOptions,
+    ProjectPayProcessListOptions,
+} from './../../interfaces/request-interface';
+import {
+    PayProcessListResponse,
+    ProjectPayBillListResponse,
+    ProjectPayProcessListResponse,
+} from './../../interfaces/response-interface';
 
 /* ===================================================Pay bill list=================================================== */
 

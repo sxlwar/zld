@@ -18,6 +18,9 @@ page-mine {
     }
     .project-info {
         color: grey;
+        ion-label {
+            white-space: normal;
+        }
         h5 {
             writing-mode: vertical-lr;
             float: left;

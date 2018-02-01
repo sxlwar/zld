@@ -1,6 +1,6 @@
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
-import { Loading, LoadingController, ToastController, AlertController } from 'ionic-angular';
+import { AlertController, Loading, LoadingController, ToastController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface ConfirmProp {
@@ -26,7 +26,7 @@ export class TipService {
     }
 
     showTip(message: string, duration = 3000, position = 'top'): void {
-        this.toastCtrl.create({ message, duration, position, }).present().then(() => { });
+        this.toastCtrl.create({ message, duration, position }).present().then(() => { });
     }
 
     loadingSpy(state: Observable<boolean>): Subscription {
@@ -44,7 +44,7 @@ export class TipService {
         this.loading = this.loadingCtrl.create({
             duration: 3000,
             spinner: 'dots',
-            content: '图片上传中,请稍侯'
+            content: '图片上传中,请稍侯',
         });
 
         this.loading.present().then(() => { });
@@ -56,19 +56,19 @@ export class TipService {
 
     showConfirmProp(source: Observable<ConfirmProp>, confirmFn, cancelFn = () => { }): Subscription {
         return source.subscribe(data => {
-            let confirm = this.alertCtrl.create({
+            const confirm = this.alertCtrl.create({
                 title: data.title,
                 message: data.message,
                 buttons: [
                     {
                         text: data.cancelText,
-                        handler: cancelFn
+                        handler: cancelFn,
                     },
                     {
                         text: data.confirmText,
-                        handler: confirmFn
-                    }
-                ]
+                        handler: confirmFn,
+                    },
+                ],
             });
 
             confirm.present().then(_ => { });
@@ -81,20 +81,20 @@ export class TipService {
             inputs: [
                 {
                     name: 'detail',
-                    placeholder: '请输入详细地址'
-                }
+                    placeholder: '请输入详细地址',
+                },
             ],
             buttons: [
                 {
                     text: '取消',
                     role: 'cancel',
-                    handler: data => { }
+                    handler: data => { },
                 },
                 {
                     text: '确定',
-                    handler: data => { }
-                }
-            ]
+                    handler: data => { },
+                },
+            ],
         });
     }
 

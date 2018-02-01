@@ -1,6 +1,7 @@
-import { RequestOption } from './../../interfaces/request-interface';
-import { Observable } from 'rxjs/Observable';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+
+import { RequestOption } from './../../interfaces/request-interface';
 
 @Injectable()
 export class RecordOptionService {
@@ -12,7 +13,7 @@ export class RecordOptionService {
         return Observable.of({
             history_view: needHistory,
             request_id: id,
-            request_status: status
+            request_status: status,
         });
     }
 }

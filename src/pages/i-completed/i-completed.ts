@@ -1,13 +1,21 @@
-import { SpecificWorkFlowState } from './../../interfaces/request-interface';
-import { MissionRoot } from './../pages';
-import { PermissionService } from './../../services/config/permission-service';
-import { WorkFlowService } from './../../services/business/work-flow-service';
-import { Subscription } from 'rxjs/Subscription';
-import { MissionListItem, AuditTarget, WorkFlowPageType, processIdToPage, ScreeningCondition, screeningConditions } from './../../interfaces/mission-interface';
-import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, InfiniteScroll } from 'ionic-angular';
+import { InfiniteScroll, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { iCompleted } from '../../services/business/icon-service';
+import {
+    AuditTarget,
+    MissionListItem,
+    processIdToPage,
+    ScreeningCondition,
+    screeningConditions,
+    WorkFlowPageType,
+} from './../../interfaces/mission-interface';
+import { SpecificWorkFlowState } from './../../interfaces/request-interface';
+import { WorkFlowService } from './../../services/business/work-flow-service';
+import { PermissionService } from './../../services/config/permission-service';
+import { MissionRoot } from './../pages';
 
 @IonicPage()
 @Component({
@@ -36,7 +44,7 @@ export class ICompletedPage {
         private navCtrl: NavController,
         private navParams: NavParams,
         private workFlow: WorkFlowService,
-        private permission: PermissionService,
+        private permission: PermissionService
     ) {
     }
 
@@ -68,8 +76,10 @@ export class ICompletedPage {
                 Observable.of(this.workFlow.getWorkFlowStateOption(SpecificWorkFlowState.completed)),
                 this.workFlow.getICompletedPage()
             ),
+
             this.workFlow.getScreeningCondition().subscribe(screening => this.screening = screening),
-            this.workFlow.handleWorkFlowError()
+            
+            this.workFlow.handleWorkFlowError(),
         ];
     }
 

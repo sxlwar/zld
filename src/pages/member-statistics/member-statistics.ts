@@ -1,11 +1,18 @@
-import { WorkTypeRealTimeStatistics, TeamMembersStatistics, RealTimeStatisticsResponse, WorkTypeRealTimeStatisticsResponse, WorkType } from './../../interfaces/response-interface';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { IonicPage } from 'ionic-angular';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    RealTimeStatisticsResponse,
+    TeamMembersStatistics,
+    WorkType,
+    WorkTypeRealTimeStatistics,
+    WorkTypeRealTimeStatisticsResponse,
+} from './../../interfaces/response-interface';
 import { CraftService } from './../../services/business/craft-service';
 import { WorkerService } from './../../services/business/worker-service';
-import { ChartService, ChartType, ChartData } from './../../services/utils/chart-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage } from 'ionic-angular';
+import { ChartData, ChartService, ChartType } from './../../services/utils/chart-service';
 
 export interface WorkTypeRealTimeStatisticsContainsName extends WorkTypeRealTimeStatistics {
     workTypeName: string;
@@ -74,7 +81,7 @@ export class MemberStatisticsPage {
     }
 
     private fixAcutalData<T>(data: RealTimeStatisticsResponse<T>, comparison: string, addition: string): RealTimeStatisticsResponse<T> {
-        let { actual, total } = data;
+        const { actual, total } = data;
 
         const actualFixed = total.map(requirement => {
             const target = actual.find(item => item[comparison] === requirement[comparison]);

@@ -1,11 +1,12 @@
-import { Subscription } from 'rxjs/Subscription';
-import { putInArray } from '../../services/utils/util';
-import { TimeService } from './../../services/utils/time-service';
-import { Observable } from 'rxjs/Observable';
-import { PayProcessService } from './../../services/business/pay-process-service';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { salaryDetailPage } from '../../pages/pages';
+import { putInArray } from '../../services/utils/util';
+import { PayProcessService } from './../../services/business/pay-process-service';
+import { TimeService } from './../../services/utils/time-service';
 
 export interface PayProcessListItem {
     yearMonth: string;
@@ -50,6 +51,7 @@ export class SalaryPage {
     launch(): void {
         this.subscriptions = [
             this.payProcess.getPayProcessList(),
+            
             this.payProcess.handleError(),
         ];
     }

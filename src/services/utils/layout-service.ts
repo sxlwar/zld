@@ -1,5 +1,5 @@
-import { ItemSliding, Item } from 'ionic-angular';
 import { Injectable } from '@angular/core';
+import { Item, ItemSliding } from 'ionic-angular';
 
 @Injectable()
 export class LayoutService {
@@ -38,5 +38,4 @@ export class LayoutService {
             this.activeItemSliding = null;
         }
     }
-
 }

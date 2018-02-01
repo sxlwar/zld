@@ -1,11 +1,12 @@
-import { LoginPage } from './login';
 import { NgModule } from '@angular/core';
-import { IonicPageModule } from 'ionic-angular';
-import { TranslateModule } from '@ngx-translate/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EffectsModule } from '@ngrx/effects';
-import { LoginEffect } from '../../effects/login-effect';
+import { TranslateModule } from '@ngx-translate/core';
+import { IonicPageModule } from 'ionic-angular';
+
 import { ComponentsModule } from '../../components/components.module';
+import { LoginEffect } from '../../effects/login-effect';
+import { LoginPage } from './login';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,7 @@ import { ComponentsModule } from '../../components/components.module';
     ],
     exports: [
         LoginPage,
-    ]
+    ],
 })
 
 export class LoginPageModule {

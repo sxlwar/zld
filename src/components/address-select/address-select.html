@@ -1,19 +1,34 @@
 <ion-list>
-    <ion-list-header>
-        {{'CURRENT_ADDRESS' | translate}}
-    </ion-list-header>
+    <ion-list-header>{{'CURRENT_ADDRESS' | translate}}</ion-list-header>
 
     <ion-item>
         <ion-label>{{'AREA' | translate}}</ion-label>
-        <ion-multi-picker id="address" [(ngModel)]="selectedArea" item-content [multiPickerColumns]="address | async" (ngModelChange)="addressChange.next($event)"
-            [cancelText]="'CANCEL_BUTTON' | translate" [doneText]="'CONFIRM_BUTTON' | translate" [placeholder]="'SELECT_ADDRESS' | translate"
-            [disabled]="disabled"></ion-multi-picker>
+        <ion-multi-picker
+            id="address"
+            [(ngModel)]="selectedArea"
+            item-content
+            [multiPickerColumns]="address | async"
+            (ngModelChange)="addressChange.next($event)"
+            [cancelText]="'CANCEL_BUTTON' | translate"
+            [doneText]="'CONFIRM_BUTTON' | translate"
+            [placeholder]="'SELECT_ADDRESS' | translate"
+            [disabled]="disabled"
+        ></ion-multi-picker>
     </ion-item>
-
 
     <ion-item>
         <ion-label>{{'ADDRESS_DETAIL' | translate}}</ion-label>
-        <ion-input [(ngModel)]="addressDetail" [value]="addressDetail" disabled></ion-input>
-        <ion-icon name="create" color="primary" item-end (click)="modifyAddress()" *ngIf="!disabled"></ion-icon>
+        <ion-input
+            [(ngModel)]="addressDetail"
+            [value]="addressDetail"
+            disabled
+        ></ion-input>
+        <ion-icon
+            name="create"
+            color="primary"
+            item-end
+            (click)="modifyAddress()"
+            *ngIf="!disabled"
+        ></ion-icon>
     </ion-item>
 </ion-list>

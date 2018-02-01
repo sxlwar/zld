@@ -1,6 +1,6 @@
-import { UploadPersonalIdImageResponse } from './../../interfaces/response-interface';
-import { CertificateResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/certificate-action';
+import { CertificateResponse } from '../../interfaces/response-interface';
+import { UploadPersonalIdImageResponse } from './../../interfaces/response-interface';
 
 export interface State {
     response: CertificateResponse;
@@ -11,7 +11,7 @@ export interface State {
 export const initialState: State = {
     response: null,
     uploadResponse: null,
-    isUpdating: false
+    isUpdating: false,
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

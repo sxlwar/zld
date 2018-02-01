@@ -1,8 +1,9 @@
-import { WorkerContractEditResponse } from './../../interfaces/response-interface';
-import { WorkerContractEditOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
 import { WorkerContractOptions } from '../../interfaces/request-interface';
 import { WorkerContractListResponse } from '../../interfaces/response-interface';
+import { WorkerContractEditOptions } from './../../interfaces/request-interface';
+import { WorkerContractEditResponse } from './../../interfaces/response-interface';
 
 export const GET_WORKER_CONTRACTS = 'GET_WORKER_CONTRACTS';
 

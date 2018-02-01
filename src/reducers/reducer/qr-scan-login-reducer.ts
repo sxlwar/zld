@@ -1,5 +1,5 @@
 import * as actions from '../../actions/action/qr-scan-login-action';
-import { QRScanLoginResponse } from "../../interfaces/response-interface";
+import { QRScanLoginResponse } from '../../interfaces/response-interface';
 
 export interface State {
     QRCode: string;
@@ -8,7 +8,7 @@ export interface State {
 
 export const initialState: State = {
     QRCode: '',
-    scanLoginResponse: null
+    scanLoginResponse: null,
 }
 
 export function reducer(state = initialState, action: actions.Actions) {

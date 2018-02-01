@@ -1,20 +1,19 @@
-import { QRLoginService } from './../../services/business/qr-login-service';
-import { Subscription } from 'rxjs/Subscription';
-import { LogoutService } from './../../services/business/logout-service';
-import { personalInfo } from './../../services/business/icon-service';
-import { MineRoot, personalInformationPage, welcomePage } from './../pages';
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
-import { IconService } from '../../services/business/icon-service';
+import { App, IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { IconState } from '../../reducers/reducer/icons-reducer';
-import { ProjectService } from '../../services/business/project-service';
-import { UserService } from '../../services/business/user-service';
-import { CraftService } from '../../services/business/craft-service';
-import { TeamService } from '../../services/business/team-service';
-import { App } from 'ionic-angular';
-import * as icon from '../../services/business/icon-service';
+import { Subscription } from 'rxjs/Subscription';
+
 import * as pages from '../../pages/pages';
+import { IconState } from '../../reducers/reducer/icons-reducer';
+import { CraftService } from '../../services/business/craft-service';
+import * as icon from '../../services/business/icon-service';
+import { ProjectService } from '../../services/business/project-service';
+import { TeamService } from '../../services/business/team-service';
+import { UserService } from '../../services/business/user-service';
+import { personalInfo } from './../../services/business/icon-service';
+import { LogoutService } from './../../services/business/logout-service';
+import { QRLoginService } from './../../services/business/qr-login-service';
+import { MineRoot, personalInformationPage, welcomePage } from './../pages';
 
 const icons = [
     icon.myAttendance,
@@ -25,7 +24,7 @@ const icons = [
     icon.personalInfo,
     icon.familyInfo,
     icon.workInfo,
-    icon.educationInfo
+    icon.educationInfo,
 ];
 
 interface Setting {
@@ -76,7 +75,7 @@ export class MinePage {
         private workTypeService: CraftService,
         private projectService: ProjectService,
         private teamService: TeamService,
-        private iconService: IconService,
+        private iconService: icon.IconService,
         private logoutService: LogoutService,
         private app: App,
         private scan: QRLoginService

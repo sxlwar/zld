@@ -1,16 +1,17 @@
-import { RevisableAttendanceListComponent } from './../../components/revisable-attendance-list/revisable-attendance-list';
-import { Observable } from 'rxjs/Observable';
-import { ConfigService } from './../../services/config/config-service';
-import { AttendanceResult } from './../../interfaces/response-interface';
-import { Subject } from 'rxjs/Subject';
-import { AttendanceModifyFormModel } from './../../services/api/mapper-service';
-import { Subscription } from 'rxjs/Subscription';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { LaunchService } from './../../services/business/launch-service';
-import { AttendanceService } from './../../services/business/attendance-service';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
+import { RevisableAttendanceListComponent } from './../../components/revisable-attendance-list/revisable-attendance-list';
+import { AttendanceResult } from './../../interfaces/response-interface';
+import { AttendanceModifyFormModel } from './../../services/api/mapper-service';
+import { AttendanceService } from './../../services/business/attendance-service';
+import { LaunchService } from './../../services/business/launch-service';
+import { ConfigService } from './../../services/config/config-service';
 
 @IonicPage()
 @Component({
@@ -56,11 +57,11 @@ export class ApplyAttendanceModifyPage {
             this.launchService.createAttendanceModify(this.modify$.map(_ => ({ ...this.form.value, attach: this.attachList }))),
 
             this.attendances.subscribe(attendances => this.form.patchValue({ attendanceIds: attendances.map(item => item.id) })),
-            
+
             this.launchService.getSuccessResponseOfAttendanceModify().subscribe(_ => this.attendanceService.resetAttendancesToModify()),
-            
+
             this.launchService.uploadAttendanceModifyAttach(),
-            
+
             this.launchService.handleAttendanceModifyError(),
         ];
     }
@@ -70,7 +71,7 @@ export class ApplyAttendanceModifyPage {
             reason: '',
             attendanceIds: ['', Validators.required],
             onDutyTime: '',
-            offDutyTime: ''
+            offDutyTime: '',
         });
     }
 
@@ -115,5 +116,4 @@ export class ApplyAttendanceModifyPage {
     get offDutyTime() {
         return this.form.get('offDutyTime');
     }
-
 }

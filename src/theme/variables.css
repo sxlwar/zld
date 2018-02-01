@@ -54,7 +54,9 @@ variables.scss:5
 /usr/local/bin/scss:23:in `load'
 /usr/local/bin/scss:23:in `<main>'
 */
+
 body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: File to import not found or unreadable: ionic.globals.\A         on line 5 of variables.scss\A \A 1: // Ionic Variables and Theming. For more info, please see:\A 2: // http://ionicframework.com/docs/v2/theming/\A 3: $font-path: \"../assets/fonts\";\A 4: \A 5: @import \"ionic.globals\";\A 6: \A 7: \A 8: // Shared Variables\A 9: // --------------------------------------------------\A 10: // To customize the look and feel of this app, you can override"; }
+    white-space: pre;
+    font-family: monospace;
+    content: "Error: File to import not found or unreadable: ionic.globals.\A         on line 5 of variables.scss\A \A 1: // Ionic Variables and Theming. For more info, please see:\A 2: // http://ionicframework.com/docs/v2/theming/\A 3: $font-path: \"../assets/fonts\";\A 4: \A 5: @import \"ionic.globals\";\A 6: \A 7: \A 8: // Shared Variables\A 9: // --------------------------------------------------\A 10: // To customize the look and feel of this app, you can override";
+}

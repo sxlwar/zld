@@ -1,6 +1,7 @@
-import { AttendanceMachineListResponse } from './../../interfaces/response-interface';
-import { AttendanceMachineListOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
+import { AttendanceMachineListOptions } from './../../interfaces/request-interface';
+import { AttendanceMachineListResponse } from './../../interfaces/response-interface';
 
 export const GET_ATTENDANCE_MACHINE_LIST = 'GET_ATTENDANCE_MACHINE_LIST';
 

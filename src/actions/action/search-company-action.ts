@@ -1,5 +1,5 @@
-import { SearchCompanyResponse } from './../../interfaces/response-interface';
 import { SearchCompanyOptions } from '../../interfaces/request-interface';
+import { SearchCompanyResponse } from './../../interfaces/response-interface';
 
 export const SEARCH_COMPANY = 'SEARCH_COMPANY';
 

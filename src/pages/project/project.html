@@ -8,8 +8,19 @@
 
 <ion-content padding>
 
-    <ion-card padding *ngIf="name | async" class="pane">
-        <button ion-button icon-left clear color="light" *ngIf="haveMultipleProject | async" (click)="switchProject($event)">
+    <ion-card
+        padding
+        *ngIf="name | async"
+        class="pane"
+    >
+        <button
+            ion-button
+            icon-left
+            clear
+            color="light"
+            *ngIf="haveMultipleProject | async"
+            (click)="switchProject($event)"
+        >
             <ion-icon name="swap"></ion-icon>
             {{'PROJECT_SWITCH_PROJECT' | translate}}
         </button>
@@ -28,7 +39,9 @@
 
         <ion-row>
             <ion-col>
-                <h6>{{remainDays | async | positiveInteger}}</h6>
+                <h6>
+                    {{remainDays | async | positiveInteger}}
+                </h6>
                 <h4 *ngIf="!(isExpired | async)">{{'PROJECT_REMAIN_DAYS' | translate}}</h4>
                 <h4 *ngIf="isExpired | async">{{'PROJECT_OVERDUE_DAYS' | translate}}</h4>
             </ion-col>
@@ -39,5 +52,8 @@
         </ion-row>
     </ion-card>
 
-    <icon-bar [icons]="icons | async" (goTo)="goTo($event)"></icon-bar>
+    <icon-bar
+        [icons]="icons | async"
+        (goTo)="goTo($event)"
+    ></icon-bar>
 </ion-content>

@@ -7,15 +7,34 @@
 
                 <ion-item #item>
                     <span>{{exp.expire}}</span>
-                    <ion-icon name="more" color="primary" (click)="openOption(slidingItem, item, $event)" *ngIf="canEditor" item-start></ion-icon>
+                    <ion-icon
+                        name="more"
+                        color="primary"
+                        (click)="openOption(slidingItem, item, $event)"
+                        *ngIf="canEditor"
+                        item-start
+                    ></ion-icon>
                 </ion-item>
 
-                <ion-item-options side="right" *ngIf="canEditor">
-                    <button ion-button color="primary" (click)="updateExperience.next(exp)">
+                <ion-item-options
+                    side="right"
+                    *ngIf="canEditor"
+                >
+                    <button
+                        ion-button
+                        color="primary"
+                        [disabled]="!exp.id"
+                        (click)="updateExperience.next(exp)"
+                    >
                         <ion-icon name="create"></ion-icon>
                         {{'UPDATE_BUTTON' | translate}}
                     </button>
-                    <button ion-button color="danger" (click)="deleteExperience.next(exp)">
+                    <button
+                        ion-button
+                        color="danger"
+                        [disabled]="!exp.id"
+                        (click)="deleteExperience.next(exp)"
+                    >
                         <ion-icon name="trash"></ion-icon>
                         {{'DELETE_BUTTON' | translate}}
                     </button>
@@ -26,15 +45,25 @@
 
         <ion-item>
             <ion-label fixed>{{'COMPANY' | translate}}</ion-label>
-            <ion-input disabled [value]="exp.company"></ion-input>
+            <ion-input
+                disabled
+                [value]="exp.company"
+            ></ion-input>
         </ion-item>
         <ion-item>
             <ion-label fixed>{{'PROJECT' | translate}}</ion-label>
-            <ion-input disabled [value]="exp.project"></ion-input>
+            <ion-input
+                disabled
+                [value]="exp.project"
+            ></ion-input>
         </ion-item>
         <ion-item>
             <ion-label fixed>{{'JOB_DUTY' | translate}}</ion-label>
-            <ion-textarea disabled [value]="exp.job" autoSize></ion-textarea>
+            <ion-textarea
+                disabled
+                [value]="exp.job"
+                autoSize
+            ></ion-textarea>
         </ion-item>
 
     </ion-list>

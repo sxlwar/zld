@@ -1,19 +1,20 @@
-import { Subject } from 'rxjs/Subject';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RequestOption } from 'interfaces/request-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { Team, AttendanceResult } from './../../interfaces/response-interface';
+import { InfiniteScroll, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { AttendanceState } from '../../interfaces/attendance-interface';
+import { attendanceList } from '../../services/api/command';
+import { AttendanceResult, Team } from './../../interfaces/response-interface';
+import { AttendanceService } from './../../services/business/attendance-service';
 import { TeamService } from './../../services/business/team-service';
 import { TimeService } from './../../services/utils/time-service';
-import { AttendanceService } from './../../services/business/attendance-service';
-import { ViewController, InfiniteScroll } from 'ionic-angular';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { attendanceList } from '../../services/api/command';
-import { AttendanceState } from '../../interfaces/attendance-interface';
 
 @Component({
     selector: 'revisable-attendance-list',
-    templateUrl: 'revisable-attendance-list.html'
+    templateUrl: 'revisable-attendance-list.html',
 })
 export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
     startDate: string;
@@ -53,11 +54,16 @@ export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
     launch() {
         this.subscriptions = [
             this.attendance.getAttendances(this.getAttendanceOption()),
+
             this.getDate(),
+
             this.teamService.getSelectedTeams().subscribe(_ => this.attendance.resetAttendance()),
+
             this.teamService.setSelectTeams(this.setTeam$.map(teams => teams.map(item => item.id))),
+
             this.teamService.handleError(),
-            this.attendance.handleAttendanceError()
+
+            this.attendance.handleAttendanceError(),
         ];
     }
 

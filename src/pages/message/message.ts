@@ -1,11 +1,12 @@
-import { messageContentPage } from './../pages';
-import { MessageReadTag } from './../../interfaces/request-interface';
-import { MessageService } from './../../services/business/message-service';
-import { Subscription } from 'rxjs/Subscription';
-import { Message } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { InfiniteScroll, IonicPage, NavController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { MessageReadTag } from './../../interfaces/request-interface';
+import { Message } from './../../interfaces/response-interface';
+import { MessageService } from './../../services/business/message-service';
+import { messageContentPage } from './../pages';
 
 @IonicPage()
 @Component({
@@ -54,7 +55,7 @@ export class MessagePage {
 
     sendRequest(): void {
         this.subscriptions = [
-            this.message.getMessageListByReadState(MessageReadTag.unread)
+            this.message.getMessageListByReadState(MessageReadTag.unread),
         ];
     }
 

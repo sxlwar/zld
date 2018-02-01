@@ -1,13 +1,27 @@
-import { Certificate } from './../../interfaces/response-interface';
-import { CertificateAddOptions, CertificateUpdateOptions, UploadCertificateImageOptions } from './../../interfaces/request-interface';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
-import { AppState, selectCertificateListResponse, selectCertificateAddResponse, selectCertificateDeleteResponse, selectCertificateUpdateResponse, selectCertificateAddOptions, selectCertificateUpdateOptions } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { UserService } from './user-service';
+
+import { ResetWorkerCertificateErrorResponse } from '../../actions/action/work-certificate-action';
+import {
+    CertificateAddOptions,
+    CertificateUpdateOptions,
+    UploadCertificateImageOptions,
+} from './../../interfaces/request-interface';
+import { Certificate } from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectCertificateAddOptions,
+    selectCertificateAddResponse,
+    selectCertificateDeleteResponse,
+    selectCertificateListResponse,
+    selectCertificateUpdateOptions,
+    selectCertificateUpdateResponse,
+} from './../../reducers/index-reducer';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
-import { Injectable } from '@angular/core';
+import { UserService } from './user-service';
 
 @Injectable()
 export class WorkCertificateService {
@@ -22,22 +36,35 @@ export class WorkCertificateService {
     /* ==================================================Request methods========================================= */
 
     getCertificateList(): Subscription {
-        return this.processor.certificateListProcessor(this.userInfo.getSid().map(sid => ({ sid })));
+        return this.processor.certificateListProcessor(
+            this.userInfo.getSid()
+                .map(sid => ({ sid }))
+        );
     }
 
     addCertificate(option: Observable<CertificateAddOptions>): Subscription {
-        return this.processor.certificateAddProcessor(option
-            .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+        return this.processor.certificateAddProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            )
         );
     }
 
     deleteCertificate(id: Observable<number>): Subscription {
-        return this.processor.certificateDeleteProcessor(id.withLatestFrom(this.userInfo.getSid(), (work_certificate_id, sid) => ({ sid, work_certificate_id })));
+        return this.processor.certificateDeleteProcessor(
+            id.withLatestFrom(
+                this.userInfo.getSid(),
+                (work_certificate_id, sid) => ({ sid, work_certificate_id }))
+        );
     }
 
     updateCertificate(option: Observable<CertificateUpdateOptions>): Subscription {
-        return this.processor.certificateUpdateProcessor(option
-            .withLatestFrom(this.userInfo.getSid(), (option, sid) => ({ ...option, sid }))
+        return this.processor.certificateUpdateProcessor(
+            option.withLatestFrom(
+                this.userInfo.getSid(),
+                (option, sid) => ({ ...option, sid })
+            )
         );
     }
 
@@ -98,14 +125,20 @@ export class WorkCertificateService {
             );
     }
 
+    /* =================================================Local state change=============================================== */
+
+    resetErrorResponse(): void {
+        this.store.dispatch(new ResetWorkerCertificateErrorResponse());
+    }
+
     /* =================================================Error handle=============================================== */
 
     handleError(): Subscription[] {
         return [
-            this.error.handleErrorInSpecific(this.store.select(selectCertificateListResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectCertificateAddResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectCertificateDeleteResponse), 'API_ERROR'),
-            this.error.handleErrorInSpecific(this.store.select(selectCertificateUpdateResponse), 'API_ERROR'),
-        ]
+            this.error.handleApiRequestError(this.store.select(selectCertificateListResponse)),
+            this.error.handleApiRequestError(this.store.select(selectCertificateAddResponse)),
+            this.error.handleApiRequestError(this.store.select(selectCertificateDeleteResponse)),
+            this.error.handleApiRequestError(this.store.select(selectCertificateUpdateResponse)),
+        ];
     }
 }

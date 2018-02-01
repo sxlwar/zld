@@ -1,13 +1,14 @@
-import { LogoutResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { Store } from '@ngrx/store';
-import { AppState, selectLogoutResponse } from './../../reducers/index-reducer';
-import { Subscription } from 'rxjs/Subscription';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
-import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
 import { ResetLogoutResponseAction } from '../../actions/action/logout-action';
+import { LogoutResponse } from './../../interfaces/response-interface';
+import { AppState, selectLogoutResponse } from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { UserService } from './user-service';
 
 
 @Injectable()

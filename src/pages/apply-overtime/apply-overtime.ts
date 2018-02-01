@@ -1,16 +1,17 @@
-import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
-import { ConfigService } from './../../services/config/config-service';
-import { WorkerService } from './../../services/business/worker-service';
-import { LaunchService } from './../../services/business/launch-service';
-import { OvertimeFormModel } from './../../services/api/mapper-service';
-import { Subject } from 'rxjs/Subject';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { WorkerItem } from './../../interfaces/worker-interface';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
+import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
+import { WorkerItem } from './../../interfaces/worker-interface';
+import { OvertimeFormModel } from './../../services/api/mapper-service';
+import { LaunchService } from './../../services/business/launch-service';
+import { WorkerService } from './../../services/business/worker-service';
+import { ConfigService } from './../../services/config/config-service';
 
 @IonicPage()
 @Component({
@@ -64,7 +65,7 @@ export class ApplyOvertimePage {
             startTime: '',
             endTime: '',
             reason: '',
-            contractIds: ['', Validators.required]
+            contractIds: ['', Validators.required],
         });
     }
 

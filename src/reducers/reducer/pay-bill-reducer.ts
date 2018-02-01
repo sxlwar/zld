@@ -1,6 +1,6 @@
-import { ProjectPayBillListResponse, ProjectPayProcessListResponse } from './../../interfaces/response-interface';
-import { PayBillListResponse, PayProcessListResponse } from '../../interfaces/response-interface';
 import * as actions from '../../actions/action/pay-bill-action';
+import { PayBillListResponse, PayProcessListResponse } from '../../interfaces/response-interface';
+import { ProjectPayBillListResponse, ProjectPayProcessListResponse } from './../../interfaces/response-interface';
 
 export interface UIStatus {
     selectedStatus: string;
@@ -16,23 +16,22 @@ export interface State {
 export const initialState: State = {
     payBillResponse: {
         pay_bill: [],
-        count: 0
+        count: 0,
     },
     payProcessResponse: {
         pay_process: [],
-        count: 0
+        count: 0,
     },
     projectPayBillResponse: {
-        project_pay_bill: []
+        project_pay_bill: [],
     },
     projectPayProcessUI: {
-        selectedStatus: 'grantIn'
+        selectedStatus: 'grantIn',
     },
     projectPayProcessResponse: {
         project_pay_process: [],
-        count: 0
-    }
-
+        count: 0,
+    },
 }
 
 export function reducer(state = initialState, action: actions.Actions): State {

@@ -1,26 +1,34 @@
 .transparent-header .toolbar-content,
 .transparent-header .back-button {
-  color: white; }
+    color: white;
+}
+
 .transparent-header .toolbar-background,
 .transparent-header ion-navbar,
 .transparent-header ion-header {
-  background: transparent !important;
-  background-color: transparent !important; }
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
 .transparent-header .header-md::after,
 .transparent-header .toolbar-background-ios {
-  background-image: none;
-  border-bottom: 0; }
+    background-image: none;
+    border-bottom: 0;
+}
+
 .transparent-header .header-ios .toolbar-background-ios,
 .transparent-header .footer-ios .toolbar-background-ios {
-  border: 0; }
+    border: 0;
+}
 
 .form-error {
-  padding: 0 16px;
-  font-size: 12px;
-  text-align: left; 
+    padding: 0 16px;
+    font-size: 12px;
+    text-align: left;
 }
 
 .scroll-content {
-  padding-bottom: 0 !important; }
+    padding-bottom: 0 !important;
+}
 
 /*# sourceMappingURL=app.css.map */

@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 
 @Component({
     selector: 'flash-card',
-    templateUrl: 'flash-card.html'
+    templateUrl: 'flash-card.html',
 })
 export class FlashCardComponent {
     @ViewChild('fcContainer') fcContainer;

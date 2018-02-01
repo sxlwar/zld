@@ -1,11 +1,9 @@
-import { Employer } from './../../interfaces/response-interface';
-//region
-import { TeamDeleteResponse, TeamUpdateResponse, TeamAddResponse } from './../../interfaces/response-interface';
-import { TeamAddOptions, TeamDeleteOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
 import { Action } from '@ngrx/store';
+
 import { TeamListOptions } from '../../interfaces/request-interface';
 import { TeamListResponse } from '../../interfaces/response-interface';
-//endregion
+import { TeamAddOptions, TeamDeleteOptions, TeamUpdateOptions } from './../../interfaces/request-interface';
+import { Employer, TeamAddResponse, TeamDeleteResponse, TeamUpdateResponse } from './../../interfaces/response-interface';
 
 /* ======================================Team list actions============================================ */
 

@@ -1,15 +1,27 @@
-import { ResetAddBankcardResponseAction, ResetDeleteBankcardResponseAction, ResetBankcardInfoAction } from './../../actions/action/bank-card-action';
-import { PersonalService } from './personal-service';
-import { WorkerBankNoAddOptions, SetBankNoMasterOptions } from './../../interfaces/request-interface';
-import { Subscription } from 'rxjs/Subscription';
-import { Bankcard, BankInfoResponse } from './../../interfaces/response-interface';
-import { Observable } from 'rxjs/Observable';
-import { ErrorService } from './../errors/error-service';
-import { ProcessorService } from './../api/processor-service';
-import { Store } from '@ngrx/store';
-import { AppState, selectBankcardList, selectBankInfo, selectBankcardAddResponse, selectBankcardDeleteResponse, selectSetMasterCardResponse } from './../../reducers/index-reducer';
-import { UserService } from './user-service';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import {
+    ResetAddBankcardResponseAction,
+    ResetBankcardInfoAction,
+    ResetDeleteBankcardResponseAction,
+} from './../../actions/action/bank-card-action';
+import { SetBankNoMasterOptions, WorkerBankNoAddOptions } from './../../interfaces/request-interface';
+import { Bankcard, BankInfoResponse } from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectBankcardAddResponse,
+    selectBankcardDeleteResponse,
+    selectBankcardList,
+    selectBankInfo,
+    selectSetMasterCardResponse,
+} from './../../reducers/index-reducer';
+import { ProcessorService } from './../api/processor-service';
+import { ErrorService } from './../errors/error-service';
+import { PersonalService } from './personal-service';
+import { UserService } from './user-service';
 
 @Injectable()
 export class BankcardService {

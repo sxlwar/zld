@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
     selector: 'image-verification',
-    templateUrl: 'image-verification.html'
+    templateUrl: 'image-verification.html',
 })
 export class ImageVerificationComponent {
 

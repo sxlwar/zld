@@ -1,11 +1,12 @@
-import { attendanceRecordPage, MineRoot } from './../pages';
-import { myAttendance } from './../../services/business/icon-service';
-import { Subscription } from 'rxjs/Subscription';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import { TimeService } from '../../services/utils/time-service';
+import { Subscription } from 'rxjs/Subscription';
+
 import { AttendanceInstant, AttendanceResult, Overtime } from '../../interfaces/response-interface';
 import { UserService } from '../../services/business/user-service';
+import { TimeService } from '../../services/utils/time-service';
+import { myAttendance } from './../../services/business/icon-service';
+import { attendanceRecordPage, MineRoot } from './../pages';
 
 export interface AttendanceUnionData {
     attendances: AttendanceResult[];
@@ -33,7 +34,7 @@ export class PersonalAttendancePage {
         private navCtrl: NavController,
         private navParams: NavParams,
         private time: TimeService,
-        private userInfo: UserService,
+        private userInfo: UserService
     ) {
         this.yearMonth = time.getDateInfo(this.date).dateWithoutDay;
     }

@@ -1,17 +1,18 @@
-import { CraftService } from './../../services/business/craft-service';
-import { NationalityService } from './../../services/business/nationality-service';
-import { Subscription } from 'rxjs/Subscription';
-import { MessageService } from './../../services/business/message-service';
-import { Observable } from 'rxjs/Observable';
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IonicPage } from 'ionic-angular';
-import { MessageRoot, ProjectRoot, MissionRoot, MineRoot } from '../pages';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+
+import { MessageRoot, MineRoot, MissionRoot, ProjectRoot } from '../pages';
+import { CraftService } from './../../services/business/craft-service';
+import { MessageService } from './../../services/business/message-service';
+import { NationalityService } from './../../services/business/nationality-service';
 
 @IonicPage()
 @Component({
     selector: 'page-tabs',
-    templateUrl: 'tabs.html'
+    templateUrl: 'tabs.html',
 })
 export class TabsPage {
     MessageRoot: any = MessageRoot;

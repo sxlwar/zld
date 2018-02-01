@@ -1,18 +1,45 @@
-import { Subject } from 'rxjs/Subject';
-import { LocationOptions, TrajectoryOptions, Trajectory, TrajectoryInfo } from './../../interfaces/location-interface';
-import { UpdateMaxEndTimeAction, UpdateHistoryLocationOptionAction, UpdateSelectedWorkerId, UpdateTrajectoryOptionAction, UpdateMaxEndTimeOfTrajectoryAction, UpdateTrajectorySelectedWorkerAction, ResetHistoryLocationEndTimeAction, ResetTrajectoryEndTimeAction, UpdatePlayWorkersAction, UpdateTrajectoryAction, UpdatePlayStateAction, UpdateRateStateAction } from './../../actions/action/location-action';
-import { TimeService } from './../utils/time-service';
-import { RequestOption } from './../../interfaces/request-interface';
+import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
-import { HistoryLocationListResponse, ProjectAreaListResponse } from './../../interfaces/response-interface';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
+
+import {
+    ResetHistoryLocationEndTimeAction,
+    ResetTrajectoryEndTimeAction,
+    UpdateHistoryLocationOptionAction,
+    UpdateMaxEndTimeAction,
+    UpdateMaxEndTimeOfTrajectoryAction,
+    UpdatePlayStateAction,
+    UpdatePlayWorkersAction,
+    UpdateRateStateAction,
+    UpdateSelectedWorkerId,
+    UpdateTrajectoryAction,
+    UpdateTrajectoryOptionAction,
+    UpdateTrajectorySelectedWorkerAction,
+} from './../../actions/action/location-action';
+import { LocationOptions, Trajectory, TrajectoryInfo, TrajectoryOptions } from './../../interfaces/location-interface';
+import { RequestOption } from './../../interfaces/request-interface';
+import { HistoryLocationListResponse, ProjectAreaListResponse } from './../../interfaces/response-interface';
+import {
+    AppState,
+    selectHistoryLocationOptions,
+    selectHistoryLocationResponse,
+    selectMaxEndTimeOptions,
+    selectProjectAreaResponse,
+    selectTrajectories,
+    selectTrajectoryIndexes,
+    selectTrajectoryMaxEndTimeOption,
+    selectTrajectoryOptions,
+    selectTrajectoryPlayState,
+    selectTrajectoryPlayWorkers,
+    selectTrajectoryRateState,
+} from './../../reducers/index-reducer';
 import { ProcessorService } from './../api/processor-service';
 import { ErrorService } from './../errors/error-service';
-import { UserService } from './user-service';
+import { TimeService } from './../utils/time-service';
 import { ProjectService } from './project-service';
-import { AppState, selectHistoryLocationResponse, selectProjectAreaResponse, selectHistoryLocationOptions, selectMaxEndTimeOptions, selectTrajectoryOptions, selectTrajectoryMaxEndTimeOption, selectTrajectoryPlayWorkers, selectTrajectories, selectTrajectoryIndexes, selectTrajectoryRateState, selectTrajectoryPlayState } from './../../reducers/index-reducer';
-import { Store } from '@ngrx/store';
-import { Injectable } from '@angular/core';
+import { UserService } from './user-service';
 
 @Injectable()
 export class LocationService {

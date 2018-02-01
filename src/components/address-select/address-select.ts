@@ -1,12 +1,13 @@
-import { TipService } from './../../services/tip-service';
-import { AddressColumn, Column, AddressService } from './../../services/utils/address-service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+
+import { TipService } from './../../services/tip-service';
+import { AddressColumn, AddressService, Column } from './../../services/utils/address-service';
 
 @Component({
     selector: 'address-select',
-    templateUrl: 'address-select.html'
+    templateUrl: 'address-select.html',
 })
 export class AddressSelectComponent {
     @Input() addressDetail: string;
@@ -38,5 +39,4 @@ export class AddressSelectComponent {
             }
         });
     }
-
 }
