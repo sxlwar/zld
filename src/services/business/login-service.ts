@@ -8,7 +8,6 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/withLatestFrom';
 
 import { Injectable } from '@angular/core';
-import { ENV } from '@app/env';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -54,8 +53,8 @@ export class LoginService {
         return this.store.select(fromRoot.selectActiveIndexOfInnerSlides).distinctUntilChanged();
     }
 
-    getVerificationImageUrl(): Observable<string> {
-        return this.store.select(fromRoot.selectRandomCode).map(randomCode => `http://${ENV.DOMAIN}/check_captcha/${randomCode}`);
+    getRandomCode(): Observable<string> {
+        return this.store.select(fromRoot.selectRandomCode);
     }
 
     getSelectedCompany(): Observable<Company> {

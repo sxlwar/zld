@@ -1,5 +1,3 @@
-import { ENV } from '@app/env';
-
 import * as actions from '../../actions/action/login-action';
 import { LoginOptions } from '../../interfaces/request-interface';
 import {
@@ -13,7 +11,6 @@ export interface State {
     activeIndexOfSlides: number
     activeIndexOfInnerSlides: number,
     loginForm: LoginOptions,
-    loginVerificationImage: string,
     randomCode: string;
 }
 
@@ -28,7 +25,6 @@ export const initialSate: State = {
         captcha_code: '',
         rand_captcha_key: '',
     },
-    loginVerificationImage: '',
     randomCode: '00000',
 };
 
@@ -44,11 +40,7 @@ export function reducer(state = initialSate, action: actions.Actions): State {
             return { ...state, loginForm: { ...action.payload, password: '***********' } };
 
         case actions.UPDATE_RANDOM_CODE:
-            return {
-                ...state,
-                randomCode: action.payload,
-                loginVerificationImage: `http://${ENV.DOMAIN}/check_captcha/${action.payload}`,
-            };
+            return { ...state, randomCode: action.payload };
 
         case actions.UPDATE_ACCOUNT:
             return { ...state, loginForm: { ...state.loginForm, username: action.payload } };
@@ -63,8 +55,6 @@ export const getActiveIndexOfSlides = (state: State) => state.activeIndexOfSlide
 export const getActiveIndexOfInnerSlides = (state: State) => state.activeIndexOfInnerSlides;
 
 export const getLoginForm = (state: State) => state.loginForm;
-
-export const getLoginVerificationImage = (state: State) => state.loginVerificationImage;
 
 export const getRandomCode = (state: State) => state.randomCode;
 

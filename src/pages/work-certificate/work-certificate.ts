@@ -11,14 +11,18 @@ import { Certificate } from './../../interfaces/response-interface';
 import { CraftService } from './../../services/business/craft-service';
 import { WorkCertificateService } from './../../services/business/work-certificate-service';
 
+export interface WorkTypedCertificate extends Certificate {
+    workTypeName: string;
+}
+
 @IonicPage()
 @Component({
     selector: 'page-work-certificate',
     templateUrl: 'work-certificate.html',
 })
-export class WorkCertificatePage implements BusinessPageModel{
+export class WorkCertificatePage implements BusinessPageModel {
 
-    certificates: Observable<Certificate[]>;
+    certificates: Observable<WorkTypedCertificate[]>;
 
     subscriptions: Subscription[] = [];
 

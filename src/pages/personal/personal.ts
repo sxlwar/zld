@@ -27,7 +27,6 @@ export class PersonalPage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 
-
     userId: number;
 
     basic: Observable<BasicInformation>;

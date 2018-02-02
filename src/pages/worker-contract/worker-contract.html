@@ -204,7 +204,7 @@
             <ion-item-divider>{{'ATTACH' | translate}}</ion-item-divider>
             <img
                 *ngFor="let src of contract?.attaches"
-                [src]="prefix + src"
+                [src]="src | imageSrc"
             >
         </div>
 

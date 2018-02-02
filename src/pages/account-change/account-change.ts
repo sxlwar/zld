@@ -35,9 +35,9 @@ export class AccountChangePage implements BusinessPageModel{
 
     showNewImageVerification: Observable<boolean>;
 
-    oldImageVerificationUrl: Observable<string>;
+    oldImageVerificationCode: Observable<string>;
 
-    newImageVerificationUrl: Observable<string>;
+    newImageVerificationCode: Observable<string>;
 
     constructor(
         private accountChange: AccountChangeService,
@@ -68,9 +68,9 @@ export class AccountChangePage implements BusinessPageModel{
 
         this.showNewImageVerification = this.accountChange.getChangePhoneVerifyResponse().map(res => res.captcha).startWith(false);
 
-        this.oldImageVerificationUrl = this.accountChange.getCheckPhoneVerifyUrl();
+        this.oldImageVerificationCode = this.accountChange.getCheckPhoneVerifyRandomCode();
 
-        this.newImageVerificationUrl = this.accountChange.getChangePhoneVerifyUrl();
+        this.newImageVerificationCode = this.accountChange.getChangePhoneVerifyRandomCode();
     }
 
     launch(): void {

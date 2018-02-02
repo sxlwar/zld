@@ -11,33 +11,36 @@ import { DegreePipe, WorkTypePipe } from './../pipes/personal-pipe';
 import { PositiveIntegerPipe } from './../pipes/positive-integer-pipe';
 import { PriceUnitPipe } from './../pipes/price-unit-pipe';
 import { SexPipe } from './../pipes/sex-pipe';
+import { CaptchaSrcPipe, ImageSrcPipe } from './../pipes/url-pipe';
 import { NamesPipe, OvertimePayPipe, TaskStatusColorPipe, TaskStatusPipe } from './../pipes/work-flow-pipe';
 import { WorkerContractTypePipe } from './../pipes/worker-contract-pipe';
 
 export const PIPES = [
-    AttendanceStatePipe,
     AttendanceStateIconPipe,
+    AttendanceStatePipe,
     BadgePipe,
+    BatteryPipe,
+    CaptchaSrcPipe,
+    DegreePipe,
     EveryMonthPipe,
+    ImageSrcPipe,
     InOutPipe,
+    IsLowPowerPipe,
     JoinPipe,
+    LocationCardStatusPipe,
+    MessageIconPipe,
+    MessageParsePipe,
+    MessageSplitPipe,
+    NamesPipe,
+    OvertimePayPipe,
+    PercentBatteryPipe,
     PositiveIntegerPipe,
     PriceUnitPipe,
     SexPipe,
-    LocationCardStatusPipe,
-    BatteryPipe,
-    PercentBatteryPipe,
-    IsLowPowerPipe,
-    DegreePipe,
-    MessageIconPipe,
-    MessageSplitPipe,
-    MessageParsePipe,
-    NamesPipe,
-    TaskStatusPipe,
     TaskStatusColorPipe,
-    OvertimePayPipe,
-    WorkerContractTypePipe,
+    TaskStatusPipe,
     WorkTypePipe,
+    WorkerContractTypePipe,
 ];
 
 export const DIRECTIVES = directives;

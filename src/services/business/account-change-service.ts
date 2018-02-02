@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ENV } from '@app/env';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -71,16 +70,12 @@ export class AccountChangeService {
         return this.store.select(selectAccountChangeChangeRandomCode);
     }
 
-    getCheckPhoneVerifyUrl(): Observable<string> {
-        return this.getImageVerificationUrl(this.getCheckRandomCode());
+    getCheckPhoneVerifyRandomCode(): Observable<string> {
+        return this.getCheckRandomCode();
     }
 
-    getChangePhoneVerifyUrl(): Observable<string> {
-        return this.getImageVerificationUrl(this.getChangeRandomCode());
-    }
-
-    getImageVerificationUrl(code: Observable<string>): Observable<string> {
-        return code.map(code => `http://${ENV.DOMAIN}/check_captcha/${code}`);
+    getChangePhoneVerifyRandomCode(): Observable<string> {
+        return this.getChangeRandomCode();
     }
 
     getAccount(): Observable<string> {

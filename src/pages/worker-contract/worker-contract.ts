@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ENV } from '@app/env';
 import { IonicPage, ModalController, NavController, NavParams } from 'ionic-angular';
 import { chain } from 'lodash';
 import { Observable } from 'rxjs/Observable';
@@ -75,8 +74,6 @@ export class WorkerContractPage implements BusinessPageModel {
     subscriptions: Subscription[] = [];
 
     isTimerContract$: Observable<boolean>;
-
-    prefix = `http://${ENV.DOMAIN}/media/`;
 
     terminate$: Subject<boolean> = new Subject();
 

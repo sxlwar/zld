@@ -139,7 +139,6 @@ const getLoginPage = (state: AppState) => state.loginPage;
 export const selectActiveIndexOfSlides = createSelector(getLoginPage, login.getActiveIndexOfSlides);
 export const selectActiveIndexOfInnerSlides = createSelector(getLoginPage, login.getActiveIndexOfInnerSlides);
 export const selectLoginForm = createSelector(getLoginPage, login.getLoginForm);
-export const selectLoginVerificationImage = createSelector(getLoginPage, login.getLoginVerificationImage);
 export const selectRandomCode = createSelector(getLoginPage, login.getRandomCode);
 
 /*<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<Server response selectors Start<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<*/

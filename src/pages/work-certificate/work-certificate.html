@@ -53,11 +53,11 @@
             </ion-toolbar>
 
             <div class="face-image">
-                <img [src]="item.imageface || '../../assets/img/advance-card-tmntr.jpg'">
+                <img [src]="item.imageface | imageSrc">
             </div>
 
             <div class="back-image">
-                <img [src]="item.imageback || '../../assets/img/advance-card-bttf.png'">
+                <img [src]="item.imageback | imageSrc">
             </div>
 
         </div>

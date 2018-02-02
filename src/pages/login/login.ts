@@ -54,7 +54,7 @@ export class LoginPage implements BusinessPageModel{
 
     resetPwdImageVerification$: Observable<PhoneVerCodeResponse>;
 
-    loginVerificationImage$: Observable<string>;
+    randomCode: Observable<string>;
 
     selectedCompany$: Observable<Company>;
 
@@ -117,7 +117,7 @@ export class LoginPage implements BusinessPageModel{
 
         this.resetPwdImageVerification$ = this.loginService.getResetPwdPhoneVer();
 
-        this.loginVerificationImage$ = this.loginService.getVerificationImageUrl();
+        this.randomCode = this.loginService.getRandomCode();
     }
 
     launch(): void {

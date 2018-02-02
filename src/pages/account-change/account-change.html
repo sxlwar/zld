@@ -30,7 +30,7 @@
                 ></ion-input>
             </ion-item>
             <image-verification
-                [src]="oldImageVerificationUrl | async"
+                [src]="oldImageVerificationCode | async | captchaSrc"
                 (update)="oldImageVerification$.next(true)"
             ></image-verification>
             <div
@@ -96,7 +96,7 @@
                 ></ion-input>
             </ion-item>
             <image-verification
-                [src]="newImageVerificationUrl | async"
+                [src]="newImageVerificationCode | async | captchaSrc"
                 (update)="newImageVerification$.next(true)"
             ></image-verification>
             <div

@@ -1,4 +1,4 @@
 <div (click)="update.emit()">
-    <img [src]="src">
+    <img [src]="src | captchaSrc">
     <span>{{'UPDATE_IMAGE_BUTTON' | translate}}</span>
 </div>

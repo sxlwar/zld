@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { ENV } from '@app/env';
 
-import { Certificate } from './../../interfaces/response-interface';
+import { Certification } from './../../interfaces/personal-interface';
 
 @Component({
     selector: 'certification',
@@ -9,9 +8,7 @@ import { Certificate } from './../../interfaces/response-interface';
 })
 export class CertificationComponent {
 
-    @Input() certification: Certificate[] = [];
-
-    prefix = `http://${ENV.DOMAIN}/media/`;
+    @Input() certification: Certification[] = [];
 
     constructor() {
     }

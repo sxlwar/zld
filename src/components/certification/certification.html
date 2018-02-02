@@ -38,11 +38,11 @@
     </ion-item>
     <img
         *ngIf="item.imageFace"
-        [src]="prefix + item.imageFace"
+        [src]="item.imageFace | imageSrc"
     >
     <img
         *ngIf="item.imageBack"
-        [src]="prefix + item.imageBack"
+        [src]="item.imageBack | imageSrc"
     >
 
 </ion-list>
