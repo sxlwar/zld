@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { Family } from './../../interfaces/personal-interface';
 import { HomeInfoUpdateOptions } from './../../interfaces/request-interface';
 import { MapperService } from './../../services/api/mapper-service';
@@ -14,7 +15,7 @@ import { AddressService } from './../../services/utils/address-service';
     selector: 'update-family-information',
     templateUrl: 'update-family-information.html',
 })
-export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
+export class UpdateFamilyInformationComponent implements BusinessComponentModel {
 
     family: Family;
 
@@ -32,8 +33,16 @@ export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.family = <Family>this.navParams.get('family');
+        this.initialModel();
 
+        this.launch();
+    }
+
+    initialModel(): void {
+        this.family = <Family>this.navParams.get('family');
+    }
+
+    launch(): void {
         this.subscriptions = [
             this.personal.updateHomeInfo(this.getOption()),
 
@@ -41,6 +50,7 @@ export class UpdateFamilyInformationComponent implements OnInit, OnDestroy {
 
             this.personal.handleUpdateHomeInfoError(),
         ];
+
     }
 
     getOption(): Observable<HomeInfoUpdateOptions> {

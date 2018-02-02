@@ -83,7 +83,7 @@
         ion-button
         full
         color="primary"
-        (click)="updateSelectedWorkers()"
+        (click)="update$.next(true)"
         no-margin
     >
         {{'CONFIRM_BUTTON' | translate}}

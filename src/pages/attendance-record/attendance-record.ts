@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AttendanceInstant, AttendanceResult } from '../../interfaces/response-interface';
 import { AttendanceRecordService } from '../../services/business/attendance-record-service';
 import { AttendanceService } from '../../services/business/attendance-service';
@@ -17,7 +18,7 @@ import { applyAttendanceModifyPage } from './../pages';
     selector: 'page-attendance-record',
     templateUrl: 'attendance-record.html',
 })
-export class AttendanceRecordPage {
+export class AttendanceRecordPage implements BusinessPageModel{
 
     attendanceResult: AttendanceResult;
 

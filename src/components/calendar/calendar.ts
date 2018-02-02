@@ -2,12 +2,13 @@ import 'rxjs/add//operator/skip';
 import 'rxjs/add/operator/combineLatest';
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
 import { RequestOption } from 'interfaces/request-interface';
 import { chain, every, isEmpty } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { AttendanceDate } from '../../interfaces/attendance-interface';
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { AttendanceRecordService } from '../../services/business/attendance-record-service';
 import { Calendar, dayNames, TimeService } from '../../services/utils/time-service';
 import { putInArray } from '../../services/utils/util';
@@ -24,12 +25,12 @@ export interface DatePeriod {
     selector: 'calendar',
     templateUrl: 'calendar.html',
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements BusinessComponentModel {
     @Input() isMonth: boolean;
 
-    @Output() dayClicked = new EventEmitter();
+    @Output() dayClicked: EventEmitter<AttendanceDate> = new EventEmitter();
 
-    data: Observable<Array<Date[]>>;
+    data: Observable<AttendanceDate[][]>;
 
     heads = dayNames;
 
@@ -60,7 +61,7 @@ export class CalendarComponent implements OnInit {
         ];
     }
 
-    getCalendar(): Observable<Date[][]> {
+    getCalendar(): Observable<AttendanceDate[][]> {
         const today = this.timeService.getDate(new Date(), true);
 
         return this.getPredicateData()
@@ -69,25 +70,24 @@ export class CalendarComponent implements OnInit {
 
                 const { start, end, records } = result;
 
-                calendar.forEach(currentWeek => {
-                    currentWeek.forEach(item => {
+                return calendar.map(currentWeek => {
+                    return currentWeek.map(item => {
                         if (item) {
                             const date = this.timeService.getDate(item, true);
 
-                            const acturlEnd = end > today ? today : end;
+                            const actualEnd = end > today ? today : end;
 
-                            const isLegalDay = date >= start && date < acturlEnd;
-
-                            item['isLegalDay'] = isLegalDay;
+                            const isLegalDay = date >= start && date < actualEnd;
 
                             const isNormalAttendance = records.indexOf(date) !== -1;
 
-                            item['isNormalAttendance'] = isNormalAttendance;
+                            return { ...item, isLegalDay, isNormalAttendance };
+                        } else {
+                            return null;
                         }
+
                     });
                 })
-
-                return calendar;
             })
     }
 
@@ -154,5 +154,9 @@ export class CalendarComponent implements OnInit {
 
     private empty(data): boolean {
         return isEmpty(data) || every(data, item => item == null);
+    }
+
+    ngOnDestroy() {
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

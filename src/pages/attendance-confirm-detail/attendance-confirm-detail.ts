@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AttendanceState } from './../../interfaces/attendance-interface';
 import { AttendanceResult } from './../../interfaces/response-interface';
 import { attendanceList } from './../../services/api/command';
@@ -19,7 +20,7 @@ import { attendanceRecordPage, MissionRoot } from './../pages';
     selector: 'page-attendance-confirm-detail',
     templateUrl: 'attendance-confirm-detail.html',
 })
-export class AttendanceConfirmDetailPage {
+export class AttendanceConfirmDetailPage implements BusinessPageModel{
     attendances: Observable<AttendanceResult[]>;
 
     subscriptions: Subscription[] = [];
@@ -76,7 +77,7 @@ export class AttendanceConfirmDetailPage {
     initialModel(): void {
         this.attendances = this.attendance.getAttendanceResultList().scan((acc, cur) => acc.concat(cur), []);
 
-        this.haveMoreData = this.attendance.getAttendanceResultMoreData();
+        this.haveMoreData = this.attendance.haveMoreData();
 
         this.operatePermission = this.permission.getOperatePermission(attendanceConfirm.icon, MissionRoot);
     }

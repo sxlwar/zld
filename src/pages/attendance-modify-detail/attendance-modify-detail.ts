@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { WorkFlowService } from '../../services/business/work-flow-service';
 import { AttendanceModify, WorkFlow } from './../../interfaces/response-interface';
 import { AttendanceService } from './../../services/business/attendance-service';
@@ -16,7 +17,7 @@ import { MissionRoot } from './../pages';
     selector: 'page-attendance-modify-detail',
     templateUrl: 'attendance-modify-detail.html',
 })
-export class AttendanceModifyDetailPage {
+export class AttendanceModifyDetailPage implements BusinessPageModel{
 
     id: number;
 

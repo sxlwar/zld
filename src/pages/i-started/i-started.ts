@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AuditTarget, MissionListItem, WorkFlowPageType } from '../../interfaces/mission-interface';
 import { processIdToPage, ScreeningCondition, screeningConditions } from './../../interfaces/mission-interface';
 import { SpecificWorkFlowState } from './../../interfaces/request-interface';
@@ -17,7 +18,7 @@ import { MissionRoot } from './../pages';
     selector: 'page-i-started',
     templateUrl: 'i-started.html',
 })
-export class IStartedPage {
+export class IStartedPage implements BusinessPageModel{
 
     total: Observable<number>;
 

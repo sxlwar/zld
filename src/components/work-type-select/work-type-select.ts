@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, ViewController } from 'ionic-angular';
 import { ReplaySubject, Subscription } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { CraftService } from './../../services/business/craft-service';
 
 interface WorkTypeItem {
@@ -15,11 +16,13 @@ interface WorkTypeItem {
     selector: 'work-type-select',
     templateUrl: 'work-type-select.html',
 })
-export class WorkTypeSelectComponent implements OnInit, OnDestroy {
+export class WorkTypeSelectComponent implements BusinessComponentModel {
 
     types: Subject<WorkTypeItem[]> = new ReplaySubject();
 
     subscriptions: Subscription[] = [];
+
+    execute$: Subject<boolean> = new Subject();
 
     constructor(
         private viewCtrl: ViewController,
@@ -31,21 +34,26 @@ export class WorkTypeSelectComponent implements OnInit, OnDestroy {
     ngOnInit() {
         const selectedTypes: number[] = this.navParams.get('types');
 
-        const subscription = this.craft.getWorkTypeList()
-            .map(types => types.map(item => ({ id: item.id, name: item.name, checked: selectedTypes.indexOf(item.id) !== -1 })))
-            .subscribe(this.types);
-
-        this.subscriptions.push(subscription);
+        this.launch(selectedTypes);
     }
 
-    execute() {
-        const subscription = this.types.subscribe(types => {
-            this.craft.updateSelectedTypes(types.filter(item => item.checked).map(item => item.id));
+    launch(selectedTypes: number[]): void {
+        this.subscriptions = [
+            this.craft.getWorkTypeList()
+                .map(types => types.map(item => ({ id: item.id, name: item.name, checked: selectedTypes.indexOf(item.id) !== -1 })))
+                .subscribe(this.types),
 
-            this.dismiss();
-        });
+            this.execute$.withLatestFrom(this.types, (_, types) => types)
+                .subscribe(types => {
+                    this.craft.updateSelectedTypes(types.filter(item => item.checked).map(item => item.id));
 
-        this.subscriptions.push(subscription);
+                    this.dismiss();
+                }),
+        ];
+    }
+
+    initialModel(): void { 
+
     }
 
     dismiss() {

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { MissionListItem } from '../../interfaces/mission-interface';
 import { AuditTarget, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
@@ -18,7 +19,7 @@ import { applyLeavePage, leaveDetailPage, MissionRoot } from './../pages';
     selector: 'page-leave',
     templateUrl: 'leave.html',
 })
-export class LeavePage {
+export class LeavePage implements BusinessPageModel{
 
     total: Observable<number>;
 

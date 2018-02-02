@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
 import { ProjectListComponent } from '../../components/project-list/project-list';
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { Project } from '../../interfaces/response-interface';
 import { ProjectRoot } from '../../pages/pages';
 import { IconState } from '../../reducers/reducer/icons-reducer';
@@ -33,7 +34,7 @@ const icons = [
     selector: 'page-project',
     templateUrl: 'project.html',
 })
-export class ProjectPage {
+export class ProjectPage implements BusinessPageModel {
 
     icons: Observable<IconState[]>;
 
@@ -55,6 +56,8 @@ export class ProjectPage {
 
     subscriptions: Subscription[] = [];
 
+    worker$$: Subscription;
+
     constructor(
         private navCtrl: NavController,
         private iconService: icon.IconService,
@@ -66,17 +69,17 @@ export class ProjectPage {
 
     ionViewDidLoad() {
         this.initialModel();
+        
+        this.launch();
     }
 
     ionViewWillEnter() {
-        this.launch();
+        this.worker$$ = this.workerService.getWorkerContractsOfCurrentProject();
     }
 
     launch(): void {
         this.subscriptions = [
             this.iconService.addRootModuleIcons(ProjectRoot, icons),
-
-            this.workerService.getWorkerContractsOfCurrentProject(),
 
             this.workerService.handleError(),
 
@@ -104,8 +107,8 @@ export class ProjectPage {
         this.workerCount = this.workerService.getWorkerCount();
     }
 
-    switchProject($event) {
-        this.popoverCtrl.create(ProjectListComponent).present({ ev: $event }).then(() => { });
+    switchProject(ev: Event) {
+        this.popoverCtrl.create(ProjectListComponent).present({ ev }).then(() => { });
     }
 
     goTo(item) {
@@ -113,9 +116,10 @@ export class ProjectPage {
     }
 
     ionViewDidLeave() {
-        this.subscriptions.forEach(item => item.unsubscribe());
+        this.worker$$.unsubscribe();
     }
 
     ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

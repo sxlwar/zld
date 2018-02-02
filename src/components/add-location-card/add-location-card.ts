@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
 import { AddLocationCardFormModel } from '../../services/api/mapper-service';
 import { cardNumberValidator } from '../../validators/validators';
@@ -24,7 +25,7 @@ interface Worker {
     selector: 'add-location-card',
     templateUrl: 'add-location-card.html',
 })
-export class AddLocationCardComponent {
+export class AddLocationCardComponent implements BusinessComponentModel  {
 
     subscriptions: Subscription[] = [];
 

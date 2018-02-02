@@ -1,9 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { bankcardNumberValidator, creditCardValidator, mobilePhoneValidator } from '../../validators/validators';
 import { PersonalId } from './../../interfaces/response-interface';
 import { MapperService } from './../../services/api/mapper-service';
@@ -14,7 +15,7 @@ import { PersonalService } from './../../services/business/personal-service';
     selector: 'add-bankcard',
     templateUrl: 'add-bankcard.html',
 })
-export class AddBankcardComponent implements OnInit, OnDestroy {
+export class AddBankcardComponent implements BusinessComponentModel {
 
     personalId: Observable<PersonalId>;
 

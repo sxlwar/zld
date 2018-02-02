@@ -4,6 +4,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { projectBillDetailPage } from '../../pages/pages';
 import { putInArray } from '../../services/utils/util';
 import { ProjectPayProcess } from './../../interfaces/response-interface';
@@ -22,7 +23,7 @@ export interface ProcessList {
     selector: 'page-project-bill',
     templateUrl: 'project-bill.html',
 })
-export class ProjectBillPage {
+export class ProjectBillPage implements BusinessPageModel {
     @ViewChild('overview') overview: ElementRef;
 
     subscriptions: Subscription[] = [];

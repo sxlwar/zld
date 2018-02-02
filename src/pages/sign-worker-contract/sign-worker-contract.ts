@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 import { Team, WorkType } from './../../interfaces/response-interface';
 import { WorkerContractFormModel } from './../../services/api/mapper-service';
@@ -21,7 +22,7 @@ import { searchWorkerPage } from './../pages';
     selector: 'page-sign-worker-contract',
     templateUrl: 'sign-worker-contract.html',
 })
-export class SignWorkerContractPage {
+export class SignWorkerContractPage implements BusinessPageModel {
     contractType: number;
 
     selectedTeam: Observable<Team>;
@@ -72,16 +73,20 @@ export class SignWorkerContractPage {
     ionViewDidLoad() {
         this.config.hideTabBar();
 
+        this.initialModel();
+
+        this.launch();
+    }
+
+    initialModel(): void {
         this.teams = this.teamService.getOwnTeams();
 
         this.workTypes = this.craft.getWorkTypeList();
 
         this.workers = this.searchService.getSelectedWorkers().map(source => source.map(item => item.realname).join(' '));
-
-        this.launch();
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.searchService.getSelectedWorkers().subscribe(source => this.contract.patchValue({ workerIds: source.map(item => item.user_id) })),
 

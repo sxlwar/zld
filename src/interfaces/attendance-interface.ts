@@ -11,3 +11,8 @@ export enum AttendanceSortType {
     total_area_hour,
     availability_work_hour,
 }
+
+export interface AttendanceDate extends Date {
+    isLegalDay: boolean;
+    isNormalAttendance: boolean;
+}

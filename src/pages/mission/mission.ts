@@ -3,6 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import * as pages from '../../pages/pages';
 import { IconState } from '../../reducers/reducer/icons-reducer';
 import * as icon from '../../services/business/icon-service';
@@ -27,7 +28,7 @@ const icons = [
     selector: 'page-mission',
     templateUrl: 'mission.html',
 })
-export class MissionPage {
+export class MissionPage implements BusinessPageModel{
 
     icons: Observable<IconState[]>;
 

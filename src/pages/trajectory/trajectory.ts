@@ -4,6 +4,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Map } from '../../interfaces/amap-interface';
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { PlayState, PlayUnit, TrajectoryInfo } from '../../interfaces/location-interface';
 import { HistoryTrajectoryWorkersComponent } from './../../components/history-trajectory-workers/history-trajectory-workers';
 import { HistoryTrajectoryComponent } from './../../components/history-trajectory/history-trajectory';
@@ -18,7 +19,7 @@ declare var AMap: any;
     selector: 'page-trajectory',
     templateUrl: 'trajectory.html',
 })
-export class TrajectoryPage {
+export class TrajectoryPage implements BusinessPageModel {
 
     subscriptions: Subscription[] = [];
 
@@ -59,12 +60,12 @@ export class TrajectoryPage {
     ionViewDidLoad() {
         this.config.hideTabBar();
 
-        this.initialMap();
+        this.initialModel();
 
         this.launch();
     }
 
-    initialMap(): void {
+    initialModel(): void {
         this.map = new AMap.Map('trajectory');
 
         this.mapService.addControl(this.map);

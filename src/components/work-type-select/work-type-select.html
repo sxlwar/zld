@@ -39,7 +39,7 @@
         ion-button
         block
         color="primary"
-        (click)="execute()"
+        (click)="execute$.next(true)"
         no-margin
     >
         {{'CONFIRM_BUTTON' | translate}}

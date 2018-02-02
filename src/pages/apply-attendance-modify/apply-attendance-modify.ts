@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 import { RevisableAttendanceListComponent } from './../../components/revisable-attendance-list/revisable-attendance-list';
 import { AttendanceResult } from './../../interfaces/response-interface';
@@ -18,7 +19,7 @@ import { ConfigService } from './../../services/config/config-service';
     selector: 'page-apply-attendance-modify',
     templateUrl: 'apply-attendance-modify.html',
 })
-export class ApplyAttendanceModifyPage {
+export class ApplyAttendanceModifyPage implements BusinessPageModel{
 
     form: FormGroup;
 

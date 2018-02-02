@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
 import { range } from 'lodash';
@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { Map } from '../../interfaces/amap-interface';
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
 import { TrajectoryOptions } from './../../interfaces/location-interface';
 import { RequestOption } from './../../interfaces/request-interface';
@@ -23,7 +24,7 @@ import { TimeService } from './../../services/utils/time-service';
     selector: 'history-trajectory',
     templateUrl: 'history-trajectory.html',
 })
-export class HistoryTrajectoryComponent implements OnInit, OnDestroy {
+export class HistoryTrajectoryComponent implements BusinessComponentModel {
 
     subscriptions: Subscription[] = [];
 

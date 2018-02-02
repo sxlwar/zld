@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { InfiniteScroll, NavParams, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { RequestOption } from '../../interfaces/request-interface';
 import { AttendanceCardResponses } from '../../reducers/reducer/attendance-card-reducer';
 import { cardNumberValidator } from '../../validators/validators';
@@ -24,7 +25,7 @@ export interface Worker {
     selector: 'add-attendance-card',
     templateUrl: 'add-attendance-card.html',
 })
-export class AddAttendanceCardComponent implements OnInit, OnDestroy {
+export class AddAttendanceCardComponent implements BusinessComponentModel {
 
     text = 'ADD_ATTENDANCE_CARD';
 

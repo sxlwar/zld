@@ -5,6 +5,7 @@ import { initial } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { ProjectBillService } from '../../services/business/project-bill-service';
 import { putInArray } from '../../services/utils/util';
 import { ProjectPayBill } from './../../interfaces/response-interface';
@@ -23,7 +24,7 @@ export interface PayBillListItem {
     selector: 'page-project-bill-detail',
     templateUrl: 'project-bill-detail.html',
 })
-export class ProjectBillDetailPage {
+export class ProjectBillDetailPage implements BusinessPageModel {
     @ViewChild('projectBillDetail') projectBillDetail: ElementRef;
     subscriptions: Subscription[] = [];
     overviewTotal: number;
@@ -61,7 +62,7 @@ export class ProjectBillDetailPage {
             this.payBill.getPayBillList(bills.map(({ project_id, month }) => ({ project_id, month: initial(month.split('-')).join('-') }))),
 
             this.projectBill.handleError(),
-            
+
             this.payBill.handleError(),
         ];
     }

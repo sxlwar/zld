@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { ContractType, RequestOption } from './../../interfaces/request-interface';
 import { Team } from './../../interfaces/response-interface';
 import { Command } from './../../services/api/command';
@@ -25,7 +26,7 @@ export interface WorkerItem {
     selector: 'page-members',
     templateUrl: 'members.html',
 })
-export class MembersPage {
+export class MembersPage implements BusinessPageModel{
     selectedTeams: Team[];
 
     type = ContractType[1];

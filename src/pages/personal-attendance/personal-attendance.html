@@ -10,7 +10,7 @@
     <ion-item-divider>{{date | date: 'yyyy-MM'}}</ion-item-divider>
     <calendar
         [isMonth]="isMonth"
-        (dayClicked)="goToDetailPage($event)"
+        (dayClicked)="detail$.next($event)"
     ></calendar>
     <attendance-time-chart [yearMonth]="yearMonth"></attendance-time-chart>
 </ion-content>

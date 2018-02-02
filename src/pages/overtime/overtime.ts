@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { PermissionService } from '../../services/config/permission-service';
 import { AuditTarget, MissionListItem, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
@@ -17,7 +18,7 @@ import { applyOvertimePage, MissionRoot, overtimeDetailPage } from './../pages';
     selector: 'page-overtime',
     templateUrl: 'overtime.html',
 })
-export class OvertimePage {
+export class OvertimePage implements BusinessPageModel {
 
     subscriptions: Subscription[] = [];
 

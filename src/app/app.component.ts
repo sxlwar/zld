@@ -79,7 +79,7 @@ export class MyApp {
             this.launch();
         });
     }
-
+    
     launch(): void {
         this.checkSystemVersion();
 

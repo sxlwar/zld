@@ -1,10 +1,10 @@
-import { Component, Input, OnDestroy } from '@angular/core';
-import { OnInit } from '@angular/core/src/metadata/lifecycle_hooks';
+import { Component, Input } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { mobilePhoneValidator, passwordMatchValidator, passwordValidator } from '../../validators/validators';
 import { ResetPasswordResponse } from './../../interfaces/response-interface';
 import { LoginService } from './../../services/business/login-service';
@@ -13,7 +13,7 @@ import { LoginService } from './../../services/business/login-service';
     selector: 'reset-password',
     templateUrl: 'reset-password.html',
 })
-export class ResetPasswordComponent implements OnInit, OnDestroy {
+export class ResetPasswordComponent implements BusinessComponentModel {
 
     @Input() reset: Observable<null>;
 

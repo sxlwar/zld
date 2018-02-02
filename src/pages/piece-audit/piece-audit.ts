@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AuditTarget, MissionListItem, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
 import { pieceAudit } from './../../services/business/icon-service';
@@ -17,7 +18,7 @@ import { applyPieceAuditPage, MissionRoot, pieceAuditDetailPage } from './../pag
     selector: 'page-piece-audit',
     templateUrl: 'piece-audit.html',
 })
-export class PieceAuditPage {
+export class PieceAuditPage implements BusinessPageModel {
 
     total: Observable<number>;
 

@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 
 import { HistoryLocationComponent } from '../../components/history-location/history-location';
 import { Map, Marker, MarkerClusterer } from '../../interfaces/amap-interface';
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { LocationService } from '../../services/business/location-service';
 import { AmapService } from './../../services/business/amap-service';
 import { ConfigService } from './../../services/config/config-service';
@@ -16,7 +17,7 @@ declare var AMap: any;
     selector: 'page-location',
     templateUrl: 'location.html',
 })
-export class LocationPage {
+export class LocationPage implements BusinessPageModel{
 
     map: Map;
 

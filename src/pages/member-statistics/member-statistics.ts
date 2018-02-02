@@ -3,6 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { IonicPage } from 'ionic-angular';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import {
     RealTimeStatisticsResponse,
     TeamMembersStatistics,
@@ -23,7 +24,7 @@ export interface WorkTypeRealTimeStatisticsContainsName extends WorkTypeRealTime
     selector: 'page-member-statistics',
     templateUrl: 'member-statistics.html',
 })
-export class MemberStatisticsPage {
+export class MemberStatisticsPage implements BusinessPageModel{
     @ViewChild('workType') workType: ElementRef;
 
     @ViewChild('teamMembers') teamMembers: ElementRef;

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { WorkerItem } from '../../interfaces/worker-interface';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
@@ -28,7 +29,7 @@ export const leaveTypes = [
     selector: 'page-apply-leave',
     templateUrl: 'apply-leave.html',
 })
-export class ApplyLeavePage {
+export class ApplyLeavePage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 

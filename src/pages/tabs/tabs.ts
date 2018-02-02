@@ -4,6 +4,7 @@ import { IonicPage } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { MessageRoot, MineRoot, MissionRoot, ProjectRoot } from '../pages';
 import { CraftService } from './../../services/business/craft-service';
 import { MessageService } from './../../services/business/message-service';
@@ -14,7 +15,7 @@ import { NationalityService } from './../../services/business/nationality-servic
     selector: 'page-tabs',
     templateUrl: 'tabs.html',
 })
-export class TabsPage {
+export class TabsPage implements BusinessPageModel {
     MessageRoot: any = MessageRoot;
 
     ProjectRoot: any = ProjectRoot;
@@ -45,20 +46,23 @@ export class TabsPage {
     }
 
     ionViewDidLoad() {
-        this.getUnreadMessage();
+        this.launch();
 
         this.initialModel();
     }
 
-    getUnreadMessage() {
+    launch(): void {
         this.subscriptions = [
+
             this.nationality.handleError(),
+
             this.workType.handleError(),
+
             this.message.getUnreadMessageCount(),
         ];
     }
 
-    initialModel() {
+    initialModel(): void {
         this.messageBadge = this.message.getUnreadCount();
     }
 

@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { InfiniteScroll } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { Message, MessageType } from './../../interfaces/response-interface';
 import { MessageService } from './../../services/business/message-service';
 
@@ -21,7 +22,7 @@ const messageTypes = [
     selector: 'message-list',
     templateUrl: 'message-list.html',
 })
-export class MessageListComponent implements OnDestroy {
+export class MessageListComponent implements BusinessComponentModel {
     @Input() messages: Message[];
 
     @Input() haveMoreData: boolean;
@@ -42,19 +43,25 @@ export class MessageListComponent implements OnDestroy {
 
     subscriptions: Subscription[] = [];
 
+    delete$: Subject<Message> = new Subject();
+
     constructor(
         private messageService: MessageService
     ) {
     }
 
-    deleteMessage(target: Message, event: Event): void {
-        event.stopImmediatePropagation();
+    ngOnInit() {
+        this.launch();
+    }
 
+    launch(): void {
         this.subscriptions = [
-            ...this.subscriptions,
-
-            this.messageService.deleteMessage(Observable.of([target.id])),
+            this.messageService.deleteMessage(this.delete$.map(item => [item.id])),
         ];
+    }
+
+    initialModel(): void {
+
     }
 
     ngOnDestroy() {

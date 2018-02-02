@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { IonicPage } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { ConfirmProp, TipService } from './../../services/tip-service';
 
 @IonicPage()
@@ -11,10 +13,12 @@ import { ConfirmProp, TipService } from './../../services/tip-service';
     selector: 'page-contact',
     templateUrl: 'contact.html',
 })
-export class ContactPage {
+export class ContactPage implements BusinessPageModel {
     tel = '0571-58977777';
 
-    subscription: Subscription;
+    subscriptions: Subscription[] = [];
+
+    call$: Subject<boolean> = new Subject();
 
     constructor(
         private tip: TipService,
@@ -22,16 +26,28 @@ export class ContactPage {
     ) {
     }
 
-    call(): void {
+    ionViewDidLoad() {
+        this.launch();
+    }
+
+    launch(): void {
         const confirmFn = window.open(`tel:${this.tel}`);
 
-        const content: Observable<ConfirmProp> = this.translate.get(['CALL_CUSTOMER_SERVICE_PHONE', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
-            .map(labels => ({ message: labels.CALL_CUSTOMER_SERVICE_PHONE, cancelText: labels.CANCEL_BUTTON, confirmText: labels.CONFIRM_BUTTON }));
+        this.subscriptions = [
+            this.tip.showConfirmProp(this.call$.withLatestFrom(this.call(), (_, confirmProp) => confirmProp), confirmFn),
+        ];
+    }
 
-        this.subscription = this.tip.showConfirmProp(content, confirmFn);
+    initialModel(): void {
+
+    }
+
+    call(): Observable<ConfirmProp> {
+        return this.translate.get(['CALL_CUSTOMER_SERVICE_PHONE', 'CANCEL_BUTTON', 'CONFIRM_BUTTON'])
+            .map(labels => ({ message: labels.CALL_CUSTOMER_SERVICE_PHONE, cancelText: labels.CANCEL_BUTTON, confirmText: labels.CONFIRM_BUTTON }));
     }
 
     ionViewWillUnload() {
-        this.subscription && this.subscription.unsubscribe();
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

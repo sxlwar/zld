@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AddWorkExperienceComponent } from '../../components/add-work-experience/add-work-experience';
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { CustomWorkExperience, PlatformExperience } from './../../interfaces/personal-interface';
 import { MapperService, WorkExperienceFormModel, WorkExperienceUpdateFormModel } from './../../services/api/mapper-service';
 import { PersonalService } from './../../services/business/personal-service';
@@ -14,7 +15,7 @@ import { PersonalService } from './../../services/business/personal-service';
     selector: 'page-work-experience',
     templateUrl: 'work-experience.html',
 })
-export class WorkExperiencePage {
+export class WorkExperiencePage implements BusinessPageModel {
 
     type = 'platform';
 

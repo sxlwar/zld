@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { leave } from '../../services/business/icon-service';
 import { Leave, WorkFlow } from './../../interfaces/response-interface';
 import { LeaveService } from './../../services/business/leave-service';
@@ -16,7 +17,7 @@ import { MissionRoot } from './../pages';
     selector: 'page-leave-detail',
     templateUrl: 'leave-detail.html',
 })
-export class LeaveDetailPage {
+export class LeaveDetailPage implements BusinessPageModel{
 
     id: number;
 

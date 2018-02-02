@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RequestOption } from 'interfaces/request-interface';
 import { InfiniteScroll, ViewController } from 'ionic-angular';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { DistinguishableWorkerItem } from '../../interfaces/worker-interface';
 import { LocationOptions } from './../../interfaces/location-interface';
 import { CraftService } from './../../services/business/craft-service';
@@ -32,7 +33,7 @@ interface WorkTypeItem {
     selector: 'history-location',
     templateUrl: 'history-location.html',
 })
-export class HistoryLocationComponent implements OnInit, OnDestroy {
+export class HistoryLocationComponent implements BusinessComponentModel {
     today: string;
 
     isTimeSlot: boolean;

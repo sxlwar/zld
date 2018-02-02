@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AddEducationComponent } from './../../components/add-education/add-education';
 import { EducationAddOptions, EducationUpdateOptions } from './../../interfaces/request-interface';
 import { PersonalService } from './../../services/business/personal-service';
@@ -15,7 +16,7 @@ import { LayoutService } from './../../services/utils/layout-service';
     selector: 'page-education-experience',
     templateUrl: 'education-experience.html',
 })
-export class EducationExperiencePage {
+export class EducationExperiencePage implements BusinessPageModel{
 
     subscriptions: Subscription[];
 

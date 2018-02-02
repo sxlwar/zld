@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { putInArray } from '../../services/utils/util';
 import { TeamItem } from '../organization/organization';
 import { WorkerContractListResponse } from './../../interfaces/response-interface';
@@ -22,7 +23,7 @@ export interface WorkerItem {
     selector: 'page-team-members',
     templateUrl: 'team-members.html',
 })
-export class TeamMembersPage {
+export class TeamMembersPage implements BusinessPageModel {
     team: TeamItem;
 
     list: Observable<WorkerItem[]>;

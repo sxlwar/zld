@@ -3,6 +3,7 @@ import { InfiniteScroll, IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { MessageReadTag } from './../../interfaces/request-interface';
 import { Message } from './../../interfaces/response-interface';
 import { MessageService } from './../../services/business/message-service';
@@ -13,7 +14,7 @@ import { messageContentPage } from './../pages';
     selector: 'page-message',
     templateUrl: 'message.html',
 })
-export class MessagePage {
+export class MessagePage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 
@@ -48,12 +49,12 @@ export class MessagePage {
     }
 
     ionViewDidLoad() {
-        this.sendRequest();
-
         this.initialModel();
+        
+        this.launch();
     }
 
-    sendRequest(): void {
+    launch(): void {
         this.subscriptions = [
             this.message.getMessageListByReadState(MessageReadTag.unread),
         ];

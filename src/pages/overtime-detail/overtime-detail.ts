@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { Overtime, WorkFlow } from './../../interfaces/response-interface';
 import { overtime } from './../../services/business/icon-service';
 import { OvertimeService } from './../../services/business/overtime-service';
@@ -16,7 +17,7 @@ import { MissionRoot } from './../pages';
     selector: 'page-overtime-detail',
     templateUrl: 'overtime-detail.html',
 })
-export class OvertimeDetailPage {
+export class OvertimeDetailPage implements BusinessPageModel{
 
     id: number;
 

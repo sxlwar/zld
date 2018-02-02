@@ -4,6 +4,7 @@ import { IonicPage, NavParams, ViewController } from 'ionic-angular';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { ContractTypeOfResponse, WorkerContract } from './../../interfaces/response-interface';
 import { WorkerContractEditFormModel } from './../../services/api/mapper-service';
 import { LaunchService } from './../../services/business/launch-service';
@@ -14,7 +15,7 @@ import { ConfigService } from './../../services/config/config-service';
     selector: 'page-edit-worker-contract',
     templateUrl: 'edit-worker-contract.html',
 })
-export class EditWorkerContractPage {
+export class EditWorkerContractPage implements BusinessPageModel {
 
     contract: WorkerContract;
 
@@ -54,7 +55,7 @@ export class EditWorkerContractPage {
         this.launch();
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.launchService.editWorkerContract(
                 this.contract$.map(_ => this.contract.type === ContractTypeOfResponse.timer
@@ -68,6 +69,10 @@ export class EditWorkerContractPage {
 
             this.launchService.handleWorkerContractEditError(),
         ];
+    }
+
+    initialModel(): void {
+
     }
 
     initialForm(): void {

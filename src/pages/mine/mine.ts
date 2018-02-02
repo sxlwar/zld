@@ -3,6 +3,7 @@ import { App, IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import * as pages from '../../pages/pages';
 import { IconState } from '../../reducers/reducer/icons-reducer';
 import { CraftService } from '../../services/business/craft-service';
@@ -45,7 +46,7 @@ const setting: Setting[] = [
     selector: 'page-mine',
     templateUrl: 'mine.html',
 })
-export class MinePage {
+export class MinePage implements BusinessPageModel{
 
     icons: Observable<IconState[]>;
 

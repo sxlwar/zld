@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { LaunchResponse } from '../../reducers/reducer/launch-reducer';
 import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
 import { WorkerItem } from './../../interfaces/worker-interface';
@@ -18,7 +19,7 @@ import { ConfigService } from './../../services/config/config-service';
     selector: 'page-apply-worker-contract-modify',
     templateUrl: 'apply-worker-contract-modify.html',
 })
-export class ApplyWorkerContractModifyPage {
+export class ApplyWorkerContractModifyPage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 

@@ -4,6 +4,7 @@ import { IonicPage, ModalController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AddBankcardComponent } from './../../components/add-bankcard/add-bankcard';
 import { Bankcard } from './../../interfaces/response-interface';
 import { BankcardService } from './../../services/business/bank-card-service';
@@ -14,7 +15,7 @@ import { TipService } from './../../services/tip-service';
     selector: 'page-bankcard',
     templateUrl: 'bankcard.html',
 })
-export class BankcardPage {
+export class BankcardPage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 
@@ -38,7 +39,7 @@ export class BankcardPage {
     ionViewDidLoad() {
         this.initialModel();
 
-        this.sendRequest();
+        this.launch();
     }
 
     ionViewWillUnload() {
@@ -55,7 +56,7 @@ export class BankcardPage {
         this.bankcards = this.bankcard.getBankCards();
     }
 
-    sendRequest(): void {
+    launch(): void {
         this.subscriptions = [
             ...this.bankcard.handleError(),
             

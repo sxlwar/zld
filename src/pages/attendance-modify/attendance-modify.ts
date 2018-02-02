@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AuditTarget, MissionListItem, WorkFlowPageType } from './../../interfaces/mission-interface';
 import { ProcessIdOptions, SpecificWorkFlowState } from './../../interfaces/request-interface';
 import { modifyAttendance } from './../../services/business/icon-service';
@@ -17,7 +18,7 @@ import { applyAttendanceModifyPage, attendanceModifyDetailPage, MissionRoot } fr
     selector: 'page-attendance-modify',
     templateUrl: 'attendance-modify.html',
 })
-export class AttendanceModifyPage {
+export class AttendanceModifyPage implements BusinessPageModel{
 
     total: Observable<number>;
 

@@ -61,7 +61,7 @@
             <button
                 ion-button
                 color="danger"
-                (click)="deleteMessage(item, $event)"
+                (click)="deleteMessage(item); $event.stopImmediatePropagation()"
             >
                 <ion-icon name="trash"></ion-icon>
                 {{'DELETE_BUTTON' | translate}}

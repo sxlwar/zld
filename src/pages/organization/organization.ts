@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AddTeamComponent } from '../../components/add-team/add-team';
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { LayoutService } from '../../services/utils/layout-service';
 import { putInArray } from '../../services/utils/util';
 import { organization } from './../../services/business/icon-service';
@@ -37,7 +38,7 @@ export interface TeamItem {
     selector: 'page-organization',
     templateUrl: 'organization.html',
 })
-export class OrganizationPage {
+export class OrganizationPage implements BusinessPageModel {
     canOperate: Observable<boolean>;
 
     teams: Observable<TeamItem[]>;

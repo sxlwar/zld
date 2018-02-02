@@ -3,6 +3,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AttendanceMachine } from './../../interfaces/response-interface';
 import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
 import { attendanceMachineRecordPage } from './../pages';
@@ -12,7 +13,7 @@ import { attendanceMachineRecordPage } from './../pages';
     selector: 'page-attendance-machine',
     templateUrl: 'attendance-machine.html',
 })
-export class AttendanceMachinePage {
+export class AttendanceMachinePage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 
@@ -25,9 +26,13 @@ export class AttendanceMachinePage {
     }
 
     ionViewDidLoad() {
-        this.machines = this.machine.getMachines();
+        this.initialModel();
 
         this.launch();
+    }
+
+    initialModel(): void {
+        this.machines = this.machine.getMachines();
     }
 
     launch(): void {

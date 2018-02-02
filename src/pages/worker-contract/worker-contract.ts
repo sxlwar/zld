@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { ContractTypeOfResponse, Project, WorkerContract } from './../../interfaces/response-interface';
 import { LaunchService } from './../../services/business/launch-service';
 import { ProjectService } from './../../services/business/project-service';
@@ -64,7 +65,7 @@ interface TimeContract extends Contract {
     selector: 'page-worker-contract',
     templateUrl: 'worker-contract.html',
 })
-export class WorkerContractPage {
+export class WorkerContractPage implements BusinessPageModel {
     contractId: number;
 
     source: WorkerContract;

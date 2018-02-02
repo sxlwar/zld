@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AttendanceCardResponses } from '../../reducers/reducer/attendance-card-reducer';
 import { AddAttendanceCardComponent } from './../../components/add-attendance-card/add-attendance-card';
 import { ConditionOption } from './../../interfaces/order-interface';
@@ -19,7 +20,7 @@ import { ProjectRoot } from './../pages';
     selector: 'page-attendance-card',
     templateUrl: 'attendance-card.html',
 })
-export class AttendanceCardPage {
+export class AttendanceCardPage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { SearchItem } from './../../interfaces/search-interface';
 import { QueryWorkerBy } from './../../reducers/reducer/search-worker-reducer';
 import { SearchService } from './../../services/business/search-service';
@@ -24,7 +25,7 @@ const searchConditions: QueryCondition[] = [
     selector: 'page-search-worker',
     templateUrl: 'search-worker.html',
 })
-export class SearchWorkerPage {
+export class SearchWorkerPage implements BusinessPageModel {
 
     selectType = 'checkbox';
 

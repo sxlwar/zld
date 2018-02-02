@@ -3,6 +3,7 @@ import { IonicPage, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { Message } from './../../interfaces/response-interface';
 import { MessageService } from './../../services/business/message-service';
 
@@ -11,7 +12,7 @@ import { MessageService } from './../../services/business/message-service';
     selector: 'page-message-content',
     templateUrl: 'message-content.html',
 })
-export class MessageContentPage {
+export class MessageContentPage implements BusinessPageModel{
     subscriptions: Subscription[] = [];
 
     content: Observable<string>;
@@ -28,7 +29,7 @@ export class MessageContentPage {
     ionViewDidLoad() {
         this.initialModel();
 
-        this.sendRequest();
+        this.launch();
 
         this.setUnreadCount();
     }
@@ -37,7 +38,7 @@ export class MessageContentPage {
         this.content = this.message.getContent();
     }
 
-    sendRequest(): void {
+    launch(): void {
         this.subscriptions = [
             this.message.getMessageContent(Observable.of(this.msg.id)),
         ];
@@ -48,5 +49,9 @@ export class MessageContentPage {
             this.message.decreaseUnreadCount();
             this.message.setMessageReadTypeAtLocal(this.msg.id);
         }
+    }
+
+    ionViewWillUnload() {
+        this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

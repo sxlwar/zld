@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { iCompleted } from '../../services/business/icon-service';
 import {
     AuditTarget,
@@ -23,7 +24,7 @@ import { MissionRoot } from './../pages';
     selector: 'page-i-completed',
     templateUrl: 'i-completed.html',
 })
-export class ICompletedPage {
+export class ICompletedPage implements BusinessPageModel{
 
     total: Observable<number>;
 

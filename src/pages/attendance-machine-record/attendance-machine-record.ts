@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { FaceImageComponent } from './../../components/face-image/face-image';
 import { AttendanceInstant } from './../../interfaces/response-interface';
 import { AttendanceMachineService } from './../../services/business/attendance-machine-service';
@@ -16,7 +17,7 @@ import { TimeService } from './../../services/utils/time-service';
     selector: 'page-attendance-machine-record',
     templateUrl: 'attendance-machine-record.html',
 })
-export class AttendanceMachineRecordPage {
+export class AttendanceMachineRecordPage implements BusinessPageModel{
     records: Observable<AttendanceInstant[]>;
 
     haveMoreData: Observable<boolean>;

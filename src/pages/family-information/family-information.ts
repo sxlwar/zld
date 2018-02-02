@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { UpdateFamilyInformationComponent } from './../../components/update-family-information/update-family-information';
 import { Family } from './../../interfaces/personal-interface';
 import { PersonalService } from './../../services/business/personal-service';
@@ -14,7 +15,7 @@ import { AddressService } from './../../services/utils/address-service';
     selector: 'page-family-information',
     templateUrl: 'family-information.html',
 })
-export class FamilyInformationPage {
+export class FamilyInformationPage implements BusinessPageModel{
 
     family: Observable<Family>;
 
@@ -37,12 +38,12 @@ export class FamilyInformationPage {
     }
 
     ionViewDidLoad() {
-        this.initialData();
+        this.initialModel();
 
         this.launch();
     }
 
-    initialData() {
+    initialModel(): void {
         this.family = this.personal.getOwnFamily()
             .mergeMap(res => this.addressService.getAddressCode(Observable.of(res.addressArea.split(' ')))
                 .map(res => res.join(' '))
@@ -53,7 +54,7 @@ export class FamilyInformationPage {
             );
     }
 
-    launch() {
+    launch(): void {
         this.subscriptions = [
             this.personal.getHomeInfoList(),
 

@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NavParams, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { EmployerService } from '../../services/business/employer-service';
 import { QW, TL } from '../../services/config/character';
 import { putInArray } from '../../services/utils/util';
@@ -13,9 +14,6 @@ import { Employer } from './../../interfaces/response-interface';
 import { AddTeamFormModel } from './../../services/api/mapper-service';
 import { ProjectService } from './../../services/business/project-service';
 import { TeamService } from './../../services/business/team-service';
-
-//region
-//endregion
 
 interface Person {
     name: string;
@@ -27,7 +25,7 @@ interface Person {
     selector: 'add-team',
     templateUrl: 'add-team.html',
 })
-export class AddTeamComponent implements OnInit, OnDestroy {
+export class AddTeamComponent implements BusinessComponentModel {
     operateType = 'ADD_TEAM';
 
     projectName: Observable<string>;

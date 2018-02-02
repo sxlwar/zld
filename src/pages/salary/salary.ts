@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { salaryDetailPage } from '../../pages/pages';
 import { putInArray } from '../../services/utils/util';
 import { PayProcessService } from './../../services/business/pay-process-service';
@@ -18,7 +19,7 @@ export interface PayProcessListItem {
     selector: 'page-salary',
     templateUrl: 'salary.html',
 })
-export class SalaryPage {
+export class SalaryPage implements BusinessPageModel {
     list: Observable<PayProcessListItem[]>;
 
     subscriptions: Subscription[] = [];
@@ -51,7 +52,7 @@ export class SalaryPage {
     launch(): void {
         this.subscriptions = [
             this.payProcess.getPayProcessList(),
-            
+
             this.payProcess.handleError(),
         ];
     }

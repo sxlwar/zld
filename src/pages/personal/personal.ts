@@ -3,6 +3,7 @@ import { IonicPage, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import {
     Certification,
     CustomWorkExperience,
@@ -19,7 +20,7 @@ import { UserService } from './../../services/business/user-service';
     selector: 'page-personal',
     templateUrl: 'personal.html',
 })
-export class PersonalPage {
+export class PersonalPage implements BusinessPageModel{
     type = 'basic';
 
     workType = 'platform';

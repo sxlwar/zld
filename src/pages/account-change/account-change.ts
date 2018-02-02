@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { ChangeAccountFormModel } from '../../services/api/mapper-service';
 import { mobilePhoneValidator } from '../../validators/validators';
 import { AccountChangeService } from './../../services/business/account-change-service';
@@ -14,7 +15,7 @@ import { AccountChangeService } from './../../services/business/account-change-s
     selector: 'page-account-change',
     templateUrl: 'account-change.html',
 })
-export class AccountChangePage {
+export class AccountChangePage implements BusinessPageModel{
 
     subscriptions: Subscription[] = [];
 

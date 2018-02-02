@@ -3,6 +3,7 @@ import { IonicPage, ModalController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { RequestOption } from '../../interfaces/request-interface';
 import { WorkPieceAxisComponent } from './../../components/work-piece-axis/work-piece-axis';
 import { WorkPiece } from './../../interfaces/response-interface';
@@ -14,7 +15,7 @@ import { WorkPieceService } from './../../services/business/work-piece-service';
     selector: 'page-work-piece',
     templateUrl: 'work-piece.html',
 })
-export class WorkPiecePage {
+export class WorkPiecePage implements BusinessPageModel {
     pieces: Observable<WorkPiece[]>
 
     subscriptions: Subscription[] = [];

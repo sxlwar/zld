@@ -4,6 +4,7 @@ import { IonicPage, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { PayBillService } from './../../services/business/pay-bill-service';
 import { ChartService, ChartType } from './../../services/utils/chart-service';
 
@@ -22,7 +23,7 @@ export interface Salary {
     selector: 'page-salary-detail',
     templateUrl: 'salary-detail.html',
 })
-export class SalaryDetailPage {
+export class SalaryDetailPage implements BusinessPageModel {
     @ViewChild('salaryDetail') salaryDetail: ElementRef;
 
     yearMonth: string;

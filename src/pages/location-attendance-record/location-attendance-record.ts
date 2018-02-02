@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { WorkerItem } from '../../interfaces/worker-interface';
 import { WorkerSelectComponent } from './../../components/worker-select/worker-select';
 import { AttendanceMachineType } from './../../interfaces/request-interface';
@@ -23,7 +24,7 @@ export interface RecordItem {
     selector: 'page-location-attendance-record',
     templateUrl: 'location-attendance-record.html',
 })
-export class LocationAttendanceRecordPage {
+export class LocationAttendanceRecordPage implements BusinessPageModel{
 
     availableDayValues: number[];
 

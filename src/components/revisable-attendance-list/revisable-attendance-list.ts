@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RequestOption } from 'interfaces/request-interface';
 import { InfiniteScroll, ViewController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AttendanceState } from '../../interfaces/attendance-interface';
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { attendanceList } from '../../services/api/command';
 import { AttendanceResult, Team } from './../../interfaces/response-interface';
 import { AttendanceService } from './../../services/business/attendance-service';
@@ -16,7 +17,7 @@ import { TimeService } from './../../services/utils/time-service';
     selector: 'revisable-attendance-list',
     templateUrl: 'revisable-attendance-list.html',
 })
-export class RevisableAttendanceListComponent implements OnInit, OnDestroy {
+export class RevisableAttendanceListComponent implements BusinessComponentModel {
     startDate: string;
 
     endDate: string;

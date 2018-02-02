@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { Company, LoginResponse, PhoneVerCodeResponse, RegisterResponse } from '../../interfaces/response-interface';
 import { LoginService } from '../../services/business/login-service';
 import {
@@ -27,7 +28,7 @@ export class LoginForm {
     selector: 'page-login',
     templateUrl: 'login.html',
 })
-export class LoginPage {
+export class LoginPage implements BusinessPageModel{
 
     readonly backgroundImage = 'assets/img/background/login-background.png';
 

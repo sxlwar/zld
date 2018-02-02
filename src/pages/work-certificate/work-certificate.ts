@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { AddWorkCertificateComponent } from './../../components/add-work-certificate/add-work-certificate';
 import { CertificateAddOptions, CertificateUpdateOptions } from './../../interfaces/request-interface';
 import { Certificate } from './../../interfaces/response-interface';
@@ -15,7 +16,7 @@ import { WorkCertificateService } from './../../services/business/work-certifica
     selector: 'page-work-certificate',
     templateUrl: 'work-certificate.html',
 })
-export class WorkCertificatePage {
+export class WorkCertificatePage implements BusinessPageModel{
 
     certificates: Observable<Certificate[]>;
 

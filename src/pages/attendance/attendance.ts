@@ -5,6 +5,7 @@ import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
 import { AttendanceState } from '../../interfaces/attendance-interface';
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { RequestOption } from '../../interfaces/request-interface';
 import { AttendanceResult, Team } from '../../interfaces/response-interface';
 import { applyAttendanceModifyPage, attendanceRecordPage, ProjectRoot } from '../../pages/pages';
@@ -20,7 +21,7 @@ import { PermissionService } from './../../services/config/permission-service';
     selector: 'page-attendance',
     templateUrl: 'attendance.html',
 })
-export class AttendancePage {
+export class AttendancePage implements BusinessPageModel{
     startDate: string;
 
     endDate: string;

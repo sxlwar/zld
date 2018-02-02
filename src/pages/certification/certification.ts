@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { CertificateService } from '../../services/business/certificate-service';
 import { personalIdValidator, realNameValidator } from '../../validators/validators';
 import { tabsPage } from './../pages';
@@ -16,7 +17,7 @@ import { tabsPage } from './../pages';
     selector: 'page-certification',
     templateUrl: 'certification.html',
 })
-export class CertificationPage {
+export class CertificationPage implements BusinessPageModel{
 
     certificateForm: FormGroup;
 

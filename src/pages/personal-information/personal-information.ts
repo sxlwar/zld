@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { addressAreaFormat } from '../../validators/validators';
 import { WorkTypeSelectComponent } from './../../components/work-type-select/work-type-select';
 import { RequestOption } from './../../interfaces/request-interface';
@@ -17,7 +18,7 @@ import { AddressService } from './../../services/utils/address-service';
     selector: 'page-personal-information',
     templateUrl: 'personal-information.html',
 })
-export class PersonalInformationPage {
+export class PersonalInformationPage implements BusinessPageModel {
     subscriptions: Subscription[];
 
     personalId: PersonalId;
@@ -149,7 +150,7 @@ export class PersonalInformationPage {
                 )
                 .map(([detail, other]) => ({ ...detail, ...other })),
             (workType, address) => ({ ...workType, ...address })
-        )
+            )
             .distinctUntilKeyChanged('detail');
     }
 

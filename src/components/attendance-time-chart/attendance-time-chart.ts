@@ -1,8 +1,9 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessComponentModel } from '../../interfaces/core-interface';
 import { ChartService, ChartType } from '../../services/utils/chart-service';
 import { PayBillService } from './../../services/business/pay-bill-service';
 
@@ -15,7 +16,7 @@ export interface ChartSourceData {
     selector: 'attendance-time-chart',
     templateUrl: 'attendance-time-chart.html',
 })
-export class AttendanceTimeChartComponent implements OnInit, OnDestroy {
+export class AttendanceTimeChartComponent implements BusinessComponentModel {
 
     @Input() yearMonth: string;
 

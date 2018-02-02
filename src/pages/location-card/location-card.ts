@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { LocationCardResponses } from '../../reducers/reducer/location-card-reducer';
 import { AddLocationCardComponent } from './../../components/add-location-card/add-location-card';
 import { ConditionOption } from './../../interfaces/order-interface';
@@ -21,7 +22,7 @@ import { ProjectRoot } from './../pages';
     selector: 'page-location-card',
     templateUrl: 'location-card.html',
 })
-export class LocationCardPage {
+export class LocationCardPage implements BusinessPageModel{
 
     subscriptions: Subscription[];
 

@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { Company } from '../../interfaces/response-interface';
 import { SearchService } from '../../services/business/search-service';
 import { SearchCompanyOptions } from './../../interfaces/request-interface';
@@ -18,7 +19,7 @@ import { SearchCompanyOptions } from './../../interfaces/request-interface';
     selector: 'page-search-company',
     templateUrl: 'search-company.html',
 })
-export class SearchCompanyPage {
+export class SearchCompanyPage implements BusinessPageModel {
 
     selectType = 'radio';
 

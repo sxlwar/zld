@@ -4,6 +4,7 @@ import { orderBy } from 'lodash';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { StatisticsService } from '../../services/business/statistics-service';
 import { AttendanceService } from './../../services/business/attendance-service';
 import {
@@ -19,7 +20,7 @@ import { attendanceConfirmDetailPage } from './../pages';
     selector: 'page-attendance-confirm',
     templateUrl: 'attendance-confirm.html',
 })
-export class AttendanceConfirmPage {
+export class AttendanceConfirmPage implements BusinessPageModel{
     selectedTeams: { name: string }[]
 
     @ViewChild('teamChart') teamChart: ElementRef;
@@ -130,7 +131,7 @@ export class AttendanceConfirmPage {
         this.navCtrl.push(attendanceConfirmDetailPage, { statistic }).then(() => { });
     }
 
-    unSubscribe() {
+    ionViewWillUnload() {
         this.subscriptions.forEach(item => item.unsubscribe());
     }
 }

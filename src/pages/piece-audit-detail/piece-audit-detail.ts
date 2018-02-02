@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 
+import { BusinessPageModel } from '../../interfaces/core-interface';
 import { WorkFlow, WorkPiece, WorkPieceFinish } from './../../interfaces/response-interface';
 import { pieceAudit } from './../../services/business/icon-service';
 import { WorkFlowService } from './../../services/business/work-flow-service';
@@ -16,7 +17,7 @@ import { MissionRoot } from './../pages';
     selector: 'page-piece-audit-detail',
     templateUrl: 'piece-audit-detail.html',
 })
-export class PieceAuditDetailPage {
+export class PieceAuditDetailPage implements BusinessPageModel {
 
     id: number;
 
@@ -71,7 +72,7 @@ export class PieceAuditDetailPage {
             this.workPiece.getWorkPieceList(this.workPiece.getRecordOptions(this.id, this.navParams.get('status'))),
 
             this.workFlowService.getTaskUpdateSuccessResponse().subscribe(_ => this.navCtrl.pop()),
-            
+
             this.workFlowService.auditTask(this.audit$.mapTo(this.id)),
 
             this.workPiece.handleError(),
